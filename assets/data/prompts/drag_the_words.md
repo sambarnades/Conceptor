@@ -7,7 +7,8 @@
 
 - Nombre de mots : Paragraphe d'au minimum 50 mots avec au moins 5 mots à glisser || [NOMBRE_ELEMENTS] mots.
 - Unicité : Chaque mot à glisser doit être UNIQUE dans le texte (pas de doublons).
-- Rétroaction : seul le feedback global (`overallFeedback`) est possible (pas de message par mot) — gradue-le par niveau de maîtrise et renvoie à la notion (cf. RÈGLES PÉDAGOGIQUES).
+
+- Rétroaction : `overallFeedback` donne un retour global. Dans `textField`, un mot peut aussi porter un indice (`*mot:indice*`) et des retours spécifiques (`*mot\+Explication correcte\-Piste de correction*`). Ne révèle pas la réponse dans l’indice.
 
 # RÈGLES PÉDAGOGIQUES
 - Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
@@ -35,6 +36,8 @@ L'objet doit contenir :
   - **Format** : \`*mot*\` pour un élément glissable.
 - \`overallFeedback\` : tableau de 4 objets pour le score final (0-25, 26-50, 51-75, 76-100).
 - **LaTeX :** Le composant DragTheWords ne supporte PAS le LaTeX dans les mots déplaçables (marqués par \`*mot*\`). Le LaTeX sera automatiquement converti en caractères Unicode dans les marqueurs. Tu peux néanmoins utiliser LaTeX \`\\\\( ... \\\\)\` dans la consigne (\`taskDescription\`).
+
+- Média facultatif : utilise `media.type` avec la bibliothèque native Image 1.1, Audio 1.5 ou Video 1.6 uniquement si un média est fourni. N’invente aucun chemin de fichier. Dans le JSON, double les antislashs des retours par mot.
 
 # EXEMPLE DE RENDU
 
@@ -66,3 +69,5 @@ L'objet doit contenir :
   ]
 }
 ```
+
+- `distractors` (facultatif) : des choix incorrects mais plausibles, au format `*mot* *expression*`. Ajoute-les si la demande ou l’objectif le justifie ; ne reprends aucune bonne réponse.

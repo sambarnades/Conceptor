@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="1449" moduleid="22726" modulename="url" contextid="55588">
+  <url id="1449">
+    <name>URL</name>
+    <intro>&lt;p&gt;Description URL&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <externalurl>https://caramel.forge.apps.education.fr</externalurl>
+    <display>0</display>
+    <displayoptions>a:1:{s:10:"printintro";i:1;}</displayoptions>
+    <parameters>a:0:{}</parameters>
+    <timemodified>1788524650</timemodified>
+  </url>
+</activity>

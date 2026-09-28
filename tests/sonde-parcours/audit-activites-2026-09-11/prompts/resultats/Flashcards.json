@@ -1,0 +1,26 @@
+{
+  "title": "Les capitales d'Europe à connaître",
+  "description": "Réponds à chaque question.",
+  "cards": [
+    {
+      "text": "Quelle est la capitale de la France ?",
+      "answer": "paris",
+      "tip": "Traversée par un fleuve célèbre : la **Seine**."
+    },
+    {
+      "text": "Quelle est la capitale de l'Italie ?",
+      "answer": "rome",
+      "tip": "Traversée par le fleuve *Tibre*."
+    },
+    {
+      "text": "Quelle est la capitale de l'Espagne ?",
+      "answer": "madrid",
+      "tip": "Située au centre du pays."
+    }
+  ],
+  "behaviour": {
+    "showSolutionsRequiresInput": false,
+    "randomCards": false,
+    "caseSensitive": false
+  }
+}

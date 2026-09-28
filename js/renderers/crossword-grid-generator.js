@@ -31,12 +31,12 @@ const MAX_GRID_DIM = 64;
 // ===================== Algorithme de placement =====================
 
 /**
- * Normalise un mot pour le placement (majuscules, sans accents, sans espaces/tirets).
+ * Normalise un mot pour le placement (majuscules natives, accents conservés, sans espaces/tirets).
  */
 function normalizeAnswer(answer) {
     return answer
-        .toUpperCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/ß/g,'ẞ').toUpperCase()
+        .normalize('NFC')
         .replace(/[\s\-']/g, '');
 }
 
@@ -72,16 +72,28 @@ function layoutWords(words) {
     const getCell = (r, c) => occupied.get(key(r, c)) || null;
     const setCell = (r, c, ch) => occupied.set(key(r, c), ch);
 
-    // Placer le premier mot horizontalement a l'origine
-    const first = prepared[0];
-    placements.push({ word: first, row: 0, col: 0, direction: 'across' });
-    for (let i = 0; i < first.answer.length; i++) {
-        setCell(0, i, first.answer[i]);
+    // Les coordonnées natives sont à base 1 ; les mots fixes sont placés en premier.
+    const fixed = prepared.filter(word => word.original.fixWord);
+    for (const word of fixed) {
+        const row = Number(word.original.row) - 1, col = Number(word.original.column) - 1;
+        const direction = word.original.orientation || 'across';
+        if (!Number.isInteger(row) || !Number.isInteger(col) || row < 0 || col < 0 ||
+            row >= MAX_GRID_DIM || col >= MAX_GRID_DIM || !['across','down'].includes(direction)) return null;
+        const dr = direction === 'down' ? 1 : 0, dc = direction === 'across' ? 1 : 0;
+        for (let i=0;i<word.answer.length;i++) {
+            const r=row+i*dr,c=col+i*dc,existing=getCell(r,c);
+            if(r>=MAX_GRID_DIM || c>=MAX_GRID_DIM || (existing && existing!==word.answer[i]))return null;
+        }
+        placements.push({word,row,col,direction});
+        for(let i=0;i<word.answer.length;i++)setCell(row+i*dr,col+i*dc,word.answer[i]);
     }
-
-    // Placer les mots suivants
-    for (let wi = 1; wi < prepared.length; wi++) {
-        const word = prepared[wi];
+    const remaining = prepared.filter(word => !word.original.fixWord);
+    if (!placements.length && remaining.length) {
+        const first=remaining.shift();placements.push({word:first,row:0,col:0,direction:'across'});
+        for(let i=0;i<first.answer.length;i++)setCell(0,i,first.answer[i]);
+    }
+    for (let wi = 0; wi < remaining.length; wi++) {
+        const word = remaining[wi];
         let bestScore = -1;
         let bestPlacement = null;
 
@@ -94,14 +106,14 @@ function layoutWords(words) {
 
                 // Essayer across (horizontal) : le mot passe par (cr, cc - li)
                 const acrossPlacement = tryPlace(word, cr, cc - li, 'across', li, occupied, key, getCell);
-                if (acrossPlacement && acrossPlacement.score > bestScore) {
+                if (acrossPlacement && (!fixed.length || (acrossPlacement.row>=0 && acrossPlacement.col>=0)) && acrossPlacement.score > bestScore) {
                     bestScore = acrossPlacement.score;
                     bestPlacement = acrossPlacement;
                 }
 
                 // Essayer down (vertical) : le mot passe par (cr - li, cc)
                 const downPlacement = tryPlace(word, cr - li, cc, 'down', li, occupied, key, getCell);
-                if (downPlacement && downPlacement.score > bestScore) {
+                if (downPlacement && (!fixed.length || (downPlacement.row>=0 && downPlacement.col>=0)) && downPlacement.score > bestScore) {
                     bestScore = downPlacement.score;
                     bestPlacement = downPlacement;
                 }
@@ -131,6 +143,8 @@ function layoutWords(words) {
         if (c < minCol) minCol = c;
         if (c > maxCol) maxCol = c;
     }
+
+    if (fixed.length) { minRow=0; minCol=0; }
 
     // Decaler pour que la grille commence a (0,0)
     const rows = maxRow - minRow + 1;
@@ -316,6 +330,11 @@ function renderGridToCanvas(gridModel, solutionLetters, colors) {
                     ctx.fillText(cell.clueId, x + 3, y + 2);
                 }
 
+                if(cell.solutionId){
+                    ctx.strokeStyle='#0055aa';ctx.fillStyle='#0055aa';ctx.lineWidth=1;
+                    ctx.beginPath();ctx.arc(x+CELL_SIZE-9,y+CELL_SIZE-9,7,0,Math.PI*2);ctx.stroke();
+                    ctx.font='bold 10px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(cell.solutionId,x+CELL_SIZE-9,y+CELL_SIZE-9);
+                }
                 if (letter) {
                     ctx.fillStyle = C.LETTER_COLOR;
                     ctx.font = `bold ${LETTER_FONT_SIZE}px -apple-system, "Segoe UI", Arial, sans-serif`;
@@ -357,11 +376,13 @@ async function renderAndExport(gridModel, solutionLetters, colors) {
  * @param {Array<{answer: string, clue: string}>} words - Tableau de mots avec reponse et indice
  * @returns {Promise<{emptyGrid: Object|null, solutionGrid: Object|null}>}
  */
-export async function generateCrosswordGridImages(words, theme) {
+export async function generateCrosswordGridImages(words, theme, behaviour = {}, solutionWord = "") {
     const result = { emptyGrid: null, solutionGrid: null, placements: [], unplacedWords: [] };
 
     try {
-        const layout = layoutWords(words);
+        const pool=Number(behaviour.poolSize);
+        const selected=pool>=2 ? words.filter(w=>w.fixWord).concat(words.filter(w=>!w.fixWord).slice(0,Math.max(0,pool-words.filter(w=>w.fixWord).length))) : words;
+        const layout = layoutWords(selected);
         if (!layout) {
             console.warn('[CrosswordGenerator] Placement des mots impossible');
             return result;
@@ -379,6 +400,19 @@ export async function generateCrosswordGridImages(words, theme) {
         const { gridModel, solutionLetters, annotatedPlacements } = buildGridModel(layout);
 
         result.placements = annotatedPlacements;
+        // Chiffres cerclés pour extraire le mot-solution sans révéler ses lettres.
+        if(solutionWord){
+            const used=new Set();let complete=true;
+            [...normalizeAnswer(solutionWord)].forEach((letter,index)=>{
+                let found=false;
+                for(let row=0;row<solutionLetters.length && !found;row++)for(let col=0;col<solutionLetters[row].length && !found;col++){
+                    const key=row+','+col;
+                    if(solutionLetters[row][col]===letter && !used.has(key)){gridModel.cells[row][col].solutionId=index+1;used.add(key);found=true;}
+                }
+                if(!found)complete=false;
+            });
+            if(!complete)throw new Error('Mot-solution absent de la grille');
+        }
 
         // Grille vide (sans lettres)
         result.emptyGrid = await renderAndExport(gridModel, null, colors);

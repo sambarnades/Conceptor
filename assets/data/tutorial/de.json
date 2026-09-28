@@ -149,6 +149,10 @@
           "alt": "Das Raster der in Caramel verfügbaren Aktivitätskacheln."
         },
         {
+          "type": "tip",
+          "text": "Unter dem Formular zeigt **Eine Aktivität** diese Kacheln an; **Ein Lernpfad** öffnet die Werkstatt, die mehrere Aktivitäten zu einem vollständigen Kurs zusammenstellt (siehe „Einen vollständigen Kurs erstellen und wieder öffnen“)."
+        },
+        {
           "type": "h",
           "text": "Zwei große Familien"
         },
@@ -623,6 +627,106 @@
       ]
     },
     {
+      "id": "parcours",
+      "icon": "grid",
+      "title": "Einen vollständigen Kurs erstellen und wieder öffnen",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Mit **Ein Lernpfad** erstellt Caramel einen Kurs für Éléa, Magistère oder Moodle: mehrere Aktivitäten in Abschnitten, in einer einzigen **.mbz**-Datei. Ausgangspunkt bleibt das gewohnte Formular mit Thema, Zielgruppe und angehängten Dokumenten."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-cadrage.webp",
+          "alt": "Das Formular, der Umschalter „Ein Lernpfad“ und die Rahmenwahl: Plattform, Unterrichtsform und Umfang."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-trames.webp",
+          "alt": "Die Wahl der Vorlage: Jede Karte zeigt ihre Abschnitte, Stufen und Aktivitäten."
+        },
+        {
+          "type": "tip",
+          "text": "Im Menü von Caramelia öffnet **Einen Kurs erstellen** direkt die Werkstatt, ohne KI-Anfrage. Ein vorhandener Entwurf wird mit **Meinen Kurs fortsetzen** wieder geöffnet. Ausgefüllte Felder und Quellen bleiben erhalten. Prüfe Rahmen und Plan in der Werkstatt, bevor du die Generierung startest."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang und Vorlage. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.",
+            "Unter **Plan** bearbeiten Sie Titel, Gesamtziel, Schlüsselbegriffe, Abschnitte und Aktivitäten. Verschieben Sie Aktivitäten mit den Pfeilen oder an ihrem Vorschaubild. **Arbeitsauftrag und Lernphase** erlaubt das Anpassen der Generierungsanweisungen. Pädagogische Hinweise unterstützen die Durchsicht, ohne ein Modell vorzuschreiben. Maximal **12 Aktivitäten** sind möglich.",
+            "Fügen Sie den Videolink in die Karte eines **interaktiven Videos** ein. Das Transkript wird beim Erstellen abgerufen; Sie können es auch selbst einfügen. Hängen Sie für **interaktive Bilder** und die Aktivitäten zum Finden einer oder mehrerer Bildstellen ein Bild an die Karte an. Es wird vor der Erstellung analysiert. Sie können diese Medien auch während der Erstellungsphase ergänzen. Eine Aktivität ohne Medium wartet, während die anderen fortfahren. Die Szenariodatei enthält die Bilder und Links der Aktivitäten; die Dokumente des Startformulars bleiben davon getrennt. Fügen Sie bei einem **Weblink** die Adresse der Ressource in die Karte ein: Die KI verfasst die Leseanweisung, ohne die Seite zu öffnen.",
+            "Bestätigen Sie den Plan, um die Erstellung zu starten. Sie können stoppen, fehlende Aktivitäten fortsetzen oder eine Aktivität neu erstellen. Das Schloss **Diese Aktivität nicht erzeugen** reserviert den Inhalt für manuelle Eingabe: Die KI füllt ihn nicht. Eine fehlgeschlagene Neuerstellung erhält den bisherigen Inhalt. Fehlende Aktivitäten werden vor dem Export benannt.",
+            "Sobald Inhalt vorliegt, öffnet **Inhalt bearbeiten** den gewohnten Editor und **Vorschau** die Vorschau. Mit **Kurs durchsehen**, **Zurück** und **Weiter** gehen Sie die Aktivitäten der Reihe nach durch. Speichern Sie Änderungen, damit sie im Plan und Export enthalten sind. Geänderte Plananweisungen schreiben vorhandene Inhalte nicht um.",
+            "Unter **Auslieferung** laden Sie die **.mbz**-Datei herunter und nutzen den Kursimport oder die Kurswiederherstellung Ihrer Plattform. Diese Kursdatei gehört nicht in eine H5P-Aktivität. Der Lernpfad erscheint auch im Benachrichtigungsbereich: **Ansehen** öffnet die **Übersicht des Lernpfads** mit Begrüßung, jedem Schritt und seinen Aktivitäten, die Sie vor dem erneuten Herunterladen prüfen und bearbeiten können. Bewahren Sie auch die **.json**-Datei für die weitere Arbeit in Caramel auf. Ablaufplan und Aktivitätsdetails lassen sich als **DOCX, ODT oder PDF** exportieren."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-plan.webp",
+          "alt": "Der Plan, geprüft vor jeder Generierung: Ziel, Abschnitte, Aktivitäten, Dauer und Planprüfung."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-fabrication.webp",
+          "alt": "Die Erstellung: Die Aktivitäten entstehen nacheinander; jede lässt sich ansehen, bearbeiten oder neu generieren."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-livraison.webp",
+          "alt": "Die Auslieferung: der .mbz-Kurs mit den Importschritten, die druckbaren Dokumente und das .json-Szenario."
+        },
+        {
+          "type": "tip",
+          "text": "**Szenario exportieren (.json)** speichert Plan und fertige Inhalte in einer **.json**-Datei. Die Schaltfläche **Plan anpassen** neben **Plan zusammenstellen** öffnet dasselbe Fenster wie bei einer Aktivität: Kopieren Sie den Prompt in die KI Ihrer Wahl und fügen Sie deren Antwort ein. **Szenario öffnen** befindet sich in diesem Fenster; die **.json**-Datei wird bei der Bereitstellung neben der **.mbz** heruntergeladen. Der Entwurf bleibt nur in diesem Tab: Exportieren Sie vor dem Schließen das Szenario. Thema, Zielgruppe und Anhänge sind nicht enthalten; geben Sie diese vor neuen Generierungen erneut an."
+        },
+        {
+          "type": "tip",
+          "text": "Öffne in Éléa **Kurseinstellungen**, aktiviere die Fortschrittskarte und wähle über die Kachel **+ Eigenes Bild hinzufügen** ein eigenes Hintergrundbild. Du kannst das Bild ersetzen oder entfernen und zu den vorgeschlagenen Motiven zurückkehren. Das Bild wird im **.json**-Szenario gespeichert und in den **.mbz**-Kurs eingebettet. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG oder TIFF · Max. 12 MB. Automatische Umwandlung, ohne Zuschneiden."
+        },
+        {
+          "type": "warn",
+          "text": "Die Fortschrittskarte gibt es nur für Éléa. Karte und schrittweiser Zugang sind optional und müssen noch im tatsächlichen Plattformbetrieb geprüft werden. Die Differenzierungsvorlage erzeugt keine automatischen Verzweigungen nach Note. Zusammenarbeit findet auf der Plattform statt."
+        },
+        {
+          "type": "h",
+          "text": "Die Module der Plattform"
+        },
+        {
+          "type": "p",
+          "text": "Der Plan bietet auch die Module Ihrer Éléa-, Magistère- oder Moodle-Plattform an; sie stehen im Menü jeder Aktivität unter **Module der Plattform**. Die KI verfasst die Inhalte, die die Plattform beim Import übernimmt:"
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-mosaique.webp",
+          "alt": "Das Mosaik der Aktivitätstypen: die von Caramel generierten Aktivitäten, danach die Module der Plattform."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Forum**, **Abstimmung**, **Fragebogen**, **Umfrage (Feedback)**: zum Austausch anregen, Meinungen, eine Diagnose oder einen Rückblick einholen.",
+            "**Lektion**: Seiten zum Lesen, von denen manche mit einer Frage enden, die nur mit der richtigen Antwort weiterführt. Das **IMS-Content-Paket** – Seiten zum Lesen mit Inhaltsverzeichnis, vollständig von Caramel geschrieben – wählen Sie im Mosaik; der Plan schlägt es nicht vor.",
+            "**Workshop**: eine Arbeit erstellen und dann die Arbeiten der anderen anhand eines Kriterienrasters beurteilen.",
+            "**Pinnwand**, **Wiki**, **Kollaboratives Dokument**, **Gemeinsames Glossar** und **Datenbank**: gemeinsam schreiben und aufbauen; sie kommen leer an, mit ihrem Arbeitsauftrag.",
+            "**Virtuelles Klassenzimmer**, **Gruppenwahl**, **Dateiaustausch**, **Weblink**: sich live treffen, Teams bilden, Dateien abgeben, eine Online-Ressource aufrufen.",
+            "**Je nach Plattform**: Etherpad und Wortwolke auf Magistère, Feedback auf Éléa und Moodle. Capytale, GeoGebra, ein SCORM-Paket oder eine Datei werden weiterhin nach dem Import in Éléa, Magistère oder Moodle von Hand hinzugefügt."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Erfordert ein Modul eine Einstellung auf der Plattform (Phasen des Workshops, Uhrzeit des virtuellen Klassenzimmers, Gruppen), schreibt Caramel sie in eine für die Lernenden verborgene Notiz **Vor dem Öffnen des Kurses zu erledigen** am Anfang des importierten Kurses. Löschen Sie sie, sobald diese Einstellungen vorgenommen sind."
+        },
+        {
+          "type": "p",
+          "text": "Zum Weiterlesen: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) unterstützt das Nachdenken über Lernaktivitäten. Die sieben Kategorien in Caramel, darunter **Diskutieren** und **Zusammenarbeiten**, sind vereinfachte, werkzeugbezogene Orientierungshilfen, nicht die sechs ABC-Lerntypen oder eine Bewertung Ihrer Lehre."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-miroir.webp",
+          "alt": "Was dieser Lernpfad trainiert: die sieben Kategorien und die fehlenden."
+        }
+      ]
+    },
+    {
       "id": "integrate",
       "icon": "upload",
       "title": "In Éléa / Magistère / Moodle integrieren",
@@ -820,6 +924,10 @@
         {
           "type": "plain",
           "text": "Um richtig zu antworten, stützt sich Caramélia auf eine **Dokumentenbasis** (ein „RAG“): Anstatt zu improvisieren, **entnimmt sie zuverlässige Auszüge** aus der Dokumentation von Caramel und übernimmt die genauen Beschriftungen der Schaltflächen, die Sie auf dem Bildschirm sehen. (Das **RAG** ist auch das, was es ermöglicht, die Generierung in den offiziellen Lehrplänen zu verankern — siehe Schritt „Ihren Bedarf beschreiben“.)"
+        },
+        {
+          "type": "tip",
+          "text": "Im Menü von Caramelia öffnet **Einen Kurs erstellen** direkt die Werkstatt, ohne KI-Anfrage. Ein vorhandener Entwurf wird mit **Meinen Kurs fortsetzen** wieder geöffnet. Ausgefüllte Felder und Quellen bleiben erhalten. Prüfe Rahmen und Plan in der Werkstatt, bevor du die Generierung startest."
         }
       ]
     },

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="30" moduleid="23628" modulename="etherpadlite" contextid="57786">
+  <etherpadlite id="30">
+    <name>Etherpad : prise de notes</name>
+    <intro>&lt;p&gt;Prenez des notes à plusieurs pendant l’expérience.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <guestsallowed>0</guestsallowed>
+    <timecreated>1790541628</timecreated>
+    <timemodified>0</timemodified>
+  </etherpadlite>
+</activity>

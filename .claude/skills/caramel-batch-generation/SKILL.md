@@ -13,15 +13,16 @@ Chaque appel LLM (proxy n8n) a un **timeout dur de ~59 s**. Au-delà de ~5 quest
 
 ```
 PLAN (1 appel court) → carcasse {title, overallFeedback…} + N intitulés distincts
-REMPLISSAGE (⌈N/4⌉ appels SÉQUENTIELS) → chaque lot rédige les items de SES intitulés
+REMPLISSAGE (⌈N/3⌉ appels, DEUX DE FRONT) → chaque lot rédige les items de SES intitulés ;
+             un lot en échec est REDÉCOUPÉ en moitiés (budget d'échecs partagé)
 FUSION (code) → carcasse + concat des items dans data[path] → pipeline existant inchangé
 ```
 
-Séquentiel (pas parallèle) : ILaaS tolère mal la concurrence (backend partagé → fallbacks en cascade). Lots de 4 → ~36 s, marge sous 59 s.
+Le mur est un VOLUME de jetons, pas une durée : le débit d'un même modèle varie du simple au triple d'un appel à l'autre (serveurs ILaaS hétérogènes). Lots de 3 QCM ≈ 2 000 jetons ≈ 12 s au débit courant, < 45 s à 50 jetons/s. Deux lots de front : 10 QCM en ~25 s (recalibration du 2026-09-28, `docs/calibration-batch-2026-09.md`).
 
 ## Fichiers
 
-- `js/services/llm-batch.js` — moteur (builders purs testables Node + `generateInBatches`). Réglages dans `BATCH_CONFIG` (threshold 5, batchSize 4, maxItems 40, concurrency 1, retries 1).
+- `js/services/llm-batch.js` — moteur (builders purs testables Node + `generateInBatches`). Réglages dans `BATCH_CONFIG` (threshold 5, batchSize 3, maxItems 40, concurrency 2, retries 1, maxFailures 4) ; `fillWithSplit` (redécoupage pur, testable).
 - `js/services/llm.js` — `generateRawWithLLM` (tokens/fallback + options `rag`/`stats`).
 - `js/services/prompt-generator.js` — `readContextParams`, `prefixForModule`.
 - `js/core/definitions.js` — métadonnée `chunking` par activité.
@@ -38,6 +39,7 @@ Séquentiel (pas parallèle) : ILaaS tolère mal la concurrence (backend partag�
    - `path` : chemin (pointé si imbriqué) du tableau d'items dans le JSON attendu.
    - `itemName` : nom singulier (utilisé dans les prompts).
    - `carcasse` : champs RACINE constants que le PLAN doit produire (le plan est relancé s'ils manquent). Quiz → `["title","overallFeedback"]`.
+   - facultatifs : `threshold`/`batchSize` (surcharges, à régler en JETONS par lot ≈ 2 000), `defaultCount` (mode Rapide / nombre vide → lots à ce nombre), `planHint` (clé i18n, 12 locales, ajoutée au prompt du plan — quiz mixte : le plan attribue les types).
 2. **Vérifier que l'exemple parse** (modèle de carcasse) : `node -e` avec `extractCarcasseModel('prompt_X', fr, 'path')` (cf. guide §4). `null` = dégradation propre.
 3. **Rien d'autre** : prompt-generator, processor et healer sont inchangés (le processor itère déjà sur `data[path]`).
 4. **Tester** (cf. ci-dessous). N'active QUE des activités list-shaped (items homogènes indépendants) — pas Page/Livre/CoursePresentation/InteractiveVideo/DragAndDrop ni les activités à champ unique.
@@ -53,6 +55,7 @@ Sous-appels → `stats:'skip'` (Worker saute Grist). Client poste 1 ligne agrég
 ## Tests
 
 ```bash
+node tests/run_browser_suite.mjs --suite=llm-batch   # parse, redécoupage, budget, planHint, réglages des quiz (sans réseau)
 node /tmp/cara_batch_unit.mjs     # purs, sans réseau (partition, builders, fusion, byte-identité)
 node /tmp/cara_batch_e2e.mjs 8    # E2E réel contre dev2 (count, 0 doublon, feedback métacognitif, timing)
 node --check js/services/llm-batch.js js/ui/ui.js

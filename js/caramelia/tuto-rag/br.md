@@ -85,6 +85,8 @@ a-us d'an teolioù a bermet strishaat ar skrammañ : **Pep tra**,
 **Quiz ha Testoù**, **Dornata testennoù**, **Kounaat ha Dizoleiñ**,
 kenkoulz hag ar savennoù **H5P**, **Éléa**, **Magistère**, **Moodle**.
 
+Dindan ar furmskrid, **Un obererezh** a ziskouez an teolennoù-mañ ; **Un hent** a zigor an atalier a strollad meur a obererezh en ur gentel klok (gwelet « Krouiñ hag adkregiñ gant un heuliad klok »).
+
 ### Oberezhioù H5P
 
 Oberezhioù er mentrezh H5P. Ar re a zo merket gant ur steredenn (★) o
@@ -259,7 +261,7 @@ Roadenn bersonel ebet ne vez dastumet na stoket. Toupin heuliañ ebet ne vez imp
 
 #### Patromoù Naoudegezh Artifisiel
 
-An arload Caramel a ziazez, e-pad ar c'henel gant ur c'hlik hepken, war patromoù IA renet gant ILaaS, ur c'hevredad frammoù IA kenrannet. Ar goulennoù a vez kaset dre ur workflow n8n herberc'hiet gant an Deorerezh, neuze treuzkaset da ILaaS evit bezañ erounezet war servijerien a fiziañs herberc'hiet e kreizennoù roadennoù labelet an Deskadurezh uhel hag an enklask (ESR). Ne erounez ket Caramel ar patromoù ha ne dret nag ne stok ar roadennoù e-unan ; implijet e vez ar roadennoù hepken evit erounit ar goulenn ha n'int ket kaset da IAoù foran. Ar patromoù kinniget bremañ a gont Mistral-Small-3.2 (24 miliard a arventennoù), Qwen 3.6 (35 miliard a arventennoù) ha GPT-OSS (120 miliard a arventennoù). Doareoù an herberc'hiañ, ar marilhañ hag ar mirout graet marteze gant ILaaS a zepand eus o folitikerezh kizidigezh hag eus o divizoù servij, ma zere sellet outo.
+An arload Caramel a ziazez, e-pad ar c'henel gant ur c'hlik hepken, war patromoù IA renet gant ILaaS, ur c'hevredad frammoù IA kenrannet. Ar goulennoù a vez kaset dre ur workflow n8n herberc'hiet gant an Deorerezh, neuze treuzkaset da ILaaS evit bezañ erounezet war servijerien a fiziañs herberc'hiet e kreizennoù roadennoù labelet an Deskadurezh uhel hag an enklask (ESR). Ne erounez ket Caramel ar patromoù ha ne dret nag ne stok ar roadennoù e-unan ; implijet e vez ar roadennoù hepken evit erounit ar goulenn ha n'int ket kaset da IAoù foran. Ar patromoù kinniget bremañ a gont Gemma 4 (31 miliard a arventennoù), Qwen 3.8 (27 miliard a arventennoù) ha Mistral Small 4 (119 miliard a arventennoù). Doareoù an herberc'hiañ, ar marilhañ hag ar mirout graet marteze gant ILaaS a zepand eus o folitikerezh kizidigezh hag eus o divizoù servij, ma zere sellet outo.
 
 #### Tretañ goulennoù an implijerien dre n8n ha Deorerezh Ministrerezh an Deskadurezh Vroadel
 
@@ -290,3 +292,59 @@ Savet eo an arload evit bezañ kenglotus gant un implij war urzhiataer, gant ar 
 - Ma fell d'an implijer genel un obererezh, Caramelia a ginnig ar
   seurt dereatañ met ne c'henel MORSE JSON un obererezh.
 - Evit pep goulenn enframmañ, Caramelia a ro ar pazennoù resis a-us.
+
+<!-- parcours-complet -->
+## Krouiñ hag adkregiñ gant un heuliad klok
+
+E Caramel, **Un hent** a grou ur gentel evit Éléa, Magistère pe Moodle : meur a obererezh, renket e rannoù, en ur restr **.mbz** hepken. Ar furmskrid boas eo ar poent loc’hañ : danvez, publik ha teulioù stag.
+
+E lañser Caramelia e tigor **Krouiñ un heuliad** an atalier war-eeun, hep goulenn ouzh an NA. Ma’z eus ur brouilhed, e c’haller e adkav gant **Kenderc’hel gant ma heuliad**. Miret e vez ar maeziennoù hag ar mammennoù a zo dija. Adlenn ar stern hag ar steuñv en atalier a-raok loc’hañ ar c’hrouiñ.
+
+Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment hag ur patrom. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.
+
+E **Steuñv**, kemmit an titl, ar pal hollek, ar meizadoù pennañ, ar pazennoù hag an obererezhioù. Dilec’hit an obererezhioù gant ar biroù pe o riklañ o skeudennig. **Kemennoù ha pazenn** a servij da azasaat kemennoù ar c’hrouidigezh. Ar c’huzulioù pedagogel a sikour da adlenn hep rediañ ur patrom. **12 obererezh** d’ar muiañ.
+
+E kartenn ur **Video etreoberiat**, pegit liamm ar video. Adkavet e vo an treuzskrivadur pa vo krouet an obererezh; gallout a rit ivez e begañ dre zorn. Evit ur **Skeudenn etreoberiat** hag an obererezhioù da gavout ur zonenn pe meur a zonenn, stagit ur skeudenn ouzh ar gartenn: dielfennet e vo a-raok ar c’hrouiñ. Gallout a rit ouzhpennañ ar skoroù-se e-pad ar c’hrouiñ ivez. Un obererezh hep skor a c’hortoz tra ma kendalc’h ar re all. Ar senario a vir skeudennoù ha liammoù an obererezhioù; chom a ra teulioù furmskrid ar bajenn degemer a-gostez. Evit ul **Liamm web**, pegit chomlec’h an danvez er gartenn: an IA a skriv an urzhiad lenn hep digeriñ ar bajenn.
+
+Pa vez prest an danvez, **Kemmañ an endalc'had** a zigor ar skridaozer boas ha **Alberz** al lenner. **Adlenn an heuliad** a servij da adlenn anezho en urzh gant **Kent** ha **War-lerc’h**. Enrollit ar c’hemmoù evit o adkavout er steuñv hag en ezporzhiadurioù. Kemmañ ur gemenn er steuñv ne adskriv ket an danvez a zo dija.
+
+Kadarnait ar steuñv evit kregiñ gant ar c’hrouiñ. Gallout a rit paouez, adkregiñ gant an obererezhioù a vank pe adkrouiñ un obererezh. Ar prenestrig-prenn **Na grouiñ ket an obererezh-mañ** a vir an danvez evit bezañ skrivet dre zorn : ne vo ket leuniet gant an NA. Ma c’hwit an adkrouiñ, e vo miret an danvez kent. An obererezhioù a vank a vez meneget a-raok an ezporzhiañ.
+
+**Ezporzhiañ ar senario (.json)** a vir ar steuñv hag an danvezioù prest en ur restr **.json**. Ar bouton **Personelaat ar steuñv**, e-kichen **Aozañ ar steuñv**, a zigor ar prenestr hevelep ha evit un obererezh : eilit ar prompt en NA a garit, ha pegit he respont. **Adkemer ur senario** a zo er prenestr-se ; ar restr **.json** a vez pellgarget d’ar mare da reiñ, e-kichen ar **.mbz**. Er ivinell-mañ hepken e chom ar brouilhed : ezporzhiit ar senario a-raok serriñ. N’emañ ket an danvez, ar publik nag an teulioù stag er senario ; leunit anezho en-dro a-raok krouiñ danvezioù nevez.
+
+E **Kas**, pellgargit ar **.mbz** hag implijit enporzhiadur pe adsevel ar gentel war ho savenn. Ne vez ket lakaet ar restr gentel-mañ en un obererezh H5P. An heuliad a zeu ivez e takad ar c’hemennoù : **Gwelout** a zigor **Gwel an heuliad**, gant an degemer, pep pazenn hag he obererezhioù, da adwelout ha da gemmañ a-raok pellgargañ en-dro. Mirit ivez ar **.json** evit distreiñ da Caramel. Fichenn an heuliad ha munudoù an obererezhioù a c’hall bezañ ezporzhiet e **DOCX, ODT pe PDF**.
+
+Kinnig a ra ar steuñv ivez modulioù hoc’h Éléa, Magistère pe Moodle, renket e lañser pep obererezh dindan **Modulioù ar savenn**: forom, sontadeg, goulennaoueg, enklask, kentel, atalier priziañ etre par ha par, taolenn, wiki, teul kenlabour, geriadurig ha diaz roadennoù da sevel, klas virtuel, dibab ur strollad, rannañ restroù ha liamm web. An IA a skriv ar pezh a vez miret gant ar savenn pa vez enporzhiet ar gentel; goullo e erru al lec’hioù labour a-stroll, gant o urzhiad. Pa vez ezhomm eus un arventenn war ar savenn evit ur modul (pazennoù an atalier, eur ar c’hlas virtuel, strolladoù), e verk Caramel anezhi en un notenn **Da ober a-raok digeriñ ar gentel**, kuzhet ouzh ar skolidi, e penn ar gentel enporzhiet. Ar **pakad danvez IMS** — pajennoù da lenn gant o zaolenn, skrivet penn-da-benn gant Caramel — a zibaber er mozaik ; ar steuñv n’her kinnig ket.
+
+Kartenn ar c’henderc’hel zo evit Éléa hepken. Diret eo ar gartenn hag an digoradur tamm-ha-tamm, ha ret eo c’hoazh o gwiriañ en implij gwirion war ar savenn. Patrom an diforc’hañ ne grou ket skourroù emgefre hervez an notenn. War ar savenn e vez graet al labour a-stroll. N’haller ket c’hoazh embann un heuliad klok e Sucrerie.
+
+Evit mont pelloc’h : [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) a sikour da soñjal en obererezhioù deskiñ. Seizh familh Caramel, en o zouez **Kaozeal** ha **Kenlabourat**, zo reperezhioù eeunaet liammet ouzh an ostilhoù, n’int ket c’hwec’h doare ABC nag ur priziadur eus ho kelenn.
+War Éléa, digorit **Arventennoù ar c’hentel**, gweredekait ar gartenn araokaat hag implijit an deolenn **+ Ouzhpennañ ma skeudenn** evit dibab ho foñs deoc’h. Gallout a rit cheñch pe tennañ ar skeudenn ha distreiñ d’an temoù kinniget. Miret eo ar foñs er senario **.json** hag enframmet eo er parcours **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG pe TIFF · 12 Mo d’ar muiañ. Amdreiñ emgefre, hep troc’hañ.
+
+<!-- parcours-trames -->
+### Dibab ur patrom
+
+Goude **Un hent**, ar patrom a ro an droienn a vez azasaet gant an IA d’ar sujed. Ar roll diskouezet a zepant eus ar mod kelenn hag eus ar ment dibabet ; pep obererezh a c’haller kemmañ c’hoazh er steuñv.
+
+- **Adwelet a-raok ar priziadur** — Lakaat war wel ar pezh a zo gounezet, adkinnig ar pennañ, pleustriñ, en em amprouiñ. *(Ur prantad · Daou pe dri frantad)*
+- **Prientiñ ha tremen ur priziadur** — Ur pleustr e stumm an amprouenn, ar priziadur merket, ar reizhadur. Tri obererezh, netra ken. *(Ur prantad)*
+- **Reizhañ goude ar priziadur** — Loc'hañ a reomp diwar ar fazioù gwelet : o anvel, displegañ en-dro ar poent resis, adober, ha gwiriañ en-dro. *(Ur prantad · Daou pe dri frantad · A-bell · An daou)*
+- **Boaz berr** — Dek munutenn, atav er memes stumm. An adlavar eo a stag, n'eo ket al liesseurted. *(Ur prantad)*
+- **Dizoleiñ ur mennozh** — Un degouezh a sav goulennoù, teulioù da furchal, ha neuze an diverradenn, hag an arload nemet goude. *(Daou pe dri frantad · Un unvez a-bezh)*
+- **Klas eilpennet** — Ar video hag e wiriadenn er gêr, al labour ha n'haller ket ober e-unan er c'hlas, ar sked a-benn ar fin. *(Ur prantad · Daou pe dri frantad · An daou)*
+- **Studiañ un oberenn** — Mont e-barzh an destenn pe ar skeudenn, merzout, lec'hiañ, jubenniñ, ha neuze sevel e lennadenn e-unan. *(Daou pe dri frantad · Un unvez a-bezh)*
+- **Kas un enklask** — Ur goulenn, ur rakdamall, roadennoù, ur c'hlozadur : an hentenn skiantel, en he urzh. *(Daou pe dri frantad · Un unvez a-bezh · Er c'hlas · An daou)*
+- **Dielfennañ un tarzh** — Eus pelec'h e teu an titour, piv en produ, ha petra a lez a-gostez. Armañ ar sell a-raok barn. *(Ur prantad · Daou pe dri frantad)*
+- **Breutadeg arguzennet** — Ur votadeg evit lavaret a-belec'h e loc'her, mammennoù evit en em gelaouiñ, ur forom evit breutaat, un destenn evit klozañ. *(Daou pe dri frantad · Un unvez a-bezh)*
+- **Diforc'hañ war dri dizh** — Ur prouad evit lec’hiañ an deskerien, ha goude obererezhioù evit kreñvaat, kenderc’hel pe mont donoc’h. An ditouroù a heñch an dibaboù, hep skourroù emgefreek hervez an notenn. *(Daou pe dri frantad · Un unvez a-bezh · A-bell · An daou)*
+- **Kevrenn yezh vev** — Ar geriaoueg da gentañ, ar gompren goude, ar produiñ e fin. *(Daou pe dri frantad)*
+- **Prientiñ ur brezegenn** — Petra a vo lavaret, e peseurt urzh, ha penaos en em bleustrañ d'e lavarout. *(Ur prantad · Daou pe dri frantad · Er c'hlas · An daou)*
+- **Deskiñ da zeskiñ** — Ar pezh a sikour da vat da zerc’hel soñj, amprouet war sujed ar gentel : en em amprouiñ, skignañ an adweladennoù, displegañ. Goude e steuñv pep hini e adweladennoù. *(Ur prantad · Daou pe dri frantad)*
+- **En em stummañ e-unan** — Den ebet a-dreñv ar skramm : ret eo d'an heuliad bezañ trawalc'h dezhañ e-unan, eus an daolenn-danvez d'ar priziadur diwezhañ. *(Daou pe dri frantad · Un unvez a-bezh · A-bell)*
+- **Stummadur kemmesket e tri frantad** — Ar prientiñ a-bell, an emvod dre gorf, ha goude al lakaat e pleustr hag an distro a-berzh. Stumm boas an heuliadoù stummañ. *(Un unvez a-bezh · An daou)*
+- **Labour dre raktres** — Ur goulenn gant e zezverkoù, teulioù, labour a-stroll, ur produadur priziet etre par ha par ha gwellaet goude. *(Un unvez a-bezh · Er c'hlas · An daou)*
+- **Labour a-stroll** — Sevel ar skipailhoù, dastum ar mennozhioù, skrivañ asambles, adlenn labour ar re all gant ur gael dezverkoù. *(Daou pe dri frantad · Un unvez a-bezh)*
+- **C'hoari diankañ** — Ur gefridi, menegerioù, kudennoù diaesoc'h-diaesañ, ur c'hod diwezhañ, hag ar sked goude. *(Ur prantad · Daou pe dri frantad · Er c'hlas · An daou)*
+- **Frammadur dieub** — Kerzhed ebet gourc'hemennet : c'hwi a aoz ar pazennoù hag e leugn Caramel ar pezh a lakait enno. *(Ur prantad · Daou pe dri frantad · Un unvez a-bezh)*
+<!-- /parcours-trames -->
+<!-- /parcours-complet -->

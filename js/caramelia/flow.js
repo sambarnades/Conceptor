@@ -10,11 +10,11 @@
  */
 
 import { CONFIG } from './config.js';
-import { state, resetGenState } from './state.js';
-import { addBotMessage, addUserMessage, addCheckboxList, showTyping, removeTyping } from './dom.js';
+import { state, resetGenState, invalidateConversation, refreshBusyState } from './state.js';
+import { addBotMessage, addUserMessage, addCheckboxList, showTyping } from './dom.js';
 import { runAutoQuery } from './chat.js';
 import { fallbackExtract, extractIntent } from './extractor.js';
-import { fillFormField, launchGenerations } from './actions.js';
+import { fillFormField, launchGenerations, parcoursDisponible, parcoursAReprendre, ouvrirParcours } from './actions.js';
 import { downloadNotificationsAsZip } from '../ui/notifications.js';
 import { t, tActivity } from './i18n.js';
 
@@ -51,15 +51,38 @@ function categoryKeysForDeduced(moduleKeys) {
 }
 
 // ── Welcome ──
+function parcoursButtons() {
+    return parcoursDisponible() ? [{
+        label: '🧭 ' + t(parcoursAReprendre() ? 'course_btn_resume' : 'course_btn_create'),
+        action: startParcoursFlow,
+    }] : [];
+}
+
+/** Un clic rejoint le cadrage ou le plan en cours, sans modifier les sources. */
+export function startParcoursFlow() {
+    if (state.generationRunning) return;
+    invalidateConversation();
+    setAttachAcceptForImage(false);
+    state.currentFlow = null;
+    state.genState = {};
+    addUserMessage(t(parcoursAReprendre() ? 'course_btn_resume' : 'course_btn_create'));
+    if (ouvrirParcours()) addBotMessage(t('course_opened'), parcoursButtons());
+    else addBotMessage(t('course_unavailable'), parcoursButtons());
+}
+
 export function showWelcome() {
     addBotMessage(t('welcome_message'), [
         { label: t('welcome_btn_help'), action: () => startHelpFlow() },
         { label: t('welcome_btn_create'), action: () => startGenerateFlow() },
+        ...parcoursButtons(),
     ]);
 }
 
 // ── Help flow ──
 export function startHelpFlow() {
+    if (state.generationRunning) return;
+    invalidateConversation();
+    setAttachAcceptForImage(false);
     state.currentFlow = 'help';
     addUserMessage(t('help_user_label'));
     addBotMessage(t('help_intro'));
@@ -67,6 +90,9 @@ export function startHelpFlow() {
 
 // ── Generate flow (guidé) ──
 export function startGenerateFlow() {
+    if (state.generationRunning) return;
+    invalidateConversation();
+    setAttachAcceptForImage(false);
     state.currentFlow = 'generate';
     state.genState = { step: 'qui' };
     addUserMessage(t('gen_user_label'));
@@ -74,12 +100,19 @@ export function startGenerateFlow() {
     const sel = CONFIG.caramelSelectors;
     const eQui = document.querySelector(sel.qui)?.value?.trim();
     const eQuoi = document.querySelector(sel.quoi)?.value?.trim();
+    // Conserver aussi le public et le sujet quand seul le rôle manque.
+    state.genState.qui = eQui || '';
+    state.genState.quoi = eQuoi || '';
+    state.genState.niveau = document.querySelector(sel.niveau)?.value?.trim() || '';
+    state.genState.nombreQuestions = document.querySelector(sel.nombreQuestions)?.value || null;
 
-    if (eQui && eQuoi) {
+    if (eQui && eQuoi && state.genState.niveau) {
         state.genState.qui = eQui;
         state.genState.quoi = eQuoi;
         state.genState.step = 'category';
         addBotMessage(t('gen_already_filled', { qui: eQui, quoi: eQuoi }), buildCategoryButtons());
+    } else if (eQui && eQuoi) {
+        proceedAfterCollect();
     } else if (eQui) {
         state.genState.qui = eQui;
         state.genState.step = 'quoi';
@@ -314,12 +347,29 @@ export function handleBackgroundImageAttachment(file) {
 
 // ── Lancement final ──
 async function doLaunch(moduleKeys) {
-    const batchIds = await launchGenerations(moduleKeys, {
-        qui: state.genState.qui,
-        quoi: state.genState.quoi,
-        videoUrl: state.genState.videoUrl,
-        backgroundImageFile: state.genState.backgroundImageFile,
-    });
+    if (state.generationRunning) return;
+    const revision = state.revision;
+    state.generationRunning = true;
+    refreshBusyState();
+    let batchIds;
+    try {
+        batchIds = await launchGenerations(moduleKeys, {
+            qui: state.genState.qui,
+            quoi: state.genState.quoi,
+            niveau: state.genState.niveau,
+            nombreQuestions: state.genState.nombreQuestions,
+            videoUrl: state.genState.videoUrl,
+            backgroundImageFile: state.genState.backgroundImageFile,
+        });
+    } catch (err) {
+        console.error('[Caramelia] lancement interrompu', err);
+        if (revision === state.revision) addBotMessage(t('launch_error'));
+        return;
+    } finally {
+        state.generationRunning = false;
+        refreshBusyState();
+    }
+    if (revision !== state.revision) return;
 
     // Si plusieurs activités générées avec succès dans ce batch, proposer un ZIP groupé
     // (réutilise le mécanisme existant du centre de notifications, exposé via downloadNotificationsAsZip)
@@ -337,12 +387,12 @@ async function doLaunch(moduleKeys) {
     buttons.push({ label: t('launch_btn_new'), action: () => startGenerateFlow() });
     buttons.push({ label: t('launch_btn_back'), action: () => resetConversation() });
 
-    addBotMessage(t('launch_done', { count: moduleKeys.length }), buttons);
+    addBotMessage(t('launch_result', { count: batchIds.length, total: moduleKeys.length }), buttons);
 
     // Rebond pédagogique : propose 1-2 activités complémentaires sur le MÊME
     // sujet (mémorisation / évaluation), réutilisant qui/quoi/niveau déjà connus.
     // Transforme une création isolée en petit parcours cohérent.
-    offerComplementaryActivities(moduleKeys);
+    if (batchIds.length === moduleKeys.length) offerComplementaryActivities(moduleKeys);
 }
 
 /**
@@ -509,13 +559,23 @@ function runGenerationFromChecklist(moduleKeys) {
  * (qui voit la documentation RAG et l'historique) qui tranche à chaque tour.
  */
 async function autoRoute(text) {
-    showTyping();
+    if (state.pendingQuery || state.generationRunning) return;
+    const revision = state.revision;
+    const controller = new AbortController();
+    state.pendingQuery = controller;
+    refreshBusyState();
+    const typing = showTyping();
     let result;
     try {
-        result = await runAutoQuery(text);
+        result = await runAutoQuery(text, { signal: controller.signal });
     } finally {
-        removeTyping();
+        typing.remove();
+        if (state.pendingQuery === controller) {
+            state.pendingQuery = null;
+            refreshBusyState();
+        }
     }
+    if (revision !== state.revision || controller.signal.aborted) return;
 
     // Service injoignable → fallback regex local (best-effort)
     if (result === null) {
@@ -528,6 +588,7 @@ async function autoRoute(text) {
             addBotMessage(t('help_error_offline'), [
                 { label: t('help_btn_retry'), action: () => autoRoute(text) },
                 { label: t('gen_btn_create'), action: () => startGenerateFlow() },
+                ...parcoursButtons(),
             ]);
         }
         return;
@@ -541,6 +602,7 @@ async function autoRoute(text) {
         addBotMessage(t('help_error_empty'), [
             { label: t('help_btn_retry'), action: () => autoRoute(text) },
             { label: t('help_btn_create'), action: () => startGenerateFlow() },
+            ...parcoursButtons(),
         ]);
         return;
     }
@@ -550,6 +612,7 @@ async function autoRoute(text) {
         state.currentFlow = null;
         addBotMessage(result.text, [
             { label: t('help_btn_create'), action: () => startGenerateFlow() },
+            ...parcoursButtons(),
         ]);
         return;
     }
@@ -692,7 +755,7 @@ function buildClarificationButtons(bc, extracted) {
 
 // ── Router principal ──
 export function handleUserInput(text) {
-    if (!text) return;
+    if (!text || state.pendingQuery || state.generationRunning) return;
 
     // Flow de création guidé en cours (réponse à une étape qui/quoi/niveau/
     // catégorie/activité/url vidéo) → traitement local, sans appel LLM.
@@ -703,7 +766,7 @@ export function handleUserInput(text) {
 
     // Tout autre message libre → routeur AUTO : le LLM (RAG-ancré) décide à
     // chaque tour s'il s'agit d'une question ou d'une demande de création.
-    autoRoute(text);
+    return autoRoute(text);
 }
 
 // ── Pièce jointe → proposition de sujet (#3) ──
@@ -718,16 +781,19 @@ export function handleUserInput(text) {
  * @param {string} fileName - nom du fichier (pour le message)
  */
 export async function offerActivityFromDocument(text, fileName) {
+    const revision = state.revision;
+    const historyLength = state.history.length;
     const snippet = String(text || '').trim().slice(0, 1500);
     if (snippet.length < 20) return; // document vide / illisible → on ne propose rien
 
-    showTyping();
+    const typing = showTyping();
     let extracted;
     try {
         extracted = await extractIntent(snippet);
     } finally {
-        removeTyping();
+        typing.remove();
     }
+    if (revision !== state.revision || historyLength !== state.history.length || state.generationRunning || state.pendingQuery) return;
 
     const quoi = extracted && extracted.quoi;
     if (!quoi) {

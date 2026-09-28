@@ -1,0 +1,19 @@
+[
+  {
+    "kind": "normal",
+    "score": "navigation et audio",
+    "duration": 1.866213,
+    "manches": [],
+    "texte": "RECETTE 11 — Cartes de dialogue\n\nObserve et écoute. RELU Sucrerie\nCarte 2 sur 2\nFrance\nRetourner\nItalie\nRetourner\nRecto de la carte\nRights of use"
+  },
+  {
+    "kind": "repetition",
+    "score": "navigation et audio",
+    "duration": null,
+    "manches": [
+      "Résumé\nManche 1\nCartes que vous avez réussies :\n1\n/\n2\nCartes que vous avez manquées :\n1\n/\n2\nCartes non montrées :\n0\nScore global\nCartes que vous avez apprises :\n0\n/\n2\nManches terminées :\n1\nRecommencer\nPasser à la manche 2\nRecto de la carte\nRights of use",
+      "Résumé\nManche 2\nCartes que vous avez réussies :\n2\n/\n2\nCartes que vous avez manquées :\n0\n/\n2\nCartes non montrées :\n0\nScore global\nCartes que vous avez apprises :\n0\n/\n2\nManches terminées :\n2\nRecommencer\nPasser à la manche 3\nRecto de la carte\nRights of use"
+    ],
+    "texte": "RECETTE 11 — Cartes de dialogue\n\nObserve et écoute. RELU Sucrerie\nItalie\nRetourner\nJe me suis trompé\nJ'ai eu bon !\nRecto de la carte\nManche 1\nCartes restantes : 2\nRights of use"
+  }
+]

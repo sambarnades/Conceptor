@@ -1,0 +1,36 @@
+[
+  {
+    "kind": "affiche",
+    "score": 2,
+    "max": 2,
+    "quality": "q2",
+    "media": {
+      "time": 2,
+      "tracks": [
+        {
+          "mode": "showing",
+          "cue": "Capitales RELU"
+        }
+      ]
+    },
+    "reprise": true,
+    "soumission": true
+  },
+  {
+    "kind": "bouton",
+    "score": 1,
+    "max": 2,
+    "quality": "q2",
+    "media": {
+      "time": 2,
+      "tracks": [
+        {
+          "mode": "showing",
+          "cue": "Capitales RELU"
+        }
+      ]
+    },
+    "reprise": false,
+    "soumission": true
+  }
+]

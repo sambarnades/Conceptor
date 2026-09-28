@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="2" moduleid="14021" modulename="bigbluebuttonbn" contextid="17749">
+  <bigbluebuttonbn id="2">
+    <type>1</type>
+    <course>801</course>
+    <name>Classe virtuelle</name>
+    <intro>&lt;p&gt;Rendez-vous en classe virtuelle mardi à 17 h.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <meetingid>142a3c349cc08861d385b73d029664d27f0b2a59</meetingid>
+    <moderatorpass>[retiré]</moderatorpass>
+    <viewerpass>[retiré]</viewerpass>
+    <wait>0</wait>
+    <record>1</record>
+    <recordallfromstart>0</recordallfromstart>
+    <recordhidebutton>0</recordhidebutton>
+    <welcome></welcome>
+    <voicebridge>0</voicebridge>
+    <openingtime>0</openingtime>
+    <closingtime>0</closingtime>
+    <timecreated>1790541055</timecreated>
+    <timemodified>0</timemodified>
+    <presentation></presentation>
+    <participants>[{"selectiontype":"all","selectionid":"all","role":"viewer"},]</participants>
+    <userlimit>0</userlimit>
+    <recordings_html>0</recordings_html>
+    <recordings_deleted>1</recordings_deleted>
+    <recordings_imported>0</recordings_imported>
+    <recordings_preview>1</recordings_preview>
+    <clienttype>0</clienttype>
+    <muteonstart>1</muteonstart>
+    <completionattendance>0</completionattendance>
+    <completionengagementchats>0</completionengagementchats>
+    <completionengagementtalks>0</completionengagementtalks>
+    <completionengagementraisehand>0</completionengagementraisehand>
+    <completionengagementpollvotes>0</completionengagementpollvotes>
+    <completionengagementemojis>0</completionengagementemojis>
+    <guestallowed>0</guestallowed>
+    <mustapproveuser>1</mustapproveuser>
+    <showpresentation>1</showpresentation>
+    <grade>100</grade>
+    <logs>
+    </logs>
+    <recordings>
+    </recordings>
+  </bigbluebuttonbn>
+</activity>

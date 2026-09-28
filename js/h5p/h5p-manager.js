@@ -48,6 +48,13 @@ export class H5PManager {
         // — sinon chaque cycle édition → re-preview épingle une nouvelle copie des blobs en mémoire.
         this._mediaObjectUrls = [];
 
+        // Minuteries différées d'un rendu (redimensionnements, MathJax) : annulées
+        // avec lui, pour ne jamais agir sur l'activité affichée ensuite.
+        this._minuteries = new Set();
+
+        // Observateur de largeur du conteneur (cf. _suivreTaille).
+        this._suiviTaille = null;
+
         // Intercepteur Fetch pour lire les fichiers locaux depuis le ZIP
         this.initFetchInterceptor();
     }
@@ -302,13 +309,23 @@ export class H5PManager {
             // apparaisse à la bonne hauteur dès l'affichage (et non « trop courte » jusqu'au resize).
             if (isInteractiveVideo) container.classList.add('h5p-preview--iv-loading');
             const h5p = new window.H5PStandalone.H5P(container, options);
-            await h5p.ready;
+            // h5p-standalone 3.8 renvoie une Promise depuis son constructeur.
+            // Attendre une propriété `ready` absente libérait le ZIP pendant son chargement.
+            await (h5p.ready || h5p);
             if (perfMod) {
                 perfMod.markEnd('render', 'H5PStandalone.H5P()', {
                     cacheHits: _cacheHits, cacheMisses: _cacheMisses
                 });
                 perfMod.endSession();
             }
+
+            if (loadGen !== this._loadGeneration) return null;
+
+            // Le lecteur a seulement ÉCRIT l'iframe : ses bibliothèques s'y chargent
+            // maintenant. Suivre la largeur avant de l'attendre, pour qu'un conteneur
+            // masqué pendant le chargement soit remesuré à son affichage.
+            this._suivreTaille(container);
+            await this._attendreRendu(container, loadGen);
 
             // Vérification finale après le rendu H5P
             if (loadGen !== this._loadGeneration) return null;
@@ -385,9 +402,18 @@ export class H5PManager {
     /**
      * Nettoie le conteneur et réinitialise l'état
      */
+    /** Interrompt aussi un chargement différé quand son panneau se ferme. */
+    cancelLoad(containerElement) {
+        this._loadGeneration++;
+        this.destroy(containerElement);
+    }
+
     destroy(containerElement) {
         // Révoquer les URLs blob: des médias embarqués (anti-fuite mémoire)
         this._revokeMediaObjectUrls();
+        this._arreterSuiviTaille();
+        this._minuteries.forEach(clearTimeout);
+        this._minuteries.clear();
 
         // Résolution du conteneur si ID passé ou stocké
         let container = containerElement;
@@ -396,6 +422,16 @@ export class H5PManager {
         }
 
         if (container) {
+            // Chaque activité encadrée accroche, avec le jQuery de SON iframe, un
+            // écouteur `resize` sur la fenêtre de Caramel, jamais retiré : il
+            // retenait toute l'iframe en mémoire et s'additionnait à chaque aperçu.
+            // Le jQuery de l'iframe ne retire que ses propres écouteurs.
+            for (const iframe of container.querySelectorAll('iframe.h5p-iframe')) {
+                try {
+                    const $ = iframe.contentWindow?.H5P?.jQuery;
+                    if ($) { $(window).off(); $(document).off(); }
+                } catch { /* iframe déjà détruite */ }
+            }
             container.innerHTML = '';
         }
 
@@ -481,9 +517,68 @@ export class H5PManager {
         // 500ms → scripts simples déjà chargés
         // 2s → scripts réseau + rendu sidebar
         // 5s → connexions lentes
-        setTimeout(fixSubInstances, 500);
-        setTimeout(fixSubInstances, 2000);
-        setTimeout(fixSubInstances, 5000);
+        this._differer(fixSubInstances, 500);
+        this._differer(fixSubInstances, 2000);
+        this._differer(fixSubInstances, 5000);
+    }
+
+    /** Un `setTimeout` rattaché au rendu courant : `destroy()` l'annule. */
+    _differer(fn, ms) {
+        const id = setTimeout(() => { this._minuteries.delete(id); fn(); }, ms);
+        this._minuteries.add(id);
+    }
+
+    /**
+     * h5p-standalone rend la main dès qu'il a ÉCRIT l'iframe ; les bibliothèques
+     * s'y chargent ensuite, parfois pendant plusieurs secondes. Attendre que
+     * l'activité y soit montée (une instance dans le `H5P.instances` de l'iframe)
+     * garde l'attente de l'appelant à l'écran au lieu d'une zone blanche.
+     * Borné : une activité qui échoue à s'initialiser finit quand même affichée.
+     */
+    async _attendreRendu(container, loadGen, delaiMax = 10000) {
+        const fin = performance.now() + delaiMax;
+        while (loadGen === this._loadGeneration && performance.now() < fin) {
+            try {
+                if (container.querySelector('iframe.h5p-iframe')?.contentWindow?.H5P?.instances?.length) return;
+            } catch { return; }
+            await new Promise(r => setTimeout(r, 50));
+        }
+    }
+
+    /**
+     * Relance le calcul de hauteur d'H5P quand la LARGEUR du conteneur change,
+     * y compris quand il passe de masqué à affiché.
+     *
+     * H5P dimensionne son iframe sur `body.scrollHeight`, qui vaut 0 tant que le
+     * conteneur est en `display:none` : une activité montée pendant que
+     * l'appelant affichait son attente restait dans une iframe de 0 px, donc
+     * invisible, jusqu'au prochain redimensionnement de la fenêtre. Les
+     * changements de hauteur, provoqués par H5P lui-même, sont ignorés.
+     */
+    _suivreTaille(container) {
+        this._arreterSuiviTaille();
+        if (typeof ResizeObserver !== 'function') return;
+        let largeur = null;
+        this._suiviTaille = new ResizeObserver(([entree]) => {
+            const l = Math.round(entree.contentRect.width);
+            if (l === largeur) return;
+            largeur = l;
+            if (l > 0) this._redimensionner(container);
+        });
+        this._suiviTaille.observe(container);
+    }
+
+    _arreterSuiviTaille() {
+        this._suiviTaille?.disconnect();
+        this._suiviTaille = null;
+    }
+
+    /** Déclenche le `resize` d'H5P sur chaque activité de l'iframe du conteneur. */
+    _redimensionner(container) {
+        try {
+            const H5Pi = container.querySelector('iframe.h5p-iframe')?.contentWindow?.H5P;
+            H5Pi?.instances?.forEach(instance => H5Pi.trigger(instance, 'resize'));
+        } catch { /* iframe déjà détruite */ }
     }
 
     /**
@@ -609,9 +704,9 @@ export class H5PManager {
         };
 
         // Plusieurs tentatives — le contenu H5P charge de façon asynchrone
-        setTimeout(tryRender, 1000);
-        setTimeout(tryRender, 3000);
-        setTimeout(tryRender, 6000);
+        this._differer(tryRender, 1000);
+        this._differer(tryRender, 3000);
+        this._differer(tryRender, 6000);
     }
 
     /**
@@ -706,7 +801,7 @@ export class H5PManager {
         const imageRe = /^images\/.+\.(jpe?g|png|gif|webp|svg)$/i;
         // Médias audio/vidéo embarqués (H5P.ImageHotspots) : servis en URL blob: (plus léger que le
         // base64 pour les gros fichiers). Le patch de H5P.getPath reconnaît `blob:` comme URL absolue.
-        const mediaRe = /^(audios?|videos?)\/.+\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|weba|webm|mp4|ogv|mov|m4v)$/i;
+        const mediaRe = /^(audios?|videos?)\/.+\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|weba|webm|mp4|ogv|mov|m4v|vtt)$/i;
 
         // Collecter toutes les promesses pour traitement parallèle
         const promises = [];
@@ -729,7 +824,7 @@ export class H5PManager {
             const file = this.currentZip.file(zipPath);
             if (!file) return;
             promises.push(file.async('blob').then(blob => {
-                const objectUrl = URL.createObjectURL(blob);
+                const objectUrl = URL.createObjectURL(/\.vtt$/i.test(relPath) ? new Blob([blob],{type:'text/vtt'}) : blob);
                 // Suivre l'URL pour la révoquer au prochain load()/destroy() (anti-fuite mémoire)
                 this._mediaObjectUrls.push(objectUrl);
                 setter(objectUrl);

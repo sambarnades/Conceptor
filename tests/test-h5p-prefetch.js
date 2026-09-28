@@ -3,7 +3,7 @@
  *
  * Pour chaque activite (19 types) :
  *  1. Charge la fixture JSON
- *  2. Traitement processeur (healer + processor)
+ *  2. Traitement processeur
  *  3. Packaging H5P (createH5PBlob)
  *  4. Prechargement bibliotheques (prefetchH5PLibraries)
  *  5. Rendu H5P (H5PManager.load)
@@ -115,7 +115,7 @@ async function runActivityPipeline(entry, container, manager) {
     }
 
     // 2. Processeur
-    let content, meta;
+    let content, meta, dynamicDependencies;
     try {
         const t0 = performance.now();
         meta = getModuleMetadata(key);
@@ -123,6 +123,7 @@ async function runActivityPipeline(entry, container, manager) {
         const input = structuredClone(fixtureData);
         const processed = await processH5PContent(key, input);
         content = processed?.content ?? processed;
+        dynamicDependencies = processed?.dependencies || [];
         if (!content || Object.keys(content).length === 0) throw new Error('contenu vide');
         timing.process = performance.now() - t0;
     } catch (e) {
@@ -137,7 +138,14 @@ async function runActivityPipeline(entry, container, manager) {
     let blob;
     try {
         const t0 = performance.now();
-        blob = await createH5PBlob(content, meta.machineName, meta.extraDependencies, {
+        // Même contrat que packageActivity : les extraDependencies n'incluent PAS
+        // la bibliothèque principale ; les QuizSet ajoutent leurs dépendances dynamiques.
+        const dependencies = [
+            ...meta.extraDependencies,
+            { machineName: meta.machineName, majorVersion: meta.version.major, minorVersion: meta.version.minor },
+            ...dynamicDependencies
+        ];
+        blob = await createH5PBlob(content, meta.machineName, dependencies, {
             title: `Test ${key}`, lang: 'fr'
         });
         if (!blob || blob.size === 0) throw new Error('blob vide');
@@ -166,6 +174,7 @@ async function runActivityPipeline(entry, container, manager) {
         container.innerHTML = '';
         const t0 = performance.now();
         await manager.load(blob, container);
+        if (!container.querySelector('iframe')) throw new Error('Aucun cadre H5P créé après le chargement');
         timing.render = performance.now() - t0;
     } catch (e) {
         timing.error = `render: ${e.message}`;

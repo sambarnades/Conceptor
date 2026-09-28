@@ -1,0 +1,3060 @@
+/* =========================================================================
+   Parcours — Atelier de conception de parcours complets (.mbz multi-activités)
+
+   Module 100% autonome, sur le modèle de caramelia.css : aucune règle ne cible
+   un sélecteur de l'application principale, tout est préfixé `.pc-`.
+   Pour désactiver : supprimer la ligne <link> et l'import dans js/main.js.
+
+   L'atelier vit DANS la page (D39) : une section insérée à la place de la barre
+   de filtres et de la grille des tuiles, au bas du formulaire de l'accueil qui
+   reste en place. Pas de fenêtre par-dessus, pas de barre fixée au bas de
+   l'écran, pas de verrou de défilement : la page défile, comme avec les tuiles.
+
+   ---- Règle visuelle ----
+   L'atelier doit avoir l'air d'être la MÊME application, pas d'un module
+   rapporté. Les valeurs ci-dessous sont RELEVÉES sur l'interface existante :
+
+     fond de page      #F5F5F7        (body)
+     surfaces          #ffffff, rayon 20 px, ombre 0 8px 32px rgba(0,0,0,.08)
+                                      (.prompt-generator, sidebar d'activité)
+     contrôles         rayon 12 px, bordure #dcdcdc, fond #fcfcfc
+                                      (.input-icon-wrapper input)
+     action primaire   #007aff plein, rayon 12 px, graisse 500
+                                      (bouton « Générer en un clic »)
+     pilules           rayon 20 px    (.filter-chip)
+     texte             #1d1d1f / #6e6e73 / #8e8e93
+
+   LE BLEU EST L'ACCENT DE L'APPLICATION. Le caramel n'apparaît QUE sur la
+   marque d'entrée — l'icône dans la barre d'en-tête et le cartouche de
+   l'atelier —, exactement comme Caramelia garde son doré pour sa seule bulle.
+   En mettre ailleurs fabrique un second produit.
+
+   Seule exception assumée : les dégradés de plateforme (Éléa, Magistère,
+   Moodle) sont repris à l'identique de la barre de filtres, pour qu'on les
+   reconnaisse au premier coup d'œil.
+   ========================================================================= */
+
+/* ---- Jetons ---- */
+:root {
+    --pc-blue: #007aff;
+    --pc-blue-dark: #0056b3;
+    --pc-blue-soft: #eaf3ff;
+
+    /* La marque d'entrée UNIQUEMENT : l'icône dans la barre d'en-tête et le
+       cartouche de l'atelier. Nulle part ailleurs (D3). */
+    --pc-caramel: #B4551A;
+    --pc-caramel-light: #E8913C;
+    --pc-caramel-dark: #8F4014;
+
+    --pc-ink: #1d1d1f;
+    --pc-ink-2: #6e6e73;
+    --pc-ink-3: #8e8e93;
+    --pc-ground: #F5F5F7;
+    --pc-surface: #ffffff;
+    --pc-field: #fcfcfc;
+    --pc-line: #e5e5e5;
+    --pc-line-strong: #dcdcdc;
+
+    /* Attention — la relecture didactique, et elle SEULE. Ce n'est ni une
+       erreur (rien n'est cassé) ni une action (rien n'est à cliquer) : le bleu
+       de l'accent et le rouge du danger seraient tous deux faux. L'ambre dit
+       « regarde », ce qui est exactement le propos. Texte à 4,5:1 sur son fond. */
+    --pc-amber: #8a6100;
+    --pc-amber-soft: #fff8e6;
+    --pc-amber-line: #f0d9a0;
+
+    --pc-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --pc-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+
+    --pc-radius: 20px;
+    --pc-radius-sm: 12px;
+    --pc-pill: 20px;
+    --pc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    /* Seul l'éditeur d'activité (un vrai dialogue) monte au-dessus de la page. */
+    --pc-z: var(--z-modal, 3000);
+
+    /* Gouttières de l'éditeur d'activité, le seul dialogue plein écran qui
+       reste ; l'atelier lui-même prend celles du conteneur de Caramel. */
+    --pc-gutter: 16px;
+}
+
+@media (min-width: 600px) { :root { --pc-gutter: 24px; } }
+@media (min-width: 1024px) { :root { --pc-gutter: 32px; } }
+
+/* =========================================================================
+   1. Le commutateur « Une activité | Un parcours », sous le formulaire
+   ------------------------------------------------------------------------
+   Une capsule centrée après le cadrage commun (D63), avec deux segments égaux.
+   Le bleu grisé distingue la sélection sans concurrencer les actions principales.
+   ========================================================================= */
+
+.prompt-generator:has(+ .pc-commutateur) {
+    margin-bottom: 12px;
+}
+
+.pc-commutateur {
+    --pc-choix-fond: var(--selection-blue);
+    --pc-choix-texte: var(--selection-on-blue);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 4px;
+    padding: 3px;
+    margin: 0 auto 12px;
+    width: 480px;
+    max-width: 100%;
+    flex: none;
+    box-sizing: border-box;
+    border: 1px solid var(--pc-line);
+    border-radius: 999px;
+    background: #f0f0f3;
+}
+
+.pc-commutateur__b {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.95em;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--pc-ink-2);
+    cursor: pointer;
+    white-space: normal;
+}
+.pc-commutateur__icone { display: inline-block; font-size: 12px; }
+.pc-commutateur__b[data-mode="parcours"] .pc-commutateur__icone { color: var(--pc-caramel); }
+.pc-commutateur__b:hover { color: var(--pc-ink); background: #fff; }
+.pc-commutateur__b:focus-visible { outline: 2px solid var(--pc-choix-fond); outline-offset: 2px; }
+.pc-commutateur__b[aria-checked="true"] {
+    color: var(--pc-choix-texte);
+    font-weight: 600;
+    background: var(--pc-choix-fond);
+    border-color: var(--pc-choix-fond);
+    box-shadow: none;
+}
+.pc-commutateur__b[aria-checked="true"] .pc-commutateur__icone { color: inherit; }
+
+/* Point de reprise : un parcours en cours de conception attend. Même bleu
+   et même vocabulaire que la pastille de Notifications, deux portes plus
+   loin ; caché quand le segment est allumé — on y est. */
+.pc-commutateur__reprise {
+    position: absolute;
+    top: 6px;
+    inset-inline-end: 12px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--pc-blue);
+    box-shadow: 0 0 0 2px var(--pc-ground);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.25s ease, transform 0.25s var(--pc-ease);
+}
+.pc-commutateur__b--reprise .pc-commutateur__reprise { opacity: 1; transform: scale(1); }
+
+/* Les deux libellés restent visibles, y compris sur téléphone. */
+@media (max-width: 480px) {
+    .pc-commutateur__b { min-height: 44px; font-size: 0.9rem; }
+}
+
+
+/* =========================================================================
+   2. L'atelier dans la page (D39)
+   ------------------------------------------------------------------------
+   Une section insérée dans `#main-content` à la place de la barre de filtres
+   et de la grille, qui sont simplement `hidden` le temps qu'elle est là. Le
+   formulaire de l'accueil reste au-dessus, vivant. Même largeur que les
+   tuiles : celle du conteneur de Caramel — aucune mesure propre ici.
+   ========================================================================= */
+
+.pc-atelier {
+    /* Référent du panneau d'attente et de ce qui se pose en absolu dedans. */
+    position: relative;
+    color: var(--pc-ink);
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    /* Quand la page défile jusqu'à l'atelier, sa tête se cale SOUS la barre
+       d'application, qui est collante. */
+    scroll-margin-top: calc(var(--pc-header-height, 60px) + 16px);
+    /* Un fondu seul, sans déplacement du contenu à l'ouverture. */
+    opacity: 0;
+    transition: opacity 0.28s var(--pc-ease);
+}
+
+.pc-atelier--open { opacity: 1; }
+
+.pc-atelier *,
+.pc-atelier *::before,
+.pc-atelier *::after { box-sizing: border-box; }
+
+/* ---- Tête : le nom de l’atelier et le fil des étapes ---- */
+.pc-atelier__tete {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "titre fil";
+    align-items: center;
+    gap: 10px 16px;
+    padding: 6px 0 18px;
+    border-bottom: 1px solid var(--pc-line);
+    min-height: 56px;
+}
+.pc-atelier__titre { grid-area: titre; }
+.pc-steps { grid-area: fil; }
+
+/* Sous 900 px : le nom sur une ligne, le fil dessous. */
+@media (max-width: 899px) {
+    .pc-atelier__tete {
+        grid-template-columns: 1fr;
+        grid-template-areas: "titre" "fil";
+        gap: 8px 12px;
+        padding-bottom: 14px;
+    }
+    .pc-steps { justify-self: start; margin: 0; }
+}
+
+.pc-atelier__titre {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Le titre reçoit le focus à l'ouverture pour être annoncé ; il n'a pas à
+   s'entourer d'un anneau pour autant — il n'est pas dans l'ordre de tabulation. */
+.pc-atelier__titre:focus { outline: none; }
+
+/* ---- Fil des étapes : le repère ET la navigation ----
+   Un écran déjà vu est un bouton (on y revient d'un clic), l'écran courant
+   est marqué, ceux qui restent sont inertes — on y arrive par l'action
+   primaire. Sous 900 px, les libellés s'effacent et les numéros restent :
+   quatre pastilles, toujours cliquables, à la place d'un compteur textuel
+   qui ne menait nulle part. */
+.pc-steps {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.pc-steps__item { display: flex; align-items: center; white-space: nowrap; }
+
+.pc-steps__cible {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--pc-ink-3);
+    cursor: default;
+}
+button.pc-steps__cible { cursor: pointer; transition: color 0.15s ease, background 0.15s ease; }
+button.pc-steps__cible:hover { color: var(--pc-blue); background: var(--pc-blue-soft); }
+button.pc-steps__cible:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 1px; }
+
+.pc-steps__num {
+    width: 22px;
+    height: 22px;
+    flex: none;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Un écran déjà vu porte une coche discrète : il est fait, on peut y revenir. */
+.pc-steps__item--lien .pc-steps__cible { color: var(--pc-ink-2); }
+
+.pc-steps__item--current .pc-steps__cible { color: var(--pc-blue); font-weight: 600; }
+.pc-steps__item--current .pc-steps__num {
+    background: var(--pc-blue);
+    border-color: var(--pc-blue);
+    color: #fff;
+}
+
+.pc-steps__sep { width: 18px; height: 1.5px; background: var(--pc-line-strong); border-radius: 1px; }
+
+@media (max-width: 899px) {
+    .pc-steps__label { display: none; }
+    .pc-steps__sep { width: 10px; }
+    .pc-steps__cible { padding: 4px; }
+}
+
+/* ---- Corps : dans le flux, c'est la page qui défile ---- */
+.pc-body { position: relative; }
+
+/* Les gouttières sont celles du conteneur de Caramel : aucune ici. */
+.pc-page {
+    padding: 28px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+@media (min-width: 600px) { .pc-page { padding-top: 36px; gap: 36px; } }
+
+/* Le temps de l'appel de plan, l'écran s'efface au profit du panneau
+   d'attente (cf. `.pc-veil`). */
+.pc-atelier--voile .pc-page { display: none; }
+
+/* ---- Titre de page ---- */
+.pc-hero { display: flex; flex-direction: column; gap: 10px; }
+
+/* À l'échelle des titres de Caramel (1.5em pour ses cartes), pas d'une page
+   d'accueil : dans la page, un titre de deux rem criait à côté du formulaire. */
+.pc-hero h2 {
+    margin: 0;
+    font-size: clamp(1.3rem, 2.6vw, 1.55rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-wrap: balance;
+}
+
+.pc-hero p:not(.pc-origine) {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--pc-ink-2);
+}
+
+/* =========================================================================
+   3. Blocs de réglage
+   ========================================================================= */
+
+.pc-block { display: flex; flex-direction: column; gap: 14px; }
+.pc-block__head { display: flex; flex-direction: column; gap: 4px; }
+
+.pc-block__title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.pc-block__hint {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--pc-ink-2);
+}
+
+/* ---- Note des documents joints ----
+   Le formulaire de l'accueil est juste au-dessus de l'atelier : on n'en
+   récapitule rien. Seules les pièces jointes ont droit à une note — en mode
+   Rapide elles sont hors de vue, et c'est elles qui feront référence. Mêmes
+   noms et mêmes couleurs que les étiquettes posées par le mode avancé. */
+.pc-context__sources { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.pc-context__sources--note { margin-top: 6px; }
+.pc-context__sources[hidden] { display: none; }
+
+.pc-sources { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.pc-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    max-width: 100%;
+    padding: 5px 12px 5px 9px;
+    background: var(--pc-field);
+    border: 1px solid var(--pc-line-strong);
+    border-radius: var(--pc-pill);
+    font-size: 0.85rem;
+    color: var(--pc-ink);
+}
+
+.pc-source__dot {
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--pc-ink-3);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.pc-source__nom {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 22ch;
+}
+
+.pc-context__note {
+    margin: 0;
+    font-size: 0.83rem;
+    line-height: 1.45;
+    color: var(--pc-ink-3);
+    font-variant-numeric: tabular-nums;
+}
+
+.pc-context__note--fort { color: var(--pc-blue-dark); font-weight: 600; }
+
+/* =========================================================================
+   4. Choix — la brique commune (plateforme / modalité / ampleur)
+   ========================================================================= */
+
+.pc-choices { display: grid; gap: 12px; grid-template-columns: 1fr; }
+
+@media (min-width: 560px) { .pc-choices { grid-template-columns: repeat(3, 1fr); } }
+
+.pc-choice {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 15px 16px;
+    text-align: left;
+    background: var(--pc-surface);
+    border: 2px solid transparent;
+    border-radius: var(--pc-radius-sm);
+    box-shadow: var(--pc-shadow-sm);
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--pc-ink);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s var(--pc-ease);
+}
+
+.pc-choice:hover { box-shadow: var(--pc-shadow); transform: translateY(-1px); }
+.pc-choice:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+
+.pc-choice__name {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 24px;
+}
+
+.pc-choice__desc { font-size: 0.86rem; line-height: 1.42; color: var(--pc-ink-2); }
+
+/* Coche de sélection, en haut à droite. */
+.pc-choice__tick {
+    position: absolute;
+    top: 12px;
+    right: 13px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #fff;
+    background: var(--pc-blue);
+    opacity: 0;
+    transform: scale(0.4);
+    transition: opacity 0.18s ease, transform 0.22s var(--pc-ease);
+}
+
+.pc-choice[aria-pressed="true"] { border-color: var(--pc-blue); box-shadow: var(--pc-shadow); }
+.pc-choice[aria-pressed="true"] .pc-choice__tick { opacity: 1; transform: scale(1); }
+
+/* Pastille de plateforme — dégradés repris à l'identique de la barre de filtres. */
+.pc-dot { width: 11px; height: 11px; border-radius: 3px; flex: none; display: block; }
+.pc-dot--elea      { background: linear-gradient(135deg, #32038D, #B9459B); }
+.pc-dot--magistere { background: linear-gradient(135deg, #043A7D, #064CA4); }
+.pc-dot--moodle    { background: linear-gradient(135deg, #E06A00, #F98012); }
+
+/* Sélection d'une plateforme : la bordure prend SA couleur de marque, pas le
+   bleu — c'est le seul endroit de l'atelier où le choix porte une identité. */
+.pc-choice--elea[aria-pressed="true"]      { border-color: #7A2A9E; }
+.pc-choice--elea[aria-pressed="true"] .pc-choice__tick      { background: linear-gradient(135deg, #32038D, #B9459B); }
+.pc-choice--magistere[aria-pressed="true"] { border-color: #064CA4; }
+.pc-choice--magistere[aria-pressed="true"] .pc-choice__tick { background: linear-gradient(135deg, #043A7D, #064CA4); }
+.pc-choice--moodle[aria-pressed="true"]    { border-color: #E06A00; }
+.pc-choice--moodle[aria-pressed="true"] .pc-choice__tick    { background: linear-gradient(135deg, #E06A00, #F98012); }
+
+/* =========================================================================
+   5. Trames
+   ========================================================================= */
+
+.pc-trames { display: grid; gap: 14px; grid-template-columns: 1fr; }
+
+@media (min-width: 700px) { .pc-trames { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1060px) { .pc-trames { grid-template-columns: repeat(3, 1fr); } }
+
+.pc-trame {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px 13px;
+    text-align: left;
+    background: var(--pc-surface);
+    border: 2px solid transparent;
+    border-radius: var(--pc-radius);
+    box-shadow: var(--pc-shadow-sm);
+    font-family: inherit;
+    color: var(--pc-ink);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s var(--pc-ease);
+}
+
+.pc-trame:hover { transform: translateY(-1px); box-shadow: var(--pc-shadow); }
+.pc-trame__select:focus-visible,
+.pc-trame__desc-toggle:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+/* La trame choisie — quelle qu'elle soit, « Caramel propose » comprise — se
+   reconnaît à sa bordure ET à un fond uni, clair et léger (retour du 28 sept.) :
+   la sélection suit le clic, pas un décor réservé à une seule carte. */
+.pc-trame[aria-pressed="true"] { border-color: var(--pc-blue); box-shadow: var(--pc-shadow); background: #f4f8ff; }
+.pc-trame[aria-pressed="true"] .pc-choice__tick { opacity: 1; transform: scale(1); }
+.pc-trame--selected { border-color: var(--pc-blue); box-shadow: var(--pc-shadow); background: #f4f8ff; }
+.pc-trame--selected .pc-choice__tick { opacity: 1; transform: scale(1); }
+
+.pc-trame__select {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.pc-trame__name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    padding-right: 28px;
+    line-height: 1.25;
+}
+
+.pc-trame__description {
+    min-width: 0;
+}
+
+.pc-trame__desc {
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    font-size: 0.88rem;
+    line-height: 1.42;
+    color: var(--pc-ink-2);
+}
+
+.pc-trame__description--ouverte .pc-trame__desc {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+}
+
+.pc-trame__desc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex: none;
+    min-height: 24px;
+    padding: 2px 0;
+    border: 0;
+    background: transparent;
+    color: var(--pc-blue-dark);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.pc-trame__desc-toggle[hidden] { display: none; }
+.pc-trame__desc-toggle i { font-size: 0.68rem; }
+
+.pc-trame__meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 0;
+}
+
+.pc-trame__meta-row .pc-trame__desc-toggle { margin-inline-start: auto; }
+
+.pc-trame__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: var(--pc-ink-3);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Aperçu de la structure : le déroulé RÉEL du modèle, étape par étape, avec son
+   palier et ses types d'activité. Une description de deux lignes ne dit pas ce
+   qu'un modèle contient — et c'est justement ce qu'on veut voir avant de choisir. */
+.pc-apercu {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 8px 0 0;
+    border-top: 1px solid var(--pc-line);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.pc-apercu__etape {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 7px;
+    align-items: start;
+}
+
+.pc-apercu__num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--pc-ground);
+    color: var(--pc-ink-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    margin-top: 1px;
+}
+
+.pc-apercu__corps { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+
+.pc-apercu__modules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    font-size: 0.79rem;
+    line-height: 1.35;
+    color: var(--pc-ink-2);
+}
+
+.pc-apercu__module {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--pc-ground);
+    box-shadow: inset 0 0 0 1px var(--pc-line);
+}
+
+.pc-apercu .pc-palier { font-size: 0.67rem; padding: 2px 8px; }
+
+/* Sélectionnée, la carte allume son aperçu. */
+.pc-trame[aria-pressed="true"] .pc-apercu__num,
+.pc-trame--selected .pc-apercu__num { background: var(--pc-blue); color: #fff; }
+.pc-trame[aria-pressed="true"] .pc-apercu__modules,
+.pc-trame--selected .pc-apercu__modules { color: var(--pc-ink); }
+.pc-trame[aria-pressed="true"] .pc-apercu__module,
+.pc-trame--selected .pc-apercu__module { background: var(--pc-blue-soft); }
+
+/* Les cartes d'une même ligne partagent quatre rangées internes : titre,
+   description, méta puis aperçu. Le séparateur de l'aperçu reste ainsi au même
+   niveau même quand une description prend une ligne de plus dans une langue. */
+@supports (grid-template-rows: subgrid) {
+    .pc-trame {
+        display: grid;
+        grid-template-rows: subgrid;
+        grid-row: span 4;
+        row-gap: 8px;
+    }
+}
+
+/* La trame « Caramel propose » : pleine largeur. Son fond ne la distingue
+   plus — seule la sélection colore une carte. */
+.pc-trame--auto {
+    grid-column: 1 / -1;
+}
+
+.pc-trame--auto .pc-trame__name { display: flex; align-items: center; gap: 9px; }
+.pc-trame--auto .pc-trame__name i { color: var(--pc-blue); font-size: 0.9em; }
+
+.pc-empty {
+    padding: 24px 20px;
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--pc-ink-2);
+    background: var(--pc-surface);
+    border: 1px dashed var(--pc-line-strong);
+    border-radius: var(--pc-radius);
+    grid-column: 1 / -1;
+}
+
+/* =========================================================================
+   6. Barre d'action — le pied de l'atelier
+   ------------------------------------------------------------------------
+   Dans le flux, à la fin de l'écran, là où l'enseignant arrive en lisant :
+   ni fixée au bas de la fenêtre ni collante. Une barre fixée se superposait
+   au contenu et à la bulle de Caramelia, et « le bas était bizarre » (retour
+   d'Emmanuel, 6 sept. 2026). Un filet au-dessus la sépare de l'écran.
+   ========================================================================= */
+
+.pc-actionbar {
+    border-top: 1px solid var(--pc-line);
+    padding: 16px 0 8px;
+}
+
+/* Un `hidden` posé en JS doit GAGNER. Les boutons de la barre sont en
+   `display: inline-flex` : sans cette règle, l'attribut (qui ne vaut qu'un
+   `display: none` de la feuille du navigateur) est écrasé et le bouton reste à
+   l'écran — constaté le 17 sept. 2026 sur « Composer le plan », qui restait
+   visible pendant la composition ET arrêtait la génération quand on le
+   recliquait, tout en disant toujours « Composer le plan ». Vaut aussi pour
+   « Partir du modèle », caché de la même façon hors du cadrage. */
+.pc-actionbar [hidden] { display: none; }
+
+.pc-actionbar__inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-direction: column;
+}
+
+@media (min-width: 600px) {
+    .pc-actionbar__inner { flex-direction: row; justify-content: space-between; }
+}
+
+
+.pc-actionbar__note {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--pc-ink-2);
+    text-align: center;
+    order: 2;
+}
+
+@media (min-width: 600px) { .pc-actionbar__note { text-align: left; order: 1; } }
+
+/* Action primaire : le bouton « Générer en un clic » de la sidebar d'activité —
+   bleu plein, rayon 12, graisse 500. Même objet, même apparence. */
+.pc-cta {
+    order: 1;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-blue);
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.18s ease, transform 0.18s var(--pc-ease);
+}
+
+@media (min-width: 600px) { .pc-cta { order: 2; width: auto; flex: none; } }
+
+.pc-cta:hover:not(:disabled) { background: var(--pc-blue-dark); }
+.pc-cta:active:not(:disabled) { transform: scale(0.985); }
+.pc-cta:focus-visible { outline: 2px solid var(--pc-blue-dark); outline-offset: 3px; }
+
+.pc-cta:disabled { cursor: not-allowed; background: #c7c7cc; color: #fff; }
+
+/* =========================================================================
+   6 bis. Écran 2 — le tableau de bord du plan
+   ========================================================================= */
+
+/* ---- Titre du parcours, éditable sur place ---- */
+.pc-title-input {
+    width: 100%;
+    min-height: 0;
+    border: none;
+    background: transparent;
+    padding: 4px 10px;
+    margin: -4px -10px;
+    border-radius: 10px;
+    font-family: inherit;
+    /* Même échelle que les titres d'écran (`.pc-hero h2`). */
+    font-size: clamp(1.3rem, 2.6vw, 1.55rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--pc-ink);
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    resize: none;
+    overflow: hidden;
+}
+.pc-title-input:hover { background: rgba(0, 0, 0, 0.035); }
+.pc-title-input:focus { outline: none; background: #fff; box-shadow: 0 0 0 2px var(--pc-blue); }
+
+/* ---- Bandeau de synthèse ---- */
+/* Une rangée de tuiles qui s'adapte à leur NOMBRE. Une grille figée à trois
+   colonnes laissait une case grise vide dès que le compte n'était pas un
+   multiple de trois — deux tuiles à la livraison, cinq au miroir (constaté le
+   6 sept. 2026). En flex, la dernière rangée s'étire toujours jusqu'au bord. */
+.pc-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    background: var(--pc-line);
+    border-radius: var(--pc-radius);
+    overflow: hidden;
+    box-shadow: var(--pc-shadow);
+}
+
+.pc-summary__item {
+    flex: 1 1 100px;
+    background: var(--pc-surface);
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    text-align: center;
+}
+
+.pc-summary__val {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.pc-summary__lab { font-size: 0.78rem; color: var(--pc-ink-2); line-height: 1.3; }
+
+/* Chiffres clés (étapes, activités, durée) : un pictogramme à gauche du chiffre. */
+.pc-summary__item--kpi { flex-direction: row; justify-content: center; gap: 12px; }
+.pc-summary__texte { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; text-align: left; min-width: 0; }
+.pc-summary__picto {
+    flex: none; width: 22px; height: 22px; padding: 8px; box-sizing: content-box;
+    border-radius: 50%; background: var(--pc-blue-soft); color: var(--pc-blue);
+    fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+@media (max-width: 560px) {
+    .pc-summary__item--kpi { flex-direction: column; gap: 6px; }
+    .pc-summary__texte { align-items: center; text-align: center; }
+    .pc-summary__picto { width: 18px; height: 18px; padding: 6px; }
+}
+
+/* L'infobulle d'une valeur estimée : un petit « i », focalisable, dont le
+   titre et le nom accessible portent l'explication. Même gris que le libellé,
+   un ton plus vif au survol. */
+.pc-info {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    vertical-align: -2px;
+    border-radius: 50%;
+    color: var(--pc-ink-3);
+    font-size: 12px;
+    cursor: help;
+}
+.pc-info:hover { color: var(--pc-blue); }
+.pc-info:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 1px; color: var(--pc-blue); }
+
+/* ---- Notions pivots ---- */
+.pc-notions { display: flex; flex-wrap: wrap; gap: 7px; }
+.pc-notions--edition { margin: 0; padding: 0; list-style: none; align-items: center; }
+.pc-notions--edition .pc-notion { display: inline-flex; align-items: center; gap: 2px; padding: 0; padding-inline-end: 4px; }
+.pc-notion__texte {
+    padding-block: 5px;
+    padding-inline: 13px 4px;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: text;
+    border-start-start-radius: var(--pc-pill);
+    border-end-start-radius: var(--pc-pill);
+}
+.pc-notion__texte:focus-visible, .pc-notion__retirer:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 1px; }
+.pc-notion__retirer {
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--pc-blue-dark);
+    font-size: .72rem;
+    opacity: .55;
+    cursor: pointer;
+}
+.pc-notion__retirer:hover { opacity: 1; background: rgba(0, 86, 179, .12); }
+.pc-notion__champ {
+    min-width: 0;
+    max-width: 100%;
+    padding: 5px 13px;
+    border: 0;
+    border-radius: var(--pc-pill);
+    background: #fff;
+    box-shadow: 0 0 0 2px var(--pc-blue);
+    color: var(--pc-ink);
+    font: inherit;
+}
+.pc-notion__champ:focus { outline: none; }
+.pc-notions--edition .pc-notion--ajout {
+    gap: 6px;
+    padding: 0;
+    padding-inline-start: 11px;
+    background: transparent;
+    border: 1px dashed var(--pc-line-strong);
+    color: var(--pc-ink-3);
+}
+.pc-notions--edition .pc-notion--ajout:focus-within { border-color: var(--pc-blue); color: var(--pc-blue); }
+.pc-notion--ajout i { font-size: .72rem; }
+.pc-notion__champ--ajout { padding-block: 5px; padding-inline: 0 13px; background: transparent; box-shadow: none; }
+.pc-notion__champ--ajout::placeholder { color: var(--pc-ink-3); }
+
+.pc-notion {
+    padding: 5px 13px;
+    background: var(--pc-blue-soft);
+    color: var(--pc-blue-dark);
+    border-radius: var(--pc-pill);
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+/* ---- Réglages du cours (Carte de progression, ouverture des étapes) ----
+   Une carte blanche, une ligne par réglage : l'interrupteur à gauche, le
+   libellé et sa note sur deux lignes, l'annexe (le thème de la carte) à
+   droite. Deux réglages se lisent alors comme deux réglages, pas comme deux
+   paragraphes. Classes neutres et partagées : les tests distinguent les
+   lignes par ce qu'elles CONTIENNENT (un menu, une raison), pas par leur nom. */
+.pc-reglages {
+    background: var(--pc-surface);
+    border-radius: var(--pc-radius);
+    box-shadow: var(--pc-shadow);
+    overflow: hidden;
+}
+
+.pc-reglage {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 6px 16px;
+    padding: 14px 18px;
+}
+.pc-reglage + .pc-reglage { border-top: 1px solid var(--pc-line); }
+
+.pc-reglage__texte { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.pc-reglage__titre {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--pc-ink);
+    cursor: pointer;
+}
+
+.pc-reglage__note {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--pc-ink-2);
+}
+
+/* Une ligne qu'on ne peut pas actionner le dit à l'œil ; la raison, elle,
+   s'écrit dans sa note (`.pc-progression__raison`). */
+.pc-reglage--off .pc-switch,
+.pc-reglage--off .pc-reglage__titre { opacity: 0.45; cursor: not-allowed; }
+
+.pc-reglage__annexe {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: opacity 0.15s ease;
+}
+.pc-reglage__annexe--off { opacity: 0.45; }
+.pc-reglage__lab { font-size: 0.84rem; color: var(--pc-ink-2); }
+
+@media (max-width: 599px) {
+    .pc-reglage { grid-template-columns: auto 1fr; }
+    .pc-reglage__annexe { grid-column: 2; }
+}
+
+/* ---- La galerie des cartes : les trente visuels, en rangée, à faire défiler ----
+   Visible seulement la case cochée. Une vignette est un bouton-radio : la
+   coche et la bordure bleue disent le choix, comme sur les cartes de choix
+   du cadrage — même coche, même bleu. Un seul arrêt de tabulation pour toute
+   la rangée, les flèches passent d'une vignette à l'autre. */
+.pc-galerie {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+    padding: 4px 2px 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+.pc-galerie[hidden] { display: none; }
+
+.pc-galerie__item {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 184px;
+    padding: 0 0 6px;
+    border: 2px solid transparent;
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-surface);
+    box-shadow: var(--pc-shadow-sm);
+    font-family: inherit;
+    color: var(--pc-ink);
+    text-align: left;
+    cursor: pointer;
+    scroll-snap-align: center;
+    transition: border-color 0.15s ease, transform 0.15s var(--pc-ease);
+}
+.pc-galerie__item img {
+    display: block;
+    width: 100%;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 9px 9px 0 0;
+    background: var(--pc-ground);
+}
+.pc-galerie__nom {
+    padding: 0 10px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pc-galerie__item .pc-choice__tick { top: 6px; right: 6px; }
+.pc-galerie__item:hover { border-color: var(--pc-line-strong); }
+.pc-galerie__item--choisi { border-color: var(--pc-blue); }
+.pc-galerie__item--choisi .pc-choice__tick { opacity: 1; transform: scale(1); }
+.pc-galerie__item:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+
+/* L'interrupteur : celui de Caramel (`.switch` du panneau d'activité), en
+   plus petit — piste grise, bouton blanc, bleu une fois allumé. L'`input`
+   reste un vrai `input` : focalisable, coché au clavier, lu tel quel. */
+.pc-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 26px;
+    flex: none;
+    cursor: pointer;
+}
+.pc-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+.pc-switch input:disabled { cursor: not-allowed; }
+.pc-switch__piste {
+    position: absolute;
+    inset: 0;
+    border-radius: 26px;
+    background: #c7c7cc;
+    transition: background 0.2s ease;
+    pointer-events: none;
+}
+.pc-switch__piste::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s var(--pc-ease);
+}
+.pc-switch input:checked + .pc-switch__piste { background: var(--pc-blue); }
+.pc-switch input:checked + .pc-switch__piste::before { transform: translateX(18px); }
+.pc-switch input:focus-visible + .pc-switch__piste { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .pc-reglage__annexe, .pc-switch__piste, .pc-switch__piste::before { transition: none; }
+}
+
+/* ---- Le miroir : ce que le parcours fait travailler ----
+   Une rangée de tuiles, pas un graphique : cinq nombres entre 0 et 6, dont
+   l'information principale est le ZÉRO — invisible dans une barre. Les tuiles
+   réemploient `.pc-summary` du bandeau du haut, donc rien de neuf à l'œil.
+   Une tuile à zéro pâlit, mais l'absence est AUSSI écrite en toutes lettres
+   dessous : jamais une information portée par la seule couleur. */
+.pc-miroir { display: flex; flex-direction: column; gap: 12px; }
+
+.pc-summary__item--vide { opacity: 0.5; }
+
+.pc-miroir__constat {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--pc-ink-2);
+}
+
+/* ---- Étapes ---- */
+.pc-etapes { display: flex; flex-direction: column; gap: 18px; }
+
+.pc-etape {
+    background: var(--pc-surface);
+    border-radius: var(--pc-radius);
+    box-shadow: var(--pc-shadow);
+    overflow: hidden;
+}
+
+.pc-etape__head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: start;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--pc-line);
+    background: #fafafa;
+}
+
+.pc-etape__num {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--pc-blue);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    margin-top: 3px;
+}
+
+.pc-etape__champs { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.pc-etape__titre,
+.pc-etape__objectif {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 3px 8px;
+    margin-left: -8px;
+    border-radius: 8px;
+    font-family: inherit;
+    color: var(--pc-ink);
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.pc-etape__titre { font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; }
+.pc-etape__objectif { font-size: 0.87rem; color: var(--pc-ink-2); }
+.pc-etape__titre:hover, .pc-etape__objectif:hover { background: rgba(0, 0, 0, 0.04); }
+.pc-etape__titre:focus, .pc-etape__objectif:focus {
+    outline: none; background: #fff; box-shadow: 0 0 0 2px var(--pc-blue);
+}
+.pc-etape__titre::placeholder, .pc-etape__objectif::placeholder { color: var(--pc-ink-3); }
+
+/* Le texte lu par l'élève en tête d'étape (D64) : un vrai paragraphe, marqué
+   d'un filet bleu pour qu'on le distingue des champs de conception. */
+.pc-etape__intro {
+    display: block;
+    width: calc(100% + 8px);
+    min-height: 0;
+    margin-block: 6px 2px;
+    margin-inline-start: -8px;
+    padding-block: 6px;
+    padding-inline: 5px 10px;
+    box-sizing: border-box;
+    border: 0;
+    border-inline-start: 3px solid #cfe3ff;
+    border-start-end-radius: 8px;
+    border-end-end-radius: 8px;
+    background: var(--pc-surface);
+    font-family: inherit;
+    font-size: .88rem;
+    line-height: 1.5;
+    color: var(--pc-ink);
+    resize: none;
+    overflow: hidden;
+    transition: background .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.pc-etape__intro:hover { border-inline-start-color: var(--pc-blue); }
+.pc-etape__intro:focus { outline: none; border-inline-start-color: var(--pc-blue); box-shadow: 0 0 0 2px var(--pc-blue); border-radius: 8px; }
+.pc-etape__intro::placeholder { color: var(--pc-ink-3); }
+.pc-etape--accueil .pc-etape__head { grid-template-columns: auto 1fr; border-bottom: 0; }
+.pc-etape__num--accueil { background: var(--pc-blue-soft); color: var(--pc-blue); font-size: .75rem; }
+.pc-etape__nom-fixe { margin: 0; padding: 3px 0; font-size: 1.02rem; font-weight: 600; letter-spacing: -.01em; color: var(--pc-ink); }
+
+.pc-etape__actions { display: flex; gap: 2px; flex: none; }
+
+/* ---- Cartes d'activité ----
+   Deux lignes, pas trois : le titre et l'objectif à gauche, les réglages
+   (type, durée, palier) sur la MÊME rangée à droite, les actions au bout. Une
+   carte fait ainsi la hauteur de deux lignes de texte ; un plan de douze
+   activités tient sur un écran et demi au lieu de trois (relecture du 6 sept.
+   2026 : « plus compact et optimal »). Sous 900 px, les réglages passent
+   sous le texte, sur toute la largeur. */
+.pc-cartes { display: flex; flex-direction: column; padding: 6px; gap: 6px; }
+
+.pc-carte {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 6px 12px;
+    align-items: center;
+    padding: 8px 10px;
+    border: 1px solid var(--pc-line);
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-surface);
+    transition: border-color 0.18s ease, opacity 0.18s ease;
+}
+.pc-carte:hover { border-color: var(--pc-line-strong); }
+/* Le survol de la carte révèle ses deux champs : on voit qu'on peut écrire
+   dedans avant même d'y poser le pointeur. */
+.pc-carte:hover .pc-carte__titre,
+.pc-carte:hover .pc-carte__objectif { background: rgba(0, 0, 0, 0.035); }
+
+/* ---- Glisser-déposer : EN SURCOUCHE des flèches, jamais à leur place ----
+   La poignée est la vignette : rendre la carte entière `draggable` casserait la
+   sélection de texte dans ses champs, et cet écran sert d'abord à écrire.
+   Le trait d'insertion se dessine du côté où la carte tombera — c'est la seule
+   chose à savoir pendant qu'on glisse. Il est posé en `box-shadow` plutôt qu'en
+   bordure pour ne pas déplacer la carte d'un pixel au survol. */
+.pc-carte__icone[draggable="true"] { cursor: grab; }
+.pc-carte__icone[draggable="true"]:active { cursor: grabbing; }
+
+.pc-carte--glissee { opacity: 0.4; }
+
+.pc-carte--avant { box-shadow: inset 0 2px 0 0 var(--pc-blue); }
+.pc-carte--apres { box-shadow: inset 0 -2px 0 0 var(--pc-blue); }
+
+/* Étape survolée sans carte sous le pointeur : la carte ira en fin de liste.
+   Indispensable pour déposer dans une étape encore VIDE. */
+.pc-cartes--cible {
+    outline: 2px dashed var(--pc-blue);
+    outline-offset: 4px;
+    border-radius: var(--pc-radius-sm);
+}
+
+/* Carte verrouillée : l'enseignant fournira le contenu, on ne génère pas. */
+.pc-carte--verrouillee { background: #fafafa; border-style: dashed; }
+.pc-carte--verrouillee .pc-carte__icone { opacity: 0.45; }
+
+.pc-carte__icone {
+    width: 36px;
+    height: 36px;
+    flex: none;
+    border-radius: 9px;
+    background: var(--pc-ground);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--pc-ink-3);
+}
+.pc-carte__icone img { width: 24px; height: 24px; object-fit: contain; }
+
+.pc-carte__corps { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+
+.pc-carte__titre,
+.pc-carte__objectif {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 2px 8px;
+    margin-left: -8px;
+    border-radius: 7px;
+    font-family: inherit;
+    color: var(--pc-ink);
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.pc-carte__titre { font-size: 0.95rem; font-weight: 600; }
+.pc-carte__objectif { font-size: 0.84rem; color: var(--pc-ink-2); }
+.pc-carte__titre:hover, .pc-carte__objectif:hover { background: rgba(0, 0, 0, 0.06) !important; }
+.pc-carte__titre:focus, .pc-carte__objectif:focus {
+    outline: none; background: #fff !important; box-shadow: 0 0 0 2px var(--pc-blue);
+}
+.pc-carte__titre::placeholder, .pc-carte__objectif::placeholder { color: var(--pc-ink-3); }
+
+/* Sur la même rangée que le texte, en COLONNES FIXES : le menu de type, la
+   durée et le palier ont chacun leur largeur, la même sur toutes les cartes,
+   pour que les lignes d'une étape tombent en colonne. Une largeur « au
+   contenu » (Glossaire, Texte à trous, Quiz QCM…) faisait onduler la colonne
+   d'une carte à l'autre (retour d'Emmanuel, 6 sept. 2026). */
+.pc-carte__reglages {
+    display: grid;
+    grid-template-columns: 172px 84px 104px;
+    align-items: center;
+    gap: 6px;
+}
+.pc-carte__reglages .pc-select { width: 100%; }
+.pc-carte__reglages .pc-duree { width: 100%; justify-content: flex-end; }
+.pc-carte__reglages .pc-palier { text-align: center; overflow: hidden; text-overflow: ellipsis; }
+
+/* Un objectif long se coupe proprement au lieu de s'arrêter net. */
+.pc-carte__titre, .pc-carte__objectif { text-overflow: ellipsis; }
+
+@media (max-width: 899px) {
+    .pc-carte { grid-template-columns: auto 1fr auto; }
+    .pc-carte__reglages { grid-column: 2 / -1; justify-content: flex-start; }
+}
+
+.pc-carte__alerte {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 4px 0 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #b8500f;
+}
+
+.pc-carte__actions { display: flex; gap: 2px; flex: none; }
+
+@media (max-width: 560px) {
+    /* Au doigt, les actions passent sous le contenu plutôt que de l'écraser. */
+    .pc-carte { grid-template-columns: auto 1fr; }
+    .pc-carte__reglages { grid-column: 1 / -1; grid-template-columns: 1fr 84px; }
+    .pc-carte__reglages .pc-palier { grid-column: 1 / -1; justify-self: start; }
+    .pc-carte__actions { grid-column: 1 / -1; justify-content: flex-end; }
+    .pc-etape__head { grid-template-columns: auto 1fr; }
+    .pc-etape__actions { grid-column: 1 / -1; justify-content: flex-end; }
+}
+
+/* ---- Contrôles de carte ---- */
+.pc-select {
+    font-family: inherit;
+    font-size: 0.82rem;
+    color: var(--pc-ink);
+    background: var(--pc-field);
+    border: 1px solid var(--pc-line-strong);
+    border-radius: 8px;
+    padding: 5px 8px;
+    max-width: 100%;
+    cursor: pointer;
+}
+.pc-select:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 1px; }
+
+/* Le type d'une carte : un bouton (vignette + nom + chevron) qui ouvre la
+   mosaïque. Même gabarit que les autres réglages de la carte. */
+.pc-choix {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    text-align: left;
+}
+.pc-choix img { width: 20px; height: 20px; border-radius: 4px; flex: none; object-fit: contain; }
+/* Vignette H5P : largeur fixe, hauteur selon sa proportion (comme dans la
+   mosaïque) — la forcer en carré l'écrasait (retour du 28 sept.). */
+.pc-choix img.pc-vignette--h5p { width: 22px; height: auto; max-height: 24px; border-radius: 0; }
+/* Même hauteur de bouton et même départ du texte, quelle que soit la vignette :
+   la carrée (20 px) se centre dans la largeur de la H5P (22 px). */
+.pc-choix { min-height: 32px; }
+.pc-choix img:not(.pc-vignette--h5p) { margin: 0 1px; }
+.pc-choix > .fas:first-child { width: 20px; text-align: center; color: var(--pc-ink-2); flex: none; }
+.pc-choix__nom { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pc-choix > .fa-chevron-down { font-size: 0.7rem; color: var(--pc-ink-3); flex: none; }
+
+/* La mosaïque des types : un vrai dialogue modal, centré, défilant. */
+.pc-mosaique {
+    width: min(920px, calc(100vw - 2 * var(--pc-gutter)));
+    max-height: min(84vh, 900px);
+    padding: 0;
+    border: none;
+    border-radius: var(--pc-radius);
+    background: var(--pc-surface);
+    color: var(--pc-ink);
+    box-shadow: var(--pc-shadow);
+    font-family: inherit;
+}
+.pc-mosaique[open] { display: flex; flex-direction: column; }
+.pc-mosaique::backdrop { background: rgba(0, 0, 0, 0.35); }
+.pc-mosaique__tete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px 8px;
+}
+.pc-mosaique__titre { margin: 0; font-size: 1.1rem; font-weight: 600; }
+.pc-mosaique__fermer {
+    border: none;
+    background: transparent;
+    color: var(--pc-ink-2);
+    font-size: 1.1rem;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.pc-mosaique__fermer:hover { background: var(--pc-ground); }
+.pc-mosaique__fermer:focus-visible { outline: 2px solid var(--pc-blue); }
+.pc-mosaique .pc-mosaique__filtre { margin: 0 20px 8px; width: calc(100% - 40px); box-sizing: border-box; }
+.pc-mosaique__corps { overflow-y: auto; padding: 4px 20px 20px; }
+.pc-mosaique__groupe[hidden], .pc-tuile[hidden], .pc-mosaique__vide[hidden] { display: none; }
+.pc-mosaique__rubrique {
+    margin: 14px 0 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--pc-ink-2);
+}
+.pc-mosaique__grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 8px;
+}
+.pc-tuile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px 10px;
+    border: 1px solid var(--pc-line);
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-field);
+    color: var(--pc-ink);
+    font-family: inherit;
+    font-size: 0.8rem;
+    line-height: 1.25;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pc-tuile img { width: 40px; height: 40px; border-radius: 6px; }
+/* Les vignettes H5P ne sont pas des carrés : elles gardent leur proportion,
+   comme sur les tuiles de l'accueil — largeur donnée, hauteur nécessaire. */
+.pc-tuile img.pc-vignette--h5p { width: 52px; height: auto; max-height: 56px; border-radius: 0; object-fit: contain; }
+.pc-tuile { position: relative; }
+.pc-tuile__rien {
+    position: absolute;
+    top: 6px;
+    right: 7px;
+    font-size: 0.72rem;
+    color: var(--pc-ink-3);
+}
+.pc-mosaique__legende {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: -2px 0 8px;
+    font-size: 0.78rem;
+    color: var(--pc-ink-2);
+}
+.pc-mosaique__legende .fas { color: var(--pc-ink-3); }
+.pc-tuile > .fas:not(.pc-tuile__rien) { font-size: 1.6rem; height: 40px; line-height: 40px; color: var(--pc-ink-2); }
+.pc-tuile:hover { border-color: var(--pc-blue); box-shadow: var(--pc-shadow-sm); }
+.pc-tuile:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+.pc-tuile[aria-pressed="true"] { border-color: var(--pc-blue); background: var(--pc-blue-soft); font-weight: 600; }
+.pc-tuile__nom { overflow-wrap: break-word; hyphens: auto; max-width: 100%; }
+@media (max-width: 599px) {
+    .pc-mosaique__grille { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+    .pc-mosaique { max-height: 90vh; }
+}
+
+.pc-duree {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--pc-field);
+    border: 1px solid var(--pc-line-strong);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 0.82rem;
+    color: var(--pc-ink-2);
+}
+
+.pc-duree__input {
+    width: 3.2em;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.83rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--pc-ink);
+    text-align: right;
+    padding: 0;
+}
+.pc-duree__input:focus { outline: none; }
+.pc-duree:focus-within { box-shadow: 0 0 0 2px var(--pc-blue); border-color: transparent; }
+
+.pc-palier {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 4px 10px;
+    border-radius: var(--pc-pill);
+    white-space: nowrap;
+}
+/* Trois paliers, trois teintes — c'est la progression du parcours qui se lit
+   d'un coup d'œil dans la colonne, pas une décoration. */
+.pc-palier--decouverte   { background: #e8f1fb; color: #2c5f95; }
+.pc-palier--entrainement { background: #e9f5ef; color: #24765f; }
+.pc-palier--transfert    { background: #f6ecf6; color: #7a3d78; }
+
+/* ---- Boutons d'icône ---- */
+.pc-icon-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--pc-ink-3);
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.pc-icon-btn:hover { background: rgba(0, 0, 0, 0.06); color: var(--pc-ink); }
+.pc-icon-btn:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 1px; }
+.pc-icon-btn--danger:hover { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
+
+/* ---- Ajouter ---- */
+.pc-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 34px;
+    padding: 6px 14px;
+    border: 1px dashed var(--pc-line-strong);
+    border-radius: var(--pc-radius-sm);
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--pc-ink-2);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.pc-add:hover { border-color: var(--pc-blue); color: var(--pc-blue); background: var(--pc-blue-soft); }
+.pc-add:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+.pc-add--etape { min-height: 48px; }
+
+/* ---- Retour, et l'action primaire en mode « annuler » ---- */
+.pc-actionbar__gauche {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    order: 2;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+@media (min-width: 600px) { .pc-actionbar__gauche { order: 1; justify-content: flex-start; } }
+
+/* Sur téléphone, la barre empilait le bouton, le retour et la note : près d'un
+   tiers de l'écran pour trois lignes (constaté le 6 sept. 2026).
+   Placée ici, APRÈS les règles de `.pc-actionbar__gauche` : à spécificité égale la
+   dernière écrite gagne, et celle-ci doit gagner sur téléphone. Une seule
+   rangée — retour compact à gauche, action primaire qui prend le reste —, et la
+   note s'efface : chaque écran la redit déjà dans son texte d'introduction. */
+@media (max-width: 599px) {
+    .pc-actionbar__inner { flex-direction: row; gap: 10px; }
+    /* Le retour À GAUCHE, l'action primaire à droite : le même sens de lecture
+       que sur ordinateur, où la barre est déjà dans cet ordre. */
+    .pc-actionbar__gauche { order: 0; flex: 0 0 auto; }
+    .pc-cta { order: 1; flex: 1 1 auto; width: auto; min-width: 0; }
+    .pc-actionbar__note { display: none; }
+}
+
+.pc-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid var(--pc-line-strong);
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-surface);
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--pc-ink);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.pc-back:hover { background: var(--pc-ground); }
+.pc-back:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+.pc-back[hidden] { display: none; }
+
+.pc-cta--annuler { background: var(--pc-ink-2); }
+.pc-cta--annuler:hover:not(:disabled) { background: var(--pc-ink); }
+
+/* ---- Panneau d'attente de la composition ----
+   Prend la place de l'écran de cadrage (masqué par `.pc-atelier--voile`) le
+   temps de l'appel : dans le flux, à hauteur d'écran, avec la barre d'action
+   et son bouton d'arrêt juste dessous. Un voile absolu par-dessus une page
+   de deux mille pixels aurait centré son anneau hors de la fenêtre. */
+.pc-veil {
+    min-height: 320px;
+    margin: 28px 0;
+    border-radius: var(--pc-radius);
+    background: var(--pc-surface);
+    box-shadow: var(--pc-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+}
+
+@keyframes pc-spin { to { transform: rotate(360deg); } }
+
+/* ---- Le caramel qui se remplit ----
+   Deux copies du logo l'une sur l'autre : la grise dessous, la colorée
+   dessus, découpée par `clip-path`. Le niveau est porté par la CLASSE, jamais
+   par le dessin — on ne retouche pas le logo, et un changement de logo ne
+   demande rien ici. Décoratif : le texte à côté dit la même chose en mots. */
+.pc-bonbon {
+    position: relative;
+    display: inline-block;
+    flex: none;
+    width: 88px;
+    height: 88px;
+}
+
+.pc-bonbon img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Le caramel gris doit rester UN CARAMEL, lisible en toutes circonstances :
+   à 0,16 d'opacité il passait pour une tache blanche dès que la couleur avait
+   fini son cycle (retour d'Emmanuel du 17 sept. 2026). */
+.pc-bonbon__fond { filter: grayscale(1) contrast(0.85); opacity: 0.42; }
+
+.pc-bonbon--vide .pc-bonbon__plein { display: none; }
+
+.pc-bonbon--plein .pc-bonbon__fond { display: none; }
+
+.pc-bonbon--remplissage .pc-bonbon__plein { animation: pc-remplir 4.2s ease-in-out infinite; }
+
+/* Un cycle CONTINU, sans jamais couper (retour d'Emmanuel du 17 sept. 2026 —
+   la première version s'effaçait en opacité à la fin, ce qui se voyait comme un
+   flash). La couleur monte du bas jusqu'en haut, puis le gris remonte du bas à
+   son tour et la mange ; au bout du tour, il ne reste rien de coloré — soit
+   exactement l'état du début. La boucle est donc invisible : aucune image ne
+   saute, et l'opacité ne bouge jamais. */
+@keyframes pc-remplir {
+    0%   { clip-path: inset(88% 0 0 0); }
+    50%  { clip-path: inset(0 0 0 0); }
+    100% { clip-path: inset(0 0 88% 0); }
+}
+
+/* Dans une pastille de statut, à hauteur de texte. Le caramel est plus large
+   qu'une icône : on lui reprend l'espace à sa gauche pour que la pastille
+   garde la largeur qu'elle avait. */
+.pc-bonbon--mini { width: 22px; height: 22px; }
+.pc-statut .pc-bonbon--mini { margin-inline-start: -4px; }
+
+/* La ligne en cours de génération : UN SEUL mouvement, un anneau doré qui
+   tourne lentement autour d'un caramel resté gris. Le caramel ne s'anime pas
+   du tout ici — c'est sa MISE EN COULEUR, à l'arrivée, qui dit que l'activité
+   est prête (retour d'Emmanuel du 17 sept. 2026 : « quand le caramel est prêt,
+   il passe de l'état gris à l'état coloré »). Ni bleu ni clignotement. */
+.pc-bonbon--mini.pc-bonbon--remplissage .pc-bonbon__plein { display: none; }
+
+.pc-statut .pc-bonbon--remplissage::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, .08);
+    border-top-color: var(--pc-caramel-light);
+    border-right-color: var(--pc-caramel-light);
+    animation: pc-spin 1.6s cubic-bezier(.5, .1, .5, .9) infinite;
+}
+
+/* L'instant où l'activité devient prête : le caramel se colore, une fois, sans
+   rebond ni éclat. Posé par le processeur d'écran au SEUL passage
+   « en cours » → « prête » (sinon chaque repeinture le rejouerait). */
+.pc-bonbon--revele .pc-bonbon__plein { animation: pc-bonbon-revele 0.7s ease-out both; }
+
+@keyframes pc-bonbon-revele {
+    0%   { opacity: 0; filter: grayscale(1) saturate(0); }
+    60%  { opacity: 1; }
+    100% { opacity: 1; filter: none; }
+}
+
+/* ---- L'anneau du panneau d'attente, autour du caramel ---- */
+.pc-veil__loader {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 132px;
+    height: 132px;
+}
+
+.pc-veil__anneau {
+    position: absolute;
+    inset: 0;
+    width: 132px;
+    height: 132px;
+}
+
+.pc-veil__anneau-piste { fill: none; stroke: #efefef; stroke-width: 2.5; }
+
+/* Un arc long et fin, doré, qui tourne LENTEMENT : l'anneau bleu et rapide
+   donnait un air d'erreur système (retour d'Emmanuel du 17 sept. 2026). La
+   courbe d'accélération lui donne une respiration plutôt qu'un vrombissement. */
+.pc-veil__anneau-arc {
+    fill: none;
+    stroke: var(--pc-caramel-light);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 150 240;
+    transform-origin: 66px 66px;
+    animation: pc-spin 2.4s cubic-bezier(.5, .1, .5, .9) infinite;
+}
+
+.pc-veil__txt { margin: 0; font-size: 1.05rem; font-weight: 600; }
+/* Une seule ligne dès que la place le permet (retour du 28 sept.) : bornée à
+   62ch, la phrase se coupait en deux et la hauteur du voile sautait quand le
+   texte changeait (recalibrage). Elle ne se replie plus qu'à l'étroit. */
+.pc-veil__sub { margin: 0; font-size: 0.9rem; color: var(--pc-ink-2); max-width: 100%; line-height: 1.5; }
+
+/* ---- Les trois jalons ----
+   Ils suivent l'appel réel : envoi, attente du modèle, contrôle du format. */
+.pc-veil__jalons {
+    margin: 2px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    text-align: start;
+}
+
+.pc-jalon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--pc-ink-2);
+}
+
+.pc-jalon__puce {
+    position: relative;
+    flex: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid var(--pc-line-strong);
+    box-sizing: border-box;
+}
+
+.pc-jalon--encours { color: var(--pc-ink); font-weight: 500; }
+.pc-jalon--encours .pc-jalon__puce {
+    border-color: var(--pc-blue);
+    background: var(--pc-blue);
+    animation: pc-jalon-pouls 1.4s ease-in-out infinite;
+}
+
+@keyframes pc-jalon-pouls { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.pc-jalon--attente { color: var(--pc-ink-3); }
+
+.pc-jalon--fait .pc-jalon__puce { border-color: #24765f; background: #24765f; }
+/* La coche, dessinée par la bordure d'un rectangle tourné : pas d'icône à charger. */
+.pc-jalon--fait .pc-jalon__puce::after {
+    content: "";
+    position: absolute;
+    left: 3.5px;
+    top: 1px;
+    width: 3px;
+    height: 6px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.pc-veil__duree { margin: 0; font-size: 0.82rem; color: var(--pc-ink-3); }
+
+/* L'arrêt, à côté de ce qu'il arrête : pendant la composition, la barre du
+   bas n'affiche plus le sien. */
+.pc-veil__arret {
+    margin-top: 4px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 22px;
+    border: 1px solid var(--pc-line-strong);
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-surface);
+    color: var(--pc-ink);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.pc-veil__arret:hover:not(:disabled) { background: var(--pc-ground); border-color: var(--pc-ink-3); }
+.pc-veil__arret:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+.pc-veil__arret:disabled { opacity: 0.55; cursor: default; }
+.pc-veil__arret i { font-size: 0.8em; }
+
+/* ---- Origine du plan : modèle, IA, ou personnalisé ---- */
+.pc-origine {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin: 0;
+    padding: 5px 12px;
+    border-radius: var(--pc-pill);
+    background: var(--pc-blue-soft);
+    color: var(--pc-blue-dark);
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+/* Une fois le plan touché, ce n'est plus le modèle : c'est le parcours de
+   l'enseignant, et l'étiquette doit cesser de prétendre le contraire. */
+.pc-origine--perso { background: #f1efe9; color: #6b5a4c; }
+
+/* ---- Action secondaire de la barre du bas ---- */
+.pc-secondaire {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid var(--pc-line-strong);
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-surface);
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--pc-ink);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+/* Un bouton secondaire qui ne peut rien faire reste VISIBLE et le dit (par son
+   `title`) : c'est ainsi que « Partir du modèle » annonce la voie sans IA avant
+   même qu'une trame soit choisie. */
+.pc-secondaire:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+.pc-secondaire:hover { background: var(--pc-blue-soft); border-color: var(--pc-blue); color: var(--pc-blue-dark); }
+.pc-secondaire:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+.pc-secondaire[hidden] { display: none; }
+
+/* =========================================================================
+   6 bis. Écran 3 « Fabrication » et écran 4 « Livraison »
+
+   Une règle domine ces deux écrans : on fait ATTENDRE. Tout ce qui est affiché
+   doit donc répondre à « où en est-on », sans que l'utilisateur ait à cliquer.
+   ========================================================================= */
+
+/* ---- Avancement global ---- */
+.pc-avancement { display: flex; flex-direction: column; gap: 8px; }
+
+.pc-avancement__piste {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--pc-line);
+    overflow: hidden;
+}
+
+.pc-avancement__part {
+    height: 100%;
+    width: 0;
+    border-radius: 3px;
+    background: var(--pc-blue);
+    transition: width 0.35s var(--pc-ease);
+}
+
+.pc-avancement__texte {
+    margin: 0;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--pc-ink-2);
+}
+
+/* ---- Étapes en lecture seule ---- */
+.pc-etape--fab .pc-etape__head { padding: 12px 14px; }
+
+.pc-etape__nom {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+/* ---- Une ligne d'activité ---- */
+/* Quatre enfants (vignette, corps, statut, actions) là où la carte du plan en a
+   trois : sans sa quatrième colonne, les actions passaient à la ligne, sous la
+   vignette, minuscules et orphelines — alors que le plan met les siennes à
+   droite (relecture UX du 6 sept. 2026). Même place, même taille, désormais. */
+.pc-carte--fab { grid-template-columns: auto 1fr auto auto; align-items: center; }
+
+.pc-carte__nom {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.pc-carte__meta {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--pc-ink-3);
+}
+
+/* Le statut est le seul endroit où la couleur porte du sens sur cet écran :
+   on la réserve donc strictement à lui. */
+.pc-statut {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: none;
+    padding: 5px 11px;
+    border-radius: var(--pc-pill);
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #f2f2f7;
+    color: var(--pc-ink-2);
+    white-space: nowrap;
+}
+
+.pc-carte--encours { border-color: var(--pc-blue); background: var(--pc-blue-soft); }
+.pc-carte--encours .pc-statut { background: #dceaff; color: var(--pc-blue-dark); }
+
+.pc-carte--faite .pc-statut { background: #e9f5ef; color: #24765f; }
+
+.pc-carte--echouee { border-color: #ffd4d1; background: #fff8f7; }
+.pc-carte--echouee .pc-statut { background: #ffe5e2; color: #b3261e; }
+
+.pc-carte--annulee .pc-statut { background: #f0eef4; color: #63577a; }
+
+@media (max-width: 640px) {
+    /* Au doigt : le statut reste sur la ligne, les actions passent dessous, à
+       droite — comme les cartes du plan sous 560 px. */
+    .pc-carte--fab { grid-template-columns: auto 1fr auto; }
+    .pc-carte--fab .pc-carte__actions { grid-column: 1 / -1; justify-content: flex-end; }
+}
+
+/* ---- L'éditeur visuel, ouvert sur une activité du parcours ---- */
+.pc-editeur {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--pc-z) + 10);
+    display: flex;
+    flex-direction: column;
+    background: var(--pc-ground);
+}
+
+.pc-editeur__barre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px var(--pc-gutter);
+    background: var(--pc-surface);
+    border-bottom: 1px solid var(--pc-line);
+}
+
+.pc-editeur__titre {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    /* Un titre d'activité peut être long ; il ne doit pas pousser la croix
+       hors de l'écran. */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pc-editeur__fermer {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--pc-ink-2);
+    cursor: pointer;
+}
+.pc-editeur__fermer:hover { background: rgba(0, 0, 0, 0.09); color: var(--pc-ink); }
+.pc-editeur__fermer:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+
+.pc-editeur__hote {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    /* Arrivé au bout, le défilement ne se propage pas à la page derrière. */
+    overscroll-behavior: contain;
+    padding: var(--pc-gutter);
+    -webkit-overflow-scrolling: touch;
+}
+
+/* La page ne défile pas derrière l'éditeur — le seul dialogue de l'atelier. */
+body.pc-locked { overflow: hidden; }
+
+.pc-editeur__erreur { margin: 0; color: #b3261e; }
+
+/* Reprendre / garder est disponible avant toute génération. */
+.pc-scenario { display: contents; }
+.pc-scenario__outils, .pc-lecture__outils, .pc-lecture__navigation,
+.pc-lecture__modes, .pc-carte__contenu-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pc-scenario__memoire, .pc-scenario__etat { margin: 8px 0 0; color: var(--pc-ink-2); font-size: .8rem; }
+.pc-scenario__etat:empty { display: none; }
+.pc-scenario__memoire--alerte { color: var(--pc-amber); font-weight: 600; }
+.pc-plan-objectif { width: 100%; min-height: 0; margin: 0; padding: 8px 10px; border: 1px solid var(--pc-line); border-radius: 8px; background: var(--pc-field); font: inherit; font-size: .9rem; line-height: 1.55; color: var(--pc-ink-2); resize: none; overflow: hidden; }
+.pc-hero > .pc-secondaire { align-self: flex-start; }
+.pc-plan-objectif:hover { background: var(--pc-surface); }
+.pc-plan-objectif:focus { outline: 2px solid var(--pc-blue); background: var(--pc-surface); }
+.pc-plan-notions summary { cursor: pointer; }
+.pc-plan-notions[open] > * + * { margin-top: 12px; }
+.pc-page--plan textarea.pc-form__saisie {
+    min-height: 0;
+    height: auto;
+    margin-bottom: 0;
+    overflow: hidden;
+    resize: none;
+}
+.pc-carte__complements { grid-column: 2 / -1; display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.pc-carte__details { flex: 1; min-width: 0; font-size: .82rem; color: var(--pc-ink-2); }
+.pc-carte__details summary { cursor: pointer; width: fit-content; padding: 8px 0; }
+.pc-carte__details[open] > * + * { margin-top: 8px; }
+.pc-carte__details .pc-select { max-width: 220px; }
+.pc-carte__contenu-actions { justify-content: flex-end; }
+.pc-carte__contenu-actions .pc-secondaire { padding: 6px 10px; font-size: .8rem; }
+.pc-carte__etat { font-size: .78rem; color: var(--pc-ink-2); }
+.pc-annulation { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; background: var(--pc-blue-soft); font-size: .85rem; }
+.pc-annulation[hidden], .pc-scenario [hidden], .pc-hero [hidden], .pc-fab-livrer[hidden] { display: none; }
+.pc-lecture__outils { justify-content: space-between; padding: 10px var(--pc-gutter); border-bottom: 1px solid var(--pc-line); background: var(--pc-surface); }
+.pc-lecture__position { font-size: .85rem; color: var(--pc-ink-2); font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+.pc-lecture__modes [aria-pressed="true"] { background: var(--pc-blue-soft); color: var(--pc-blue-dark); border-color: var(--pc-blue); }
+.pc-lecture__annonce { margin: 0; padding: 0 var(--pc-gutter); font-size: .85rem; color: #24765f; }
+.pc-lecture__annonce:not(:empty) { padding-block: 8px; }
+.pc-lecture__attente { text-align: center; padding: 48px 12px; }
+/* Pendant son chargement, le lecteur H5P garde sa largeur mais ne prend aucune
+   place : H5P mesure la hauteur de son iframe dans un conteneur disposé (en
+   `display:none`, il mesurait 0 et l'activité restait invisible). */
+.pc-lecture__lecteur--chargement { visibility: hidden; height: 0; overflow: hidden; }
+.pc-lecture__texte { max-width: 960px; margin: auto; padding: 28px; background: var(--pc-surface); border: 1px solid var(--pc-line); border-radius: 16px; line-height: 1.65; overflow-wrap: anywhere; }
+.pc-lecture__prose { white-space: pre-wrap; }
+/* Questions et pages d'un module natif, rendues comme sur la plateforme. */
+.pc-lecture__questions { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; }
+.pc-lecture__choix { list-style: none; margin: 4px 0 0; padding-left: 0.2em; }
+.pc-lecture__libre { margin: 4px 0 0; color: var(--pc-ink-2); }
+.pc-lecture__pages { display: grid; gap: 12px; }
+.pc-lecture__page {
+    border-left: 3px solid var(--pc-line);
+    padding: 2px 0 2px 12px;
+}
+.pc-lecture__page h4 { margin: 0 0 4px; font-size: 1rem; }
+.pc-lecture__page p { margin: 0 0 4px; }
+.pc-lecture__question { font-weight: 600; }
+.pc-editeur__hote > .pc-form { max-width: 1000px; margin-inline: auto; }
+/* Dans l’activité unique, la modale fournit son propre pied. L’atelier doit
+   réafficher celui de l’éditeur, sinon « Enregistrer » est inaccessible. (La vue
+   du parcours ouverte depuis une notification, elle, garde le pied de la modale.) */
+.pc-editeur .json-editor__actions { display: flex; position: sticky; bottom: 0; z-index: 2; align-items: center; justify-content: space-between; padding: 14px; background: var(--pc-surface); border-top: 1px solid var(--pc-line); }
+.pc-editeur__fermer { width: 44px; height: 44px; }
+.pc-editeur__fermer > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.pc-editeur__hote { overflow-x: hidden; }
+.pc-carte--fab .pc-carte__actions { flex-wrap: wrap; justify-content: flex-end; }
+.pc-carte--fab .pc-carte__actions .pc-secondaire { padding: 7px 10px; font-size: .82rem; }
+.pc-carte--reservee .pc-statut { background: #f0eef4; color: #63577a; }
+.pc-secondaire:disabled, .pc-icon-btn:disabled, .pc-add:disabled { opacity: .5; cursor: default; }
+@media (max-width: 760px) {
+    .pc-carte__complements { grid-column: 1 / -1; flex-wrap: wrap; }
+    .pc-carte__details { min-width: 100%; }
+    .pc-carte__contenu-actions { width: 100%; }
+    .pc-carte--fab { grid-template-columns: auto minmax(0, 1fr); }
+    .pc-carte--fab .pc-statut { grid-column: 2; justify-self: start; }
+    .pc-carte--fab .pc-carte__actions { grid-column: 1 / -1; }
+    .pc-lecture__outils { gap: 10px; }
+    .pc-lecture__navigation, .pc-lecture__modes { justify-content: space-between; width: 100%; }
+    .pc-lecture__modes > button { flex: 1; }
+    .pc-scenario__outils > button { font-size: .8rem; padding: 8px 10px; }
+    .pc-lecture__texte { padding: 16px; }
+}
+
+/* ---- Livraison ---- */
+.pc-block--alerte {
+    padding: 16px;
+    border: 1px solid #ffd4d1;
+    border-radius: var(--pc-radius-sm);
+    background: #fff8f7;
+    align-items: flex-start;
+}
+
+/* Un cadre et une navigation communs aux QUATRE écrans (D55). Le formulaire
+   conserve intégralement son style habituel au-dessus, comme en mode Activité. */
+.pc-atelier {
+    padding: 0 25px;
+    background: var(--pc-surface);
+    border: 1px solid rgba(0, 0, 0, .05);
+    border-radius: 20px;
+    box-shadow: 0 14px 24px -20px rgba(0, 0, 0, .18);
+}
+.pc-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    padding-top: 14px;
+}
+.pc-navigation .pc-atelier__tete {
+    display: block;
+    padding: 0;
+    min-height: 0;
+    border: 0;
+}
+.pc-atelier__titre {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+.pc-navigation .pc-steps { margin: 0; }
+.pc-navigation .pc-scenario__outils { gap: 4px; margin-inline-start: auto; }
+.pc-navigation .pc-scenario__outils > button {
+    padding: 6px 8px;
+    min-height: 36px;
+    font-size: .8rem;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+.pc-navigation .pc-scenario__outils > button:hover { background: var(--pc-ground); }
+/* Le tutoriel : un livre ouvert dessiné pour l'atelier (dom.js#iconeTutoriel), au trait,
+   dans la couleur du texte — ni plus ni moins en avant que « Nouveau parcours » ; le « ? »
+   noir plein qu'il remplace pesait plus lourd que tout le fil. */
+.pc-livre { width: 1.6em; height: 1.6em; flex: none; }
+.pc-livre__page { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; }
+.pc-livre__dos { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.pc-livre__ligne { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; opacity: .5; }
+.pc-livre__signet { fill: currentColor; }
+.pc-navigation .pc-scenario__memoire,
+.pc-navigation .pc-scenario__etat { flex-basis: 100%; margin: 0; padding-inline: 4px; }
+.pc-page { padding: 22px 0 28px; gap: 30px; min-width: 0; }
+.pc-hero { gap: 8px; min-width: 0; }
+.pc-hero p:not(.pc-origine) { font-size: .9rem; }
+.pc-atelier--cadrage .pc-hero { gap: 5px; }
+.pc-atelier--cadrage .pc-hero h2 { font-size: 1.15rem; font-weight: 600; }
+.pc-atelier--cadrage .pc-choice[aria-pressed="false"],
+.pc-atelier--cadrage .pc-trame[aria-pressed="false"],
+.pc-atelier--cadrage .pc-trame:not(.pc-trame--selected):not([aria-pressed="true"]) {
+    border-color: var(--pc-line);
+    box-shadow: none;
+}
+@media (max-width: 559px) {
+    .pc-atelier { padding-inline: 16px; }
+    .pc-navigation { gap: 6px; }
+}
+@media (max-width: 899px) {
+    .pc-steps__item--current .pc-steps__label { display: inline; }
+}
+
+/* Les blocs intérieurs se distinguent par leurs contours et leurs fonds,
+   sans empiler des ombres dans le cadre principal. */
+.pc-summary, .pc-etape, .pc-reglages {
+    border: 1px solid var(--pc-line);
+    border-radius: var(--pc-radius-sm);
+    box-shadow: none;
+}
+.pc-summary__item { padding: 12px; background: #fafafa; min-width: 0; }
+.pc-summary__val { font-size: 1.3rem; }
+.pc-summary__item--vide { opacity: 1; }
+.pc-summary__item--vide .pc-summary__val { color: var(--pc-ink-3); }
+.pc-overview { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.pc-plan__entete { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.pc-plan__entete .pc-title-input { flex: 1 1 360px; min-width: 0; margin-block: 0; }
+.pc-plan__entete .pc-origine { flex: 0 1 auto; max-width: 100%; align-self: center; }
+.pc-plan-complements { display: grid; gap: 8px; }
+.pc-plan-option { padding: 12px 16px; border-radius: var(--pc-radius-sm); background: var(--pc-field); }
+.pc-plan-option > summary { cursor: pointer; font-size: .95rem; }
+.pc-plan-option > summary:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 4px; border-radius: 3px; }
+.pc-plan-option[open] > * + * { margin-top: 12px; }
+.pc-plan-option .pc-reglages { border: 0; border-radius: 0; }
+.pc-plan-option .pc-reglage { padding-inline: 0; }
+.pc-plan-option .pc-reglage + .pc-reglage { border-top: 0; }
+.pc-plan-option .pc-reglage:first-child { padding-top: 0; }
+.pc-plan-option .pc-reglage:last-child { padding-bottom: 0; }
+.pc-veil { box-shadow: none; background: var(--pc-field); border: 1px solid var(--pc-line); border-radius: var(--pc-radius-sm); }
+
+/* Même pied sur chaque écran : les deux actions alignées, puis leur aide.
+   La note reste lisible aussi sur mobile, notamment en cas de validation. */
+.pc-actionbar { padding: 18px 0 22px; }
+.pc-actionbar__inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 20px; }
+.pc-actionbar__gauche { display: contents; }
+.pc-actionbar__gauche > button { grid-column: 1; grid-row: 1; justify-self: start; }
+/* « Retour » et l'action principale (Arrêter, Assembler…) ont le même gabarit :
+   côte à côte, deux hauteurs différentes se lisaient comme un défaut (28 sept.). */
+.pc-actionbar__gauche > button { min-height: 48px; padding: 12px 20px; font-size: 1rem; }
+.pc-actionbar #pc-cta { grid-column: 2; grid-row: 1; max-width: 100%; }
+.pc-actionbar__note { display: block; grid-column: 1 / -1; grid-row: 2; margin: 0; text-align: start; font-size: .82rem; }
+.pc-actionbar__note:empty { display: none; }
+@media (max-width: 599px) {
+    .pc-actionbar__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 10px; }
+    .pc-actionbar__inner button { white-space: normal; padding: 10px 12px; font-size: .88rem; }
+    .pc-actionbar #pc-cta { width: 100%; }
+}
+
+/* La livraison reprend le pied de l'aperçu d'une activité (D64) : groupe gris
+   « Télécharger » et bouton bleu au format en capitales, bouton rose de la
+   Sucrerie, « Relire » à droite là où l'aperçu place « Éditer ». Valeurs
+   relevées sur `.preview-modal__footer`, `__download-group`, `__download-btn`
+   et `__edit-btn` ; toutes les commandes ont la même hauteur. */
+.pc-livrer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+    padding: .9rem 1.25rem;
+    background: #fff;
+    border: 1px solid var(--pc-line);
+    border-radius: 1rem;
+    box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .07);
+}
+.pc-livrer__barre { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+/* Livraison réorganisée (28 sept.) : le cours d'abord — titre et « Relire » en
+   tête, l'action et son résultat à gauche, la marche d'import affichée à droite ;
+   puis le papier ; puis, en retrait, la reprise dans Caramel (.json). */
+.pc-livrer--cours { padding: 1.1rem 1.25rem 1.25rem; gap: 16px; }
+.pc-livrer__tete { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; }
+.pc-livrer__corps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px 32px; }
+@media (min-width: 820px) { .pc-livrer__corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
+.pc-livrer__action { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
+.pc-livrer__action .pc-block__hint { margin: 0; }
+.pc-livrer .pc-livrer__mbz { width: auto; order: 0; }
+.pc-livrer__import { padding: 12px 16px; background: var(--pc-ground); border-radius: var(--pc-radius-sm); font-size: .9rem; color: var(--pc-ink-2); }
+.pc-livrer__soustitre { margin: 0 0 6px; font-weight: 600; color: var(--pc-ink); }
+.pc-livrer--reprise { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; background: var(--pc-field); box-shadow: none; }
+.pc-livrer__reprise-texte { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1 1 320px; }
+.pc-livrer__reprise-texte .pc-block__hint { margin: 0; }
+.pc-livrer__json { flex: none; }
+@media (max-width: 599px) {
+    /* Sur téléphone, l'action principale d'abord ; « Relire » ferme le bloc. */
+    .pc-livrer__tete { display: contents; }
+    .pc-livrer--cours .pc-livrer__titre { order: 0; }
+    .pc-livrer--cours .pc-livrer__corps { order: 1; }
+    .pc-livrer--cours .pc-livrer__relire { order: 2; width: 100%; justify-content: center; }
+    .pc-livrer .pc-livrer__mbz { width: 100%; }
+    .pc-livrer__json { width: 100%; justify-content: center; }
+}
+.pc-livrer__gauche, .pc-livrer__droite { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; min-width: 0; }
+.pc-telecharger {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding-block: 6px;
+    padding-inline: 20px 6px;
+    background: #eff1f5;
+    border: 1px solid rgba(0, 0, 0, .02);
+    border-radius: 12px;
+}
+.pc-telecharger__label { font-size: 15px; font-weight: 600; letter-spacing: -.01em; color: #1d1d1f; }
+.pc-telecharger__btn,
+.pc-livrer .sucrerie-bridge__btn,
+.pc-livrer__relire {
+    min-height: 42px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    line-height: 1.2;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.pc-telecharger__btn {
+    border: 1.5px solid #007AFF;
+    background: #007AFF;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, .25);
+    transition: background .2s, box-shadow .2s, transform .2s;
+}
+.pc-telecharger__btn:hover { background: #006ce6; border-color: #006ce6; box-shadow: 0 4px 12px rgba(0, 122, 255, .35); }
+.pc-telecharger__btn--secondaire { background: #fff; color: #007AFF; box-shadow: 0 2px 8px rgba(0, 122, 255, .1); }
+.pc-telecharger__btn--secondaire:hover { background: #f0f7ff; color: #006ce6; box-shadow: 0 4px 12px rgba(0, 122, 255, .2); }
+.pc-telecharger__btn:focus-visible, .pc-livrer__relire:focus-visible { outline: 2px solid #0056b3; outline-offset: 2px; }
+.pc-telecharger__btn i { font-size: .95em; }
+.pc-livrer .sucrerie-bridge__btn { font-size: .95em; }
+/* Partage d'un parcours vers la Sucrerie coupé (D67, `CONFIG.partageSucrerie`) :
+   `display: inline-flex` ci-dessus l'emporterait sur l'attribut `hidden`. Dans
+   la modale, la classe est posée avant l'affichage et survit à la reconstruction
+   du pied par l'édition. */
+.pc-livrer .sucrerie-bridge__btn[hidden],
+.preview-modal--parcours-sans-sucrerie [data-sucrerie-bridge-btn] { display: none; }
+.pc-livrer__relire {
+    border: 1px solid transparent;
+    background: rgba(0, 122, 255, .1);
+    color: #007AFF;
+    font-size: .95em;
+    font-weight: 500;
+    transition: background .2s;
+}
+.pc-livrer__relire:hover { background: rgba(0, 122, 255, .18); }
+/* La ligne d'état garde sa place même vide : un export ne doit rien déplacer (D62). */
+.pc-livrer__etats { display: flex; flex-direction: column; gap: 6px; margin-block: -4px; }
+.pc-livrer .pc-liv__etat:empty { display: none; }
+.pc-livrer__import { border-top: 1px solid #f0f0f0; padding-top: 10px; font-size: .9rem; color: var(--pc-ink-2); }
+.pc-livrer__import > summary { cursor: pointer; width: fit-content; font-weight: 500; color: var(--pc-ink); }
+.pc-livrer__import > summary:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 3px; border-radius: 3px; }
+.pc-livrer__import[open] > .pc-marche { margin-top: 10px; }
+.pc-livrer__titre { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--pc-ink); }
+.pc-livrer--papier .pc-papier__ligne { padding: 12px 0 0; border-top: 1px solid #f0f0f0; }
+.pc-livrer--papier .pc-papier__ligne + .pc-papier__ligne { padding-top: 12px; }
+.pc-papier__quoi { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pc-papier__nom { font-weight: 600; color: var(--pc-ink); }
+.pc-papier__aide { font-size: .85rem; color: var(--pc-ink-2); }
+.pc-telecharger--formats { padding: 6px; background: transparent; border: 0; }
+@media (max-width: 599px) {
+    .pc-livrer { padding: 14px; }
+    .pc-livrer__barre, .pc-livrer__gauche, .pc-livrer__droite { flex-direction: column; align-items: stretch; width: 100%; min-width: 0; }
+    .pc-telecharger__btn, .pc-livrer .sucrerie-bridge__btn, .pc-livrer__relire { white-space: normal; text-align: center; min-width: 0; }
+    .pc-telecharger { padding-inline-start: 14px; }
+    .pc-telecharger { justify-content: space-between; }
+    .pc-telecharger--formats { justify-content: flex-start; padding: 0; }
+    .pc-telecharger--formats .pc-telecharger__btn { flex: 1; padding-inline: 10px; }
+}
+
+.pc-manques { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+.pc-manques li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.pc-manques__titre { font-weight: 600; }
+.pc-manques__motif { color: var(--pc-ink-2); }
+
+.pc-cta--bloc { align-self: flex-start; }
+
+.pc-liv__etat { margin: 0; font-size: 0.9rem; color: var(--pc-ink-2); line-height: 1.5; }
+.pc-liv__etat--ok { color: #24765f; font-weight: 500; }
+.pc-liv__etat--echec { color: #b3261e; font-weight: 500; }
+.pc-liv__etat--alerte { color: #8a5a00; }
+
+.pc-liv__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Le champ de fichier natif est illisible d'un navigateur à l'autre : on garde
+   le champ (il reste atteignable au clavier via son <label>) et on habille le
+   label comme une action secondaire. */
+.pc-liv__fichier {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+.pc-liv__fichier:focus-visible + .pc-secondaire--label,
+.pc-secondaire--label:focus-within { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+
+.pc-marche {
+    margin: 0;
+    padding-left: 1.3em;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--pc-ink-2);
+}
+
+/* =========================================================================
+   7. Accessibilité et préférences système
+   ========================================================================= */
+
+.pc-sr {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pc-commutateur__reprise,
+    .pc-commutateur__b,
+    .pc-atelier,
+    .pc-choice,
+    .pc-trame,
+    .pc-cta,
+    .pc-choice__tick,
+    .pc-carte,
+    .pc-add,
+    .pc-icon-btn,
+    .pc-avancement__part {
+        transition-duration: 0.01ms !important;
+        animation: none !important;
+    }
+    /* L'anneau garde une rotation LENTE : le supprimer donnerait un écran figé
+       pendant une minute, ce qui inquiète plus que ça n'apaise. */
+    .pc-veil__anneau-arc { animation-duration: 2.4s !important; }
+    /* Le caramel garde son niveau au lieu de pomper, la puce cesse de battre. */
+    .pc-bonbon--remplissage .pc-bonbon__plein { animation: none; clip-path: inset(45% 0 0 0); }
+    .pc-statut .pc-bonbon--remplissage::before { animation-duration: 3.6s; }
+    .pc-bonbon--revele .pc-bonbon__plein { animation: none; }
+    .pc-jalon--encours .pc-jalon__puce { animation: none; }
+}
+
+/* ---- Formulaire simple d'un module de parcours (forum, sondage, étiquette) ---- */
+.pc-form { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
+
+.pc-form__champ { display: flex; flex-direction: column; gap: 6px; }
+
+.pc-form__label { font-size: 0.88rem; font-weight: 500; color: var(--pc-ink-2); }
+/* Rappel de syntaxe des champs structurés (questions, pages de leçon). */
+.pc-form__aide { font-size: 0.8rem; color: var(--pc-ink-2); white-space: pre-line; line-height: 1.45; }
+
+.pc-form__saisie {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--pc-line-strong);
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-field);
+    font-family: inherit;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--pc-ink);
+    resize: vertical;
+}
+.pc-form__saisie:focus {
+    outline: none;
+    border-color: var(--pc-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+
+/* =========================================================================
+   Relecture didactique du plan (§ 5 du PRD)
+
+   Six repères affichés au-dessus des étapes. Le ton est celui d'un collègue
+   qui relit : on signale, on n'interdit pas. D'où l'ambre plutôt que le rouge,
+   et un bloc qui se replie de lui-même quand tout va bien.
+   ========================================================================= */
+
+.pc-relecture {
+    background: var(--pc-amber-soft);
+    border: 1px solid var(--pc-amber-line);
+    border-radius: var(--pc-radius-sm);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Rien à signaler : le bloc s'efface au lieu de féliciter. */
+.pc-relecture--ok {
+    background: var(--pc-surface);
+    border-color: var(--pc-line);
+}
+
+.pc-relecture__tete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 9px;
+    color: var(--pc-amber);
+    font-weight: 500;
+}
+
+.pc-relecture--ok .pc-relecture__tete { color: var(--pc-ink-2); }
+
+.pc-relecture__titre { color: var(--pc-ink); }
+.pc-relecture--ok .pc-relecture__titre { color: var(--pc-ink-2); }
+
+.pc-relecture__compte {
+    font-size: 0.9em;
+    font-weight: 400;
+}
+
+/* Le dépliage part à droite : c'est une commande, pas une information. */
+.pc-relecture__plier {
+    margin-inline-start: auto;
+    background: none;
+    border: none;
+    padding: 4px 6px;
+    font: inherit;
+    font-size: 0.88em;
+    font-weight: 400;
+    color: var(--pc-blue);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s var(--pc-ease);
+}
+
+.pc-relecture__plier:hover { background: rgba(0, 122, 255, 0.08); }
+
+.pc-relecture__liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.pc-relecture__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--pc-ink);
+    line-height: 1.45;
+}
+
+.pc-relecture__item i {
+    flex: none;
+    margin-top: 0.22em;
+    color: var(--pc-amber);
+    font-size: 0.9em;
+}
+
+/* Un constat qui passe : présent, mais qui ne réclame pas l'attention. */
+.pc-relecture__item--ok { color: var(--pc-ink-2); }
+.pc-relecture__item--ok i { color: #34c759; }
+
+.pc-relecture__hint {
+    margin: 0;
+    font-size: 0.85em;
+    color: var(--pc-ink-3);
+}
+
+/* ---- Marquage des étapes et activités concernées ----
+   Un filet à gauche, rien de plus : un constat qui dit « 2 étapes sur 5 »
+   laisserait sinon chercher lesquelles. */
+.pc-etape--attention { box-shadow: inset 3px 0 0 var(--pc-amber-line); }
+.pc-carte--attention { box-shadow: inset 3px 0 0 var(--pc-amber-line); }
+
+@media (prefers-reduced-motion: reduce) {
+    .pc-relecture__plier { transition: none; }
+}
+
+
+/* ---- Le papier : fiche de séquence et détail des activités ----
+   Une ligne par document : ce qu'on emporte à gauche, les trois formats à
+   droite. Aucun n'est mis en avant — cela dépend de ce dont l'enseignant
+   dispose, pas de ce qu'on préfère. */
+
+.pc-papier__ligne {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding: 12px 0;
+    border-top: 1px solid var(--pc-line);
+}
+
+.pc-papier__ligne:first-of-type { border-top: none; }
+
+.pc-papier__quoi {
+    color: var(--pc-ink);
+    line-height: 1.45;
+}
+
+/* Sur petit écran la ligne se plie : le libellé prend toute la largeur, les
+   formats passent dessous et restent atteignables au pouce. */
+@media (max-width: 520px) {
+    .pc-papier__ligne { flex-direction: column; align-items: stretch; }
+    .pc-papier__ligne .pc-liv__actions { width: 100%; }
+}
+
+/* Support de génération : reste dans sa carte, au même endroit aux étapes 2 et 3. */
+.pc-source { grid-column: 2 / -1; min-width: 0; margin: 2px 0 0; padding: 12px; border: 1px solid var(--pc-line); border-radius: var(--pc-radius-sm); background: var(--pc-field); }
+.pc-source legend { padding: 0 6px; font-size: .8rem; font-weight: 600; color: var(--pc-ink-2); }
+.pc-source__corps { min-width: 0; }
+.pc-source__corps--image { display: flex; gap: 12px; align-items: center; }
+.pc-source__apercu { width: 84px; height: 68px; object-fit: contain; border-radius: 6px; background: var(--pc-surface); flex-shrink: 0; }
+.pc-source__controles { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.pc-source .pc-secondaire { padding: 7px 10px; font-size: .8rem; white-space: normal; max-width: 100%; text-align: start; }
+.pc-source__nom { font-size: .78rem; color: var(--pc-ink-2); overflow-wrap: anywhere; }
+.pc-source__hint, .pc-source__message { width: 100%; margin: 6px 0 0; font-size: .78rem; line-height: 1.5; color: var(--pc-ink-2); }
+.pc-source__message:empty { display: none; }
+.pc-source__transcription { margin-top: 8px; font-size: .78rem; color: var(--pc-ink-2); }
+.pc-source__transcription summary { cursor: pointer; }
+.pc-source__transcription textarea { margin-top: 8px; }
+.pc-source--survol { border-color: var(--pc-blue); background: var(--pc-blue-soft); }
+.pc-source:disabled { opacity: .7; }
+.pc-source [hidden] { display: none; }
+@media (max-width: 700px) { .pc-source { grid-column: 1 / -1; } }
+
+/* Fond personnel : une tuile toujours à portée, avec les thèmes à côté. */
+.pc-carte-images { grid-column: 1 / -1; display: grid; grid-template-columns: 154px minmax(0, 1fr); gap: 12px; min-width: 0; }
+.pc-carte-images[hidden], .pc-fond-suite [hidden] { display: none; }
+.pc-carte-images .pc-galerie { grid-column: 2; margin: 0; }
+.pc-fond-tuile { align-self: start; min-height: 111px; min-width: 0; margin-top: 4px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: 1px dashed var(--pc-line-strong); border-radius: var(--pc-radius-sm); background: var(--pc-surface); color: var(--pc-ink-2); font: inherit; font-size: .85rem; cursor: pointer; }
+.pc-fond-tuile > i { font-size: 1.4rem; color: var(--pc-blue); }
+.pc-fond-tuile > img { width: 100%; height: 64px; object-fit: contain; border-radius: 4px; }
+.pc-fond-tuile:hover, .pc-fond-tuile--survol, .pc-fond-tuile[aria-pressed="true"] { border-color: var(--pc-blue); background: var(--pc-blue-soft); color: var(--pc-blue); }
+.pc-fond-tuile[aria-pressed="true"] { border-style: solid; }
+.pc-fond-tuile:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 3px; }
+.pc-fond-tuile:disabled { opacity: .6; cursor: wait; }
+.pc-fond-suite { grid-column: 1 / -1; min-width: 0; }
+.pc-fond-suite > .pc-block__hint { margin: 0; }
+.pc-fond-message { margin: 8px 0 0; font-size: .85rem; color: var(--pc-ink-2); }
+.pc-fond-message:empty { display: none; }
+.pc-fond-apercu { margin: 14px 0 0; }
+.pc-fond-apercu__image { position: relative; width: fit-content; max-width: 100%; margin-inline: auto; overflow: hidden; border-radius: var(--pc-radius-sm); }
+.pc-fond-apercu__image > img { display: block; width: auto; height: auto; max-width: 100%; max-height: 420px; }
+.pc-fond-apercu__image > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pc-fond-apercu__trace { stroke: white; stroke-width: 5; stroke-dasharray: 8 9; filter: drop-shadow(0 1px 2px #0009); }
+.pc-fond-apercu circle { fill: var(--pc-blue); stroke: white; stroke-width: 3; }
+.pc-fond-apercu text { fill: white; font: 600 24px system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
+.pc-fond-apercu figcaption { margin-top: 8px; font-size: .8rem; color: var(--pc-ink-2); }
+.pc-fond-controles { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.pc-fond-nom { flex: 1 1 160px; min-width: 0; overflow-wrap: anywhere; font-size: .85rem; color: var(--pc-ink-2); }
+@media (max-width: 599px) {
+    .pc-carte-images { grid-template-columns: 114px minmax(0, 1fr); gap: 8px; }
+    .pc-fond-tuile { padding: 8px; font-size: .8rem; }
+    .pc-fond-controles > button { white-space: normal; }
+}
+
+/* Relecture dans le même cadre que l’atelier : une surface, une navigation. */
+.pc-editeur { padding: 24px; background: rgba(29, 29, 31, .28); align-items: center; justify-content: center; }
+.pc-editeur__cadre { display: flex; flex-direction: column; width: min(1280px, 100%); height: 100%; min-height: 0; overflow: hidden; border: 1px solid var(--pc-line); border-radius: var(--pc-radius); background: var(--pc-ground); box-shadow: 0 16px 64px #0002; }
+.pc-editeur__barre { padding: 18px 24px; border-bottom: 0; }
+.pc-editeur__intitule { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.pc-lecture__type { font-size: .8rem; color: var(--pc-blue-dark); font-weight: 500; }
+.pc-editeur__titre { font-size: 1.18rem; white-space: normal; overflow-wrap: anywhere; line-height: 1.3; }
+.pc-lecture__outils { padding: 0 24px 16px; gap: 12px; }
+.pc-lecture__navigation button { padding: 8px 12px; }
+.pc-lecture__navigation:dir(rtl) i { transform: scaleX(-1); }
+.pc-lecture__modes { padding: 3px; border: 1px solid var(--pc-line); border-radius: 12px; background: var(--pc-ground); gap: 3px; }
+.pc-lecture__modes > button { padding: 8px 12px; border-color: transparent; background: transparent; border-radius: 9px; box-shadow: none; }
+.pc-lecture__modes [aria-pressed="true"] { background: white; border-color: var(--pc-line); color: var(--pc-blue-dark); box-shadow: 0 1px 3px #0001; }
+.pc-editeur__hote { display: flex; flex-direction: column; padding: 20px 24px; }
+.pc-editeur__hote > .json-editor { padding: 0; gap: 0; background: white; border: 1px solid var(--pc-line); border-radius: 12px; }
+.pc-editeur .json-editor__header { display: none; }
+.pc-editeur .json-editor__body { border: 0; border-radius: 0; grid-template-columns: minmax(190px, 23%) minmax(0, 1fr); }
+.pc-editeur .json-editor__nav { padding: 10px; background: var(--pc-field); }
+.pc-editeur .json-editor__detail { padding: 18px 20px; }
+.pc-editeur .json-editor__actions { flex-shrink: 0; position: static; padding: 12px 16px; gap: 12px; }
+.pc-editeur .json-editor__btn { border-radius: 10px; }
+.pc-editeur .json-editor__changes-indicator { padding: 7px 10px; font-size: .8rem; border-radius: 9px; }
+.pc-editeur__hote > .pc-form { width: 100%; padding: 22px; border: 1px solid var(--pc-line); border-radius: 12px; background: white; }
+.pc-editeur__hote > .pc-lecture__texte { width: 100%; margin-block: 0; }
+.pc-lecture__annonce:not(:empty) { background: var(--pc-surface); }
+.pc-confirmation { position: fixed; inset: 0; z-index: calc(var(--pc-z) + 20); padding: 20px; display: grid; place-items: center; background: #1d1d1f40; }
+.pc-confirmation__boite { width: min(480px, 100%); padding: 24px; border: 1px solid var(--pc-line); border-radius: 20px; background: var(--pc-surface); box-shadow: 0 12px 48px #0002; }
+.pc-confirmation h2 { margin: 0 0 12px; font-size: 1.12rem; line-height: 1.4; }
+.pc-confirmation p { margin: 0; font-size: .95rem; line-height: 1.5; color: var(--pc-ink-2); }
+.pc-confirmation__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+.pc-confirmation__actions button { white-space: normal; }
+.pc-confirmation__abandon { color: #a52620; border-color: #e6bcb8; background: #fff6f5; }
+.pc-confirmation__abandon:hover { background: #fde8e6; }
+/* L'action annexe (exporter avant de remplacer) se tient à l'écart des deux réponses. */
+.pc-confirmation__annexe { margin-right: auto; }
+.pc-confirmation__boite:has(.pc-confirmation__annexe) { width: min(640px, 100%); }
+@media (max-width: 768px) {
+    .pc-editeur { padding: 8px; }
+    .pc-editeur__cadre { border-radius: 16px; }
+    .pc-editeur__barre { padding: 14px 16px; }
+    .pc-lecture__outils { padding: 0 16px 12px; }
+    .pc-editeur__hote { padding: 12px; }
+    .pc-editeur .json-editor__body { grid-template-columns: minmax(0, 1fr); }
+    .pc-editeur .json-editor__nav { padding: 6px; }
+    .pc-editeur .json-editor__detail { padding: 14px; }
+    .pc-editeur .json-editor__actions { padding: 10px; flex-wrap: wrap; }
+    .pc-editeur__hote > .pc-form { padding: 14px; }
+}
+
+/* Les exports annoncent leur travail sans déplacer ni décolorer les commandes. */
+.pc-export-etat { display: grid; font-size: .9rem; line-height: 1.5; }
+.pc-export-etat > * { grid-area: 1 / 1; margin: 0; font: inherit; }
+.pc-export-etat__reserve { visibility: hidden; pointer-events: none; font-weight: 500; }
+.pc-export i { width: 1em; text-align: center; }
+.pc-export[aria-disabled="true"] { cursor: progress; }
+.pc-export { transition: none; transform: none; }
+.pc-export:hover, .pc-export:active { transform: none; }
+
+/* Le pied : « Personnaliser les instructions » à gauche de l'action primaire,
+   qui génère en un clic (D64). Même hauteur pour les deux ; sur téléphone, il passe sous
+   l'action primaire, sur toute la largeur. */
+.pc-actionbar__inner { grid-template-columns: minmax(0, 1fr) auto auto; }
+.pc-actionbar .pc-guide-open {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 48px;
+    padding: 12px 20px;
+    justify-content: center;
+    font-size: 1rem;
+    white-space: normal;
+}
+.pc-actionbar__droite { grid-column: 3; grid-row: 1; display: flex; align-items: stretch; min-width: 0; }
+.pc-actionbar__droite > button,
+.pc-actionbar__droite .pc-llm-selector .action-btn {
+    min-height: 48px;
+    padding: 12px 22px;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1.3;
+    white-space: normal;
+}
+.pc-llm-selector { position: relative; width: auto; }
+.pc-llm-selector .llm-buttons-row {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    overflow: hidden;
+    border-radius: var(--pc-radius-sm);
+    background: var(--pc-blue);
+}
+.pc-llm-selector .main-action-button { min-width: 0; }
+.pc-llm-selector .main-action-button > button {
+    background: transparent;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.pc-llm-selector .more-actions-button { margin-left: 0; }
+.pc-llm-selector .dropdown-toggle {
+    min-width: 48px;
+    padding-inline: 14px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.pc-llm-selector:hover .llm-buttons-row { background: var(--pc-blue-dark); }
+.pc-llm-selector:has(.main-action-button .action-btn:disabled) .llm-buttons-row { background: #c7c7cc; }
+.pc-llm-selector:has(.main-action-button > button:disabled) .llm-buttons-row { background: #c7c7cc; }
+.pc-llm-selector:hover .action-btn.primary-btn { background: transparent; }
+.pc-llm-selector:hover .main-action-button > button { background: transparent; }
+.pc-llm-selector .action-btn.primary-btn { background: transparent; }
+.pc-llm-selector .action-btn:hover,
+.pc-llm-selector .action-btn:active { transform: none; box-shadow: none; }
+.pc-llm-selector--sans-menu .main-action-button > button { border-radius: var(--pc-radius-sm); }
+.pc-llm-selector--sans-menu .more-actions-button { display: none; }
+.pc-guide .pc-llm-selector { width: 100%; }
+.pc-guide .pc-llm-selector .model-selector-dropdown { z-index: 30; }
+.pc-actionbar .pc-llm-selector .model-selector-dropdown,
+.pc-guide .modal-panel-footer .pc-llm-selector .model-selector-dropdown {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+@media (max-width: 599px) {
+    .pc-actionbar__droite > button,
+    .pc-actionbar__droite .pc-llm-selector { width: 100%; }
+    .pc-actionbar__droite .pc-llm-selector .action-btn { padding: 10px 12px; }
+    .pc-llm-selector .model-selector-dropdown {
+        min-width: calc(100vw - 32px);
+        width: calc(100vw - 32px);
+        max-width: calc(100vw - 32px);
+    }
+    /* « Retour » garde son nom accessible mais n'affiche que sa flèche : le
+       bouton principal a ainsi la place de tenir sur deux lignes au plus. */
+    .pc-actionbar__inner { grid-template-columns: auto minmax(0, 1fr); }
+    .pc-actionbar__droite { grid-column: 2; }
+    .pc-actionbar #pc-back { min-width: 46px; justify-content: center; padding-inline: 12px; }
+    .pc-actionbar #pc-back > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .pc-actionbar .pc-guide-open { grid-column: 1 / -1; grid-row: 2; width: 100%; padding: 10px 12px; }
+    .pc-actionbar__inner:has(> .pc-guide-open:not([hidden])) .pc-actionbar__note { grid-row: 3; }
+}
+
+/* =========================================================================
+   La fenêtre « Personnaliser les instructions » — génération externe (D64)
+   ------------------------------------------------------------------------
+   Son contenu porte les classes de la modale d'activité (`modal-header-group`,
+   `modal-panel`, `floating-toolbar`, `toolbar-btn`, `ia-guidance-text`,
+   `action-btn primary-btn`…) : il en prend le rendu tel quel. Seul le cadre
+   est posé ici, avec les valeurs de `#module-sidebar`, puisque la modale
+   d'activité est un élément unique de la page que l'atelier ne réemploie pas.
+   ========================================================================= */
+.pc-guide-voile {
+    position: fixed;
+    inset: 0;
+    background-color: var(--backdrop-light, rgba(0, 0, 0, .4));
+    z-index: var(--z-sidebar-overlay, 2000);
+}
+.pc-guide {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 1400px;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: #F5F5F7;
+    border-radius: 1.25rem;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, .15);
+    color: #1d1d1f;
+    z-index: var(--z-sidebar, 2050);
+}
+.pc-guide.advanced-view { height: 95vh; }
+.pc-guide.advanced-view .modal-main-content {
+    max-height: 1000px;
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 1rem;
+    overflow: visible;
+}
+/* En Guidé, le bouton passe dans le panneau 2 ; en Simple, il reste en haut. */
+.pc-guide.advanced-view .top-controls-container { display: none; }
+.pc-guide .pc-guide__icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    border-radius: 50%;
+    background: var(--pc-blue-soft);
+    color: var(--pc-blue);
+    font-size: 1.1rem;
+}
+.pc-guide__etat { flex: none; margin: 0; color: #b3261e; font-size: .9rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pc-guide__etat:empty { display: none; }
+.pc-guide__etat:focus { outline: none; }
+.pc-guide .modal-panel-footer .generation-button-group .action-btn:disabled { background-color: #c7c7cc; color: #fff; cursor: not-allowed; transform: none; }
+.pc-guide[aria-busy="true"] .action-btn:disabled { cursor: progress; }
+/* Le plein écran clone la barre d'outils : la reprise de scénario n'y a pas de sens. */
+.fullscreen-modal-container .pc-guide__import { display: none; }
+@media (max-width: 768px) {
+    .pc-guide { width: 95vw; padding: 1rem; }
+    .pc-guide.advanced-view { height: 97vh; max-height: 97vh; }
+    .pc-guide:not(.advanced-view) .modal-main-content { display: none; }
+    .pc-guide.advanced-view .modal-main-content { display: flex; }
+}
+/* Sur téléphone, le fil et les outils du mode Guidé tiennent sur une ligne :
+   séparateurs et marges resserrés, le nom de l'écran courant reste lisible. */
+@media (max-width: 480px) {
+    .pc-navigation { gap: 4px; }
+    .pc-navigation .pc-steps { gap: 2px; min-width: 0; }
+    .pc-navigation .pc-steps__sep { width: 6px; }
+    .pc-navigation .pc-steps__cible { padding: 4px 2px; gap: 5px; }
+    .pc-navigation .pc-scenario__outils { flex-wrap: nowrap; gap: 0; flex: none; }
+    .pc-navigation .pc-scenario__outils > button { min-width: 32px; padding: 6px; }
+    /* « Nouveau parcours » garde son nom en infobulle et en nom accessible. */
+    .pc-navigation .pc-scenario__nouveau > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+/* =========================================================================
+   La vue du parcours — le cours tel que l'élève le parcourra (D65)
+   ------------------------------------------------------------------------
+   Dans « Relire le parcours » et dans l'aperçu d'une notification : l'accueil,
+   une carte blanche par étape avec son texte, puis ses activités, chacune avec
+   sa vignette et son type écrit en clair (Forum, Vrai/Faux, Page…).
+   ========================================================================= */
+.pc-lecture__outils [hidden], .pc-vue-apercu [hidden] { display: none !important; }
+.pc-vue {
+    width: 100%;
+    max-width: 960px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: start;
+    color: var(--pc-ink);
+}
+.pc-vue__tete { display: flex; flex-direction: column; gap: 6px; padding: 4px 2px 2px; }
+.pc-vue__titre { margin: 0; font-size: clamp(1.2rem, 2.4vw, 1.45rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.25; }
+.pc-vue__objectif { margin: 0; color: var(--pc-ink-2); line-height: 1.5; }
+.pc-vue__meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.pc-vue__meta li { padding: 3px 10px; border-radius: 999px; background: #eff1f5; color: var(--pc-ink-2); font-size: .8rem; }
+.pc-vue__section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 18px;
+    background: var(--pc-surface);
+    border: 1px solid var(--pc-line);
+    border-radius: 16px;
+}
+.pc-vue__section-titre { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 1.05rem; font-weight: 600; line-height: 1.35; }
+.pc-vue__section-titre > i { width: 26px; text-align: center; color: var(--pc-blue); }
+.pc-vue__numero {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--pc-blue);
+    color: #fff;
+    font-size: .8rem;
+    font-variant-numeric: tabular-nums;
+}
+.pc-vue__objectif-etape { margin: -4px 0 0; padding-inline-start: 36px; color: var(--pc-ink-2); font-size: .88rem; }
+.pc-vue__prose {
+    margin-inline-start: 36px;
+    padding: 2px 0 2px 12px;
+    border-inline-start: 3px solid #cfe3ff;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+.pc-vue__prose > :first-child { margin-top: 0; }
+.pc-vue__prose > :last-child { margin-bottom: 0; }
+.pc-vue__section--accueil .pc-vue__prose { margin-inline-start: 36px; }
+.pc-vue__activites { display: flex; flex-direction: column; gap: 8px; margin: 2px 0 0; padding: 0; list-style: none; }
+.pc-vue__activite {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px 10px 10px;
+    border: 1px solid var(--pc-line);
+    border-radius: 12px;
+    background: #fafafa;
+    color: var(--pc-ink);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+button.pc-vue__activite:hover:not(:disabled) { border-color: var(--pc-blue); background: var(--pc-blue-soft); }
+button.pc-vue__activite:focus-visible { outline: 2px solid var(--pc-blue); outline-offset: 2px; }
+.pc-vue__activite:disabled, .pc-vue__activite--fixe { cursor: default; }
+.pc-vue__activite:disabled { opacity: .7; }
+.pc-vue__activite > i { color: var(--pc-ink-3); font-size: .8rem; }
+.pc-vue__vignette {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--pc-surface);
+    border: 1px solid var(--pc-line);
+}
+.pc-vue__vignette img { width: 28px; height: 28px; object-fit: contain; }
+.pc-vue__vignette--icone { background: var(--pc-blue-soft); border-color: transparent; color: var(--pc-blue); font-size: .95rem; }
+.pc-vue__corps { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pc-vue__nom { font-weight: 600; font-size: .95rem; line-height: 1.35; overflow-wrap: anywhere; }
+.pc-vue__infos { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--pc-ink-2); font-size: .8rem; }
+.pc-vue__type { color: var(--pc-blue-dark); font-weight: 500; }
+.pc-vue__statut { padding: 3px 10px; border-radius: 999px; background: var(--pc-amber-soft); color: var(--pc-amber); font-size: .78rem; font-weight: 600; white-space: nowrap; }
+.pc-vue__prose--liaison { margin: 6px 0 2px 50px; font-size: .92rem; }
+@media (max-width: 600px) {
+    .pc-vue__section { padding: 14px; }
+    .pc-vue__prose, .pc-vue__section--accueil .pc-vue__prose, .pc-vue__prose--liaison { margin-inline-start: 0; }
+    .pc-vue__objectif-etape { padding-inline-start: 0; margin-top: 0; }
+}
+
+/* Dans l'aperçu d'une notification : la vue, puis chaque activité avec une
+   barre qui dit où l'on est dans le parcours. */
+.preview-modal__preview--parcours {
+    display: block !important;
+    padding: 0 !important;
+    overflow: auto;
+    text-align: start;
+    position: relative;
+    min-height: 400px;
+}
+.preview-modal__preview--parcours-edition { min-height: 0; overflow: hidden; }
+.pc-vue-apercu { display: flex; flex-direction: column; min-height: 100%; }
+.pc-vue-apercu__barre {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 10px 16px;
+    background: var(--pc-surface);
+    border-bottom: 1px solid var(--pc-line);
+}
+.pc-vue-apercu__lieu { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.pc-vue-apercu__etape { font-size: .78rem; color: var(--pc-ink-2); }
+.pc-vue-apercu__activite { font-weight: 600; overflow-wrap: anywhere; }
+.pc-vue-apercu__hote { flex: 1; display: flex; flex-direction: column; padding: 16px; }
+.pc-vue-apercu__hote > .pc-vue-apercu__attente { flex: 1; }
+.pc-vue-apercu__hote > .pc-lecture__texte { width: 100%; box-sizing: border-box; }
+.pc-vue-apercu .pc-lecture__annonce:not(:empty) { padding: 8px 16px; background: var(--pc-surface); }
+/* L’activité précédente et la suivante, nommées, au bas de l’activité (comme la
+   navigation d’activités d’Éléa) : les flèches de l’en-tête restent celles des
+   notifications. Le numéro garde sa place d’une activité à l’autre. */
+.pc-vue-apercu__suite {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--pc-line);
+    background: var(--pc-surface);
+}
+.pc-vue-apercu__suite > button { display: inline-flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%; }
+.pc-vue-apercu__precedente { justify-self: start; }
+.pc-vue-apercu__suivante { justify-self: end; }
+.pc-vue-apercu__voisine { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pc-vue-apercu__suite:dir(rtl) i { transform: scaleX(-1); }
+/* En édition, comme pour une activité seule : l’éditeur occupe toute la zone,
+   défile à l’intérieur, et ses boutons sont dans le pied de la modale. */
+.pc-vue-apercu--edition { height: 100%; }
+.pc-vue-apercu--edition .pc-vue-apercu__hote { min-height: 0; overflow: auto; padding: 0; }
+.pc-edition { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: .3rem; padding: .4rem; overflow-y: auto; background: #f5f5f7; border-radius: 8px; }
+.pc-edition > .pc-form { width: 100%; max-width: none; box-sizing: border-box; padding: 18px 20px; border: 1px solid #e5e5ea; border-radius: 10px; background: white; }
+@media (max-width: 600px) {
+    .pc-vue-apercu__barre { flex-wrap: wrap; padding: 8px 12px; }
+    .pc-vue-apercu__suite { padding: 8px 12px; gap: 8px; }
+    .pc-vue-apercu__suite > button { padding: 8px 10px; }
+    .pc-vue-apercu__hote { padding: 10px; }
+}
+
+/* L'icône du parcours dans la liste des notifications et le toast. */
+.notification-parcours-icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--pc-blue-soft);
+    color: var(--pc-blue);
+    font-size: 10px;
+}
+.notification-toast__icon.notification-parcours-icone { font-size: 11px; }
+.notification-parcours-icone i { color: var(--pc-blue) !important; margin: 0 !important; }

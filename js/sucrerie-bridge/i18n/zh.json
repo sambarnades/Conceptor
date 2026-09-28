@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "初级",
     "level_formation_intermediaire": "中级",
-    "level_formation_expert": "高级"
+    "level_formation_expert": "高级",
+    "sucrerie_bridge_welcome_title_course": "将学习路径分享到 Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "完整学习路径及其活动和说明将在 Sucrerie 目录中向所有教师开放。",
+    "sucrerie_bridge_course_close": "返回",
+    "sucrerie_bridge_success_title_approved_course": "学习路径已发布！",
+    "sucrerie_bridge_success_title_pending_course": "学习路径已保存",
+    "sucrerie_bridge_success_message_approved_course": "你的学习路径已在 Sucrerie 目录中上线。",
+    "sucrerie_bridge_success_message_pending_course": "学习路径将在管理员审核后显示在目录中。",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "您的提交需要验证。确认链接已发送至 {email}：请在 2 小时内点击该链接以发布您的学习路径。未经确认，它将在「我的学习路径」中保留为草稿 7 天。",
+    "sucrerie_bridge_success_email_sent_course": "一封包含管理链接的电子邮件已发送至 {email}。请妥善保存：它将允许您随时修改或撤回您的学习路径。"
 }

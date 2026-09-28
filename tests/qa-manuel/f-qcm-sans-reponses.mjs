@@ -47,7 +47,10 @@ const cas = await p.evaluate(async () => {
 for (const [nom, err] of Object.entries(cas)) console.log(`  ${nom.padEnd(24)} → ${err.length ? err.join(' | ') : 'aucune erreur'}`);
 verdict(cas['answers ABSENT'].length > 0, '« answers » absent est signalé', '« answers » ABSENT passe en silence');
 verdict(cas['answers = []'].length > 0, '« answers » vide est signalé', '« answers » VIDE passe en silence');
-verdict(cas['answers = [1 réponse]'].length > 0, '« answers » à 1 élément est signalé', 'régression : 1 réponse n’est plus signalée');
+// Borne NATIVE de H5P.MultiChoice 1.16 : `answers.min = 1` (semantics.json), alignée le 11-09-2026
+// (60d45a81 « Compléter et éprouver les capacités natives de Choix multiple »). Une seule
+// proposition est donc un QCM valide ; le trou couvert ici reste celui de la cardinalité ZÉRO.
+verdict(cas['answers = [1 réponse]'].length === 0, '« answers » à 1 élément accepté (borne native : 1 minimum)', 'faux positif : 1 réponse bloque malgré la borne native de 1');
 verdict(cas['answers = [2 réponses]'].length === 0, '« answers » complet ne déclenche RIEN (pas de faux positif)', 'faux positif sur un QCM valide');
 
 titre('revers : un champ MASQUÉ par showWhen ne doit pas se mettre à bloquer');
@@ -72,24 +75,30 @@ titre('bout en bout : les 116 fixtures restent enregistrables');
 console.log('  (couvert par test-editor-activities.js A2 — « aucune activité ne naît bloquée »)');
 
 // ---------------------------------------------------------------------------
-// LIMITE CONNUE, hors périmètre de ce correctif — signalée, pas assertée.
-// La génération IA (LLM → healer → processeur → .h5p) ne passe PAS par la validation :
-// un QCM sans réponses produit directement par le modèle part encore dans le .h5p.
-// Le correctif ci-dessus protège l'ÉDITEUR, pas le pipeline de génération.
+// Ancienne LIMITE CONNUE, levée par 60d45a81 : la génération IA (LLM → healer → processeur)
+// ne passe toujours pas par la validation de l'éditeur, mais le processeur MultiChoice refuse
+// désormais lui-même une question sans proposition (autonome comme dans un QuizSet).
 // ---------------------------------------------------------------------------
-titre('limite connue — le pipeline de GÉNÉRATION ne valide pas');
+titre('le pipeline de GÉNÉRATION refuse lui aussi un QCM sans réponses');
 const build = await p.evaluate(async () => {
     const brut = await (await fetch('assets/data/examples/quiz_mixte_1.json')).json();
     brut.questions.push({ subContentId: '', library: 'H5P.MultiChoice 1.16', metadata: { title: 'Question 8' },
         params: { overallFeedback: [{ from: 0, to: 50, feedback: '' }, { from: 51, to: 100, feedback: '' }],
                   question: 'Capitale de la France ?', behaviour: { singleAnswer: false } } });
-    const res = await window.__qa.build(window.__qa.heal(brut, 'QuizSet'), 'QuizSet');
-    const c = res && res.content ? res.content : res;
-    const q = (c?.questions || []).slice(-1)[0];
-    return q ? { nbReponses: (q.params?.answers || []).length } : null;
+    try {
+        const res = await window.__qa.build(window.__qa.heal(brut, 'QuizSet'), 'QuizSet');
+        const c = res && res.content ? res.content : res;
+        const q = (c?.questions || []).slice(-1)[0];
+        return q ? { nbReponses: (q.params?.answers || []).length } : null;
+    } catch (e) {
+        // Depuis 60d45a81, le processeur MultiChoice (autonome ET QuizSet) lève une erreur.
+        return { refus: e.message };
+    }
 });
-console.log(`  .h5p bâti sans passer par l’éditeur → dernière question : ${JSON.stringify(build)}`);
-console.log(`  ${build && build.nbReponses === 0 ? 'ℹ️  toujours possible par la génération IA — hors périmètre de ce correctif' : '✅ le pipeline refuse aussi'}`);
+console.log(`  .h5p bâti sans passer par l’éditeur → ${JSON.stringify(build)}`);
+verdict(!!build?.refus && /proposition est requise/.test(build.refus),
+    'le pipeline de génération refuse aussi un QCM sans réponses',
+    'un QCM sans réponses repart dans le .h5p par la génération IA');
 
 await b.close();
 console.log(`\n${rouge === 0 ? '✅ scénario (f) conforme' : `❌ ${rouge} contrôle(s) en échec`}`);

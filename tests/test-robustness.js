@@ -980,6 +980,49 @@ async function runStep11_FullHealPipeline() {
         { got: healedDTW.textField }
     );
 
+    // --- 11d2. DragTheWords : leurres rendus en LISTE par le modèle ---
+    // Cas réel (parcours « Les 30 Glorieuses », 15 sept. 2026) : chaque entrée
+    // mélange le bon mot marqué et son leurre. Le processeur levait
+    // « cleaned.trim is not a function » et la carte était écartée à la livraison.
+    const dtwListe = {
+        textField: 'Une forte *croissance* attire vers les *villes* ; l’*exode rural* suit.',
+        distractors: ['*croissance* stagnation', '*villes* campagnes', '*exode rural* retour à la terre', 'récession', '*villes*', '*campagnes*'],
+    };
+    const healedListe = healActivitySpecificFields(dtwListe, 'DragTheWords');
+    assert(healedListe.distractors === '*stagnation* *campagnes* *retour à la terre* *récession*',
+        `[11d2.DTW] DragTheWords : liste de leurres → chaîne de marqueurs, sans bonne réponse ni doublon`,
+        { got: healedListe.distractors }
+    );
+    assert(healActivitySpecificFields({ textField: '*a*', distractors: '*b* *c*' }, 'DragTheWords').distractors === '*b* *c*',
+        `[11d2.DTW] DragTheWords : une chaîne de leurres reste intacte`
+    );
+    assert(!('distractors' in healActivitySpecificFields({ textField: '*a*', distractors: ['*a*'] }, 'DragTheWords')),
+        `[11d2.DTW] DragTheWords : une liste qui ne contient que des bonnes réponses est retirée`
+    );
+    const quizDtw = healActivitySpecificFields({ questions: [{ library: 'H5P.DragText 1.10', params: { textField: '*mot*', distractors: ['*mot* leurre'] } }] }, 'QuizSet');
+    assert(quizDtw.questions[0].params.distractors === '*leurre*',
+        `[11d2.DTW] QuizSet : leurres en liste d’une question Glisser les mots normalisés`,
+        { got: quizDtw.questions[0].params.distractors }
+    );
+    // La consigne qui recopie le texte dévoilait toutes les réponses (même parcours).
+    const texteDtw = 'Les Trente Glorieuses désignent une période de forte *croissance* économique.\n\n1. L’*exode rural* suit.';
+    const consigneRecopiee = healActivitySpecificFields({ taskDescription: `Glisse les mots dans le texte.\n\n${texteDtw.replace('\n\n', '\n')}`, textField: texteDtw }, 'DragTheWords');
+    assert(consigneRecopiee.taskDescription === 'Glisse les mots dans le texte.',
+        `[11d2.DTW] DragTheWords : la consigne ne recopie plus le texte et ses réponses`,
+        { got: consigneRecopiee.taskDescription }
+    );
+    assert(healActivitySpecificFields({ taskDescription: 'Place *croissance* et les autres mots.', textField: texteDtw }, 'DragTheWords').taskDescription === 'Place *croissance* et les autres mots.',
+        `[11d2.DTW] DragTheWords : une consigne qui cite un mot reste intacte`
+    );
+    let traitementDtw = null;
+    try { traitementDtw = await processH5PContent('DragTheWords', { textField: '*croissance*', distractors: ['*croissance* stagnation'] }); }
+    catch (e) { traitementDtw = { erreur: e.message }; }
+    const contenuDtw = traitementDtw?.content || traitementDtw;
+    assert(contenuDtw && !contenuDtw.erreur && contenuDtw.distractors === '*stagnation*',
+        `[11d2.DTW] Processeur : des leurres en liste ne font plus échouer la mise en forme`,
+        { got: contenuDtw }
+    );
+
     // --- 11e. healActivitySpecificFields : FillInTheBlanks ---
     const fibData = {
         questions: ['**gras** devrait etre *trou* et \\(formule\\) dans le texte'],
@@ -1453,8 +1496,7 @@ async function runStep12_LatexProtectionAndStructuralHealing() {
             { type: 'matching', content: { name: null, questiontext: null, feedback: null, subquestions: null } },
             { type: 'truefalse', content: { name: null, questiontext: null, feedback: null, answer: null } },
             { type: 'shortanswer', content: { name: null, questiontext: null, feedback: null, answers: null } },
-            { type: 'numerical', content: { name: null, questiontext: null, feedback: null, answer: null } },
-            { type: 'cloze', content: { name: null, questiontext: null, feedback: null } }
+            { type: 'numerical', content: { name: null, questiontext: null, feedback: null, answer: null } }
         ]
     };
     let xmlNullCrash = false;
@@ -1468,6 +1510,19 @@ async function runStep12_LatexProtectionAndStructuralHealing() {
         xmlNullCrash = true;
         assert(false, '[12l.XmlNull] XML : CRASH avec valeurs null : ' + e.message);
     }
+    // Une question à trous SANS trou ne peut jamais être réussie : l'export la
+    // REFUSE en la nommant (comme le GIFT), il ne plante pas et ne la livre pas.
+    let refusCloze = null;
+    try {
+        generateMoodleXml({ questions: [{ type: 'cloze', content: { name: null, questiontext: null, feedback: null } }] });
+    } catch (e) {
+        refusCloze = e.message;
+    }
+    assert(
+        refusCloze === 'test_cloze_injouable:1',
+        '[12l.XmlNullCloze] XML : question à trous vide refusée par son nom, sans TypeError',
+        { got: refusCloze }
+    );
 
     // --- 12m. generateMoodleGift avec valeurs null ---
     const giftNullData = {

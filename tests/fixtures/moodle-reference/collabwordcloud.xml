@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="89" moduleid="22720" modulename="collabwordcloud" contextid="55570">
+  <collabwordcloud id="89">
+    <name>Nuage de mots</name>
+    <intro>&lt;p&gt;Nuage&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <instructions>&lt;p&gt;Les instructions&lt;/p&gt;</instructions>
+    <wordsallowed>5</wordsallowed>
+    <wordsrequired>1</wordsrequired>
+    <timestart>0</timestart>
+    <timeend>0</timeend>
+    <completionwords>1</completionwords>
+    <timecreated>0</timecreated>
+    <timemodified>1788524533</timemodified>
+  </collabwordcloud>
+</activity>

@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "manuel",
+    "score": "1/1",
+    "texte": "Madrid est la capitale de l’Espagne. RELU Sucrerie.\nVrai\n.Bonne réponse\nFaux\nMadrid est la capitale espagnole. RELU\nVous avez obtenu 1 sur 1 points\n1/1\nRights of use"
+  },
+  {
+    "kind": "automatique",
+    "score": "1/1",
+    "texte": "Madrid est la capitale de l’Italie. RELU Sucrerie.\nVrai\nFaux\n.Bonne réponse\nRome est la capitale italienne. RELU\nVous avez obtenu 1 sur 1 points\n1/1\nRights of use"
+  }
+]

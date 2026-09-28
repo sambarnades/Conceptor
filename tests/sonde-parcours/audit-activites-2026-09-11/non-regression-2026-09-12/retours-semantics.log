@@ -1,0 +1,8 @@
+83 fixtures H5P traversées — 21 portent des retours par réponse
+A. structure     : 0 anomalie(s)
+B. conservation  : 0 perte(s) sur 96 retours vérifiés
+C. récupération  : 0 anomalie(s) sur 2 cas synthétiques
+
+============================================================
+✅ Aucun retour pédagogique perdu, aucune clé hors semantics.
+============================================================

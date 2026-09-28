@@ -16,6 +16,7 @@ import { initSmartPreloading } from './core/lib-loader.js';
 import { initNotificationCenter, initNotificationDropdown, initToastNotifications, initPreviewModal } from './ui/notifications.js';
 import { initDebugLogger } from './ui/debug-logger.js';
 import { initPromptMic } from './ui/prompt-mic.js';
+import { initParcours } from './parcours/index.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Panneau de logs debug (ne fait rien si ?debug absent)
@@ -48,6 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Branche la saisie vocale (micro Caramelia) sur les champs Qui/Quoi/Niveau
     initPromptMic();
+
+    // Atelier de parcours : pose UNIQUEMENT le commutateur « Une activité |
+    // Un parcours » sous le formulaire commun (D63 du PRD parcours).
+    // « Un parcours » met l'atelier À LA PLACE des tuiles, sous le formulaire
+    // qui reste en place (D39) ; rien n'est construit avant le premier clic.
+    initParcours();
 
     // Initialisation des effets de l'animation caramel
     initCaramelAnimationEffects();

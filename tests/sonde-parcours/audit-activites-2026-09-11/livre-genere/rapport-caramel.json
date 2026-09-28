@@ -1,0 +1,47 @@
+[
+  {
+    "activity": "InteractiveBook",
+    "case": "livre-genere-relu",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/livre-genere-relu.docx",
+    "verifiedTokens": [
+      "Observe les pays",
+      "France",
+      "Paris",
+      "Italie",
+      "Rome",
+      "Espagne",
+      "Madrid"
+    ]
+  },
+  {
+    "activity": "InteractiveBook",
+    "case": "livre-genere-relu",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/livre-genere-relu.odt",
+    "verifiedTokens": [
+      "Observe les pays",
+      "France",
+      "Paris",
+      "Italie",
+      "Rome",
+      "Espagne",
+      "Madrid"
+    ]
+  },
+  {
+    "activity": "InteractiveBook",
+    "case": "livre-genere-relu",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/livre-genere-relu.pdf",
+    "verifiedTokens": [
+      "Observe les pays",
+      "France",
+      "Paris",
+      "Italie",
+      "Rome",
+      "Espagne",
+      "Madrid"
+    ]
+  }
+]

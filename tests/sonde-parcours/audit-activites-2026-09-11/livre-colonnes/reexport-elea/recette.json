@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-11",
+  "cours": 794,
+  "activite": 13840,
+  "h5pId": 394,
+  "sha256Source": "3a858afcc971c56aa209e1a0690eb693db7251c22e93d251df3f47bf3ee959ea",
+  "sha256Reexport": "137a451dac8df41a4601746f59ed262c400d83f31b76c716d878c7b276e5396a",
+  "titreNatif": "Livre à colonnes — relu dans Éléa",
+  "largeurs": [
+    45,
+    55
+  ],
+  "sousContenusConserves": 11,
+  "mediasConserves": {
+    "content/images/image-64f40959.jpg": "7013e362d3dce76dca95e3294b42b19c5d41444d059507fb9f257a7d80c7d4ce",
+    "content/audios/audio-4695cd14.wav": "698e2117c9d5815b5784cbdba5cd52d2251f3173a674ccdbbf6d7036ac65ad0e"
+  },
+  "observations": {
+    "cartes": "Trois tours, progression rapide sans retourner aux tours 2 et 3 ; une carte maîtrisée sur une.",
+    "resume": "Mauvaise réponse puis correction : progression 1/1, score 0/1 après erreur.",
+    "navigation": "Bilan puis retour ; progression des cartes conservée.",
+    "enregistrement": "Titre retouché au clavier, enregistrement natif puis réexport.",
+    "audio": "Commande native actionnée ; octets audio conservés, aucune écoute acoustique revendiquée."
+  }
+}

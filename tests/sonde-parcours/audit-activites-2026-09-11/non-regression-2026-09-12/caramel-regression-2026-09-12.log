@@ -1,0 +1,35 @@
+▶ http://127.0.0.1:8099/tests/test-all.html
+
+   14218PASS  |  16FAIL  |  14234assertions  |  42/42suites  |  141.9stemps total
+
+   ❌ Internationalisationtest-i18n.js | FAIL | 452 | 1 | 452/453 | 0.16s | Ouvrir
+   ❌ Editeur CoursePresentationtest-editor-cp.js | FAIL | 1364 | 1 | 1364/1365 | 0.02s | Ouvrir
+   ❌ Editeur InteractiveBooktest-editor-ib.js | ERREUR | - | - | Cannot read properties of undefined (reading 'headers') | - | Ouvrir
+   ❌ Editeur — cycle édition/enregistrementtest-editor-lifecycle.js | ERREUR | - | - | Cannot read properties of undefined (reading '_blockType') | - | Ouvrir
+   ❌ Pipeline complettest-edit-export-flow.js | FAIL | 3330 | 6 | 3330/3336 | 0.48s | Ouvrir
+   ❌ Reglages avances (behaviour)test-behaviour-settings.js | FAIL | 190 | 7 | 190/197 | 0.01s | Ouvrir
+   ❌ Hygiene des modules EStest-module-hygiene.js | FAIL | 26 | 1 | 26/27 | 0.28s | Ouvrir
+     ↳ FAIL Integrite fichiers [1d.Size] el.json : 450 Ko (< 450 Ko)
+     ↳ FAIL Modifications et sauvegarde Changement type exercice: taskDescription present
+     ↳ ERR Cannot read properties of undefined (reading 'headers')
+     ↳ ERR Cannot read properties of undefined (reading '_blockType')
+     ↳ FAIL Generation [3c.Structure] summary_1.json : structure H5P valide - behaviour manquant
+     ↳ FAIL Generation [3c.Structure] summary_2.json : structure H5P valide - behaviour manquant
+     ↳ FAIL Math pre-edit [4f2.WordList] FindTheWords - LaTeX OK dans taskDescription, interdit dans wordList : wordList sans LaTeX/Unicode math - "π" dans wordList
+     ↳ FAIL Math pre-edit [4h.ExampleWordList] find_the_words_3.json : wordList sans LaTeX/Unicode math - symboles Unicode math dans wordList
+     ↳ FAIL Re-export [7c.Structure] summary_1.json : structure H5P toujours valide - behaviour manquant
+     ↳ FAIL Re-export [7c.Structure] summary_2.json : structure H5P toujours valide - behaviour manquant
+     ↳ FAIL Schema editeur Timeline : champ height present
+     ↳ FAIL Defaults sans behaviour MultipleChoice : defaut behaviour.passPercentage = 50 (recu: 100)
+     ↳ FAIL Defaults sans behaviour FillInTheBlanks : defaut behaviour.caseSensitive = false (recu: true)
+     ↳ FAIL Defaults sans behaviour FillInTheBlanks : defaut behaviour.autoCheck = true (recu: false)
+     ↳ FAIL Defaults sans behaviour Essay : defaut behaviour.minimumLength = 10 (recu: undefined)
+     ↳ FAIL Defaults sans behaviour Essay : defaut behaviour.maximumLength = 10000 (recu: undefined)
+     ↳ FAIL Defaults sans behaviour Essay : defaut behaviour.overrideForgiveMistakes = "on" (recu: undefined)
+     ↳ FAIL Aucun `catch` totalement muet [6.2] Aucun `catch` muet dans les 211 modules du produit
+
+========================================
+suite navigateur : 14218 PASS / 16 FAIL (référence : 0 échec pré-existant)
+========================================
+❌ 2 suite(s) n'ont pas pu s'exécuter : Editeur InteractiveBooktest-editor-ib.js, Editeur — cycle édition/enregistrementtest-editor-lifecycle.js
+   (une suite en erreur ne produit AUCUNE assertion — elle ne compte donc pas dans les FAIL)

@@ -1,0 +1,59 @@
+  ✓ les cinq notions sont lisibles dès l’ouverture
+  ✓ les options dépliées ne tracent plus de séparateurs
+  ✓ une courte consigne ne laisse pas 200 px de vide
+  ✓ la consigne grandit sans barre de défilement
+  ✓ raccourcir le texte réduit aussi le champ
+  ✓ la carte reste désactivée et le dépôt masqué au départ
+  ✓ la tuile + accompagne les trente thèmes
+  ✓ le fond choisi montre les repères des deux activités
+  ✓ png est décodé puis converti en JPEG
+  ✓ png conserve les proportions et les pixels
+  ✓ gif est décodé puis converti en JPEG
+  ✓ gif conserve les proportions et les pixels
+  ✓ bmp est décodé puis converti en JPEG
+  ✓ bmp conserve les proportions et les pixels
+  ✓ tiff est décodé puis converti en JPEG
+  ✓ tiff conserve les proportions et les pixels
+  ✓ heic est décodé puis converti en JPEG
+  ✓ heic conserve les proportions et les pixels
+  ✓ avif est décodé puis converti en JPEG
+  ✓ avif conserve les proportions et les pixels
+  ✓ image/jpeg est décodé puis converti en JPEG
+  ✓ image/jpeg conserve les proportions et les pixels
+  ✓ image/webp est décodé puis converti en JPEG
+  ✓ image/webp conserve les proportions et les pixels
+  ✓ svg est décodé puis converti en JPEG
+  ✓ svg conserve les proportions et les pixels
+  ✓ le scénario conserve exactement le fond choisi
+  ✓ le fichier cible le contexte renuméroté de la carte
+  ✓ le fond utilise la zone mod_mapmodules/maps/0
+  ✓ les identifiants de fichiers sont uniques
+  ✓ inforef référence le fond embarqué
+  ✓ le pool du MBZ contient les octets exacts et leur SHA-1
+  ✓ le paquet H5P voisin est conservé
+  ✓ le repli sous quota conserve un manque explicite
+  ✓ une URL extérieure dans le scénario est refusée
+  ✓ un fond perdu demande de joindre à nouveau le fichier
+  ✓ une fausse image est refusée avant téléchargement
+  ✓ la carte reste facultative et propre à Éléa
+  ✓ le nom respecte la grammaire exacte du greffon
+  ✓ choisir un thème conserve la photo pour y revenir
+  ✓ un remplacement invalide conserve le fond précédent
+  ✓ le remplacement par un HEIC fonctionne depuis le vrai champ fichier
+  ✓ une image trop lourde conserve le fond déjà choisi
+  ✓ choisir un thème pendant la conversion garde le dernier choix
+  ✓ fr/1440 : aucun débordement avec fond personnel
+  ✓ fr/1440 : aucune clé brute dans les nouveaux contrôles
+  ✓ fr/1440 : les textes dépliés sont entiers
+  ✓ fr/390 : aucun débordement avec fond personnel
+  ✓ fr/390 : aucune clé brute dans les nouveaux contrôles
+  ✓ fr/390 : les textes dépliés sont entiers
+  ✓ ar/390 : aucun débordement avec fond personnel
+  ✓ ar/390 : aucune clé brute dans les nouveaux contrôles
+  ✓ ar/390 : les textes dépliés sont entiers
+  ✓ br/390 : aucun débordement avec fond personnel
+  ✓ br/390 : aucune clé brute dans les nouveaux contrôles
+  ✓ br/390 : les textes dépliés sont entiers
+  ✓ retirer la photo rend la tuile + et le thème précédent
+  ✓ aucune erreur JavaScript
+Fonds personnels : 58 PASS / 0 FAIL

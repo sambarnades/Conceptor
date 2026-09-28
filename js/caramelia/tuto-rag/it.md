@@ -87,6 +87,8 @@ visualizzazione: **Tutto**, **Quiz & Test**, **Manipolazione del testo**,
 **Memorizzazione & Scoperta**, oltre alle piattaforme **H5P**,
 **Éléa**, **Moodle**.
 
+Sotto il modulo, **Un'attività** mostra queste schede; **Un percorso** apre il laboratorio che riunisce più attività in un corso completo (vedi «Creare e riprendere un corso completo»).
+
 ### Attività H5P
 
 Attività in formato H5P. Quelle contrassegnate con una stella (★) integrano
@@ -260,7 +262,7 @@ Non viene raccolto né conservato alcun dato personale. Non viene utilizzato alc
 
 #### Modelli di Intelligenza Artificiale
 
-L'applicazione Caramel si basa, esclusivamente durante la generazione con un clic, su modelli di IA gestiti da ILaaS, una federazione di infrastrutture di IA condivise. Le richieste vengono instradate tramite un workflow n8n ospitato dall'Incubateur, quindi trasmesse a ILaaS per l'esecuzione su server affidabili ospitati in data center certificati dell'Istruzione Superiore e della Ricerca francese (ESR). Caramel non esegue i modelli e non elabora né archivia dati per proprio conto; i dati vengono utilizzati esclusivamente per eseguire la richiesta e non vengono inviati a IA di consumo. I modelli attualmente disponibili includono Mistral-Small-3.2 (24 miliardi di parametri), Qwen 3.6 (35 miliardi di parametri) e GPT-OSS (120 miliardi di parametri). Le eventuali modalità di hosting, registrazione e conservazione effettuate da ILaaS sono regolate dalla loro politica di riservatezza e dalle loro condizioni di servizio, alle quali è opportuno fare riferimento.
+L'applicazione Caramel si basa, esclusivamente durante la generazione con un clic, su modelli di IA gestiti da ILaaS, una federazione di infrastrutture di IA condivise. Le richieste vengono instradate tramite un workflow n8n ospitato dall'Incubateur, quindi trasmesse a ILaaS per l'esecuzione su server affidabili ospitati in data center certificati dell'Istruzione Superiore e della Ricerca francese (ESR). Caramel non esegue i modelli e non elabora né archivia dati per proprio conto; i dati vengono utilizzati esclusivamente per eseguire la richiesta e non vengono inviati a IA di consumo. I modelli attualmente disponibili includono Gemma 4 (31 miliardi di parametri), Qwen 3.8 (27 miliardi di parametri) e Mistral Small 4 (119 miliardi di parametri). Le eventuali modalità di hosting, registrazione e conservazione effettuate da ILaaS sono regolate dalla loro politica di riservatezza e dalle loro condizioni di servizio, alle quali è opportuno fare riferimento.
 
 #### Trattamento delle richieste degli utenti tramite n8n e l'Incubateur del Ministero dell'Istruzione nazionale
 
@@ -292,3 +294,59 @@ L'applicazione è progettata per essere compatibile con l'uso su computer, inclu
   tipo più adatto ma non genera MAI il JSON di un'attività.
 - Per qualsiasi domanda di integrazione, Caramelia fornisce i passaggi
   precisi indicati sopra.
+
+<!-- parcours-complet -->
+## Creare e riprendere un corso completo
+
+In Caramel, **Un percorso** crea un corso per Éléa, Magistère o Moodle: più attività organizzate in sezioni in un unico file **.mbz**. Il punto di partenza resta il modulo abituale: argomento, destinatari e documenti allegati.
+
+Nel menu di Caramelia, **Crea un percorso** apre direttamente il laboratorio senza chiamare l’IA. Se esiste una bozza, **Riprendi il mio percorso** la riapre. I campi e le fonti presenti vengono conservati. Rileggi le impostazioni e il piano nel laboratorio prima di avviare la generazione.
+
+Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza e modello. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.
+
+In **Piano**, modifica titolo, obiettivo generale, concetti chiave, fasi e attività. Sposta le attività con le frecce o trascinando la miniatura. **Consegna e fase** permette di regolare le istruzioni di generazione. I suggerimenti pedagogici aiutano a rileggere senza imporre un modello. Il massimo è di **12 attività**.
+
+Nella scheda di un **Video interattivo**, incollate il link del video. La trascrizione viene recuperata durante la generazione; potete anche incollarla manualmente. Per **Immagine interattiva**, **Trova la zona** o **Trova le zone**, allegate un’immagine alla scheda: sarà analizzata prima della generazione. Potete aggiungere questi supporti anche durante la fase di generazione. Un’attività senza supporto attende mentre le altre proseguono. Lo scenario conserva le immagini e i link delle attività; i documenti del modulo iniziale restano separati. Per un **Link web**, incollate l’indirizzo della risorsa nella scheda: l’IA scrive la consegna di lettura senza aprire la pagina.
+
+Quando il contenuto è pronto, **Modificare il contenuto** apre l’editor abituale e **Anteprima** il lettore. **Rivedere il corso** permette di rivedere le attività in ordine con **Precedente** e **Successiva**. Salva le modifiche per includerle nel piano e nelle esportazioni. Cambiare una consegna nel piano non riscrive i contenuti esistenti.
+
+Approva il piano per avviare la generazione. Puoi fermarla, riprendere le attività mancanti o rigenerarne una. Il lucchetto **Non generare questa attività** riserva il contenuto all’inserimento manuale: l’IA non lo compila. Una rigenerazione fallita conserva il contenuto precedente. Le attività assenti sono indicate prima dell’esportazione.
+
+**Esportare lo scenario (.json)** salva il piano e i contenuti pronti in un file **.json**. Il pulsante **Personalizza il piano**, accanto a **Comporre il piano**, apre la stessa finestra di un’attività: copia il prompt nell’IA che preferisci, poi incollane la risposta. **Riprendere uno scenario** si trova in questa finestra; il file **.json** si scarica alla consegna, accanto al **.mbz**. La bozza resta solo in questa scheda: esporta lo scenario prima di chiuderla. Lo scenario non include argomento, destinatari o allegati; reinseriscili prima di generare nuovi contenuti.
+
+In **Consegna**, scarica il **.mbz** e usa l’importazione o il ripristino del corso della piattaforma. Questo file di corso non va caricato in un’attività H5P. Il percorso compare anche nell’area delle notifiche: **Visualizza** apre la **Panoramica del percorso**, con l’accoglienza, ogni tappa e le sue attività, da rivedere e modificare prima di scaricarlo di nuovo. Conserva anche il **.json** per tornare in Caramel. La scheda della sequenza e i dettagli delle attività si esportano in **DOCX, ODT o PDF**.
+
+Il piano propone anche i moduli del vostro Éléa, Magistère o Moodle, raccolti nel menu di ogni attività sotto **Moduli della piattaforma**: forum, sondaggio, questionario, indagine, lezione, workshop di valutazione tra pari, bacheca, wiki, documento collaborativo, glossario e database da costruire, aula virtuale, scelta del gruppo, condivisione di file e link web. L’IA ne scrive ciò che la piattaforma conserva all’importazione; gli spazi collettivi arrivano vuoti, con la loro consegna. Quando un modulo richiede un’impostazione sulla piattaforma (fasi del workshop, orario dell’aula virtuale, gruppi), Caramel la scrive in una nota **Da fare prima di aprire il corso**, nascosta agli allievi, in cima al corso importato. Il **pacchetto di contenuti IMS** — pagine da leggere con il loro indice, scritte interamente da Caramel — si sceglie nel mosaico; il piano non lo propone.
+
+La mappa di avanzamento è specifica di Éléa. La mappa e l’accesso progressivo sono facoltativi e richiedono ancora verifiche nell’uso reale sulla piattaforma. Il modello di differenziazione non crea ramificazioni automatiche in base al voto. La collaborazione avviene sulla piattaforma. La pubblicazione di un percorso completo su Sucrerie non è ancora disponibile.
+
+Per approfondire: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) aiuta a riflettere sulle attività di apprendimento. Le sette famiglie di Caramel, tra cui **Discutere** e **Collaborare**, sono indicazioni semplificate basate sugli strumenti, non i sei tipi ABC né una valutazione della sua didattica.
+Su Éléa, apri **Impostazioni del corso**, attiva la mappa di avanzamento e usa il riquadro **+ Aggiungi la mia immagine** per scegliere il tuo sfondo. Puoi cambiare o rimuovere l’immagine e tornare ai temi proposti. Lo sfondo viene salvato nello scenario **.json** e incluso nel corso **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG o TIFF · Max. 12 MB. Conversione automatica, senza ritaglio.
+
+<!-- parcours-trames -->
+### Scegliere un modello
+
+Dopo **Un percorso**, il modello dà lo svolgimento che l’IA adatta all’argomento. L’elenco mostrato dipende dalla modalità e dall’ampiezza scelte; ogni attività resta modificabile nel piano.
+
+- **Ripassare prima della verifica** — Si individua ciò che è acquisito, si rimette sotto gli occhi l'essenziale, ci si esercita, ci si mette alla prova. *(Una lezione · Da due a tre lezioni)*
+- **Preparare e sostenere una verifica** — Un allenamento nel formato della prova, la verifica valutata, la correzione. Tre attività, niente di più. *(Una lezione)*
+- **Recuperare dopo la verifica** — Si riparte dagli errori constatati: si nominano, si rispiega il punto preciso, si rifà, si ricontrolla. *(Una lezione · Da due a tre lezioni · A distanza · Entrambe)*
+- **Rituale breve** — Dieci minuti, sempre la stessa forma. È la ripetizione che fissa, non la varietà. *(Una lezione)*
+- **Scoprire un concetto** — Una situazione che interroga, documenti da esplorare, poi la sintesi, e solo dopo l'applicazione. *(Da due a tre lezioni · Un'unità completa)*
+- **Classe capovolta** — Il video e la sua verifica a casa, il compito che non si può fare da soli in classe, il bilancio dopo. *(Una lezione · Da due a tre lezioni · Entrambe)*
+- **Studiare un'opera** — Entrare nel testo o nell'immagine, individuare, collocare, interpretare, e poi produrre la propria lettura. *(Da due a tre lezioni · Un'unità completa)*
+- **Condurre un'indagine** — Una domanda, un'ipotesi, dei dati, una conclusione: il metodo scientifico, nell'ordine. *(Da due a tre lezioni · Un'unità completa · In classe · Entrambe)*
+- **Analizzare una fonte** — Da dove viene l'informazione, chi la produce, che cosa omette. Attrezzare lo sguardo prima di giudicare. *(Una lezione · Da due a tre lezioni)*
+- **Dibattito argomentato** — Un voto per dire da dove si parte, fonti per informarsi, un forum per discutere, un testo per concludere. *(Da due a tre lezioni · Un'unità completa)*
+- **Differenziazione a tre velocità** — Un test iniziale, poi attività per consolidare, proseguire o approfondire. Le istruzioni guidano le scelte, senza ramificazioni automatiche in base al voto. *(Da due a tre lezioni · Un'unità completa · A distanza · Entrambe)*
+- **Sequenza di lingua straniera** — Prima il lessico, poi la comprensione, la produzione per ultima. *(Da due a tre lezioni)*
+- **Preparare un intervento orale** — Che cosa si dirà, in quale ordine, e come ci si allena a dirlo. *(Una lezione · Da due a tre lezioni · In classe · Entrambe)*
+- **Imparare a imparare** — Ciò che aiuta davvero a ricordare, provato sull’argomento del corso: mettersi alla prova, distanziare, spiegare. Poi ognuno pianifica i propri ripassi. *(Una lezione · Da due a tre lezioni)*
+- **Formarsi in autonomia** — Nessuno dietro allo schermo: il percorso deve bastare a sé stesso, dall'indice alla verifica finale. *(Da due a tre lezioni · Un'unità completa · A distanza)*
+- **Formazione mista in tre tempi** — La preparazione a distanza, l'incontro in presenza, poi la messa in pratica e il ritorno di esperienza. Il formato dei percorsi di formazione. *(Un'unità completa · Entrambe)*
+- **Lavoro per progetti** — Una commessa con i suoi criteri, documentazione, lavoro di squadra, una produzione rivista tra pari e poi migliorata. *(Un'unità completa · In classe · Entrambe)*
+- **Lavoro di gruppo** — Formare le squadre, raccogliere le idee, scrivere insieme, rileggersi tra pari con una griglia. *(Da due a tre lezioni · Un'unità completa)*
+- **Gioco di fuga** — Una missione, indizi, enigmi di difficoltà crescente, un codice finale e il debriefing. *(Una lezione · Da due a tre lezioni · In classe · Entrambe)*
+- **Struttura libera** — Nessuno svolgimento imposto: componi tu le tappe e Caramel riempie ciò che ci metti. *(Una lezione · Da due a tre lezioni · Un'unità completa)*
+<!-- /parcours-trames -->
+<!-- /parcours-complet -->

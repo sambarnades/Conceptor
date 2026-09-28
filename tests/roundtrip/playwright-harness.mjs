@@ -87,11 +87,11 @@ const INIT_SCRIPT = `
 `;
 
 // ===========================================================================
-// 1. Serveur statique (python3 -m http.server) sur la racine du dépôt
+// 1. Serveur statique (tests/serveur-statique.py) sur la racine du dépôt
 // ===========================================================================
 function startServer() {
   return new Promise((resolveSrv, rejectSrv) => {
-    const srv = spawn('python3', ['-m', 'http.server', String(PORT)], {
+    const srv = spawn('python3', ['tests/serveur-statique.py', String(PORT)], {
       cwd: REPO_ROOT,
       stdio: ['ignore', 'pipe', 'pipe']
     });

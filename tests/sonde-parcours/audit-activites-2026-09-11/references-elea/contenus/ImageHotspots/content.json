@@ -1,0 +1,115 @@
+{
+  "backgroundImageAltText": "",
+  "globalIconType": "numbers",
+  "globalIcon": "plus",
+  "globalColor": "#1768c4",
+  "hotspots": [
+    {
+      "position": {
+        "x": 31.5,
+        "y": 22,
+        "legacyPositioning": false
+      },
+      "alwaysFullscreen": false,
+      "hotspotIconType": "default",
+      "hotspotIcon": "plus",
+      "hotspotColor": "#1768c4",
+      "content": [
+        {
+          "params": {
+            "text": "&lt;p&gt;Les &lt;strong&gt;pétales&lt;/strong&gt; colorés attirent les insectes pollinisateurs.&lt;/p&gt;"
+          },
+          "library": "H5P.Text 1.1",
+          "metadata": {
+            "contentType": "Text",
+            "license": "U",
+            "title": "Sans titre Text"
+          },
+          "subContentId": "d78c033d-b08a-42ad-9404-213b8a4377bc"
+        }
+      ],
+      "header": "Le pétale"
+    },
+    {
+      "position": {
+        "x": 52,
+        "y": 48.5,
+        "legacyPositioning": false
+      },
+      "alwaysFullscreen": false,
+      "hotspotIconType": "default",
+      "hotspotIcon": "plus",
+      "hotspotColor": "#1768c4",
+      "content": [
+        {
+          "params": {
+            "text": "&lt;p&gt;L'&lt;strong&gt;étamine&lt;/strong&gt; est l'organe mâle de la fleur : elle produit le pollen.&lt;/p&gt;"
+          },
+          "library": "H5P.Text 1.1",
+          "metadata": {
+            "contentType": "Text",
+            "license": "U",
+            "title": "Sans titre Text"
+          },
+          "subContentId": "61eccb7e-5a39-4c41-85cc-986f62ce640f"
+        }
+      ],
+      "header": "L&#039;étamine"
+    },
+    {
+      "position": {
+        "x": 50,
+        "y": 63,
+        "legacyPositioning": false
+      },
+      "alwaysFullscreen": false,
+      "hotspotIconType": "default",
+      "hotspotIcon": "plus",
+      "hotspotColor": "#1768c4",
+      "content": [
+        {
+          "params": {
+            "text": "&lt;p&gt;Le &lt;strong&gt;pistil&lt;/strong&gt; est l'organe femelle, situé au centre de la fleur.&lt;/p&gt;"
+          },
+          "library": "H5P.Text 1.1",
+          "metadata": {
+            "contentType": "Text",
+            "license": "U",
+            "title": "Sans titre Text"
+          },
+          "subContentId": "c11a68f2-c2bd-4188-85b5-f63717a1dedc"
+        }
+      ],
+      "header": "Le pistil"
+    },
+    {
+      "position": {
+        "x": 47,
+        "y": 86,
+        "legacyPositioning": false
+      },
+      "alwaysFullscreen": false,
+      "hotspotIconType": "default",
+      "hotspotIcon": "plus",
+      "hotspotColor": "#1768c4",
+      "content": [
+        {
+          "params": {
+            "text": "&lt;p&gt;La &lt;strong&gt;tige&lt;/strong&gt; soutient la fleur et conduit la sève.&lt;/p&gt;"
+          },
+          "library": "H5P.Text 1.1",
+          "metadata": {
+            "contentType": "Text",
+            "license": "U",
+            "title": "Sans titre Text"
+          },
+          "subContentId": "a2009110-c3c9-4c61-a6b3-73cd3d3d2651"
+        }
+      ],
+      "header": "La tige"
+    }
+  ],
+  "untitledHotspotLabel": "Point sans titre",
+  "closeButtonLabel": "Fermer",
+  "containsAudioVideoLabel": "Contient de l&#039;audio ou de la vidéo"
+}

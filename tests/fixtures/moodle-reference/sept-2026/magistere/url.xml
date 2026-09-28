@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="1490" moduleid="23614" modulename="url" contextid="57772">
+  <url id="1490">
+    <name>Article : le cycle de l’eau</name>
+    <intro>&lt;p&gt;Consulte cet article et relève les quatre étapes du cycle.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <externalurl>https://fr.wikipedia.org/wiki/Cycle_de_l%27eau</externalurl>
+    <display>3</display>
+    <displayoptions>a:0:{}</displayoptions>
+    <parameters>a:0:{}</parameters>
+    <timemodified>1790541617</timemodified>
+  </url>
+</activity>

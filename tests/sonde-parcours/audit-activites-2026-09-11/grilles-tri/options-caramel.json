@@ -1,0 +1,192 @@
+[
+  {
+    "key": "SortParagraphs",
+    "id": "tri-options",
+    "required": [
+      "Observer"
+    ],
+    "options": {
+      "scoringMode": "positions",
+      "applyPenalties": false,
+      "duplicatesInterchangeable": true,
+      "enableRetry": true,
+      "enableSolutionsButton": true,
+      "addButtonsForMovement": true
+    }
+  },
+  {
+    "key": "FindTheWords",
+    "id": "grille-options",
+    "required": [
+      "PARIS",
+      "ROME",
+      "MADRID"
+    ],
+    "options": {
+      "preferOverlap": true,
+      "showVocabulary": false,
+      "enableShowSolution": true,
+      "enableRetry": true,
+      "orientations": {
+        "horizontal": true,
+        "horizontalBack": false,
+        "vertical": false,
+        "verticalUp": false,
+        "diagonal": false,
+        "diagonalBack": false,
+        "diagonalUp": false,
+        "diagonalUpBack": false
+      },
+      "fillPool": "Z"
+    },
+    "grid": {
+      "wordGrid": [
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "P",
+          "A",
+          "R",
+          "I",
+          "S",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "M",
+          "A",
+          "D",
+          "R",
+          "I",
+          "D",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ],
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "R",
+          "O",
+          "M",
+          "E"
+        ],
+        [
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z",
+          "Z"
+        ]
+      ],
+      "wordLocations": [
+        {
+          "x": 0,
+          "y": 5,
+          "orientation": "horizontal",
+          "word": "MADRID",
+          "overlap": 0
+        },
+        {
+          "x": 0,
+          "y": 3,
+          "orientation": "horizontal",
+          "word": "PARIS",
+          "overlap": 0
+        },
+        {
+          "x": 6,
+          "y": 8,
+          "orientation": "horizontal",
+          "word": "ROME",
+          "overlap": 0
+        }
+      ],
+      "height": 10,
+      "width": 10
+    }
+  }
+]

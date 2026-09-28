@@ -1,0 +1,78 @@
+{
+  "numero": 6,
+  "module": "MarkTheWords",
+  "recu": true,
+  "fichier_telechargement": "06-MarkTheWords.h5p",
+  "sha256_source": "238e31845882c22e86c8826579f05bf13e2195b414012415a6be0d4940f69f96",
+  "sha256_retour": "e9a5ebec3dc3fd9ac6151fde64800ca8372e99f1c0f3bd0f396c9f60bc20fcc9",
+  "source_comparee": "a-importer/06-MarkTheWords.h5p",
+  "titre": "RECETTE 06 — Marquer les mots",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "taskDescription"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5P.Components",
+      "version": "1.0.97"
+    },
+    {
+      "nom": "H5PEditor.RangeList",
+      "version": "1.0.13"
+    },
+    {
+      "nom": "H5PEditor.ShowWhen",
+      "version": "1.0.9"
+    },
+    {
+      "nom": "H5PEditor.TableList",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "H5P.FontIcons",
+      "version": "1.0.11"
+    },
+    {
+      "nom": "H5P.Image",
+      "version": "1.1.33"
+    },
+    {
+      "nom": "H5P.JoubelUI",
+      "version": "1.3.45"
+    },
+    {
+      "nom": "H5P.MarkTheWords",
+      "version": "1.11.24"
+    },
+    {
+      "nom": "H5P.Question",
+      "version": "1.5.53"
+    },
+    {
+      "nom": "H5P.Transition",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "jQuery.ui",
+      "version": "1.10.22"
+    }
+  ],
+  "medias_sources": [
+    {
+      "chemin": "content/images/recette-zones.png",
+      "identique_dans_retour": true
+    }
+  ],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 1,
+    "normalisation_html": 2,
+    "ajout_natif": 5,
+    "retrait_natif": 1,
+    "taille_liste": 0
+  }
+}

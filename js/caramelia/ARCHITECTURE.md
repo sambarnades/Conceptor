@@ -81,7 +81,7 @@ imports descendants (jamais circulaires).
 
 | Fichier | Rôle | Dépend de |
 |---------|------|-----------|
-| [`index.js`](index.js) | Bootstrap : crée le widget, attache les events, démarre le polling de langue | tout le reste |
+| [`index.js`](index.js) | Bootstrap : crée le widget, attache les events, écoute les changements de langue | tout le reste |
 | [`config.js`](config.js) | Constantes : version, webhook, catégories, `moduleKeys`, `fuzzyMap`, timing | — |
 | [`state.js`](state.js) | État partagé : `isOpen`, `history`, `currentFlow`, `genState`, `elements` | — |
 | [`i18n.js`](i18n.js) | Chargement des locales, helper `t()`, `tActivity()` (mappe vers Caramel) | `config`, core/translation |
@@ -93,7 +93,7 @@ imports descendants (jamais circulaires).
 | [`actions.js`](actions.js) | Pont DOM Caramel : `fillFormField`, `findActivityTile`, `launchGenerations` | `config`, `dom`, `i18n` |
 | [`flow.js`](flow.js) | **Cerveau** : orchestre la conversation, `autoRoute`, `proceedAfterCollect` | tout sauf `index` |
 | [`attachment.js`](attachment.js) | Drag & drop + bouton trombone → délègue à `window.CaramelOCR` | `state`, `dom`, `i18n` |
-| [`locales/*.json`](locales/) | 11 fichiers de traduction (fr, en, es, de, it, nl, pt, ar, zh, jp, el) | — |
+| [`locales/*.json`](locales/) | 12 fichiers de traduction (fr, en, es, de, it, nl, pt, ar, zh, jp, el, br) | — |
 
 ---
 
@@ -498,14 +498,14 @@ loadLocale(lang) ─→ fetch js/caramelia/locales/{lang}.json
                   ├─ fallback fr si HTTP error
                   └─ idempotent (ne refait rien si déjà chargé)
 
-watchLanguageChanges() ─→ setInterval 2s, recharge si lang a changé
+watchLanguageChanges() ─→ caramel:language-changed, recharge immédiatement
                           + applyLanguageChange()
 
 applyLanguageChange() ─→ refreshWidgetLabels()   (châssis : aria, title, placeholder)
      [index.js]         + resetConversation()    SI la conversation est vierge
                           (history ≤ 1 && !currentFlow) → réaffiche l'accueil
                           dans la nouvelle langue. Appelé AUSSI par toggle(),
-                          pour l'ouverture dans les 2 s qui suivent le clic.
+                          pour vérifier la langue à l’ouverture.
 
 t(key, vars)      ─→ "Bonjour {name}" + {name:'Léa'} → "Bonjour Léa"
                      warn console si clé manquante
@@ -704,3 +704,28 @@ Ordre indicatif d'impact / effort :
 **Dernière mise à jour de ce document** : à mettre à jour à chaque ajout de
 flow, de champ extrait, ou de point d'extension. Ce fichier est le contrat
 de lecture pour qui reprend Caramelia.
+
+## Accès au parcours et consolidation du 10 septembre 2026
+
+Le menu et les réponses d’aide proposent l’atelier de parcours quand le module
+est présent. `flow.startParcoursFlow()` passe par les sélecteurs centralisés de
+`actions.ouvrirParcours()` : clic sur le commutateur existant, aucune importation
+du moteur du parcours, aucun appel IA. Le plan existant reste intact. L’événement
+`caramelia:close` laisse le bootstrap fermer le chat avant de rendre le focus au
+commutateur au premier cadrage (sans défilement) ou au titre d’un plan repris.
+La validation du plan et la fabrication restent dans l’atelier.
+
+`state.pendingQuery` empêche deux messages libres simultanés ; le champ conserve
+la saisie suivante. `state.revision` et AbortSignal empêchent une réponse tardive
+de repeindre une conversation recommencée ou remplacée par un choix du menu.
+L’indicateur d’attente appartient à sa requête. `fetchWithRetry` relaie désormais
+l’annulation du demandeur, sans la considérer comme une panne à réessayer.
+`generationRunning` protège le lancement en série ; le bilan compte les
+notifications créées. Les choix des réponses précédentes sont retirés.
+Le dernier appel à `loadLocale` gagne, même si un téléchargement antérieur est lent.
+
+Tests : `node tests/run_parcours_caramelia.mjs` et
+`node tests/run_browser_suite.mjs --suite=caramelia,caramelia-ui`.
+Le premier bloque les services distants et simule les réponses du chatbot.
+Pas de changement du schéma d’intention ni de n8n. La création d’un parcours
+entièrement guidée en conversation reste une évolution distincte de ce raccourci.

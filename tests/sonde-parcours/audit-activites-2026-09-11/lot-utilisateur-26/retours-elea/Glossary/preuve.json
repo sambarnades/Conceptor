@@ -1,0 +1,37 @@
+{
+  "numero": 16,
+  "module": "Glossary",
+  "recu": true,
+  "fichier_telechargement": "16-Glossary.h5p",
+  "sha256_source": "2cbb55a75b503ba08b8806df625547da3ef933b2c5d478a3caa34206e5ac1150",
+  "sha256_retour": "d9f34294ba3e8b60e5dbf89421a27eaee72db7b45a1e9b88a9849b4f1211d381",
+  "source_comparee": "a-importer/16-Glossary.h5p",
+  "titre": "RECETTE 16 — Glossaire",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "panels[0].title"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5P.Accordion",
+      "version": "1.0.33"
+    },
+    {
+      "nom": "H5P.AdvancedText",
+      "version": "1.1.14"
+    }
+  ],
+  "medias_sources": [],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 1,
+    "normalisation_html": 5,
+    "ajout_natif": 0,
+    "retrait_natif": 0,
+    "taille_liste": 0
+  }
+}

@@ -26,6 +26,7 @@
  * @exports {Object} default.process - Transformation principale (async, reçoit helpers)
  */
 import { translations } from '../../core/translation.js';
+import { processVideoFile, registerMedia } from '../image-manager.js';
 import { libellesSummary } from './Summary.js';
 import { formatTextToHtml, generateUUID, debugLog } from '../../core/utils.js';
 import { healSlidesLatex } from './CoursePresentation.js';
@@ -383,7 +384,7 @@ function buildSummary(summary) {
                 ...libellesSummary()
             }
         },
-        displayAt: 3
+        displayAt: summary.displayAt!=null && summary.displayAt!=='' && Number.isFinite(Number(summary.displayAt)) ? Math.max(0,Number(summary.displayAt)) : 3
     };
 }
 
@@ -395,6 +396,15 @@ export default {
      * @returns {Promise<{content:Object, dependencies:Array}>}
      */
     async process(jsonObj, helpers) {
+        if(jsonObj.interactiveVideo){
+            const content=JSON.parse(JSON.stringify(jsonObj));
+            const dependencies=[];const seen=new Set();
+            const walk=value=>{if(!value||typeof value!=='object')return;
+                if(typeof value.library==='string'){const m=/^(H5P\.[A-Za-z0-9]+) (\d+)\.(\d+)$/.exec(value.library);if(m&&!seen.has(value.library)){seen.add(value.library);dependencies.push({machineName:m[1],majorVersion:+m[2],minorVersion:+m[3]});}}
+                Object.values(value).forEach(walk);};walk(content);
+            return {content,dependencies};
+        }
+
         debugLog('InteractiveVideo', 'Début du traitement', {
             interactions: jsonObj.interactions?.length,
             hasVideo: !!jsonObj.videoSource
@@ -402,7 +412,44 @@ export default {
 
         // Healing LaTeX nu local (réutilisé de CoursePresentation).
         const rawInteractions = healSlidesLatex(Array.isArray(jsonObj.interactions) ? jsonObj.interactions : []);
-        const videoSource = jsonObj.videoSource || {};
+        let videoSource = jsonObj.videoSource || {};
+        if (videoSource.embed === true && videoSource.url) {
+            // Le téléchargement progressif PeerTube corrige duration=Infinity dans
+            // Firefox, mais ne supporte pas toujours Range dans Chromium. Le média
+            // doit donc être embarqué : navigation locale en aperçu et sur Éléa.
+            const response = await fetch(videoSource.url, { signal: AbortSignal.timeout(60000) });
+            if (!response.ok) throw new Error(`Vidéo : téléchargement impossible (${response.status}).`);
+            const limit = 80 * 1024 * 1024; // Même plafond que processVideoFile.
+            if (Number(response.headers.get('content-length')) > limit) {
+                await response.body?.cancel();
+                throw new Error('SIZE_EXCEEDED');
+            }
+            const reader = response.body.getReader();
+            const chunks = [];
+            let size = 0;
+            try {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    size += value.byteLength;
+                    if (size > limit) throw new Error('SIZE_EXCEEDED');
+                    chunks.push(value);
+                }
+            } catch (error) {
+                await reader.cancel().catch(() => {});
+                throw error;
+            } finally {
+                reader.releaseLock();
+            }
+            const blob = new Blob(chunks, { type: 'video/mp4' });
+            // Un HTTP 200 peut être une page HTML PeerTube. Vérifier la signature
+            // MP4 avant de déclarer le fichier utilisable et de l'exporter.
+            const signature = new Uint8Array(await blob.slice(4, 8).arrayBuffer());
+            if (String.fromCharCode(...signature) !== 'ftyp') throw new Error('Vidéo : fichier MP4 attendu.');
+            const media = await processVideoFile(blob);
+            registerMedia(`interactive-video:${videoSource.url}`, media);
+            videoSource = { ...videoSource, url: media.h5pPath, mime: media.mime };
+        }
         const allLibs = new Set();
         // Durée de la vidéo (injectée par l'UI depuis la détection) → borne haute des timestamps.
         const maxDuration = Number(jsonObj.duration) > 0 ? Number(jsonObj.duration) : null;
@@ -491,14 +538,15 @@ export default {
                         : [],
                     startScreenOptions: {
                         title: jsonObj.title || '',
-                        hideStartTitle: false
+                        hideStartTitle: false,
+                        ...(jsonObj.startScreenOptions || {})
                     },
                     textTracks
                 },
                 assets: {
                     interactions,
-                    bookmarks: [],
-                    endscreens: []
+                    bookmarks: Array.isArray(jsonObj.bookmarks) ? structuredClone(jsonObj.bookmarks) : [],
+                    endscreens: Array.isArray(jsonObj.endscreens) ? structuredClone(jsonObj.endscreens) : []
                 },
                 ...(summary ? { summary } : {})
             },
@@ -510,7 +558,8 @@ export default {
                 showBookmarksmenuOnLoad: false,
                 showRewind10: false,
                 preventSkippingMode: 'none',
-                deactivateSound: false
+                deactivateSound: false,
+                ...(jsonObj.override || {})
             },
             // Libellés d'interface en français (sinon défauts anglais de la lib).
             l10n: buildIvL10n()

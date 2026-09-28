@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "مبتدئ",
     "level_formation_intermediaire": "متوسط",
-    "level_formation_expert": "خبير"
+    "level_formation_expert": "خبير",
+    "sucrerie_bridge_welcome_title_course": "مشاركة المسار في Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "سيكون المسار الكامل بأنشطته وتعليماته متاحاً لجميع المعلمين في كتالوج Sucrerie.",
+    "sucrerie_bridge_course_close": "رجوع",
+    "sucrerie_bridge_success_title_approved_course": "تم نشر المسار!",
+    "sucrerie_bridge_success_title_pending_course": "تم حفظ المسار",
+    "sucrerie_bridge_success_message_approved_course": "المسار متاح في كتالوج Sucrerie.",
+    "sucrerie_bridge_success_message_pending_course": "سيظهر المسار في الكتالوج بعد مراجعته من المشرف.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "يجب التحقق من إرسالك. تم إرسال رابط تأكيد للتو إلى {email}: انقر عليه خلال ساعتين لنشر مسارك. بدون تأكيد، يبقى مسودة في «أنشطتي» لمدة 7 أيام.",
+    "sucrerie_bridge_success_email_sent_course": "تم إرسال بريد إلكتروني يحتوي على رابط الإدارة إلى {email}. احتفظ به بعناية: سيمكنك من تعديل أو سحب مسارك في أي وقت."
 }

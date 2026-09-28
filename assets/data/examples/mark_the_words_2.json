@@ -2,11 +2,38 @@
   "taskDescription": "Identifie les **termes clés** liés aux *fonctions racines carrées* dans le texte ci-dessous.",
   "textField": "La *fonction* racine carrée, notée *√x*, est une *fonction* *croissante* définie pour *x* ≥ 0. Elle possède une *image* toujours positive et une *parité* impaire. Son *graphe* est une demi-parabole située dans le premier quadrant.",
   "overallFeedback": [
-    {"from": 0, "to": 10, "feedback": "Des efforts supplémentaires sont nécessaires pour bien assimiler ces notions fondamentales."},
-    {"from": 11, "to": 30, "feedback": "Tu progresses, mais il faut approfondir la compréhension des propriétés des fonctions racines carrées."},
-    {"from": 31, "to": 50, "feedback": "C'est un bon début, mais certains concepts comme la *parité* ou le *graphe* méritent d'être revus."},
-    {"from": 51, "to": 70, "feedback": "Bon travail ! Tu as saisi l'essentiel des caractéristiques de la fonction racine carrée."},
-    {"from": 71, "to": 90, "feedback": "Très bon score ! Tu maîtrises bien les propriétés et le comportement de cette fonction."},
-    {"from": 91, "to": 100, "feedback": "Excellent ! Tu as une parfaite compréhension des fonctions racines carrées et de leurs applications."}
-  ]
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Des efforts supplémentaires sont nécessaires pour bien assimiler ces notions fondamentales."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu progresses, mais il faut approfondir la compréhension des propriétés des fonctions racines carrées."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C'est un bon début, mais certains concepts comme la *parité* ou le *graphe* méritent d'être revus."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu as saisi l'essentiel des caractéristiques de la fonction racine carrée."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu maîtrises bien les propriétés et le comportement de cette fonction."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu as une parfaite compréhension des fonctions racines carrées et de leurs applications."
+    }
+  ],
+  "behaviour": {
+    "enableCheckButton": true
+  }
 }

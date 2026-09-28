@@ -7,16 +7,16 @@
   "sanitizerFallbackCount": 0,
   "caveats": [
     "Sanitizer = IDENTITÉ injectée (DOMPurify réel impossible sans DOM/jsdom en Node). HTML préservé verbatim ; idempotent. Écart vs navigateur : pas de suppression des balises/attrs hors-allowlist (négligeable sur fixtures propres). T4 ≈ navigateur, à confirmer en phase Playwright.",
-    "T2 : 26 activités non-idempotentes au niveau fonction (dont 0 de type DUPLICATION/croissance). LATENT : le flux Markdown-First re-traite toujours le Markdown original, jamais le contenu processé → pas d'impact dans le parcours actuel. Deviendrait actif si un code re-feedait du contenu processé.",
+    "T2 : 3 activités non-idempotentes au niveau fonction (dont 0 de type DUPLICATION/croissance). LATENT : le flux Markdown-First re-traite toujours le Markdown original, jamais le contenu processé → pas d'impact dans le parcours actuel. Deviendrait actif si un code re-feedait du contenu processé.",
     "T5 .mbz : fflate.gzip async (Web Worker) indisponible en Node → redirigé vers gzipSync (même DEFLATE, mtime fixé → output byte-identique au navigateur). Page/Livre différés (génération HTML via page-themes = vrai DOM)."
   ],
   "summary": {
     "T2": {
-      "ok": 57,
-      "fail": 26,
+      "ok": 80,
+      "fail": 3,
       "err": 0,
       "categories": {
-        "SHAPE-LOSS": 26
+        "SHAPE-LOSS": 3
       },
       "duplicationGrowth": 0
     },
@@ -84,375 +84,42 @@
     {
       "file": "course_presentation_1.json",
       "moduleKey": "CoursePresentation",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 6,
-      "diff": [
-        {
-          "path": "$.presentation.slides",
-          "kind": "array-length",
-          "a": 5,
-          "b": 0
-        },
-        {
-          "path": "$.presentation.slides[0]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":5,\"y\":15,\"width\":90,\"height\":70,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5…(+306)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[1]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+614)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[2]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2001)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[3]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2084)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[4]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1571)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -7180,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "course_presentation_2.json",
       "moduleKey": "CoursePresentation",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 8,
-      "diff": [
-        {
-          "path": "$.presentation.slides",
-          "kind": "array-length",
-          "a": 7,
-          "b": 0
-        },
-        {
-          "path": "$.presentation.slides[0]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":5,\"y\":15,\"width\":90,\"height\":70,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5…(+315)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[1]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+638)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[2]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1689)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[3]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1980)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[4]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1732)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[5]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1493)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[6]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1600)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -10293,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "course_presentation_3.json",
       "moduleKey": "CoursePresentation",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 8,
-      "diff": [
-        {
-          "path": "$.presentation.slides",
-          "kind": "array-length",
-          "a": 7,
-          "b": 0
-        },
-        {
-          "path": "$.presentation.slides[0]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":5,\"y\":15,\"width\":90,\"height\":70,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5…(+323)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[1]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+746)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[2]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2499)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[3]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2427)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[4]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2247)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[5]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2250)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[6]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2076)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -13414,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "course_presentation_4.json",
       "moduleKey": "CoursePresentation",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 14,
-      "diff": [
-        {
-          "path": "$.presentation.slides",
-          "kind": "array-length",
-          "a": 12,
-          "b": 0
-        },
-        {
-          "path": "$.presentation.slides[0]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":5,\"y\":15,\"width\":90,\"height\":70,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5…(+313)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[1]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+860)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[2]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2570)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[3]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2528)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[4]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1829)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[5]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1709)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[6]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2068)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[7]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2149)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[8]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2116)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[9]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+4898)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[10]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2955)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[11]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2122)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.globalBackgroundSelector.fillGlobalBackground",
-          "kind": "value",
-          "a": "#f0f4f8",
-          "b": "#ffffff"
-        }
-      ],
-      "lengthDelta": -27568,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "course_presentation_5.json",
       "moduleKey": "CoursePresentation",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 17,
-      "diff": [
-        {
-          "path": "$.presentation.slides",
-          "kind": "array-length",
-          "a": 16,
-          "b": 0
-        },
-        {
-          "path": "$.presentation.slides[0]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":5,\"y\":15,\"width\":90,\"height\":70,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5…(+289)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[1]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+740)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[2]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+3583)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[3]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+699)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[4]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2129)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[5]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1788)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[6]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1631)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[7]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+662)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[8]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2251)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[9]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1886)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[10]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2092)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[11]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+726)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[12]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+4961)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[13]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2781)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[14]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2198)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.presentation.slides[15]",
-          "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1939)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -32290,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "crosswords_1.json",
@@ -745,53 +412,26 @@
     {
       "file": "fill_in_the_blanks_1.json",
       "moduleKey": "FillInTheBlanks",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 1,
-      "diff": [
-        {
-          "path": "$.text",
-          "kind": "value",
-          "a": "<p>Bonjour ! Prêt pour un petit défi de géométrie ?</p><p>Dans cette activité, nous allons revoir les <em>propriétés car…(+213)",
-          "b": ""
-        }
-      ],
-      "lengthDelta": -333,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "fill_in_the_blanks_2.json",
       "moduleKey": "FillInTheBlanks",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 1,
-      "diff": [
-        {
-          "path": "$.text",
-          "kind": "value",
-          "a": "Complète les lacunes du texte ci-dessous afin de consolider ta compréhension des <em>racines carrées et de leur rôle dan…(+21)",
-          "b": ""
-        }
-      ],
-      "lengthDelta": -141,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "fill_in_the_blanks_3.json",
       "moduleKey": "FillInTheBlanks",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 1,
-      "diff": [
-        {
-          "path": "$.text",
-          "kind": "value",
-          "a": "Complétez les propriétés des fonctions de référence. Les formules utilisent la notation mathématique standard.",
-          "b": ""
-        }
-      ],
-      "lengthDelta": -110,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "find_multiple_hotspots_1.json",
@@ -868,2019 +508,122 @@
     {
       "file": "interactive_book_1.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 25,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Un voyage interactif à travers les huit planètes de notre système so…(+12)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Introduction",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Le <strong>système solaire</strong> s'est formé il y a environ <em>4,6 milliards d'années</em>. Il comprend le Soleil et…(+15)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1140)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Combien de planètes compte le …(+1737)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Les planètes telluriques",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Les planètes <strong>telluriques</strong> (Mercure, Vénus, Terre, Mars) sont rocheuses et proches du Soleil.",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1094)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Mars est surnommée la planète rou…(+1047)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Synthèse",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.library",
-          "kind": "value",
-          "a": "H5P.Summary 1.10",
-          "b": "H5P.AdvancedText 1.1"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.metadata.title",
-          "kind": "value",
-          "a": "Exercice",
-          "b": "Texte"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.metadata.contentType",
-          "kind": "value",
-          "a": "Exercise",
-          "b": "Text"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.intro",
-          "kind": "missing-in-b",
-          "a": "Choisissez les affirmations correctes."
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.summaries",
-          "kind": "missing-in-b",
-          "a": "[{\"summary\":[\"La Terre possède une lune\",\"La Terre possède deux lunes\",\"La Terre ne possède aucune lune\"],\"subContentId\"…(+170)"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.behaviour",
-          "kind": "missing-in-b",
-          "a": "{\"enableRetry\":true,\"enableSolutionsButton\":true,\"passPercentage\":50}"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.overallFeedback",
-          "kind": "missing-in-b",
-          "a": "[{\"from\":0,\"to\":25,\"feedback\":\"Revoyez les points clés du livre.\"},{\"from\":26,\"to\":50,\"feedback\":\"C'est un bon début.\"},…(+102)"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.solvedLabel",
-          "kind": "missing-in-b",
-          "a": "Progression :"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.scoreLabel",
-          "kind": "missing-in-b",
-          "a": "Mauvaises réponses :"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.resultLabel",
-          "kind": "missing-in-b",
-          "a": "Votre résultat"
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.labelCorrect",
-          "kind": "missing-in-b",
-          "a": "Correct."
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.labelIncorrect",
-          "kind": "missing-in-b",
-          "a": "Incorrect ! Veuillez réessayer."
-        }
-      ],
-      "lengthDelta": -6928,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_10.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 23,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Découvrez comment parler de vos voyages avec le present perfect ! Un…(+102)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Découvrir le present perfect",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p><strong>Le present perfect</strong> est un temps très utile en anglais pour parler d'expériences passées <strong>sans…(+453)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Quand utilise-t-on le present …(+2176)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Vocabulaire : les moyens de transport",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Quand on parle de voyage, on utilise souvent des mots pour décrire <strong>comment</strong> on se déplace. Voici les …(+1239)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+1588)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Construire des phrases avec le present perfect",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour raconter vos voyages, combinez le present perfect avec le vocabulaire des transports. Voici des exemples :</p><p…(+522)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1396)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Exprimer la durée avec for et since",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour parler de la durée d'un voyage ou d'un séjour, on utilise :</p><p>- <strong>for</strong> + durée (<em>for two we…(+445)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2008)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[4].metadata.title",
-          "kind": "value",
-          "a": "Synthèse : raconter un voyage",
-          "b": "Chapitre 5"
-        },
-        {
-          "path": "$.chapters[4].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[4].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Maintenant, vous savez raconter un voyage en utilisant :</p><p>1. Le <strong>present perfect</strong> pour parler de …(+369)",
-          "b": "Chapitre 5"
-        },
-        {
-          "path": "$.chapters[4].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1599)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.behaviour.baseColor",
-          "kind": "value",
-          "a": "#2a5c8a",
-          "b": "#1768c4"
-        }
-      ],
-      "lengthDelta": -13339,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_11.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 20,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Découvrez comment la France est gouvernée : Président, Parlement, Go…(+28)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "1. Les fondements de la Ve République",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>La <strong>Ve République</strong> (Ve = cinquième) est le régime politique actuel de la France. Elle a été instaurée …(+688)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La Ve République a été instaurée …(+1135)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1329)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "2. Le Président de la République",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Le <strong>Président de la République</strong> est le chef de l'État. Il est élu au <strong>suffrage universel direct…(+479)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1084)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Quel est le mandat actuel du P…(+1879)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "3. Le Gouvernement et le Parlement",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Le <strong>Gouvernement</strong> est dirigé par le <strong>Premier ministre</strong>. Il détient le pouvoir exécutif …(+555)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1883)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "4. Synthèse : Récapitulatif des institutions",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Pour réussir votre brevet, il est essentiel de bien distinguer les rôles. Voici un récapitulatif des institutions clés d…(+82)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1640)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -12187,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_12.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 22,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Découvrez les trois états de la matière et leurs changements à trave…(+55)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Qu'est-ce que la matière ?",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>La <strong>matière</strong> est tout ce qui nous entoure : l'air que tu respires, l'eau que tu bois, ou encore ton st…(+294)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1673)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Parmi ces objets, lequel est à…(+2229)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Les changements d'état",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Un <strong>changement d'état</strong> se produit quand la matière passe d'un état à un autre. Ces transformations son…(+331)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+3008)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1465)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Expériences et observations",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour mieux comprendre, faisons quelques <strong>expériences simples</strong> avec l'eau, une substance que tu connais…(+515)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2021)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La vaporisation et l'évaporation …(+1251)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Synthèse et révision",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Félicitations ! Tu as maintenant exploré les <strong>trois états de la matière</strong> et leurs <strong>transformations…(+128)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1241)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragQuestion 1.15\",\"metadata\":{\"title\":\"Classe ces exemples selon leu…(+4258)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -20064,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_13.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 24,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Découvrez comment les mécanismes de l'offre et de la demande façonne…(+104)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Qu'est-ce que l'offre et la demande ?",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Dans une économie de marché, les <strong>prix</strong> se forment grâce à l'interaction entre deux forces principales…(+494)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Parmi ces propositions, laquel…(+2354)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La demande est toujours égale à l…(+1262)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Les courbes d'offre et de demande",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour visualiser l'offre et la demande, on utilise des <strong>courbes</strong> :</p><p>- <strong>Courbe de demande</s…(+403)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1583)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1474)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Les facteurs influençant l'offre et la demande",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Plusieurs facteurs peuvent déplacer les courbes d'offre et de demande :</p><p><strong>Facteurs influençant la demande…(+369)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2206)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Le prix d'équilibre et les déséquilibres",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Le <strong>prix d'équilibre</strong> est le prix où l'offre et la demande sont égales.</p><p>- Si le prix est <strong…(+313)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragQuestion 1.15\",\"metadata\":{\"title\":\"Associez chaque situation à s…(+3439)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[4].metadata.title",
-          "kind": "value",
-          "a": "Synthèse : L'offre, la demande et les prix",
-          "b": "Chapitre 5"
-        },
-        {
-          "path": "$.chapters[4].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[4].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour résumer, la formation des prix repose sur l'interaction entre l'offre et la demande. Voici les points clés à ret…(+463)",
-          "b": "Chapitre 5"
-        },
-        {
-          "path": "$.chapters[4].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1739)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -17880,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_2.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 25,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Un livre interactif pour découvrir, comprendre et appliquer le théor…(+23)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Découverte du théorème",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 4,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Dans un triangle <strong>rectangle</strong>, le côté opposé à l'angle droit s'appelle l'<strong>hypoténuse</strong>. C'e…(+45)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+254)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"L'hypoténuse est toujours le côté…(+1183)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[3]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Dans un triangle ABC rectangle…(+1865)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Triplets pythagoriciens",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Certains triangles rectangles ont des côtés de longueurs <strong>entières</strong> : on parle de <em>triplets pythagoric…(+10)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1492)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1228)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Vocabulaire et réciproque",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 4,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "La <strong>réciproque</strong> du théorème permet de prouver qu'un triangle est rectangle : si \\( a^{2} + b^{2} = c^{2} …(+36)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+1459)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1681)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[3]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1686)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Classer les situations",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Le théorème et sa réciproque ne servent pas à la même chose : à vous de classer les situations.",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragQuestion 1.15\",\"metadata\":{\"title\":\"Glissez chaque situation dans…(+3405)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[4].metadata.title",
-          "kind": "value",
-          "a": "Synthèse",
-          "b": "Chapitre 5"
-        },
-        {
-          "path": "$.chapters[4].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        }
-      ],
-      "lengthDelta": -19078,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_3.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 25,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Découvrez comment la France a connu une croissance exceptionnelle ap…(+174)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Qu'est-ce que les Trente Glorieuses ?",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 4,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Les <strong>Trente Glorieuses</strong> désignent la période de <strong>croissance économique exceptionnelle</strong> que…(+376)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+542)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Quel économiste a popularisé l…(+2259)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[3]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Les Trente Glorieuses ont duré ex…(+1224)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Les transformations économiques",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 4,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Pendant les Trente Glorieuses, l'économie française connaît une <strong>croissance annuelle moyenne de 5%</strong> et le…(+82)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1794)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+404)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[3]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1490)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Une société en mutation",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 5,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Les Trente Glorieuses transforment profondément la société française. Plusieurs évolutions majeures marquent cette pério…(+4)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+365)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+360)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[3]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+359)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[4]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2071)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Les défis et les limites",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 5,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Malgré sa prospérité, la période des Trente Glorieuses connaît aussi des <strong>défis</strong> et des <strong>limites</…(+9)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+368)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -22168,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_4.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 25,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Explorez les grandeurs physiques et maîtrisez les unités du SI grâce…(+36)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Quelles sont les grandeurs physiques ?",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 4,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<strong>Grandeur physique</strong> : toute propriété mesurable d’un phénomène ou d’un corps (ex. la longueur, le temps, …(+207)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Toutes les grandeurs physiques pe…(+1235)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+291)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[3]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1270)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Les unités de base du SI",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 4,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Le SI comporte <strong>sept unités de base</strong> qui définissent les grandeurs fondamentales. Elles sont utilisées po…(+50)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+2135)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1679)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[3]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Quelle unité SI correspond à l…(+1822)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Préfixes et conversions d'unités",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Les <strong>préfixes SI</strong> permettent d'exprimer des valeurs très grandes ou très petites. Exemples : <em>kilo</em…(+150)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragQuestion 1.15\",\"metadata\":{\"title\":\"Associez chaque préfixe à son…(+3895)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Quelle est l’unité SI du champ…(+1843)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Synthèse",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.library",
-          "kind": "value",
-          "a": "H5P.Summary 1.10",
-          "b": "H5P.AdvancedText 1.1"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.metadata.title",
-          "kind": "value",
-          "a": "Exercice",
-          "b": "Texte"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.metadata.contentType",
-          "kind": "value",
-          "a": "Exercise",
-          "b": "Text"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.intro",
-          "kind": "missing-in-b",
-          "a": "Sélectionnez les affirmations correctes parmi chaque groupe."
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.summaries",
-          "kind": "missing-in-b",
-          "a": "[{\"summary\":[\"Le kilogramme est l’unité de masse du SI.\",\"Le kilogramme est l’unité de longueur du SI.\",\"Le kilogramme e…(+424)"
-        }
-      ],
-      "lengthDelta": -17510,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_5.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 25,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Comprendre les liens entre les nombres, calculer des réductions et d…(+18)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "1. Les bases de la proportionnalité",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Une situation est <strong>proportionnelle</strong> lorsque les grandeurs évoluent ensemble de façon à les multiplier ou …(+215)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Parmi ces situations, laquelle…(+2056)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[0].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.AdvancedText 1.1\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Text\",\"license\":\"U\",\"tit…(+303)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "2. Calculer les pourcentages",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Un pourcentage est une proportion exprimée sur 100. Pour calculer \\(x\\%\\) d'un nombre, on multiplie ce nombre par \\(\\fra…(+85)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1278)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "3. Taux d'évolution et coefficients",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "Le <strong>coefficient multiplicateur</strong> est le facteur par lequel on multiplie une valeur initiale pour obtenir l…(+150)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1796)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Synthèse",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.library",
-          "kind": "value",
-          "a": "H5P.Summary 1.10",
-          "b": "H5P.AdvancedText 1.1"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.metadata.title",
-          "kind": "value",
-          "a": "Exercice",
-          "b": "Texte"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.metadata.contentType",
-          "kind": "value",
-          "a": "Exercise",
-          "b": "Text"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.intro",
-          "kind": "missing-in-b",
-          "a": "Choisissez les affirmations correctes concernant la proportionnalité."
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.summaries",
-          "kind": "missing-in-b",
-          "a": "[{\"summary\":[\"Le coefficient de proportionnalité permet de passer d'une ligne à l'autre dans un tableau.\",\"Le coefficien…(+676)"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.behaviour",
-          "kind": "missing-in-b",
-          "a": "{\"enableRetry\":true,\"enableSolutionsButton\":true,\"passPercentage\":50}"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.overallFeedback",
-          "kind": "missing-in-b",
-          "a": "[{\"from\":0,\"to\":25,\"feedback\":\"Revoyez les points clés du livre.\"},{\"from\":26,\"to\":50,\"feedback\":\"C'est un début, contin…(+101)"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.solvedLabel",
-          "kind": "missing-in-b",
-          "a": "Progression :"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.scoreLabel",
-          "kind": "missing-in-b",
-          "a": "Mauvaises réponses :"
-        }
-      ],
-      "lengthDelta": -8515,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_6.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 25,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Explorez la chute de la monarchie, l'expérience démocratique et l'as…(+64)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "1789-1792 : La fin de l'Ancien Régime",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>En <strong>1789</strong>, la France traverse une crise profonde. Le <strong>Tiers État</strong>, qui représente la gr…(+527)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Quels événements majeurs ont m…(+2091)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "1792-1799 : République et Terreur",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>En <strong>1792</strong>, la République est proclamée et le roi <strong>Louis XVI</strong> est guillotiné en janvier …(+499)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La période de la Terreur a été ca…(+1344)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1417)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "1804-1815 : L'Empire Napoléonien",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>En <strong>1804</strong>, Napoléon Bonaparte se proclame <strong>Empereur</strong>. Il stabilise le régime par la sig…(+599)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1978)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Synthèse : De la Révolution à l'Empire",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.library",
-          "kind": "value",
-          "a": "H5P.MultiChoice 1.16",
-          "b": "H5P.AdvancedText 1.1"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.metadata.title",
-          "kind": "value",
-          "a": "Parmi les propositions suivantes, lesquelles décrivent une continuité ou un changement majeur entre la Révolution et l'E…(+7)",
-          "b": "Texte"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.metadata.contentType",
-          "kind": "value",
-          "a": "Exercise",
-          "b": "Text"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.question",
-          "kind": "missing-in-b",
-          "a": "Parmi les propositions suivantes, lesquelles décrivent une continuité ou un changement majeur entre la Révolution et l'E…(+7)"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.answers",
-          "kind": "missing-in-b",
-          "a": "[{\"text\":\"La Révolution abolit les privilèges et l'Empire maintient l'ordre social réformé.\",\"correct\":true,\"tipsAndFeed…(+591)"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.behaviour",
-          "kind": "missing-in-b",
-          "a": "{\"type\":\"auto\",\"singleAnswer\":false,\"enableRetry\":true,\"enableSolutionsButton\":true,\"randomAnswers\":true}"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.overallFeedback",
-          "kind": "missing-in-b",
-          "a": "[{\"from\":0,\"to\":25,\"feedback\":\"La Révolution et l'Empire sont intimement liés. Revoir le cours.\"},{\"from\":26,\"to\":50,\"fe…(+291)"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.UI",
-          "kind": "missing-in-b",
-          "a": "{\"checkAnswerButton\":\"Vérifier\",\"showSolutionButton\":\"Afficher la solution\",\"tryAgainButton\":\"Recommencer\",\"scoreBarLabe…(+727)"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "missing-in-a",
-          "b": "Chapitre 4"
-        }
-      ],
-      "lengthDelta": -11935,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_7.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 18,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Explorez le mystère de la photosynthèse et comprenez comment les pla…(+59)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Observation : Le mystère de la croissance",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Tu as sûrement remarqué que les plantes peuvent pousser sans jamais manger de nourriture au sens humain du terme. Ell…(+460)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1809)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "Le rôle clé de la lumière",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Jan Baptiste s'était posé la bonne question : la matière vient-elle du sol ou de l'eau ? Il avait raison pour l'eau, …(+462)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"D'après les expériences, que f…(+2277)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Les ingrédients et les lieux",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour réaliser cette usine chimique qu'est la photosynthèse, la plante a besoin de trois choses qu'elle <em>capture</e…(+489)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1529)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Bilan et Révision",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour résumer : les plantes sont des êtres <strong>autotrophes</strong> (qui se fabriquent leur propre nourriture).</p…(+286)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1827)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -10325,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_8.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 25,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Guide interactif pour décrypter et utiliser les figures de style ess…(+31)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "Introduction aux Figures de Style",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Bonjour ! Dans ce livre, nous allons explorer l'outil principal des poètes : <strong>l'image poétique</strong>.</p><p…(+597)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1197)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "La Métaphore et l'Image",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>La métaphore est la figure reine de la poésie. Elle consiste à <strong>remplacer</strong> un terme par un autre, sans…(+560)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+1504)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La métaphore utilise obligatoirem…(+1245)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "Les Figures Sonores",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>La poésie s'écoute autant qu'elle ne se lit. Pour créer des effets musicaux, le poète utilise des <strong>figures son…(+648)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1033)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1351)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "Figures d'Insistance",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Parfois, le poète veut insister, donner de l'ampleur à une émotion. Il utilise alors des figures d'insistance ou de c…(+607)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Quelles sont les trois figures…(+2044)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1807)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[4].metadata.title",
-          "kind": "value",
-          "a": "Synthèse et Quiz",
-          "b": "Chapitre 5"
-        },
-        {
-          "path": "$.chapters[4].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[4].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour finir, récapitulons ! Pour réussir votre analyse de poème au brevet, vous devez être capable de <strong>nommer</…(+178)",
-          "b": "Chapitre 5"
-        },
-        {
-          "path": "$.chapters[4].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1181)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -17600,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_book_9.json",
       "moduleKey": "InteractiveBook",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 19,
-      "diff": [
-        {
-          "path": "$.showCoverPage",
-          "kind": "value",
-          "a": "true",
-          "b": "false"
-        },
-        {
-          "path": "$.bookCover",
-          "kind": "missing-in-b",
-          "a": "{\"coverDescription\":\"<p style=\\\"text-align:center\\\">Comprendre les mécanismes du changement climatique et ses impacts su…(+55)"
-        },
-        {
-          "path": "$.chapters[0].metadata.title",
-          "kind": "value",
-          "a": "1. L'effet de serre naturel",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[0].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour comprendre le changement climatique, il faut d'abord distinguer le <strong>climat</strong> de la <strong>météo</…(+466)",
-          "b": "Chapitre 1"
-        },
-        {
-          "path": "$.chapters[0].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"L'effet de serre est un phénomène…(+1269)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].metadata.title",
-          "kind": "value",
-          "a": "2. Le réchauffement accéléré",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content",
-          "kind": "array-length",
-          "a": 3,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[1].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Depuis la Révolution industrielle (fin du 18e siècle), les activités humaines ont modifié l'équilibre. En brûlant des…(+430)",
-          "b": "Chapitre 2"
-        },
-        {
-          "path": "$.chapters[1].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"library\":\"H5P.Table 1.2\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Table\",\"license\":\"U\",\"title\":\"T…(+1376)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[1].params.content[2]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1736)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[2].metadata.title",
-          "kind": "value",
-          "a": "3. Les conséquences visibles",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[2].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Les conséquences sont déjà observables partout dans le monde. On parle d'<strong>impacts</strong> environnementaux, s…(+513)",
-          "b": "Chapitre 3"
-        },
-        {
-          "path": "$.chapters[2].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MultiChoice 1.16\",\"metadata\":{\"title\":\"Parmi les propositions suivant…(+2252)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.chapters[3].metadata.title",
-          "kind": "value",
-          "a": "4. Synthèse : Agir pour le climat",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content",
-          "kind": "array-length",
-          "a": 2,
-          "b": 1
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.text",
-          "kind": "value",
-          "a": "<p>Pour limiter le réchauffement, il faut agir sur deux fronts : l'<strong>atténuation</strong> et l'<strong>adaptation<…(+466)",
-          "b": "Chapitre 4"
-        },
-        {
-          "path": "$.chapters[3].params.content[1]",
-          "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Summary 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\"…(+1648)",
-          "b": "undefined:undefined"
-        }
-      ],
-      "lengthDelta": -11464,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_video_1.json",
       "moduleKey": "InteractiveVideo",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 5,
-      "diff": [
-        {
-          "path": "$.interactiveVideo.assets.interactions",
-          "kind": "array-length",
-          "a": 3,
-          "b": 0
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[0]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":18,\"to\":20},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"width…(+1690)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[1]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":72,\"to\":74},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"width…(+1215)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[2]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":120,\"to\":122},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":60,\"y\":10,\"w…(+1157)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.summary",
-          "kind": "missing-in-b",
-          "a": "{\"task\":{\"library\":\"H5P.Summary 1.10\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Summary\",\"license\":\"U\",\"title\":…(+690)"
-        }
-      ],
-      "lengthDelta": -5245,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "interactive_video_2.json",
       "moduleKey": "InteractiveVideo",
-      "ok": false,
+      "ok": true,
       "error": null,
-      "diffCount": 9,
-      "diff": [
-        {
-          "path": "$.interactiveVideo.video.files",
-          "kind": "array-length",
-          "a": 1,
-          "b": 0
-        },
-        {
-          "path": "$.interactiveVideo.video.files[0]",
-          "kind": "type",
-          "a": "object:{\"path\":\"https://podeduc.apps.education.fr/media/videos/4ab156a586a5ba3c77854ae64d979eb092a735714cfd27fad91f015ba8c03aaf…(+36)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions",
-          "kind": "array-length",
-          "a": 5,
-          "b": 0
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[0]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":205,\"to\":207},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"wid…(+1437)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[1]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":491,\"to\":493},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"wid…(+2394)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[2]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":615,\"to\":617},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"wid…(+2191)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[3]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":1348,\"to\":1350},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"w…(+1508)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.assets.interactions[4]",
-          "kind": "type",
-          "a": "object:{\"duration\":{\"from\":2247,\"to\":2249},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"w…(+1170)",
-          "b": "undefined:undefined"
-        },
-        {
-          "path": "$.interactiveVideo.summary",
-          "kind": "missing-in-b",
-          "a": "{\"task\":{\"library\":\"H5P.Summary 1.10\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Summary\",\"license\":\"U\",\"title\":…(+2911)"
-        }
-      ],
-      "lengthDelta": -12502,
-      "category": "SHAPE-LOSS"
+      "diffCount": 0,
+      "diff": []
     },
     {
       "file": "mark_the_words_1.json",
@@ -3250,50 +993,50 @@
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "245ad4bdf7b473655586f7f70bf5e88916c194d35b4fbf9d562fbd5e4e6b9444",
-      "sha2": "245ad4bdf7b473655586f7f70bf5e88916c194d35b4fbf9d562fbd5e4e6b9444",
+      "sha1": "351c870f9b3fdbd2c5e2f082ba166343ff026d435d8b9b17d4af7a1c4a268ee4",
+      "sha2": "351c870f9b3fdbd2c5e2f082ba166343ff026d435d8b9b17d4af7a1c4a268ee4",
       "diff": [],
-      "canonSize": 19052
+      "canonSize": 19262
     },
     {
       "file": "course_presentation_2.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "65559e11565e6719a76dc2c24411c1a7697957a069c7bbb0f2add09890c88b29",
-      "sha2": "65559e11565e6719a76dc2c24411c1a7697957a069c7bbb0f2add09890c88b29",
+      "sha1": "d9941b4193e9a469d4351ff859ca480890da5e4f6aecdb325cae87c955b51fe8",
+      "sha2": "d9941b4193e9a469d4351ff859ca480890da5e4f6aecdb325cae87c955b51fe8",
       "diff": [],
-      "canonSize": 24704
+      "canonSize": 26857
     },
     {
       "file": "course_presentation_3.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "1790c8c1572538fb982f1d0bd98bbd67f420c1f0914e966f8aa26351bd1a959b",
-      "sha2": "1790c8c1572538fb982f1d0bd98bbd67f420c1f0914e966f8aa26351bd1a959b",
+      "sha1": "7428bded2050c10f5b436875fd1692322bf7b085fb624123138138f408879ffb",
+      "sha2": "7428bded2050c10f5b436875fd1692322bf7b085fb624123138138f408879ffb",
       "diff": [],
-      "canonSize": 27978
+      "canonSize": 28855
     },
     {
       "file": "course_presentation_4.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "1499e31f796e7f3f7e4e5837e41cbdbed3e7547b438ebcbfe43527cff67f5e1b",
-      "sha2": "1499e31f796e7f3f7e4e5837e41cbdbed3e7547b438ebcbfe43527cff67f5e1b",
+      "sha1": "ef46c860bf492a9280a390a21993ee85936732dcffd6a0a5a0965129f09abe14",
+      "sha2": "ef46c860bf492a9280a390a21993ee85936732dcffd6a0a5a0965129f09abe14",
       "diff": [],
-      "canonSize": 57593
+      "canonSize": 60153
     },
     {
       "file": "course_presentation_5.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "e4da906a88c517a35e18f7534c7ec8098594924645c3d85ca4789709b9d37644",
-      "sha2": "e4da906a88c517a35e18f7534c7ec8098594924645c3d85ca4789709b9d37644",
+      "sha1": "0edf1ea7d56fcf7fdb0be9d79843ae7356523b67cd6f4d8f2c7d9e1d88944030",
+      "sha2": "0edf1ea7d56fcf7fdb0be9d79843ae7356523b67cd6f4d8f2c7d9e1d88944030",
       "diff": [],
-      "canonSize": 64974
+      "canonSize": 67351
     },
     {
       "file": "crosswords_1.json",
@@ -3320,40 +1063,40 @@
       "moduleKey": "Crossword",
       "ok": true,
       "error": null,
-      "sha1": "f21d566bc5d45c5889870b9aea66855e775d5a3beefcdc5d342d0c7cc2e2e3c5",
-      "sha2": "f21d566bc5d45c5889870b9aea66855e775d5a3beefcdc5d342d0c7cc2e2e3c5",
+      "sha1": "0fc3f1087f3f12d54e9b3474644dcbcacaba62d8d7aa03f9fab7865b71168b1f",
+      "sha2": "0fc3f1087f3f12d54e9b3474644dcbcacaba62d8d7aa03f9fab7865b71168b1f",
       "diff": [],
-      "canonSize": 7167
+      "canonSize": 7645
     },
     {
       "file": "dialog_cards_1.json",
       "moduleKey": "DialogCards",
       "ok": true,
       "error": null,
-      "sha1": "85d8acde6c14a0e2c77f97d7d29343fc6f59ae012f0e1db661fb96435d19ead1",
-      "sha2": "85d8acde6c14a0e2c77f97d7d29343fc6f59ae012f0e1db661fb96435d19ead1",
+      "sha1": "bf49ef962f67d5944eb15b5201ce1dd03796e2f8efdd6fdec3004ed4767ce11f",
+      "sha2": "bf49ef962f67d5944eb15b5201ce1dd03796e2f8efdd6fdec3004ed4767ce11f",
       "diff": [],
-      "canonSize": 4053
+      "canonSize": 4136
     },
     {
       "file": "dialog_cards_2.json",
       "moduleKey": "DialogCards",
       "ok": true,
       "error": null,
-      "sha1": "eaa71801c1b3b4953ab4e5e27ab228518ebe2d1ea798843c32a3d53c72669c25",
-      "sha2": "eaa71801c1b3b4953ab4e5e27ab228518ebe2d1ea798843c32a3d53c72669c25",
+      "sha1": "1f0bda688f5554dc3de204bd5917fa421390f31afa15ef85da4e0d5bec4cafea",
+      "sha2": "1f0bda688f5554dc3de204bd5917fa421390f31afa15ef85da4e0d5bec4cafea",
       "diff": [],
-      "canonSize": 3686
+      "canonSize": 3837
     },
     {
       "file": "dialog_cards_3.json",
       "moduleKey": "DialogCards",
       "ok": true,
       "error": null,
-      "sha1": "4bf9888c83ed3191a2c18f41fd86d473e7d84544aab161d232852ea36731aeb0",
-      "sha2": "4bf9888c83ed3191a2c18f41fd86d473e7d84544aab161d232852ea36731aeb0",
+      "sha1": "9296e5bf44145002af23016aca296bef5e8bf6e031d35357b9d1c5cf89cb3ead",
+      "sha2": "9296e5bf44145002af23016aca296bef5e8bf6e031d35357b9d1c5cf89cb3ead",
       "diff": [],
-      "canonSize": 3695
+      "canonSize": 3846
     },
     {
       "file": "dictation_1.json",
@@ -3390,10 +1133,10 @@
       "moduleKey": "DragTheWords",
       "ok": true,
       "error": null,
-      "sha1": "e0fe616352e91f9c2b3055cdb708471de8c0d1b550caa921808e4c1e4ddd652b",
-      "sha2": "e0fe616352e91f9c2b3055cdb708471de8c0d1b550caa921808e4c1e4ddd652b",
+      "sha1": "2cdd3a8929b6e8602e43a6492189c4ed80f4037eddc0c17c74d2e38f5af3f356",
+      "sha2": "2cdd3a8929b6e8602e43a6492189c4ed80f4037eddc0c17c74d2e38f5af3f356",
       "diff": [],
-      "canonSize": 3805
+      "canonSize": 3848
     },
     {
       "file": "drag_the_words_2.json",
@@ -3420,60 +1163,60 @@
       "moduleKey": "Essay",
       "ok": true,
       "error": null,
-      "sha1": "6e42174b1147e61378938448bad6df6bb359c2abaf39c63eded3be9063dc45f7",
-      "sha2": "6e42174b1147e61378938448bad6df6bb359c2abaf39c63eded3be9063dc45f7",
+      "sha1": "6f59a9891c60d6f629b93cda80093728be8381900696b4231acb73fef1682995",
+      "sha2": "6f59a9891c60d6f629b93cda80093728be8381900696b4231acb73fef1682995",
       "diff": [],
-      "canonSize": 5464
+      "canonSize": 5196
     },
     {
       "file": "essay_2.json",
       "moduleKey": "Essay",
       "ok": true,
       "error": null,
-      "sha1": "fcc08c9a614e6f2e06c894fa9379f7600afedc35834ba6788da1e2211f330d72",
-      "sha2": "fcc08c9a614e6f2e06c894fa9379f7600afedc35834ba6788da1e2211f330d72",
+      "sha1": "b43868550681e33d8954c88b3cd79998d30e5c59b6b60a55ea7edead087032f7",
+      "sha2": "b43868550681e33d8954c88b3cd79998d30e5c59b6b60a55ea7edead087032f7",
       "diff": [],
-      "canonSize": 5444
+      "canonSize": 5203
     },
     {
       "file": "essay_3.json",
       "moduleKey": "Essay",
       "ok": true,
       "error": null,
-      "sha1": "aada17624e101c00bc0bcda275f7b2cc0921a2e792f9971e633068f408121f74",
-      "sha2": "aada17624e101c00bc0bcda275f7b2cc0921a2e792f9971e633068f408121f74",
+      "sha1": "61ec657a659832eefccee46ab6c22db8b85d8cb45973041681421db7b267d32e",
+      "sha2": "61ec657a659832eefccee46ab6c22db8b85d8cb45973041681421db7b267d32e",
       "diff": [],
-      "canonSize": 3912
+      "canonSize": 3677
     },
     {
       "file": "fill_in_the_blanks_1.json",
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "8b4dcf8a199e1ef222dfd1b4b4f792515dd6627cc13f86f542f2a0f940b88923",
-      "sha2": "8b4dcf8a199e1ef222dfd1b4b4f792515dd6627cc13f86f542f2a0f940b88923",
+      "sha1": "eefeec12a961af168e65d18cdcb406ca48c1239fa7d5cd657bef9be5456d0eb6",
+      "sha2": "eefeec12a961af168e65d18cdcb406ca48c1239fa7d5cd657bef9be5456d0eb6",
       "diff": [],
-      "canonSize": 5098
+      "canonSize": 5132
     },
     {
       "file": "fill_in_the_blanks_2.json",
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "232a899d022020b6b83d15e930a0d01970b20f91bef2f1cd4c3f5c2b2117cddb",
-      "sha2": "232a899d022020b6b83d15e930a0d01970b20f91bef2f1cd4c3f5c2b2117cddb",
+      "sha1": "98e43673aa1e5773a18df107660e42a411ca211ab5156933ffc839902b1499df",
+      "sha2": "98e43673aa1e5773a18df107660e42a411ca211ab5156933ffc839902b1499df",
       "diff": [],
-      "canonSize": 4672
+      "canonSize": 4706
     },
     {
       "file": "fill_in_the_blanks_3.json",
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "aa7bebe9ba76950455c36cc5a735428b3b2081cbe2d95c478b763ea42bbb4ce5",
-      "sha2": "aa7bebe9ba76950455c36cc5a735428b3b2081cbe2d95c478b763ea42bbb4ce5",
+      "sha1": "20aa9288e9cf3bfcd07e3edc0da827643d6aad68ce6647d6d7d229b501270eb5",
+      "sha2": "20aa9288e9cf3bfcd07e3edc0da827643d6aad68ce6647d6d7d229b501270eb5",
       "diff": [],
-      "canonSize": 3835
+      "canonSize": 3869
     },
     {
       "file": "find_multiple_hotspots_1.json",
@@ -3500,60 +1243,60 @@
       "moduleKey": "FindTheWords",
       "ok": true,
       "error": null,
-      "sha1": "64c76d161391ffaac7f080612599355465d1eb4da19845d34e95072dd4aae4d2",
-      "sha2": "64c76d161391ffaac7f080612599355465d1eb4da19845d34e95072dd4aae4d2",
+      "sha1": "d9bd6a824d69466aaa7d4bf83a22389d860940a5e0bea17df5a16be4fa9449ab",
+      "sha2": "d9bd6a824d69466aaa7d4bf83a22389d860940a5e0bea17df5a16be4fa9449ab",
       "diff": [],
-      "canonSize": 1979
+      "canonSize": 2039
     },
     {
       "file": "find_the_words_2.json",
       "moduleKey": "FindTheWords",
       "ok": true,
       "error": null,
-      "sha1": "bce2d58b530a6cfb6a299abcfc1ff813926dd1187cfdd75f49ad31affd694bff",
-      "sha2": "bce2d58b530a6cfb6a299abcfc1ff813926dd1187cfdd75f49ad31affd694bff",
+      "sha1": "b80b3a8efb9885b500e6d790bd05bcac6bd914a32badfbb66cf08f606cf6ec82",
+      "sha2": "b80b3a8efb9885b500e6d790bd05bcac6bd914a32badfbb66cf08f606cf6ec82",
       "diff": [],
-      "canonSize": 1755
+      "canonSize": 1815
     },
     {
       "file": "find_the_words_3.json",
       "moduleKey": "FindTheWords",
       "ok": true,
       "error": null,
-      "sha1": "cc68cf6e7b4df26e5e1738224f2704f544ca573e163ac4c4ee66c83b96f9d9ba",
-      "sha2": "cc68cf6e7b4df26e5e1738224f2704f544ca573e163ac4c4ee66c83b96f9d9ba",
+      "sha1": "a9221b7cc97b09ba24388aebf77f3a4ff4fd274d86b92c231a8d47602f3f876c",
+      "sha2": "a9221b7cc97b09ba24388aebf77f3a4ff4fd274d86b92c231a8d47602f3f876c",
       "diff": [],
-      "canonSize": 1987
+      "canonSize": 2050
     },
     {
       "file": "flashcards_1.json",
       "moduleKey": "Flashcards",
       "ok": true,
       "error": null,
-      "sha1": "eca7d3b3556300267794786e5dfb6abb5d41573a698834489252f365a48e7dfe",
-      "sha2": "eca7d3b3556300267794786e5dfb6abb5d41573a698834489252f365a48e7dfe",
+      "sha1": "b42ced72057ae34c2b971efb70537372ae85ce783fcf9db0c65ae6de1c1d332d",
+      "sha2": "b42ced72057ae34c2b971efb70537372ae85ce783fcf9db0c65ae6de1c1d332d",
       "diff": [],
-      "canonSize": 2586
+      "canonSize": 2796
     },
     {
       "file": "flashcards_2.json",
       "moduleKey": "Flashcards",
       "ok": true,
       "error": null,
-      "sha1": "c19133f317a39a9858254045317f327e49bb402cb96f216d57d9bf450c65b554",
-      "sha2": "c19133f317a39a9858254045317f327e49bb402cb96f216d57d9bf450c65b554",
+      "sha1": "c7082c6f424495977fa5f1f5ba4c5a0e72d0db1bd03ba70eda6f7a6b60283d1d",
+      "sha2": "c7082c6f424495977fa5f1f5ba4c5a0e72d0db1bd03ba70eda6f7a6b60283d1d",
       "diff": [],
-      "canonSize": 3725
+      "canonSize": 3901
     },
     {
       "file": "flashcards_3.json",
       "moduleKey": "Flashcards",
       "ok": true,
       "error": null,
-      "sha1": "c9a9417fe247a1b4c15324564f9054ca2df03185d4deebb601d57ed096567d8d",
-      "sha2": "c9a9417fe247a1b4c15324564f9054ca2df03185d4deebb601d57ed096567d8d",
+      "sha1": "be7f5331fc7dd903f08c8e0f800890f7cd49ef09a56728004acff37c2e7edb36",
+      "sha2": "be7f5331fc7dd903f08c8e0f800890f7cd49ef09a56728004acff37c2e7edb36",
       "diff": [],
-      "canonSize": 2514
+      "canonSize": 2690
     },
     {
       "file": "image_hotspots_1.json",
@@ -3570,150 +1313,150 @@
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "d3c97668c083399259e2eee727ee7fe6e1ee035992dc63d4ee528c6f6381c0bd",
-      "sha2": "d3c97668c083399259e2eee727ee7fe6e1ee035992dc63d4ee528c6f6381c0bd",
+      "sha1": "2386d6a7bdc5b6ca74dbe28ee9436784c826141b3d892640cfda2c57d4c067a7",
+      "sha2": "2386d6a7bdc5b6ca74dbe28ee9436784c826141b3d892640cfda2c57d4c067a7",
       "diff": [],
-      "canonSize": 19045
+      "canonSize": 23079
     },
     {
       "file": "interactive_book_10.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "8034ce3fa466263b1dd4a50ce93d710876897f40125f6f2ed4e8654c8067f0cc",
-      "sha2": "8034ce3fa466263b1dd4a50ce93d710876897f40125f6f2ed4e8654c8067f0cc",
+      "sha1": "aa2ce093e3afd34335f06ea721c3791e10033dcadb1517a40366338cf730f61b",
+      "sha2": "aa2ce093e3afd34335f06ea721c3791e10033dcadb1517a40366338cf730f61b",
       "diff": [],
-      "canonSize": 29503
+      "canonSize": 31274
     },
     {
       "file": "interactive_book_11.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "0179da1186fc53dfcbed38f39f8cb23bff7610fe12c7c33e91157132c0bf9c21",
-      "sha2": "0179da1186fc53dfcbed38f39f8cb23bff7610fe12c7c33e91157132c0bf9c21",
+      "sha1": "e149790508b88a04826305cdef76423c3aba4714384c3b7ea2b2c8875b19a419",
+      "sha2": "e149790508b88a04826305cdef76423c3aba4714384c3b7ea2b2c8875b19a419",
       "diff": [],
-      "canonSize": 27516
+      "canonSize": 29935
     },
     {
       "file": "interactive_book_12.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "5845c25a71d05cf4d3094c7c99dc403aaf605a3c0282c7b6a47b812ba7572e3c",
-      "sha2": "5845c25a71d05cf4d3094c7c99dc403aaf605a3c0282c7b6a47b812ba7572e3c",
+      "sha1": "ea8ac2cc631aeee0e8e2a19e1d86fb4cfd4d3d1f7628578a9f08d7955f7d88b1",
+      "sha2": "ea8ac2cc631aeee0e8e2a19e1d86fb4cfd4d3d1f7628578a9f08d7955f7d88b1",
       "diff": [],
-      "canonSize": 42805
+      "canonSize": 45151
     },
     {
       "file": "interactive_book_13.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "4100090803411576cfd9bbcfe4569d015f3c30aef746004a97f5fdaf833d15b0",
-      "sha2": "4100090803411576cfd9bbcfe4569d015f3c30aef746004a97f5fdaf833d15b0",
+      "sha1": "b75f5af9158731dd16b03177c1ddd5333f022a9cb6f767574db50c56049de454",
+      "sha2": "b75f5af9158731dd16b03177c1ddd5333f022a9cb6f767574db50c56049de454",
       "diff": [],
-      "canonSize": 39236
+      "canonSize": 41575
     },
     {
       "file": "interactive_book_2.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "5db0c58d8df2ff445051f0a1e6f008285c8b776c3b134561af6dc514a0e74123",
-      "sha2": "5db0c58d8df2ff445051f0a1e6f008285c8b776c3b134561af6dc514a0e74123",
+      "sha1": "4b0d0956eae5a341e050912c0622a23a60b08ccbc22809da576c2d47e4925d3f",
+      "sha2": "4b0d0956eae5a341e050912c0622a23a60b08ccbc22809da576c2d47e4925d3f",
       "diff": [],
-      "canonSize": 43790
+      "canonSize": 46333
     },
     {
       "file": "interactive_book_3.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "19f5cd8f74837c714877a66bfc76b4d5889062539493b75e9381b28e9e59d369",
-      "sha2": "19f5cd8f74837c714877a66bfc76b4d5889062539493b75e9381b28e9e59d369",
+      "sha1": "7be0c0e62a0f30c50f194714cb652a2d4c6ba810ae3b217f93acf0891054dbc2",
+      "sha2": "7be0c0e62a0f30c50f194714cb652a2d4c6ba810ae3b217f93acf0891054dbc2",
       "diff": [],
-      "canonSize": 43528
+      "canonSize": 46132
     },
     {
       "file": "interactive_book_4.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "31c3040e73be20b8b450a49d1fd79ccd31fab4613f64e0984c488866be57cef6",
-      "sha2": "31c3040e73be20b8b450a49d1fd79ccd31fab4613f64e0984c488866be57cef6",
+      "sha1": "71350bcad8a491ad5eafc0be7fc2d7e998812ef99c093e87a482894b6af41ed7",
+      "sha2": "71350bcad8a491ad5eafc0be7fc2d7e998812ef99c093e87a482894b6af41ed7",
       "diff": [],
-      "canonSize": 40543
+      "canonSize": 43399
     },
     {
       "file": "interactive_book_5.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "a37282344e012f379e81a4b6169e6a69a9d219e64678624bbafabca875b1d885",
-      "sha2": "a37282344e012f379e81a4b6169e6a69a9d219e64678624bbafabca875b1d885",
+      "sha1": "82f1538e571d7bf07b18a9b66de53ebe0c170c0ba62d0f9e31eb47891906fe2c",
+      "sha2": "82f1538e571d7bf07b18a9b66de53ebe0c170c0ba62d0f9e31eb47891906fe2c",
       "diff": [],
-      "canonSize": 22863
+      "canonSize": 24698
     },
     {
       "file": "interactive_book_6.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "14dfa9633d08a35217e032c75efb132118d01238c910419c117202320d377802",
-      "sha2": "14dfa9633d08a35217e032c75efb132118d01238c910419c117202320d377802",
+      "sha1": "8c56eb365f6b33c36f7deb05376b5c6f6638f90f9e50df7217748704a346c00a",
+      "sha2": "8c56eb365f6b33c36f7deb05376b5c6f6638f90f9e50df7217748704a346c00a",
       "diff": [],
-      "canonSize": 27326
+      "canonSize": 29554
     },
     {
       "file": "interactive_book_7.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "3293ad8a2e86c06bcad4b56c20a5f796002f7673aeb81aa16e6842c685ceb22f",
-      "sha2": "3293ad8a2e86c06bcad4b56c20a5f796002f7673aeb81aa16e6842c685ceb22f",
+      "sha1": "825f5722005bc1b8c9fea83fa89bdeeed7af0fda442d680e2413f67c9f29e158",
+      "sha2": "825f5722005bc1b8c9fea83fa89bdeeed7af0fda442d680e2413f67c9f29e158",
       "diff": [],
-      "canonSize": 24394
+      "canonSize": 25941
     },
     {
       "file": "interactive_book_8.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "0fc45522195e9d680379a388100b244d6dd95ba0682d14c20522e878a913db88",
-      "sha2": "0fc45522195e9d680379a388100b244d6dd95ba0682d14c20522e878a913db88",
+      "sha1": "bd964caea1616cf378e6dc2985330d3e50bf4149b63332fda6241ba8c7f48907",
+      "sha2": "bd964caea1616cf378e6dc2985330d3e50bf4149b63332fda6241ba8c7f48907",
       "diff": [],
-      "canonSize": 36401
+      "canonSize": 38317
     },
     {
       "file": "interactive_book_9.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "ff63e51295f0464baa1632d9c25448b3ac24f40fef2dedd3325d3131989fd701",
-      "sha2": "ff63e51295f0464baa1632d9c25448b3ac24f40fef2dedd3325d3131989fd701",
+      "sha1": "7dcd675109a1c360caa1cb0166e120387ee0056a85f72f6a6c0b04f8fb4411ca",
+      "sha2": "7dcd675109a1c360caa1cb0166e120387ee0056a85f72f6a6c0b04f8fb4411ca",
       "diff": [],
-      "canonSize": 25149
+      "canonSize": 25762
     },
     {
       "file": "interactive_video_1.json",
       "moduleKey": "InteractiveVideo",
       "ok": true,
       "error": null,
-      "sha1": "60325a02c4ec57dde14dde7a048e29c1f7eb286982a52d84ebdf06c856092fe5",
-      "sha2": "60325a02c4ec57dde14dde7a048e29c1f7eb286982a52d84ebdf06c856092fe5",
+      "sha1": "8c5a84b40058296e0145364cd8a25a85b6cc24098d1a713c60be3dbd4140bd6b",
+      "sha2": "8c5a84b40058296e0145364cd8a25a85b6cc24098d1a713c60be3dbd4140bd6b",
       "diff": [],
-      "canonSize": 14090
+      "canonSize": 17254
     },
     {
       "file": "interactive_video_2.json",
       "moduleKey": "InteractiveVideo",
       "ok": true,
       "error": null,
-      "sha1": "ecf00240e763d16e042d3dfb5952e21d25a4e1b0624cc457eb6654fb35a23f33",
-      "sha2": "ecf00240e763d16e042d3dfb5952e21d25a4e1b0624cc457eb6654fb35a23f33",
+      "sha1": "7fd9fe92f28cbac79079f56c60e0575959a337a4c2bdaff5789d844e75e3d3ce",
+      "sha2": "7fd9fe92f28cbac79079f56c60e0575959a337a4c2bdaff5789d844e75e3d3ce",
       "diff": [],
-      "canonSize": 24807
+      "canonSize": 29595
     },
     {
       "file": "mark_the_words_1.json",
@@ -3760,158 +1503,158 @@
       "moduleKey": "MultipleChoice",
       "ok": true,
       "error": null,
-      "sha1": "68799eb2e42c1a20a56e74a451d18b30ae86cdb2e295c81156b67b056f02168d",
-      "sha2": "68799eb2e42c1a20a56e74a451d18b30ae86cdb2e295c81156b67b056f02168d",
+      "sha1": "863f67d5a5a0337710f59aa4087d4f6fc648612b80f2cec172f0c5f57bc15f74",
+      "sha2": "863f67d5a5a0337710f59aa4087d4f6fc648612b80f2cec172f0c5f57bc15f74",
       "diff": [],
-      "canonSize": 5630
+      "canonSize": 5662
     },
     {
       "file": "multiple_choice_3.json",
       "moduleKey": "MultipleChoice",
       "ok": true,
       "error": null,
-      "sha1": "01fda7163693bf3ef8bcf6241dc9152722c11b17b84d5a08ae05bdccc4134d97",
-      "sha2": "01fda7163693bf3ef8bcf6241dc9152722c11b17b84d5a08ae05bdccc4134d97",
+      "sha1": "19f9397c17088356ee25a51f4274c62a3e101b7a4132dc0e5718af3cd81bf9d0",
+      "sha2": "19f9397c17088356ee25a51f4274c62a3e101b7a4132dc0e5718af3cd81bf9d0",
       "diff": [],
-      "canonSize": 4210
+      "canonSize": 4242
     },
     {
       "file": "quiz_mixte_1.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "b8fd0460c420ef26ed4071742bf76f41b95d9ad4881c5aa8b07a3b52d402245e",
-      "sha2": "b8fd0460c420ef26ed4071742bf76f41b95d9ad4881c5aa8b07a3b52d402245e",
+      "sha1": "136036cdb3a67a0dc2cc44bf113b45cbd1e3f3315515d4751023072e65e76732",
+      "sha2": "136036cdb3a67a0dc2cc44bf113b45cbd1e3f3315515d4751023072e65e76732",
       "diff": [],
-      "canonSize": 27209
+      "canonSize": 28891
     },
     {
       "file": "quiz_mixte_2.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "452193760ad0541d4c3666c75f60a27855c0e756ca1a4be170710be681ce75a5",
-      "sha2": "452193760ad0541d4c3666c75f60a27855c0e756ca1a4be170710be681ce75a5",
+      "sha1": "d043629b2bf0317e6ab2c595d8a8eb1b9e11fecf499210ee9a5a48a13bd4c636",
+      "sha2": "d043629b2bf0317e6ab2c595d8a8eb1b9e11fecf499210ee9a5a48a13bd4c636",
       "diff": [],
-      "canonSize": 21108
+      "canonSize": 22692
     },
     {
       "file": "quiz_mixte_3.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "05b0b14deac407e583ee4197f1fa50211b0a0959eceb67a618bf114e94062f5e",
-      "sha2": "05b0b14deac407e583ee4197f1fa50211b0a0959eceb67a618bf114e94062f5e",
+      "sha1": "c35307bef149dfe9e93b5f3da4eed6509cdf026152938ef5fa7fbf221862b736",
+      "sha2": "c35307bef149dfe9e93b5f3da4eed6509cdf026152938ef5fa7fbf221862b736",
       "diff": [],
-      "canonSize": 19514
+      "canonSize": 21175
     },
     {
       "file": "quiz_mixte_4.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "cb4ed1910b3121721be6c6c5db28af9c8ae49feb46498ed1ffb826c71c085aea",
-      "sha2": "cb4ed1910b3121721be6c6c5db28af9c8ae49feb46498ed1ffb826c71c085aea",
+      "sha1": "a2550fc33b834dd7398bec6a5b19f4a3098b72488fd70eed895b18f4f07cef70",
+      "sha2": "a2550fc33b834dd7398bec6a5b19f4a3098b72488fd70eed895b18f4f07cef70",
       "diff": [],
-      "canonSize": 15869
+      "canonSize": 17787
     },
     {
       "file": "quiz_mixte_5.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "ed9728a009f950efc80c554e4e43591dfdeaa88639b503cacbd1cb36c89026df",
-      "sha2": "ed9728a009f950efc80c554e4e43591dfdeaa88639b503cacbd1cb36c89026df",
+      "sha1": "399c8802254c1d32f97cc327f0fca56f6d3d1b56c2de4d6df3d0ce1706717911",
+      "sha2": "399c8802254c1d32f97cc327f0fca56f6d3d1b56c2de4d6df3d0ce1706717911",
       "diff": [],
-      "canonSize": 26866
+      "canonSize": 28426
     },
     {
       "file": "quiz_qcm_1.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "a3a299a86c54bedc69a116833466acb00bb8c30009e1bbc8574db0d8e27bc6b0",
-      "sha2": "a3a299a86c54bedc69a116833466acb00bb8c30009e1bbc8574db0d8e27bc6b0",
+      "sha1": "684f920c6cf17b894738eb6d4440b49dbaa67ace4bae06411a4ee24049be99a8",
+      "sha2": "684f920c6cf17b894738eb6d4440b49dbaa67ace4bae06411a4ee24049be99a8",
       "diff": [],
-      "canonSize": 22755
+      "canonSize": 23526
     },
     {
       "file": "quiz_qcm_2.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "99da085fe6d68213362a9233ca2510128ebaf9e1c4c09ad08accfe5dc5ecc9a5",
-      "sha2": "99da085fe6d68213362a9233ca2510128ebaf9e1c4c09ad08accfe5dc5ecc9a5",
+      "sha1": "cb7df8e8058de41a66848796da557558978a73b5e99f7ce86bc44f237bdd9c9f",
+      "sha2": "cb7df8e8058de41a66848796da557558978a73b5e99f7ce86bc44f237bdd9c9f",
       "diff": [],
-      "canonSize": 20383
+      "canonSize": 21742
     },
     {
       "file": "quiz_qcm_3.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "a2550813338bf8459ee77a88fb84f1687604ceea0a634dcd2774522012bbeb65",
-      "sha2": "a2550813338bf8459ee77a88fb84f1687604ceea0a634dcd2774522012bbeb65",
+      "sha1": "ac81e4b0365db2305e6092148872e5bc1f6d425532bf221983fb98b983016c96",
+      "sha2": "ac81e4b0365db2305e6092148872e5bc1f6d425532bf221983fb98b983016c96",
       "diff": [],
-      "canonSize": 20965
+      "canonSize": 21881
     },
     {
       "file": "quiz_qcm_4.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "7ace7deb83490216362de68c047f99e3f931db00d83dc2a484c21a7cb3c9cb73",
-      "sha2": "7ace7deb83490216362de68c047f99e3f931db00d83dc2a484c21a7cb3c9cb73",
+      "sha1": "32bdd4daadfc109b79a9767069aacec0e0bce2e401bf8de6d8322d08b11f82c3",
+      "sha2": "32bdd4daadfc109b79a9767069aacec0e0bce2e401bf8de6d8322d08b11f82c3",
       "diff": [],
-      "canonSize": 20056
+      "canonSize": 22005
     },
     {
       "file": "quiz_qcm_5.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "4232d3efd02c87fc11e52259af8019b667c46d14fded1f4adc7a78167f8ddb0a",
-      "sha2": "4232d3efd02c87fc11e52259af8019b667c46d14fded1f4adc7a78167f8ddb0a",
+      "sha1": "62cfd6711c3bcaca75f3dcffc36fad434ff8583a985ad26fdb9e743b0c827c4d",
+      "sha2": "62cfd6711c3bcaca75f3dcffc36fad434ff8583a985ad26fdb9e743b0c827c4d",
       "diff": [],
-      "canonSize": 20604
+      "canonSize": 22523
     },
     {
       "file": "quiz_qcm_formules_test.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "cbb26c62cc355d0378850d24bc2d6f038657edfd8a74e248833d60f7d8316b04",
-      "sha2": "cbb26c62cc355d0378850d24bc2d6f038657edfd8a74e248833d60f7d8316b04",
+      "sha1": "f8dbfe75239c89f59f0ec0f1c8ade494a6ce82e589c0324bbd011e67cf154b07",
+      "sha2": "f8dbfe75239c89f59f0ec0f1c8ade494a6ce82e589c0324bbd011e67cf154b07",
       "diff": [],
-      "canonSize": 51192
+      "canonSize": 53356
     },
     {
       "file": "quiz_vraifaux_1.json",
       "moduleKey": "QuizSetVF",
       "ok": true,
       "error": null,
-      "sha1": "67b2a8bf0d215b785ae06d31b34c63aa41c00fb3d71d2b4841f4ced445e03fe0",
-      "sha2": "67b2a8bf0d215b785ae06d31b34c63aa41c00fb3d71d2b4841f4ced445e03fe0",
+      "sha1": "0e1648f5973e10fc17db4bdc7b1af6eb8e224579ca1bc1c79c43cbd2dbe4936c",
+      "sha2": "0e1648f5973e10fc17db4bdc7b1af6eb8e224579ca1bc1c79c43cbd2dbe4936c",
       "diff": [],
-      "canonSize": 14317
+      "canonSize": 17161
     },
     {
       "file": "quiz_vraifaux_2.json",
       "moduleKey": "QuizSetVF",
       "ok": true,
       "error": null,
-      "sha1": "84f1c335160bf79484d0d265beb4992fb7533fdfb505b259e930d16316911f5b",
-      "sha2": "84f1c335160bf79484d0d265beb4992fb7533fdfb505b259e930d16316911f5b",
+      "sha1": "1f09b9c6b6fa9f6831c3e34f0aca01124bda39d3ce2a014cd72876f3fdf62631",
+      "sha2": "1f09b9c6b6fa9f6831c3e34f0aca01124bda39d3ce2a014cd72876f3fdf62631",
       "diff": [],
-      "canonSize": 13261
+      "canonSize": 16151
     },
     {
       "file": "single_choice_set_1.json",
       "moduleKey": "SingleChoiceSet",
       "ok": true,
       "error": null,
-      "sha1": "a21bfe01b310d7ac16b9d00d26764422eb7fd79fe1b8ce4b6c4b4649ce5160e7",
-      "sha2": "a21bfe01b310d7ac16b9d00d26764422eb7fd79fe1b8ce4b6c4b4649ce5160e7",
+      "sha1": "03ad023fb908fe5c6fdb33a751df1aadd11d589283ad489f0cc2c295868e2595",
+      "sha2": "03ad023fb908fe5c6fdb33a751df1aadd11d589283ad489f0cc2c295868e2595",
       "diff": [],
       "canonSize": 4643
     },
@@ -3920,8 +1663,8 @@
       "moduleKey": "SingleChoiceSet",
       "ok": true,
       "error": null,
-      "sha1": "c9ad9db2e0dbfbcfffd849639345e5cfb70d9a314984de9c914f3490fbf482f0",
-      "sha2": "c9ad9db2e0dbfbcfffd849639345e5cfb70d9a314984de9c914f3490fbf482f0",
+      "sha1": "6fd560a5f22214707bb63545f5d9cbcf31d21ca2d1114b576693ad5d37a31d12",
+      "sha2": "6fd560a5f22214707bb63545f5d9cbcf31d21ca2d1114b576693ad5d37a31d12",
       "diff": [],
       "canonSize": 4159
     },
@@ -3930,40 +1673,40 @@
       "moduleKey": "SortParagraphs",
       "ok": true,
       "error": null,
-      "sha1": "10dcc98348c525e96ceb81763c8a4082b668b513c1a740f5eb257df89823864c",
-      "sha2": "10dcc98348c525e96ceb81763c8a4082b668b513c1a740f5eb257df89823864c",
+      "sha1": "f1af54748587b53bc8a6e764e69da6ed0aa324b6facf73d6e7e26fc232d41119",
+      "sha2": "f1af54748587b53bc8a6e764e69da6ed0aa324b6facf73d6e7e26fc232d41119",
       "diff": [],
-      "canonSize": 5680
+      "canonSize": 5731
     },
     {
       "file": "sort_the_paragraphs_2.json",
       "moduleKey": "SortParagraphs",
       "ok": true,
       "error": null,
-      "sha1": "86739318cb04329576479d576200cf210ceff17f5fc277a29298eb8026992451",
-      "sha2": "86739318cb04329576479d576200cf210ceff17f5fc277a29298eb8026992451",
+      "sha1": "3e398c90a53e76e2b217f5fef076fbb615311c750eceb7a74ed9972fe7e24273",
+      "sha2": "3e398c90a53e76e2b217f5fef076fbb615311c750eceb7a74ed9972fe7e24273",
       "diff": [],
-      "canonSize": 4944
+      "canonSize": 4995
     },
     {
       "file": "summary_1.json",
       "moduleKey": "Summary",
       "ok": true,
       "error": null,
-      "sha1": "d789e4eb2cfbc92d57792852042d1ac93b8ac85b57273037a64b5facb0a2320b",
-      "sha2": "d789e4eb2cfbc92d57792852042d1ac93b8ac85b57273037a64b5facb0a2320b",
+      "sha1": "cdaf0f326877086473e41292d6099845c4a6bf0b59551ee1168fdbbe8e034d67",
+      "sha2": "cdaf0f326877086473e41292d6099845c4a6bf0b59551ee1168fdbbe8e034d67",
       "diff": [],
-      "canonSize": 5461
+      "canonSize": 5354
     },
     {
       "file": "summary_2.json",
       "moduleKey": "Summary",
       "ok": true,
       "error": null,
-      "sha1": "8197e101e17d6b3035755113007126417f782370ba58e96d7ef1f4e1648cc12a",
-      "sha2": "8197e101e17d6b3035755113007126417f782370ba58e96d7ef1f4e1648cc12a",
+      "sha1": "7ec66217d1174f12bda93b3bb0d9ecdf8a02f20fb582ffd21deb2f1bb074635b",
+      "sha2": "7ec66217d1174f12bda93b3bb0d9ecdf8a02f20fb582ffd21deb2f1bb074635b",
       "diff": [],
-      "canonSize": 4750
+      "canonSize": 4643
     },
     {
       "file": "timeline_1.json",
@@ -4000,30 +1743,30 @@
       "moduleKey": "TrueFalse",
       "ok": true,
       "error": null,
-      "sha1": "21d78fe89c8117f558c3995517a7e594d916482e594ec895ab824429c2c93044",
-      "sha2": "21d78fe89c8117f558c3995517a7e594d916482e594ec895ab824429c2c93044",
+      "sha1": "028634f70c55a566dfc84cbdd3722914bd9f62168d3e20e6e7e9e696fc73318b",
+      "sha2": "028634f70c55a566dfc84cbdd3722914bd9f62168d3e20e6e7e9e696fc73318b",
       "diff": [],
-      "canonSize": 3203
+      "canonSize": 2698
     },
     {
       "file": "true_false_2.json",
       "moduleKey": "TrueFalse",
       "ok": true,
       "error": null,
-      "sha1": "aedd8392c8d52b6b5be5b6a81e2856020b6a7454d6147fe5f595960c87f9a975",
-      "sha2": "aedd8392c8d52b6b5be5b6a81e2856020b6a7454d6147fe5f595960c87f9a975",
+      "sha1": "e42559a828896f2a42fb3089513844498fe5af901dc9010c67c4496aa40e942e",
+      "sha2": "e42559a828896f2a42fb3089513844498fe5af901dc9010c67c4496aa40e942e",
       "diff": [],
-      "canonSize": 3230
+      "canonSize": 2749
     },
     {
       "file": "true_false_3.json",
       "moduleKey": "TrueFalse",
       "ok": true,
       "error": null,
-      "sha1": "e999d3e3e4ed737f65bd46b9b17782e9ad1e4a112de2b5738d1bb91c0c5e38ae",
-      "sha2": "e999d3e3e4ed737f65bd46b9b17782e9ad1e4a112de2b5738d1bb91c0c5e38ae",
+      "sha1": "b87ecb2b0fcfdbb292328917e1fd445dd5c644569248fc08afafc18422ecb272",
+      "sha2": "b87ecb2b0fcfdbb292328917e1fd445dd5c644569248fc08afafc18422ecb272",
       "diff": [],
-      "canonSize": 3378
+      "canonSize": 2849
     }
   ],
   "T3_verbatim": [
@@ -4084,7 +1827,7 @@
       "error": null,
       "verbatimBase64": true,
       "blobUntouchedAfterExtract": true,
-      "extractMarkdownLen": 3596,
+      "extractMarkdownLen": 4147,
       "extractActivityType": "H5P.InteractiveBook"
     }
   ],
@@ -4193,14 +1936,14 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "245ad4bdf7b473655586f7f70bf5e88916c194d35b4fbf9d562fbd5e4e6b9444",
-      "canonSize": 19052,
+      "totalSha256": "351c870f9b3fdbd2c5e2f082ba166343ff026d435d8b9b17d4af7a1c4a268ee4",
+      "canonSize": 19262,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 15877,
-          "canonSha256": "2df7004eed9e8ee7e1d17a4985d306c9beee38131d43aa597fb16e0bf337cebe"
+          "canonSize": 16087,
+          "canonSha256": "e9a92b149e4acdb5c85da469590f340d7bbc187d7bd660a737737516e372119c"
         },
         {
           "name": "h5p.json",
@@ -4213,14 +1956,14 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "65559e11565e6719a76dc2c24411c1a7697957a069c7bbb0f2add09890c88b29",
-      "canonSize": 24704,
+      "totalSha256": "d9941b4193e9a469d4351ff859ca480890da5e4f6aecdb325cae87c955b51fe8",
+      "canonSize": 26857,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 21415,
-          "canonSha256": "153bedab232c349999d602d0fe9a08ad14bdb9bd2505e029be789b790599c10d"
+          "canonSize": 23568,
+          "canonSha256": "74c7ec5e6f896a56d8e6e50ab460316a529d515b94eb87c4b590d952896c19a7"
         },
         {
           "name": "h5p.json",
@@ -4233,14 +1976,14 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "1790c8c1572538fb982f1d0bd98bbd67f420c1f0914e966f8aa26351bd1a959b",
-      "canonSize": 27978,
+      "totalSha256": "7428bded2050c10f5b436875fd1692322bf7b085fb624123138138f408879ffb",
+      "canonSize": 28855,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 24757,
-          "canonSha256": "020daccdd474cd0d3cac2f3a50e9589419fe43234c259d0ba47555a401784c3b"
+          "canonSize": 25634,
+          "canonSha256": "675dc3f124dc352d48ea04b79970d77fff1b92554f9239ca37691a12a6086eab"
         },
         {
           "name": "h5p.json",
@@ -4253,14 +1996,14 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "1499e31f796e7f3f7e4e5837e41cbdbed3e7547b438ebcbfe43527cff67f5e1b",
-      "canonSize": 57593,
+      "totalSha256": "ef46c860bf492a9280a390a21993ee85936732dcffd6a0a5a0965129f09abe14",
+      "canonSize": 60153,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 54394,
-          "canonSha256": "822b1834fdb81501aec89d4112e4f2ea4a3b1d8c2aa30934ffc3c0f499caeb18"
+          "canonSize": 56954,
+          "canonSha256": "f3592ce33b1a0a1c6fcdb6dd40e65a73176688a67dbd7433a8f9a4811d6203af"
         },
         {
           "name": "h5p.json",
@@ -4273,14 +2016,14 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "e4da906a88c517a35e18f7534c7ec8098594924645c3d85ca4789709b9d37644",
-      "canonSize": 64974,
+      "totalSha256": "0edf1ea7d56fcf7fdb0be9d79843ae7356523b67cd6f4d8f2c7d9e1d88944030",
+      "canonSize": 67351,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 61811,
-          "canonSha256": "1ba4c0f23ec7dcbb2c4af7559fb36a3c6fe4c03266a296088c843a5159eba747"
+          "canonSize": 64188,
+          "canonSha256": "a74c246c37c912e55efa23cd39259581c7e0b6cd81fe9854631c758a8420b3a7"
         },
         {
           "name": "h5p.json",
@@ -4333,14 +2076,14 @@
       "moduleKey": "Crossword",
       "format": "h5p",
       "error": null,
-      "totalSha256": "f21d566bc5d45c5889870b9aea66855e775d5a3beefcdc5d342d0c7cc2e2e3c5",
-      "canonSize": 7167,
+      "totalSha256": "0fc3f1087f3f12d54e9b3474644dcbcacaba62d8d7aa03f9fab7865b71168b1f",
+      "canonSize": 7645,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 5880,
-          "canonSha256": "71c2e3867cfb932a805878c15a1a059fe8d40d8e52c9b3424a1b3203ebc9a24d"
+          "canonSize": 6358,
+          "canonSha256": "26dcd61aa4abb6e413e56fea558dcca989d4e20abc461debdc06bf3a07e928ee"
         },
         {
           "name": "h5p.json",
@@ -4353,14 +2096,14 @@
       "moduleKey": "DialogCards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "85d8acde6c14a0e2c77f97d7d29343fc6f59ae012f0e1db661fb96435d19ead1",
-      "canonSize": 4053,
+      "totalSha256": "bf49ef962f67d5944eb15b5201ce1dd03796e2f8efdd6fdec3004ed4767ce11f",
+      "canonSize": 4136,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3184,
-          "canonSha256": "64740e5668b0ed0f2a11e9492efb54b5cc9e591bd8bacd08669b9a1d6519df60"
+          "canonSize": 3267,
+          "canonSha256": "a4390431eb528fb420716104d3f6caaa5e3bc4a19cb98f9216e4ec11f2899590"
         },
         {
           "name": "h5p.json",
@@ -4373,14 +2116,14 @@
       "moduleKey": "DialogCards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "eaa71801c1b3b4953ab4e5e27ab228518ebe2d1ea798843c32a3d53c72669c25",
-      "canonSize": 3686,
+      "totalSha256": "1f0bda688f5554dc3de204bd5917fa421390f31afa15ef85da4e0d5bec4cafea",
+      "canonSize": 3837,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2677,
-          "canonSha256": "08e79dde9b0da4ac020bb9fa93890357522041062653f97fc166c3772b55cc29"
+          "canonSize": 2828,
+          "canonSha256": "f62c7bacedd0a0bfa135c2edd867b0ed592cffd01faee7541a6ba35704113c7d"
         },
         {
           "name": "h5p.json",
@@ -4393,14 +2136,14 @@
       "moduleKey": "DialogCards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "4bf9888c83ed3191a2c18f41fd86d473e7d84544aab161d232852ea36731aeb0",
-      "canonSize": 3695,
+      "totalSha256": "9296e5bf44145002af23016aca296bef5e8bf6e031d35357b9d1c5cf89cb3ead",
+      "canonSize": 3846,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2744,
-          "canonSha256": "f3ce2ccdfa031540e69cfb11551e78fd2bcae96ec73774f38fc46837129f0c1e"
+          "canonSize": 2895,
+          "canonSha256": "20a94e0239133c35511b2ad58a3dc7e8eb6853f644a8d35628102e9ca33483bd"
         },
         {
           "name": "h5p.json",
@@ -4459,14 +2202,14 @@
       "moduleKey": "DragTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "e0fe616352e91f9c2b3055cdb708471de8c0d1b550caa921808e4c1e4ddd652b",
-      "canonSize": 3805,
+      "totalSha256": "2cdd3a8929b6e8602e43a6492189c4ed80f4037eddc0c17c74d2e38f5af3f356",
+      "canonSize": 3848,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3485,
-          "canonSha256": "31957ba93e7b1194ed62fb257dc6eccc3064d57eb9425b89fc9fc88f9cca7c51"
+          "canonSize": 3528,
+          "canonSha256": "6aa4e0350ad098ff5c5482f1b7b7de5be59f2167b12dbb53c3cdf050356c6989"
         },
         {
           "name": "h5p.json",
@@ -4519,14 +2262,14 @@
       "moduleKey": "Essay",
       "format": "h5p",
       "error": null,
-      "totalSha256": "6e42174b1147e61378938448bad6df6bb359c2abaf39c63eded3be9063dc45f7",
-      "canonSize": 5464,
+      "totalSha256": "6f59a9891c60d6f629b93cda80093728be8381900696b4231acb73fef1682995",
+      "canonSize": 5196,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4550,
-          "canonSha256": "759aefe0a8ad09d35ca0f2de3567903f23594a9ba34dc1ab64a630e9f3d7b922"
+          "canonSize": 4282,
+          "canonSha256": "fd403f88ce36905d8136d79b799f241e5d6f1da61fa2f7304ebe9f00407800f1"
         },
         {
           "name": "h5p.json",
@@ -4539,14 +2282,14 @@
       "moduleKey": "Essay",
       "format": "h5p",
       "error": null,
-      "totalSha256": "fcc08c9a614e6f2e06c894fa9379f7600afedc35834ba6788da1e2211f330d72",
-      "canonSize": 5444,
+      "totalSha256": "b43868550681e33d8954c88b3cd79998d30e5c59b6b60a55ea7edead087032f7",
+      "canonSize": 5203,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4428,
-          "canonSha256": "8dde0fbc069db9b57ea251894b4dd995bde11a83c27c55746080eeef57e32c23"
+          "canonSize": 4187,
+          "canonSha256": "b473afdc76acfc428efb09498cee6d6979459b57448475c2caa32bd22b5ae895"
         },
         {
           "name": "h5p.json",
@@ -4559,14 +2302,14 @@
       "moduleKey": "Essay",
       "format": "h5p",
       "error": null,
-      "totalSha256": "aada17624e101c00bc0bcda275f7b2cc0921a2e792f9971e633068f408121f74",
-      "canonSize": 3912,
+      "totalSha256": "61ec657a659832eefccee46ab6c22db8b85d8cb45973041681421db7b267d32e",
+      "canonSize": 3677,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2896,
-          "canonSha256": "ed8eee29b4fb1c87be03d3d19645ba86b9bcc761d29b719ce79628925124d334"
+          "canonSize": 2661,
+          "canonSha256": "5f401e5b0b0c8c0a2965a26013467a09456544510c89bca9ec3bbfb8d1295173"
         },
         {
           "name": "h5p.json",
@@ -4579,14 +2322,14 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8b4dcf8a199e1ef222dfd1b4b4f792515dd6627cc13f86f542f2a0f940b88923",
-      "canonSize": 5098,
+      "totalSha256": "eefeec12a961af168e65d18cdcb406ca48c1239fa7d5cd657bef9be5456d0eb6",
+      "canonSize": 5132,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4181,
-          "canonSha256": "97efbd20cea3bc06dbd9be9b59dfb5f213bebdf493dff6f57ba1c24442c66898"
+          "canonSize": 4215,
+          "canonSha256": "7ba452105a3cd6359d8a32f3e900f70306b3758f83cbdb2149674a1ca536b87e"
         },
         {
           "name": "h5p.json",
@@ -4599,14 +2342,14 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "232a899d022020b6b83d15e930a0d01970b20f91bef2f1cd4c3f5c2b2117cddb",
-      "canonSize": 4672,
+      "totalSha256": "98e43673aa1e5773a18df107660e42a411ca211ab5156933ffc839902b1499df",
+      "canonSize": 4706,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3653,
-          "canonSha256": "76e2e4550a5d5a2cd341b90e005d5152da39323b6a3e73010ada24f0c15886aa"
+          "canonSize": 3687,
+          "canonSha256": "5e4dc15abae1d173ffcf0677939506bb366e6985ca3896b44189101744f0a566"
         },
         {
           "name": "h5p.json",
@@ -4619,14 +2362,14 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "aa7bebe9ba76950455c36cc5a735428b3b2081cbe2d95c478b763ea42bbb4ce5",
-      "canonSize": 3835,
+      "totalSha256": "20aa9288e9cf3bfcd07e3edc0da827643d6aad68ce6647d6d7d229b501270eb5",
+      "canonSize": 3869,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2816,
-          "canonSha256": "b1406ba55af63789653760448f20e4a748dc34ec9b0475261a9bf3a252deed27"
+          "canonSize": 2850,
+          "canonSha256": "16bc008b435037606575b9a41c7b1eceba84a47a41da213e9d8f996c624e1c59"
         },
         {
           "name": "h5p.json",
@@ -4679,14 +2422,14 @@
       "moduleKey": "FindTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "64c76d161391ffaac7f080612599355465d1eb4da19845d34e95072dd4aae4d2",
-      "canonSize": 1979,
+      "totalSha256": "d9bd6a824d69466aaa7d4bf83a22389d860940a5e0bea17df5a16be4fa9449ab",
+      "canonSize": 2039,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 1158,
-          "canonSha256": "aad55a3ec2826b22c6f5775489d85056bfef748bc1cba0b9644ca97d78f1af16"
+          "canonSize": 1218,
+          "canonSha256": "bea38036eee4dec2664f9a96fb815a1a087c510a83ac95fb4c489eaacd93b96b"
         },
         {
           "name": "h5p.json",
@@ -4699,14 +2442,14 @@
       "moduleKey": "FindTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "bce2d58b530a6cfb6a299abcfc1ff813926dd1187cfdd75f49ad31affd694bff",
-      "canonSize": 1755,
+      "totalSha256": "b80b3a8efb9885b500e6d790bd05bcac6bd914a32badfbb66cf08f606cf6ec82",
+      "canonSize": 1815,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 934,
-          "canonSha256": "bcb2ea39aa510eea021c10431dd4300eb63d7fd16b60b176ffd1b648f0174a0f"
+          "canonSize": 994,
+          "canonSha256": "1e64ff9a62e4f73de226c9251069d1c832b43c041736be61a36688b42b9d1b08"
         },
         {
           "name": "h5p.json",
@@ -4719,14 +2462,14 @@
       "moduleKey": "FindTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "cc68cf6e7b4df26e5e1738224f2704f544ca573e163ac4c4ee66c83b96f9d9ba",
-      "canonSize": 1987,
+      "totalSha256": "a9221b7cc97b09ba24388aebf77f3a4ff4fd274d86b92c231a8d47602f3f876c",
+      "canonSize": 2050,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 1064,
-          "canonSha256": "5a956022b1b55e61a4ced2515bf0870612a6c69466c1254d501deaccb6869c11"
+          "canonSize": 1127,
+          "canonSha256": "53ea45383ecd37aa6b64790c7e9d94a5a47bdf4d4092df021c7f0ccaff069af0"
         },
         {
           "name": "h5p.json",
@@ -4739,14 +2482,14 @@
       "moduleKey": "Flashcards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "eca7d3b3556300267794786e5dfb6abb5d41573a698834489252f365a48e7dfe",
-      "canonSize": 2586,
+      "totalSha256": "b42ced72057ae34c2b971efb70537372ae85ce783fcf9db0c65ae6de1c1d332d",
+      "canonSize": 2796,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 1728,
-          "canonSha256": "7c01594bc7d972a78a487982c211496999780d3daa5909fad0e9ced2d96caea6"
+          "canonSize": 1938,
+          "canonSha256": "e613d30508753a0acff1dac5882444427aad178388be38c3dfa7872ee2fee43b"
         },
         {
           "name": "h5p.json",
@@ -4759,14 +2502,14 @@
       "moduleKey": "Flashcards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "c19133f317a39a9858254045317f327e49bb402cb96f216d57d9bf450c65b554",
-      "canonSize": 3725,
+      "totalSha256": "c7082c6f424495977fa5f1f5ba4c5a0e72d0db1bd03ba70eda6f7a6b60283d1d",
+      "canonSize": 3901,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2757,
-          "canonSha256": "3f89fe944f4dff649d976f4d7cf6545e33a6ddf7c50f2c5f209bf945a56c8580"
+          "canonSize": 2933,
+          "canonSha256": "3138e014d2c52b337c6b765be425269033cf381cc05467acc10be097d8013c23"
         },
         {
           "name": "h5p.json",
@@ -4779,14 +2522,14 @@
       "moduleKey": "Flashcards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "c9a9417fe247a1b4c15324564f9054ca2df03185d4deebb601d57ed096567d8d",
-      "canonSize": 2514,
+      "totalSha256": "be7f5331fc7dd903f08c8e0f800890f7cd49ef09a56728004acff37c2e7edb36",
+      "canonSize": 2690,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 1560,
-          "canonSha256": "575eb68f01badfe2c9ee231b2ee4054d82e8e6e6cd2b48b8f7307f96211f5a3e"
+          "canonSize": 1736,
+          "canonSha256": "df1c7f6f62ddfbde4134f747b8110b2667bf0401894e4aa67e3c84e43a75e3f7"
         },
         {
           "name": "h5p.json",
@@ -4819,14 +2562,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "d3c97668c083399259e2eee727ee7fe6e1ee035992dc63d4ee528c6f6381c0bd",
-      "canonSize": 19045,
+      "totalSha256": "2386d6a7bdc5b6ca74dbe28ee9436784c826141b3d892640cfda2c57d4c067a7",
+      "canonSize": 23079,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 15899,
-          "canonSha256": "d3c9bee6870966cf38c51f84775fe9ab4e8998cf8eaef66f36f2bf3f47ca3725"
+          "canonSize": 19933,
+          "canonSha256": "f3f322e4825210271458ae57f598594e89c9652fcb1a1793e6e73bc7a697de09"
         },
         {
           "name": "h5p.json",
@@ -4839,14 +2582,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8034ce3fa466263b1dd4a50ce93d710876897f40125f6f2ed4e8654c8067f0cc",
-      "canonSize": 29503,
+      "totalSha256": "aa2ce093e3afd34335f06ea721c3791e10033dcadb1517a40366338cf730f61b",
+      "canonSize": 31274,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 26313,
-          "canonSha256": "d04a21963b56195e70121b697045ac17fc7d9ec4c808174c880f3f72245cba19"
+          "canonSize": 28084,
+          "canonSha256": "136f897ca72de154731c801bbcae192be18144e52135a611c10ac9a9338d8100"
         },
         {
           "name": "h5p.json",
@@ -4859,14 +2602,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "0179da1186fc53dfcbed38f39f8cb23bff7610fe12c7c33e91157132c0bf9c21",
-      "canonSize": 27516,
+      "totalSha256": "e149790508b88a04826305cdef76423c3aba4714384c3b7ea2b2c8875b19a419",
+      "canonSize": 29935,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 24336,
-          "canonSha256": "f4abb361ee2a77238193e0dafff84346c67b59e7f0db934f8b2c95faca11f1f9"
+          "canonSize": 26755,
+          "canonSha256": "1d037c903287260947798b4978622532a4309ad5a60786643e9dd2df5a8c5f6d"
         },
         {
           "name": "h5p.json",
@@ -4879,14 +2622,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "5845c25a71d05cf4d3094c7c99dc403aaf605a3c0282c7b6a47b812ba7572e3c",
-      "canonSize": 42805,
+      "totalSha256": "ea8ac2cc631aeee0e8e2a19e1d86fb4cfd4d3d1f7628578a9f08d7955f7d88b1",
+      "canonSize": 45151,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 39597,
-          "canonSha256": "30452745e7bedea2c3f510ffb3332c32e71cdc426d5ade1bff9965e8971a086d"
+          "canonSize": 41943,
+          "canonSha256": "d391d886db34bdabaa3261a84bcf7befbc0cc00a2184a14c97ff1258531d53e6"
         },
         {
           "name": "h5p.json",
@@ -4899,14 +2642,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "4100090803411576cfd9bbcfe4569d015f3c30aef746004a97f5fdaf833d15b0",
-      "canonSize": 39236,
+      "totalSha256": "b75f5af9158731dd16b03177c1ddd5333f022a9cb6f767574db50c56049de454",
+      "canonSize": 41575,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 36040,
-          "canonSha256": "a868ebef7edf7a378e67e94fc0805098c76fb017181af4c6312419009f47c84a"
+          "canonSize": 38379,
+          "canonSha256": "ed8cc6e3cbfbd2ea916b52acac488dad6022f8b3dd4ae392ba5566a501c9bf30"
         },
         {
           "name": "h5p.json",
@@ -4919,14 +2662,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "5db0c58d8df2ff445051f0a1e6f008285c8b776c3b134561af6dc514a0e74123",
-      "canonSize": 43790,
+      "totalSha256": "4b0d0956eae5a341e050912c0622a23a60b08ccbc22809da576c2d47e4925d3f",
+      "canonSize": 46333,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 40528,
-          "canonSha256": "723db416a15ab1911732f39693b221bcd8349bd49bbb66fc78942f2ae1d7b5a3"
+          "canonSize": 43071,
+          "canonSha256": "f0e66d5c7a5b4bd26fd9f9d575ffaf8bd5a3e7c08ca3aff7bd1c28244405ddb8"
         },
         {
           "name": "h5p.json",
@@ -4939,14 +2682,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "19f5cd8f74837c714877a66bfc76b4d5889062539493b75e9381b28e9e59d369",
-      "canonSize": 43528,
+      "totalSha256": "7be0c0e62a0f30c50f194714cb652a2d4c6ba810ae3b217f93acf0891054dbc2",
+      "canonSize": 46132,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 40306,
-          "canonSha256": "7d1e01484c5dae67504b6cdbdc1fe6de519d8cab7ba959791743654c83020e3c"
+          "canonSize": 42910,
+          "canonSha256": "45c4a7979940a75656a82f96031cae3424881a19fa07d87ce5a078a2ab645a2d"
         },
         {
           "name": "h5p.json",
@@ -4959,14 +2702,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "31c3040e73be20b8b450a49d1fd79ccd31fab4613f64e0984c488866be57cef6",
-      "canonSize": 40543,
+      "totalSha256": "71350bcad8a491ad5eafc0be7fc2d7e998812ef99c093e87a482894b6af41ed7",
+      "canonSize": 43399,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 37269,
-          "canonSha256": "fdff0370106d6d16353370c00646ee715c657a4bec54e9d473448f1928e59ab1"
+          "canonSize": 40125,
+          "canonSha256": "9535c00d247743ce57ee8014d26f56c4719bddef6b4176068bc7dedb741b1997"
         },
         {
           "name": "h5p.json",
@@ -4979,14 +2722,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a37282344e012f379e81a4b6169e6a69a9d219e64678624bbafabca875b1d885",
-      "canonSize": 22863,
+      "totalSha256": "82f1538e571d7bf07b18a9b66de53ebe0c170c0ba62d0f9e31eb47891906fe2c",
+      "canonSize": 24698,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19591,
-          "canonSha256": "909cc58c7ba3471cc811e11c9ac5bd963319701272812d1d4aa53ab105cad555"
+          "canonSize": 21426,
+          "canonSha256": "b8b2022fa47a3478d385552e1c65aa32aed3dcd9eee5c13ab31a6de3ed6cce1a"
         },
         {
           "name": "h5p.json",
@@ -4999,14 +2742,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "14dfa9633d08a35217e032c75efb132118d01238c910419c117202320d377802",
-      "canonSize": 27326,
+      "totalSha256": "8c56eb365f6b33c36f7deb05376b5c6f6638f90f9e50df7217748704a346c00a",
+      "canonSize": 29554,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 24142,
-          "canonSha256": "bb2465ff98b058c5c72d4fcb674faa598d47c39f48a47da011874173e4ca4bfc"
+          "canonSize": 26370,
+          "canonSha256": "78240fd1834af7d253157920ca93946c5e61083a381c0c5883153275bd2110dd"
         },
         {
           "name": "h5p.json",
@@ -5019,14 +2762,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "3293ad8a2e86c06bcad4b56c20a5f796002f7673aeb81aa16e6842c685ceb22f",
-      "canonSize": 24394,
+      "totalSha256": "825f5722005bc1b8c9fea83fa89bdeeed7af0fda442d680e2413f67c9f29e158",
+      "canonSize": 25941,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 21202,
-          "canonSha256": "6030700fdf9dbbe42bf8063725904389fa31c592ced76ae3b73b0326d7d7c1fa"
+          "canonSize": 22749,
+          "canonSha256": "e72658c351ed6231925f8598ce8d0ffffc60d21f4a4d911858e7b86fd7683a51"
         },
         {
           "name": "h5p.json",
@@ -5039,14 +2782,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "0fc45522195e9d680379a388100b244d6dd95ba0682d14c20522e878a913db88",
-      "canonSize": 36401,
+      "totalSha256": "bd964caea1616cf378e6dc2985330d3e50bf4149b63332fda6241ba8c7f48907",
+      "canonSize": 38317,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 33209,
-          "canonSha256": "5026c5e66e46a403207812c1763f8970414d715d244b25cad928d47071491ba1"
+          "canonSize": 35125,
+          "canonSha256": "0bd2f7bb3709afd9db9aa5e80ebbbff98ad93641e77aa9b64cec3a1f1b1cad7d"
         },
         {
           "name": "h5p.json",
@@ -5059,14 +2802,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ff63e51295f0464baa1632d9c25448b3ac24f40fef2dedd3325d3131989fd701",
-      "canonSize": 25149,
+      "totalSha256": "7dcd675109a1c360caa1cb0166e120387ee0056a85f72f6a6c0b04f8fb4411ca",
+      "canonSize": 25762,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 21999,
-          "canonSha256": "53792a07783b1f1fdf6255f929d37f9669249560837d6a30b9c489e720fd9151"
+          "canonSize": 22612,
+          "canonSha256": "73c4722e1acd2d14451f18c0dd1ca6fd321f326649330c5985f77593d3b4fb31"
         },
         {
           "name": "h5p.json",
@@ -5079,14 +2822,14 @@
       "moduleKey": "InteractiveVideo",
       "format": "h5p",
       "error": null,
-      "totalSha256": "60325a02c4ec57dde14dde7a048e29c1f7eb286982a52d84ebdf06c856092fe5",
-      "canonSize": 14090,
+      "totalSha256": "8c5a84b40058296e0145364cd8a25a85b6cc24098d1a713c60be3dbd4140bd6b",
+      "canonSize": 17254,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 11956,
-          "canonSha256": "7568f70eab753c37903bca233104b1907314121b9117ffdc2f8146352d7c5734"
+          "canonSize": 15120,
+          "canonSha256": "9d83bec31da32758109e8f093105a1231d56ba0eacf0c9d9d71fd204fa9b4894"
         },
         {
           "name": "h5p.json",
@@ -5099,14 +2842,14 @@
       "moduleKey": "InteractiveVideo",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ecf00240e763d16e042d3dfb5952e21d25a4e1b0624cc457eb6654fb35a23f33",
-      "canonSize": 24807,
+      "totalSha256": "7fd9fe92f28cbac79079f56c60e0575959a337a4c2bdaff5789d844e75e3d3ce",
+      "canonSize": 29595,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 22585,
-          "canonSha256": "04558129a8e9bc0bc4f43607b8a56d5e397e63130f1b37031a80cf95af574843"
+          "canonSize": 27373,
+          "canonSha256": "a4a81afc341b935e93d503b40da567f64d8c103959468a06fddf555c27ffc523"
         },
         {
           "name": "h5p.json",
@@ -5199,14 +2942,14 @@
       "moduleKey": "MultipleChoice",
       "format": "h5p",
       "error": null,
-      "totalSha256": "68799eb2e42c1a20a56e74a451d18b30ae86cdb2e295c81156b67b056f02168d",
-      "canonSize": 5630,
+      "totalSha256": "863f67d5a5a0337710f59aa4087d4f6fc648612b80f2cec172f0c5f57bc15f74",
+      "canonSize": 5662,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4807,
-          "canonSha256": "e784a8ef1714216daf21e1af1ed96e42b08cd35957f0eb0afbc90b28de69575c"
+          "canonSize": 4839,
+          "canonSha256": "d7b89d2c76f36e00876268ec1a908130d600e848a0d3b32650e848516544ce8a"
         },
         {
           "name": "h5p.json",
@@ -5219,14 +2962,14 @@
       "moduleKey": "MultipleChoice",
       "format": "h5p",
       "error": null,
-      "totalSha256": "01fda7163693bf3ef8bcf6241dc9152722c11b17b84d5a08ae05bdccc4134d97",
-      "canonSize": 4210,
+      "totalSha256": "19f9397c17088356ee25a51f4274c62a3e101b7a4132dc0e5718af3cd81bf9d0",
+      "canonSize": 4242,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3285,
-          "canonSha256": "2382aced003dbcf2b09a639afbe4d44f43a64549ae6320f15eef0bcd78663ba9"
+          "canonSize": 3317,
+          "canonSha256": "4c8e2f447dd589dae0b24fd3e0213e504a026272ba2437f0c8f759f9a83afafc"
         },
         {
           "name": "h5p.json",
@@ -5239,14 +2982,14 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "b8fd0460c420ef26ed4071742bf76f41b95d9ad4881c5aa8b07a3b52d402245e",
-      "canonSize": 27209,
+      "totalSha256": "136036cdb3a67a0dc2cc44bf113b45cbd1e3f3315515d4751023072e65e76732",
+      "canonSize": 28891,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 25920,
-          "canonSha256": "3b1e4671716747b1ba39cbfdf96532de20c0fafbcbc654d0948b01c4073dd793"
+          "canonSize": 27602,
+          "canonSha256": "6681cb7c30d6adcc3ff5701d6ded182c378eae464e6dcd8f4cc3589d249114cf"
         },
         {
           "name": "h5p.json",
@@ -5259,14 +3002,14 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "452193760ad0541d4c3666c75f60a27855c0e756ca1a4be170710be681ce75a5",
-      "canonSize": 21108,
+      "totalSha256": "d043629b2bf0317e6ab2c595d8a8eb1b9e11fecf499210ee9a5a48a13bd4c636",
+      "canonSize": 22692,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19803,
-          "canonSha256": "b5b2e0e3a670dea3dcb00f37ec121c68eab9b6272d7d8b1861f2c397be1f321d"
+          "canonSize": 21387,
+          "canonSha256": "9d77199dd5ef08e2e054fc31c89e49f61723b06253a7dfcc6cf738dadda431ae"
         },
         {
           "name": "h5p.json",
@@ -5279,14 +3022,14 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "05b0b14deac407e583ee4197f1fa50211b0a0959eceb67a618bf114e94062f5e",
-      "canonSize": 19514,
+      "totalSha256": "c35307bef149dfe9e93b5f3da4eed6509cdf026152938ef5fa7fbf221862b736",
+      "canonSize": 21175,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 18213,
-          "canonSha256": "834aa62939dc102b7f32b56f12ad8c25b2ca88ee7743933d9d9548ad42897264"
+          "canonSize": 19874,
+          "canonSha256": "0f370b8eb37489b9379777671e8dba3bbe3f45139986df99032b127c03a6469a"
         },
         {
           "name": "h5p.json",
@@ -5299,14 +3042,14 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "cb4ed1910b3121721be6c6c5db28af9c8ae49feb46498ed1ffb826c71c085aea",
-      "canonSize": 15869,
+      "totalSha256": "a2550fc33b834dd7398bec6a5b19f4a3098b72488fd70eed895b18f4f07cef70",
+      "canonSize": 17787,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 14608,
-          "canonSha256": "484cceda1e05aedfa20729a2c92ddb2acb5866b5481a818dc47187d8fda1cbca"
+          "canonSize": 16526,
+          "canonSha256": "241630fb9c55950ad1fd1222565e80e570f45aa97b34ae11ca023a8b8311b693"
         },
         {
           "name": "h5p.json",
@@ -5319,14 +3062,14 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ed9728a009f950efc80c554e4e43591dfdeaa88639b503cacbd1cb36c89026df",
-      "canonSize": 26866,
+      "totalSha256": "399c8802254c1d32f97cc327f0fca56f6d3d1b56c2de4d6df3d0ce1706717911",
+      "canonSize": 28426,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 25585,
-          "canonSha256": "11b49ca675d16bc4f70412933e2f919bb0f709206dbd8015a315b8bddf8e2b56"
+          "canonSize": 27145,
+          "canonSha256": "db0f9dd16fd2f990a6f2b9e34bd929a924cdde53adef85c69e10ae2c40dd4209"
         },
         {
           "name": "h5p.json",
@@ -5339,14 +3082,14 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a3a299a86c54bedc69a116833466acb00bb8c30009e1bbc8574db0d8e27bc6b0",
-      "canonSize": 22755,
+      "totalSha256": "684f920c6cf17b894738eb6d4440b49dbaa67ace4bae06411a4ee24049be99a8",
+      "canonSize": 23526,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 21476,
-          "canonSha256": "5ee5412e185db035021b940995f3592c580b6c6a6c85f0ef40833effcd2ba46f"
+          "canonSize": 22247,
+          "canonSha256": "6a199b39580f3380ddf95cd15829a11e14324b0ed1d115b79d237e155f631126"
         },
         {
           "name": "h5p.json",
@@ -5359,14 +3102,14 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "99da085fe6d68213362a9233ca2510128ebaf9e1c4c09ad08accfe5dc5ecc9a5",
-      "canonSize": 20383,
+      "totalSha256": "cb7df8e8058de41a66848796da557558978a73b5e99f7ce86bc44f237bdd9c9f",
+      "canonSize": 21742,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19062,
-          "canonSha256": "fd2ddc86ab58fb839501ecc945a3e55d7f95fac881b4ffcdddc76955734c7aa9"
+          "canonSize": 20421,
+          "canonSha256": "6179dbc6b425484424791a34a8ac934eff2251daa1ab12ae01f6e9f65c539e13"
         },
         {
           "name": "h5p.json",
@@ -5379,14 +3122,14 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a2550813338bf8459ee77a88fb84f1687604ceea0a634dcd2774522012bbeb65",
-      "canonSize": 20965,
+      "totalSha256": "ac81e4b0365db2305e6092148872e5bc1f6d425532bf221983fb98b983016c96",
+      "canonSize": 21881,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19686,
-          "canonSha256": "60becae94fd253a9c2cedd3ca5327e6f9035fe2991335c750ed5164e240ebd11"
+          "canonSize": 20602,
+          "canonSha256": "c0f6343302e07cc2e8195fca7c0bfbf6f683be5fe7b8d3909886fee2f30da628"
         },
         {
           "name": "h5p.json",
@@ -5399,14 +3142,14 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "7ace7deb83490216362de68c047f99e3f931db00d83dc2a484c21a7cb3c9cb73",
-      "canonSize": 20056,
+      "totalSha256": "32bdd4daadfc109b79a9767069aacec0e0bce2e401bf8de6d8322d08b11f82c3",
+      "canonSize": 22005,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 18753,
-          "canonSha256": "c21c1ba5d1a3cdecbb5145a3945629751f230c5b8d8e66368673dc7967e19ceb"
+          "canonSize": 20702,
+          "canonSha256": "ecdbce40d61574b5c4874f83b7a3f37662b68ab66eb24c8c4d9d4aaa4235aba9"
         },
         {
           "name": "h5p.json",
@@ -5419,14 +3162,14 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "4232d3efd02c87fc11e52259af8019b667c46d14fded1f4adc7a78167f8ddb0a",
-      "canonSize": 20604,
+      "totalSha256": "62cfd6711c3bcaca75f3dcffc36fad434ff8583a985ad26fdb9e743b0c827c4d",
+      "canonSize": 22523,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19329,
-          "canonSha256": "0d5039ecac9018797e544ec1cb805749f041e534d707d497dc670838a9227a13"
+          "canonSize": 21248,
+          "canonSha256": "e4eb45b58feb202d513424d14a9448a7477b9741d9a1328452a857727a51bc25"
         },
         {
           "name": "h5p.json",
@@ -5439,14 +3182,14 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "cbb26c62cc355d0378850d24bc2d6f038657edfd8a74e248833d60f7d8316b04",
-      "canonSize": 51192,
+      "totalSha256": "f8dbfe75239c89f59f0ec0f1c8ade494a6ce82e589c0324bbd011e67cf154b07",
+      "canonSize": 53356,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 49883,
-          "canonSha256": "94b08f6a8d6279025c81d896797e91b58d11395f16f275a39894057953f2014e"
+          "canonSize": 52047,
+          "canonSha256": "36423a63f51c9ab0b525a7228c934c00eadbfd4505c87a8d806eb40eedb67cd3"
         },
         {
           "name": "h5p.json",
@@ -5459,14 +3202,14 @@
       "moduleKey": "QuizSetVF",
       "format": "h5p",
       "error": null,
-      "totalSha256": "67b2a8bf0d215b785ae06d31b34c63aa41c00fb3d71d2b4841f4ced445e03fe0",
-      "canonSize": 14317,
+      "totalSha256": "0e1648f5973e10fc17db4bdc7b1af6eb8e224579ca1bc1c79c43cbd2dbe4936c",
+      "canonSize": 17161,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 13026,
-          "canonSha256": "e9fa679e8e3815e936c8db8b9734a3b30f1af264c18b8ef15b9c950ae15aba21"
+          "canonSize": 15870,
+          "canonSha256": "f2b9a9c89ed0b80777a009cb5048219a3bf9b822fa4a4a5cc3eee278d911495d"
         },
         {
           "name": "h5p.json",
@@ -5479,14 +3222,14 @@
       "moduleKey": "QuizSetVF",
       "format": "h5p",
       "error": null,
-      "totalSha256": "84f1c335160bf79484d0d265beb4992fb7533fdfb505b259e930d16316911f5b",
-      "canonSize": 13261,
+      "totalSha256": "1f09b9c6b6fa9f6831c3e34f0aca01124bda39d3ce2a014cd72876f3fdf62631",
+      "canonSize": 16151,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 11942,
-          "canonSha256": "7c399b235492f2ac00b609824c24f7a19d277cbb6584cac0a9d6dab79fd08b62"
+          "canonSize": 14832,
+          "canonSha256": "c0ad4d05cd3f54873424bfb47dce7494ab9698a302a1a720304c242fb4897fef"
         },
         {
           "name": "h5p.json",
@@ -5499,14 +3242,14 @@
       "moduleKey": "SingleChoiceSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a21bfe01b310d7ac16b9d00d26764422eb7fd79fe1b8ce4b6c4b4649ce5160e7",
+      "totalSha256": "03ad023fb908fe5c6fdb33a751df1aadd11d589283ad489f0cc2c295868e2595",
       "canonSize": 4643,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 3812,
-          "canonSha256": "a5ba2d4dc07edf09382e7ea59ba8d84ee2ff1eccb7f46c7e478777a7f6b081b1"
+          "canonSha256": "e190d4f99158f45847f487c6fbbef7001f675fb766bc5dedae43a18751b0a0a9"
         },
         {
           "name": "h5p.json",
@@ -5519,14 +3262,14 @@
       "moduleKey": "SingleChoiceSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "c9ad9db2e0dbfbcfffd849639345e5cfb70d9a314984de9c914f3490fbf482f0",
+      "totalSha256": "6fd560a5f22214707bb63545f5d9cbcf31d21ca2d1114b576693ad5d37a31d12",
       "canonSize": 4159,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 3226,
-          "canonSha256": "b721bfb3269f5fac858308628023794d5fab78bc08261268b1af1f93ca609a0c"
+          "canonSha256": "7ce01e878a2b40a12ceef06d966a92bc92580e8a552e63e376869f70da5cd05e"
         },
         {
           "name": "h5p.json",
@@ -5539,14 +3282,14 @@
       "moduleKey": "SortParagraphs",
       "format": "h5p",
       "error": null,
-      "totalSha256": "10dcc98348c525e96ceb81763c8a4082b668b513c1a740f5eb257df89823864c",
-      "canonSize": 5680,
+      "totalSha256": "f1af54748587b53bc8a6e764e69da6ed0aa324b6facf73d6e7e26fc232d41119",
+      "canonSize": 5731,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4851,
-          "canonSha256": "fac781b017e3145830705e69911e40a2c0cf390f75a204e4fcfb86c63645663d"
+          "canonSize": 4902,
+          "canonSha256": "c55ddb31b83a0d2b400fe5c51448ffe77430819f75d179b5f9f799bb987f8623"
         },
         {
           "name": "h5p.json",
@@ -5559,14 +3302,14 @@
       "moduleKey": "SortParagraphs",
       "format": "h5p",
       "error": null,
-      "totalSha256": "86739318cb04329576479d576200cf210ceff17f5fc277a29298eb8026992451",
-      "canonSize": 4944,
+      "totalSha256": "3e398c90a53e76e2b217f5fef076fbb615311c750eceb7a74ed9972fe7e24273",
+      "canonSize": 4995,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4013,
-          "canonSha256": "d7dfe92e757f92b848c9ee749fdb359e2139d19ca93c50fbdc644f0067755adb"
+          "canonSize": 4064,
+          "canonSha256": "72b65687262a2231f55a0b50de761e5c4f8532d46b9d2741c3746b074ecfd323"
         },
         {
           "name": "h5p.json",
@@ -5579,14 +3322,14 @@
       "moduleKey": "Summary",
       "format": "h5p",
       "error": null,
-      "totalSha256": "d789e4eb2cfbc92d57792852042d1ac93b8ac85b57273037a64b5facb0a2320b",
-      "canonSize": 5461,
+      "totalSha256": "cdaf0f326877086473e41292d6099845c4a6bf0b59551ee1168fdbbe8e034d67",
+      "canonSize": 5354,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4646,
-          "canonSha256": "c2b829a428ea3c36ece4c699396bede23d08526cc06dcad5d7e2527925acf8a0"
+          "canonSize": 4539,
+          "canonSha256": "85fc5e684913115d046d411923688fc7fda262bfd9b3caedcd6ad5fc03fb77b8"
         },
         {
           "name": "h5p.json",
@@ -5599,14 +3342,14 @@
       "moduleKey": "Summary",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8197e101e17d6b3035755113007126417f782370ba58e96d7ef1f4e1648cc12a",
-      "canonSize": 4750,
+      "totalSha256": "7ec66217d1174f12bda93b3bb0d9ecdf8a02f20fb582ffd21deb2f1bb074635b",
+      "canonSize": 4643,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3833,
-          "canonSha256": "2c24ac0daf1395b392ec7c206497c1915e0c7465ce6087289ef4b58c771072ad"
+          "canonSize": 3726,
+          "canonSha256": "085c302d1179abf267fc3febea776043f5619b254acf89261180bf97fb8a704b"
         },
         {
           "name": "h5p.json",
@@ -5679,14 +3422,14 @@
       "moduleKey": "TrueFalse",
       "format": "h5p",
       "error": null,
-      "totalSha256": "21d78fe89c8117f558c3995517a7e594d916482e594ec895ab824429c2c93044",
-      "canonSize": 3203,
+      "totalSha256": "028634f70c55a566dfc84cbdd3722914bd9f62168d3e20e6e7e9e696fc73318b",
+      "canonSize": 2698,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2385,
-          "canonSha256": "ea8470ec8c75b1746418968a657b3b97e673256ad7494ab05cf6da7541fedd6d"
+          "canonSize": 1880,
+          "canonSha256": "ef49d8b58f370684d9af998e6d7ae72eac7f7a46783dd6555c92f126dd00b31e"
         },
         {
           "name": "h5p.json",
@@ -5699,14 +3442,14 @@
       "moduleKey": "TrueFalse",
       "format": "h5p",
       "error": null,
-      "totalSha256": "aedd8392c8d52b6b5be5b6a81e2856020b6a7454d6147fe5f595960c87f9a975",
-      "canonSize": 3230,
+      "totalSha256": "e42559a828896f2a42fb3089513844498fe5af901dc9010c67c4496aa40e942e",
+      "canonSize": 2749,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2310,
-          "canonSha256": "5265fc6c2d7d9566c16c871b0a482d094b6d7be85ec3af1cf2db39464719a7ac"
+          "canonSize": 1829,
+          "canonSha256": "49d3c7c5cb17dd50a59927a5d3df2784dd6e0fe7a5378b759ffef04bc799580b"
         },
         {
           "name": "h5p.json",
@@ -5719,14 +3462,14 @@
       "moduleKey": "TrueFalse",
       "format": "h5p",
       "error": null,
-      "totalSha256": "e999d3e3e4ed737f65bd46b9b17782e9ad1e4a112de2b5738d1bb91c0c5e38ae",
-      "canonSize": 3378,
+      "totalSha256": "b87ecb2b0fcfdbb292328917e1fd445dd5c644569248fc08afafc18422ecb272",
+      "canonSize": 2849,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2458,
-          "canonSha256": "32ab6f7341c6a97db2bfcb98984cb800fb72cc3cd192be6fc7c333b5d94a8fc2"
+          "canonSize": 1929,
+          "canonSha256": "8705f102e474f1fa1fdf3d9bd7a141f4cb7f30e49c3aa0607a06f7e3cdc97ab1"
         },
         {
           "name": "h5p.json",
@@ -5800,8 +3543,8 @@
       "kind": "mbz",
       "ok": true,
       "error": null,
-      "sha": "578de348792bc2a079094fb703b5f2ae2714325ab9a42c46fcb4db6c88ec42af",
-      "blobSize": 10789
+      "sha": "fa3edc55ccc0753d1835220133b35dddcf60e3e66ba7002510c77c95acc11a75",
+      "blobSize": 10822
     }
   ],
   "T5_moodle_snapshot": {
@@ -5851,8 +3594,8 @@
     "test_1.json": {
       "moduleKey": "test_elea",
       "format": "mbz",
-      "totalSha256": "578de348792bc2a079094fb703b5f2ae2714325ab9a42c46fcb4db6c88ec42af",
-      "canonSize": 82322,
+      "totalSha256": "fa3edc55ccc0753d1835220133b35dddcf60e3e66ba7002510c77c95acc11a75",
+      "canonSize": 82646,
       "fileCount": 28
     }
   }

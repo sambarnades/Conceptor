@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="124" moduleid="22713" modulename="bigbluebuttonbn" contextid="55559">
+  <bigbluebuttonbn id="124">
+    <type>0</type>
+    <course>340</course>
+    <name>Nom de la salle</name>
+    <intro></intro>
+    <introformat>1</introformat>
+    <meetingid>ca8b6900164156435f6b8333502df84d74df9af8</meetingid>
+    <moderatorpass>d9UxCl4cJVhk</moderatorpass>
+    <viewerpass>YOqlLbUvJG5B</viewerpass>
+    <wait>0</wait>
+    <record>1</record>
+    <recordallfromstart>0</recordallfromstart>
+    <recordhidebutton>0</recordhidebutton>
+    <welcome></welcome>
+    <voicebridge>0</voicebridge>
+    <openingtime>0</openingtime>
+    <closingtime>0</closingtime>
+    <timecreated>1788524331</timecreated>
+    <timemodified>0</timemodified>
+    <presentation></presentation>
+    <participants>[{"selectiontype":"all","selectionid":"all","role":"viewer"},{"selectiontype":"user","selectionid":"261","role":"moderator"},{"selectiontype":"role","selectionid":"1","role":"moderator"},{"selectiontype":"role","selectionid":"3","role":"moderator"},{"selectiontype":"role","selectionid":"4","role":"moderator"}]</participants>
+    <userlimit>0</userlimit>
+    <recordings_html>0</recordings_html>
+    <recordings_deleted>0</recordings_deleted>
+    <recordings_imported>0</recordings_imported>
+    <recordings_preview>1</recordings_preview>
+    <clienttype>0</clienttype>
+    <muteonstart>1</muteonstart>
+    <completionattendance>0</completionattendance>
+    <completionengagementchats>0</completionengagementchats>
+    <completionengagementtalks>0</completionengagementtalks>
+    <completionengagementraisehand>0</completionengagementraisehand>
+    <completionengagementpollvotes>0</completionengagementpollvotes>
+    <completionengagementemojis>0</completionengagementemojis>
+    <guestallowed>0</guestallowed>
+    <mustapproveuser>1</mustapproveuser>
+    <showpresentation>1</showpresentation>
+    <grade>100</grade>
+    <logs>
+    </logs>
+    <recordings>
+    </recordings>
+  </bigbluebuttonbn>
+</activity>

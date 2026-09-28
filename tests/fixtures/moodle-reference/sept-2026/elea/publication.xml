@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="10" moduleid="14025" modulename="publication" contextid="17753">
+  <publication id="10">
+    <name>Partage de fichiers : vos photos</name>
+    <intro>&lt;p&gt;Dépose tes photos de l’expérience.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <alwaysshowdescription>1</alwaysshowdescription>
+    <duedate>1791064800</duedate>
+    <allowsubmissionsfromdate>1790460000</allowsubmissionsfromdate>
+    <completionupload>1</completionupload>
+    <completionassignsubmission>0</completionassignsubmission>
+    <timemodified>0</timemodified>
+    <cutoffdate>0</cutoffdate>
+    <approvalfromdate>1790460000</approvalfromdate>
+    <approvaltodate>1791064800</approvaltodate>
+    <mode>0</mode>
+    <importfrom>-1</importfrom>
+    <obtainstudentapproval>0</obtainstudentapproval>
+    <maxfiles>5</maxfiles>
+    <maxbytes>5242880</maxbytes>
+    <allowedfiletypes></allowedfiletypes>
+    <obtainteacherapproval>0</obtainteacherapproval>
+    <autoimport>0</autoimport>
+    <groupapproval>0</groupapproval>
+    <notifystatuschange>3</notifystatuschange>
+    <notifyfilechange>2</notifyfilechange>
+    <availabilityrestriction>1</availabilityrestriction>
+  </publication>
+</activity>

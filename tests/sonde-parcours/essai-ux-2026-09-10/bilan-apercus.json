@@ -1,0 +1,45 @@
+{
+  "apercus": [
+    {
+      "module": "Timeline",
+      "iframe": true,
+      "texte": "1945Début des Trente Glorieuses Frise chronologique des Trente GlorieusesDébut des Trente GlorieusesCréation de la Sécurité socialeNaissance de la Ve République"
+    },
+    {
+      "module": "Glossary",
+      "iframe": true,
+      "texte": "Croissance économiqueAugmentation durable de la production de richesses dans un pays, mesurée par l'accroissement du produit intérieur brut (PIB).Elle s'accompa"
+    },
+    {
+      "module": "QuizSetQCM",
+      "iframe": true,
+      "texte": "Quel indicateur mesure principalement la croissance économique d’un pays ?Le taux d’inflationLe Produit Intérieur Brut (PIB)Le taux de chômageLe niveau de vie m"
+    },
+    {
+      "module": "Appariement",
+      "iframe": false,
+      "texte": "Appariement des secteurs économiques\n            \n            Associez chaque secteur économique à son évolution durant les Trente Glorieuses en utilisant les t"
+    },
+    {
+      "module": "SortParagraphs",
+      "iframe": true,
+      "texte": "Voici 8 paragraphes à remettre dans l’ordre pour expliquer comment s’est organisée la société salariale pendant les Trente Glorieuses. Rassemble-les de façon lo"
+    },
+    {
+      "module": "QuizSetVF",
+      "iframe": true,
+      "texte": "La croissance économique annuelle moyenne en France pendant les Trente Glorieuses (1945-1975) était supérieure à 5 %.VraiFauxVérifierLes inégalités sociales ent"
+    },
+    {
+      "module": "FillInTheBlanks",
+      "iframe": true,
+      "texte": "Complétez le texte ci-dessous en utilisant les mots-clés du glossaire pour décrire les crises des Trente Piteuses.Utilisez les termes suivants : crise pétrolièr"
+    },
+    {
+      "module": "Summary",
+      "iframe": true,
+      "texte": "Réponses correctes.Voici une synthèse des limites des Trente Glorieuses. Choisissez la phrase qui résume correctement cette période en utilisant les termes du g"
+    }
+  ],
+  "erreurs": []
+}

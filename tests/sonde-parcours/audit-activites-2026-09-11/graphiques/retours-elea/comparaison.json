@@ -1,0 +1,52 @@
+[
+  {
+    "fichier": "graphique-barres.h5p",
+    "titre": "graphique-barres modif",
+    "sha256": "c4f9869010308d6aa70bae6a6cf40179adb5955054f8ce2ba7ebb14745d21b59",
+    "champs_identiques": {
+      "graphMode": true,
+      "listOfTypes": true,
+      "figureDefinition": true
+    },
+    "semantics_identiques_vendor": true,
+    "bibliotheques": [
+      {
+        "nom": "H5P.Chart",
+        "version": "1.2.22"
+      },
+      {
+        "nom": "H5PEditor.ColorSelector",
+        "version": "1.3.1"
+      }
+    ],
+    "champs_non_natifs_retires": [
+      "behaviour",
+      "overallFeedback"
+    ]
+  },
+  {
+    "fichier": "graphique-secteurs.h5p",
+    "titre": "graphique-secteurs-modif",
+    "sha256": "96d1a403ae78708ce86987e6884971d2bd4adad73a09e5b3b1be290fe572e9e0",
+    "champs_identiques": {
+      "graphMode": true,
+      "listOfTypes": true,
+      "figureDefinition": true
+    },
+    "semantics_identiques_vendor": true,
+    "bibliotheques": [
+      {
+        "nom": "H5P.Chart",
+        "version": "1.2.22"
+      },
+      {
+        "nom": "H5PEditor.ColorSelector",
+        "version": "1.3.1"
+      }
+    ],
+    "champs_non_natifs_retires": [
+      "behaviour",
+      "overallFeedback"
+    ]
+  }
+]

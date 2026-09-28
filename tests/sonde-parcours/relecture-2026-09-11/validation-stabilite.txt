@@ -1,0 +1,122 @@
+  ✓ fr/1440 : le Test a son vrai nom traduit
+  ✓ fr/1440 : un seul titre principal visible
+  ✓ fr/1440 : cadre et pied d’édition restent dans l’écran
+  ✓ fr/1440 : Annuler ouvre un seul dialogue intégré
+  ✓ fr/1440 : les commandes du panneau sont suspendues
+  ✓ fr/1440 : le clavier reste dans la confirmation
+  ✓ fr/1440 : Échap garde la saisie et rend le focus à Annuler
+  ✓ fr/1440 : le mode actif ne redemande pas de confirmation
+  ✓ fr/1440 : refuser l’abandon conserve les données (.pc-editeur__fermer)
+  ✓ fr/1440 : refuser l’abandon conserve les données (.pc-lecture__navigation button:last-child)
+  ✓ fr/1440 : refuser l’abandon conserve les données (.pc-lecture__modes button:first-child)
+  ✓ fr/1440 : abandonner ferme sans seconde popup et sans sauvegarder
+  ✓ fr/1440 : enregistrer conserve le contenu et ouvre le simulateur
+  ✓ fr/1440 : l’aperçu permet de consulter les vraies questions
+  ✓ fr/1440 : les clics concurrents ne lancent qu’un téléchargement
+  ✓ fr/1440 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.mbz sans changement de géométrie, police ou opacité
+  ✓ fr/1440 : les commandes sont rendues disponibles
+  ✓ fr/1440 : parcours-document-caramel-202609110838-fr.docx sans changement de géométrie, police ou opacité
+  ✓ fr/1440 : les commandes sont rendues disponibles
+  ✓ fr/1440 : parcours-document-caramel-202609110838-fr.odt sans changement de géométrie, police ou opacité
+  ✓ fr/1440 : les commandes sont rendues disponibles
+  ✓ fr/1440 : parcours-document-caramel-202609110838-fr.pdf sans changement de géométrie, police ou opacité
+  ✓ fr/1440 : les commandes sont rendues disponibles
+  ✓ fr/1440 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.docx sans changement de géométrie, police ou opacité
+  ✓ fr/1440 : les commandes sont rendues disponibles
+  ✓ fr/1440 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.odt sans changement de géométrie, police ou opacité
+  ✓ fr/1440 : les commandes sont rendues disponibles
+  ✓ fr/1440 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.pdf sans changement de géométrie, police ou opacité
+  ✓ fr/1440 : les commandes sont rendues disponibles
+  ✓ fr/1440 : aucun dialogue natif ou échec JavaScript
+  ✓ le nom du Test est traduit dans les douze langues aussi hors parcours
+  ✓ fr/390 : le Test a son vrai nom traduit
+  ✓ fr/390 : un seul titre principal visible
+  ✓ fr/390 : cadre et pied d’édition restent dans l’écran
+  ✓ fr/390 : Annuler ouvre un seul dialogue intégré
+  ✓ fr/390 : les commandes du panneau sont suspendues
+  ✓ fr/390 : le clavier reste dans la confirmation
+  ✓ fr/390 : Échap garde la saisie et rend le focus à Annuler
+  ✓ fr/390 : le mode actif ne redemande pas de confirmation
+  ✓ fr/390 : refuser l’abandon conserve les données (.pc-editeur__fermer)
+  ✓ fr/390 : refuser l’abandon conserve les données (.pc-lecture__navigation button:last-child)
+  ✓ fr/390 : refuser l’abandon conserve les données (.pc-lecture__modes button:first-child)
+  ✓ fr/390 : abandonner ferme sans seconde popup et sans sauvegarder
+  ✓ fr/390 : enregistrer conserve le contenu et ouvre le simulateur
+  ✓ fr/390 : l’aperçu permet de consulter les vraies questions
+  ✓ fr/390 : les clics concurrents ne lancent qu’un téléchargement
+  ✓ fr/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.mbz sans changement de géométrie, police ou opacité
+  ✓ fr/390 : les commandes sont rendues disponibles
+  ✓ fr/390 : parcours-document-caramel-202609110838-fr.docx sans changement de géométrie, police ou opacité
+  ✓ fr/390 : les commandes sont rendues disponibles
+  ✓ fr/390 : parcours-document-caramel-202609110838-fr.odt sans changement de géométrie, police ou opacité
+  ✓ fr/390 : les commandes sont rendues disponibles
+  ✓ fr/390 : parcours-document-caramel-202609110838-fr.pdf sans changement de géométrie, police ou opacité
+  ✓ fr/390 : les commandes sont rendues disponibles
+  ✓ fr/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.docx sans changement de géométrie, police ou opacité
+  ✓ fr/390 : les commandes sont rendues disponibles
+  ✓ fr/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.odt sans changement de géométrie, police ou opacité
+  ✓ fr/390 : les commandes sont rendues disponibles
+  ✓ fr/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-fr.pdf sans changement de géométrie, police ou opacité
+  ✓ fr/390 : les commandes sont rendues disponibles
+  ✓ fr/390 : aucun dialogue natif ou échec JavaScript
+  ✓ ar/390 : le Test a son vrai nom traduit
+  ✓ ar/390 : un seul titre principal visible
+  ✓ ar/390 : cadre et pied d’édition restent dans l’écran
+  ✓ ar/390 : Annuler ouvre un seul dialogue intégré
+  ✓ ar/390 : les commandes du panneau sont suspendues
+  ✓ ar/390 : le clavier reste dans la confirmation
+  ✓ ar/390 : Échap garde la saisie et rend le focus à Annuler
+  ✓ ar/390 : le mode actif ne redemande pas de confirmation
+  ✓ ar/390 : refuser l’abandon conserve les données (.pc-editeur__fermer)
+  ✓ ar/390 : refuser l’abandon conserve les données (.pc-lecture__navigation button:last-child)
+  ✓ ar/390 : refuser l’abandon conserve les données (.pc-lecture__modes button:first-child)
+  ✓ ar/390 : abandonner ferme sans seconde popup et sans sauvegarder
+  ✓ ar/390 : enregistrer conserve le contenu et ouvre le simulateur
+  ✓ ar/390 : l’aperçu permet de consulter les vraies questions
+  ✓ ar/390 : les clics concurrents ne lancent qu’un téléchargement
+  ✓ ar/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-ar.mbz sans changement de géométrie, police ou opacité
+  ✓ ar/390 : les commandes sont rendues disponibles
+  ✓ ar/390 : parcours-document-caramel-202609110838-ar.docx sans changement de géométrie, police ou opacité
+  ✓ ar/390 : les commandes sont rendues disponibles
+  ✓ ar/390 : parcours-document-caramel-202609110838-ar.odt sans changement de géométrie, police ou opacité
+  ✓ ar/390 : les commandes sont rendues disponibles
+  ✓ ar/390 : parcours-document-caramel-202609110838-ar.pdf sans changement de géométrie, police ou opacité
+  ✓ ar/390 : les commandes sont rendues disponibles
+  ✓ ar/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-ar.docx sans changement de géométrie, police ou opacité
+  ✓ ar/390 : les commandes sont rendues disponibles
+  ✓ ar/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-ar.odt sans changement de géométrie, police ou opacité
+  ✓ ar/390 : les commandes sont rendues disponibles
+  ✓ ar/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-ar.pdf sans changement de géométrie, police ou opacité
+  ✓ ar/390 : les commandes sont rendues disponibles
+  ✓ ar/390 : aucun dialogue natif ou échec JavaScript
+  ✓ br/390 : le Test a son vrai nom traduit
+  ✓ br/390 : un seul titre principal visible
+  ✓ br/390 : cadre et pied d’édition restent dans l’écran
+  ✓ br/390 : Annuler ouvre un seul dialogue intégré
+  ✓ br/390 : les commandes du panneau sont suspendues
+  ✓ br/390 : le clavier reste dans la confirmation
+  ✓ br/390 : Échap garde la saisie et rend le focus à Annuler
+  ✓ br/390 : le mode actif ne redemande pas de confirmation
+  ✓ br/390 : refuser l’abandon conserve les données (.pc-editeur__fermer)
+  ✓ br/390 : refuser l’abandon conserve les données (.pc-lecture__navigation button:last-child)
+  ✓ br/390 : refuser l’abandon conserve les données (.pc-lecture__modes button:first-child)
+  ✓ br/390 : abandonner ferme sans seconde popup et sans sauvegarder
+  ✓ br/390 : enregistrer conserve le contenu et ouvre le simulateur
+  ✓ br/390 : l’aperçu permet de consulter les vraies questions
+  ✓ br/390 : les clics concurrents ne lancent qu’un téléchargement
+  ✓ br/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-br.mbz sans changement de géométrie, police ou opacité
+  ✓ br/390 : les commandes sont rendues disponibles
+  ✓ br/390 : parcours-document-caramel-202609110838-br.docx sans changement de géométrie, police ou opacité
+  ✓ br/390 : les commandes sont rendues disponibles
+  ✓ br/390 : parcours-document-caramel-202609110838-br.odt sans changement de géométrie, police ou opacité
+  ✓ br/390 : les commandes sont rendues disponibles
+  ✓ br/390 : parcours-document-caramel-202609110838-br.pdf sans changement de géométrie, police ou opacité
+  ✓ br/390 : les commandes sont rendues disponibles
+  ✓ br/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-br.docx sans changement de géométrie, police ou opacité
+  ✓ br/390 : les commandes sont rendues disponibles
+  ✓ br/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-br.odt sans changement de géométrie, police ou opacité
+  ✓ br/390 : les commandes sont rendues disponibles
+  ✓ br/390 : parcours-l-italie-au-xxe-siecle-caramel-202609110838-br.pdf sans changement de géométrie, police ou opacité
+  ✓ br/390 : les commandes sont rendues disponibles
+  ✓ br/390 : aucun dialogue natif ou échec JavaScript
+Stabilité parcours : 121 PASS / 0 FAIL

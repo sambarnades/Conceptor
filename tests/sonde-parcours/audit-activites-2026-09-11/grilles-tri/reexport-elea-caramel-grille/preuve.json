@@ -1,0 +1,56 @@
+{
+  "activiteElea": 13847,
+  "h5pId": 401,
+  "titreReexport": "Grille Caramel — relue dans Éléa",
+  "source": "tests/sonde-parcours/audit-activites-2026-09-11/grilles-tri/grille-options.h5p",
+  "reexport": "find-the-words-401-401.h5p",
+  "sha256Source": "28a40fd27283b453f8222831610aeb085e87bded04245d39321b66a5eeed3330",
+  "sha256Reexport": "4dfdc5881aed0ede7c1878a6a766e9bc0aa2ec14095eb646684e9cee41e88ded",
+  "behaviourIdentique": true,
+  "behaviourSource": {
+    "preferOverlap": true,
+    "showVocabulary": false,
+    "enableShowSolution": true,
+    "enableRetry": true,
+    "orientations": {
+      "horizontal": true,
+      "horizontalBack": false,
+      "vertical": false,
+      "verticalUp": false,
+      "diagonal": false,
+      "diagonalBack": false,
+      "diagonalUp": false,
+      "diagonalUpBack": false
+    },
+    "fillPool": "Z"
+  },
+  "behaviourReexport": {
+    "preferOverlap": true,
+    "showVocabulary": false,
+    "enableShowSolution": true,
+    "enableRetry": true,
+    "orientations": {
+      "horizontal": true,
+      "horizontalBack": false,
+      "vertical": false,
+      "verticalUp": false,
+      "diagonal": false,
+      "diagonalBack": false,
+      "diagonalUp": false,
+      "diagonalUpBack": false
+    },
+    "fillPool": "Z"
+  },
+  "bibliotheques": {
+    "FontAwesome-4.5": "4.5.6",
+    "H5P.FindTheWords-1.4": "1.4.4",
+    "H5P.FontIcons-1.0": "1.0.11",
+    "H5P.JoubelUI-1.3": "1.3.45",
+    "H5P.Timer-0.4": "0.4.2",
+    "H5P.Transition-1.0": "1.0.4"
+  },
+  "contenusConserves": {
+    "wordList": true,
+    "taskDescription": true
+  }
+}

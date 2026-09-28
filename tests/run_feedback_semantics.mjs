@@ -22,7 +22,7 @@
  *      fautive, donc sans ce cas A et B resteraient VERTS correctif retiré — soit un
  *      garde-fou qui ne garde plus rien. Il tient lieu de contre-épreuve embarquée.
  *
- * Lancement :  node tests/run_feedback_semantics.mjs [--verbeux]
+ * Lancement :  node tests/run_feedback_semantics.mjs [--verbeux] [--modules=MultipleChoice,QuizSet,QuizSetQCM]
  * Sortie : 0 si conforme, 1 sinon.
  */
 import { readFile } from 'node:fs/promises';
@@ -159,7 +159,9 @@ for (const cas of CAS_SYNTHETIQUES) {
     }
 }
 
-const fixtures = await listFixtures('h5p');
+const selection=(process.argv.find(a=>a.startsWith('--modules='))||'').slice(10).split(',').filter(Boolean);
+const fixtures = (await listFixtures('h5p')).filter(f=>!selection.length || selection.includes(f.moduleKey));
+if (!fixtures.length) throw Error('Aucune fixture pour les modules demandés.');
 const echecsStructure = [];
 const echecsConservation = [];
 let examinees = 0, avecRetours = 0, retoursVerifies = 0;

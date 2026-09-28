@@ -248,8 +248,74 @@ async function runStep1_FormatAll() {
 
 async function runStep2_ContentIntegrity() {
     console.group('Etape 2 : Integrite du contenu');
+    const trous = { taskDescription: 'CONSIGNE_UNIQUE', questions: ['France : *Paris*.'] };
+    for (const [module, data] of [
+        ['QuizSet', { questions: [{ library: 'H5P.Blanks 1.14', params: trous }] }],
+        ['CoursePresentation', { slides: [{ type: 'quiz', exercise: { library: 'H5P.Blanks 1.14', ...trous } }] }],
+        ['InteractiveBook', { chapters: [{ title: 'Une page', content: [{ type: 'exercise', library: 'H5P.Blanks 1.14', ...trous }] }] }]
+    ]) {
+        const result = await formatContentForDocument(module, data);
+        assert(result.sections.filter(s => s.text === 'CONSIGNE_UNIQUE').length === 1, `${module} : une seule consigne pour le texte à trous imbriqué`);
+        assert(result.sections.every((s, i, all) => s.type !== 'separator' || (all[i + 1] && all[i + 1].type !== 'pageBreak')), `${module} : aucun espace vide isolé avant le corrigé ou en fin de document`);
+    }
+    // Régression : contenu pédagogique perdu alors que l'éditeur l'avait enregistré.
+    const essay = {
+        taskDescription: 'Explique le phénomène.',
+        solution: { introduction: 'Une réponse possible', sample: 'REPONSE_MODELE_COMPLETE' },
+        keywords: [{ keyword: 'Énergie', alternatives: ['Travail'], options: { points: 0, occurrences: 2, feedbackIncluded: 'RETOUR_PRESENT', feedbackMissed: 'RETOUR_ABSENT' } }]
+    };
+    const drag = { taskDescription: 'Complète.', textField: 'Un *triangle:INDICE_SECRET\\+RETOUR_JUSTE\\-RETOUR_FAUX* et un *rapport 1/2*.', distractors: '*cercle* *carré*' };
+    const quiz = { title: 'Questions', questions: [{ library: 'H5P.DragText 1.10', params: drag }, { library: 'H5P.Essay 1.5', params: essay }] };
+    for (const [module, data] of [['Essay', essay], ['DragTheWords', drag], ['QuizSet', quiz]]) {
+        const formatted = await formatContentForDocument(module, data, { keepLatex: true });
+        const split = formatted.sections.findIndex(s => s.type === 'pageBreak');
+        const student = JSON.stringify(formatted.sections.slice(0, split));
+        const teacher = JSON.stringify(formatted.sections.slice(split));
+        if (module !== 'DragTheWords') {
+            assert(!student.includes('REPONSE_MODELE_COMPLETE') && teacher.includes('REPONSE_MODELE_COMPLETE') && teacher.includes('Travail') && teacher.includes('RETOUR_PRESENT') && teacher.includes('RETOUR_ABSENT'), `${module} : corrigé rédigé, variantes et retours dans la partie enseignant`);
+            assert(teacher.includes(' : 0;') && teacher.includes(' : 2'), `${module} : pondération nulle et occurrences conservées`);
+        }
+        if (module !== 'Essay') {
+            assert(student.includes('cercle') && student.includes('carré') && student.includes('rapport 1/2'), `${module} : distracteurs et barre oblique littérale dans les choix`);
+            assert(student.includes('INDICE_SECRET') && !student.includes('RETOUR_JUSTE') && !student.includes('RETOUR_FAUX') && teacher.includes('[triangle]') && teacher.includes('RETOUR_JUSTE') && teacher.includes('RETOUR_FAUX'), `${module} : les marqueurs de feedback ne contaminent pas les réponses papier`);
+        }
+    }
+    const { normalizeDataForEditor, denormalizeDataForSave } = await import('../js/editor/content-detector.js');
+    const { processH5PContent } = await import('../js/h5p/processors/index.js');
+    const edited = normalizeDataForEditor(drag, 'DragTheWords');
+    edited.distractors = '*ellipse*';
+    const saved = denormalizeDataForSave(edited, 'DragTheWords');
+    const packaged = await processH5PContent('DragTheWords', saved);
+    assert(packaged.distractors === '*ellipse*', 'Le distracteur modifié traverse la sauvegarde et le processeur autonome');
+
     _ctx = { step: 2, stepName: 'Contenu', file: '', module: '', source: '' };
     const t0 = performance.now();
+
+    for (const module of ['Flashcards', 'DialogCards']) {
+        const card = { text: 'RECTO', answer: 'VERSO', tip: 'INDICE', tips: {front:'INDICE',back:'VERSO_INDICE'}, image: {path:'images/carte.png',copyright:{license:'CC BY',author:'CREDIT_CONSERVE'}} };
+        const result = await formatContentForDocument(module, {description:'CONSIGNE_CONSERVEE', [module==='Flashcards'?'cards':'dialogs']:[card]});
+        const text = JSON.stringify(result);
+        assert(text.includes('CONSIGNE_CONSERVEE') && text.includes('CREDIT_CONSERVE'), `[2.Cartes] ${module} : consigne et crédits sur papier`);
+        assert(result.sections.filter(s=>s.type==='flashcardTable').map(s=>s.side).join(',')==='recto,verso', `[2.Cartes] ${module} : paire recto/verso contiguë`);
+    }
+    {
+        const result = await formatContentForDocument('Summary', {intro:'Choisir', summaries:[{summary:['BONNE_REPONSE','DISTRACTEUR'],tip:'INDICE_GROUPE'}]});
+        const end = result.sections.findIndex(s=>s.type==='pageBreak');
+        assert(JSON.stringify(result.sections.slice(0,end)).includes('INDICE_GROUPE'), '[2.Résumé] Indice dans la feuille élève');
+        assert(!JSON.stringify(result.sections.slice(end)).includes('INDICE_GROUPE'), '[2.Résumé] Indice non ajouté comme correction');
+        assert(result.sections.find(s => s.type === 'checkbox').text === 'A. DISTRACTEUR', '[2.Résumé] La réponse native ne reste pas systématiquement A');
+        assert(result.sections.some(s => s.style === 'correctAnswer' && s.text.includes('B. BONNE_REPONSE')), '[2.Résumé] Lettre du corrigé alignée sur la fiche élève');
+        const native = await fetch('/tests/sonde-parcours/audit-activites-2026-09-11/lot-utilisateur-26/retours-elea/Summary/content.json').then(r => r.json());
+        const { default: processor } = await import('../js/h5p/processors/Summary.js');
+        const before = JSON.stringify(native);
+        const packaged = processor.process(native);
+        assert(packaged.summaries[0].subContentId === native.summaries[0].subContentId, '[2.Résumé] UUID natif conservé au réexport');
+        assert(packaged.summaries[0].tip.includes('RELU'), '[2.Résumé] Retouche utilisateur conservée');
+        assert(!('behaviour' in packaged), '[2.Résumé] Pas de comportement absent des semantics natives');
+        assert(processor.process({...native, tipButtonLabel:'AIDE PERSONNALISEE'}).tipButtonLabel === 'AIDE PERSONNALISEE', '[2.Résumé] Libellé natif personnalisé conservé');
+        assert(JSON.stringify(native) === before, '[2.Résumé] Source native non mutée');
+
+    }
 
     // Fixture de test avec caracteres speciaux
     const specialChars = 'àéèêçôùîë «guillemets» – tiret — cadratin … œ æ';
@@ -600,6 +666,28 @@ async function runStep4_ImageAndChart() {
         assert(false, `[4j.PieChart] Exception`);
     }
 
+    // Contre-exemples : graduations décimales autrefois toutes nulles,
+    // légende et libellés longs autrefois coupés au bord du canvas.
+    const originalFillText = CanvasRenderingContext2D.prototype.fillText;
+    const drawn = [];
+    CanvasRenderingContext2D.prototype.fillText = function(text, x, y, ...rest) {
+        drawn.push({ text: String(text), x, y, height: this.canvas.height });
+        return originalFillText.call(this, text, x, y, ...rest);
+    };
+    try {
+        generateChartImage({ graphMode: 'barChart', listOfTypes: [{ text: 'A', value: 0.0001 }, { text: 'B', value: 0.0012 }] });
+        const ticks = drawn.filter(d => d.x === 62).map(d => Number(d.text));
+        assert(ticks.length === 6 && ticks.filter(v => v > 0).length === 5 && ticks.at(-1) === 0.0012,
+            '[4k.Graduations] Les petites valeurs gardent des graduations distinctes', { ticks });
+        for (const graphMode of ['pieChart', 'barChart']) {
+            drawn.length = 0;
+            const result = generateChartImage({ graphMode, listOfTypes: Array.from({ length: 20 }, (_, i) => ({ text: `Libellé ${i + 1} suffisamment long pour éprouver le retour à la ligne`, value: i + 1 })) });
+            assert(result.height > 500 && drawn.every(d => d.y >= 0 && d.y + 10 <= d.height),
+                `[4l.Libellés] ${graphMode} réserve la place des vingt libellés longs`, { height: result.height });
+        }
+    } finally {
+        CanvasRenderingContext2D.prototype.fillText = originalFillText;
+    }
     recordTiming('Utilitaires', 'Image + Chart', performance.now() - t0);
     console.groupEnd();
 }

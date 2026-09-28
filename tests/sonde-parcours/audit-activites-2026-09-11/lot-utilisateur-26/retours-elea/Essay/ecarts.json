@@ -1,0 +1,77 @@
+[
+  {
+    "chemin": "behaviour.enableSolutionsButton",
+    "type": "retrait_natif",
+    "avant": true
+  },
+  {
+    "chemin": "keywords[0].keyword",
+    "type": "modification",
+    "avant": "énergie",
+    "apres": "énergie RELU"
+  },
+  {
+    "chemin": "keywords[0].options.feedbackIncludedWord",
+    "type": "ajout_natif",
+    "apres": "keyword"
+  },
+  {
+    "chemin": "keywords[0].options.feedbackMissedWord",
+    "type": "ajout_natif",
+    "apres": "none"
+  },
+  {
+    "chemin": "media.type.metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "media.type.params.contentName",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.params.decorative",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "media.type.params.expandImage",
+    "type": "ajout_natif",
+    "apres": "Agrandir l&#039;image"
+  },
+  {
+    "chemin": "media.type.params.minimizeImage",
+    "type": "ajout_natif",
+    "apres": "Réduire l&#039;image"
+  },
+  {
+    "chemin": "overallFeedback[0].feedback",
+    "type": "normalisation_html",
+    "avant": "C'est un début. Pense à bien réviser les événements de l'été 1789 pour identifier comment le pouvoir a changé de mains.",
+    "apres": "C&#039;est un début. Pense à bien réviser les événements de l&#039;été 1789 pour identifier comment le pouvoir a changé de mains."
+  },
+  {
+    "chemin": "overallFeedback[1].feedback",
+    "type": "normalisation_html",
+    "avant": "Tu commences à cerner le sujet, mais il te manque les termes techniques essentiels. Relis les définitions de 'sujet' et de 'citoyen' pour enrichir ton texte.",
+    "apres": "Tu commences à cerner le sujet, mais il te manque les termes techniques essentiels. Relis les définitions de &#039;sujet&#039; et de &#039;citoyen&#039; pour enrichir ton texte."
+  },
+  {
+    "chemin": "overallFeedback[2].feedback",
+    "type": "normalisation_html",
+    "avant": "Ton récit progresse ! Tu as compris que l'année 1789 est une rupture. Essaie d'intégrer davantage les notions de droit et de souveraineté pour gagner en précision.",
+    "apres": "Ton récit progresse ! Tu as compris que l&#039;année 1789 est une rupture. Essaie d&#039;intégrer davantage les notions de droit et de souveraineté pour gagner en précision."
+  },
+  {
+    "chemin": "overallFeedback[3].feedback",
+    "type": "normalisation_html",
+    "avant": "Bon travail ! Tu maîtrises les bases de la période. Tu as su évoquer la fin de l'Ancien Régime et l'émergence de nouveaux acteurs politiques.",
+    "apres": "Bon travail ! Tu maîtrises les bases de la période. Tu as su évoquer la fin de l&#039;Ancien Régime et l&#039;émergence de nouveaux acteurs politiques."
+  }
+]

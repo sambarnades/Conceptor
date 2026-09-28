@@ -10,8 +10,9 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
-import { latexToUnicode } from '../json-healer.js';
+import { latexToUnicode, normaliserLeurresDragText } from '../json-healer.js';
 import { buildMediaStructure } from '../image-manager.js';
+import { prepareQuestionMedia } from '../question-media.js';
 
 
 /**
@@ -48,12 +49,17 @@ function libelles() {
 
 export default {
     process: (jsonObj) => {
+        const media = prepareQuestionMedia(jsonObj);
+
         return {
             taskDescription: formatTextToHtml(jsonObj.taskDescription || ""),
             textField: cleanDragTextTextField(jsonObj.textField),
-            checkAnswer: translations.h5p_check_answer || "Vérifier",
-            tryAgain: translations.h5p_try_again || "Recommencer",
-            showSolution: translations.h5p_show_solution || "Afficher la solution",
+            // Le réparateur normalise déjà les leurres rendus en liste ; la garde reste
+            // ici pour tout contenu arrivé par un autre chemin (import, éditeur).
+            ...(jsonObj.distractors ? { distractors: cleanDragTextTextField(normaliserLeurresDragText(jsonObj.distractors, jsonObj.textField)) } : {}),
+            checkAnswer: jsonObj.checkAnswer ?? (translations.h5p_check_answer || "Vérifier"),
+            tryAgain: jsonObj.tryAgain ?? (translations.h5p_try_again || "Recommencer"),
+            showSolution: jsonObj.showSolution ?? (translations.h5p_show_solution || "Afficher la solution"),
             behaviour: {
                 enableRetry: true,
                 enableSolutionsButton: true,
@@ -66,8 +72,8 @@ export default {
                 to: 100,
                 feedback: translations.h5p_drag_words_score_feedback || "Score : @score sur @total."
             }],
-            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
-            ...libelles()
+            media,
+            ...Object.fromEntries(Object.entries(libelles()).map(([key, fallback]) => [key, jsonObj[key] ?? fallback]))
         };
     },
 
@@ -78,18 +84,22 @@ export default {
         if (question.params.textField) {
             question.params.textField = cleanDragTextTextField(question.params.textField);
         }
+        if (question.params.distractors) {
+            question.params.distractors = cleanDragTextTextField(normaliserLeurresDragText(question.params.distractors, question.params.textField));
+        }
         // Mêmes libellés que l'activité autonome (cf. libelles()) : sans ça, la
         // question intégrée affichait « Submit », « Correct! », « Show tip »… en anglais.
-        Object.assign(question.params, libelles(), {
+        const defaults = {
+            ...libelles(),
             checkAnswer: translations.h5p_check_answer || "Vérifier",
             tryAgain: translations.h5p_try_again || "Recommencer",
             showSolution: translations.h5p_show_solution || "Afficher la solution"
-        });
+        };
+        for (const [key,value] of Object.entries(defaults)) question.params[key] ??= value;
         question.params.behaviour = {
             enableRetry: true,
             enableSolutionsButton: true,
             instantFeedback: false,
-            randomAccounts: true, // Note from original: often 'randomAccounts' or 'randomizableAnswers' depending on version
             ...question.params.behaviour
         };
         return question;
@@ -107,7 +117,7 @@ export default {
  */
 function cleanDragTextTextField(text) {
     if (!text) return "";
-    let cleaned = text;
+    let cleaned = Array.isArray(text) ? text.join('\n\n') : String(text);
 
     // 1. Supprimer les wrappers \( et \) parasites (texte entier)
     if (cleaned.trim().startsWith('\\(') && cleaned.trim().endsWith('\\)')) {
@@ -130,4 +140,3 @@ function cleanDragTextTextField(text) {
 
     return cleaned;
 }
-

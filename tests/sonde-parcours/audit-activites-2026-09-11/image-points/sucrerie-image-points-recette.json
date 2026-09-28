@@ -1,0 +1,540 @@
+[
+  {
+    "id": "image-points-icones",
+    "contenu": {
+      "image": {
+        "path": "images/recette-zones.png",
+        "mime": "image/png",
+        "copyright": {
+          "license": "PD",
+          "version": "CC0 1.0",
+          "title": "Trois zones de recette"
+        },
+        "width": 800,
+        "height": 450
+      },
+      "backgroundImageAltText": "Trois rectangles RELU Sucrerie",
+      "globalIconType": "icon",
+      "globalIcon": "plus",
+      "globalColor": "#336699",
+      "hotspots": [
+        {
+          "position": {
+            "x": 20,
+            "y": 47,
+            "legacyPositioning": false
+          },
+          "alwaysFullscreen": false,
+          "hotspotIconType": "icon",
+          "hotspotIcon": "check",
+          "hotspotColor": "#cc3300",
+          "content": [
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "<p>Tu as ouvert la zone 1.</p>",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "Zone 1",
+                "license": "PD",
+                "contentType": "Text"
+              },
+              "subContentId": "129dad77-a035-54e8-90ca-504546b49b6d"
+            },
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "Deuxième paragraphe RELU",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Sans titre Text"
+              },
+              "subContentId": "11111111-1111-4111-8111-111111111111"
+            }
+          ],
+          "header": "Premier point RELU"
+        },
+        {
+          "position": {
+            "x": 50,
+            "y": 47,
+            "legacyPositioning": false
+          },
+          "alwaysFullscreen": false,
+          "hotspotIconType": "default",
+          "hotspotIcon": "plus",
+          "hotspotColor": "#981d99",
+          "content": [
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "<p>Tu as ouvert la zone 2.</p>",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "Zone 2",
+                "license": "PD",
+                "contentType": "Text"
+              },
+              "subContentId": "5b9e8abe-d781-50fd-bd1e-5dead675ba63"
+            },
+            {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "file": {
+                  "path": "images/recette-zones.png",
+                  "mime": "image/png",
+                  "width": 800,
+                  "height": 450,
+                  "copyright": {
+                    "license": "PD",
+                    "version": "CC0 1.0",
+                    "title": "Trois zones de recette"
+                  }
+                },
+                "alt": "Trois rectangles RELU",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                },
+                "decorative": false
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Sans titre Image"
+              },
+              "subContentId": "22222222-2222-4222-8222-222222222222"
+            },
+            {
+              "library": "H5P.Audio 1.5",
+              "params": {
+                "playerMode": "full",
+                "fitToWrapper": false,
+                "controls": true,
+                "autoplay": false,
+                "files": [
+                  {
+                    "path": "audios/audio-d913246e.wav",
+                    "mime": "audio/wav"
+                  }
+                ],
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "",
+                "license": "U",
+                "contentType": "Image"
+              },
+              "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09"
+            }
+          ],
+          "header": "Zone 2"
+        },
+        {
+          "position": {
+            "x": 80,
+            "y": 47,
+            "legacyPositioning": false
+          },
+          "alwaysFullscreen": true,
+          "hotspotIconType": "default",
+          "hotspotIcon": "plus",
+          "hotspotColor": "#981d99",
+          "content": [
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "<p>Tu as ouvert la zone 3.</p>",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "Zone 3",
+                "license": "PD",
+                "contentType": "Text"
+              },
+              "subContentId": "dc0a4d8b-400e-574f-8010-b21cd772621e"
+            },
+            {
+              "library": "H5P.Video 1.6",
+              "params": {
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": true
+                },
+                "sources": [
+                  {
+                    "path": "videos/video-f2c92659.webm",
+                    "mime": "video/webm"
+                  }
+                ],
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false
+              },
+              "metadata": {
+                "title": "",
+                "license": "U",
+                "contentType": "Image"
+              },
+              "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09"
+            }
+          ],
+          "header": "Zone 3"
+        }
+      ],
+      "untitledHotspotLabel": "Point sans titre",
+      "closeButtonLabel": "Fermer",
+      "containsAudioVideoLabel": "Contient de l&#039;audio ou de la vidéo",
+      "title": "Image à points — icones"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "image-points-image",
+    "contenu": {
+      "image": {
+        "path": "images/recette-zones.png",
+        "mime": "image/png",
+        "copyright": {
+          "license": "PD",
+          "version": "CC0 1.0",
+          "title": "Trois zones de recette"
+        },
+        "width": 800,
+        "height": 450
+      },
+      "backgroundImageAltText": "Trois rectangles RELU Sucrerie",
+      "globalIconType": "icon",
+      "globalIcon": "plus",
+      "globalIconImage": {
+        "path": "images/recette-zones.png",
+        "mime": "image/png",
+        "copyright": {
+          "license": "PD",
+          "version": "CC0 1.0",
+          "title": "Trois zones de recette"
+        },
+        "width": 800,
+        "height": 450
+      },
+      "globalColor": "#336699",
+      "hotspots": [
+        {
+          "position": {
+            "x": 20,
+            "y": 47,
+            "legacyPositioning": false
+          },
+          "alwaysFullscreen": true,
+          "hotspotIconType": "image",
+          "hotspotIcon": "plus",
+          "hotspotColor": "#981d99",
+          "content": [
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "<p>Tu as ouvert la zone 1.</p>",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "Zone 1",
+                "license": "PD",
+                "contentType": "Text"
+              },
+              "subContentId": "129dad77-a035-54e8-90ca-504546b49b6d"
+            },
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "Deuxième paragraphe RELU",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Sans titre Text"
+              },
+              "subContentId": "11111111-1111-4111-8111-111111111111"
+            }
+          ],
+          "header": "Premier point RELU",
+          "hotspotIconImage": {
+            "path": "images/recette-zones.png",
+            "mime": "image/png",
+            "width": 800,
+            "height": 450,
+            "copyright": {
+              "license": "PD",
+              "version": "CC0 1.0",
+              "title": "Trois zones de recette"
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 50,
+            "y": 47,
+            "legacyPositioning": false
+          },
+          "alwaysFullscreen": false,
+          "hotspotIconType": "default",
+          "hotspotIcon": "plus",
+          "hotspotColor": "#981d99",
+          "content": [
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "<p>Tu as ouvert la zone 2.</p>",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "Zone 2",
+                "license": "PD",
+                "contentType": "Text"
+              },
+              "subContentId": "5b9e8abe-d781-50fd-bd1e-5dead675ba63"
+            },
+            {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "file": {
+                  "path": "images/recette-zones.png",
+                  "mime": "image/png",
+                  "width": 800,
+                  "height": 450,
+                  "copyright": {
+                    "license": "PD",
+                    "version": "CC0 1.0",
+                    "title": "Trois zones de recette"
+                  }
+                },
+                "alt": "Trois rectangles RELU",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                },
+                "decorative": false
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Sans titre Image"
+              },
+              "subContentId": "22222222-2222-4222-8222-222222222222"
+            },
+            {
+              "library": "H5P.Audio 1.5",
+              "params": {
+                "playerMode": "full",
+                "fitToWrapper": false,
+                "controls": true,
+                "autoplay": false,
+                "files": [
+                  {
+                    "path": "audios/audio-d913246e.wav",
+                    "mime": "audio/wav"
+                  }
+                ],
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "",
+                "license": "U",
+                "contentType": "Image"
+              },
+              "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09"
+            }
+          ],
+          "header": "Zone 2"
+        },
+        {
+          "position": {
+            "x": 80,
+            "y": 47,
+            "legacyPositioning": false
+          },
+          "alwaysFullscreen": true,
+          "hotspotIconType": "default",
+          "hotspotIcon": "plus",
+          "hotspotColor": "#981d99",
+          "content": [
+            {
+              "library": "H5P.Text 1.1",
+              "params": {
+                "text": "<p>Tu as ouvert la zone 3.</p>",
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false,
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": false
+                }
+              },
+              "metadata": {
+                "title": "Zone 3",
+                "license": "PD",
+                "contentType": "Text"
+              },
+              "subContentId": "dc0a4d8b-400e-574f-8010-b21cd772621e"
+            },
+            {
+              "library": "H5P.Video 1.6",
+              "params": {
+                "visuals": {
+                  "controls": true,
+                  "fit": true
+                },
+                "playback": {
+                  "autoplay": false,
+                  "loop": true
+                },
+                "sources": [
+                  {
+                    "path": "videos/video-f2c92659.webm",
+                    "mime": "video/webm"
+                  }
+                ],
+                "controls": true,
+                "autoplay": false,
+                "fitToWrapper": false
+              },
+              "metadata": {
+                "title": "",
+                "license": "U",
+                "contentType": "Image"
+              },
+              "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09"
+            }
+          ],
+          "header": "Zone 3"
+        }
+      ],
+      "untitledHotspotLabel": "Point sans titre",
+      "closeButtonLabel": "Fermer",
+      "containsAudioVideoLabel": "Contient de l&#039;audio ou de la vidéo",
+      "title": "Image à points — image"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

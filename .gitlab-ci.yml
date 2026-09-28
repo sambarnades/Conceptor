@@ -25,7 +25,7 @@ validate:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
     - if: $CI_MERGE_REQUEST_ID
   script:
-    - echo "→ Validation JSON des 11 locales"
+    - echo "→ Validation JSON des 12 locales"
     - |
       set -eu
       for f in js/locales/*.json; do
@@ -40,8 +40,50 @@ validate:
     # content.json écrite par le processeur est traduite. Un champ traduisible
     # oublié repart donc en ANGLAIS, et un champ écrit en dur fige une langue —
     # deux régressions invisibles en relecture de diff. (Audit langues 2026-08.)
-    - echo "→ Couverture des libellés d'interface H5P (11 locales)"
+    - echo "→ Couverture des libellés d'interface H5P (12 locales)"
     - node tests/run_h5p_ui_coverage.mjs
+    - echo "→ Garde-fous et documentation du parcours"
+    - node tests/run_parcours_gardefous.mjs
+    - node tests/run_parcours_types.mjs
+    - node tests/run_parcours_documentation.mjs
+    # Ces bancs Node (sans navigateur) ne tournaient qu'à la main. Un champ texte
+    # rendu en liste par le modèle faisait planter la mise en forme de 24 modules,
+    # et les références de trois oracles avaient dérivé depuis des semaines sans
+    # que rien ne le signale (audit des tests, 15 sept. 2026). Tous vérifiés sous
+    # Node 20. Les bancs Playwright restent à lancer à la main (voir tests/).
+    - echo "→ Réparateur, processeurs et validateurs (bancs Node)"
+    - node tests/run_deformations_modele.mjs
+    - node tests/run_heal_rules_tests.mjs
+    - node tests/run_validators_rules_tests.mjs
+    - node tests/run_validators_oracle.mjs
+    - node tests/roundtrip/harness.mjs
+    - node tests/run_clean_json_input_tests.mjs
+    - node tests/run_sources_prompt_tests.mjs
+    - node tests/run_math_tests.mjs
+    - node tests/run_semantics_audit.mjs
+    # Ces bancs valident les XML avec xmllint et manipulent des archives avec zip
+    # et unzip, absents de node:20-alpine (la MR 6 a échoué sur « spawnSync xmllint
+    # ENOENT » alors que les bancs passaient sur une machine qui les avait).
+    - echo "→ Outils système des bancs Moodle et export (xmllint, zip, unzip)"
+    - apk add --no-cache libxml2-utils zip unzip
+    - echo "→ Moodle, exports et fichiers (bancs Node)"
+    - node tests/run_moodle_backup_tests.mjs
+    - node tests/run_moodle_import_tests.mjs
+    - node tests/roundtrip/mbz-quiz-backup.mjs
+    - node tests/roundtrip/docx-image-type.mjs
+    - node tests/roundtrip/latex-display-wrap.mjs
+    - node tests/roundtrip/placeholder-collision.mjs
+    - node tests/roundtrip/comparer-export-elea.test.mjs
+    - node tests/run_ocr_filetype_tests.mjs
+    - echo "→ Sécurité, stockage et hygiène (bancs Node)"
+    - node tests/run_escape_tests.mjs
+    - node tests/run_safe_storage_tests.mjs
+    - node tests/run_profanity_tests.mjs
+    - node tests/run_sucrerie_allowed_domains.mjs
+    - node tests/run_rag_orchestrator_tests.mjs
+    - node tests/run_grid_canvas_utils_tests.mjs
+    - node tests/run_legal_notices.mjs
+    - node tests/run_module_hygiene.mjs
 
 # -----------------------------------------------------------------------------
 # JOB 2 — Minification + déploiement GitLab Pages

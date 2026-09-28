@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="105" moduleid="14034" modulename="millionnairev2" contextid="17762">
+  <millionnairev2 id="105">
+    <course>801</course>
+    <name>Millionnaire : le cycle de l’eau</name>
+    <intro>&lt;p&gt;Réponds aux questions pour gagner.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <questions>[{"question":"Quelle \u00e9nergie fait \u00e9vaporer l\u2019eau des oc\u00e9ans ?","goodanswer":"Le Soleil","badanswer":["Le vent","La Lune","Les volcans"]},{"question":"Comment appelle-t-on la pluie, la neige et la gr\u00eale ?","goodanswer":"Les pr\u00e9cipitations","badanswer":["Les infiltrations","Les nappes","Les nuages"]}]</questions>
+    <grade>100</grade>
+    <timecreated>1790541179</timecreated>
+    <timemodified>1790541179</timemodified>
+    <completionminattempts>1</completionminattempts>
+  </millionnairev2>
+</activity>

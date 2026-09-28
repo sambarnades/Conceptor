@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "manuel",
+    "score": "1/2",
+    "texte": "Capitale de l’Italie ?\nMadrid\nNe devrait pas sélectionner\nParis\nNe devrait pas sélectionner\nRome\nBonne réponseDevrait sélectionner\nVotre résultat :\n1 bonnes réponses sur 2\nQuestion\nScore\nCapitale de la France ? RELU Sucrerie\nMadridBonne réponse: Paris\n0\nCapitale de l’Italie ?\nRome\n1\nRecommencer"
+  },
+  {
+    "kind": "automatique",
+    "score": "2/2",
+    "texte": "Capitale de l’Italie ?\nParis\nNe devrait pas sélectionner\nMadrid\nNe devrait pas sélectionner\nRome\nBonne réponseDevrait sélectionner\nVotre résultat :\n2 bonnes réponses sur 2\nQuestion\nScore\nCapitale de la France ? RELU Sucrerie\nParis\n1\nCapitale de l’Italie ?\nRome\n1"
+  }
+]

@@ -1,0 +1,62 @@
+{
+  "numero": 22,
+  "module": "ImageHotspots",
+  "recu": true,
+  "fichier_telechargement": "22-ImageHotspots.h5p",
+  "sha256_source": "011787b9a532388d3c01ea927f67856867ff9ab0fbaec040dc579536a11c36df",
+  "sha256_retour": "dac31a97fc67f4221e9c8011da9c14d53861ebf8acc3fbb0830c049658d1cbdd",
+  "source_comparee": "a-importer/22-ImageHotspots.h5p",
+  "titre": "RECETTE 22 — Image interactive",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "hotspots[0].header"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5PEditor.ColorSelector",
+      "version": "1.3.1"
+    },
+    {
+      "nom": "H5PEditor.ImageCoordinateSelector",
+      "version": "1.2.7"
+    },
+    {
+      "nom": "H5PEditor.ShowWhen",
+      "version": "1.0.9"
+    },
+    {
+      "nom": "H5PEditor.VerticalTabs",
+      "version": "1.3.14"
+    },
+    {
+      "nom": "H5P.ImageHotspots",
+      "version": "1.11.6"
+    },
+    {
+      "nom": "H5P.Text",
+      "version": "1.1.24"
+    },
+    {
+      "nom": "H5P.Transition",
+      "version": "1.0.4"
+    }
+  ],
+  "medias_sources": [
+    {
+      "chemin": "content/images/recette-zones.png",
+      "identique_dans_retour": true
+    }
+  ],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 1,
+    "normalisation_html": 1,
+    "ajout_natif": 9,
+    "retrait_natif": 3,
+    "taille_liste": 0
+  }
+}

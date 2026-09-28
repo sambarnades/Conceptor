@@ -27,5 +27,10 @@
       "answer": "8",
       "tip": "Le carré de 8 est *64*, donc c'est la réponse."
     }
-  ]
+  ],
+  "behaviour": {
+    "showSolutionsRequiresInput": true,
+    "caseSensitive": false,
+    "randomCards": false
+  }
 }

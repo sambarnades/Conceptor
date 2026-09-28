@@ -1,0 +1,125 @@
+[
+  {
+    "activity": "DialogCards",
+    "case": "dialogues-audio-edites",
+    "format": "docx",
+    "file": "dialogues-audio-edites.docx",
+    "verifiedTokens": [
+      "Observe le drapeau",
+      "Atelier de test",
+      "4.0"
+    ]
+  },
+  {
+    "activity": "DialogCards",
+    "case": "dialogues-audio-edites",
+    "format": "odt",
+    "file": "dialogues-audio-edites.odt",
+    "verifiedTokens": [
+      "Observe le drapeau",
+      "Atelier de test",
+      "4.0"
+    ]
+  },
+  {
+    "activity": "DialogCards",
+    "case": "dialogues-audio-edites",
+    "format": "pdf",
+    "file": "dialogues-audio-edites.pdf",
+    "verifiedTokens": [
+      "Observe le drapeau",
+      "Atelier de test",
+      "4.0"
+    ]
+  },
+  {
+    "activity": "Flashcards",
+    "case": "flashcards-editees",
+    "format": "docx",
+    "file": "flashcards-editees.docx",
+    "verifiedTokens": [
+      "Écris la capitale",
+      "Atelier de test",
+      "4.0"
+    ]
+  },
+  {
+    "activity": "Flashcards",
+    "case": "flashcards-editees",
+    "format": "odt",
+    "file": "flashcards-editees.odt",
+    "verifiedTokens": [
+      "Écris la capitale",
+      "Atelier de test",
+      "4.0"
+    ]
+  },
+  {
+    "activity": "Flashcards",
+    "case": "flashcards-editees",
+    "format": "pdf",
+    "file": "flashcards-editees.pdf",
+    "verifiedTokens": [
+      "Écris la capitale",
+      "Atelier de test",
+      "4.0"
+    ]
+  },
+  {
+    "activity": "Summary",
+    "case": "resume-indice",
+    "format": "docx",
+    "file": "resume-indice.docx",
+    "verifiedTokens": [
+      "Repère le pays"
+    ]
+  },
+  {
+    "activity": "Summary",
+    "case": "resume-indice",
+    "format": "odt",
+    "file": "resume-indice.odt",
+    "verifiedTokens": [
+      "Repère le pays"
+    ]
+  },
+  {
+    "activity": "Summary",
+    "case": "resume-indice",
+    "format": "pdf",
+    "file": "resume-indice.pdf",
+    "verifiedTokens": [
+      "Repère le pays"
+    ]
+  },
+  {
+    "activity": "SingleChoiceSet",
+    "case": "choix-unique-delais",
+    "format": "docx",
+    "file": "choix-unique-delais.docx",
+    "verifiedTokens": [
+      "Paris",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "SingleChoiceSet",
+    "case": "choix-unique-delais",
+    "format": "odt",
+    "file": "choix-unique-delais.odt",
+    "verifiedTokens": [
+      "Paris",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "SingleChoiceSet",
+    "case": "choix-unique-delais",
+    "format": "pdf",
+    "file": "choix-unique-delais.pdf",
+    "verifiedTokens": [
+      "Paris",
+      "Rome"
+    ]
+  }
+]

@@ -1,0 +1,52 @@
+Comparaison éditeur Sucrerie vs Caramel (source de vérité)
+Caramel  : /Users/egaunard/Desktop/Forge/Caramel/bas
+Sucrerie : /Users/egaunard/Desktop/Forge/Caramel/sucrerie.forge.apps.education.fr
+
+  OK     assets/js/h5p/drag-text-grammar.js                 (12 l.)
+  OK     assets/js/moodle/course-archive.js                 (144 l.)
+  OK     assets/js/h5p/package-images.js                    (40 l.)
+  OK     assets/js/editor/array-manager.js                  (1827 l.)
+  OK     assets/js/editor/cloze-editor.js                   (668 l.)
+  OK     assets/js/editor/native-presentation-schema.js     (161 l.)
+  OK     assets/js/editor/content-detector.js               (5268 l.)
+  OK     assets/js/editor/editor-core.js                    (2098 l.)
+  OK     assets/js/editor/feedback-editor.js                (446 l.)
+  OK     assets/js/editor/field-renderers.js                (2772 l.)
+  OK     assets/js/editor/formula-assistant.js              (443 l.)
+  OK     assets/js/editor/json-utils.js                     (182 l.)
+  OK     assets/js/editor/richtext-editor.js                (1523 l.)
+  OK     assets/js/editor/validators.js                     (1251 l.)
+  OK     assets/js/editor/interactive-video-panel.js        (306 l.)
+  OK     assets/js/editor/interactive-image-panel.js        (578 l.)
+  OK     assets/js/editor/dictation-tts-panel.js            (960 l.)
+  OK     assets/js/editor/audio-recorder-widget.js          (444 l.)
+  OK     assets/js/editor/dragdrop-layout-panel.js          (633 l.)
+  OK     assets/js/editor/dragdrop-layout-model.js          (457 l.)
+  OK     assets/js/ui/sync-video-player.js                  (150 l.)
+  OK     assets/css/components/json-editor.css              (2941 l.)
+  OK     assets/css/components/richtext-editor.css          (665 l.)
+  OK     assets/css/components/cloze-editor.css             (193 l.)
+  OK     assets/js/moodle/page-themes.js                    (42 l.)
+  OK     assets/js/moodle/page-themes/elea.js               (777 l.)
+  OK     assets/js/moodle/page-themes/dsfr.js               (767 l.)
+  OK     assets/js/moodle/page-themes/accessible.js         (749 l.)
+  OK     assets/js/moodle/page-themes/dynamique.js          (779 l.)
+  OK     assets/js/moodle/page-themes/shared.js             (26 l.)
+  OK     assets/js/moodle/mbz-course-builder.js             (1911 l.)
+  OK     assets/js/moodle/xml-utils.js                      (63 l.)
+  OK     assets/js/moodle/test-backup-builder.js            (274 l.)
+  OK     assets/js/moodle/test-backup-parser.js             (166 l.)
+  OK     assets/js/moodle/test-io.js                        (263 l.)
+  OK     assets/js/moodle/moodle-formats.js                 (931 l.)
+  OK     assets/js/moodle/test-evaluation.js                (55 l.)
+
+Total : 37 identique(s), 0 divergent(s), 0 absent(s).
+
+Pour mettre à jour un fichier divergent :
+  cp <caramel>/<fichier-source> <sucrerie>/<fichier-cible>
+
+Pour voir le diff précis :
+  git diff --no-index <caramel>/<fichier> <sucrerie>/<fichier>
+
+Rappel : assets/js/editor/index.js est intentionnellement exclu (orchestrateur
+spécifique : Caramel = notification + LLM, Sucrerie = API /sucrerie-render).

@@ -1,0 +1,41 @@
+{
+  "timeline": {
+    "headline": "Trois étapes fictives de lecture",
+    "text": "Une séance en trois temps.",
+    "defaultZoomLevel": "1",
+    "height": 500,
+    "language": "fr",
+    "backgroundImage": {
+      "path": "images/recette-frise.png",
+      "mime": "image/png",
+      "width": 800,
+      "height": 450,
+      "copyright": {
+        "license": "PD",
+        "version": "CC0 1.0",
+        "title": "Trois zones de recette"
+      }
+    },
+    "date": [
+      {
+        "startDate": "2026,09,11",
+        "headline": "Lire RELU",
+        "text": "Lire le texte.",
+        "asset": {}
+      },
+      {
+        "startDate": "2026,09,12",
+        "headline": "Échanger",
+        "text": "Comparer les idées.",
+        "asset": {}
+      },
+      {
+        "startDate": "2026,09,13",
+        "headline": "Rédiger",
+        "text": "Écrire une synthèse.",
+        "asset": {}
+      }
+    ],
+    "asset": {}
+  }
+}

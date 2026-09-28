@@ -3,7 +3,7 @@
  * Verifie que chaque bibliotheque utilisee par Caramel fonctionne correctement
  * apres une mise a jour, en testant l'API exacte utilisee dans le code.
  *
- * 8 etapes :
+ * 9 etapes :
  *  1. Chargement de toutes les bibliotheques
  *  2. JSZip — Creation et lecture ZIP
  *  3. client-zip — ZIP streaming H5P
@@ -12,6 +12,7 @@
  *  6. jsPDF & AutoTable — Export PDF
  *  7. docx — Export DOCX
  *  8. MathJax — Rendu LaTeX
+ *  9. pako & UTIF — TIFF compresse Deflate
  */
 
 // ============================================================================
@@ -26,6 +27,8 @@ import {
     loadDocumentExportLibs,
     loadDOMPurify,
     loadClientZip,
+    loadPako,
+    loadUTIF,
     LIB_PATHS
 } from '../js/core/lib-loader.js';
 
@@ -98,7 +101,8 @@ const STEP_NAMES = [
     'DOMPurify',
     'jsPDF & AutoTable',
     'docx',
-    'MathJax'
+    'MathJax',
+    'pako & UTIF'
 ];
 
 export const STEP_DESCRIPTIONS = {
@@ -108,8 +112,9 @@ export const STEP_DESCRIPTIONS = {
     4: 'Cree un TAR avec tar-js, compresse avec fflate.gzip(), verifie le magic number gzip (0x1f, 0x8b) et la taille',
     5: 'Teste DOMPurify.sanitize() avec les vecteurs XSS (script, onerror, javascript:) et la preservation du HTML pedagogique autorise',
     6: 'Cree un PDF avec jsPDF, ajoute du texte et un tableau via autoTable, verifie lastAutoTable.finalY et genere un blob',
-    7: 'Cree un DOCX avec Document, Paragraph, TextRun, HeadingLevel, Packer.toBlob(), verifie le magic number ZIP (PK)',
-    8: 'Rend une formule LaTeX (E=mc^2) via MathJax.typesetPromise(), verifie la presence de SVG, teste typesetClear()'
+    7: 'Cree un DOCX avec docx, le relit reellement avec Mammoth.extractRawText(), puis verifie le texte, les accents et la seconde page',
+    8: 'Rend une formule LaTeX (E=mc^2) via MathJax.typesetPromise(), verifie la presence de SVG, teste typesetClear()',
+    9: 'Compresse des pixels RGBA avec pako.deflate(), construit un vrai TIFF Deflate, le decode avec UTIF puis compare tous les pixels'
 };
 
 // ============================================================================
@@ -697,6 +702,15 @@ async function runStep7_Docx() {
             octet0: '0x' + headerBytes[0]?.toString(16),
             octet1: '0x' + headerBytes[1]?.toString(16)
         });
+
+        // Relire le document produit avec la vraie version vendoree de Mammoth.
+        const t2 = performance.now();
+        const mammothResult = await window.mammoth.extractRawText({ arrayBuffer: await blob.arrayBuffer() });
+        recordTiming('mammoth', 'extractRawText(DOCX reel)', performance.now() - t2);
+        const texteExtrait = mammothResult.value || '';
+        assert(texteExtrait.includes('Document de test Caramel'), '[7m.MammothTitre] Mammoth extrait le titre du DOCX', { texteExtrait });
+        assert(texteExtrait.includes('éèêë àâ ùû'), '[7n.MammothUtf8] Mammoth preserve les accents du DOCX', { texteExtrait });
+        assert(texteExtrait.includes('Page 2'), '[7o.MammothPage2] Mammoth extrait le texte apres le saut de page', { texteExtrait });
     } catch (e) {
         assert(false, '[7.Create] Echec creation document DOCX', { erreur: e.message, stack: e.stack });
     }
@@ -704,10 +718,64 @@ async function runStep7_Docx() {
     // --- convertMillimetersToTwip ---
     try {
         const twips = convertMillimetersToTwip(25.4); // 1 pouce = 25.4mm = 1440 twips
-        assert(typeof twips === 'number', '[7m.Twip] convertMillimetersToTwip retourne un nombre');
-        assert(twips > 0, '[7n.TwipValue] La conversion 25.4mm donne un resultat > 0', { twips });
+        assert(typeof twips === 'number', '[7p.Twip] convertMillimetersToTwip retourne un nombre');
+        assert(twips > 0, '[7q.TwipValue] La conversion 25.4mm donne un resultat > 0', { twips });
     } catch (e) {
         assert(false, '[7.Twip] Echec convertMillimetersToTwip', { erreur: e.message });
+    }
+
+    console.groupEnd();
+}
+
+// ============================================================================
+// ETAPE 9 : PAKO & UTIF — TIFF COMPRESSE DEFLATE
+// ============================================================================
+
+async function runStep9_PakoUtif() {
+    _ctx = { step: 9, stepName: 'pako & UTIF', file: 'js/core/lib-loader.js', module: 'pako/UTIF', source: '' };
+    console.group('Etape 9 : pako & UTIF');
+
+    try {
+        // loadUTIF() doit charger pako avant UTIF : UTIF capture self.pako a son evaluation.
+        await loadPako();
+        await loadUTIF();
+        assert(typeof window.pako?.deflate === 'function', '[9a.PakoDeflate] pako.deflate est disponible');
+        assert(typeof window.pako?.inflate === 'function', '[9b.PakoInflate] pako.inflate est disponible');
+        assert(typeof window.UTIF?.decodeImage === 'function', '[9c.UtifDecode] UTIF.decodeImage est disponible');
+
+        const largeur = 2;
+        const hauteur = 2;
+        const pixels = new Uint8Array([
+            255, 0, 0, 255,   0, 255, 0, 255,
+            0, 0, 255, 255,   255, 255, 0, 128
+        ]);
+        const compressed = window.pako.deflate(pixels);
+        assert(compressed.length > 0, '[9d.Deflate] pako compresse les pixels RGBA');
+        assert(compressed.length !== pixels.length, '[9e.DeflateFlux] le flux Deflate differe des pixels bruts');
+
+        // TIFF big-endian minimal, un strip RGBA, compression Adobe Deflate (tag 259 = 8).
+        const ifd = {
+            t256: [largeur], t257: [hauteur], t258: [8, 8, 8, 8], t259: [8],
+            t262: [2], t273: [1000], t277: [4], t278: [hauteur],
+            t279: [compressed.length], t282: [1], t283: [1], t284: [1],
+            t286: [0], t287: [0], t296: [1], t305: ['Caramel vendor test'], t338: [1]
+        };
+        const prefixe = new Uint8Array(window.UTIF.encode([ifd]));
+        const tiff = new Uint8Array(1000 + compressed.length);
+        tiff.set(prefixe);
+        tiff.set(compressed, 1000);
+
+        const pages = window.UTIF.decode(tiff.buffer);
+        assert(pages.length === 1, '[9f.TiffPage] UTIF lit une page TIFF compressee', { pages: pages.length });
+        window.UTIF.decodeImage(tiff.buffer, pages[0], pages);
+        const rgba = window.UTIF.toRGBA8(pages[0]);
+        assert(rgba.length === pixels.length, '[9g.TiffTaille] UTIF restitue le bon nombre de composantes RGBA', { taille: rgba.length });
+        assert(pixels.every((octet, index) => rgba[index] === octet), '[9h.TiffPixels] le TIFF Deflate restitue exactement les pixels sources', {
+            attendu: [...pixels],
+            obtenu: [...rgba]
+        });
+    } catch (e) {
+        assert(false, '[9.PakoUtif] Echec du cycle TIFF Deflate', { erreur: e.message, stack: e.stack });
     }
 
     console.groupEnd();
@@ -814,6 +882,7 @@ export async function runAllTests() {
     await runStep6_jsPDF();
     await runStep7_Docx();
     await runStep8_MathJax();
+    await runStep9_PakoUtif();
 
     recordTiming('Global', 'Duree totale des tests', performance.now() - t0);
 

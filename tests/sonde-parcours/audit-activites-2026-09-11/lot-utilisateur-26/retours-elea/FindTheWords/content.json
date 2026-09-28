@@ -1,0 +1,30 @@
+{
+  "taskDescription": "RELU Retrouve PARIS, ROME et ΑΘΗΝΑ (Athènes en grec).",
+  "wordList": "PARIS,ROME,ΑΘΗΝΑ",
+  "behaviour": {
+    "preferOverlap": true,
+    "showVocabulary": true,
+    "enableShowSolution": true,
+    "enableRetry": true,
+    "orientations": {
+      "horizontal": true,
+      "horizontalBack": false,
+      "vertical": false,
+      "verticalUp": false,
+      "diagonal": false,
+      "diagonalBack": false,
+      "diagonalUp": false,
+      "diagonalUpBack": false
+    },
+    "fillPool": "XYZ"
+  },
+  "l10n": {
+    "check": "Vérifier",
+    "tryAgain": "Recommencer",
+    "showSolution": "Afficher la solution",
+    "found": "@found sur @totalWords mots trouvés",
+    "timeSpent": "Temps écoulé",
+    "score": "Vous avez obtenu @score sur @total points",
+    "wordListHeader": "Liste de mots"
+  }
+}

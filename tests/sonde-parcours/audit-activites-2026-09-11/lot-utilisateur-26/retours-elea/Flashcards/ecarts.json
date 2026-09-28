@@ -1,0 +1,43 @@
+[
+  {
+    "chemin": "cards[0].image.dataURL",
+    "type": "retrait_natif",
+    "avant": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAYAAADSm7GJAAABjklEQVR4AezTwWnDQBiEUZMmUkzILc2lz/ThwJ6XsCIX/5+ewTqIFezMY97eP7+fr/x/vvjv5+Pr+cr/t4dfugHAad7HAzDgeAPxeBYMON5APJ4FA042cJtQFhynBgw43kA8ngUDjjcQj2fBgOMNxONZ8L2A42lvGM+C4+iAAccbiMezYMDxBuLxLBhwvIF4PAtewN0H4K7tSgZ41dB9AO7armSAVw3dB+Cu7UoGeNXQfQDu2q5kgFcN3cffwN3ct0kGOE4NGHC8gXg8CwYcbyAez4IBxxuIx7PgHXDoHeAQ5i4K4F0roXeAQ5i7KIB3rYTeAQ5h7qIA3rUSegc4hLmLAnjXSujdJeBQ7ttEARynBgw43kA8ngUDjjcQj2fBgOMNxONZ8AHw5COAJ+sd3B3wQUmTjwCerHdwd8AHJU0+Aniy3sHdAR+UNPkI4Ml6B3cHfFDS5CP/AZ6c+zZ3BxynBgw43kA8ngUDjjcQj2fBgOMNxONZ8HXgUV8AHsV1/bKAr3c26gvAo7iuX/YXAAD//8tenZUAAAAGSURBVAMAIIFJwEx4gxsAAAAASUVORK5CYII="
+  },
+  {
+    "chemin": "cards[0].tip",
+    "type": "modification",
+    "avant": "Pense à la Seine.",
+    "apres": "<p>Pense à la Seine. RELU</p>"
+  },
+  {
+    "chemin": "cardsHeader",
+    "type": "retrait_natif",
+    "avant": "Cartes"
+  },
+  {
+    "chemin": "enableRetry",
+    "type": "retrait_natif",
+    "avant": true
+  },
+  {
+    "chemin": "informationText",
+    "type": "retrait_natif",
+    "avant": "Information"
+  },
+  {
+    "chemin": "language",
+    "type": "retrait_natif",
+    "avant": "fr"
+  },
+  {
+    "chemin": "scoreHeader",
+    "type": "retrait_natif",
+    "avant": "Score"
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Nommer les capitales"
+  }
+]

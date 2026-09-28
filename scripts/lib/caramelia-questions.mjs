@@ -21,7 +21,7 @@ export const CASES = [
     {
         id: 'llm-list', tag: 'meta', expect: 'answer',
         q: 'quels sont les LLM de caramel',
-        must: [['mistral', 'qwen', 'gpt-oss']],
+        must: [['mistral', 'qwen', 'gemma']],
         mustNot: ['ne sont pas publiés', 'ne suis pas en mesure'],
     },
     {

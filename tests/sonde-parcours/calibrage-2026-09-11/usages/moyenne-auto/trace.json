@@ -1,0 +1,194 @@
+{
+  "cas": {
+    "id": "moyenne-auto",
+    "lang": "fr",
+    "platform": "moodle",
+    "format": "presentiel",
+    "ampleur": "moyenne",
+    "trame": "auto",
+    "qui": "Enseignante en licence de biologie",
+    "quoi": "Comprendre la mitose et la distinguer de la méiose, en deux à trois séances."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Comprendre la mitose et la distinguer de la méiose, en deux à trois séances.\nL'enseignant : Enseignante en licence de biologie\nPlateforme : Moodle\nModalité : presentiel\nLe groupe travaille en présence de l’enseignant. Inclure les échanges ou manipulations utiles dans les consignes et leur durée.\nAmpleur : Deux à trois séances\n\nAucune trame imposée : choisis le déroulé le mieux adapté, entre 5 et 8 activités AU TOTAL (pas par étape), réparties en 2 à 5 étapes non vides.\n\nBUDGET : 6 activités prévues, dans la limite de 5 à 8 pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline) — Frise à CONSULTER : événements déjà placés. Pour remettre des événements en ordre, choisir SortParagraphs.\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion) — Lexique de définitions à consulter ; les apprenants ne complètent pas les entrées.\n- Crossword : Mots croisés (Crosswords) — Retrouver des MOTS à partir de définitions ; pas de résultats chiffrés dans la grille.\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary) — Choisir l’affirmation correcte parmi plusieurs propositions pour construire une synthèse ; pas de texte à trous.\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop) — Déplacer des étiquettes textuelles dans des zones ; ne pas exiger un schéma ou des images absents.\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards) — Cartes recto-verso à retourner pour comparer et réviser ; aucun appariement par glisser-déposer.\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart) — Graphique à LIRE, construit depuis les données fournies ; aucune saisie de données par l’apprenant.\n- CoursePresentation : Présentation de cours (CoursePresentation) — Diaporama de textes et questions intégrées ; pas de vidéo à regarder ni de média fourni automatiquement.\n- InteractiveBook : Livre interactif (InteractiveBook) — Livre de textes et exercices intégrés ; pas de vidéo ou de média fourni automatiquement.\n- test_elea : Test (test_elea)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir) — Consigne et critères d’un travail à remettre ou réaliser ; pas de correction automatique immédiate.\n- parcours_etiquette : Texte de liaison (label) — Texte ou consigne affichés dans le cours ; aucun champ de réponse.\n- parcours_forum : Forum (forum) — Consigne d’un échange asynchrone ; les participants écriront ensuite, pas de discussion préremplie.\n- parcours_sondage : Sondage (choice)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 6 à 10 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.\n- La consigne doit correspondre au geste réellement permis par le module décrit dans le catalogue. Pour faire ORDONNER des événements, utiliser SortParagraphs ; Timeline sert à les CONSULTER.\n- Aucun média externe n’est ajouté automatiquement : ne demande pas de regarder une vidéo, une photo ou un schéma absent. Prévoir des ressources textuelles autonomes. Si une manipulation en présence nécessite du matériel, l’annoncer explicitement comme matériel à préparer.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 5 à 8 activités pour TOUT le parcours. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788925",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Mitose et méiose : distinguer les processus\",\n  \"objectifGeneral\": \"Distinguer les mécanismes et les enjeux de la mitose et de la méiose\",\n  \"notionsPivots\": [\n    \"la mitose\",\n    \"la méiose\",\n    \"les cellules somatiques\",\n    \"les cellules germinales\",\n    \"la division cellulaire\",\n    \"le cycle cellulaire\",\n    \"la recombinaison génétique\",\n    \"les chromosomes homologues\",\n    \"les gamètes\",\n    \"la diversité génétique\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Découverte des processus\",\n      \"objectif\": \"Identifier les caractéristiques principales de la mitose et de la méiose\",\n      \"cartes\": [\n        {\n          \"titre\": \"Présentation des concepts\",\n          \"objectif\": \"Découvrir les définitions de la mitose et de la méiose\",\n          \"module\": \"CoursePresentation\",\n          \"palier\": \"decouverte\",\n          \"duree\": 15,\n          \"consigne\": \"Lisez attentivement la présentation qui introduit les notions de mitose et de méiose. Notez les différences clés entre ces deux processus.\"\n        },\n        {\n          \"titre\": \"Lexique des termes\",\n          \"objectif\": \"S'approprier le vocabulaire spécifique\",\n          \"module\": \"Glossary\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"Consultez le glossaire pour comprendre les termes clés comme 'cellules somatiques', 'gamètes', 'recombinaison génétique' ou 'chromosomes homologues'.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Comparaison des mécanismes\",\n      \"objectif\": \"Comparer les étapes et les produits de la mitose et de la méiose\",\n      \"cartes\": [\n        {\n          \"titre\": \"Frise des étapes\",\n          \"objectif\": \"Ordonner les phases de la mitose et de la méiose\",\n          \"module\": \"SortParagraphs\",\n          \"palier\": \"entrainement\",\n          \"duree\": 20,\n          \"consigne\": \"À partir des descriptions fournies, replacez dans l'ordre les étapes de la mitose et celles de la méiose. Travaillez en binôme pour discuter vos choix.\"\n        },\n        {\n          \"titre\": \"Quiz de comparaison\",\n          \"objectif\": \"Valider la compréhension des différences\",\n          \"module\": \"QuizSetQCM\",\n          \"palier\": \"entrainement\",\n          \"duree\": 15,\n          \"consigne\": \"Répondez au quiz qui teste votre capacité à distinguer les caractéristiques de la mitose et de la méiose. Une seule réponse est correcte par question.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Application et entraînement\",\n      \"objectif\": \"Appliquer les connaissances à des cas concrets\",\n      \"cartes\": [\n        {\n          \"titre\": \"Exercices de classification\",\n          \"objectif\": \"Classer des événements ou des produits selon le type de division\",\n          \"module\": \"DragAndDrop\",\n          \"palier\": \"entrainement\",\n          \"duree\": 20,\n          \"consigne\": \"Glissez les étiquettes dans les bonnes catégories : 'mitose' ou 'méiose'. Par exemple, associez 'cellules somatiques' à la mitose et 'gamètes' à la méiose.\"\n        },\n        {\n          \"titre\": \"Étude de cas\",\n          \"objectif\": \"Analyser un exemple de division cellulaire\",\n          \"module\": \"InteractiveBook\",\n          \"palier\": \"entrainement\",\n          \"duree\": 25,\n          \"consigne\": \"Lisez le cas pratique présenté dans le livre interactif. Identifiez s'il s'agit d'une mitose ou d'une méiose et justifiez votre réponse en vous appuyant sur les critères vus.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Synthèse et évaluation\",\n      \"objectif\": \"Synthétiser les connaissances et évaluer sa compréhension\",\n      \"cartes\": [\n        {\n          \"titre\": \"Synthèse collective\",\n          \"objectif\": \"Construire une synthèse partagée des différences\",\n          \"module\": \"Summary\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"À partir des réponses du groupe, choisissez les affirmations correctes pour construire une synthèse collective des différences entre mitose et méiose.\"\n        },\n        {\n          \"titre\": \"Quiz final\",\n          \"objectif\": \"Évaluer sa maîtrise des notions\",\n          \"module\": \"QuizSet\",\n          \"palier\": \"transfert\",\n          \"duree\": 15,\n          \"consigne\": \"Passez le quiz final qui évalue votre compréhension globale de la mitose et de la méiose. Les questions portent sur les notions pivots du parcours.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 1152,
+      "prompt_tokens": 2265,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "fr",
+    "exporteLe": "2026-09-10T22:17:23.509Z",
+    "cadrage": {
+      "platform": "moodle",
+      "format": "presentiel",
+      "ampleur": "moyenne",
+      "trame": "auto"
+    },
+    "plan": {
+      "titre": "Mitose et méiose : distinguer les processus",
+      "objectifGeneral": "Distinguer les mécanismes et les enjeux de la mitose et de la méiose",
+      "notionsPivots": [
+        "la mitose",
+        "la méiose",
+        "les cellules somatiques",
+        "les cellules germinales",
+        "la division cellulaire",
+        "le cycle cellulaire",
+        "la recombinaison génétique",
+        "les chromosomes homologues",
+        "les gamètes",
+        "la diversité génétique"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Découverte des processus",
+          "objectif": "Identifier les caractéristiques principales de la mitose et de la méiose",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Présentation des concepts",
+              "objectif": "Découvrir les définitions de la mitose et de la méiose",
+              "consigne": "Lisez attentivement la présentation qui introduit les notions de mitose et de méiose. Notez les différences clés entre ces deux processus.",
+              "module": "CoursePresentation",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 15,
+              "verrouillee": false
+            },
+            {
+              "id": "c3",
+              "titre": "Lexique des termes",
+              "objectif": "S'approprier le vocabulaire spécifique",
+              "consigne": "Consultez le glossaire pour comprendre les termes clés comme 'cellules somatiques', 'gamètes', 'recombinaison génétique' ou 'chromosomes homologues'.",
+              "module": "Glossary",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 10,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e4",
+          "titre": "Comparaison des mécanismes",
+          "objectif": "Comparer les étapes et les produits de la mitose et de la méiose",
+          "cartes": [
+            {
+              "id": "c5",
+              "titre": "Frise des étapes",
+              "objectif": "Ordonner les phases de la mitose et de la méiose",
+              "consigne": "À partir des descriptions fournies, replacez dans l'ordre les étapes de la mitose et celles de la méiose. Travaillez en binôme pour discuter vos choix.",
+              "module": "SortParagraphs",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c6",
+              "titre": "Quiz de comparaison",
+              "objectif": "Valider la compréhension des différences",
+              "consigne": "Répondez au quiz qui teste votre capacité à distinguer les caractéristiques de la mitose et de la méiose. Une seule réponse est correcte par question.",
+              "module": "QuizSetQCM",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e7",
+          "titre": "Application et entraînement",
+          "objectif": "Appliquer les connaissances à des cas concrets",
+          "cartes": [
+            {
+              "id": "c8",
+              "titre": "Exercices de classification",
+              "objectif": "Classer des événements ou des produits selon le type de division",
+              "consigne": "Glissez les étiquettes dans les bonnes catégories : 'mitose' ou 'méiose'. Par exemple, associez 'cellules somatiques' à la mitose et 'gamètes' à la méiose.",
+              "module": "DragAndDrop",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c9",
+              "titre": "Étude de cas",
+              "objectif": "Analyser un exemple de division cellulaire",
+              "consigne": "Lisez le cas pratique présenté dans le livre interactif. Identifiez s'il s'agit d'une mitose ou d'une méiose et justifiez votre réponse en vous appuyant sur les critères vus.",
+              "module": "InteractiveBook",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 25,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e10",
+          "titre": "Synthèse et évaluation",
+          "objectif": "Synthétiser les connaissances et évaluer sa compréhension",
+          "cartes": [
+            {
+              "id": "c11",
+              "titre": "Synthèse collective",
+              "objectif": "Construire une synthèse partagée des différences",
+              "consigne": "À partir des réponses du groupe, choisissez les affirmations correctes pour construire une synthèse collective des différences entre mitose et méiose.",
+              "module": "Summary",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c12",
+              "titre": "Quiz final",
+              "objectif": "Évaluer sa maîtrise des notions",
+              "consigne": "Passez le quiz final qui évalue votre compréhension globale de la mitose et de la méiose. Les questions portent sur les notions pivots du parcours.",
+              "module": "QuizSet",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "La fabrication démarre dès ce clic : chaque activité est générée une par une, dans l'ordre, sous vos yeux."
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "kind": "classique",
+    "score": "7/7",
+    "duration": 1.964943,
+    "erreur": "Écoute puis écris. RELU Sucrerie\nUne capitale européenne RELU\nMadridParis\nest\nla\ncapitale\nde\nla\nFrance\nVous avez fait 7 faute(s). Réécoute chaque phrase en lecture lente et écris-la mot après mot, puis relis-toi.\nVous avez obtenu 0 points sur 7\n0/7\nRecommencer\nRights of use",
+    "texte": "Écoute puis écris. RELU Sucrerie\nUne capitale européenne RELU\nVous avez fait 0 faute(s). Bravo : les phrases sont fidèles, accents et accords compris.\nVous avez obtenu 7 points sur 7\n7/7\nVoir la solution\nRights of use"
+  },
+  {
+    "kind": "variantes",
+    "score": "7/7",
+    "duration": 1.964943,
+    "texte": "Écoute puis écris. RELU Sucrerie\nUne capitale européenne RELU\nVous avez écrit 7 mot(s) correctement et 0 mot(s) avec de petites erreurs. Bravo : les phrases sont fidèles, accents et accords compris.\nVous avez obtenu 7 points sur 7\n7/7\nVoir la solution\nRights of use"
+  },
+  {
+    "kind": "separateur",
+    "score": "7/7",
+    "direction": "ltr",
+    "rtl": false,
+    "note": "Sonde technique de segmentation ; audio français conservé, non joué."
+  },
+  {
+    "kind": "segmentation-cjk",
+    "score": "2/2",
+    "direction": "ltr",
+    "rtl": true,
+    "note": "Sonde technique de segmentation ; audio français conservé, non joué."
+  },
+  {
+    "kind": "synthese-reelle",
+    "duration": 2.031927,
+    "currentTime": 0.222206
+  }
+]

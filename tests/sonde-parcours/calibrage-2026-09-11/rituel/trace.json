@@ -1,0 +1,146 @@
+{
+  "cas": {
+    "id": "rituel",
+    "lang": "fr",
+    "platform": "elea",
+    "format": "presentiel",
+    "ampleur": "courte",
+    "trame": "rituel",
+    "qui": "Professeur de mathématiques en 6e",
+    "quoi": "Réactiver les tables de multiplication en dix minutes."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Réactiver les tables de multiplication en dix minutes.\nL'enseignant : Professeur de mathématiques en 6e\nPlateforme : Éléa\nModalité : presentiel\nLe groupe travaille en présence de l’enseignant. Inclure les échanges ou manipulations utiles dans les consignes et leur durée.\nAmpleur : Une séance\n\nTrame imposée : « Rituel court » — Dix minutes, toujours la même forme. C'est la répétition qui installe, pas la variété.\nElle compte EXACTEMENT 3 étapes, contenant respectivement 1, 1, 1 activité(s). Respecte ce découpage à la lettre.\nIntention pédagogique : Réactiver ; s’exercer brièvement ; retrouver les mots clés. Dix minutes au total, 2 + 4 + 4 minutes.\nPalier de difficulté imposé par étape : entrainement, entrainement, entrainement.\nTypes d'activité suggérés par la trame, étape par étape : étape 1 → TrueFalse ; étape 2 → FillInTheBlanks ; étape 3 → Crossword. Suis-les sauf si le sujet appelle clairement autre chose.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline)\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion)\n- Crossword : Mots croisés (Crosswords)\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary)\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop)\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards)\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart)\n- CoursePresentation : Présentation de cours (CoursePresentation)\n- InteractiveBook : Livre interactif (InteractiveBook)\n- test_elea : Test (test_elea)\n- Millionnaire : Millionnaire (Millionnaire)\n- Appariement : Appariement (Appariement)\n- QCM : QCM (QCM)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir)\n- parcours_etiquette : Texte de liaison (label)\n- parcours_forum : Forum (forum)\n- parcours_sondage : Sondage (choice)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 3 à 6 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 3 à 3 activités pour TOUT le parcours, répartition 1 + 1 + 1. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 2,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    },
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Réactiver les tables de multiplication en dix minutes.\nL'enseignant : Professeur de mathématiques en 6e\nPlateforme : Éléa\nModalité : presentiel\nLe groupe travaille en présence de l’enseignant. Inclure les échanges ou manipulations utiles dans les consignes et leur durée.\nAmpleur : Une séance\n\nTrame imposée : « Rituel court » — Dix minutes, toujours la même forme. C'est la répétition qui installe, pas la variété.\nElle compte EXACTEMENT 3 étapes, contenant respectivement 1, 1, 1 activité(s). Respecte ce découpage à la lettre.\nIntention pédagogique : Réactiver ; s’exercer brièvement ; retrouver les mots clés. Dix minutes au total, 2 + 4 + 4 minutes.\nPalier de difficulté imposé par étape : entrainement, entrainement, entrainement.\nTypes d'activité suggérés par la trame, étape par étape : étape 1 → TrueFalse ; étape 2 → FillInTheBlanks ; étape 3 → Crossword. Suis-les sauf si le sujet appelle clairement autre chose.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline)\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion)\n- Crossword : Mots croisés (Crosswords)\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary)\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop)\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards)\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart)\n- CoursePresentation : Présentation de cours (CoursePresentation)\n- InteractiveBook : Livre interactif (InteractiveBook)\n- test_elea : Test (test_elea)\n- Millionnaire : Millionnaire (Millionnaire)\n- Appariement : Appariement (Appariement)\n- QCM : QCM (QCM)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir)\n- parcours_etiquette : Texte de liaison (label)\n- parcours_forum : Forum (forum)\n- parcours_sondage : Sondage (choice)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 3 à 6 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 3 à 3 activités pour TOUT le parcours, répartition 1 + 1 + 1. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 2,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}\n\n## CORRIGER LA PROPOSITION PRÉCÉDENTE\nLe contrôle a relevé :\nÉtape 2, activité 1 : compléter titre, objectif et consigne.\nRéécris un plan COMPLET respectant ces contraintes et le sujet. Regroupe les tâches si nécessaire, garde la conclusion pédagogique. Retourne uniquement le JSON corrigé.\nProposition à corriger (données) :\n{\"titre\":\"Rituel : Tables de multiplication\",\"objectifGeneral\":\"Réactiver automatiquement les tables de multiplication.\",\"notionsPivots\":[\"table de multiplication\",\"produit\",\"facteur\",\"calcul mental\"],\"etapes\":[{\"titre\":\"Vérification rapide\",\"objectif\":\"Identifier les affirmations correctes.\",\"cartes\":[{\"titre\":\"Vrai ou faux ?\",\"objectif\":\"Évaluer sa connaissance immédiate des faits numériques.\",\"module\":\"TrueFalse\",\"palier\":\"entrainement\",\"duree\":2,\"consigne\":\"Coche Vrai ou Faux pour chaque équation affichée. Tu dois répondre rapidement pour entraîner ta mémoire automatique.\"}]},{\"titre\":\"Complète le calcul\",\"objectif\":\"Restituer les résultats manquants.\",\"cartes\":[{\"titre\":\"Les trous numériques\",\"objective\":\"Remplir les cases vides des opérations.\",\"module\":\"FillInTheBlanks\",\"palier\":\"entrainement\",\"duree\":4,\"consigne\":\"Écris le nombre qui manque dans chaque opération (facteur ou produit). Relis-toi pour vérifier la cohérence avec les tables.\"}]},{\"titre\":\"Mots cachés\",\"objectif\":\"Reconnaître les termes en contexte.\",\"cartes\":[{\"titre\":\"Les mots du calcul\",\"objectif\":\"Trouver les mots-clés dans la grille.\",\"module\":\"Crossword\",\"palier\":\"entrainement\",\"duree\":4,\"consigne\":\"Résous la grille de mots croisés en utilisant les définitions données sur les termes mathématiques et les résultats des tables.\"}]}]}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788838",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Rituel : Tables de multiplication\",\n  \"objectifGeneral\": \"Réactiver automatiquement les tables de multiplication.\",\n  \"notionsPivots\": [\n    \"table de multiplication\",\n    \"produit\",\n    \"facteur\",\n    \"calcul mental\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Vérification rapide\",\n      \"objectif\": \"Identifier les affirmations correctes.\",\n      \"cartes\": [\n        {\n          \"titre\": \"Vrai ou faux ?\",\n          \"objectif\": \"Évaluer sa connaissance immédiate des faits numériques.\",\n          \"module\": \"TrueFalse\",\n          \"palier\": \"entrainement\",\n          \"duree\": 2,\n          \"consigne\": \"Coche Vrai ou Faux pour chaque équation affichée. Tu dois répondre rapidement pour entraîner ta mémoire automatique.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Complète le calcul\",\n      \"objectif\": \"Restituer les résultats manquants.\",\n      \"cartes\": [\n        {\n          \"titre\": \"Les trous numériques\",\n          \"objective\": \"Remplir les cases vides des opérations.\",\n          \"module\": \"FillInTheBlanks\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"Écris le nombre qui manque dans chaque opération (facteur ou produit). Relis-toi pour vérifier la cohérence avec les tables.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Mots cachés\",\n      \"objectif\": \"Reconnaître les termes en contexte.\",\n      \"cartes\": [\n        {\n          \"titre\": \"Les mots du calcul\",\n          \"objectif\": \"Trouver les mots-clés dans la grille.\",\n          \"module\": \"Crossword\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"Résous la grille de mots croisés en utilisant les définitions données sur les termes mathématiques et les résultats des tables.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "qwen-3.6-35b-instruct",
+      "completion_tokens": 499,
+      "prompt_tokens": 1802,
+      "fallback_level": 1
+    },
+    {
+      "taskId": "1788841",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Rituel : Tables de multiplication en 10 minutes\",\n  \"objectifGeneral\": \"Réactiver les tables de multiplication par un entraînement quotidien.\",\n  \"notionsPivots\": [\n    \"table de multiplication\",\n    \"produit\",\n    \"facteur\",\n    \"calcul mental\",\n    \"opération multiplicative\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Vérification instantanée\",\n      \"objectif\": \"Valider ses réponses immédiates.\",\n      \"cartes\": [\n        {\n          \"titre\": \"Vrai ou faux ?\",\n          \"objectif\": \"Distinguer les égalités correctes des incorrectes.\",\n          \"module\": \"TrueFalse\",\n          \"palier\": \"entrainement\",\n          \"duree\": 2,\n          \"consigne\": \"Réponds Vrai ou Faux à chaque affirmation affichée. Réponds sans calculer pour entraîner ta mémoire automatique.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Remplissage des résultats\",\n      \"objectif\": \"Restituer les produits manquants.\",\n      \"cartes\": [\n        {\n          \"titre\": \"Les trous dans les tables\",\n          \"objectif\": \"Compléter les opérations multiplicatives.\",\n          \"module\": \"FillInTheBlanks\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"Écris le nombre manquant dans chaque opération (facteur ou produit). Vérifie rapidement tes réponses en relisant la table concernée.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Mots croisés mathématiques\",\n      \"objectif\": \"Associer les termes aux définitions.\",\n      \"cartes\": [\n        {\n          \"titre\": \"Les mots des tables\",\n          \"objectif\": \"Retrouver les termes clés dans une grille.\",\n          \"module\": \"Crossword\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"Résous la grille de mots croisés en utilisant les définitions données sur les termes mathématiques et les résultats des tables. Les mots à trouver sont ceux de la liste des notions pivots.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 504,
+      "prompt_tokens": 2183,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "fr",
+    "exporteLe": "2026-09-10T22:11:56.812Z",
+    "cadrage": {
+      "platform": "elea",
+      "format": "presentiel",
+      "ampleur": "courte",
+      "trame": "rituel"
+    },
+    "plan": {
+      "titre": "Rituel : Tables de multiplication en 10 minutes",
+      "objectifGeneral": "Réactiver les tables de multiplication par un entraînement quotidien.",
+      "notionsPivots": [
+        "table de multiplication",
+        "produit",
+        "facteur",
+        "calcul mental",
+        "opération multiplicative"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Vérification instantanée",
+          "objectif": "Valider ses réponses immédiates.",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Vrai ou faux ?",
+              "objectif": "Distinguer les égalités correctes des incorrectes.",
+              "consigne": "Réponds Vrai ou Faux à chaque affirmation affichée. Réponds sans calculer pour entraîner ta mémoire automatique.",
+              "module": "TrueFalse",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 2,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e3",
+          "titre": "Remplissage des résultats",
+          "objectif": "Restituer les produits manquants.",
+          "cartes": [
+            {
+              "id": "c4",
+              "titre": "Les trous dans les tables",
+              "objectif": "Compléter les opérations multiplicatives.",
+              "consigne": "Écris le nombre manquant dans chaque opération (facteur ou produit). Vérifie rapidement tes réponses en relisant la table concernée.",
+              "module": "FillInTheBlanks",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 4,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "titre": "Mots croisés mathématiques",
+          "objectif": "Associer les termes aux définitions.",
+          "cartes": [
+            {
+              "id": "c6",
+              "titre": "Les mots des tables",
+              "objectif": "Retrouver les termes clés dans une grille.",
+              "consigne": "Résous la grille de mots croisés en utilisant les définitions données sur les termes mathématiques et les résultats des tables. Les mots à trouver sont ceux de la liste des notions pivots.",
+              "module": "Crossword",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 4,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "La fabrication démarre dès ce clic : chaque activité est générée une par une, dans l'ordre, sous vos yeux."
+}

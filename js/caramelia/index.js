@@ -14,7 +14,7 @@
  *   chat.js         → mode aide (chat libre)
  *   actions.js      → interactions DOM Caramel (tuiles, sidebar, MutationObserver)
  *   flow.js         → orchestration des conversations (router intelligent)
- *   locales/*.json  → 11 langues
+ *   locales/*.json  → 12 langues
  *
  * @module caramelia
  */
@@ -48,12 +48,8 @@ let lastFocusedBeforeOpen = null;
  * dans la nouvelle langue puisque `t()` lit la locale rechargée.
  */
 function applyLanguageChange() {
-    // `refreshWidgetLabels()` sort en early-return quand le widget n'existe pas, mais
-    // `resetConversation()` descend jusqu'à `addBotMessage()`, qui fait
-    // `state.elements.messages.appendChild(...)` SANS garde. Comme ce code est appelé
-    // par un setInterval de 2 s qui survit à la page l'ayant créé (`test-caramelia-ui.js`
-    // réimporte ce module dans une iframe), on refuse de repeindre un widget absent
-    // plutôt que de lever une TypeError toutes les 2 secondes.
+    // Le chargement peut finir avant la création du widget ou après son retrait.
+    // resetConversation() exige une zone de messages ; ne pas repeindre un hôte absent.
     if (!state.elements.fab || !state.elements.messages) return;
 
     refreshWidgetLabels();
@@ -73,14 +69,13 @@ async function toggle() {
         lastFocusedBeforeOpen = document.activeElement;
 
         // Si la langue Caramel a changé entre-temps, recharger la locale et repeindre.
-        // Ce chemin sert quand l'utilisateur ouvre le panneau dans les 2 s qui suivent
-        // le changement de drapeau, avant que le poller de watchLanguageChanges() ait vu.
+        // Couvre aussi une ouverture pendant le téléchargement de la nouvelle langue.
         const prev = getLang();
         await syncLocale();
         if (getLang() !== prev) applyLanguageChange();
 
         if (!state.history.length) showWelcome();
-        setTimeout(() => state.elements.input.focus(), 350);
+        setTimeout(() => { if (state.isOpen) state.elements.input.focus(); }, 350);
     } else {
         // Restaurer le focus sur ce qui l'avait avant (FAB par défaut), sans bloc visible si l'élément a disparu
         const target = (lastFocusedBeforeOpen && document.body.contains(lastFocusedBeforeOpen))
@@ -108,15 +103,12 @@ function close() {
 
 // ── Détection langue Caramel : refresh widget si elle change ──
 function watchLanguageChanges() {
-    let lastLang = currentLang;
-    // Polling léger toutes les 2s : moins fragile qu'écouter un sélecteur précis
-    setInterval(async () => {
-        if (currentLang !== lastLang) {
-            lastLang = currentLang;
-            await loadLocale(currentLang);
-            applyLanguageChange();
-        }
-    }, 2000);
+    // Événement du moteur de traduction, indépendant du sélecteur visuel.
+    // Les boutons et le champ de saisie suivent la langue sans attendre un poller.
+    window.addEventListener('caramel:language-changed', async () => {
+        await loadLocale(currentLang);
+        applyLanguageChange();
+    });
 }
 
 // ── Click hors panel : ne ferme pas si on clique dans une modal Caramel ──
@@ -130,6 +122,7 @@ function isInsideCaramelModal(target) {
 
 // ── Bind events ──
 function bindEvents() {
+    document.addEventListener('caramelia:close', close);
     state.elements.fab.addEventListener('click', toggle);
     state.elements.closeBtn.addEventListener('click', close);
     if (state.elements.expandBtn) {
@@ -179,6 +172,8 @@ function bindEvents() {
 }
 
 function submitInput() {
+    // Conserver la saisie en attente : Entrée ne doit pas lancer un second appel.
+    if (state.pendingQuery || state.generationRunning) return;
     const raw = (state.elements.input.value || '').trim();
     if (!raw) return;
     state.elements.input.value = '';

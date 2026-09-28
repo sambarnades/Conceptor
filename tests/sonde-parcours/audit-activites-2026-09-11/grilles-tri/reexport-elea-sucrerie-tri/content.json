@@ -1,0 +1,60 @@
+{
+  "taskDescription": "Place Début en premier, Fin en dernier et Observer au milieu.",
+  "paragraphs": [
+    "<p>Début</p>",
+    "<p>Observer</p>",
+    "<p>Observer</p>",
+    "<p>Fin</p>"
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 100,
+      "feedback": ""
+    }
+  ],
+  "behaviour": {
+    "scoringMode": "positions",
+    "applyPenalties": false,
+    "duplicatesInterchangeable": false,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "addButtonsForMovement": false
+  },
+  "l10n": {
+    "checkAnswer": "Vérifier",
+    "submitAnswer": "Valider",
+    "tryAgain": "Recommencer",
+    "showSolution": "Afficher la solution",
+    "up": "Monter",
+    "down": "Descendre",
+    "disabled": "Désactivé"
+  },
+  "a11y": {
+    "check": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+    "showSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+    "retry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+    "yourResult": "Vous avez obtenu @score sur @total points",
+    "paragraph": "Paragraphe",
+    "correct": "Bonne réponse",
+    "wrong": "Mauvaise réponse",
+    "point": "@score point",
+    "sevenOfNine": "@current sur @total",
+    "currentPosition": "Position actuelle dans la liste",
+    "instructionsSelected": "Appuyez sur la barre d&#039;espace pour réorganiser",
+    "instructionsGrabbed": "Appuyez sur les flèches haut et bas pour changer de position, sur la barre d&#039;espace pour déposer, sur échap pour annuler",
+    "grabbed": "Saisi",
+    "moved": "Déplacé",
+    "dropped": "Déposé",
+    "reorderCancelled": "Réorganisation annulée",
+    "finalPosition": "Position finale",
+    "nextParagraph": "Paragraphe suivant",
+    "correctParagraph": "Paragraphe correct à la position",
+    "listDescription": "Liste de paragraphes triables.",
+    "listDescriptionCheckAnswer": "Liste de paragraphes avec résultats.",
+    "listDescriptionShowSolution": "Liste de paragraphes avec solutions."
+  },
+  "media": {
+    "disableImageZooming": false
+  }
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="137" moduleid="23627" modulename="bigbluebuttonbn" contextid="57785">
+  <bigbluebuttonbn id="137">
+    <type>1</type>
+    <course>2560</course>
+    <name>Classe virtuelle</name>
+    <intro>&lt;p&gt;Rendez-vous en classe virtuelle mardi à 17 h.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <meetingid>3c185e3f5fcbb1d4bdf20e948a0c38f0127bbee3</meetingid>
+    <moderatorpass>[retiré]</moderatorpass>
+    <viewerpass>[retiré]</viewerpass>
+    <wait>0</wait>
+    <record>1</record>
+    <recordallfromstart>0</recordallfromstart>
+    <recordhidebutton>0</recordhidebutton>
+    <welcome></welcome>
+    <voicebridge>0</voicebridge>
+    <openingtime>0</openingtime>
+    <closingtime>0</closingtime>
+    <timecreated>1790541626</timecreated>
+    <timemodified>0</timemodified>
+    <presentation></presentation>
+    <participants>[{"selectiontype":"all","selectionid":"all","role":"viewer"},{"selectiontype":"role","selectionid":"1","role":"moderator"},{"selectiontype":"role","selectionid":"3","role":"moderator"},{"selectiontype":"role","selectionid":"4","role":"moderator"}]</participants>
+    <userlimit>0</userlimit>
+    <recordings_html>0</recordings_html>
+    <recordings_deleted>0</recordings_deleted>
+    <recordings_imported>0</recordings_imported>
+    <recordings_preview>1</recordings_preview>
+    <clienttype>0</clienttype>
+    <muteonstart>1</muteonstart>
+    <completionattendance>0</completionattendance>
+    <completionengagementchats>0</completionengagementchats>
+    <completionengagementtalks>0</completionengagementtalks>
+    <completionengagementraisehand>0</completionengagementraisehand>
+    <completionengagementpollvotes>0</completionengagementpollvotes>
+    <completionengagementemojis>0</completionengagementemojis>
+    <guestallowed>0</guestallowed>
+    <mustapproveuser>1</mustapproveuser>
+    <showpresentation>1</showpresentation>
+    <grade>100</grade>
+    <logs>
+    </logs>
+    <recordings>
+    </recordings>
+  </bigbluebuttonbn>
+</activity>

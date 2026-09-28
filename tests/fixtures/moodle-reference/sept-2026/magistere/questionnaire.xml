@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="519" moduleid="23620" modulename="questionnaire" contextid="57778">
+  <questionnaire id="519">
+    <course>2560</course>
+    <name>Questionnaire : ce que je sais déjà</name>
+    <intro>&lt;p&gt;Réponds à ces quelques questions avant de commencer.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <qtype>0</qtype>
+    <respondenttype>fullname</respondenttype>
+    <resp_eligible>all</resp_eligible>
+    <resp_view>1</resp_view>
+    <notifications>0</notifications>
+    <opendate>0</opendate>
+    <closedate>0</closedate>
+    <resume>0</resume>
+    <navigate>0</navigate>
+    <grade>0</grade>
+    <sid>517</sid>
+    <timemodified>1790541622</timemodified>
+    <completionsubmit>1</completionsubmit>
+    <autonum>3</autonum>
+    <removeafter>0</removeafter>
+    <surveys>
+      <survey id="517">
+        <name>Questionnaire : ce que je sais déjà</name>
+        <courseid>2560</courseid>
+        <realm>private</realm>
+        <status>0</status>
+        <title>Questionnaire : ce que je sais déjà</title>
+        <email></email>
+        <subtitle></subtitle>
+        <info></info>
+        <theme></theme>
+        <thanks_page></thanks_page>
+        <thank_head></thank_head>
+        <thank_body></thank_body>
+        <feedbacksections>0</feedbacksections>
+        <feedbacknotes></feedbacknotes>
+        <feedbackscores>0</feedbackscores>
+        <chart_type>$@NULL@$</chart_type>
+        <questions>
+          <question id="6679">
+            <surveyid>517</surveyid>
+            <name>source_pluie</name>
+            <type_id>4</type_id>
+            <result_id>$@NULL@$</result_id>
+            <length>0</length>
+            <precise>0</precise>
+            <position>1</position>
+            <content>&lt;p&gt;D’où vient, selon toi, l’eau de pluie ?&lt;/p&gt;</content>
+            <required>y</required>
+            <deleted>$@NULL@$</deleted>
+            <extradata>0</extradata>
+            <quest_choices>
+              <quest_choice id="12942">
+                <question_id>6679</question_id>
+                <content>Des océans</content>
+                <value>$@NULL@$</value>
+              </quest_choice>
+              <quest_choice id="12943">
+                <question_id>6679</question_id>
+                <content>Des rivières</content>
+                <value>$@NULL@$</value>
+              </quest_choice>
+              <quest_choice id="12944">
+                <question_id>6679</question_id>
+                <content>Des nuages seulement</content>
+                <value>$@NULL@$</value>
+              </quest_choice>
+            </quest_choices>
+            <quest_dependencies>
+            </quest_dependencies>
+          </question>
+          <question id="6680">
+            <surveyid>517</surveyid>
+            <name>deja_etudie</name>
+            <type_id>1</type_id>
+            <result_id>$@NULL@$</result_id>
+            <length>0</length>
+            <precise>0</precise>
+            <position>2</position>
+            <content>&lt;p&gt;As-tu déjà étudié le cycle de l’eau ?&lt;/p&gt;</content>
+            <required>y</required>
+            <deleted>$@NULL@$</deleted>
+            <extradata>0</extradata>
+            <quest_choices>
+            </quest_choices>
+            <quest_dependencies>
+            </quest_dependencies>
+          </question>
+        </questions>
+        <fb_sections>
+        </fb_sections>
+      </survey>
+    </surveys>
+    <responses>
+    </responses>
+  </questionnaire>
+</activity>

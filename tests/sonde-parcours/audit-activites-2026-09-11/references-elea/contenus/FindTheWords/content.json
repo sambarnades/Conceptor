@@ -1,0 +1,30 @@
+{
+  "taskDescription": "Bonjour à toutes et à tous ! Dans cette grille, vous devez retrouver les termes essentiels de notre chapitre sur la Révolution française. Ces mots représentent les acteurs, les lieux et les symboles qui ont marqué la fin de la monarchie absolue et la naissance de la citoyenneté. Bonne chance !",
+  "wordList": "BASTILLE,NATION,CITOYEN,EMPIRE,REPUBLIQUE,CONSTITUTION",
+  "behaviour": {
+    "orientations": {
+      "horizontal": true,
+      "horizontalBack": true,
+      "vertical": true,
+      "verticalUp": true,
+      "diagonal": true,
+      "diagonalBack": true,
+      "diagonalUp": true,
+      "diagonalUpBack": true
+    },
+    "fillPool": "abcdefghijklmnopqrstuvwxyz",
+    "preferOverlap": true,
+    "showVocabulary": true,
+    "enableShowSolution": true,
+    "enableRetry": true
+  },
+  "l10n": {
+    "check": "Vérifier",
+    "tryAgain": "Recommencer",
+    "showSolution": "Afficher la solution",
+    "found": "@found sur @totalWords mots trouvés",
+    "timeSpent": "Temps écoulé",
+    "score": "Vous avez obtenu @score sur @total points",
+    "wordListHeader": "Liste de mots"
+  }
+}

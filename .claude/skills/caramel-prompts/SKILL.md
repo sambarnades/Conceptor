@@ -44,19 +44,18 @@ Pour chaque activité X :
 
 ## Choix du modèle LLM
 
-`services/llm.js` définit les modèles disponibles. Override par activité :
+`services/llm.js` définit les modèles disponibles (`AVAILABLE_MODELS`) et le défaut
+(`DEFAULT_MODEL` = `mistral-small-4-119b`). Override par activité — **vide** aujourd'hui :
 ```javascript
-const MODEL_OVERRIDES = {
-  QuizSetQCM: 'gpt-oss-120b',     // gros modèle pour structures complexes
-  QuizSetVF: 'gpt-oss-120b',
-  QuizSet: 'gpt-oss-120b',
-  Page: 'gpt-oss-120b',           // pages longues structurées
-  test_elea: 'gpt-oss-120b'
-  // défaut : mistral-small-3.2-24b
+export const ACTIVITY_MODEL_OVERRIDES = {
+  // 'QuizSetQCM': 'qwen-3.8-27b',   // forme : moduleKey → id de modèle
 };
 ```
+Les anciens overrides visaient `gpt-oss-120b`, arrêté par ILaaS le 30-09-2026.
 
-Si une activité plante systématiquement avec le modèle par défaut → essayer un override.
+Si une activité plante systématiquement avec le modèle par défaut → sonder d'abord le modèle
+seul (piège 5 du CLAUDE.md : une panne ILaaS passe pour un défaut de prompt). Un override ne se
+justifie que par un motif de QUALITÉ ou de VITESSE mesuré, jamais par une panne du jour.
 
 ## Système de prompts générés (assets/data/prompts)
 

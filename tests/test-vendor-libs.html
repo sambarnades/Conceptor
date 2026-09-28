@@ -94,8 +94,9 @@
             <li><strong>fflate &amp; tar-js</strong> : creation TAR + compression gzip (packaging Moodle .mbz)</li>
             <li><strong>DOMPurify</strong> : vecteurs XSS bloques, HTML pedagogique preserve (3 profils)</li>
             <li><strong>jsPDF &amp; AutoTable</strong> : creation PDF, tableau, generation blob</li>
-            <li><strong>docx</strong> : creation DOCX, Packer.toBlob(), magic number ZIP</li>
+            <li><strong>docx + Mammoth</strong> : creation d’un DOCX puis extraction reelle de son texte</li>
             <li><strong>MathJax</strong> : rendu LaTeX (E=mc&sup2;, integrale), typesetClear()</li>
+            <li><strong>pako + UTIF</strong> : creation et decodage d’un TIFF compresse Deflate, comparaison des pixels</li>
         </ol>
     </details>
 
@@ -104,7 +105,7 @@
     </div>
 
     <script type="module">
-        import { runAllTests, STEP_DESCRIPTIONS } from './tests/test-vendor-libs.js';
+        import { runAllTests, STEP_DESCRIPTIONS } from '/tests/test-vendor-libs.js';
         const output = document.getElementById('output');
         const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
@@ -113,7 +114,7 @@
             if (failures.length === 0) return `<div class="ai-prompt-section"><div class="ai-prompt-none">Aucune erreur ! Toutes les bibliotheques vendor fonctionnent correctement.</div></div>`;
             const byStep = new Map();
             for (const f of failures) { const s = f.step || 0; if (!byStep.has(s)) byStep.set(s, []); byStep.get(s).push(f); }
-            let prompt = `Je travaille sur Caramel, une application web de generation d'activites pedagogiques.\nLes tests des bibliotheques vendor (8 etapes) montrent ${failures.length} echec(s) sur ${results.length} assertions.\n\nBibliotheques testees :\n- JSZip (ZIP creation/lecture) — js/services/ocr.js, js/h5p/h5p-creator.js\n- client-zip (ZIP streaming) — js/h5p/h5p-creator.js\n- fflate (compression gzip) — js/moodle/moodle-creator.js\n- tar-js (archives TAR) — js/moodle/moodle-creator.js\n- DOMPurify (sanitisation HTML) — js/export/sanitizer.js\n- jsPDF + AutoTable (export PDF) — js/export/document-exporter.js\n- docx (export DOCX) — js/export/document-exporter.js\n- MathJax (rendu LaTeX) — js/renderers/math-renderer.js\n- PDF.js (extraction PDF) — js/services/ocr.js\n- Tesseract.js (OCR images) — js/services/ocr.js\n- mammoth (extraction DOCX) — js/services/ocr.js\n\nFichier de configuration : js/core/lib-loader.js (LIB_PATHS, fonctions de chargement)\n\n=== ERREURS ===\n\n`;
+            let prompt = `Je travaille sur Caramel, une application web de generation d'activites pedagogiques.\nLes tests des bibliotheques vendor (9 etapes) montrent ${failures.length} echec(s) sur ${results.length} assertions.\n\nBibliotheques testees :\n- JSZip (ZIP creation/lecture) — js/services/ocr.js, js/h5p/h5p-creator.js\n- client-zip (ZIP streaming) — js/h5p/h5p-creator.js\n- fflate (compression gzip) — js/moodle/moodle-creator.js\n- tar-js (archives TAR) — js/moodle/moodle-creator.js\n- DOMPurify (sanitisation HTML) — js/export/sanitizer.js\n- jsPDF + AutoTable (export PDF) — js/export/document-exporter.js\n- docx (export DOCX) — js/export/document-exporter.js\n- MathJax (rendu LaTeX) — js/renderers/math-renderer.js\n- PDF.js (extraction PDF) — js/services/ocr.js\n- Tesseract.js (OCR images) — js/services/ocr.js\n- mammoth (relecture du DOCX produit) — js/services/ocr.js\n- pako + UTIF (TIFF Deflate) — js/core/lib-loader.js\n\nFichier de configuration : js/core/lib-loader.js (LIB_PATHS, fonctions de chargement)\n\n=== ERREURS ===\n\n`;
             for (const [step, sf] of byStep) {
                 prompt += `--- Etape ${step} : ${STEP_NAMES[step] || '?'} ---\n`;
                 for (const f of sf) {

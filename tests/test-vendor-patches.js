@@ -1,7 +1,7 @@
 /**
  * @file Patchs appliqués aux bibliothèques vendor — garde anti-écrasement.
  *
- * Cinq fichiers de `js/vendor/` sont PATCHÉS à la main. CLAUDE.md le dit pour chacun :
+ * Sept fichiers de `js/vendor/` sont PATCHÉS à la main. CLAUDE.md le dit pour chacun :
  * « à réappliquer à chaque mise à jour ». Or une mise à jour vendor est un simple
  * remplacement de fichier : le patch disparaît SANS BRUIT, aucun test ne le remarquait,
  * et la panne n'apparaît qu'à l'aperçu d'une activité — souvent chez l'enseignant.
@@ -44,14 +44,16 @@ export const STEP_NAMES = {
     1: 'h5p-standalone — data: et blob: dans getPath',
     2: 'H5P.Video — YouTube sans cookie (erreur 153)',
     3: 'H5P.DragQuestion / Components — formules LaTeX des étiquettes',
-    4: 'Cohérence des versions vendor chargées'
+    4: 'Cohérence des versions vendor chargées',
+    5: 'Mots mêlés et tri — pointage et reprise'
 };
 
 export const STEP_DESCRIPTIONS = {
     1: 'La regex accepte data:image|audio|video et blob:, et REFUSE data:text/html.',
     2: 'host youtube-nocookie + ORIGIN pris sur window.top, en 1.5 comme en 1.6.',
     3: 'Les exclusions :not(MathJax) / :not(mjx-container) sont présentes dans les 2 CSS.',
-    4: 'Les versions patchées sont bien celles que lib-loader charge réellement.'
+    4: 'Les versions patchées sont bien celles que lib-loader charge réellement.',
+    5: 'Coordonnées relatives au canvas et retrait des indicateurs depuis leur vrai parent.'
 };
 
 const BASE = new URL('../', new URL(import.meta.url)).href;
@@ -259,6 +261,13 @@ export async function runAllTests() {
     await runStep2_Youtube();
     await runStep3_CssMath();
     await runStep4_Versions();
+    beginStep(5, STEP_NAMES[5]);
+    const grid = await lire('js/vendor/h5p-libs/H5P.FindTheWords-1.4/scripts/h5p-find-the-words-word-grid.js');
+    assert(typeof grid === 'string' && !grid.includes('e.pageY - Math.abs(offsetTop)'), '[5.1] Aucun plafonnement de l’origine du pointeur');
+    const sort = await lire('js/vendor/h5p-libs/H5P.SortParagraphs-0.11/dist/h5p-sort-paragraphs.js');
+    assert(typeof sort === 'string' && sort.includes('.h5p-question-minus-one') && !sort.includes('.h5p-question-minus.one'), '[5.2] Indicateur négatif correctement sélectionné');
+    assert(typeof sort === 'string' && !sort.includes('this.content.removeChild(t)'), '[5.3] Retrait du score indépendant de la profondeur DOM');
+    endStep();
 
     console.log(`\n=== Résultat : ${passCount} PASS / ${failCount} FAIL ===`);
 

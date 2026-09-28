@@ -1,0 +1,24 @@
+{
+  "graphMode": "pieChart",
+  "figureDefinition": "Répartition fictive d’une heure de lecture",
+  "listOfTypes": [
+    {
+      "text": "Lecture individuelle",
+      "value": 0.125,
+      "color": "#336699",
+      "fontColor": "#ffffff"
+    },
+    {
+      "text": "Lecture en binôme",
+      "value": 0.375,
+      "color": "#663399",
+      "fontColor": "#ffffff"
+    },
+    {
+      "text": "Discussion collective",
+      "value": 0.5,
+      "color": "#996600",
+      "fontColor": "#fff"
+    }
+  ]
+}

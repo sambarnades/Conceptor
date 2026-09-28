@@ -51,7 +51,7 @@ function purgeStoredIdentity() {
  * Démarre le flow Sucrerie sur la modale courante.
  * No-op si le kill switch est désactivé.
  */
-export function runSucrerieFlow({ modal, notification, translations, userIntent }) {
+export function runSucrerieFlow({ modal, notification, translations, userIntent, onExit }) {
     if (!SUCRERIE_BRIDGE.enabled) return;
     if (!modal || !notification) return;
     const intent = userIntent || {};
@@ -60,6 +60,15 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
         modal._sucrerieBridgeFlow.exit();
     }
 
+    const contextualTranslations = pack => {
+        if (!notification.isCourse) return pack;
+        const result = { ...pack };
+        for (const key of Object.keys(pack || {})) {
+            if (key.endsWith('_course')) result[key.slice(0, -7)] = pack[key];
+        }
+        return result;
+    };
+    translations = contextualTranslations(translations);
     const panel = createPanel({ modal, translations });
     modal.classList.add(MODAL_ACTIVE_CLASS);
 
@@ -152,17 +161,21 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
         accountExistsForEmail: null, // email pour lequel accountExists a été résolu
         authorDisplayTouched: false, // l'auteur a-t-il édité la signature manuellement ?
         exit() {
+            if (flow.closed) return;
+            flow.closed = true;
             uninstallCloseGuards();
             modal.classList.remove(MODAL_ACTIVE_CLASS);
             panel.destroy();
             modal._sucrerieBridgeFlow = null;
+            onExit?.();
         },
         /**
          * Ré-applique les traductions au panneau de dépôt en cours sans
          * détruire les saisies ni les listeners. Appelé par le
          * MutationObserver sur `<html lang>` (cf. index.js).
          */
-        refreshTranslations(translations) {
+        refreshTranslations(pack) {
+            translations = contextualTranslations(pack);
             panel.refreshTranslations(translations);
         }
     };
@@ -185,7 +198,7 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
     // On confirme la fermeture si l'utilisateur est en train de remplir
     // (étape `loading` ou `preview`). Sur `email` vide ou `success` (déjà
     // publié) ou `rejected` (rien à perdre) → fermeture libre.
-    const overlay = document.querySelector('.preview-modal-overlay');
+    const overlay = modal.closest('.preview-modal-overlay') || document.querySelector('.preview-modal-overlay');
     const closeBtn = modal.querySelector('.preview-modal__close');
 
     function shouldConfirmClose() {
@@ -402,9 +415,9 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
             const fmt = detectFormat(notification);
             const titleHint = getTitleHint(notification);
             flow.contentFormat = fmt;
-            const { markdown, activityType } = await extractMarkdownFromBlob(
-                notification.blob, fmt, titleHint
-            );
+            const { markdown, activityType } = notification.isCourse
+                ? { markdown: notification.courseText, activityType: 'parcours' }
+                : await extractMarkdownFromBlob(notification.blob, fmt, titleHint);
             flow.markdownSent = markdown;
             // Pour markdown (aManDe), `notification.titleKey` contient le slug
             // du renderer (ex. `e-marguerite-mot`) — c'est cette valeur qui doit
@@ -803,6 +816,7 @@ function detectFormat(notification) {
 }
 
 function getTitleHint(notification) {
+    if (notification.isCourse) return notification.title || '';
     const fromModal = document.querySelector('.preview-modal__title')?.textContent?.trim();
     if (fromModal) return fromModal;
     return notification.titleKey || '';

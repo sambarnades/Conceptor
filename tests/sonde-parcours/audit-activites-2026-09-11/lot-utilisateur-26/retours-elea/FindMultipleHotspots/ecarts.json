@@ -1,0 +1,20 @@
+[
+  {
+    "chemin": "imageMultipleHotspotQuestion.hotspotSettings.hotspot[0].computedSettings.x",
+    "type": "modification",
+    "avant": 10,
+    "apres": 10.126582278481012
+  },
+  {
+    "chemin": "imageMultipleHotspotQuestion.hotspotSettings.hotspot[0].computedSettings.y",
+    "type": "modification",
+    "avant": 26.67,
+    "apres": 27.0042194092827
+  },
+  {
+    "chemin": "imageMultipleHotspotQuestion.hotspotSettings.hotspot[0].userSettings.feedbackText",
+    "type": "modification",
+    "avant": "Zone 1 sélectionnée.",
+    "apres": "Zone 1 sélectionnée. RELU"
+  }
+]

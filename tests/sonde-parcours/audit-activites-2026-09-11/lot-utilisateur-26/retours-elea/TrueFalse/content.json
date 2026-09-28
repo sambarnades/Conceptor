@@ -1,0 +1,71 @@
+{
+  "question": "Madrid est la capitale de l’Espagne.",
+  "correct": "true",
+  "behaviour": {
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "confirmCheckDialog": false,
+    "confirmRetryDialog": false,
+    "autoCheck": true,
+    "enableCheckButton": false,
+    "feedbackOnCorrect": "Madrid est la capitale espagnole. RELU",
+    "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+  },
+  "l10n": {
+    "trueText": "Vrai",
+    "falseText": "Faux",
+    "score": "Vous avez obtenu @score sur @total points",
+    "checkAnswer": "Vérifier",
+    "showSolutionButton": "Afficher la solution",
+    "tryAgain": "Recommencer",
+    "wrongAnswerMessage": "Mauvaise réponse",
+    "correctAnswerMessage": "Bonne réponse",
+    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+    "submitAnswer": "Valider",
+    "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+    "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+    "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  "confirmCheck": {
+    "header": "Terminer ?",
+    "body": "Êtes-vous sûr de vouloir terminer ?",
+    "cancelLabel": "Annuler",
+    "confirmLabel": "Terminer"
+  },
+  "confirmRetry": {
+    "header": "Recommencer ?",
+    "body": "Êtes-vous sûr de vouloir recommencer ?",
+    "cancelLabel": "Annuler",
+    "confirmLabel": "Confirmer"
+  },
+  "media": {
+    "type": {
+      "library": "H5P.Image 1.1",
+      "params": {
+        "file": {
+          "path": "images/recette-zones.png",
+          "mime": "image/png",
+          "width": 800,
+          "height": 450,
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          }
+        },
+        "alt": "Zones un, deux et trois",
+        "decorative": false,
+        "contentName": "Image",
+        "expandImage": "Agrandir l&#039;image",
+        "minimizeImage": "Réduire l&#039;image"
+      },
+      "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+      "metadata": {
+        "title": "Image de recette",
+        "license": "PD",
+        "contentType": "Image"
+      }
+    },
+    "disableImageZooming": false
+  }
+}

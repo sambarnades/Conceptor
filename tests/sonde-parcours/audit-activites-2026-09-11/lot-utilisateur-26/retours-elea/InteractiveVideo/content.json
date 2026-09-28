@@ -1,0 +1,257 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "files": [
+        {
+          "path": "videos/recette.webm",
+          "mime": "video/webm",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ],
+      "startScreenOptions": {
+        "title": "Vidéo courte de recette",
+        "hideStartTitle": false,
+        "shortStartDescription": "Une question apparaît à 0,2 seconde.",
+        "poster": {
+          "path": "images/recette-zones.png",
+          "mime": "image/png",
+          "width": 800,
+          "height": 450,
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          }
+        }
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Sous-titres",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      }
+    },
+    "assets": {
+      "interactions": [
+        {
+          "duration": {
+            "from": 0.09999999999999987,
+            "to": 1
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "label": "",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100,
+          "libraryTitle": "Question",
+          "action": {
+            "subContentId": "4e20e64a-d7c3-4728-ba8f-7a56dadc5246",
+            "library": "H5P.MultiChoice 1.16",
+            "metadata": {
+              "title": "Que produit principalement la photosynthèse ?",
+              "contentType": "Multiple Choice",
+              "license": "U"
+            },
+            "params": {
+              "question": "Quelle est la capitale de la France ?",
+              "answers": [
+                {
+                  "text": "Paris",
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  }
+                },
+                {
+                  "text": "Rome",
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  }
+                }
+              ],
+              "UI": {
+                "checkAnswerButton": "Vérifier",
+                "showSolutionButton": "Afficher la solution",
+                "tryAgainButton": "Recommencer",
+                "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                "submitAnswerButton": "Valider",
+                "tipsLabel": "Indice",
+                "tipAvailable": "Indice disponible",
+                "feedbackAvailable": "Feedback disponible",
+                "readFeedback": "Lire le commentaire",
+                "wrongAnswer": "Mauvaise réponse",
+                "correctAnswer": "Bonne réponse",
+                "shouldCheck": "Il fallait cocher ici",
+                "shouldNotCheck": "Il ne fallait pas cocher ici !",
+                "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+                "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+              },
+              "behaviour": {
+                "type": "auto",
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "randomAnswers": true,
+                "enableCheckButton": true,
+                "singlePoint": false,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "media": {
+                "disableImageZooming": false
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "confirmCheck": {
+                "header": "Terminer ?",
+                "body": "Êtes-vous certain de vouloir terminer ?",
+                "cancelLabel": "Annuler",
+                "confirmLabel": "Terminer"
+              },
+              "confirmRetry": {
+                "header": "Recommencer ?",
+                "body": "Êtes-vous certain de vouloir recommencer ?",
+                "cancelLabel": "Annuler",
+                "confirmLabel": "Confirmer"
+              }
+            }
+          },
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          }
+        }
+      ],
+      "bookmarks": [
+        {
+          "time": 0,
+          "label": "Début"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "Choisissez l'affirmation exacte.",
+          "summaries": [
+            {
+              "subContentId": "45d1de1a-ab15-4928-a86f-cb2630acf761",
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progression :",
+          "scoreLabel": "Erreurs :",
+          "resultLabel": "Votre résultat :",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Réponses correctes.",
+          "tipButtonLabel": "Montrer l&#039;indice",
+          "scoreBarLabel": "Vous avez :num points sur un total de :total",
+          "progressText": "Progression de :num sur :total"
+        },
+        "subContentId": "209b57c5-deb6-4935-8b2c-dc9d4937d6b6",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Sans titre"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": true,
+    "preventSkippingMode": "none",
+    "hasNoAutoPause": false,
+    "showRewind10": false,
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Lecture",
+    "pause": "Pause",
+    "mute": "Couper le son",
+    "unmute": "Activer le son",
+    "quality": "Qualité de la vidéo",
+    "captions": "Sous-titres",
+    "close": "Fermer",
+    "fullscreen": "Plein écran",
+    "exitFullscreen": "Quitter le plein écran",
+    "summary": "Ouvrir le résumé",
+    "bookmarks": "Signets",
+    "endscreen": "Écran de soumission",
+    "defaultAdaptivitySeekLabel": "Continuer",
+    "continueWithVideo": "Continuer la vidéo",
+    "more": "Plus d’options",
+    "playbackRate": "Vitesse de lecture",
+    "rewind10": "Reculer de 10 secondes",
+    "navDisabled": "La navigation est désactivée",
+    "navForwardDisabled": "La navigation en avant est désactivée",
+    "sndDisabled": "Le son est désactivé",
+    "requiresCompletionWarning": "Vous devez répondre correctement à toutes les questions avant de continuer.",
+    "back": "Retour",
+    "hours": "Heures",
+    "minutes": "Minutes",
+    "seconds": "Secondes",
+    "currentTime": "Temps actuel :",
+    "totalTime": "Durée totale :",
+    "singleInteractionAnnouncement": "Une interaction est apparue :",
+    "multipleInteractionsAnnouncement": "Plusieurs interactions sont apparues.",
+    "videoPausedAnnouncement": "La vidéo est en pause",
+    "content": "Contenu",
+    "answered": "@answered répondue(s)",
+    "endcardQuestion": "Question",
+    "endcardTitle": "@answered question(s) répondue(s)",
+    "endcardInformation": "Vous avez répondu à @answered questions, cliquez ci-dessous pour soumettre vos réponses.",
+    "endcardInformationOnSubmitButtonDisabled": "Vous avez répondu à @answered questions.",
+    "endcardInformationNoAnswers": "Vous n’avez répondu à aucune question.",
+    "endcardInformationMustHaveAnswer": "Vous devez répondre à au moins une question avant de pouvoir soumettre vos réponses.",
+    "endcardSubmitButton": "Soumettre les réponses",
+    "endcardSubmitMessage": "Vos réponses ont été soumises !",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "répondue",
+    "endCardTableRowSummaryWithScore": "Vous avez obtenu @score sur @total points pour la @question apparue après @minutes minutes et @seconds secondes.",
+    "endCardTableRowSummaryWithoutScore": "Vous avez répondu à la @question apparue après @minutes minutes et @seconds secondes.",
+    "videoProgressBar": "Progression de la vidéo",
+    "howToCreateInteractions": "Lancez la vidéo pour commencer à créer des interactions"
+  }
+}

@@ -1,0 +1,18 @@
+✅ Cas prod (113 ancres, mode Rapide) : aucune ligne « nombre maximum »
+✅ Cas prod : la ligne de durée est conservée (borne des timestamps)
+✅ Cas prod : la règle éditoriale « JAMAIS plus de 10 » reste la seule consigne de volume
+✅ Cas prod : la transcription horodatée est bien injectée en SOURCES
+✅ Transcription pauvre (4 ancres < 10) : la ligne « nombre maximum » est émise
+✅ Transcription pauvre : le plafond annoncé vaut 4
+✅ Transcription pauvre : la formule qui écrasait les règles a disparu
+✅ Guidé 30 questions / 113 ancres : rien à annoncer (les ancres ne bornent pas)
+✅ Guidé 30 questions : la demande de l’enseignant est transmise
+✅ Guidé 30 questions / 4 ancres : le nombre demandé est ramené au plafond (clampVideoCount)
+✅ Guidé 30 questions / 4 ancres : pas de second plafond dans l’en-tête (les règles le portent déjà)
+✅ Aucun prompt ne contient deux consignes de volume concurrentes
+✅ Couture « prompt copiable » : un prompt Vidéo interactive est bien produit
+✅ Couture « prompt copiable » : le nombre saisi APRÈS la transcription est pris en compte
+✅ Couture « prompt copiable » : aucune ligne « nombre maximum » concurrente
+✅ Couture « prompt copiable » : la ligne de durée est présente
+
+✅ Tout est vert

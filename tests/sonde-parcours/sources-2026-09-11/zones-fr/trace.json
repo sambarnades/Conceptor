@@ -1,0 +1,97 @@
+{
+  "cas": {
+    "id": "zones-fr",
+    "module": "FindMultipleHotspots",
+    "lang": "fr"
+  },
+  "demandes": [
+    {
+      "url": "/webhook/caramel-vision-detect-bas",
+      "image": "[image du fixture Van Gogh]",
+      "context": {
+        "qui": "Professeur d’arts plastiques au collège",
+        "quoi": "Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village. — Observer La Nuit étoilée — Repérer les astres lumineux dans le ciel.",
+        "niveau": "",
+        "corpus": "",
+        "corpusLength": 0,
+        "sources": []
+      },
+      "lang": "fr",
+      "model": "qwen-3.6-35b-instruct",
+      "prompt": "Tu es un expert en analyse d'images. Rédige TOUS les textes de ta réponse (imageDescription, chaque label, chaque description) EXCLUSIVEMENT en français.\n\nAnalyse l'image fournie dans ce contexte pédagogique : Professeur d’arts plastiques au collège · Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village. — Observer La Nuit étoilée — Repérer les astres lumineux dans le ciel.\n\n1) Donne une brève description GLOBALE de l'image (1 à 2 phrases) : champ \"imageDescription\".\n2) Identifie de 3 à 5 ZONES/POINTS clés réellement présents dans l'image et pertinents pour ce contexte.\nPour CHAQUE zone, donne EXACTEMENT :\n- x : coordonnée horizontale du CENTRE de la zone sur une échelle de 0 à 1000 (0 = bord gauche, 1000 = bord droit) ;\n- y : coordonnée verticale du CENTRE de la zone sur une échelle de 0 à 1000 (0 = haut, 1000 = bas) ;\n- label : un nom très court (1 à 3 mots) ;\n- description : ce que montre la zone ET ce qui l'entoure (1 à 2 phrases).\nEstime x et y au plus JUSTE d'après la VRAIE position de chaque zone (entiers entre 0 et 1000, distincts d'une zone à l'autre).\nN'invente AUCUNE zone absente de l'image.\nRéponds STRICTEMENT en JSON valide, sans aucun texte autour, au format :\n{\"imageDescription\":\"...\",\"zones\":[{\"x\":number,\"y\":number,\"label\":string,\"description\":string}]}"
+    },
+    {
+      "url": "/webhook/caramel/llm/submit-bas",
+      "prompt": "# CONTEXTE PÉDAGOGIQUE\n- Ton rôle : Professeur d’arts plastiques au collège. Expert en didactique et ingénierie pédagogique\n- Ton objectif pédagogique : Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village.. Observer La Nuit étoilée — L'élève doit : Repérer les astres lumineux dans le ciel. — Titre attendu de l'activité : « Observer La Nuit étoilée » — Durée visée : 10 minutes.\n\n# RÈGLES SPÉCIFIQUES\n- PRIORITÉ aux consignes de l'utilisateur : s'il impose le critère de recherche ou les zones à faire trouver, respecte-les.\n- Choisis un CRITÈRE de recherche net et adapté au contexte pédagogique (ex. « les légumes », « les erreurs », « les risques ») et marque `correct: true` TOUTES les zones qui y répondent ; les autres deviennent des leurres (`correct: false`). AU MOINS une zone correcte (idéalement 2 ou plus).\n- Une entrée par zone détectée : pour CHAQUE zone fournie en SOURCES, crée EXACTEMENT une entrée `hotspots` en RECOPIANT sa position `x`/`y` (en %).\n- `taskDescription` : la consigne (ex. « Cliquez sur tous les… »). `hotspotName` : le nom PLURIEL de ce qu'on cherche. `numberHotspots` : le nombre de zones correctes.\n- Feedback des zones CORRECTES : une AMORCE DE PHRASE SANS ponctuation finale (ex. « Bravo, vous avez trouvé ») — le lecteur la complète automatiquement en « … 1 of 2 légumes. ». Feedback des LEURRES : une phrase complète expliquant pourquoi c'est incorrect. Prévois aussi `noneSelectedFeedback` (clic hors zones) et `alreadySelectedFeedback` (zone déjà trouvée).\n- TEXTE BRUT uniquement : AUCUN HTML, AUCUN Markdown, AUCUNE formule LaTeX.\n- Nombre de zones : 5 zones (une par zone fournie en SOURCES).\n- Qualité : critère sans ambiguïté (chaque zone est clairement correcte ou non), vocabulaire adapté au niveau.\n\n# RÈGLES PÉDAGOGIQUES\n- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.\n- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).\n- Langue : rédige dans la langue cible (français sauf indication contraire).\n- Rétroactions (feedback formatif) — quand l’activité en comporte :\n  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.\n  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.\n  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.\n  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.\n  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.\n  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.\n- Formules mathématiques : chaque délimiteur ouvrant a son fermant — une formule en ligne s'écrit \\\\( … \\\\) (jamais un \\\\( ou un \\\\) isolé), une formule mise en évidence \\\\[ … \\\\] ; équilibre aussi les accolades { } de chaque commande (\\\\frac{a}{b}, \\\\sqrt{x}, x^{2}).\n\n# SOURCES\nVoici les ZONES CLÉS détectées dans l'image de fond (numéro, position `x`/`y` en POURCENTAGES de l'image, et description de la zone et de ce qui l'entoure). Tu t'appuieras UNIQUEMENT sur ces zones et le contexte pédagogique pour construire la chasse aux zones. RECOPIE EXACTEMENT les positions `x`/`y` fournies — ne les recalcule jamais et n'invente aucune zone supplémentaire.\n---\nDESCRIPTION GLOBALE DE L'IMAGE : La Nuit étoilée de Vincent van Gogh, peinture à l’huile représentant un ciel nocturne tourbillonnant avec des étoiles lumineuses, une lune éclatante, un cyprès sombre au premier plan et un village endormi en contrebas.\n\n(Image de fond : 330×261px. Les positions x,y sont des POURCENTAGES 0–100 à RECOPIER tels quels.)\n\nZone 1 — x=50.0% y=15.0% : Ciel tourbillonnant — Le ciel occupe la majeure partie supérieure de l’image, dominé par des spirales bleues et blanches qui créent un mouvement dynamique. Il entoure les étoiles et la lune, symbolisant l’énergie cosmique.\nZone 2 — x=80.0% y=12.0% : Lune lumineuse — Une grande lune jaune pâle brille dans le coin supérieur droit, entourée d’un halo lumineux. Elle contraste avec le bleu profond du ciel et attire le regard comme point focal céleste.\nZone 3 — x=20.0% y=60.0% : Cyprès sombre — Un cyprès noir et élancé se dresse au premier plan à gauche, sa silhouette flambée s’opposant aux formes arrondies du ciel. Il sert de lien entre la terre et le cosmos, ajoutant une dimension mystique.\nZone 4 — x=50.0% y=80.0% : Village endormi — Au centre-bas, un petit village aux toits sombres et aux fenêtres éclairées repose paisiblement. Il est entouré de collines et contraste avec l’agitation du ciel, évoquant la sérénité humaine face à l’univers.\nZone 5 — x=30.0% y=20.0% : Étoiles scintillantes — Plusieurs étoiles jaunes et blanches parsement le ciel, certaines entourées de halos lumineux. Elles sont disposées en arc ou en groupe, renforçant l’impression de mouvement et de vie céleste.\n---\n\n# STRUCTURE DU JSON ATTENDUE\n- Génère UNIQUEMENT un JSON complet et valide. Ta réponse DOIT commencer par `{` et finir par `}`. Aucun autre texte.\n- N'inclus PAS de champ `image` ni d'image de fond : Caramel l'ajoute automatiquement à partir du fichier joint par l'utilisateur.\n- L'objet racine contient :\n  - `title` (string) : titre court de l'activité.\n  - `taskDescription` (string) : la consigne affichée à l'élève.\n  - `hotspotName` (string) : nom PLURIEL de ce qu'on cherche (ex. « légumes »).\n  - `numberHotspots` (number) : nombre de zones correctes à trouver.\n  - `hotspots` (array) : une entrée par zone détectée.\n  - `noneSelectedFeedback` (string) : message si l'élève clique hors de toute zone.\n  - `alreadySelectedFeedback` (string) : message si l'élève reclique une zone déjà trouvée.\n\n**Structure d'une zone (tableau `hotspots`) :**\n- `x` (number) : position horizontale du CENTRE de la zone en POURCENTAGE (0 = bord gauche, 100 = bord droit), RECOPIÉE de la zone.\n- `y` (number) : position verticale du CENTRE en POURCENTAGE (0 = haut, 100 = bas), RECOPIÉE de la zone.\n- `correct` (boolean) : `true` si la zone répond au critère, `false` pour les leurres.\n- `label` (string) : nom court de la zone (repère éditorial).\n- `feedbackText` (string) : zone correcte = AMORCE sans ponctuation finale ; leurre = phrase complète.\n- `width`, `height` (number, optionnels) : taille de la zone cliquable en % (défaut 20).\n\n- **TEXTE BRUT partout** : pas de HTML, pas de Markdown, pas de LaTeX.\n\n# EXEMPLE DE RENDU\n**Exemple complet.** Suppose que les SOURCES contiennent ces zones détectées sur l'image d'une fleur :\n\n```\nZone 1 — x=31.5% y=22.0% : pétale coloré en haut de la fleur, entouré d'autres pétales.\nZone 2 — x=52.0% y=48.5% : fine tige surmontée d'une petite poche (étamine).\nZone 3 — x=50.0% y=63.0% : organe central renflé, entouré par les étamines.\nZone 4 — x=47.0% y=86.0% : tige verticale verte reliant la fleur à la plante.\n```\n\nCritère choisi : les organes reproducteurs (étamine + pistil = 2 zones correctes). Chaque `x`/`y` est RECOPIÉ, le feedback des zones correctes est une AMORCE sans ponctuation finale :\n\n```json\n{\n  \"title\": \"Trouver les organes reproducteurs\",\n  \"taskDescription\": \"Cliquez sur tous les organes reproducteurs de la fleur.\",\n  \"hotspotName\": \"organes reproducteurs\",\n  \"numberHotspots\": 2,\n  \"hotspots\": [\n    { \"x\": 31.5, \"y\": 22.0, \"correct\": false, \"label\": \"Le pétale\", \"feedbackText\": \"Non : le pétale attire les pollinisateurs mais n'est pas un organe reproducteur.\" },\n    { \"x\": 52.0, \"y\": 48.5, \"correct\": true, \"label\": \"L'étamine\", \"feedbackText\": \"Bravo, vous avez trouvé\" },\n    { \"x\": 50.0, \"y\": 63.0, \"correct\": true, \"label\": \"Le pistil\", \"feedbackText\": \"Bravo, vous avez trouvé\" },\n    { \"x\": 47.0, \"y\": 86.0, \"correct\": false, \"label\": \"La tige\", \"feedbackText\": \"Non : la tige soutient la fleur, elle ne participe pas à la reproduction.\" }\n  ],\n  \"noneSelectedFeedback\": \"Vous n'avez cliqué sur aucune zone connue. Essayez encore !\",\n  \"alreadySelectedFeedback\": \"Vous avez déjà trouvé cette zone !\"\n}\n```\n\nObserve : 2 zones correctes cohérentes avec `numberHotspots`, des amorces identiques et SANS point final pour les zones correctes, aucune position inventée.\n\n# CADRE DU PARCOURS\nCette activité fait partie d'un parcours intitulé « Observer La Nuit étoilée ».\nObjectif du parcours : Observer La Nuit étoilée\n\nNOTIONS PIVOTS du parcours — emploie ces formulations MOT POUR MOT quand tu parles de ces notions, sans les reformuler ni les traduire :\n- ciel\n- étoiles\n- cyprès\n\nC'est la PREMIÈRE activité du parcours : elle pose les bases, sans supposer aucun acquis préalable sur le sujet.\n\nPalier de cette activité : Découverte.\nRespecte ce palier : une activité de découverte ne piège pas, une activité de transfert ne récite pas.",
+      "model": "mistral-small-4-119b",
+      "activity": {
+        "moduleKey": "FindMultipleHotspots",
+        "category": "parcours"
+      },
+      "rag": {
+        "sujet": "Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village.",
+        "discipline": "Professeur d’arts plastiques au collège",
+        "niveau": "",
+        "cycle": ""
+      }
+    }
+  ],
+  "reponses": [
+    {
+      "url": "/webhook/caramel-vision-detect-bas",
+      "data": {
+        "imageDescription": "La Nuit étoilée de Vincent van Gogh, peinture à l’huile représentant un ciel nocturne tourbillonnant avec des étoiles lumineuses, une lune éclatante, un cyprès sombre au premier plan et un village endormi en contrebas.",
+        "zones": [
+          {
+            "x": 50,
+            "y": 15,
+            "label": "Ciel tourbillonnant",
+            "description": "Le ciel occupe la majeure partie supérieure de l’image, dominé par des spirales bleues et blanches qui créent un mouvement dynamique. Il entoure les étoiles et la lune, symbolisant l’énergie cosmique."
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "label": "Lune lumineuse",
+            "description": "Une grande lune jaune pâle brille dans le coin supérieur droit, entourée d’un halo lumineux. Elle contraste avec le bleu profond du ciel et attire le regard comme point focal céleste."
+          },
+          {
+            "x": 20,
+            "y": 60,
+            "label": "Cyprès sombre",
+            "description": "Un cyprès noir et élancé se dresse au premier plan à gauche, sa silhouette flambée s’opposant aux formes arrondies du ciel. Il sert de lien entre la terre et le cosmos, ajoutant une dimension mystique."
+          },
+          {
+            "x": 50,
+            "y": 80,
+            "label": "Village endormi",
+            "description": "Au centre-bas, un petit village aux toits sombres et aux fenêtres éclairées repose paisiblement. Il est entouré de collines et contraste avec l’agitation du ciel, évoquant la sérénité humaine face à l’univers."
+          },
+          {
+            "x": 30,
+            "y": 20,
+            "label": "Étoiles scintillantes",
+            "description": "Plusieurs étoiles jaunes et blanches parsement le ciel, certaines entourées de halos lumineux. Elles sont disposées en arc ou en groupe, renforçant l’impression de mouvement et de vie céleste."
+          }
+        ],
+        "model": "qwen-3.6-35b-instruct",
+        "attempt": 1,
+        "ok": true
+      }
+    },
+    {
+      "url": "/webhook/caramel/llm/result-bas",
+      "data": {
+        "taskId": "1789132",
+        "status": "done",
+        "content": "{\n  \"title\": \"Observer La Nuit étoilée\",\n  \"taskDescription\": \"Cliquez sur tous les astres lumineux dans le ciel.\",\n  \"hotspotName\": \"astres lumineux\",\n  \"numberHotspots\": 2,\n  \"hotspots\": [\n    { \"x\": 50.0, \"y\": 15.0, \"correct\": false, \"label\": \"Ciel tourbillonnant\", \"feedbackText\": \"Non : ce n’est pas un astre, mais l’ensemble du ciel qui bouge et ondule\" },\n    { \"x\": 80.0, \"y\": 12.0, \"correct\": true, \"label\": \"Lune lumineuse\", \"feedbackText\": \"Bravo, vous avez trouvé\" },\n    { \"x\": 20.0, \"y\": 60.0, \"correct\": false, \"label\": \"Cyprès sombre\", \"feedbackText\": \"Non : le cyprès est un arbre, il se trouve sur la terre et non parmi les astres\" },\n    { \"x\": 50.0, \"y\": 80.0, \"correct\": false, \"label\": \"Village endormi\", \"feedbackText\": \"Non : le village est une construction des humains, il n’est pas dans le ciel\" },\n    { \"x\": 30.0, \"y\": 20.0, \"correct\": true, \"label\": \"Étoiles scintillantes\", \"feedbackText\": \"Bravo, vous avez trouvé\" }\n  ],\n  \"noneSelectedFeedback\": \"Tu n’as sélectionné aucune zone valide pour l’instant. Repère bien les éléments qui brillent dans le ciel\",\n  \"alreadySelectedFeedback\": \"Tu as déjà identifié ce groupe d’astres\"\n}",
+        "model": "mistral-small-4-119b",
+        "completion_tokens": 399,
+        "prompt_tokens": 2788,
+        "fallback_level": 0
+      }
+    }
+  ],
+  "erreurs": [],
+  "message": "",
+  "echecExport": null
+}

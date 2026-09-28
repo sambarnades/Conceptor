@@ -1,0 +1,74 @@
+[
+  {
+    "chemin": "containsAudioVideoLabel",
+    "type": "normalisation_html",
+    "avant": "Contient de l'audio ou de la vidéo",
+    "apres": "Contient de l&#039;audio ou de la vidéo"
+  },
+  {
+    "chemin": "hotspots[0].content[0].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Text"
+  },
+  {
+    "chemin": "hotspots[0].content[0].metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "hotspots[0].header",
+    "type": "modification",
+    "avant": "Zone 1",
+    "apres": "Zone 1 RELU"
+  },
+  {
+    "chemin": "hotspots[0].hotspotColor",
+    "type": "ajout_natif",
+    "apres": "#981d99"
+  },
+  {
+    "chemin": "hotspots[0].hotspotIcon",
+    "type": "ajout_natif",
+    "apres": "plus"
+  },
+  {
+    "chemin": "hotspots[1].content[0].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Text"
+  },
+  {
+    "chemin": "hotspots[1].content[0].metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "hotspots[1].hotspotColor",
+    "type": "ajout_natif",
+    "apres": "#981d99"
+  },
+  {
+    "chemin": "hotspots[1].hotspotIcon",
+    "type": "ajout_natif",
+    "apres": "plus"
+  },
+  {
+    "chemin": "hotspots[2].content[0].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Text"
+  },
+  {
+    "chemin": "hotspots[2].content[0].metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "hotspots[2].hotspotColor",
+    "type": "ajout_natif",
+    "apres": "#981d99"
+  },
+  {
+    "chemin": "hotspots[2].hotspotIcon",
+    "type": "ajout_natif",
+    "apres": "plus"
+  }
+]

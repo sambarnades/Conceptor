@@ -1,0 +1,30 @@
+{
+  "intro": "<p>Choisis la bonne affirmation.</p>",
+  "summaries": [
+    {
+      "summary": [
+        "Paris est la capitale de la France.",
+        "Paris est la capitale de l’Italie."
+      ],
+      "tip": "Repère le pays représenté par le drapeau.",
+      "subContentId": "7af15ea1-7f94-4d83-a5ea-b45b5ac32b84"
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 100,
+      "feedback": ""
+    }
+  ],
+  "solvedLabel": "Progression :",
+  "scoreLabel": "Mauvaises réponses :",
+  "resultLabel": "Votre résultat",
+  "labelCorrect": "Correct.",
+  "labelIncorrect": "Incorrect ! Veuillez réessayer.",
+  "labelCorrectAnswers": "Réponses correctes.",
+  "tipButtonLabel": "Indice",
+  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+  "progressText": "Progression :num sur :total",
+  "alternativeIncorrectLabel": "Incorrect"
+}

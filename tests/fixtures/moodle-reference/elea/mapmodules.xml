@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="1433" moduleid="119939" modulename="mapmodules" contextid="191800">
+  <mapmodules id="1433">
+    <course>6722</course>
+    <name>Carte standard : louise</name>
+    <intro>&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;div id="container_game429" style="width:100%;position:relative;margin:0 auto;"&gt;
+    &lt;img id="back_game429" style="width:100%;" src="https://SITE-SOURCE.example/mod/mapmodules/pix/maps/maplouise.jpg" alt="bg"&gt;
+    &lt;svg id="path_container_game429" style='position:absolute;top:0px;left:0px;' viewBox="0 0 1000 400" version="1.1" &gt;
+      &lt;path id="path" fill="none" d="M 390 128 C 424 107 492 106 522 116 C 545 123 617 150 655 150 C 692 150 789 101 821 102 C 850 112 897 155 909 207 C 933 274 950 382 845 380 C 775 380 752 375 701 321 C 649 263 635 273 592 283 C 491 344 450 434 394 350" /&gt;
+    &lt;/svg&gt;
+&lt;/div&gt;
+&lt;script src="https://SITE-SOURCE.example/mod/mapmodules/js/maploader.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+YUI().use("node-base", function(Y){
+    Y.on("domready", function(){
+      maploader({
+        mapid: "1433",
+        gameid: "game429",
+        gamewidth: "1000",
+        mapbuttoncheck: "https://SITE-SOURCE.example/mod/mapmodules/pix/icons/checked.png",
+        mapbuttonquestion: "https://SITE-SOURCE.example/mod/mapmodules/pix/icons/questionmark.png",
+        mapbuttonlock: "https://SITE-SOURCE.example/mod/mapmodules/pix/icons/locked.png",
+        buttonwidth: "50"
+      })
+    })
+})
+
+&lt;/script&gt;
+&lt;/div&gt;&lt;div&gt;&lt;/div&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>1788529008</timecreated>
+    <timemodified>1788529008</timemodified>
+    <targetsection>666</targetsection>
+    <path>M 390 128 C 424 107 492 106 522 116 C 545 123 617 150 655 150 C 692 150 789 101 821 102 C 850 112 897 155 909 207 C 933 274 950 382 845 380 C 775 380 752 375 701 321 C 649 263 635 273 592 283 C 491 344 450 434 394 350</path>
+    <iconset>10</iconset>
+    <displaymodulenames>0</displaymodulenames>
+    <buttonwidth>50</buttonwidth>
+    <descriptionheader></descriptionheader>
+    <descriptionheaderformat>1</descriptionheaderformat>
+    <descriptionfooter></descriptionfooter>
+    <descriptionfooterformat>1</descriptionfooterformat>
+  </mapmodules>
+</activity>

@@ -36,7 +36,7 @@
   - \`extraClue\` (optionnel) : Un objet \`{"params": {"text": "..."}}\`. Le texte peut utiliser \`**mot**\` pour le gras, \`*mot*\` pour l'italique et \`\\n\` pour les sauts de ligne.
 - \`taskDescription\` : Une consigne claire et contextualisée. Utilise \`**mot**\` pour le gras, \`*mot*\` pour l'italique et \`\\n\` pour les sauts de ligne. Après un saut de ligne, précise : "Pour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés')."
 - **LaTeX :** Pour les indices (\`clue\`), utilise le format LaTeX : \`\\\\( ... \\\\)\`. Exemples : \`\\\\( \\\\frac{1}{2} \\\\)\`, \`\\\\( \\\\alpha \\\\)\`, \`\\\\( x^{2} \\\\)\`.
-- **Réponses :** Les \`answer\` (mots de la grille) DOIVENT contenir UNIQUEMENT des lettres alphabétiques (A-Z, À-Ÿ). Pas de chiffres, pas de symboles, pas de LaTeX.
+- `answer` : Lettres de la langue cible, accents conservés ; chiffres admis dans un mot (H2O). Aucun espace, symbole mathématique ou LaTeX.
 - \`overallFeedback\` : (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 4 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-25, 26-50, 51-75, et 76-100.
 
 # EXEMPLE DE RENDU
@@ -56,3 +56,5 @@
   ]
 }
 ```
+
+- `solutionWord` : mot-solution formé avec des lettres disponibles dans la grille. `words[].fixWord` : fixer la position ; `row` et `column` à partir de 1, `orientation` across/down. `extraClue.library` : texte, image, audio ou vidéo H5P natif. `behaviour.poolSize` facultatif, minimum 2.

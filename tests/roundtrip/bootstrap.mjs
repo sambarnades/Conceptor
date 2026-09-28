@@ -228,10 +228,10 @@ if (typeof globalThis.localStorage === 'undefined') {
 // ===========================================================================
 
 const VENDOR_PATHS = {
-    JSZIP: '../../js/vendor/jszip/3.10.1/jszip.min.js',
+    JSZIP: '../../js/vendor/jszip/3.10.2/jszip.min.js',
     FFLATE: '../../js/vendor/fflate/0.8.3/index.js',
     TAR_JS: '../../js/vendor/tar-js/0.3.0/tar.bundle.js',
-    CLIENT_ZIP: '../../js/vendor/client-zip/2.5.0/index.js'
+    CLIENT_ZIP: '../../js/vendor/client-zip/2.5.1/index.js'
 };
 
 import { readFile } from 'node:fs/promises';
@@ -277,7 +277,7 @@ export async function ensureJSZip() {
     const JSZip = globalThis.JSZip || exp.default || exp;
     globalThis.JSZip = JSZip;
     _vendorState.jszip = true;
-    logStub('vendor:JSZip', 'chargé depuis js/vendor/jszip/3.10.1 → window.JSZip');
+    logStub('vendor:JSZip', 'chargé depuis js/vendor/jszip/3.10.2 → window.JSZip');
     return JSZip;
 }
 
@@ -348,7 +348,7 @@ export async function ensureClientZip() {
     if (_vendorState.clientZip) return _vendorState.clientZip;
     const mod = await import(resolve(__dirname, VENDOR_PATHS.CLIENT_ZIP));
     _vendorState.clientZip = mod.downloadZip;
-    logStub('vendor:client-zip', 'import ES module js/vendor/client-zip/2.5.0 → downloadZip');
+    logStub('vendor:client-zip', 'import ES module js/vendor/client-zip/2.5.1 → downloadZip');
     return mod.downloadZip;
 }
 

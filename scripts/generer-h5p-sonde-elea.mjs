@@ -100,6 +100,16 @@ function healFull(obj, moduleKey) {
  */
 async function fabriquer(rawObj, moduleKey) {
     const healed = healFull(rawObj, moduleKey);
+    // Fournir le son AVANT le processeur : depuis l'ajout du vrai TTS, attendre
+    // le packaging ferait d'abord partir une synthèse réseau inutile.
+    if (moduleKey === 'Dictation') {
+        healed.sentences = healed.sentences.map((sentence, i) => ({
+            ...(typeof sentence === 'string' ? { text: sentence } : sentence),
+            sample: [{ path: `audios/sonde-collecte-${i}.mp3`, mime: 'audio/mpeg' }],
+            sampleAlternative: undefined
+        }));
+        healed.tts = { ...(healed.tts || {}), slow: false };
+    }
     const traite = await processH5PContent(moduleKey, healed);
     let content = traite;
     let depsDynamiques = [];
@@ -171,7 +181,7 @@ for (const cle of cles) {
 
 await writeFile(join(SORTIE, 'inventaire.json'), JSON.stringify({
     genereLe: 'date figée par le bootstrap roundtrip',
-    racine: ROOT, total: lignes.length, ok, ko, activites: lignes
+    racine: '.', total: lignes.length, ok, ko, activites: lignes
 }, null, 2));
 
 // ---------------------------------------------------------------- rapport

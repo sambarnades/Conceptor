@@ -130,7 +130,7 @@ ${fenceUserMessage(userText)}`;
  *   'empty' = le service a répondu 200 mais sans un mot, deux fois de suite.
  *   null    = service injoignable (le caller bascule sur le fallback regex).
  */
-export async function runAutoQuery(text) {
+export async function runAutoQuery(text, { signal } = {}) {
     const injection = detectInjectionAttempt(text);
     if (injection.detected) {
         console.warn('[Caramelia] tentative d\'injection détectée (auto):', injection.reason);
@@ -164,6 +164,7 @@ export async function runAutoQuery(text) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: payload,
+                signal,
             }, { retries: 1, timeoutMs: 25000 });
             if (!res.ok) {
                 const err = new Error(`HTTP ${res.status}`);
@@ -190,6 +191,7 @@ export async function runAutoQuery(text) {
         }
         return { kind: 'empty' };
     } catch (err) {
+        if (signal?.aborted) return null;
         console.warn('[Caramelia] Erreur auto:', err);
         return null;
     }

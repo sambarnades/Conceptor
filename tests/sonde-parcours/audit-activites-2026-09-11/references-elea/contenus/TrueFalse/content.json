@@ -1,0 +1,44 @@
+{
+  "question": "Un <strong>carré</strong> est à la fois un <em>rectangle</em> et un <em>losange</em>.",
+  "correct": "true",
+  "behaviour": {
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "confirmCheckDialog": false,
+    "confirmRetryDialog": false,
+    "autoCheck": false,
+    "enableCheckButton": true,
+    "feedbackOnCorrect": "Bravo ! C est tout a fait exact. Le carre possede les quatre angles droits du rectangle et les quatre cotes de meme longueur du losange. C est un quadrilatere tres special !",
+    "feedbackOnWrong": "Dommage ! En fait, cette affirmation est vraie. Comme le carre a quatre angles droits, c est un rectangle particulier. Comme il a quatre cotes egaux, c est aussi un losange particulier."
+  },
+  "l10n": {
+    "trueText": "Vrai",
+    "falseText": "Faux",
+    "score": "Vous avez obtenu @score sur @total points",
+    "checkAnswer": "Vérifier",
+    "showSolutionButton": "Afficher la solution",
+    "tryAgain": "Recommencer",
+    "wrongAnswerMessage": "Mauvaise réponse",
+    "correctAnswerMessage": "Bonne réponse",
+    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+    "submitAnswer": "Valider",
+    "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+    "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+    "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  "confirmCheck": {
+    "header": "Terminer ?",
+    "body": "Êtes-vous sûr de vouloir terminer ?",
+    "cancelLabel": "Annuler",
+    "confirmLabel": "Terminer"
+  },
+  "confirmRetry": {
+    "header": "Recommencer ?",
+    "body": "Êtes-vous sûr de vouloir recommencer ?",
+    "cancelLabel": "Annuler",
+    "confirmLabel": "Confirmer"
+  },
+  "media": {
+    "disableImageZooming": false
+  }
+}

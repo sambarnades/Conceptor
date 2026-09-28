@@ -1,0 +1,65 @@
+[
+  {
+    "chemin": "a11y.exclamationPoint",
+    "type": "normalisation_html",
+    "avant": "point d'exclamation",
+    "apres": "point d&#039;exclamation"
+  },
+  {
+    "chemin": "a11y.questionMark",
+    "type": "normalisation_html",
+    "avant": "point d'interrogation",
+    "apres": "point d&#039;interrogation"
+  },
+  {
+    "chemin": "a11y.triesLeft",
+    "type": "normalisation_html",
+    "avant": "Nombre d'écoutes restantes : @number",
+    "apres": "Nombre d&#039;écoutes restantes : @number"
+  },
+  {
+    "chemin": "behaviour.alternateSolution",
+    "type": "retrait_natif",
+    "avant": "all"
+  },
+  {
+    "chemin": "behaviour.autosplit",
+    "type": "retrait_natif",
+    "avant": true
+  },
+  {
+    "chemin": "behaviour.overrideRTL",
+    "type": "retrait_natif",
+    "avant": "off"
+  },
+  {
+    "chemin": "behaviour.typoFactor",
+    "type": "retrait_natif",
+    "avant": "50"
+  },
+  {
+    "chemin": "sentences[0].description",
+    "type": "modification",
+    "avant": "Une capitale européenne",
+    "apres": "Une capitale européenne RELU"
+  },
+  {
+    "chemin": "sentences[0].sample[0].copyright",
+    "type": "ajout_natif",
+    "apres": {
+      "license": "U"
+    }
+  },
+  {
+    "chemin": "sentences[0].sampleAlternative[0].copyright",
+    "type": "ajout_natif",
+    "apres": {
+      "license": "U"
+    }
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Dictée : le printemps"
+  }
+]

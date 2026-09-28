@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "complet",
+    "score": "2/2",
+    "texte": "Sélectionne les capitales. RELU dans Sucrerie.\nTexte complet lisible\nParis Lyon Rome Milan Nice Toulouse\nMode de vérification - Texte complet où les mots peuvent être marqués\nParis\nCorrect !\n Lyon\n Rome\nCorrect !\n Milan\n Nice\n Toulouse\nLes capitales sont trouvées.\nVous avez obtenu 2 sur 2 points\n2/2\nRights of use"
+  },
+  {
+    "kind": "sans-aides",
+    "score": "1/2",
+    "texte": "Sélectionne les capitales. RELU dans Sucrerie.\nTexte complet lisible\nParis Lyon Rome Milan Nice Toulouse\nMode de vérification - Texte complet où les mots peuvent être marqués\nParis\nCorrect !\n Lyon\n Rome\n Milan\n Nice\n Toulouse\nRepère les capitales.\nVous avez obtenu 1 sur 2 points\n1/2\nRights of use"
+  }
+]

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="66" moduleid="14016" modulename="wiki" contextid="17744">
+  <wiki id="66">
+    <name>Wiki de la classe</name>
+    <intro>&lt;p&gt;Construisons ensemble un lexique illustré.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>0</timecreated>
+    <timemodified>1790541049</timemodified>
+    <firstpagetitle>Accueil du wiki</firstpagetitle>
+    <wikimode>collaborative</wikimode>
+    <defaultformat>html</defaultformat>
+    <forceformat>0</forceformat>
+    <editbegin>0</editbegin>
+    <editend>0</editend>
+    <subwikis>
+    </subwikis>
+  </wiki>
+</activity>

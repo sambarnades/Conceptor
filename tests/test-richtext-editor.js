@@ -2175,12 +2175,15 @@ function runStep30_ClozeEditor() {
     assert(mc[2].type === 'text' && mc[2].content === ' suite', 'Parse MC: texte apres');
 
     // --- Parse SHORTANSWER ---
-    const sa = parseClozeText('{1:SHORTANSWER:=Paris~paris}');
+    const sa = parseClozeText('{1:SHORTANSWER:=Paris~=paris}');
     assert(sa.length === 1 && sa[0].type === 'gap', 'Parse SA: gap unique');
     assert(sa[0].gapData.type === 'SHORTANSWER', 'Parse SA: type SHORTANSWER');
     assert(sa[0].gapData.correct.length === 2, 'Parse SA: 2 reponses correctes');
     assert(sa[0].gapData.correct[0] === 'Paris', 'Parse SA: correct 1 = Paris');
     assert(sa[0].gapData.correct[1] === 'paris', 'Parse SA: correct 2 = paris');
+    const rejectedAlternative = '{1:SHORTANSWER:=Paris~Lyon}';
+    assertEqual(serializeGap(parseClozeText(rejectedAlternative)[0].gapData), rejectedAlternative,
+        'Une alternative sans = garde sa note nulle après édition');
 
     // --- Parse NUMERICAL ---
     const num = parseClozeText('{1:NUMERICAL:=3.14:0.01}');
@@ -2200,9 +2203,8 @@ function runStep30_ClozeEditor() {
 
     // --- Parse multiples bonnes reponses ---
     const multi = parseClozeText('{1:MULTICHOICE:=A~=B~C}');
-    assert(multi[0].gapData.correct.length === 2, 'Parse multi: 2 bonnes reponses');
-    assert(multi[0].gapData.correct[0] === 'A' && multi[0].gapData.correct[1] === 'B', 'Parse multi: correct = A, B');
-    assert(multi[0].gapData.wrong[0] === 'C', 'Parse multi: wrong = C');
+    assertEqual(serializeGap(multi[0].gapData), '{1:MULTICHOICE:=A~=B~C}',
+        'Plusieurs réponses correctes conservées dans le formulaire source');
 
     // --- Parse texte mixte (plusieurs trous) ---
     const mix = parseClozeText('Debut {1:SHORTANSWER:=X} milieu {1:NUMERICAL:=7:0} fin');

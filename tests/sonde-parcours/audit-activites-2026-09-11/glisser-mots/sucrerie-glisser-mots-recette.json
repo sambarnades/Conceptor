@@ -1,0 +1,240 @@
+[
+  {
+    "id": "glisser-mots-image",
+    "contenu": {
+      "taskDescription": "Complète les deux capitales. RELU dans Sucrerie.",
+      "textField": "La capitale de la France est *Paris:La Seine traverse cette ville. RELU Sucrerie.\\+Paris est bien la capitale française.\\-Cherche la ville française.*. En Italie, la capitale est *Rome:Le Colisée\\+Rome est la capitale italienne.\\-Cherche la ville italienne.*. Les deux pays sont en Europe.",
+      "distractors": "*Madrid*",
+      "checkAnswer": "Vérifier",
+      "tryAgain": "Recommencer",
+      "showSolution": "Afficher la solution",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "instantFeedback": false,
+        "enableCheckButton": true
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Repère le pays associé à chaque capitale."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Les deux capitales sont correctement associées."
+        }
+      ],
+      "media": {
+        "disableImageZooming": false,
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-06a1d65d.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": ""
+          },
+          "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+          "metadata": {
+            "title": "",
+            "license": "U",
+            "contentType": "Image"
+          }
+        }
+      },
+      "dropZoneIndex": "Zone de dépôt @index.",
+      "empty": "La zone de dépôt @index est vide.",
+      "contains": "La zone de dépôt @index contient l&#039;élément @draggable.",
+      "tipLabel": "Indice",
+      "correctText": "Correct !",
+      "incorrectText": "Incorrect !",
+      "resetDropTitle": "Réinitialiser le dépôt",
+      "resetDropDescription": "Êtes-vous certain de vouloir réinitialiser cette zone de dépôt ?",
+      "grabbed": "L&#039;élément est saisi.",
+      "cancelledDragging": "Déplacement annulé.",
+      "correctAnswer": "Réponse correcte :",
+      "feedbackHeader": "Commentaire de retour",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "submitAnswer": "Valider",
+      "ariaDraggableIndex": "@index sur @count éléments.",
+      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "title": "Glisser les capitales — image"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "glisser-mots-audio",
+    "contenu": {
+      "taskDescription": "Complète les deux capitales. RELU dans Sucrerie.",
+      "textField": "La capitale de la France est *Paris:La Seine traverse cette ville. RELU Sucrerie.\\+Paris est bien la capitale française.\\-Cherche la ville française.*. En Italie, la capitale est *Rome:Le Colisée\\+Rome est la capitale italienne.\\-Cherche la ville italienne.*. Les deux pays sont en Europe.",
+      "distractors": "*Madrid*",
+      "checkAnswer": "Vérifier",
+      "tryAgain": "Recommencer",
+      "showSolution": "Afficher la solution",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "instantFeedback": true,
+        "enableCheckButton": false
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Repère le pays associé à chaque capitale."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Les deux capitales sont correctement associées."
+        }
+      ],
+      "media": {
+        "disableImageZooming": false,
+        "type": {
+          "library": "H5P.Audio 1.5",
+          "params": {
+            "playerMode": "minimalistic",
+            "fitToWrapper": false,
+            "controls": true,
+            "autoplay": false,
+            "files": [
+              {
+                "path": "audios/audio-d913246e.wav",
+                "mime": "audio/wav"
+              }
+            ]
+          },
+          "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+          "metadata": {
+            "title": "",
+            "license": "U",
+            "contentType": "Image"
+          }
+        }
+      },
+      "dropZoneIndex": "Zone de dépôt @index.",
+      "empty": "La zone de dépôt @index est vide.",
+      "contains": "La zone de dépôt @index contient l&#039;élément @draggable.",
+      "tipLabel": "Indice",
+      "correctText": "Correct !",
+      "incorrectText": "Incorrect !",
+      "resetDropTitle": "Réinitialiser le dépôt",
+      "resetDropDescription": "Êtes-vous certain de vouloir réinitialiser cette zone de dépôt ?",
+      "grabbed": "L&#039;élément est saisi.",
+      "cancelledDragging": "Déplacement annulé.",
+      "correctAnswer": "Réponse correcte :",
+      "feedbackHeader": "Commentaire de retour",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "submitAnswer": "Valider",
+      "ariaDraggableIndex": "@index sur @count éléments.",
+      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "title": "Glisser les capitales — audio"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "glisser-mots-video",
+    "contenu": {
+      "taskDescription": "Complète les deux capitales. RELU dans Sucrerie.",
+      "textField": "La capitale de la France est *Paris:La Seine traverse cette ville. RELU Sucrerie.\\+Paris est bien la capitale française.\\-Cherche la ville française.*. En Italie, la capitale est *Rome:Le Colisée\\+Rome est la capitale italienne.\\-Cherche la ville italienne.*. Les deux pays sont en Europe.",
+      "distractors": "*Madrid*",
+      "checkAnswer": "Vérifier",
+      "tryAgain": "Recommencer",
+      "showSolution": "Afficher la solution",
+      "behaviour": {
+        "enableRetry": false,
+        "enableSolutionsButton": false,
+        "instantFeedback": false,
+        "enableCheckButton": true
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Repère le pays associé à chaque capitale."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Les deux capitales sont correctement associées."
+        }
+      ],
+      "media": {
+        "disableImageZooming": false,
+        "type": {
+          "library": "H5P.Video 1.6",
+          "params": {
+            "visuals": {
+              "controls": true,
+              "fit": true
+            },
+            "playback": {
+              "autoplay": false,
+              "loop": false
+            },
+            "sources": [
+              {
+                "path": "videos/video-f2c92659.webm",
+                "mime": "video/webm"
+              }
+            ]
+          },
+          "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+          "metadata": {
+            "title": "",
+            "license": "U",
+            "contentType": "Image"
+          }
+        }
+      },
+      "dropZoneIndex": "Zone de dépôt @index.",
+      "empty": "La zone de dépôt @index est vide.",
+      "contains": "La zone de dépôt @index contient l&#039;élément @draggable.",
+      "tipLabel": "Indice",
+      "correctText": "Correct !",
+      "incorrectText": "Incorrect !",
+      "resetDropTitle": "Réinitialiser le dépôt",
+      "resetDropDescription": "Êtes-vous certain de vouloir réinitialiser cette zone de dépôt ?",
+      "grabbed": "L&#039;élément est saisi.",
+      "cancelledDragging": "Déplacement annulé.",
+      "correctAnswer": "Réponse correcte :",
+      "feedbackHeader": "Commentaire de retour",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "submitAnswer": "Valider",
+      "ariaDraggableIndex": "@index sur @count éléments.",
+      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "title": "Glisser les capitales — video"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "kind": "complet",
+    "max": 2,
+    "horsZone": true,
+    "erreur": true,
+    "doubleClicSansPoint": true,
+    "plafondRespecte": false,
+    "repriseVisible": false
+  },
+  {
+    "kind": "plafond",
+    "max": 1,
+    "horsZone": true,
+    "erreur": true,
+    "doubleClicSansPoint": false,
+    "plafondRespecte": true,
+    "repriseVisible": false
+  }
+]

@@ -1,3 +1,4 @@
+import { parseDragTextWord } from '../h5p/drag-text-grammar.js';
 /**
  * @file Module de formatage des contenus générés pour l'export document.
  * Ce module transforme les JSON générés par l'IA en contenu structuré
@@ -53,6 +54,9 @@ export async function formatContentForDocument(moduleKey, jsonData, options = {}
         'Page': formatPage,
         'Livre': formatLivre,
         'Devoir': formatDevoir,
+        // Documents de parcours — voir `formatParcoursDocument` : la structure
+        // est AUTODESCRIPTIVE, elle porte ses propres libellés.
+        'parcours_document': formatParcoursDocument,
         // Modules Éléa (clés longues — utilisées par l'éditeur)
         'elea_qcm': formatQCM,
         'elea_test': formatMoodleXml,
@@ -78,6 +82,10 @@ export async function formatContentForDocument(moduleKey, jsonData, options = {}
 
     // formatChart est async (chargement paresseux de chart-renderer.js)
     const result = await formatter(jsonData);
+    // Un espacement vide juste avant un saut explicite peut déborder seul et
+    // créer une page blanche dans l'ODT. Le saut fournit déjà la séparation.
+    result.sections = result.sections.filter((section, index, sections) =>
+        section.type !== 'separator' || (sections[index + 1] && sections[index + 1].type !== 'pageBreak'));
     return options.keepLatex ? result : postProcessLatex(result);
 }
 
@@ -98,6 +106,8 @@ function getMediaImageUrl(imageField) {
  */
 function formatQuizSet(data) {
     const sections = [];
+    // Le tirage papier reste déterministe, et le corrigé porte sur le même lot.
+    if(Number(data.poolSize)>0)data={...data,questions:(data.questions||[]).slice(0,Number(data.poolSize))};
     const title = data.title || t('doc_fmt_quiz_title');
 
     // ========================================
@@ -119,6 +129,17 @@ function formatQuizSet(data) {
         });
     }
 
+    if(data.introPage?.showIntroPage) {
+        if(data.introPage.title)sections.push({type:'header',level:2,text:cleanHtml(data.introPage.title)});
+        if(data.introPage.introduction)sections.push({type:'paragraph',text:cleanHtml(data.introPage.introduction),style:'description'});
+        if(data.introPage.backgroundImage?.path || data.introPage.backgroundImage?.dataURL) {
+            const illustration=[];
+            formatQuestionMedia({media:{type:{library:'H5P.Image 1.1',params:{file:data.introPage.backgroundImage,alt:data.introPage.backgroundImageAltText}}}},illustration);
+            for(const section of illustration)if(section.type==='image')section.imgSizeMm=140;
+            sections.push(...illustration, {type:'pageBreak'});
+        }
+    }
+
     // Instructions
     sections.push({
         type: 'paragraph',
@@ -131,6 +152,7 @@ function formatQuizSet(data) {
     // Questions (énoncé uniquement)
     if (data.questions && Array.isArray(data.questions)) {
         data.questions.forEach((question, index) => {
+            const questionStart=sections.length;
             sections.push({
                 type: 'header',
                 level: 2,
@@ -161,9 +183,11 @@ function formatQuizSet(data) {
             // placement que `formatMultipleChoice` pour une question autonome. Sans
             // ça, l'image d'une question DANS un questionnaire était perdue aux trois
             // formats : le modèle porte bien `params.mediaImage`, seul ce formatter
-            // omettait de l'émettre.
+            // omettait de l'émettre. Les énoncés spécialisés gèrent désormais leur média :
+            // ce repli ne doit pas le dupliquer lorsqu'un pont fournit aussi mediaImage.
             const qImageUrl = getMediaImageUrl(params.mediaImage);
-            if (qImageUrl) {
+            const statementHandlesMedia = /H5P\.(MultiChoice|TrueFalse|Blanks|DragText|MarkTheWords|Essay)\b/.test(question.library || '');
+            if (qImageUrl && !statementHandlesMedia) {
                 sections.push({ type: 'image', url: qImageUrl });
             }
 
@@ -184,6 +208,8 @@ function formatQuizSet(data) {
                 formatDragQuestionStatement(params, sections);
             }
 
+            const group=sections.slice(questionStart);
+            if(group.every(s=>['header','paragraph','checkbox'].includes(s.type)))group.slice(0,-1).forEach(s=>s.keepWithNext=true);
             sections.push({ type: 'separator' });
         });
     }
@@ -247,6 +273,12 @@ function formatQuizSet(data) {
  * Énoncé (questions triées par timestamp « À mm:ss ») → saut de page → correction → résumé.
  */
 function formatVideoInteractive(data) {
+    if(data.interactiveVideo){
+        const iv=data.interactiveVideo,video=iv.video||{},chapters=(iv.assets?.interactions||[]).map(item=>({library:'H5P.Column 1.22',metadata:{title:`${Number(item.duration?.from||0).toFixed(1)} s — ${cleanHtml(item.label||item.action?.metadata?.title||'')}`},params:{content:[{content:item.action}]}}));
+        if(iv.summary?.task?.params?.summaries?.some(s=>s.summary?.length))chapters.push({library:'H5P.Column 1.22',metadata:{title:t('editor_iv_section_summary')},params:{content:[{content:iv.summary.task}]}});
+        return formatNativeInteractiveBook({documentKind:'video',title:data.title||video.startScreenOptions?.title||t('h5p_interactive_video_name'),showCoverPage:true,bookCover:{coverDescription:video.startScreenOptions?.shortStartDescription,coverMedium:{library:'H5P.Video 1.6',params:{sources:video.files,visuals:{poster:video.startScreenOptions?.poster}}}},chapters});
+    }
+
     const sections = [];
     const title = data.title || t('doc_fmt_video_title') || 'Vidéo interactive';
     const mmss = (s) => {
@@ -382,7 +414,7 @@ async function formatImageHotspots(data) {
             const txt = h.content.find(c => c && c.library && /H5P\.Text/i.test(c.library) && c.params);
             text = txt ? txt.params.text : '';
         }
-        return { n: i + 1, x, y, header: h.header || '', text: text || '' };
+        return { n: i + 1, x, y, header: h.header || '', text: text || '', content: h.content || [] };
     });
 
     sections.push({ type: 'header', level: 1, text: title });
@@ -427,7 +459,7 @@ async function formatImageHotspots(data) {
             // Composition impossible (canvas/chargement) → on continue avec la légende seule.
         }
     }
-    sections.push({ type: 'separator' });
+    sections.push({ type: bg && points.some(p=>p.content.some(n=>n.library?.startsWith('H5P.Image'))) ? 'pageBreak' : 'separator' });
 
     // Légende numérotée. ⚠️ Titre de point en EN-TÊTE « N. … » (pas un paragraphe « N. » isolé : Word
     // et LibreOffice transformeraient « N. » en liste auto et casseraient la numérotation). Le texte
@@ -438,7 +470,12 @@ async function formatImageHotspots(data) {
     points.forEach(p => {
         const head = p.header ? `${p.n}. ${cleanHtml(p.header)}` : `${p.n}.`;
         sections.push({ type: 'header', level: 3, text: head });
-        if (p.text) sections.push({ type: 'paragraph', text: cleanHtml(p.text), style: 'question' });
+        if (!p.content.length && p.text) sections.push({ type: 'paragraph', text: cleanHtml(p.text), style: 'question' });
+        for (const node of p.content) {
+            if (node.library?.startsWith('H5P.Text')) {
+                if (node.params?.text) sections.push({type:'paragraph',text:cleanHtml(node.params.text),style:'question'});
+            } else formatQuestionMedia({media:{type:node}},sections);
+        }
     });
 
     return { title, sections };
@@ -586,6 +623,7 @@ async function formatHotspotQuestion(data, rootKey, fallbackTitle) {
  * Formate l'énoncé d'une question à choix multiples (sans indication des bonnes réponses)
  */
 function formatMultiChoiceStatement(params, sections) {
+    formatQuestionMedia(params, sections);
     if (params.answers && Array.isArray(params.answers)) {
         sections.push({
             type: 'paragraph',
@@ -593,14 +631,10 @@ function formatMultiChoiceStatement(params, sections) {
             style: 'answersTitle'
         });
 
-        // Mélanger les réponses pour l'énoncé (optionnel mais pédagogiquement intéressant)
-        const shuffledAnswers = [...params.answers];
         params.answers.forEach((answer, i) => {
             const letter = String.fromCharCode(65 + i); // A, B, C, D...
-            sections.push({
-                type: 'checkbox',
-                text: `${letter}. ${cleanHtml(answer.text)}`
-            });
+            sections.push({type:'checkbox',text:`${letter}. ${cleanHtml(answer.text)}`});
+            if(answer.tipsAndFeedback?.tip)sections.push({type:'paragraph',text:`${t('editor_tip')} ${letter} : ${cleanHtml(answer.tipsAndFeedback.tip)}`,style:'description'});
         });
     }
 }
@@ -626,12 +660,19 @@ function formatMultiChoiceCorrection(params, sections) {
             });
         }
     }
+    for (const [index,answer] of (params.answers || []).entries()) {
+        for (const [key,label] of [['chosenFeedback','editor_chosen_feedback'],['notChosenFeedback','editor_not_chosen_feedback']]) {
+            if(answer.tipsAndFeedback?.[key])sections.push({type:'paragraph',text:`${String.fromCharCode(65+index)} — ${t(label)} : ${cleanHtml(answer.tipsAndFeedback[key])}`,style:'description'});
+        }
+    }
+
 }
 
 /**
  * Formate l'énoncé d'une question Vrai/Faux (sans indication de la bonne réponse)
  */
 function formatTrueFalseStatement(params, sections) {
+    formatQuestionMedia(params, sections);
     const trueLabel = (params.l10n && params.l10n.trueText) ? cleanHtml(params.l10n.trueText) : (t('doc_fmt_true') || 'Vrai');
     const falseLabel = (params.l10n && params.l10n.falseText) ? cleanHtml(params.l10n.falseText) : (t('doc_fmt_false') || 'Faux');
 
@@ -665,18 +706,33 @@ function formatTrueFalseCorrection(params, sections) {
         text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : ${correct ? `A. ${trueLabel}` : `B. ${falseLabel}`}`,
         style: 'correctAnswer'
     });
+    for (const [key,label] of [['feedbackOnCorrect','editor_feedback_correct'],['feedbackOnWrong','editor_feedback_wrong']]) {
+        const feedback=params[key] ?? params.behaviour?.[key];
+        if(feedback)sections.push({type:'paragraph',text:`${t(label)} : ${cleanHtml(feedback)}`,style:'description'});
+    }
+
 }
 
 /**
  * Formate l'énoncé d'une question à texte à trous (avec les trous à compléter)
  */
 function formatBlanksStatement(params, sections) {
-    if (params.taskDescription) {
+    if (params.taskDescription || params.text) {
         sections.push({
             type: 'paragraph',
-            text: cleanHtml(params.taskDescription),
+            text: cleanHtml(params.taskDescription ?? params.text),
             style: 'description'
         });
+    }
+
+    formatQuestionMedia(params, sections);
+    let blankIndex=0;
+    for (const q of params.questions || []) {
+        for (const match of cleanHtml(q).matchAll(/\*([^*]+)\*/g)) {
+            blankIndex++;
+            const colon=match[1].indexOf(':');
+            if(colon!==-1)sections.push({type:'paragraph',text:`${t('editor_tip')} ${blankIndex} : ${match[1].slice(colon+1)}`,style:'description'});
+        }
     }
 
     // Extraire le texte avec les trous (remplacer les réponses par des tirets)
@@ -723,7 +779,7 @@ function formatBlanksCorrection(params, sections) {
             if (matches) {
                 matches.forEach(match => {
                     // Nettoyer et extraire la première réponse (avant le /)
-                    const answer = match.replace(/\*/g, '').split('/')[0].trim();
+                    const answer = match.replace(/\*/g, '').split(':')[0].split('/').map(s=>s.trim()).join(' / ');
                     answers.push(answer);
                 });
             }
@@ -732,7 +788,7 @@ function formatBlanksCorrection(params, sections) {
         const matches = cleanHtml(params.text).match(/\*([^*]+)\*/g);
         if (matches) {
             matches.forEach(match => {
-                const answer = match.replace(/\*/g, '').split('/')[0].trim();
+                const answer = match.replace(/\*/g, '').split(':')[0].split('/').map(s=>s.trim()).join(' / ');
                 answers.push(answer);
             });
         }
@@ -755,17 +811,52 @@ function formatBlanksCorrection(params, sections) {
     }
 }
 
-/**
- * Formate l'énoncé d'une question "Glisser les mots" (texte avec trous + liste des mots)
- */
+/** Extrait la réponse selon la grammaire native DragText (indice et retours exclus). */
+function dragTextAnswer(marked) {
+    return parseDragTextWord(marked).answer.trim();
+}
+
+function formatQuestionMedia(data, sections) {
+    const media=data.media?.type, params=media?.params || {};
+    const image = media?.library?.startsWith('H5P.Image') ? params.file : !media ? data.mediaImage : null;
+    const file = image || (media?.library?.startsWith('H5P.Audio') ? params.files?.[0] : params.sources?.[0]);
+    if (image) {
+        const url=getMediaImageUrl(image);
+        if (url) sections.push({type:'image',url,alt:params.alt || data.mediaImageAlt || ''});
+    } else if (file?.path) {
+        const path=file.path;
+        sections.push({type:'paragraph',text:/^https?:/.test(path) ? `${t('editor_question_media')} : ${path}` : t('doc_fmt_question_embedded_media'),style:'description'});
+    }
+    const credits=file?.copyright;
+    if (credits) {
+        // « U » (undisclosed) est le code H5P d'une licence non renseignée : il ne s'imprime pas.
+        const text=[credits.title,credits.author,credits.source,credits.license!=='U'?credits.license:''].filter(Boolean).join(' — ');
+        if (text) sections.push({type:'paragraph',text:`${t('editor_credit')} : ${cleanHtml(text)}`,style:'metadata'});
+    }
+}
+
+function formatDragTextHints(params, sections, correction = false) {
+    [...(params.textField || '').matchAll(/\*([^*]+)\*/g)].forEach((match,index) => {
+        const word=parseDragTextWord(match[0]);
+        if (!correction && word.tip) sections.push({type:'paragraph', text:`${t('editor_tip')} ${index+1} : ${cleanHtml(word.tip)}`, style:'tip'});
+        if (correction) for (const [key,label] of [['correctFeedback','editor_feedback_correct'],['incorrectFeedback','editor_feedback_wrong']]) {
+            if (word[key]) sections.push({type:'paragraph',text:`${index+1}. ${cleanHtml(word.answer)} — ${t(label)} : ${cleanHtml(word[key])}`,style:'tip'});
+        }
+    });
+}
+
+/** Formate l'énoncé DragText : texte à compléter et ensemble des choix. */
 function formatDragTextStatement(params, sections) {
+    if (params.taskDescription) sections.push({type:'paragraph',text:cleanHtml(params.taskDescription),style:'question'});
+    formatQuestionMedia(params,sections);
+    formatDragTextHints(params, sections);
     if (params.textField) {
         // Extraire les mots à placer (entre astérisques)
         const wordsToPlace = [];
         const matches = cleanHtml(params.textField).match(/\*([^*]+)\*/g);
         if (matches) {
             matches.forEach(match => {
-                const word = match.replace(/\*/g, '').split('/')[0].trim();
+                const word = dragTextAnswer(match);
                 wordsToPlace.push(word);
             });
         }
@@ -784,11 +875,14 @@ function formatDragTextStatement(params, sections) {
             style: 'blanksText'
         });
 
+        // Les distracteurs font partie des choix, sans révéler lesquels sont faux.
+        wordsToPlace.push(...(cleanHtml(params.distractors || '').match(/\*([^*]+)\*/g) || []).map(dragTextAnswer));
+
         // Liste des mots à placer (mélangés)
         if (wordsToPlace.length > 0) {
             sections.push({
                 type: 'paragraph',
-                text: t('doc_fmt_words_to_place') || 'Mots à placer :',
+                text: params.distractors ? t('doc_fmt_words_available') : t('doc_fmt_words_to_place'),
                 style: 'answersTitle'
             });
 
@@ -807,6 +901,7 @@ function formatDragTextStatement(params, sections) {
  * Formate la correction d'une question "Glisser les mots"
  */
 function formatDragTextCorrection(params, sections) {
+    formatDragTextHints(params, sections, true);
     if (params.textField) {
         sections.push({
             type: 'paragraph',
@@ -816,7 +911,7 @@ function formatDragTextCorrection(params, sections) {
 
         // Afficher le texte avec les réponses (en gras)
         const textWithAnswers = cleanHtml(params.textField).replace(/\*([^*]+)\*/g, (match, content) => {
-            const answer = content.split('/')[0].trim();
+            const answer = dragTextAnswer(content);
             return `[${answer}]`;
         });
 
@@ -832,6 +927,7 @@ function formatDragTextCorrection(params, sections) {
  * Formate l'énoncé d'une question "Marquer les mots" (texte sans indication des mots à trouver)
  */
 function formatMarkWordsStatement(params, sections) {
+    formatQuestionMedia(params, sections);
     if (params.textField) {
         sections.push({
             type: 'paragraph',
@@ -903,6 +999,11 @@ function formatEssayStatement(params, sections) {
         });
     }
 
+    formatQuestionMedia(params, sections);
+    for (const [key,label] of [['minimumLength','editor_minimum_words'],['maximumLength','editor_maximum_words']]) {
+        if (params.behaviour?.[key] > 0) sections.push({type:'paragraph',text:`${t(label)} : ${params.behaviour[key]}`,style:'description'});
+    }
+
     // Espace pour la réponse de l'élève
     sections.push({
         type: 'paragraph',
@@ -921,26 +1022,33 @@ function formatEssayStatement(params, sections) {
  * Formate la correction d'une question Essay
  */
 function formatEssayCorrection(params, sections) {
-    if (params.keywords && params.keywords.length > 0) {
-        sections.push({
-            type: 'paragraph',
-            text: t('doc_fmt_keywords_expected') || 'Mots-clés attendus dans la réponse :',
-            style: 'answersTitle'
-        });
-
-        params.keywords.forEach(kw => {
-            sections.push({
-                type: 'bulletPoint',
-                text: cleanHtml(kw.keyword || kw.word || kw.text || (typeof kw === 'string' ? kw : '')),
-                style: 'correctAnswer'
-            });
-        });
-    } else if (!params.keywords || params.keywords.length === 0) {
-        sections.push({
-            type: 'paragraph',
-            text: t('doc_fmt_open_answer') || 'Réponse ouverte - évaluation selon les critères définis.',
-            style: 'description'
-        });
+    if (params.solution?.sample || params.solution?.introduction) {
+        sections.push({ type: 'paragraph', text: t('editor_essay_sample_answer'), style: 'answersTitle' });
+        if (params.solution.introduction) sections.push({ type: 'paragraph', text: cleanHtml(params.solution.introduction), style: 'description' });
+        if (params.solution.sample) sections.push({ type: 'paragraph', text: cleanHtml(params.solution.sample), style: 'correctAnswer' });
+    }
+    if (params.keywords?.length) {
+        sections.push({ type: 'paragraph', text: t('doc_fmt_keywords_expected'), style: 'answersTitle' });
+        for (const kw of params.keywords) {
+            const keyword = cleanHtml(kw.keyword || kw.word || kw.text || (typeof kw === 'string' ? kw : ''));
+            const options = kw.options || {};
+            const points = options.points ?? kw.points ?? 1;
+            const occurrences = options.occurrences ?? 1;
+            sections.push({ type: 'bulletPoint', text: `${keyword} — ${t('editor_weight')} : ${points}; ${t('editor_essay_occurrences')} : ${occurrences}`, style: 'correctAnswer' });
+            if (Array.isArray(kw.alternatives) && kw.alternatives.length) {
+                sections.push({ type: 'paragraph', text: `${t('editor_cloze_alternatives')} : ${kw.alternatives.map(cleanHtml).join(' / ')}`, style: 'description' });
+            }
+            const behaviour = params.behaviour || {};
+            for (const [key, override, label] of [['caseSensitive','overrideCaseSensitive','editor_case_sensitive'],['forgiveMistakes','overrideForgiveMistakes','editor_forgive_mistakes']]) {
+                const active = behaviour[override] === 'on' || (behaviour[override] !== 'off' && (options[key] ?? (key === 'caseSensitive')));
+                sections.push({type:'paragraph',text:`${t(label)} : ${t(active ? 'editor_true' : 'editor_false')}`,style:'description'});
+            }
+            for (const [field, label] of [['feedbackIncluded', 'editor_essay_feedback_present'], ['feedbackMissed', 'editor_essay_feedback_absent']]) {
+                if (options[field]) sections.push({ type: 'paragraph', text: `${t(label)} : ${cleanHtml(options[field])}`, style: 'description' });
+            }
+        }
+    } else if (!params.solution?.sample) {
+        sections.push({ type: 'paragraph', text: t('doc_fmt_open_answer'), style: 'description' });
     }
 }
 
@@ -1040,14 +1148,28 @@ function formatDragQuestionCorrection(params, sections) {
  * - Recto : [Carte 1][Carte 2] / [Carte 3][Carte 4] / ...
  * - Verso : [Carte 2][Carte 1] / [Carte 4][Carte 3] / ... (miroir horizontal)
  */
+function ajouterCreditsCartes(sections, cards) {
+    const credits = cards.flatMap((card, index) => {
+        const c = card.image?.copyright;
+        if (!c || !['title', 'author', 'source', 'license', 'version', 'licenseVersion'].some(k => c[k] && c[k] !== 'U')) return [];
+        return [`${index + 1}. ${[c.title, c.author, c.source, c.license !== 'U' ? c.license : '', c.version || c.licenseVersion].filter(Boolean).map(cleanHtml).join(' — ')}`];
+    });
+    if (credits.length) {
+        sections.push({ type: 'pageBreak' });
+        sections.push({ type: 'header', level: 2, text: t('editor_credit') });
+        credits.forEach(text => sections.push({ type: 'paragraph', text }));
+    }
+}
+
 function formatFlashcards(data) {
     const sections = [];
-    const title = data.title || t('doc_fmt_flashcards_title');
+    const title = cleanHtml(data.title || t('doc_fmt_flashcards_title'));
     const cards = data.cards || [];
 
     // Titre du document en tête, comme les autres formatters (audit Sucrerie
     // 2026-07-05, F6 : les flashcards sortaient sans aucun titre).
     sections.push({ type: 'header', level: 1, text: title });
+    if (data.description) sections.push({ type: 'paragraph', text: cleanHtml(data.description), style: 'description' });
 
     if (cards.length === 0) {
         return { title, sections };
@@ -1076,20 +1198,20 @@ function formatFlashcards(data) {
             // Extraire l'image d'une carte (data URL ou chemin)
             const getCardImage = (card) => {
                 if (!card || !card.image || !card.image.path) return null;
-                return card.image.path; // data URL ou chemin relatif
+                return card.image.dataURL || card.image.path;
             };
 
             // Recto : ordre normal [gauche, droite]
             rectoRows.push({
                 left: leftCard ? {
                     text: cleanHtml(leftCard.text),
-                    hint: leftCard.tip ? cleanHtml(leftCard.tip) : null,
+                    hint: leftCard.tip ? cleanHtml(typeof leftCard.tip === 'object' ? leftCard.tip?.tip : leftCard.tip) : null,
                     cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1,
                     imageUrl: getCardImage(leftCard)
                 } : null,
                 right: rightCard ? {
                     text: cleanHtml(rightCard.text),
-                    hint: rightCard.tip ? cleanHtml(rightCard.tip) : null,
+                    hint: rightCard.tip ? cleanHtml(typeof rightCard.tip === 'object' ? rightCard.tip?.tip : rightCard.tip) : null,
                     cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1,
                     imageUrl: getCardImage(rightCard)
                 } : null
@@ -1131,6 +1253,7 @@ function formatFlashcards(data) {
         });
     });
 
+    ajouterCreditsCartes(sections, cards);
     return { title, sections };
 }
 
@@ -1174,7 +1297,7 @@ function formatCrossword(data) {
         sections.push({
             type: 'image',
             imageData: data._gridImage,
-            fillWidth: true
+            imgSizeMm: 110
         });
     }
 
@@ -1193,6 +1316,7 @@ function formatCrossword(data) {
     // ========================================
     // SAUT DE PAGE
     // ========================================
+    if(data.solutionWord)sections.push({type:'paragraph',text:t('editor_crossword_solution_word')+' (1 → 2 → …) : '+[...data.solutionWord].map(()=> '___').join(' ')});
     sections.push({ type: 'pageBreak' });
 
     // ========================================
@@ -1211,7 +1335,7 @@ function formatCrossword(data) {
         sections.push({
             type: 'image',
             imageData: data._solutionGridImage,
-            fillWidth: true
+            imgSizeMm: 110
         });
     }
 
@@ -1226,6 +1350,7 @@ function formatCrossword(data) {
         data.words.forEach((word, index) => appendCrosswordAnswer(sections, String(index + 1), word));
     }
 
+    if(data.solutionWord)sections.push({type:'paragraph',text:t('editor_crossword_solution_word')+' : '+data.solutionWord,style:'correctAnswer'});
     return { title, sections };
 }
 
@@ -1244,6 +1369,7 @@ function appendCrosswordClue(sections, label, word) {
         text: `${label} — ${cleanHtml(word.clue || '')} (${letterCount} ${t('doc_fmt_letters') || 'lettres'})`,
         style: 'crosswordClue'
     });
+    if(word.extraClue?.library && !word.extraClue.library.startsWith('H5P.AdvancedText'))formatQuestionMedia({media:{type:word.extraClue}},sections);
     if (word.extraClue && word.extraClue.params && word.extraClue.params.text) {
         sections.push({
             type: 'paragraph',
@@ -1311,26 +1437,16 @@ function formatTimeline(data) {
         });
     }
 
-    // H5P Timeline n'accepte que des URLs externes dans asset.media (pas d'upload de fichier)
-    if (timeline.asset) {
-        const mediaUrl = timeline.asset.media || timeline.asset.path;
-        if (mediaUrl) {
-            sections.push({
-                type: 'image',
-                url: mediaUrl,
-                caption: timeline.asset.caption || '',
-                alt: timeline.asset.credit || ''
-            });
-        }
-    } else if (timeline.media && (timeline.media.path || timeline.media.url)) {
-        const mediaUrl = timeline.media.path || timeline.media.url;
-        sections.push({
-            type: 'image',
-            url: mediaUrl,
-            caption: timeline.media.caption || '',
-            alt: timeline.media.credit || ''
-        });
-    }
+    const assetSections = asset => {
+        if (!asset) return;
+        const url = asset.media || asset.path;
+        if (url && (/^data:image\//i.test(url) || /\.(png|jpe?g|gif|webp|svg)(?:[?#]|$)/i.test(url))) {
+            sections.push({type:'image',url,caption:asset.caption || '',alt:asset.caption || ''});
+        } else if (url) sections.push({type:'paragraph',text:url});
+        if (asset.caption && !(url && /\.(png|jpe?g|gif|webp|svg)(?:[?#]|$)/i.test(url))) sections.push({type:'paragraph',text:cleanHtml(asset.caption)});
+        if (asset.credit) sections.push({type:'paragraph',text:cleanHtml(asset.credit),style:'metadata'});
+    };
+    assetSections(timeline.asset || timeline.media);
 
     sections.push({ type: 'separator' });
 
@@ -1346,7 +1462,7 @@ function formatTimeline(data) {
             sections.push({
                 type: 'header',
                 level: 3,
-                text: `${h5pDateToLocale(event.startDate, currentLang)} - ${cleanHtml(event.headline)}`
+                text: `${h5pDateToLocale(event.startDate, currentLang)}${event.endDate ? ' – '+h5pDateToLocale(event.endDate, currentLang) : ''} - ${cleanHtml(event.headline)}`
             });
 
             // Image uploadée (eventImage) OU URL (asset.media)
@@ -1358,14 +1474,7 @@ function formatTimeline(data) {
                     caption: event.eventImageAlt || '',
                     alt: event.eventImageAlt || ''
                 });
-            } else if (event.asset && event.asset.media) {
-                sections.push({
-                    type: 'image',
-                    url: event.asset.media,
-                    caption: event.asset.caption || '',
-                    alt: event.asset.credit || ''
-                });
-            }
+            } else assetSections(event.asset);
 
             if (event.text) {
                 sections.push({
@@ -1401,6 +1510,7 @@ function formatTimeline(data) {
                 style: 'timelineEra'
             });
 
+            if (era.tag) sections.push({type:'paragraph',text:era.tag,style:'metadata'});
             if (era.text) {
                 sections.push({
                     type: 'paragraph',
@@ -1438,19 +1548,16 @@ function formatDragTheWords(data) {
         });
     }
 
-    // Image de contexte (après la description, avant le texte)
-    const dtwImageUrl = getMediaImageUrl(data.mediaImage);
-    if (dtwImageUrl) {
-        sections.push({ type: 'image', url: dtwImageUrl });
-    }
+    formatQuestionMedia(data, sections);
 
+    formatDragTextHints(data, sections);
     if (data.textField) {
         // Extraire les mots à placer (entre astérisques)
         const wordsToPlace = [];
         const matches = cleanHtml(data.textField).match(/\*([^*]+)\*/g);
         if (matches) {
             matches.forEach(match => {
-                const word = match.replace(/\*/g, '').split('/')[0].trim();
+                const word = dragTextAnswer(match);
                 wordsToPlace.push(word);
             });
         }
@@ -1469,12 +1576,15 @@ function formatDragTheWords(data) {
             style: 'blanksText'
         });
 
+        // Les distracteurs font partie des choix, sans révéler lesquels sont faux.
+        wordsToPlace.push(...(cleanHtml(data.distractors || '').match(/\*([^*]+)\*/g) || []).map(dragTextAnswer));
+
         // Liste des mots à placer (mélangés)
         if (wordsToPlace.length > 0) {
             sections.push({
                 type: 'header',
                 level: 2,
-                text: t('doc_fmt_words_to_place') || 'Mots à placer'
+                text: data.distractors ? t('doc_fmt_words_available') : t('doc_fmt_words_to_place')
             });
 
             // Mélanger les mots pour l'énoncé
@@ -1502,6 +1612,7 @@ function formatDragTheWords(data) {
     });
 
     sections.push({ type: 'separator' });
+    formatDragTextHints(data, sections, true);
 
     if (data.textField) {
         sections.push({
@@ -1512,7 +1623,7 @@ function formatDragTheWords(data) {
 
         // Afficher le texte avec les réponses
         const textWithAnswers = cleanHtml(data.textField).replace(/\*([^*]+)\*/g, (match, content) => {
-            const answer = content.split('/')[0].trim();
+            const answer = dragTextAnswer(content);
             return `[${answer}]`;
         });
 
@@ -1594,6 +1705,11 @@ function formatDragAndDrop(data) {
     }
 
     sections.push({ type: 'separator' });
+
+    for (const zone of dropZones) {
+        const tip = zone._native?.tipsAndFeedback?.tip || zone.tipsAndFeedback?.tip;
+        if (tip) sections.push({type:'paragraph',text:cleanHtml(zone.label || '')+' — '+cleanHtml(tip)});
+    }
 
     // --- Étiquettes à découper (table 3 colonnes, ordre mélangé) ---
     if (elements.length > 0) {
@@ -1747,6 +1863,12 @@ function formatDragAndDrop(data) {
         });
     }
 
+    for (const zone of dropZones) {
+        const feedback = zone._native?.tipsAndFeedback || zone.tipsAndFeedback || {};
+        for (const key of ['feedbackOnCorrect','feedbackOnIncorrect']) {
+            if (feedback[key]) sections.push({type:'paragraph',text:cleanHtml(zone.label || '')+' — '+t(key==='feedbackOnCorrect'?'editor_feedback_correct':'editor_feedback_wrong')+' : '+cleanHtml(feedback[key])});
+        }
+    }
     return { title, sections };
 }
 
@@ -1767,37 +1889,7 @@ function formatFillInTheBlanks(data) {
         text: title
     });
 
-    if (data.taskDescription) {
-        sections.push({
-            type: 'paragraph',
-            text: cleanHtml(data.taskDescription),
-            style: 'description'
-        });
-    }
-
-    // Image de contexte (après la description, avant le texte à trous)
-    const fibImageUrl = getMediaImageUrl(data.mediaImage);
-    if (fibImageUrl) {
-        sections.push({ type: 'image', url: fibImageUrl });
-    }
-
-    if (data.questions && Array.isArray(data.questions)) {
-        sections.push({
-            type: 'header',
-            level: 2,
-            text: t('doc_fmt_text_to_complete') || 'Texte à compléter'
-        });
-
-        data.questions.forEach(q => {
-            // Remplacer les réponses entre astérisques par des blancs
-            const textWithBlanks = cleanHtml(q).replace(/\*([^*]+)\*/g, '_________');
-            sections.push({
-                type: 'paragraph',
-                text: textWithBlanks,
-                style: 'blanksText'
-            });
-        });
-    }
+    formatBlanksStatement(data, sections);
 
     // ========================================
     // SAUT DE PAGE
@@ -1840,6 +1932,8 @@ function formatFillInTheBlanks(data) {
         });
     }
 
+    formatBlanksCorrection(data, sections);
+
     return { title, sections };
 }
 
@@ -1869,10 +1963,7 @@ function formatMarkTheWords(data) {
     }
 
     // Image de contexte (après la description, avant le texte)
-    const mtwImageUrl = getMediaImageUrl(data.mediaImage);
-    if (mtwImageUrl) {
-        sections.push({ type: 'image', url: mtwImageUrl });
-    }
+    formatQuestionMedia(data, sections);
 
     if (data.textField) {
         sections.push({
@@ -1985,7 +2076,6 @@ function formatGlossary(data) {
                 style: 'definition'
             });
 
-            sections.push({ type: 'separator' });
         });
     }
 
@@ -2043,6 +2133,18 @@ async function formatChart(data) {
  * Formate un Summary
  * Structure pédagogique : énoncé + saut de page + correction
  */
+// Rotation reproductible : mêmes lettres dans les trois formats et leur corrigé.
+// La première affirmation native est correcte, mais ne doit pas toujours être A sur papier.
+function summaryPaperOrder(statements, groupIndex) {
+    const offset = statements.length > 1 ? (groupIndex % (statements.length - 1)) + 1 : 0;
+    return statements.map((text, index) => ({ text, index })).slice(offset)
+        .concat(statements.slice(0, offset).map((text, index) => ({ text, index })));
+}
+
+function summaryCorrectLetter(statements, groupIndex) {
+    return String.fromCharCode(65 + summaryPaperOrder(statements, groupIndex).findIndex(item => item.index === 0));
+}
+
 function formatSummary(data) {
     const sections = [];
     const title = data.title || t('doc_fmt_summary_title');
@@ -2080,8 +2182,11 @@ function formatSummary(data) {
                 text: `${t('doc_fmt_claim_index') || 'Groupe'} ${index + 1}`
             });
 
+            const tip = typeof summary.tip === 'object' ? summary.tip?.tip : summary.tip;
+            if (tip) sections.push({ type: 'paragraph', text: `${t('editor_tip')} : ${cleanHtml(tip)}`, style: 'description' });
+
             if (summary.summary && Array.isArray(summary.summary)) {
-                summary.summary.forEach((statement, i) => {
+                summaryPaperOrder(summary.summary, index).forEach(({ text: statement }, i) => {
                     const letter = String.fromCharCode(65 + i);
                     sections.push({
                         type: 'checkbox',
@@ -2122,7 +2227,7 @@ function formatSummary(data) {
                 // La première affirmation est toujours la bonne
                 sections.push({
                     type: 'paragraph',
-                    text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : A. ${cleanHtml(summary.summary[0])}`,
+                    text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : ${summaryCorrectLetter(summary.summary, index)}. ${cleanHtml(summary.summary[0])}`,
                     style: 'correctAnswer'
                 });
             }
@@ -2159,27 +2264,7 @@ function formatMultipleChoice(data) {
         });
     }
 
-    // Image de contexte (après l'énoncé, avant les réponses)
-    const mcImageUrl = getMediaImageUrl(data.mediaImage);
-    if (mcImageUrl) {
-        sections.push({ type: 'image', url: mcImageUrl });
-    }
-
-    if (data.answers && Array.isArray(data.answers)) {
-        sections.push({
-            type: 'header',
-            level: 2,
-            text: t('doc_fmt_proposed_answers') || 'Propositions'
-        });
-
-        data.answers.forEach((answer, i) => {
-            const letter = String.fromCharCode(65 + i);
-            sections.push({
-                type: 'checkbox',
-                text: `${letter}. ${cleanHtml(answer.text)}`
-            });
-        });
-    }
+    formatMultiChoiceStatement(data, sections);
 
     // ========================================
     // SAUT DE PAGE
@@ -2197,23 +2282,7 @@ function formatMultipleChoice(data) {
 
     sections.push({ type: 'separator' });
 
-    if (data.answers && Array.isArray(data.answers)) {
-        const correctAnswers = data.answers
-            .map((answer, i) => ({ answer, letter: String.fromCharCode(65 + i) }))
-            .filter(item => item.answer.correct);
-
-        if (correctAnswers.length > 0) {
-            const answerText = correctAnswers.map(item =>
-                `${item.letter}. ${cleanHtml(item.answer.text)}`
-            ).join(', ');
-
-            sections.push({
-                type: 'paragraph',
-                text: `${t('doc_fmt_correct_answer') || 'Bonne(s) réponse(s)'} : ${answerText}`,
-                style: 'correctAnswer'
-            });
-        }
-    }
+    formatMultiChoiceCorrection(data, sections);
 
     return { title, sections };
 }
@@ -2264,7 +2333,7 @@ function formatSingleChoiceSet(data) {
                     style: 'answersTitle'
                 });
 
-                choice.answers.forEach((answer, i) => {
+                summaryPaperOrder(choice.answers, index).forEach(({text: answer}, i) => {
                     const letter = String.fromCharCode(65 + i);
                     sections.push({
                         type: 'checkbox',
@@ -2305,7 +2374,7 @@ function formatSingleChoiceSet(data) {
             if (choice.answers && Array.isArray(choice.answers) && choice.answers.length > 0) {
                 sections.push({
                     type: 'paragraph',
-                    text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : A. ${cleanHtml(choice.answers[0])}`,
+                    text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : ${summaryCorrectLetter(choice.answers, index)}. ${cleanHtml(choice.answers[0])}`,
                     style: 'correctAnswer'
                 });
             }
@@ -2342,30 +2411,7 @@ function formatTrueFalse(data) {
         });
     }
 
-    // Image de contexte (après l'énoncé, avant les propositions)
-    const tfImageUrl = getMediaImageUrl(data.mediaImage);
-    if (tfImageUrl) {
-        sections.push({ type: 'image', url: tfImageUrl });
-    }
-
-    const trueLabel = (data.l10n && data.l10n.trueText) ? cleanHtml(data.l10n.trueText) : (t('doc_fmt_true') || 'Vrai');
-    const falseLabel = (data.l10n && data.l10n.falseText) ? cleanHtml(data.l10n.falseText) : (t('doc_fmt_false') || 'Faux');
-
-    sections.push({
-        type: 'paragraph',
-        text: t('doc_fmt_proposed_answers') || 'Propositions :',
-        style: 'answersTitle'
-    });
-
-    sections.push({
-        type: 'checkbox',
-        text: `A. ${trueLabel}`
-    });
-
-    sections.push({
-        type: 'checkbox',
-        text: `B. ${falseLabel}`
-    });
+    formatTrueFalseStatement(data, sections);
 
     // ========================================
     // SAUT DE PAGE
@@ -2383,12 +2429,7 @@ function formatTrueFalse(data) {
 
     sections.push({ type: 'separator' });
 
-    const correct = data.correct === 'true' || data.correct === true;
-    sections.push({
-        type: 'paragraph',
-        text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : ${correct ? `A. ${trueLabel}` : `B. ${falseLabel}`}`,
-        style: 'correctAnswer'
-    });
+    formatTrueFalseCorrection(data, sections);
 
     return { title, sections };
 }
@@ -2405,12 +2446,13 @@ function formatTrueFalse(data) {
  */
 function formatDialogCards(data) {
     const sections = [];
-    const title = data.title || t('doc_fmt_dialog_cards_title');
+    const title = cleanHtml(data.title || t('doc_fmt_dialog_cards_title'));
     const dialogs = data.dialogs || [];
 
     // Titre du document en tête, comme les autres formatters (audit Sucrerie
     // 2026-07-05, F6 : les cartes de dialogue sortaient sans aucun titre).
     sections.push({ type: 'header', level: 1, text: title });
+    if (data.description) sections.push({ type: 'paragraph', text: cleanHtml(data.description), style: 'description' });
 
     if (dialogs.length === 0) {
         return { title, sections };
@@ -2439,7 +2481,7 @@ function formatDialogCards(data) {
             // Extraire l'image d'un dialogue (data URL ou chemin)
             const getDialogImage = (dialog) => {
                 if (!dialog || !dialog.image || !dialog.image.path) return null;
-                return dialog.image.path;
+                return dialog.image.dataURL || dialog.image.path;
             };
 
             // Recto : ordre normal [gauche, droite]
@@ -2494,6 +2536,7 @@ function formatDialogCards(data) {
         });
     });
 
+    ajouterCreditsCartes(sections, dialogs);
     return { title, sections };
 }
 
@@ -2519,13 +2562,7 @@ function formatDictation(data) {
     if (taskDesc) {
         sections.push({ type: 'paragraph', text: taskDesc, style: 'description' });
     }
-    // Illustration (champ éditeur mediaImage, ou bloc « Média » H5P d'un content.json
-    // rechargé) — même patron que les activités à media context.
-    const dictImageUrl = getMediaImageUrl(data.mediaImage)
-        || getMediaImageUrl(data.media && data.media.type && data.media.type.params && data.media.type.params.file);
-    if (dictImageUrl) {
-        sections.push({ type: 'image', url: dictImageUrl });
-    }
+    formatQuestionMedia(data, sections);
     if (!taskDesc) {
         sections.push({
             type: 'paragraph',
@@ -2548,6 +2585,9 @@ function formatDictation(data) {
         sections.push({ type: 'paragraph', text: `${i + 1}. ${s.text.trim().replace(/\|/g, ' / ')}` });
     });
 
+    const sources=sentences.flatMap(sentence=>[sentence.sample,sentence.sampleAlternative].flatMap(v=>Array.isArray(v)?v:(v?[v]:[])));
+    const uniques=sources.filter((source,index)=>sources.findIndex(other=>other.path===source.path)===index);
+    ajouterCreditsCartes(sections, uniques.map(source=>({image:source})));
     return { title, sections };
 }
 
@@ -2576,6 +2616,8 @@ function formatSortParagraphs(data) {
         });
     }
 
+    formatQuestionMedia(data, sections);
+
     sections.push({
         type: 'paragraph',
         text: t('doc_fmt_sort_instructions') || 'Remettez les paragraphes suivants dans le bon ordre.',
@@ -2591,7 +2633,16 @@ function formatSortParagraphs(data) {
 
         // Mélanger les paragraphes pour l'énoncé
         const shuffled = data.paragraphs.map((para, i) => ({ para, originalIndex: i }));
-        shuffled.sort(() => Math.random() - 0.5);
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        // Ne pas livrer par hasard une fiche dont l'ordre est déjà résolu.
+        // Les doublons visibles comptent comme identiques, même si leurs indices diffèrent.
+        const originalText = data.paragraphs.map(cleanHtml);
+        if (new Set(originalText).size > 1 && shuffled.every((item, i) => cleanHtml(item.para) === originalText[i])) {
+            shuffled.push(shuffled.shift());
+        }
 
         shuffled.forEach((item, i) => {
             const letter = String.fromCharCode(65 + i);
@@ -2648,6 +2699,9 @@ function formatSortParagraphs(data) {
 function formatFindTheWords(data) {
     const sections = [];
     const title = data.title || t('doc_fmt_find_the_words_title');
+    // Le lecteur natif ne compte qu'une occurrence de chaque mot de la liste.
+    const words = [...new Set((Array.isArray(data.wordList) ? data.wordList : (data.wordList || '').split(','))
+        .map(word => word.trim()).filter(Boolean))];
 
     // ========================================
     // PARTIE 1 : ÉNONCÉ
@@ -2666,8 +2720,7 @@ function formatFindTheWords(data) {
         });
     }
 
-    if (data.wordList) {
-        const words = (Array.isArray(data.wordList) ? data.wordList : data.wordList.split(',')).map(w => w.trim());
+    if (words.length) {
         const instructionText = (t('doc_fmt_find_instructions') || 'Trouvez les @count mots cachés dans la grille :')
             .replace('@count', words.length);
         sections.push({
@@ -2675,11 +2728,13 @@ function formatFindTheWords(data) {
             text: instructionText,
             style: 'instructions'
         });
-        sections.push({
-            type: 'paragraph',
-            text: words.join(', ') + '.',
-            style: 'wordList'
-        });
+        if (data.behaviour?.showVocabulary !== false) {
+            sections.push({
+                type: 'paragraph',
+                text: words.join(', ') + '.',
+                style: 'wordList'
+            });
+        }
     }
 
     // Grille vierge (énoncé) — image capturée depuis le H5P
@@ -2717,8 +2772,7 @@ function formatFindTheWords(data) {
         sections.push({ type: 'spacer' });
     }
 
-    if (data.wordList) {
-        const words = Array.isArray(data.wordList) ? data.wordList : data.wordList.split(',').map(w => w.trim());
+    if (words.length) {
         sections.push({
             type: 'header',
             level: 2,
@@ -2754,32 +2808,7 @@ function formatEssay(data) {
         text: title
     });
 
-    if (data.taskDescription) {
-        sections.push({
-            type: 'paragraph',
-            text: cleanHtml(data.taskDescription),
-            style: 'description'
-        });
-    }
-
-    // Image de contexte (après la consigne, avant l'espace de réponse)
-    const essayImageUrl = getMediaImageUrl(data.mediaImage);
-    if (essayImageUrl) {
-        sections.push({ type: 'image', url: essayImageUrl });
-    }
-
-    // Espace pour la réponse de l'élève
-    sections.push({
-        type: 'header',
-        level: 2,
-        text: t('doc_fmt_answer_space') || 'Espace pour la réponse'
-    });
-
-    sections.push({
-        type: 'paragraph',
-        text: '___________________________________________________________________\n\n___________________________________________________________________\n\n___________________________________________________________________\n\n___________________________________________________________________\n\n___________________________________________________________________',
-        style: 'blanksText'
-    });
+    formatEssayStatement(data, sections);
 
     // ========================================
     // SAUT DE PAGE
@@ -2797,27 +2826,7 @@ function formatEssay(data) {
 
     sections.push({ type: 'separator' });
 
-    if (data.keywords && data.keywords.length > 0) {
-        sections.push({
-            type: 'header',
-            level: 2,
-            text: t('doc_fmt_keywords_expected') || 'Mots-clés attendus dans la réponse'
-        });
-
-        data.keywords.forEach(kw => {
-            sections.push({
-                type: 'bulletPoint',
-                text: cleanHtml(kw.keyword || kw.word || kw.text || (typeof kw === 'string' ? kw : '')),
-                style: 'correctAnswer'
-            });
-        });
-    } else if (!data.keywords || data.keywords.length === 0) {
-        sections.push({
-            type: 'paragraph',
-            text: t('doc_fmt_open_answer') || 'Réponse ouverte - évaluation selon les critères définis par l\'enseignant.',
-            style: 'description'
-        });
-    }
+    formatEssayCorrection(data, sections);
 
     return { title, sections };
 }
@@ -3938,7 +3947,43 @@ function getCalloutEmoji(type) {
  * Partie 1 : contenu des diapositives et énoncés des exercices.
  * Partie 2 : correction des exercices.
  */
+function formatNativeCoursePresentation(data) {
+    const title=data.title||t('doc_fmt_cp_title'),sections=[{type:'header',level:1,text:title}],corrections=[];
+    for(const [index,slide] of data.presentation.slides.entries()){
+        sections.push({type:'header',level:2,text:`${t('doc_fmt_cp_slide')} ${index+1}${slide.keywords?.[0]?.main?' — '+cleanHtml(slide.keywords[0].main):''}`});
+        const start=sections.length-1;
+        for(const element of slide.elements||[]){
+            const action=element.action||{},lib=String(action.library||''),params=action.params||{};
+            if(lib.startsWith('H5P.Table')){
+                const table=new DOMParser().parseFromString(params.text||'','text/html').querySelector('table');
+                const rows=table?Array.from(table.rows,row=>Array.from(row.cells,cell=>cleanHtml(cell.innerHTML))):[];
+                if(rows.length)sections.push({type:'table',headers:rows[0],rows:rows.slice(1)});
+                else if(params.text)sections.push({type:'paragraph',text:cleanHtml(params.text)});
+            }else if(/H5P\.(AdvancedText|ContinuousText|Text)\b/.test(lib)){
+                if(params.text)sections.push({type:'paragraph',text:cleanHtml(params.text),style:'content'});
+            }else if(/H5P\.(Image|Audio|Video)\b/.test(lib))formatQuestionMedia({media:{type:action}},sections);
+            else if(lib.startsWith('H5P.Link'))sections.push({type:'paragraph',text:[params.title,params.link?.url||params.link||params.url].filter(v=>typeof v==='string').map(cleanHtml).join(' : ')});
+            else if(/H5P\.(MultiChoice|TrueFalse|Blanks|DragText|MarkTheWords|SingleChoiceSet|Summary|Dialogcards|DragQuestion)\b/.test(lib)){
+                formatCPExerciseStatement(lib,params,sections);corrections.push({lib,params,slide:index+1});
+            }
+            if(element.solution)corrections.push({comment:element.solution,slide:index+1});
+        }
+        if(sections.length-start<=10 && !sections.slice(start).some(s=>s.type==='image'))for(const section of sections.slice(start,-1))section.keepWithNext=true;
+        sections.push({type:'separator'});
+    }
+    if(corrections.length){
+        sections.push({type:'pageBreak'},{type:'header',level:1,text:t('doc_fmt_correction_title')});
+        for(const c of corrections){
+            sections.push({type:'header',level:3,text:`${t('doc_fmt_cp_slide')} ${c.slide}`});
+            if(c.comment)sections.push({type:'paragraph',text:cleanHtml(c.comment),style:'tip'});
+            else formatCPExerciseCorrection(c.lib,c.params,sections);
+        }
+    }
+    return {title,sections};
+}
+
 function formatCoursePresentation(data) {
+    if(Array.isArray(data.presentation?.slides))return formatNativeCoursePresentation(data);
     const sections = [];
     const title = data.title || t('doc_fmt_cp_title');
 
@@ -4081,14 +4126,9 @@ function formatCPExerciseStatement(library, params, sections) {
         }
         formatTrueFalseStatement(params, sections);
     } else if (library.includes('Blanks')) {
-        if (params.taskDescription) {
-            sections.push({ type: 'paragraph', text: cleanHtml(params.taskDescription), style: 'question' });
-        }
+        // Le helper émet déjà la consigne, y compris dans un livre ou une présentation.
         formatBlanksStatement(params, sections);
     } else if (library.includes('DragText')) {
-        if (params.taskDescription) {
-            sections.push({ type: 'paragraph', text: cleanHtml(params.taskDescription), style: 'question' });
-        }
         formatDragTextStatement(params, sections);
     } else if (library.includes('MarkTheWords')) {
         if (params.taskDescription) {
@@ -4101,7 +4141,7 @@ function formatCPExerciseStatement(library, params, sections) {
             params.choices.forEach((choice, i) => {
                 sections.push({ type: 'paragraph', text: cleanHtml(choice.question), style: 'question' });
                 if (choice.answers && Array.isArray(choice.answers)) {
-                    choice.answers.forEach((answer, j) => {
+                    summaryPaperOrder(choice.answers, i).forEach(({text: answer}, j) => {
                         const letter = String.fromCharCode(65 + j);
                         sections.push({ type: 'checkbox', text: `${letter}. ${cleanHtml(answer)}` });
                     });
@@ -4121,8 +4161,10 @@ function formatCPExerciseStatement(library, params, sections) {
         if (params.summaries && Array.isArray(params.summaries)) {
             params.summaries.forEach((group, i) => {
                 sections.push({ type: 'header', level: 3, text: `${t('doc_fmt_claim_index') || 'Groupe'} ${i + 1}` });
+                const tip = typeof group.tip === 'object' ? group.tip?.tip : group.tip;
+                if (tip) sections.push({ type: 'paragraph', text: `${t('editor_tip')} : ${cleanHtml(tip)}`, style: 'description' });
                 if (group.summary && Array.isArray(group.summary)) {
-                    group.summary.forEach((statement, j) => {
+                    summaryPaperOrder(group.summary, i).forEach(({ text: statement }, j) => {
                         const letter = String.fromCharCode(65 + j);
                         sections.push({ type: 'checkbox', text: `${letter}. ${cleanHtml(statement)}` });
                     });
@@ -4138,9 +4180,15 @@ function formatCPExerciseStatement(library, params, sections) {
             const headers = [t('doc_fmt_cp_card_front'), t('doc_fmt_cp_card_back')];
             const rows = [];
             params.dialogs.forEach(dialog => {
-                rows.push([cleanHtml(dialog.text || ''), cleanHtml(dialog.answer || '')]);
+                rows.push([
+                    [dialog.text, dialog.tips?.front].filter(Boolean).map(cleanHtml).join('\n'),
+                    [dialog.answer, dialog.tips?.back].filter(Boolean).map(cleanHtml).join('\n')
+                ]);
+                const imageUrl = getMediaImageUrl(dialog.image);
+                if (imageUrl) sections.push({ type: 'image', url: imageUrl, alt: dialog.imageAlt || '', caption: cleanHtml(dialog.text || '') });
             });
             sections.push({ type: 'table', headers, rows });
+            ajouterCreditsCartes(sections, params.dialogs);
         }
     }
 }
@@ -4167,7 +4215,7 @@ function formatCPExerciseCorrection(library, params, sections) {
                 if (choice.answers && Array.isArray(choice.answers) && choice.answers.length > 0) {
                     sections.push({
                         type: 'paragraph',
-                        text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : A. ${cleanHtml(choice.answers[0])}`,
+                        text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : ${summaryCorrectLetter(choice.answers, i)}. ${cleanHtml(choice.answers[0])}`,
                         style: 'correctAnswer'
                     });
                 }
@@ -4182,7 +4230,7 @@ function formatCPExerciseCorrection(library, params, sections) {
                 if (group.summary && Array.isArray(group.summary) && group.summary.length > 0) {
                     sections.push({
                         type: 'paragraph',
-                        text: `${t('doc_fmt_claim_index') || 'Groupe'} ${i + 1} : A. ${cleanHtml(group.summary[0])}`,
+                        text: `${t('doc_fmt_claim_index') || 'Groupe'} ${i + 1} : ${summaryCorrectLetter(group.summary, i)}. ${cleanHtml(group.summary[0])}`,
                         style: 'correctAnswer'
                     });
                 }
@@ -4204,7 +4252,65 @@ function formatCPExerciseCorrection(library, params, sections) {
  * Partie 2 : correction des exercices, regroupée par chapitre.
  * Réutilise les dispatchers d'exercices de CoursePresentation (mêmes 9 types).
  */
+/** Parcourir les conteneurs natifs sans perdre les blocs ou leurs corrigés. */
+async function formatNativeInteractiveBook(data) {
+    const base=formatInteractiveBook({title:data.title,cover:{enabled:data.showCoverPage,description:data.bookCover?.coverDescription,media:data.bookCover?.coverMedium},chapters:[]});
+    const sections=base.sections.filter(section=>data.documentKind!=='video'||section.text!==t('doc_fmt_ib_embedded_video')),corrections=[];
+    if(data.documentKind==='video')for(const section of sections)if(section.style==='instructions')section.text=t('doc_fmt_video_instructions');
+    const modules={Blanks:'FillInTheBlanks',MultiChoice:'MultipleChoice',DragText:'DragTheWords',DragQuestion:'DragAndDrop',Dialogcards:'DialogCards',QuestionSet:'QuizSet',ImageHotspotQuestion:'FindTheHotspot',MultiMediaChoice:'MultiMediaChoice'};
+    const walk=async(action,chapter)=>{
+        if(!action)return;const library=String(action.library||'').split(' ')[0].replace('H5P.',''),params=action.params||{};
+        if(library==='Row'){for(const column of params.columns||[])await walk(column.content,chapter);return;}
+        if(library==='Column'||library==='RowColumn'){for(const item of params.content||[])await walk(item.content||item,chapter);return;}
+        if(['AdvancedText','ContinuousText','Text','Table','Link','Image','Audio','Video'].includes(library)){
+            const one=formatNativeCoursePresentation({presentation:{slides:[{elements:[{action}]}]}});
+            sections.push(...one.sections.filter(s=>s.type!=='header'&&s.type!=='separator').map(s=>s.type==='image'?{...s,imgSizeMm:80}:s));return;
+        }
+        if(library==='Nil')return;
+        if(library==='Questionnaire'){for(const item of params.questionnaireElements||[])await walk(item.library||item,chapter);return;}
+        if(['FreeTextQuestion','OpenEndedQuestion'].includes(library)){
+            sections.push({type:'paragraph',text:cleanHtml(params.question||''),style:'question'},{type:'paragraph',text:'________________________________________________________________'});return;
+        }
+        if(library==='SimpleMultiChoice'){
+            sections.push({type:'paragraph',text:cleanHtml(params.question||''),style:'question'});
+            for(const option of params.alternatives||[])sections.push({type:'paragraph',text:'☐ '+cleanHtml(option.text||option)});return;
+        }
+        if(library==='GoToQuestion'){
+            sections.push({type:'paragraph',text:cleanHtml(params.text||''),style:'question'});
+            for(const choice of params.choices||[])sections.push({type:'paragraph',text:`☐ ${cleanHtml(choice.text||'')} → ${Number(choice.goTo||0)} s${choice.ifChosenText?' — '+cleanHtml(choice.ifChosenText):''}`});return;
+        }
+        if(library==='IVHotspot'){
+            const target=params.destination?.type==='url'?((params.destination.url?.protocol==='other'?'':params.destination.url?.protocol||'')+(params.destination.url?.url||'')):`${Number(params.destination?.time||0)} s`;
+            sections.push({type:'paragraph',text:[params.texts?.label||params.texts?.alternativeText,target].filter(Boolean).map(cleanHtml).join(' → ')});return;
+        }
+        if(library==='MultiMediaChoice'){
+            sections.push({type:'paragraph',text:cleanHtml(params.question||''),style:'question'});const answers=[];
+            for(const [i,option] of (params.options||[]).entries()){
+                const label=String.fromCharCode(65+i);sections.push({type:'paragraph',text:'☐ '+label});await walk(option.media,chapter);
+                if(option.poster)sections.push({type:'image',url:getMediaImageUrl(option.poster),imgSizeMm:60});if(option.correct)answers.push(label);
+            }
+            corrections.push({chapter,sections:[{type:'paragraph',text:answers.join(', '),style:'answer'}]});return;
+        }
+        if(library==='Accordion'){for(const panel of params.panels||[]){sections.push({type:'header',level:3,text:cleanHtml(panel.title||'')});await walk(panel.content,chapter);}return;}
+        if(['MultiChoice','TrueFalse','Blanks','DragText','MarkTheWords','SingleChoiceSet','Summary','Dialogcards','DragQuestion'].includes(library)){
+            const start=sections.length;formatCPExerciseStatement(action.library,params,sections);if(sections.length-start<=10 && !sections.slice(start).some(s=>s.type==='image'))for(const s of sections.slice(start,-1))s.keepWithNext=true;const correction=[];formatCPExerciseCorrection(action.library,params,correction);corrections.push({chapter,sections:correction});return;
+        }
+        const formatted=await formatContentForDocument(modules[library]||library,params,{keepLatex:true});
+        const split=formatted.sections.findIndex(s=>s.type==='header'&&s.text===t('doc_fmt_correction_title'));
+        if(split>=0){sections.push(...formatted.sections.slice(0,split).filter(s=>s.type!=='pageBreak'));corrections.push({chapter,sections:formatted.sections.slice(split+1)});}
+        else sections.push(...formatted.sections);
+    };
+    for(const [index,chapter] of (data.chapters||[]).entries()){
+        const label=data.documentKind==='video'?cleanHtml(chapter.metadata?.title||''):`${t('doc_fmt_ib_chapter')} ${index+1} — ${cleanHtml(chapter.metadata?.title||'')}`;
+        const start=sections.length;sections.push({type:'header',level:2,text:label});await walk(chapter,label);
+        if(sections.length-start<=10&&!sections.slice(start).some(s=>s.type==='image'))for(const section of sections.slice(start,-1))section.keepWithNext=true;
+    }
+    if(corrections.length){sections.push({type:'pageBreak'},{type:'header',level:1,text:t('doc_fmt_correction_title')});for(const c of corrections)sections.push({type:'header',level:3,text:c.chapter},...c.sections);}
+    return {title:base.title,sections};
+}
+
 function formatInteractiveBook(data) {
+    if(data.chapters?.[0]?.params)return formatNativeInteractiveBook(data);
     const sections = [];
     const title = data.title || t('doc_fmt_ib_title');
 
@@ -4217,12 +4323,35 @@ function formatInteractiveBook(data) {
         text: title
     });
 
-    if (data.cover && data.cover.description) {
+    if (data.cover?.enabled !== false && data.cover?.description) {
         sections.push({
             type: 'paragraph',
             text: cleanHtml(data.cover.description),
             style: 'subtitle'
         });
+    }
+
+    if (data.cover?.enabled !== false && data.cover?.media) {
+        const media = data.cover.media;
+        const params = media.params || {};
+        const file = media.library?.startsWith('H5P.Image') ? params.file : params.visuals?.poster;
+        if (file && getMediaImageUrl(file)) {
+            sections.push({ type: 'image', url: getMediaImageUrl(file), imgSizeMm: 100, alt: params.alt || '', caption: params.alt || '' });
+            const credits = file.copyright;
+            if (credits) {
+                const label = [credits.title, credits.author, credits.source, credits.license !== 'U' ? credits.license : ''].filter(Boolean).join(' — ');
+                if (label) sections.push({ type: 'paragraph', text: label, style: 'metadata' });
+            }
+        }
+        if (media.library?.startsWith('H5P.Video')) {
+            const path = params.sources?.[0]?.path || '';
+            if (/^https?:\/\//i.test(path)) {
+                sections.push({ type: 'paragraph', text: `${t('doc_fmt_video_link')} : ${path}`, style: 'metadata' });
+                sections.push({ type: 'image', qrText: path, imgSizeMm: 32, caption: t('doc_fmt_video_qr_caption') });
+            } else {
+                sections.push({ type: 'paragraph', text: t('doc_fmt_ib_embedded_video'), style: 'description' });
+            }
+        }
     }
 
     sections.push({
@@ -4245,7 +4374,13 @@ function formatInteractiveBook(data) {
             text: `${t('doc_fmt_ib_chapter')} ${ci + 1}${chapter.title ? ' — ' + cleanHtml(chapter.title) : ''}`
         });
 
-        (chapter.content || []).forEach(block => {
+        // Sur papier, lire les colonnes de gauche à droite puis leurs blocs
+        // de haut en bas. Les corrigés restent tous dans la seconde partie.
+        const lireBlocs = blocks => blocks.flatMap(block =>
+            (block?._blockType || block?.type) === 'row'
+                ? (block.columns || []).flatMap(column => lireBlocs(column.content || []).map(b => ({ ...b, _inRow: true })))
+                : [block]);
+        lireBlocs(chapter.content || []).forEach(block => {
             if (!block || typeof block !== 'object') return;
             const blockType = block._blockType || block.type ||
                 (block.library ? 'exercise' : (block.table ? 'table' : (block.image ? 'image' : 'text')));
@@ -4268,6 +4403,7 @@ function formatInteractiveBook(data) {
                     sections.push({
                         type: 'image',
                         url: imageUrl,
+                        ...(block._inRow ? { imgSizeMm: 80 } : {}),
                         caption: block.alt || '',
                         alt: block.alt || ''
                     });
@@ -4418,6 +4554,71 @@ function convertLatexToUnicode(text) {
  * Produit un document avec la grille sous forme de tableau professionnel,
  * optimisé pour l'impression papier par les enseignants.
  */
+/**
+ * Rend un document dont la STRUCTURE porte ses propres libellés.
+ *
+ * **Pourquoi ce formateur ne ressemble à aucun autre.** Tous ses voisins
+ * connaissent leur module : `formatQuizSet` sait ce qu'est une question,
+ * `formatFlashcards` ce qu'est une carte, et chacun puise ses en-têtes dans les
+ * clés `doc_fmt_*`. Celui-ci ne sait rien du parcours — il reçoit des titres,
+ * des puces et des tableaux déjà rédigés, et se contente de les rendre.
+ *
+ * Ce choix n'est pas de la paresse, c'est le contrat de partage. Ce fichier est
+ * byte-identique entre Caramel et La Sucrerie, mais **les traductions, elles, ne
+ * voyagent pas avec lui** : une clé ajoutée ici et absente des douze locales de
+ * l'autre dépôt s'afficherait BRUTE à l'utilisateur. Un formateur qui connaîtrait
+ * le vocabulaire du parcours obligerait donc à traduire des dizaines de libellés
+ * des deux côtés, pour un module que La Sucrerie ne produit pas. En laissant
+ * l'appelant fournir ses libellés — déjà traduits dans SA langue et SON dépôt —
+ * on obtient le même document sans une seule clé nouvelle ici.
+ *
+ * @param {Object} data
+ * @param {string} [data.title]   Titre du document.
+ * @param {string} [data.intro]   Chapeau, sous le titre.
+ * @param {string[]} [data.meta]  Repères courts, rendus sur une ligne (« 4 étapes · 1 h 25 »).
+ * @param {Array<Object>} [data.sections] Blocs, dans l'ordre :
+ *        `{ titre?, lignes?: string[], puces?: string[],
+ *           table?: { headers: string[], rows: string[][] } }`
+ * @returns {{title:string, sections:Array}}
+ */
+function formatParcoursDocument(data) {
+    const sections = [];
+    const titre = String((data && data.title) || '').trim();
+    sections.push({ type: 'header', level: 1, text: titre });
+
+    if (data && data.intro) {
+        sections.push({ type: 'paragraph', text: cleanHtml(data.intro), style: 'description' });
+    }
+    // Les repères tiennent sur une ligne : « Éléa · 4 étapes · 11 activités ».
+    if (data && Array.isArray(data.meta) && data.meta.length) {
+        sections.push({ type: 'paragraph', text: data.meta.filter(Boolean).join(' · ') });
+    }
+    sections.push({ type: 'separator' });
+
+    for (const bloc of (data && Array.isArray(data.sections) ? data.sections : [])) {
+        if (!bloc) continue;
+        if (bloc.titre) {
+            sections.push({ type: 'header', level: 2, text: cleanHtml(bloc.titre) });
+        }
+        for (const ligne of (Array.isArray(bloc.lignes) ? bloc.lignes : [])) {
+            if (ligne) sections.push({ type: 'paragraph', text: cleanHtml(ligne) });
+        }
+        for (const puce of (Array.isArray(bloc.puces) ? bloc.puces : [])) {
+            if (puce) sections.push({ type: 'bulletPoint', text: cleanHtml(puce) });
+        }
+        const table = bloc.table;
+        if (table && Array.isArray(table.headers) && Array.isArray(table.rows) && table.rows.length) {
+            sections.push({
+                type: 'table',
+                headers: table.headers.map(h => cleanHtml(String(h || ''))),
+                rows: table.rows.map(r => (Array.isArray(r) ? r : []).map(c => cleanHtml(String(c || '')))),
+            });
+        }
+    }
+
+    return { title: titre, sections };
+}
+
 function formatDevoir(data) {
     const sections = [];
     const title = data.title || t('doc_fmt_devoir_title');

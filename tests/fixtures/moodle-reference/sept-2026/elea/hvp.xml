@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="468" moduleid="14027" modulename="hvp" contextid="17755">
+  <hvp id="468">
+    <name>choix-unique-delais</name>
+    <machine_name>H5P.SingleChoiceSet</machine_name>
+    <major_version>1</major_version>
+    <minor_version>11</minor_version>
+    <intro>&lt;p&gt;Réponds aux questions.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <json_content>{
+  "choices": [
+    {
+      "question": "Capitale de la France ?",
+      "answers": [
+        "Paris",
+        "Rome",
+        "Madrid"
+      ],
+      "subContentId": "7dd27f95-bb38-44f0-a86d-372cd3b6351c"
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 100,
+      "feedback": ""
+    }
+  ],
+  "behaviour": {
+    "timeoutCorrect": 0,
+    "timeoutWrong": 2300,
+    "soundEffectsEnabled": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "passPercentage": 100,
+    "autoContinue": true
+  },
+  "l10n": {
+    "retryButtonLabel": "Recommencer",
+    "solutionViewTitle": "Solution",
+    "correctText": "Bonne réponse",
+    "incorrectText": "Mauvaise réponse",
+    "muteButtonLabel": "Désactiver le son",
+    "closeButtonLabel": "Fermer",
+    "slideOfTotal": "Diapositive @slide sur @total",
+    "nextButtonLabel": "Suivant",
+    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+    "solutionListQuestionNumber": "Question @question",
+    "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "shouldSelect": "Devrait sélectionner",
+    "shouldNotSelect": "Ne devrait pas sélectionner",
+    "nextButton": "Suivant",
+    "showResultsButtonLabel": "Montrer les résultats",
+    "resultHeader": "Votre résultat :",
+    "totalScore": ":score bonnes réponses sur :maxScore",
+    "resultTableHeader": "Question",
+    "resultScoreTableHeader": "Score",
+    "correctAnswerIntroduction": "Bonne réponse"
+  }
+}</json_content>
+    <embed_type>div</embed_type>
+    <disable>15</disable>
+    <content_type>$@NULL@$</content_type>
+    <source>$@NULL@$</source>
+    <year_from>$@NULL@$</year_from>
+    <year_to>$@NULL@$</year_to>
+    <license_version>$@NULL@$</license_version>
+    <changes>$@NULL@$</changes>
+    <license_extras>$@NULL@$</license_extras>
+    <author_comments>$@NULL@$</author_comments>
+    <slug></slug>
+    <timecreated>1790541065</timecreated>
+    <timemodified>1790541065</timemodified>
+    <authors>$@NULL@$</authors>
+    <license>$@NULL@$</license>
+    <completionpass>0</completionpass>
+    <content_user_data>
+    </content_user_data>
+  </hvp>
+</activity>

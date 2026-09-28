@@ -1,0 +1,1061 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-28T14:08:20.370Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "moyenne",
+    "trame": "apprendre"
+  },
+  "plan": {
+    "titre": "La Révolution française : causes et événements clés",
+    "objectifGeneral": "Comprendre les causes et événements majeurs de la Révolution française (1789-1799) en appliquant des méthodes de mémorisation efficaces.",
+    "introduction": "Tu vas découvrir les causes et les étapes de la Révolution française (1789-1799) tout en apprenant comment mieux mémoriser tes cours. Ce parcours t'expliquera des méthodes simples et efficaces pour retenir, que tu pourras appliquer à tout moment. Suis les étapes dans l'ordre et prends le temps de tester les outils proposés.",
+    "notionsPivots": [
+      "les causes de la Révolution française",
+      "la prise de la Bastille",
+      "la Déclaration des droits de l’homme et du citoyen",
+      "la fin de la monarchie absolue",
+      "la Terreur",
+      "le rôle des États généraux",
+      "les sans-culottes",
+      "la Constitution de 1791",
+      "la Convention nationale",
+      "la guillotine"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Apprends à mieux mémoriser",
+        "objectif": "Identifier les méthodes de mémorisation efficaces à travers des tests et des explications",
+        "introduction": "Tu utilises peut-être certaines techniques pour apprendre : surligner, relire plusieurs fois ou tout réviser la veille. Mais est-ce que cela marche vraiment ? Cette étape va te montrer ce qui aide à retenir durablement et pourquoi. Garde ces méthodes en tête pour les appliquer ensuite sur la Révolution française.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Teste tes idées reçues sur le travail",
+            "objectif": "Repérer les croyances sur la mémorisation",
+            "consigne": "Réponds à ces affirmations sur ce qui fait retenir ou non. Tu verras si tes idées sont justes et pourquoi.",
+            "module": "QuizSetVF",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 8,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Teste tes idées reçues sur le travail",
+              "questions": [
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Apprendre en lisant plusieurs fois un texte aide davantage à retenir qu'en expliquant avec ses propres mots"
+                  },
+                  "params": {
+                    "question": "Relire plusieurs fois un texte est plus efficace pour mémoriser que d'essayer de l'expliquer avec tes propres mots.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "C'est l'inverse qui est vrai : expliquer un sujet avec ses propres mots ou le reformuler améliore la mémorisation, car cela active une réflexion active et non passive.",
+                    "feedbackOnWrong": "En réalité, reformuler ou expliquer un texte avec ses mots est bien plus efficace. La relecture passive donne l'illusion de connaître mais sans ancrage solide dans la mémoire. Essaie de faire comme si tu devais enseigner le passage à un camarade pour mieux retenir."
+                  },
+                  "subContentId": "2dc45bf0-eb52-4f15-859d-808d9d26def7"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Faire des fiches de révision pour tout noter mot à mot est la meilleure façon de retenir"
+                  },
+                  "params": {
+                    "question": "Copier mot à mot les définitions sur des fiches est la meilleure méthode pour les retenir.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Recopier sans réfléchir ne suffit pas : il faut trier les idées, les reformuler ou les schématiser pour que le cerveau établisse des liens entre les notions.",
+                    "feedbackOnWrong": "Écrire sans comprendre ou sans organiser les informations ne crée pas de mémoire solide. Pour retenir, il vaut mieux identifier les mots-clés, les relier entre eux ou créer des schémas. La surcharge de texte non transformée fatigue la mémoire sans améliorer la rétention."
+                  },
+                  "subContentId": "a6c7a16e-2978-435b-866e-f946370fb6a5"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "S'entraîner à se rappeler sans regarder ses notes est plus utile que relire plusieurs fois"
+                  },
+                  "params": {
+                    "question": "Relire plusieurs fois ses notes sans s'interroger est plus utile pour mémoriser que de s'entraîner à se rappeler sans regarder ses fiches.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Se tester sans tricher (technique appelée 'réactivation') est l'une des méthodes les plus efficaces pour ancrer les connaissances car elle force le cerveau à reconstruire l'information.",
+                    "feedbackOnWrong": "Rester passif en relisant ne prouve pas que tu sais réutiliser les informations plus tard. Le fait de te demander 'Qu'est-ce que je sais sur la prise de la Bastille ?' sans regarder active ta mémoire à long terme. C'est ça qui fait progresser, pas la répétition passive."
+                  },
+                  "subContentId": "fb19fdb5-598c-4505-b506-0d8fc55299f3"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Accumuler des heures de travail sans pause est la garantie de mieux retenir"
+                  },
+                  "params": {
+                    "question": "Travailler plus longtemps sans pause améliore la mémorisation des leçons.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Le cerveau a besoin de pauses pour digérer les informations. Travailler sans interruption fatigue et réduit l'efficacité de la mémorisation.",
+                    "feedbackOnWrong": "Réviser en continu sans pause ne laisse pas le temps au cerveau de fixer les informations. Une courte pause après 20 ou 30 minutes de travail permet de mieux ancrer ce que tu as appris. Le travail efficace repose sur des sessions courtes et régulières, pas sur des marathons improductifs."
+                  },
+                  "subContentId": "a320f2fa-09cb-4a2d-8c4c-58d27b2958a4"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Ces idées sont à reprendre : la mémoire se travaille avec des méthodes actives. Relis bien les retours après chaque question pour comprendre où tu as fait fausse route."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Certains principes restent à clarifier : identifie les affirmations qui t'ont fait hésiter pour progresser sur ces points précis."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Tu commences à repérer les méthodes de travail efficaces : cibler les cas qui résistent te permettra de consolider tes résultats."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Ces notions sur la mémorisation sont bien comprises. Pour aller plus loin, tu peux t'entraîner à appliquer ces méthodes lors de la révision de ton cours sur la Révolution française."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c3",
+            "titre": "Découvre les méthodes qui fonctionnent",
+            "objectif": "Comprendre pourquoi se tester, espacer et expliquer améliore la mémorisation",
+            "consigne": "Lis la page qui t’explique les techniques qui marchent vraiment pour retenir, avec des exemples concrets.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Découvre les méthodes qui fonctionnent",
+              "intro": "Savais-tu que tes anciens efforts pour retenir peuvent être améliorés ? Dans cette activité courte, tu vas comprendre pourquoi certaines techniques marchent mieux que d’autres. On va utiliser des exemples concrets autour de la Révolution française pour illustrer ces idées.",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "Mémoriser mieux, c’est possible",
+                    "subtitle": "Grâce à des méthodes testées par la science"
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Ce que tu vas découvrir",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Pourquoi se tester, espacer et expliquer aide à retenir des informations."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Ces techniques sont basées sur des recherches sérieuses en psychologie."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Des astuces qui font la différence",
+                    "paragraphs": [
+                      "Imagine que tu dois retenir les causes de la Révolution française. Beaucoup d’élèves relisent leurs notes plusieurs fois. Pourtant, cette méthode n’est pas la plus efficace selon les scientifiques. Des études montrent que se poser des questions sur ce qu’on vient d’apprendre renforce la mémoire. Par exemple, après avoir lu un paragraphe sur les États généraux, tu peux te demander : 'Quels étaient les trois ordres représentés ?'. Cette action, appelée 'auto-évaluation', améliore la mémorisation bien plus que la relecture simple.",
+                      "Un autre point important : l’espacement. Révise plusieurs fois un même sujet, mais pas tout de suite. Au lieu de travailler une heure sur la Déclaration des droits de l’homme et du citoyen et puis de passer à autre chose, mieux vaut y consacrer 20 minutes le lundi, 20 minutes le mercredi et 20 minutes le vendredi. Ton cerveau retient mieux quand les révisions sont réparties dans le temps.",
+                      "Enfin, expliquer à voix haute ce que tu as appris est une méthode puissante. Quand tu racontes à un camarade les événements de 1789 en utilisant tes propres mots, tu forces ton cerveau à organiser les idées. Cette étape, appelée 'restitution active', montre si tu as vraiment compris ou s’il faut revoir certaines parties."
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Des exemples concrets pour bien comprendre",
+                    "callouts": [
+                      {
+                        "type": "alerte",
+                        "text": "À éviter : relire plusieurs fois le même texte sans te poser de questions. C’est une perte de temps si tu veux retenir sur le long terme."
+                      },
+                      {
+                        "type": "objectif",
+                        "text": "Essaie à la place : après chaque paragraphe, ferme ton livre et essaie de te rappeler les idées principales."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Petit lexique des méthodes",
+                    "caption": "Des termes utiles pour parler des techniques de mémorisation.",
+                    "headers": [
+                      "Terme",
+                      "Définition"
+                    ],
+                    "rows": [
+                      [
+                        "Auto-évaluation",
+                        "Se poser des questions pour vérifier ce qu’on a retenu."
+                      ],
+                      [
+                        "Espacement",
+                        "Répartir les révisions dans le temps pour mieux ancrer les informations."
+                      ],
+                      [
+                        "Restitution active",
+                        "Expliquer à voix haute ce qu’on a appris pour mieux le comprendre."
+                      ],
+                      [
+                        "Mémorisation à long terme",
+                        "Retenir une information sur une longue période, pas juste le temps d’un contrôle."
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Pour en savoir plus",
+                    "links": [
+                      {
+                        "href": "https://www.reseau-canope.fr/notice/la-memorisation-1.html",
+                        "text": "Le site Canopé sur les techniques de mémorisation"
+                      },
+                      {
+                        "href": "https://www.neurosciences.asso.fr/",
+                        "text": "Articles sur le fonctionnement du cerveau et la mémoire"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e4",
+        "titre": "Applique ces méthodes à la Révolution française",
+        "objectif": "Utiliser les techniques de mémorisation sur le sujet étudié",
+        "introduction": "Maintenant que tu as découvert les bonnes méthodes, il est temps de les essayer avec la Révolution française. Tu vas t’entraîner à te tester sans regarder tes notes et à revenir sur ce que tu as appris quelques jours plus tard. Ces exercices t’aideront à mieux mémoriser les dates et les événements.",
+        "cartes": [
+          {
+            "id": "c5",
+            "titre": "T’entraîne avec des cartes mémoires",
+            "objectif": "Réviser les notions clés avec des flashcards",
+            "consigne": "Utilise les cartes pour te tester sans regarder tes notes. Retourne-les pour vérifier tes réponses et essaie de retenir.",
+            "module": "Flashcards",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "T’entraîne avec des cartes mémoires",
+              "description": "Réponds à chaque question.",
+              "cards": [
+                {
+                  "text": "En quelle année a commencé la Révolution française ?",
+                  "answer": "1789",
+                  "tip": "Année de la **prise de la Bastille** et des **États généraux**.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                },
+                {
+                  "text": "Quel événement marque la fin de la monarchie absolue en 1791 ?",
+                  "answer": "constitution",
+                  "tip": "Texte qui limite les pouvoirs du roi après les **États généraux**.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                },
+                {
+                  "text": "Comment s’appellent les révolutionnaires radicaux de Paris en 1792 ?",
+                  "answer": "sans-culottes",
+                  "tip": "Ils portent des pantalons, pas des *culottes* comme les nobles.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                },
+                {
+                  "text": "Quel régime politique remplace la monarchie absolue en 1792 ?",
+                  "answer": "république",
+                  "tip": "Nouveau système où le pouvoir ne vient plus d’un **roi**.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                },
+                {
+                  "text": "Quelle machine est utilisée pour les exécutions pendant la Terreur ?",
+                  "answer": "guillotine",
+                  "tip": "Appelée aussi *« la veuve »* ou *« le rasoir national »*.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                }
+              ],
+              "behaviour": {
+                "showSolutionsRequiresInput": true,
+                "randomCards": false,
+                "caseSensitive": false
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c6",
+            "titre": "Fais un quiz pour vérifier ta compréhension",
+            "objectif": "T’entraîner avec un quiz mixte sur les événements de la Révolution",
+            "consigne": "Réponds aux questions du quiz sur les causes, la prise de la Bastille et la fin de la monarchie. Compare tes réponses avec les corrections proposées.",
+            "module": "QuizSet",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Fais un quiz pour vérifier ta compréhension",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "Quand la Révolution française entre dans l'histoire",
+                "introduction": "Pour vérifier tes connaissances sur les événements clés de la Révolution, réponds à ce quiz en 15 minutes. À la fin, tu recevras des conseils pour progresser sur les points qui te restent flous.",
+                "startButtonText": "Commence le quiz"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Les causes de la Révolution"
+                  },
+                  "params": {
+                    "question": "Parmi ces propositions, laquelle N'EST PAS une cause directe de la Révolution française ?",
+                    "answers": [
+                      {
+                        "text": "Des récoltes catastrophiques en 1788-1789.",
+                        "correct": false
+                      },
+                      {
+                        "text": "Le mécontentement contre les impôts trop lourds.",
+                        "correct": false
+                      },
+                      {
+                        "text": "Le refus du roi Louis XVI de convoquer les États généraux.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "Pense à ce qui a poussé le roi à agir contre son propre gré.",
+                          "chosenFeedback": "En réalité, Louis XVI a bien convoqué les États généraux en 1789 pour répondre à la crise financière."
+                        }
+                      },
+                      {
+                        "text": "La colère des paysans contre les droits seigneuriaux.",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "enableCheckButton": true
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "override": {
+                      "checkButton": "on",
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repense aux crises qui ont menacé le royaume avant 1789 : famines, dettes de l'État et impôts inégaux."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Cela ressemble à une cause, mais ce n'est pas la bonne : le roi n'a pas refusé, il a agi pour résoudre."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : une seule réponse ne correspond pas aux causes évoquées en classe."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Exact : Louis XVI a convoqué les États généraux dès 1789, espérant trouver des solutions financières."
+                      }
+                    ]
+                  },
+                  "subContentId": "af3bd655-45df-48ae-b832-872c959a202f"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Le rôle des États généraux"
+                  },
+                  "params": {
+                    "question": "Quel problème les États généraux devaient-ils résoudre en 1789 ?",
+                    "answers": [
+                      {
+                        "text": "Imposer un nouveau code civil pour le royaume.",
+                        "correct": false
+                      },
+                      {
+                        "text": "Trouver des solutions à la crise financière de l'État.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "Quel était l'objectif principal de la réunion convoquée par Louis XVI ?"
+                        }
+                      },
+                      {
+                        "text": "Décider de la guerre contre l'Angleterre.",
+                        "correct": false
+                      },
+                      {
+                        "text": "Remplacer la monarchie par une république.",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "enableCheckButton": true
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "override": {
+                      "checkButton": "on",
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Les États généraux sont réunis pour aider le roi à trouver des revenus supplémentaires."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : cette crise n'était pas liée à une guerre, mais à l'argent manquant dans les caisses de l'État."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La bonne raison est à chercher dans le manque de moyens pour payer les dettes de la France."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Oui : les États généraux réunis par Louis XVI devaient proposer des réformes fiscales pour renflouer le trésor royal."
+                      }
+                    ]
+                  },
+                  "subContentId": "0dda105c-70b7-4146-ae00-c0bff3695995"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "La prise de la Bastille"
+                  },
+                  "params": {
+                    "question": "Le 14 juillet 1789, que symbolise la prise de la Bastille ?",
+                    "answers": [
+                      {
+                        "text": "Le début de la guerre en Europe.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pense à ce que les Parisiens voulaient montrer en attaquant cette prison royale.",
+                          "chosenFeedback": "Non : la guerre en Europe n'a commencé qu'en 1792, après la Révolution."
+                        }
+                      },
+                      {
+                        "text": "La révolte contre l'absolutisme monarchique.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la Bastille, symbole du pouvoir royal, est prise par le peuple pour marquer la fin de l'arbitraire."
+                        }
+                      },
+                      {
+                        "text": "La fin définitive de la monarchie.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : la monarchie ne sera supprimée qu'en 1792, après des années de troubles."
+                        }
+                      },
+                      {
+                        "text": "Le massacre des nobles par les paysans.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : la prise de la Bastille n'a pas entraîné de tueries massives de nobles à cette date."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "enableCheckButton": true
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "override": {
+                      "checkButton": "on",
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revois le rôle de la Bastille : une prison pour les opposants au roi, mais aussi un symbole du pouvoir absolu."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : ce n'est pas une victoire militaire ou une tuerie, mais un geste politique fort."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : il s'agit d'un acte contre l'autorité royale, mais la monarchie n'a pas disparu en 1789."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Exact : en s'emparant de la Bastille, les Parisiens montrent leur volonté de limiter le pouvoir du roi."
+                      }
+                    ]
+                  },
+                  "subContentId": "30833d02-d5ac-4f70-8bd7-89d3d34e9857"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "La déclaration des droits de l’homme"
+                  },
+                  "params": {
+                    "question": "La Déclaration des droits de l’homme et du citoyen est adoptée en 1789 par l’Assemblée nationale.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Oui : ce texte fondamental est voté le 26 août 1789 par la nouvelle assemblée révolutionnaire.",
+                    "feedbackOnWrong": "En réalité, ce texte est adopté le 26 août 1789 par l’Assemblée nationale constituante, après de longs débats."
+                  },
+                  "subContentId": "e5112f1c-c2ef-4679-be7c-aaec2a32c8f6"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "La fin de la monarchie absolue"
+                  },
+                  "params": {
+                    "question": "Quand la monarchie absolue est-elle officiellement remplacée par une monarchie constitutionnelle ?",
+                    "answers": [
+                      {
+                        "text": "Après le 14 juillet 1789.",
+                        "correct": false
+                      },
+                      {
+                        "text": "Avec l’adoption de la Constitution de 1791.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "Cherche quand la Constitution qui limite les pouvoirs du roi est établie.",
+                          "chosenFeedback": "En effet : la Constitution de 1791 organise la séparation des pouvoirs et diminue l’autorité du roi."
+                        }
+                      },
+                      {
+                        "text": "Avec l’exécution de Louis XVI en 1793.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : la monarchie est abolie en 1792, après l’arrestation du roi, pas en 1793."
+                        }
+                      },
+                      {
+                        "text": "Avec le début de la Terreur en 1793.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : la Terreur est une période de violence révolutionnaire, pas l’acte qui instaure la monarchie constitutionnelle."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "enableCheckButton": true
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "override": {
+                      "checkButton": "on",
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revois les étapes : après la prise de la Bastille et la Déclaration des droits, une nouvelle organisation est mise en place."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : cette étape représente une transformation majeure, mais l’abolition de la monarchie viendra plus tard."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la Constitution de 1791 marque une nouvelle phase pour les pouvoirs en France."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Exact : la Constitution de 1791 réduit les pouvoirs du roi et met en place une monarchie constitutionnelle."
+                      }
+                    ]
+                  },
+                  "subContentId": "5f8dfd9b-80be-4304-bcf3-7c14c54615d1"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Les sans-culottes"
+                  },
+                  "params": {
+                    "question": "Qui appelle-t-on les 'sans-culottes' pendant la Révolution ?",
+                    "answers": [
+                      {
+                        "text": "Les nobles qui refusent tout changement.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Cherche le surnom donné à une partie du peuple parisien actif en 1792-1794.",
+                          "chosenFeedback": "Non : les sans-culottes ne sont pas des nobles, mais des révolutionnaires radicaux issus du peuple."
+                        }
+                      },
+                      {
+                        "text": "Les artisans et ouvriers de Paris qui soutiennent la Révolution.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Oui : leur nom vient du fait qu'ils ne portent pas de culotte courte comme l'aristocratie."
+                        }
+                      },
+                      {
+                        "text": "Les prêtres réfractaires qui gardent leur foi.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : les sans-culottes sont des laïcs, des citoyens révolutionnaires, pas des religieux."
+                        }
+                      },
+                      {
+                        "text": "Les soldats de l’armée royale restés fidèles au roi.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : ces soldats ne portent pas le surnom de 'sans-culottes'."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "enableCheckButton": true
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "override": {
+                      "checkButton": "on",
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pense à ce qui les différencie des autres groupes : leur tenue, leur engagement radical."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : ces révolutionnaires proviennent d'un milieu précis de Paris."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : il s'agit d'un groupe populaire soutenant les idées révolutionnaires."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Exact : les sans-culottes sont les artisans et ouvriers de Paris qui incarnent la radicalité révolutionnaire."
+                      }
+                    ]
+                  },
+                  "subContentId": "3ab082cf-43cc-4869-ac94-257a66da0531"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "La Convention nationale"
+                  },
+                  "params": {
+                    "question": "Quel événement marque le début de la Convention nationale en 1792 ?",
+                    "answers": [
+                      {
+                        "text": "L’exécution de Louis XVI.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Cherche le moment où la monarchie est officiellement abolie et où une nouvelle assemblée est élue.",
+                          "chosenFeedback": "Non : Louis XVI est exécuté plus tard, en janvier 1793, mais la Convention est créée avant."
+                        }
+                      },
+                      {
+                        "text": "La défaite de Valmy face aux Autrichiens et Prussiens.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : cette victoire a lieu en septembre 1792, mais elle ne marque pas directement le début de la Convention."
+                        }
+                      },
+                      {
+                        "text": "La proclamation de la Première République.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la Convention nationale est élue en septembre 1792 et vote l’abolition de la monarchie."
+                        }
+                      },
+                      {
+                        "text": "La chute de Robespierre.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non : Robespierre est renversé en 1794, bien après le début de la Convention."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "enableCheckButton": true
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "override": {
+                      "checkButton": "on",
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La Convention est la nouvelle assemblée qui succède à l'Assemblée législative après la chute de la monarchie."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : ce moment marque une étape importante, mais la Convention est née d’un choix politique radical."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la proclamation de la République est liée à l'action de ce nouveau groupe de députés."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Correct : la Convention nationale naît en septembre 1792 avec l’abolition de la monarchie et la proclamation de la République."
+                      }
+                    ]
+                  },
+                  "subContentId": "ea9b8571-cb4e-41da-867a-c9289e73751c"
+                },
+                {
+                  "library": "H5P.Blanks 1.14",
+                  "metadata": {
+                    "title": "La Terreur"
+                  },
+                  "params": {
+                    "taskDescription": "Complète la phrase suivante avec les mots manquants.",
+                    "questions": [
+                      "La *Terreur* est une période où le gouvernement révolutionnaire, dirigé par *Robespierre*, utilise la *guillotine* pour éliminer ses opposants.",
+                      "Les *sans-culottes* et les comités, comme le *Comité de salut public*, jouent un rôle clé pendant cette phase extrême."
+                    ],
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repense aux années 1793-1794 : cherche les noms des figures politiques et des outils radicaux associés à cette époque."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Quelques mots sont trouvés : il reste à compléter le vocabulaire précis de la période."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : ces termes désignent bien les acteurs et méthodes de l'époque."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Très bien : la Terreur, Robespierre, la guillotine, les sans-culottes et le Comité de salut public sont correctement identifiés."
+                      }
+                    ]
+                  },
+                  "subContentId": "dc29488a-d7b4-4494-9c90-f4475ff9dddc"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Ces questions visent à repérer les idées clés de la Révolution : relis le cours en soulignant ces notions pour progresser."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Quelques confusions persistent : concentrer tes efforts sur les étapes majeures (États généraux, Bastille, Convention) te fera progresser."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "À part quelques hésitations, les connaissances sont bien installées. Repère les questions qui ont demandé plus de réflexion pour les ancrer définitivement."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellente compréhension de ces événements ! Pour aller plus loin, essaie de relier ces étapes entre elles ou d’expliquer pourquoi elles ont marqué l’histoire."
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": "on",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Ces questions visent à repérer les idées clés de la Révolution : relis le cours en soulignant ces notions pour progresser."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "Quelques confusions persistent : concentrer tes efforts sur les étapes majeures (États généraux, Bastille, Convention) te fera progresser."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "À part quelques hésitations, les connaissances sont bien installées. Repère les questions qui ont demandé plus de réflexion pour les ancrer définitivement."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Excellente compréhension de ces événements ! Pour aller plus loin, essaie de relier ces étapes entre elles ou d’expliquer pourquoi elles ont marqué l’histoire."
+                  }
+                ]
+              },
+              "poolSize": 8,
+              "disableBackwardsNavigation": false,
+              "randomQuestions": false,
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e7",
+        "titre": "Planifie tes révisions pour une évaluation",
+        "objectif": "Organiser et planifier ses révisions en utilisant les méthodes qui fonctionnent",
+        "introduction": "Tu as maintenant testé des techniques qui marchent. Cette étape t’aide à préparer tes futures révisions. Tu vas rédiger un plan personnalisé en choisissant les méthodes qui te conviennent. Tu pourras aussi indiquer lesquelles tu comptes réutiliser lors de ton prochain contrôle.",
+        "cartes": [
+          {
+            "id": "c8",
+            "titre": "Rédige ton plan de révision",
+            "objectif": "Créer un planning efficace pour préparer ton évaluation",
+            "consigne": "Rédige un plan de révision pour ton prochain contrôle sur la Révolution française. Indique quand et combien de temps tu comptes travailler, et quelles méthodes tu utiliseras.",
+            "module": "Essay",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Tu dois préparer ton prochain contrôle sur **la Révolution française**. La consigne est simple : explique **comment tu vas organiser tes révisions** avant ce contrôle.\n\nDans ton texte, réponds à ces questions : *Quand* et *combien de temps* tu comptes travailler ? *Quelles méthodes* tu utiliseras pour apprendre le cours ? *Comment* tu vérifieras que tu as bien tout compris ?\n\nTon texte doit montrer que tu as préparé un *plan de révision efficace*.",
+              "keywords": [
+                {
+                  "keyword": "planning",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1
+                  }
+                },
+                {
+                  "keyword": "révisions",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1
+                  }
+                },
+                {
+                  "keyword": "méthodes",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 2
+                  }
+                },
+                {
+                  "keyword": "temps alloué",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1
+                  }
+                },
+                {
+                  "keyword": "vérification",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1
+                  }
+                },
+                {
+                  "keyword": "évaluation",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Ton texte doit encore être plus précis. Repense à : organiser tes révisions, choisir des méthodes, et vérifier que tu as bien compris. Relis ta leçon pour mieux savoir ce qui est important."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as commencé à parler de révisions et de méthodes, mais il faut mieux expliquer comment tu comptes organiser ton temps. Ajoute des durées et des exemples de techniques que tu utiliseras."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Ton plan est bien structuré : tu as évoqué des méthodes et une façon de vérifier tes connaissances. Pour progresser, pense à écrire un calendrier précis avec des étapes pour chaque notion."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Bravo ! Ton texte intègre un vrai planning avec des méthodes adaptées et une idée de vérification. Tu as parfaitement expliqué comment tu t’organiseras pour réussir ton contrôle."
+                }
+              ],
+              "solution": {
+                "introduction": "Voici un exemple de réponse bien rédigée pour t'aider à repérer ce que l'enseignant attend :",
+                "sample": "Pour mon contrôle sur la Révolution française, je vais préparer un planning sur 10 jours. Chaque jour, je révise 30 minutes en utilisant les fiches de révision faites en cours. Le week-end, je fais des quiz pour tester mes connaissances. Avant le contrôle, je relis mes notes pour voir si tout est clair."
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Rédige ton plan de révision"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c9",
+            "titre": "Dis quelles méthodes tu retiens",
+            "objectif": "Faire le point sur les techniques qui t’aideront le plus",
+            "consigne": "Réponds au questionnaire pour indiquer quelles méthodes de mémorisation tu comptes utiliser à l’avenir. Cela t’aidera à organiser tes futures révisions.",
+            "module": "parcours_questionnaire",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 8,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Dis quelles méthodes tu retiens",
+              "intro": "Savoir comment tu apprends est déjà une très bonne façon de mieux retenir ! Réponds à ces questions pour identifier les techniques qui te correspondent le mieux et organiser tes révisions.",
+              "questions": [
+                {
+                  "texte": "Quand tu prépares un contrôle, par quelle étape commences-tu généralement ?",
+                  "type": "unique",
+                  "choix": [
+                    "Lire attentivement chaque notion une fois et relire une deuxième fois",
+                    "Écrire des résumés ou des fiches de ce qui semble important",
+                    "Réexpliquer les idées à voix haute pour vérifier si je les comprends",
+                    "Faire des exercices ou des quiz pour voir ce que j’ai retenu"
+                  ]
+                },
+                {
+                  "texte": "Te souviens-tu d’une méthode que tu as testée pour la Révolution française ? Si oui, laquelle t’a le plus aidé pour retenir des dates ou des événements ?",
+                  "type": "multiple",
+                  "choix": [
+                    "Les cartes mémoires avec questions et réponses",
+                    "Me tester en expliquant à quelqu’un d’autre (ou à moi-même)",
+                    "Espacer mes révisions sur plusieurs jours",
+                    "Utiliser des phrases ou des schémas pour relier les idées entre elles",
+                    "Aucune en particulier"
+                  ]
+                },
+                {
+                  "texte": "Est-ce que tu as déjà essayé de relier une date à un événement précis ? Par exemple, associer « 14 juillet 1789 » à « la prise de la Bastille ».",
+                  "type": "ouinon",
+                  "choix": []
+                },
+                {
+                  "texte": "Si tu devais expliquer à un camarade pourquoi il est important de bien comprendre la *Déclaration des droits de l’homme et du citoyen*, que dirais-tu ?",
+                  "type": "libre",
+                  "choix": []
+                },
+                {
+                  "texte": "Parmi ces propositions, lesquelles te parlent quand tu dois retenir quelque chose ? (Tu peux en choisir plusieurs)",
+                  "type": "multiple",
+                  "choix": [
+                    "Chercher des images ou des dessins qui résument bien la notion",
+                    "Écrire plusieurs fois les mêmes informations pour mieux les mémoriser",
+                    "Les associer à un moment personnel de ta vie (un exemple vécu ou un souvenir)",
+                    "Les apprendre dans l’ordre comme une liste sans chercher à comprendre",
+                    "Créer des moyens mnémotechniques (comme des phrases ou des acronymes)"
+                  ]
+                },
+                {
+                  "texte": "Est-ce que tu préfères réviser seul ou avec d’autres ? Pourquoi ?",
+                  "type": "libre",
+                  "choix": []
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "4e",
+    "adultes": false
+  }
+}

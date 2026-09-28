@@ -1,0 +1,66 @@
+[
+  {
+    "chemin": "behaviour.feedbackOnCorrect",
+    "type": "modification",
+    "avant": "Madrid est la capitale espagnole.",
+    "apres": "Madrid est la capitale espagnole. RELU"
+  },
+  {
+    "chemin": "l10n.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "l10n.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "media.type.metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "media.type.params.contentName",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.params.decorative",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "media.type.params.expandImage",
+    "type": "ajout_natif",
+    "apres": "Agrandir l&#039;image"
+  },
+  {
+    "chemin": "media.type.params.minimizeImage",
+    "type": "ajout_natif",
+    "apres": "Réduire l&#039;image"
+  },
+  {
+    "chemin": "mediaImageAlt",
+    "type": "retrait_natif",
+    "avant": ""
+  },
+  {
+    "chemin": "overallFeedback",
+    "type": "retrait_natif",
+    "avant": [
+      {
+        "from": 0,
+        "to": 100,
+        "feedback": ""
+      }
+    ]
+  }
+]

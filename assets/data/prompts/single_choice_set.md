@@ -84,3 +84,5 @@
   ]
 }
 ```
+
+- Options natives : `behaviour.autoContinue`, `timeoutCorrect` (2000 ms), `timeoutWrong` (3000 ms), `soundEffectsEnabled`, `enableRetry`, `enableSolutionsButton`, `passPercentage` (0–100). Respecte les réglages demandés. Deux à quatre réponses par question ; aucun média ni retour par réponse dans ce type natif.

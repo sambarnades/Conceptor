@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="7" moduleid="23635" modulename="lti" contextid="57793">
+  <lti id="7">
+    <name>Capytale : activité de programmation</name>
+    <intro>&lt;p&gt;Ouvre l’activité Capytale.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>1790541634</timecreated>
+    <timemodified>1790541634</timemodified>
+    <typeid>1</typeid>
+    <toolurl></toolurl>
+    <securetoolurl></securetoolurl>
+    <launchcontainer>1</launchcontainer>
+    <instructorchoicesendname>1</instructorchoicesendname>
+    <instructorchoicesendemailaddr>0</instructorchoicesendemailaddr>
+    <instructorchoiceacceptgrades>0</instructorchoiceacceptgrades>
+    <instructorchoiceallowroster>$@NULL@$</instructorchoiceallowroster>
+    <instructorchoiceallowsetting>$@NULL@$</instructorchoiceallowsetting>
+    <grade>0</grade>
+    <instructorcustomparameters></instructorcustomparameters>
+    <debuglaunch>0</debuglaunch>
+    <showtitlelaunch>1</showtitlelaunch>
+    <showdescriptionlaunch>0</showdescriptionlaunch>
+    <icon></icon>
+    <secureicon></secureicon>
+    <resourcekey encrypted="true">[retiré]</resourcekey>
+    <password encrypted="true">[retiré]</password>
+    <ltitype id="1">
+      <name>Capytale</name>
+      <baseurl>$@NULL@$</baseurl>
+      <tooldomain>$@NULL@$</tooldomain>
+      <state>$@NULL@$</state>
+      <course>1</course>
+      <coursevisible>$@NULL@$</coursevisible>
+      <ltiversion>$@NULL@$</ltiversion>
+      <clientid>$@NULL@$</clientid>
+      <toolproxyid>$@NULL@$</toolproxyid>
+      <enabledcapability>$@NULL@$</enabledcapability>
+      <parameter>$@NULL@$</parameter>
+      <icon>$@NULL@$</icon>
+      <secureicon>$@NULL@$</secureicon>
+      <createdby>$@NULL@$</createdby>
+      <timecreated>$@NULL@$</timecreated>
+      <timemodified>$@NULL@$</timemodified>
+      <description>$@NULL@$</description>
+      <ltitypesconfigs>
+      </ltitypesconfigs>
+    </ltitype>
+    <ltisubmissions>
+    </ltisubmissions>
+    <subplugin_ltiservice_gradebookservices_lti>
+      <lineitems>
+      </lineitems>
+    </subplugin_ltiservice_gradebookservices_lti>
+  </lti>
+</activity>

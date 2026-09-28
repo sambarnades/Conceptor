@@ -1,0 +1,344 @@
+{
+  "scoreShow": "Vérifier",
+  "submit": "Valider",
+  "tryAgain": "Recommencer",
+  "scoreExplanation": "Les bonnes réponses donnent +1 point. Les mauvaises réponses donnent -1 point. Le score minimum est de 0.",
+  "question": {
+    "settings": {
+      "size": {
+        "width": 800,
+        "height": 500
+      }
+    },
+    "task": {
+      "elements": [
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>marcher</p>"
+            },
+            "subContentId": "95f59e76-a9e8-4432-b0d3-326e0168909f",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 4.81,
+          "y": 76.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>parler</p>"
+            },
+            "subContentId": "1881d049-83e2-4fc4-a7e1-a7bd74e2b8e4",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 28.69,
+          "y": 76.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>chanter</p>"
+            },
+            "subContentId": "10973d8b-e9e6-400d-a71d-8cb5d6610933",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 52.56,
+          "y": 76.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>finir</p>"
+            },
+            "subContentId": "d3c9edae-aafb-4f3a-aede-bd9e0dc016a3",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 76.44,
+          "y": 76.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>choisir</p>"
+            },
+            "subContentId": "661a5203-52dd-47d3-82dc-7b9f22e5a0a8",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 4.81,
+          "y": 88.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>aller</p>"
+            },
+            "subContentId": "20c3410a-e13d-42e3-80a6-b472a294edfb",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 28.69,
+          "y": 88.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>être</p>"
+            },
+            "subContentId": "36918a2c-21f7-4328-876c-afa2d8962471",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 52.56,
+          "y": 88.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p>avoir</p>"
+            },
+            "subContentId": "6310da83-bdd9-4e52-8ce0-4109134d8e1b",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Untitled Text"
+            }
+          },
+          "x": 76.44,
+          "y": 88.8,
+          "width": 9.38,
+          "height": 2.38,
+          "dropZones": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "multiple": false
+        }
+      ],
+      "dropZones": [
+        {
+          "label": "<div>1er groupe</div>",
+          "showLabel": true,
+          "x": 1.5,
+          "y": 6.8,
+          "width": 15.34,
+          "height": 20.94,
+          "correctElements": [
+            "0",
+            "1",
+            "2"
+          ],
+          "backgroundOpacity": 100,
+          "tipsAndFeedback": {
+            "tip": "",
+            "feedbackOnCorrect": "",
+            "feedbackOnIncorrect": ""
+          },
+          "single": false,
+          "autoAlign": true
+        },
+        {
+          "label": "<div>2e groupe</div>",
+          "showLabel": true,
+          "x": 34.67,
+          "y": 6.8,
+          "width": 15.34,
+          "height": 20.94,
+          "correctElements": [
+            "3",
+            "4"
+          ],
+          "backgroundOpacity": 100,
+          "tipsAndFeedback": {
+            "tip": "",
+            "feedbackOnCorrect": "",
+            "feedbackOnIncorrect": ""
+          },
+          "single": false,
+          "autoAlign": true
+        },
+        {
+          "label": "<div>3e groupe</div>",
+          "showLabel": true,
+          "x": 67.83,
+          "y": 6.8,
+          "width": 15.34,
+          "height": 20.94,
+          "correctElements": [
+            "5",
+            "6",
+            "7"
+          ],
+          "backgroundOpacity": 100,
+          "tipsAndFeedback": {
+            "tip": "",
+            "feedbackOnCorrect": "",
+            "feedbackOnIncorrect": ""
+          },
+          "single": false,
+          "autoAlign": true
+        }
+      ]
+    }
+  },
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "La classification des verbes est à revoir."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu confonds encore certains groupes, relis tes leçons de conjugaison."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C&#039;est un bon début, mais il reste des confusions entre les groupes."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu connais les bases de la classification verbale."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bonne maîtrise des groupes de verbes !"
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu maîtrises parfaitement la classification des verbes français !"
+    }
+  ],
+  "behaviour": {
+    "enableRetry": true,
+    "enableCheckButton": true,
+    "singlePoint": false,
+    "applyPenalties": true,
+    "enableScoreExplanation": true,
+    "dropZoneHighlighting": "dragging",
+    "autoAlignSpacing": 2,
+    "enableFullScreen": true,
+    "showScorePoints": true,
+    "showTitle": true,
+    "dragHandleVisibility": true
+  },
+  "localize": {
+    "fullscreen": "Plein écran",
+    "exitFullscreen": "Quitter le plein écran"
+  },
+  "grabbablePrefix": "Élément déplaçable {num} sur {total}.",
+  "grabbableSuffix": "Placé dans la zone de dépôt {num}.",
+  "dropzonePrefix": "Zone de dépôt {num} sur {total}.",
+  "noDropzone": "Pas de zone de dépôt.",
+  "tipLabel": "Voir l&#039;indice.",
+  "tipAvailable": "Indice disponible",
+  "correctAnswer": "Bonne réponse",
+  "wrongAnswer": "Mauvaise réponse",
+  "feedbackHeader": "Résultat",
+  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+  "scoreExplanationButtonLabel": "Voir l&#039;explication du score",
+  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+}

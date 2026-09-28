@@ -340,11 +340,11 @@ export function detectPlatform(url) {
 /**
  * Collecte toutes les renditions mp4 vidéo (resolution.id > 0) depuis files[] et
  * streamingPlaylists[].files[], triées par résolution CROISSANTE.
- * Règle (cf. audit) : ne JAMAIS reconstruire l'URL — utiliser fileUrl tel quel (fédération).
+ * Ne JAMAIS reconstruire les URL : conserver fileUrl et fileDownloadUrl (fédération).
  * Exportée pour les tests (`tests/test-editor-iv.js`) : c'est ici que se joue la différence entre
  * une instance progressive et une instance HLS-only, impossible à vérifier via detectVideo() sans réseau.
  * @param {Object} apiVideo - L'objet vidéo de l'API PeerTube.
- * @returns {Array<{url:string, mime:string, resolution:number, kind:string}>}
+ * @returns {Array<{url:string, playbackUrl?:string, mime:string, resolution:number, kind:string}>}
  */
 export function collectRenditions(apiVideo) {
     const candidates = [];
@@ -355,7 +355,13 @@ export function collectRenditions(apiVideo) {
             const url = f?.fileUrl || f?.fileDownloadUrl;
             if (!url || typeof resId !== 'number') continue;
             if (resId > 0) {
-                candidates.push({ url, mime: 'video/mp4', resolution: resId, kind });
+                candidates.push({ url, mime: 'video/mp4', resolution: resId, kind,
+                    // L'URL de téléchargement progressive peut être remuxée par PeerTube,
+                    // même lorsque son ancien fichier statique n'existe plus. Garder
+                    // `url` pour Albert, qui doit continuer à préférer le fragmenté.
+                    ...(kind === 'progressive' && f.fileDownloadUrl
+                        ? { playbackUrl: f.fileDownloadUrl } : {})
+                });
             } else if (resId === 0) {
                 // Rendition AUDIO-SEULE : idéale pour Albert (poids minimal, ex. 5,9 Mo vs 41 Mo en
                 // 480p → tient sous 20 Mo bien plus longtemps). NON jouable comme vidéo → taguée
@@ -381,8 +387,8 @@ export function collectRenditions(apiVideo) {
 }
 
 /**
- * Choisit la rendition de LECTURE : progressif de préférence (compatibilité <video>),
- * la plus haute ≤ 720p (confort/poids), sinon la plus basse ; repli HLS si pas de progressif.
+ * Choisit la rendition de LECTURE : téléchargement progressif fourni par l'API,
+ * la plus haute ≤ 720p (confort/poids), sinon la plus basse ; repli HLS historique.
  * Exportée pour les tests : la rendition audio-seule ne doit JAMAIS devenir la source de lecture
  * (une « vidéo » noire avec le son serait un échec silencieux, invisible à la génération).
  * @param {Array} renditions - Renditions triées croissant (cf. collectRenditions).
@@ -393,7 +399,17 @@ export function pickPlayableRendition(renditions) {
     // Lecture = vidéo uniquement (jamais la rendition audio-seule 0p).
     const videos = renditions.filter(r => r.kind !== 'audio');
     if (videos.length === 0) return null;
-    // Préférer HLS « fragmented » : sur PeerTube en HLS-only (défaut moderne), le progressif
+    // Firefox lit certains MP4 fragmentés avec duration=Infinity : les repères et
+    // le résumé H5P disparaissent. Le téléchargement progressif expose une durée
+    // finie, contrairement au fileUrl statique parfois périmé (HTML au lieu de MP4).
+    // Ne jamais fabriquer cette URL : conserver celle fournie par l'instance fédérée.
+    const progressive = videos.filter(r => r.kind === 'progressive' && r.playbackUrl);
+    if (progressive.length) {
+        const upTo720 = progressive.filter(r => r.resolution <= 720);
+        const selected = upTo720.length ? upTo720[upTo720.length - 1] : progressive[0];
+        return { ...selected, url: selected.playbackUrl };
+    }
+    // Sans téléchargement progressif, garder le repli HLS « fragmented » : le progressif
     // `web-videos/*.mp4` listé par l'API est 404 (fichiers supprimés au profit du HLS).
     // Repli progressif pour les anciennes vidéos sans streamingPlaylists.
     const hls = videos.filter(r => r.kind === 'hls');
@@ -428,17 +444,18 @@ export function albertCandidates(renditions) {
  *   { supported, platform, title, duration, thumbnail, playable,
  *     videoSource:{type,url,mime}, captions:{available,lang,fileUrl,source}, error? }
  */
-export async function detectVideo(url) {
+// Le signal optionnel permet aussi à la file du parcours d’arrêter la détection.
+export async function detectVideo(url, signal = null) {
     const platform = detectPlatform(url);
 
     if (platform === 'peertube') {
-        return detectPeerTube(url);
+        return detectPeerTube(url, signal);
     }
     if (platform === 'podeduc') {
-        return detectPodEduc(url);
+        return detectPodEduc(url, signal);
     }
     if (platform === 'youtube') {
-        return detectYouTube(url);
+        return detectYouTube(url, signal);
     }
     return { supported: false, platform: 'unknown', playable: false, error: 'unsupported_platform' };
 }
@@ -525,14 +542,14 @@ async function fetchPeerTubeJson(url, signal = null) {
  * @param {string} url
  * @returns {Promise<Object>}
  */
-async function detectPeerTube(url) {
+async function detectPeerTube(url, signal = null) {
     const parsed = parsePeerTubeUrl(url);
     if (!parsed) {
         return { supported: false, platform: 'peertube', playable: false, error: 'bad_url' };
     }
     const { origin, id } = parsed;
     try {
-        const videoRes = await fetchPeerTubeJson(`${origin}/api/v1/videos/${encodeURIComponent(id)}`);
+        const videoRes = await fetchPeerTubeJson(`${origin}/api/v1/videos/${encodeURIComponent(id)}`, signal);
         if (!videoRes.data) {
             return {
                 supported: false, platform: 'peertube', playable: false,
@@ -552,7 +569,7 @@ async function detectPeerTube(url) {
         // Sous-titres : endpoint séparé. On préfère le français, sinon la 1ère piste.
         let captions = { available: false, lang: null, fileUrl: null, source: 'none' };
         try {
-            const capRes = await fetchPeerTubeJson(`${origin}/api/v1/videos/${encodeURIComponent(id)}/captions`);
+            const capRes = await fetchPeerTubeJson(`${origin}/api/v1/videos/${encodeURIComponent(id)}/captions`, signal);
             if (capRes.data) {
                 const list = Array.isArray(capRes.data?.data) ? capRes.data.data : [];
                 if (list.length > 0) {
@@ -584,7 +601,11 @@ async function detectPeerTube(url) {
             language: (v?.language?.id) || null,
             thumbnail: v?.thumbnailPath ? origin + v.thumbnailPath : (v?.previewPath ? origin + v.previewPath : null),
             playable,
-            videoSource: playable ? { type: 'html5', url: rendition.url, mime: rendition.mime } : null,
+            videoSource: playable ? { type: 'html5', url: rendition.url, mime: rendition.mime,
+                // Ce flux progressif n'accepte pas toujours Range (Chromium ne peut
+                // alors pas naviguer). L'embarquer avant de construire le H5P.
+                ...(rendition.playbackUrl ? { embed: true } : {})
+            } : null,
             renditions, // triées croissant — utilisées pour la voie Albert (plus basse rendition)
             hlsPlaylistUrl, // master m3u8 → découpage fMP4 (vidéos longues sans sous-titres)
             captions
@@ -610,7 +631,7 @@ async function detectPeerTube(url) {
  * @param {string} url - URL de la page vidéo PodEduc.
  * @returns {Promise<Object>} Même forme que detectPeerTube (videoSource, renditions, captions…).
  */
-async function detectPodEduc(url) {
+async function detectPodEduc(url, signal = null) {
     const endpoint = CONFIG && CONFIG.videoTranscriptUrl;
     if (!endpoint) return { supported: false, platform: 'podeduc', playable: false, error: 'no_endpoint' };
     try {
@@ -619,7 +640,7 @@ async function detectPodEduc(url) {
             headers: { 'Content-Type': 'application/json' },
             // Pas de mediaUrl → le workflow bascule en mode détection (scrape de la page).
             body: JSON.stringify({ url })
-        }, DETECT_TIMEOUT_MS);
+        }, DETECT_TIMEOUT_MS, signal);
         if (!res.ok) {
             return { supported: false, platform: 'podeduc', playable: false, error: `detect_http_${res.status}` };
         }
@@ -673,7 +694,7 @@ async function detectPodEduc(url) {
  * @param {string} url
  * @returns {Promise<Object>} Même forme que detectPeerTube (videoSource, captions, _transcript?).
  */
-async function detectYouTube(url) {
+async function detectYouTube(url, signal = null) {
     const parsed = parseYouTubeUrl(url);
     if (!parsed) {
         return { supported: false, platform: 'youtube', playable: false, error: 'bad_url' };
@@ -707,7 +728,7 @@ async function detectYouTube(url) {
             // Mode YouTube du webhook (proxy yt-dlp) — distinct de mediaUrl/hlsPlanUrl/url.
             body: JSON.stringify({ youtubeUrl: parsed.url, language: reqLang })
             // DÉTECTION seule (pas de repli Albert ici) : appel rapide, cf. YT_DETECT_TIMEOUT_MS.
-        }, YT_DETECT_TIMEOUT_MS);
+        }, YT_DETECT_TIMEOUT_MS, signal);
         if (!res.ok) {
             return { ...base, transcriptError: `detect_http_${res.status}` };
         }
@@ -783,7 +804,7 @@ async function transcribeYouTubeAudio(url, onProgress = null, signal = null) {
  * @returns {Promise<Object>} Objet transcript normalisé, ou { error } si indisponible.
  */
 export async function fetchTranscript(url, detectInfo = null, onProgress = null, signal = null) {
-    const info = detectInfo || await detectVideo(url);
+    const info = detectInfo || await detectVideo(url, signal);
     if (signal?.aborted) return { error: 'aborted' };
 
     if (info?.captions?.available && info.captions.fileUrl) {

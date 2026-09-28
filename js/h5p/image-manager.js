@@ -37,7 +37,7 @@ const BG_IMAGE_CONFIG = {
     // Informatif. La validation réelle ET la conversion des formats non décodables nativement se
     // font dans classifyImage()/ensureCanvasDecodable(). ENTRÉES acceptées : PNG, JPEG, WebP, GIF,
     // BMP, AVIF, SVG (canvas natif) + HEIC/HEIF, TIFF (conversion lazy). SORTIE embarquée dans le
-    // .h5p : toujours PNG ou JPEG (WebP conservé si fourni) — formats lus de façon fiable par H5P.Image.
+    // .h5p : toujours PNG ou JPEG. Éléa refuse notamment l’extension WebP à l’import.
     acceptedInputs: ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/bmp', 'image/avif', 'image/svg+xml', 'image/heic', 'image/heif', 'image/tiff'],
     jpegQuality: 0.9
 };
@@ -183,14 +183,14 @@ export async function processImage(file, options = {}) {
 
 /**
  * Traite l'IMAGE DE FOND d'une activité « Image interactive » (H5P.ImageHotspots).
- * PRÉSERVE le format (PNG/JPEG/WebP ; GIF → PNG) et la transparence, borne seulement la
+ * PRÉSERVE la transparence (PNG ; WebP/GIF/autres → PNG) et le JPEG, borne seulement la
  * plus grande dimension à `maxDimension` (défaut 1920). À utiliser à la place de processImage()
  * pour le fond, qui ne doit PAS être bridé à 800×600 ni aplati en JPEG.
  *
  * @param {File|Blob} file - Fichier image de fond.
  * @param {Object} [options]
  * @param {number} [options.maxDimension=1920] - Borne de la plus grande dimension.
- * @returns {Promise<ImageEntry>} L'entrée image prête (mime/extension préservés).
+ * @returns {Promise<ImageEntry>} L'entrée image prête (octets, MIME et extension concordants).
  * @throws {Error} 'FORMAT_INVALID' | 'SIZE_EXCEEDED'
  */
 export async function processBackgroundImage(file, options = {}) {
@@ -203,11 +203,11 @@ export async function processBackgroundImage(file, options = {}) {
     //    PNG/JPEG/WebP/GIF/BMP/AVIF/SVG passent tels quels. Lève FORMAT_INVALID si inconnu/illisible.
     const { blob: decodable, mime: inMime } = await ensureCanvasDecodable(file);
 
-    // 2. Normaliser la SORTIE vers un format embarquable de façon fiable par H5P.Image (PNG/JPEG/WebP) ;
-    //    tout autre format décodable (GIF/BMP/AVIF/SVG…) est ré-encodé en PNG (sans perte, alpha gardé).
-    const EMBEDDABLE = new Set(['image/jpeg', 'image/png', 'image/webp']);
+    // 2. Le navigateur lit le WebP, mais la liste blanche H5P d’Éléa le refuse.
+    //    Tout autre format que PNG/JPEG est ré-encodé en PNG (alpha conservé).
+    const EMBEDDABLE = new Set(['image/jpeg', 'image/png']);
     const outMime = EMBEDDABLE.has(inMime) ? inMime : 'image/png';
-    const ext = outMime === 'image/jpeg' ? 'jpg' : (outMime === 'image/webp' ? 'webp' : 'png');
+    const ext = outMime === 'image/jpeg' ? 'jpg' : 'png';
 
     const originalSize = file.size;
     debugLog('ImageManager', `Fond: ${file.type || inMime || '?'} → ${outMime}, ${(originalSize / 1024).toFixed(0)} Ko`);

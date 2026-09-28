@@ -1,0 +1,41 @@
+[
+  {
+    "chemin": "a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "behaviour.dragHandleVisibility",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "behaviour.enableSolutionsButton",
+    "type": "retrait_natif",
+    "avant": true
+  },
+  {
+    "chemin": "overallFeedback[2].feedback",
+    "type": "normalisation_html",
+    "avant": "C'est un bon début, mais il reste des confusions entre les groupes.",
+    "apres": "C&#039;est un bon début, mais il reste des confusions entre les groupes."
+  },
+  {
+    "chemin": "scoreExplanationButtonLabel",
+    "type": "normalisation_html",
+    "avant": "Voir l'explication du score",
+    "apres": "Voir l&#039;explication du score"
+  },
+  {
+    "chemin": "tipLabel",
+    "type": "normalisation_html",
+    "avant": "Voir l'indice.",
+    "apres": "Voir l&#039;indice."
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Classification des verbes"
+  }
+]

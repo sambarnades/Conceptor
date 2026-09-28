@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="84" moduleid="23619" modulename="choice" contextid="57777">
+  <choice id="84">
+    <name>Sondage : d’où vient la pluie ?</name>
+    <intro>&lt;p&gt;À ton avis, d’où vient l’eau de pluie ?&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <publish>0</publish>
+    <showresults>0</showresults>
+    <display>0</display>
+    <allowupdate>0</allowupdate>
+    <allowmultiple>0</allowmultiple>
+    <showunanswered>0</showunanswered>
+    <limitanswers>0</limitanswers>
+    <timeopen>0</timeopen>
+    <timeclose>0</timeclose>
+    <timemodified>1790541621</timemodified>
+    <completionsubmit>1</completionsubmit>
+    <showpreview>0</showpreview>
+    <includeinactive>0</includeinactive>
+    <showavailable>0</showavailable>
+    <options>
+      <option id="332">
+        <text>Des océans</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1790541621</timemodified>
+      </option>
+      <option id="333">
+        <text>Des rivières</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1790541621</timemodified>
+      </option>
+      <option id="334">
+        <text>Des nuages seulement</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1790541621</timemodified>
+      </option>
+      <option id="335">
+        <text>Je ne sais pas</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1790541621</timemodified>
+      </option>
+    </options>
+    <answers>
+    </answers>
+  </choice>
+</activity>

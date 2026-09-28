@@ -1,0 +1,809 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-28T12:47:29.837Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "longue",
+    "trame": "debat"
+  },
+  "plan": {
+    "titre": "Les réseaux sociaux : outils de liberté ou d'asservissement ?",
+    "objectifGeneral": "Construire et justifier une position argumentée sur l'impact des réseaux sociaux dans la liberté individuelle et collective.",
+    "introduction": "Tu vas explorer un sujet qui te concerne directement : les réseaux sociaux transforment-ils ta liberté ou celle des autres ? Ce parcours t'amènera à te questionner, t'informer, échanger et rédiger. Tu avanceras à ton rythme avec des activités variées. Prêt à commencer ?",
+    "notionsPivots": [
+      "l'opinion personnelle",
+      "l'argument valable",
+      "la source fiable",
+      "le contre-argument",
+      "la liberté d'expression",
+      "la désinformation",
+      "la vie privée",
+      "la manipulation",
+      "l'espace public numérique",
+      "l'engagement collectif"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Où en es-tu sur la question ?",
+        "objectif": "Exprimer ton opinion initiale sur le sujet du débat.",
+        "introduction": "Avant de plonger dans les arguments des autres, commence par prendre position. Cette étape va te faire découvrir tes propres convictions avant de les confronter aux sources et à l'avis de tes camarades.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Déclenche ton avis",
+            "objectif": "Te positionner sur la question du débat.",
+            "consigne": "Vote pour la position qui te semble la plus proche de la tienne : les réseaux sociaux rendent-ils la société plus libre ou moins libre ?",
+            "module": "parcours_sondage",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 3,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Déclenche ton avis",
+              "intro": "Les réseaux sociaux transforment-ils notre liberté ou la restreignent-ils ? Donne ton avis en votant pour la réponse qui te correspond le plus.",
+              "options": [
+                "Oui, ils élargissent la liberté d'expression et l'engagement collectif.",
+                "Non, ils limitent la liberté par la désinformation et la manipulation.",
+                "Ni l'un ni l'autre : ils changent juste la façon d'exister dans l'espace public numérique.",
+                "Je ne sais pas encore, mais je vais me faire une opinion en suivant le parcours."
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c3",
+            "titre": "Premières questions autour du sujet",
+            "objectif": "Prendre conscience des enjeux du débat.",
+            "consigne": "Lis attentivement le texte qui présente la question et les enjeux du débat. Note les mots qui te semblent importants, tu en auras besoin par la suite.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Premières questions autour du sujet",
+              "intro": "Les réseaux sociaux transforment notre façon de communiquer, de nous informer et de nous engager. Mais est-ce qu’ils nous rendent plus libres ? Aujourd’hui, tu vas explorer les premières pistes de ce débat en identifiant les mots-clés et les enjeux autour de cette question. Prépare-toi à noter les termes importants pour construire ton argumentation plus tard.",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "Les réseaux sociaux : des outils de liberté ?",
+                    "subtitle": "Analyse des premiers enjeux"
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Ce que tu dois retenir",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Repérer les mots importants pour comprendre le débat et préparer tes arguments."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Tu vas explorer des idées sans encore prendre parti : l’objectif est d’abord de bien cerner les termes du sujet."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "D’où vient cette question ?",
+                    "paragraphs": [
+                      "Les réseaux sociaux comme Facebook, Instagram ou TikTok ont changé notre rapport à l’information et aux autres. Ils permettent de s’exprimer facilement, de partager des idées en un clic, ou encore de mobiliser des groupes pour des causes importantes. Mais est-ce que cela signifie qu’on est plus libres aujourd’hui ?",
+                      "Cette question interroge à la fois ta vie personnelle et la société. Par exemple, quand tu publies un message, tu utilises ta liberté d’expression. Mais est-ce que ce message est réellement entendu, ou est-il noyé dans une masse d’informations ? Et quand tu partages une information, es-tu certain qu’elle est exacte ?",
+                      "Le débat ne porte pas seulement sur ce que *tu* fais en tant qu’utilisateur, mais aussi sur ce que les plateformes (comme Twitter ou YouTube) décident de montrer ou de cacher. Qui contrôle cet espace public numérique ? Comment les algorithmes influencent-ils ce que tu vois ?"
+                    ]
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Mots à repérer et définir",
+                    "caption": "Note ces termes et cherche leur signification pendant ou après l'activité. Ils te serviront pour construire tes arguments.",
+                    "headers": [
+                      "Terme",
+                      "Pourquoi c'est important dans le débat"
+                    ],
+                    "rows": [
+                      [
+                        "liberté d'expression",
+                        "C'est le droit de dire ce que tu penses sans être censuré, mais est-ce que les réseaux respectent vraiment ce droit ?"
+                      ],
+                      [
+                        "manipulation",
+                        "Certains contenus ou algorithmes peuvent influencer tes opinions sans que tu t’en rendes compte : est-ce que cela limite ta liberté ?"
+                      ],
+                      [
+                        "désinformation",
+                        "Fausses informations partagées rapidement : comment savoir si ce que tu lis est vrai ?"
+                      ],
+                      [
+                        "vie privée",
+                        "Tes données sont-elles protégées lorsque tu utilises les réseaux ?"
+                      ],
+                      [
+                        "espace public numérique",
+                        "Là où se croisent les idées, les débats et les informations : qui y a accès, et qui en est exclu ?"
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Premières pistes à explorer",
+                    "callouts": [
+                      {
+                        "type": "alerte",
+                        "text": "Attention : une opinion personnelle (ton avis sans preuve) n’est pas un argument valable (une idée justifiée par des faits). Tes arguments plus tard devront s’appuyer sur des sources fiables (informations vérifiées) pour convaincre."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Pour le moment, concentre-toi sur la compréhension des termes. Tu auras tout le temps nécessaire pour construire ta position plus tard dans le parcours."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Pour approfondir la question",
+                    "links": [
+                      {
+                        "href": "https://www.cnil.fr/fr/definition/vie-privee",
+                        "text": "La CNIL explique ce qu'est la vie privée en ligne (conseils pour protéger ses données)."
+                      },
+                      {
+                        "href": "https://www.francetvinfo.fr/replay-radio/l-edito-media/reseaux-sociaux-et-desinformation-comment-lutter_4850093.html",
+                        "text": "Une vidéo sur le lien entre réseaux sociaux et désinformation (à regarder sans prise de notes pour l’instant)."
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e4",
+        "titre": "S'informer pour débattre",
+        "objectif": "Comprendre et repérer les arguments fondés sur des sources fiables.",
+        "introduction": "Maintenant que tu as donné ton opinion, explore les arguments et les preuves qui existent sur le sujet. Tu vas apprendre à chercher des informations pertinentes et à évaluer leur qualité.",
+        "cartes": [
+          {
+            "id": "c5",
+            "titre": "Les arguments et leurs sources",
+            "objectif": "Repérer les arguments et les sources dans un texte.",
+            "consigne": "Lis le texte qui propose différents points de vue sur la question. Souligne ou note les arguments et leur source pour mieux les identifier.",
+            "module": "Livre",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Les arguments et leurs sources",
+              "intro": "Dans ce livre, tu vas analyser des arguments pour débattre : les réseaux sociaux libèrent-ils ou enferment-ils ? Identifie les idées et leurs sources pour construire ton raisonnement.",
+              "chapters": [
+                {
+                  "title": "Pourquoi cette question ?",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Débattre avec des arguments",
+                        "subtitle": "Comment repérer les idées et leurs sources"
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Le débat en classe",
+                        "paragraphs": [
+                          "Tu as construit ton avis sur les réseaux sociaux. Maintenant, tu vas justifier ta position avec des arguments solides. Comment savoir si un argument est valable ?",
+                          "Il faut chercher qui le soutient : une personne, une étude, une expérience. Ce sont les sources. Une opinion personnelle n'est pas une source assez forte pour un débat."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Activité guidée",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Reconnaître les arguments et leurs sources dans un texte."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "Surligner ou noter chaque argument avant de chercher son auteur."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Lire un texte pour en extraire les arguments",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#11_definition_box",
+                      "data": {
+                        "title": "Définition : Argument et source",
+                        "text": "Un argument est une idée avancée pour soutenir une opinion. La source est ce qui donne de la force à l'argument : une étude, un témoignage, un texte de loi… Une opinion personnelle n'est pas une source fiable pour un débat."
+                      }
+                    },
+                    {
+                      "type": "#10_table_comparison",
+                      "data": {
+                        "title": "Arguments vs opinions personnelles",
+                        "headers": [
+                          "Arguments",
+                          "Opinions personnelles",
+                          "Sources possibles"
+                        ],
+                        "rows": [
+                          [
+                            "Les réseaux sociaux permettent de s'exprimer librement.",
+                            "Je trouve que c'est bien.",
+                            "Déclaration des droits de l'homme, article 19"
+                          ],
+                          [
+                            "Ils aident à organiser des mobilisations.",
+                            "À mon avis, c'est utile.",
+                            "Étude de l'INSEE sur les mouvements sociaux"
+                          ],
+                          [
+                            "Ils favorisent la désinformation.",
+                            "Je n'aime pas.",
+                            "Rapport du Sénat sur la désinformation en ligne"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Analyser un texte type",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Exemple de texte à analyser",
+                        "paragraphs": [
+                          "Les réseaux sociaux ont transformé la liberté d'expression. Selon une étude de l'Observatoire international des droits numériques (2023), ils permettent à des milliers de personnes de partager leurs idées sans passer par les médias traditionnels. Par exemple, le mouvement #MeToo a commencé en ligne avant de devenir un phénomène mondial. Cependant, le même rapport souligne aussi que ces plateformes sont utilisées par des régimes autoritaires pour surveiller et contrôler la population, comme le montre l'exemple de la Chine avec la suppression des voix critiques."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#06_lexique_table",
+                      "data": {
+                        "title": "Lexique pour la séance",
+                        "caption": "Mots importants à retenir",
+                        "headers": [
+                          "Mot",
+                          "Définition"
+                        ],
+                        "rows": [
+                          [
+                            "Libre d'expression",
+                            "Droit de dire ce qu’on pense sans être censuré."
+                          ],
+                          [
+                            "Désinformation",
+                            "Mauvaise information diffusée volontairement."
+                          ],
+                          [
+                            "Espace public numérique",
+                            "Lieu (réseaux, forums) où s’échangent les idées."
+                          ],
+                          [
+                            "Manipulation",
+                            "Action de contrôler les opinions des autres."
+                          ],
+                          [
+                            "Source fiable",
+                            "Document ou personne dont l’information peut être vérifiée."
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Entraîne-toi : repérer les arguments et leurs sources",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Consigne",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Souligne les arguments dans le texte ci-dessous et note leur source."
+                          },
+                          {
+                            "type": "alerte",
+                            "text": "Attention : une source n'est pas toujours un nom de personne. Parfois, c'est une institution, un document ou une œuvre."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Texte d'entraînement",
+                        "paragraphs": [
+                          "Les réseaux sociaux donnent plus de pouvoir aux citoyens. Un rapport de Reporters sans frontières (2022) montre que 78 % des utilisateurs estiment qu’ils peuvent défendre leurs droits en ligne. Par exemple, des jeunes au Sénégal ont utilisé Twitter pour alerter sur les violences policières pendant les élections de 2020. Pourtant, une enquête de l'Union européenne (2021) révèle que 34 % des contenus partagés contiennent des fake news, ce qui peut influencer les choix démocratiques."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#05_stats_cards",
+                      "data": {
+                        "title": "Aide pour repérer les sources",
+                        "stats": [
+                          {
+                            "value": "1. Cherche les noms propres",
+                            "label": "Personnes, associations, institutions"
+                          },
+                          {
+                            "value": "2. Vérifie la date",
+                            "label": "Une étude récente est plus fiable"
+                          },
+                          {
+                            "value": "3. Repère les verbes d'opinion",
+                            "label": "Les actions ou les demandes sont des arguments"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Corrige et valide ta réponse",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#14_faq_block",
+                      "data": {
+                        "title": "Retours sur ton travail",
+                        "questions": [
+                          {
+                            "q": "Comment savoir si j’ai bien souligné les bons arguments ?",
+                            "a": "Un argument commence souvent par « Les réseaux sociaux... », « Ils permettent de... » ou « Selon... ». Souligne uniquement ces phrases."
+                          },
+                          {
+                            "q": "Que faire si une source me semble faible ?",
+                            "a": "Une source faible peut être une opinion personnelle, un avis sans preuve. Mets-la en doute et cherche une autre source plus solide."
+                          },
+                          {
+                            "q": "Peut-on avoir plusieurs sources pour un même argument ?",
+                            "a": "Oui, si l’argument est soutenu par plusieurs idées ou documents. Note-les toutes pour renforcer ton analyse."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Pour aller plus loin : organiser tes idées",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Vers la prise de position",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Prépare un débat en classant tes arguments du plus fort au plus faible."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "Utilise les sources les plus fiables en priorité : textes officiels, études scientifiques, témoignages vérifiés."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Méthode pour le débat",
+                        "paragraphs": [
+                          "1. Choisis 2 ou 3 arguments solides avec leurs sources. Par exemple : 'Les réseaux sociaux aident à s'exprimer (DUDH, art. 19), mais ils propagent aussi des fake news (étude de l'UE, 2021).'",
+                          "2. Classe-les par ordre d’importance. Les arguments avec des chiffres ou des sources officielles sont souvent plus convaincants.",
+                          "3. Prépare un contre-argument à ton avis pour montrer que tu as anticipé les objections."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#18_sito_graphy",
+                      "data": {
+                        "title": "Sources fiables à explorer",
+                        "links": [
+                          {
+                            "href": "https://www.ohchr.org/fr/udhr",
+                            "text": "Déclaration universelle des droits de l'homme — Article 19"
+                          },
+                          {
+                            "href": "https://www.reporters-sans-frontieres.org/",
+                            "text": "Reporters sans frontières — Rapports sur la liberté d'expression"
+                          },
+                          {
+                            "href": "https://www.senat.fr/rap/r20-422/r20-4221.pdf",
+                            "text": "Rapport du Sénat français sur les fake news (2020)"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "numbering": 1,
+              "theme": "elea"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c6",
+            "titre": "Vérifie ce que tu as retenu",
+            "objectif": "Valider ta compréhension des arguments et de leurs sources.",
+            "consigne": "Réponds à une série d'affirmations vrai ou faux pour vérifier ce que tu as compris du texte. Une fois que tu as fait tes choix, vérifie les corrections et relis les passages si nécessaire.",
+            "module": "QuizSetVF",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Vérifie ce que tu as retenu",
+              "questions": [
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Liberté d'expression sur les réseaux sociaux"
+                  },
+                  "params": {
+                    "question": "Les réseaux sociaux garantissent toujours la liberté d'expression sans aucune limite.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Exact : les réseaux sociaux imposent des règles (modération, suppression de contenus) qui limitent la liberté d'expression pour protéger la vie privée ou lutter contre la désinformation.",
+                    "feedbackOnWrong": "En réalité, les plateformes appliquent des conditions d'utilisation et des lois (comme le RGPD en Europe) qui encadrent la liberté d'expression. Par exemple, les discours de haine ou les fausses informations peuvent être supprimés."
+                  },
+                  "subContentId": "b1c2c5f1-5743-4c73-a21e-46868bd3dcdd"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Manipulation et algorithmes"
+                  },
+                  "params": {
+                    "question": "Les algorithmes des réseaux sociaux influencent nos choix sans que nous en ayons conscience.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Oui : les algorithmes analysent nos comportements pour nous proposer du contenu, ce qui peut orienter nos opinions ou nos achats sans qu'on s'en rende compte.",
+                    "feedbackOnWrong": "Les algorithmes des réseaux sociaux sont conçus pour maximiser notre engagement. Ils analysent nos likes, nos partages et nos temps de visionnage pour nous montrer des contenus adaptés, parfois de manière invisible."
+                  },
+                  "subContentId": "d50cb2ce-e395-453c-8257-bfcd1ac06d8d"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Engagement collectif et réseaux sociaux"
+                  },
+                  "params": {
+                    "question": "Les réseaux sociaux permettent uniquement de partager des contenus personnels et n'ont aucun rôle dans l'engagement collectif.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Faux : les réseaux sociaux sont des outils puissants pour organiser des mouvements collectifs (mobilisations, pétitions, sensibilisations) comme #MeToo ou les marches pour le climat.",
+                    "feedbackOnWrong": "Les réseaux sociaux servent aussi à mobiliser rapidement des groupes autour de causes communes. Par exemple, des hashtags ont permis de rassembler des milliers de personnes pour des actions citoyennes."
+                  },
+                  "subContentId": "212c99ed-2cca-491c-94ac-4ccd2634fe61"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Vie privée et données personnelles"
+                  },
+                  "params": {
+                    "question": "Publier une photo sur un réseau social ne met jamais en danger la vie privée.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Faux : publier une photo peut exposer des informations personnelles (lieu, entourage) et être utilisée à mauvais escient, même des années plus tard.",
+                    "feedbackOnWrong": "Même avec des paramètres de confidentialité, les données partagées peuvent être récupérées, analysées ou piratées. La vie privée est souvent compromise par des partages mal contrôlés."
+                  },
+                  "subContentId": "7c8a5386-70d3-412f-a0c2-92743c2db20b"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Désinformation et réseaux sociaux"
+                  },
+                  "params": {
+                    "question": "Les réseaux sociaux amplifient toujours la désinformation.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Pas toujours : les plateformes tentent de limiter la désinformation avec des vérifications (fact-checking) et des alertes, mais leur efficacité dépend des utilisateurs.",
+                    "feedbackOnWrong": "Les réseaux sociaux peuvent aussi être des outils pour lutter contre la désinformation, par exemple en relayant des sources fiables ou en signalant des contenus trompeurs. Leur rôle n'est pas uniquement négatif."
+                  },
+                  "subContentId": "f41b75ba-fa97-45fb-9f92-ddd4dd0a4993"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Ces affirmations t'ont posé problème : relis les arguments sur la liberté d'expression, la manipulation et la vie privée. Repère les idées qui te semblent floues pour les retravailler."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Certaines réponses t'ont fait hésiter : concentre-toi sur les contre-arguments liés à l'engagement collectif et à la désinformation. Ces notions sont à approfondir."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Tu maîtrises une partie des enjeux, mais quelques points résistent encore. Identifie les questions où tu as douté pour cibler tes révisions."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Ces notions sont bien comprises. Pour aller plus loin, cherche des exemples concrets de manipulation ou d'engagement collectif dans l'actualité récente."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c7",
+            "titre": "Qui dit quoi ?",
+            "objectif": "Associer les arguments à leurs auteurs et sources.",
+            "consigne": "Dans le texte, surligne les mots-clés qui indiquent l'origine des arguments ou leur source. Cela te permettra de les retrouver plus facilement pour le débat.",
+            "module": "MarkTheWords",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 8,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Dans le texte ci-dessous, surligne les mots qui montrent *qui parle* ou *d'où vient l'idée*. Cherche les prénoms, les noms, les titres, les expressions comme \\\"selon\\\" ou \\\"d'après\\\".",
+              "textField": "Pour le sociologue *Jean* *Zin*, les réseaux sociaux offrent une liberté d'expression sans précédent. *Selon* une étude de l'INSEE publiée en 2022, 80 % des adolescents s'expriment en ligne sans contrainte. L'utilisateur *Thomas* *Moreau* explique dans un podcast que ces plateformes permettent une mobilisation rapide. Pour finir, *d'après* un rapport de l'UNESCO, ces outils favorisent l'espace public numérique. *Mark* *Zuckerberg*, le PDG de Meta, affirme qu'ils renforcent la démocratie.",
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Tu as repéré quelques mots qui montrent l'origine des propos, mais il en reste encore. Cherche les prénoms, les noms de personnes ou les expressions comme \\\"selon\\\", \\\"d'après\\\"."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Plusieurs mots indiquant l'auteur ou la source sont identifiés : essaie de retrouver les deux ou trois autres en relisant attentivement."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque tous les mots indiquant l'origine des idées sont marqués. Vérifie pourtant et relis-toi pour être certain de ne rien avoir manqué."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent ! Tu as relevé tous les mots qui indiquent qui parle ou d'où vient l'idée. Ces marques te serviront pour organiser le débat en classe."
+                }
+              ],
+              "behaviour": {
+                "enableCheckButton": true,
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "media": {
+                "type": "library",
+                "library": "H5P.Image 1.1"
+              },
+              "title": "Qui dit quoi ?"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e8",
+        "titre": "Le grand débat en ligne",
+        "objectif": "Transformer tes connaissances en échanges argumentés avec tes camarades.",
+        "introduction": "Tu es désormais capable d'identifier des arguments et de vérifier des sources. Il est temps de partager tes idées et d'échanger avec les autres. Construis-toi une opinion en confrontant ton avis à celui des autres.",
+        "cartes": [
+          {
+            "id": "c9",
+            "titre": "Échange tes arguments avec les autres",
+            "objectif": "Formuler une position argumentée avec des exemples issus des sources.",
+            "consigne": "Publie un message dans ce forum en expliquant ta position. Appuie-toi sur au moins un argument et sa source. Réponds ensuite à au moins deux messages proposés par d'autres participants en posant une question, en objectant ou en apportant un nouvel argument.",
+            "module": "parcours_forum",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Échange tes arguments avec les autres",
+              "intro": "Partage ici ta position sur la question : les réseaux sociaux rendent-ils plus libres ? Justifie-la avec au moins un argument et sa source fiable. Ensuite, réagis aux messages des autres en posant une question, en proposant un contre-argument ou en apportant un nouvel élément. Ton message doit s’appuyer sur les notions du parcours : l’espace public numérique, la manipulation ou l’engagement collectif, par exemple."
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c10",
+            "titre": "Une carte commune des idées",
+            "objectif": "Synthétiser les arguments échangés dans un document partagé.",
+            "consigne": "À partir des échanges du forum, contribue à la construction d’une carte collaborative qui classe les arguments en trois grandes parties : ceux qui montrent que les réseaux sociaux rendent plus libres, ceux qui montrent le contraire, et les sources mentionnées. Relis et complète les contributions des autres.",
+            "module": "parcours_wiki",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Une carte commune des idées",
+              "intro": "Cette page est un wiki : tout le monde peut y contribuer. Pour commencer, chacun repère dans le forum un argument qui montre que les réseaux sociaux rendent plus libres ou un contre-argument qui prouve le contraire. Note-le dans la bonne section. Quand un autre élève modifie ton texte, justifie tes choix sans supprimer ce qui est écrit, mais en proposant des ajouts ou des précisions avec des sources fiables.",
+              "premierePage": "Arguments pour la liberté / Contre-arguments"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e11",
+        "titre": "Trouver sa voix et conclure",
+        "objectif": "Synthétiser tes connaissances et affiner ta position à la lumière du débat.",
+        "introduction": "Tu as pu constater que les avis sur le sujet sont variés. Maintenant, il est temps de formaliser ta pensée en rédigeant une position argumentée. Tu pourras aussi comparer ton avis initial avec celui que tu as aujourd'hui.",
+        "cartes": [
+          {
+            "id": "c12",
+            "titre": "Rédige ta position argumentée",
+            "objectif": "Rédiger un texte structuré qui défend ton point de vue face à un contre-argument.",
+            "consigne": "Rédige un texte argumenté de quelques paragraphes dans lequel tu donnes ton avis sur la question en utilisant au moins un contre-argument que tu rejettes avec des exemples et des sources. Sois précis et structuré.",
+            "module": "Essay",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 30,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Après avoir échangé avec tes camarades et exploré différents arguments, rédige un texte de quelques paragraphes dans lequel tu donnes ton avis sur la question : **Les réseaux sociaux rendent-ils plus libres ?**\nTu devras :\n- Défendre ta position en t’appuyant sur au moins un **contre-argument** que tu rejetteras avec des **exemples concrets** ou des **sources**;\n- Structurer ton texte pour que chaque idée soit bien expliquée et illustrée;\n- Utiliser un vocabulaire précis en lien avec le débat étudié.\n\nPense aux mots et notions travaillés précédemment comme **l’opinion personnelle**, **l’argument valable**, ou **la désinformation** pour enrichir ton texte.",
+              "keywords": [
+                {
+                  "keyword": "liberté d'expression",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "cet aspect est identifié et développé dans ton texte.",
+                    "feedbackMissed": "l’aspect liberté d’expression semble absent ou incomplet : rappelle-toi que cette notion se lie à la possibilité de s’exprimer sans censure et à la démocratie."
+                  }
+                },
+                {
+                  "keyword": "désinformation",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "tu as expliqué comment les réseaux sociaux peuvent propager de la désinformation et ses effets sur la liberté.",
+                    "feedbackMissed": "la désinformation n’est pas abordée : c’est un élément clé pour comprendre les limites de la liberté sur les réseaux."
+                  }
+                },
+                {
+                  "keyword": "vie privée",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "la notion de vie privée est bien intégrée, avec des exemples qui montrent sa fragilité.",
+                    "feedbackMissed": "la vie privée est peu mentionnée : or, elle est essentielle pour évaluer l’impact des réseaux sur notre liberté."
+                  }
+                },
+                {
+                  "keyword": "manipulation",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "tu as identifié des cas de manipulation et expliqué en quoi cela limite la liberté.",
+                    "feedbackMissed": "la manipulation est absente de ton raisonnement : pense aux algorithmes ou aux fake news qui influencent nos choix."
+                  }
+                },
+                {
+                  "keyword": "engagement collectif",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "l’engagement collectif est mentionné avec des exemples concrets (mouvements citoyens, pétitions).",
+                    "feedbackMissed": "l’engagement collectif ne ressort pas : c’est pourtant un point fort des réseaux pour la liberté."
+                  }
+                },
+                {
+                  "keyword": "espace public numérique",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "l’espace public numérique est décrit comme un lieu d’échange ou de débat avec ses avantages et inconvénients.",
+                    "feedbackMissed": "l’espace public numérique n’est pas défini : il s’agit pourtant d’un concept central pour ton argumentation."
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Ton texte est encore très général : reprends les bases des notions de liberté d’expression, vie privée ou désinformation pour bien cerner le sujet. Tu peux t’appuyer sur les exemples vus en classe ou les sources étudiées."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu commences à bien structurer ton argumentation, mais certains mots-clés manquent ou ne sont pas assez développés. N’oublie pas de lier tes idées à des sources fiables ou à des exemples précis pour montrer ta réflexion."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Ton texte est solide et montre une bonne compréhension du sujet. Pour aller plus loin, vérifie si tu as bien expliqué comment les réseaux sociaux limitent certaines libertés (comme la manipulation ou la vie privée) tout en en offrant d’autres (engagement collectif, espace public numérique)."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Ton argumentation est claire, bien structurée et s’appuie sur des exemples concrets. Tu utilises les notions essentielles comme l’opinion personnelle, les contre-arguments et les sources fiables pour défendre ta position. Continue ainsi pour approfondir encore certains points si tu le souhaites."
+                }
+              ],
+              "solution": {
+                "introduction": "Voici comment un texte pourrait répondre à la consigne.",
+                "sample": "Les réseaux sociaux rendent-ils plus libres ? Cette question mérite une réponse nuancée, car les réseaux offrent à la fois de nouvelles possibilités d’expression et des risques pour notre liberté. D’un côté, ils permettent aux individus de s’exprimer librement sur des sujets qui leur tiennent à cœur, comme le montrent les mouvements comme #MeToo ou les pétitions en ligne. Cependant, un contre-argument souvent avancé est que les réseaux favoriseraient la **désinformation** et la **manipulation**, limitant ainsi la liberté des utilisateurs. Ce point de vue n’est pas complètement exact : bien que les algorithmes privilégient parfois le sensationnalisme, les utilisateurs restent libres de vérifier les sources et de s’informer correctement. Par exemple, des plateformes comme TikTok ou Twitter ont ajouté des étiquettes pour signaler les fake news, ce qui aide à lutter contre la désinformation. La **vie privée** est aussi préservée grâce aux réglages de confidentialité, même si elle reste menacée par les pratiques des géants du numérique. Ainsi, si les réseaux sociaux comportent des dangers, ils restent des outils puissants pour la **liberté d’expression** et l’**engagement collectif**, à condition d’en user avec esprit critique."
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Rédige ta position argumentée"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c13",
+            "titre": "Réévalue ton avis après le débat",
+            "objectif": "Comparer ton opinion avant et après le parcours.",
+            "consigne": "Retrouve le sondage de la première étape : vote à nouveau pour la position qui te correspond le plus après ce parcours. Compare les résultats avec ceux du début et explique ce qui a pu changer.",
+            "module": "parcours_sondage",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 3,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Réévalue ton avis après le débat",
+              "intro": "Maintenant que tu as exploré les arguments et débattu avec la classe, vote à nouveau pour la position qui te correspond le plus. Compare ce résultat avec celui du début du parcours pour voir comment tes idées ont évolué.",
+              "options": [
+                "Oui, ils élargissent la liberté d'expression et l'engagement collectif.",
+                "Non, ils limitent la liberté par la désinformation et la manipulation.",
+                "Ni l'un ni l'autre : ils changent juste la façon d'exister dans l'espace public numérique.",
+                "Je ne sais pas encore, mais j'ai maintenant des éléments pour me faire une opinion."
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "3e",
+    "adultes": false
+  }
+}

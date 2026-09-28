@@ -12,12 +12,28 @@ export const state = {
     history: [],
     currentFlow: null,   // 'help' | 'generate' | null
     genState: {},        // {qui, quoi, niveau, step}
+    revision: 0,         // invalide les réponses d'une conversation abandonnée
+    pendingQuery: null,  // AbortController du message libre en cours
+    generationRunning: false,
     elements: {},        // {fab, panel, messages, input, sendBtn, closeBtn, expandBtn}
     _prefillAsked: false, // "repartir des champs Caramel ou de zéro ?" déjà posée ?
     _proactiveShown: false, // suggestion proactive post-génération déjà affichée ?
 };
 
+export function refreshBusyState() {
+    if (state.elements.sendBtn) state.elements.sendBtn.disabled = Boolean(state.pendingQuery || state.generationRunning);
+}
+
+export function invalidateConversation() {
+    state.revision++;
+    state.pendingQuery?.abort();
+    state.pendingQuery = null;
+    state.elements.messages?.querySelectorAll('[data-typing]').forEach(e => e.remove());
+    refreshBusyState();
+}
+
 export function resetGenState() {
+    invalidateConversation();
     state.history = [];
     state.currentFlow = null;
     state.genState = {};

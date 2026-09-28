@@ -95,10 +95,11 @@ C7a() { sub js/editor/validators.js \
   "    if (!validators.required(value) && !config.required && !exigeDesElements) {" \
   "    if (!validators.required(value) && !config.required) {" }
 
+# La garde couvre aussi les `stringArray` depuis 5e918d14 : le motif suit sa forme actuelle.
 C7b() { sub js/editor/validators.js \
-  "    if (config.type === 'array') {
+  "    if (['array', 'stringArray'].includes(config.type)) {
         if (config.minItems" \
-  "    if (config.type === 'array' && Array.isArray(value)) {
+  "    if (['array', 'stringArray'].includes(config.type) && Array.isArray(value)) {
         if (config.minItems" }
 
 C6b() { sub js/editor/validators.js \

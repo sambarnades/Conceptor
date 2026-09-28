@@ -1,0 +1,148 @@
+[
+  {
+    "id": "flashcards-saisie",
+    "contenu": {
+      "description": "Écris la capitale. RELU Sucrerie",
+      "cards": [
+        {
+          "text": "France",
+          "answer": "Paris",
+          "tip": "Pense à la Seine. RELU",
+          "image": {
+            "path": "images/drapeau.png",
+            "mime": "image/png",
+            "width": 120,
+            "height": 80,
+            "copyright": {
+              "title": "Drapeau tricolore",
+              "author": "Atelier de test",
+              "license": "CC BY",
+              "version": "4.0"
+            }
+          },
+          "imageAltText": ""
+        },
+        {
+          "text": "Italie",
+          "answer": "Rome",
+          "tip": ""
+        }
+      ],
+      "progressText": "Carte @card sur @total",
+      "next": "Suivant",
+      "previous": "Précédent",
+      "checkAnswerText": "Vérifier",
+      "defaultAnswerText": "Votre réponse",
+      "correctAnswerText": "Bonne réponse",
+      "incorrectAnswerText": "Mauvaise réponse",
+      "showSolutionText": "Réponse correcte",
+      "results": "Résultats",
+      "ofCorrect": "@score réponses correctes sur un total de @total",
+      "showResults": "Montrer les résultats",
+      "answerShortText": "R :",
+      "retry": "Recommencer",
+      "cardAnnouncement": "Réponse incorrecte. La réponse correcte était @answer",
+      "correctAnswerAnnouncement": "@answer est correct.",
+      "pageAnnouncement": "Page @current sur @total",
+      "title": "Cartes mémoires",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "showSolutionsRequiresInput": true,
+      "caseSensitive": true,
+      "randomCards": false,
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      },
+      "enableRetry": true,
+      "informationText": "Information",
+      "cardsHeader": "Cartes",
+      "scoreHeader": "Score",
+      "language": "fr"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "flashcards-libre",
+    "contenu": {
+      "description": "Écris la capitale. RELU Sucrerie",
+      "cards": [
+        {
+          "text": "France",
+          "answer": "Paris",
+          "tip": "Pense à la Seine. RELU",
+          "image": {
+            "path": "images/drapeau.png",
+            "mime": "image/png",
+            "width": 120,
+            "height": 80,
+            "copyright": {
+              "title": "Drapeau tricolore",
+              "author": "Atelier de test",
+              "license": "CC BY",
+              "version": "4.0"
+            }
+          },
+          "imageAltText": ""
+        },
+        {
+          "text": "Italie",
+          "answer": "Rome",
+          "tip": ""
+        }
+      ],
+      "progressText": "Carte @card sur @total",
+      "next": "Suivant",
+      "previous": "Précédent",
+      "checkAnswerText": "Vérifier",
+      "defaultAnswerText": "Votre réponse",
+      "correctAnswerText": "Bonne réponse",
+      "incorrectAnswerText": "Mauvaise réponse",
+      "showSolutionText": "Réponse correcte",
+      "results": "Résultats",
+      "ofCorrect": "@score réponses correctes sur un total de @total",
+      "showResults": "Montrer les résultats",
+      "answerShortText": "R :",
+      "retry": "Recommencer",
+      "cardAnnouncement": "Réponse incorrecte. La réponse correcte était @answer",
+      "correctAnswerAnnouncement": "@answer est correct.",
+      "pageAnnouncement": "Page @current sur @total",
+      "title": "Cartes mémoires",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "showSolutionsRequiresInput": false,
+      "caseSensitive": false,
+      "randomCards": true,
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      },
+      "enableRetry": true,
+      "informationText": "Information",
+      "cardsHeader": "Cartes",
+      "scoreHeader": "Score",
+      "language": "fr"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

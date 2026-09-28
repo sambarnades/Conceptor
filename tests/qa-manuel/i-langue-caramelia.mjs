@@ -20,7 +20,7 @@
  * vrai sélecteur de langue, vrai FAB, vrai `MutationObserver`, vrai fetch de
  * `js/caramelia/locales/*.json`.
  *
- * Prérequis : `python3 -m http.server 8010` à la RACINE du dépôt.
+ * Prérequis : `python3 tests/serveur-statique.py 8010` à la RACINE du dépôt.
  * Usage     : node tests/qa-manuel/i-langue-caramelia.mjs
  *             node tests/qa-manuel/i-langue-caramelia.mjs --contre-epreuve
  *

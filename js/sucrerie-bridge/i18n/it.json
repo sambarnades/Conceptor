@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Principiante",
     "level_formation_intermediaire": "Intermedio",
-    "level_formation_expert": "Esperto"
+    "level_formation_expert": "Esperto",
+    "sucrerie_bridge_welcome_title_course": "Condividere il percorso su Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "Il percorso completo, con attività e istruzioni, sarà accessibile a tutti i docenti nel catalogo Sucrerie.",
+    "sucrerie_bridge_course_close": "Indietro",
+    "sucrerie_bridge_success_title_approved_course": "Percorso pubblicato!",
+    "sucrerie_bridge_success_title_pending_course": "Percorso salvato",
+    "sucrerie_bridge_success_message_approved_course": "Il percorso è disponibile nel catalogo Sucrerie.",
+    "sucrerie_bridge_success_message_pending_course": "Il percorso apparirà nel catalogo dopo la verifica di un moderatore.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Il tuo invio deve essere convalidato. Un link di conferma è appena stato inviato a {email}: cliccalo entro 2 ore per pubblicare il tuo percorso. Senza conferma, rimane una bozza in «Le mie attività» per 7 giorni.",
+    "sucrerie_bridge_success_email_sent_course": "Un'email con il tuo link di gestione è stata inviata a {email}. Conservala con cura: ti permetterà di modificare o ritirare il tuo percorso in qualsiasi momento."
 }

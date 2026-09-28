@@ -12,6 +12,7 @@
  */
 
 import { showNotification, escapeHtmlTags, debugLog } from '../core/utils.js';
+import { texteAffiche } from '../core/texte-affiche.js';
 import { translations, currentLang } from '../core/translation.js';
 import { loadOcrLibs, LIB_PATHS } from '../core/lib-loader.js';
 import { CONFIG } from '../caramelia/config.js';
@@ -339,12 +340,23 @@ export function readDroppedFiles(dataTransfer) {
 }
 
 /**
- * Extrait le texte natif d'une page PDF via PDF.js
+ * Extrait le texte natif d'une page PDF via PDF.js, une ligne du PDF par ligne.
+ *
+ * Les fragments étaient joints par une espace sans tenir compte de `hasEOL`, par lequel
+ * PDF.js signale une fin de ligne : chaque page devenait UNE ligne, titres, listes et
+ * lignes de tableau collés bout à bout dans les SOURCES envoyées à l'IA. Le séparateur
+ * reste l'espace entre fragments d'une même ligne — aucun mot n'est recollé (vérifié
+ * sur des fiches, guides et affiches réels de 1 à 58 pages, 25-09-2026).
  */
 async function extractTextFromPdfPage(page) {
     const textContent = await page.getTextContent();
-    const strings = textContent.items.map(item => item.str);
-    return strings.join(' ');
+    return textContent.items
+        .map(item => (item.str ?? '') + (item.hasEOL ? '\n' : ' '))
+        .join('')
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n[ \t]+/g, '\n')
+        .replace(/[ \t]{2,}/g, ' ')
+        .trim();
 }
 
 /**
@@ -1259,6 +1271,9 @@ export function initOcr() {
     const pdfTagsContainer = document.getElementById('pdf-tags-container');
 
     let uploadedFiles = [];
+    // Identifiant stable d'un fichier dans la zone (`data-source-id` de son bloc) :
+    // un indice ne convient pas, il se décale quand on retire un fichier.
+    let prochainIdSource = 0;
     const MAX_CHARS = 120000;
     const FILE_COLORS = [
         '#E6E6FA', '#F0F8FF', '#F5FFFA', '#FFF5EE', '#FAFAD2',
@@ -1328,11 +1343,38 @@ export function initOcr() {
         hideCancelButton();
     }
 
+    /**
+     * Relit la zone AVANT de la reconstruire : la zone est éditable, et la reconstruire
+     * à partir des seuls fichiers effaçait ce que l'enseignant y avait tapé ou collé —
+     * texte qui disparaissait alors aussi du prompt envoyé à l'IA.
+     *  - une retouche DANS le bloc d'un fichier devient le contenu de ce fichier ;
+     *  - le texte HORS des blocs est renvoyé, pour être replacé en tête de zone.
+     * Le bloc d'un fichier qu'on vient de retirer n'est ni relu ni conservé.
+     * @returns {string} le texte saisi hors des blocs de fichiers
+     */
+    function relireSaisies() {
+        const vus = new Set();
+        ocrOutput.querySelectorAll('mark[data-source-id]').forEach(bloc => {
+            const id = bloc.dataset.sourceId;
+            const fichier = uploadedFiles.find(f => String(f.id) === id);
+            if (!fichier || vus.has(id)) return;
+            vus.add(id);
+            fichier.content = texteAffiche(bloc).replace(/\s+$/, '');
+        });
+        const copie = ocrOutput.cloneNode(true);
+        copie.querySelectorAll('mark[data-source-id]').forEach(bloc => bloc.remove());
+        return texteAffiche(copie).replace(/\n{3,}/g, '\n\n').trim();
+    }
+
     function updateRagArea() {
+        const texteSaisi = relireSaisies();
         pdfTagsContainer.innerHTML = '';
-        let combinedHtml = '';
+        let combinedHtml = texteSaisi
+            ? `${escapeHtmlTags(texteSaisi).replace(/\n/g, '<br>')}<br><br>`
+            : '';
 
         uploadedFiles.forEach((file, index) => {
+            if (file.id === undefined) file.id = prochainIdSource++;
             const tag = document.createElement('div');
             tag.className = 'pdf-tag';
             tag.style.backgroundColor = file.color;
@@ -1346,11 +1388,16 @@ export function initOcr() {
             pdfTagsContainer.appendChild(tag);
 
             const sanitizedContent = escapeHtmlTags(file.content);
-            combinedHtml += `<mark style="background-color:${file.color};">${sanitizedContent.replace(/\n/g, '<br>')}</mark><br><br>`;
+            combinedHtml += `<mark data-source-id="${file.id}" style="background-color:${file.color};">${sanitizedContent.replace(/\n/g, '<br>')}</mark><br><br>`;
         });
 
         ocrOutput.innerHTML = combinedHtml;
         updateCharCounter();
+        // Le corpus vient de changer SANS saisie : une affectation d'innerHTML n'émet
+        // aucun événement. On émet celui d'un collage, sans quoi les prompts des tuiles
+        // (ui.js, handleContextChange) ne sont ni régénérés ni purgés de la session :
+        // l'IA recevait un prompt sans SOURCES, ou les sources d'un document retiré.
+        ocrOutput.dispatchEvent(new Event('input', { bubbles: true }));
 
         pdfTagsContainer.querySelectorAll('.remove-tag-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {

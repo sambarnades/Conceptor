@@ -19,31 +19,35 @@ export default {
         const h5pLang = languageCodes(currentLang).h5p;
 
         // Valeurs par défaut et traductions
-        return {
+        if (!Array.isArray(jsonObj.cards) || !jsonObj.cards.length) throw Error('Flashcards : au moins une carte est requise.');
+        const result = {
+            ...jsonObj,
             title: jsonObj.title || translations.h5p_flashcards_name,
             description: formatTextToHtml(jsonObj.description || translations.h5p_flashcards_description),
             cards: (Array.isArray(jsonObj.cards) ? jsonObj.cards : []).map(card => ({
+                ...card,
                 text: formatTextToHtml(card.text || ""),
                 answer: formatTextToHtml(card.answer || ""),
-                tip: formatTextToHtml(card.tip || ""),
+                tip: formatTextToHtml((typeof card.tip === 'object' ? card.tip?.tip : card.tip) || ""),
                 // Image optionnelle — structure attendue par H5P.Flashcards semantics
                 ...(card.image && card.image.path ? {
                     image: {
+                        ...card.image,
                         path: card.image.path,
                         mime: card.image.mime || "image/jpeg",
-                        copyright: { license: "U" },
+                        copyright: card.image.copyright || { license: "U" },
                         width: card.image.width || 0,
                         height: card.image.height || 0
                     },
                     imageAltText: card.imageAltText || ""
-                } : {})
+                } : {image: undefined})
             })),
             progressText: translations.h5p_flashcards_progress_text || "Carte @card sur @total",
             next: translations.h5p_next || "Suivant",
             previous: translations.h5p_previous || "Précédent",
             checkAnswerText: translations.h5p_check_answer || "Vérifier",
-            enableRetry: jsonObj.behaviour?.enableRetry ?? true,
-            showSolutionsRequiresInput: true,
+            enableRetry: jsonObj.enableRetry ?? jsonObj.behaviour?.enableRetry ?? true,
+            showSolutionsRequiresInput: jsonObj.showSolutionsRequiresInput ?? jsonObj.behaviour?.showSolutionsRequiresInput ?? true,
             defaultAnswerText: translations.h5p_flashcards_your_answer || "Votre réponse",
             correctAnswerText: translations.h5p_correct_text || "Correct !",
             incorrectAnswerText: translations.h5p_incorrect_text || "Incorrect !",
@@ -62,12 +66,16 @@ export default {
             showResults: translations.h5p_flashcards_show_results || "Montrer les résultats",
             answerShortText: translations.h5p_flashcards_answer_short || "R :",
             retry: translations.h5p_try_again || "Recommencer",
-            caseSensitive: jsonObj.behaviour?.caseSensitive ?? false,
+            caseSensitive: jsonObj.caseSensitive ?? jsonObj.behaviour?.caseSensitive ?? false,
             cardAnnouncement: translations.h5p_flashcards_card_announcement || "Réponse incorrecte. La réponse correcte était @answer",
             correctAnswerAnnouncement: translations.h5p_flashcards_correct_announcement || "@answer est correct.",
             pageAnnouncement: translations.h5p_flashcards_page_announcement || "Page @current sur @total",
-            randomCards: jsonObj.behaviour?.randomCards ?? false,
-            language: h5pLang
+            randomCards: jsonObj.randomCards ?? jsonObj.behaviour?.randomCards ?? false,
+            language: jsonObj.language || h5pLang
         };
+        for (const key of ['progressText','next','previous','checkAnswerText','defaultAnswerText','correctAnswerText','incorrectAnswerText','showSolutionText','results','informationText','cardsHeader','scoreHeader','ofCorrect','showResults','answerShortText','retry','cardAnnouncement','correctAnswerAnnouncement','pageAnnouncement']) {
+            if (typeof jsonObj[key] === 'string') result[key] = jsonObj[key];
+        }
+        return result;
     }
 };

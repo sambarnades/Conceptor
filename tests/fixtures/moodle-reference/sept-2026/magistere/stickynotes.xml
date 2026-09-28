@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="192" moduleid="23622" modulename="stickynotes" contextid="57780">
+  <stickynotes id="192">
+    <course>2560</course>
+    <name>Mur : nos idées</name>
+    <intro>&lt;p&gt;Écris une idée par note.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <colors>1</colors>
+    <votes>0</votes>
+    <limitvotes>0</limitvotes>
+    <maxlimitvotes>1</maxlimitvotes>
+    <limitstickynotes>0</limitstickynotes>
+    <maxstickynotes>0</maxstickynotes>
+    <orderstickynotes>desc</orderstickynotes>
+    <viewauthor>0</viewauthor>
+    <rotate>1</rotate>
+    <color1>1</color1>
+    <color1_meaning>Je sais</color1_meaning>
+    <color2>1</color2>
+    <color2_meaning>Je me demande</color2_meaning>
+    <color3>1</color3>
+    <color3_meaning></color3_meaning>
+    <color4>1</color4>
+    <color4_meaning></color4_meaning>
+    <color5>1</color5>
+    <color5_meaning></color5_meaning>
+    <color6>1</color6>
+    <color6_meaning></color6_meaning>
+    <timecreated>1790541623</timecreated>
+    <timemodified>0</timemodified>
+    <displaystickycaption>0</displaystickycaption>
+    <moveallnotes>0</moveallnotes>
+    <seeallnotes>1</seeallnotes>
+    <completionstickynotes>1</completionstickynotes>
+    <stickynotescolumns>
+      <stickynotescolumn id="456">
+        <title>Titre 1</title>
+        <column_order>1</column_order>
+        <stickynotesnotes>
+        </stickynotesnotes>
+      </stickynotescolumn>
+    </stickynotescolumns>
+  </stickynotes>
+</activity>

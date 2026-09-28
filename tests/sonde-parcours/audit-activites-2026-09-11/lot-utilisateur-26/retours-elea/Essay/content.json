@@ -1,0 +1,114 @@
+{
+  "taskDescription": "<p>Écris une phrase avec le mot énergie.</p>",
+  "keywords": [
+    {
+      "keyword": "énergie RELU",
+      "alternatives": [
+        "energie"
+      ],
+      "options": {
+        "points": 2,
+        "occurrences": 1,
+        "caseSensitive": false,
+        "forgiveMistakes": true,
+        "feedbackIncluded": "Le mot attendu est présent.",
+        "feedbackMissed": "Pense au mot énergie.",
+        "feedbackIncludedWord": "keyword",
+        "feedbackMissedWord": "none"
+      }
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "C&#039;est un début. Pense à bien réviser les événements de l&#039;été 1789 pour identifier comment le pouvoir a changé de mains."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu commences à cerner le sujet, mais il te manque les termes techniques essentiels. Relis les définitions de &#039;sujet&#039; et de &#039;citoyen&#039; pour enrichir ton texte."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Ton récit progresse ! Tu as compris que l&#039;année 1789 est une rupture. Essaie d&#039;intégrer davantage les notions de droit et de souveraineté pour gagner en précision."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu maîtrises les bases de la période. Tu as su évoquer la fin de l&#039;Ancien Régime et l&#039;émergence de nouveaux acteurs politiques."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bien ! Ta rédaction est solide et utilise un vocabulaire historique pertinent. Tu as bien compris le passage de la monarchie absolue à la nation."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Ta maîtrise de la Révolution française est parfaite. Tu utilises tous les concepts clés avec brio pour expliquer la naissance de la France moderne."
+    }
+  ],
+  "behaviour": {
+    "inputFieldSize": "3",
+    "enableRetry": true,
+    "ignoreScoring": false,
+    "minimumLength": 5,
+    "maximumLength": 200,
+    "percentagePassing": 50,
+    "percentageMastering": 100,
+    "pointsHost": 1,
+    "linebreakReplacement": " ",
+    "overrideForgiveMistakes": "on"
+  },
+  "solution": {
+    "introduction": "Une proposition",
+    "sample": "Le Soleil fournit de l’énergie."
+  },
+  "checkAnswer": "Vérifier",
+  "tryAgain": "Recommencer",
+  "showSolution": "Afficher la solution",
+  "feedbackHeader": "Commentaire",
+  "solutionTitle": "Exemple de solution",
+  "remainingChars": "Caractères restants : @chars",
+  "notEnoughChars": "Vous devez saisir au moins @chars caractères !",
+  "messageSave": "enregistré",
+  "placeholderText": "Écris ici ta phrase.",
+  "media": {
+    "type": {
+      "library": "H5P.Image 1.1",
+      "params": {
+        "file": {
+          "path": "images/recette-zones.png",
+          "mime": "image/png",
+          "width": 800,
+          "height": 450,
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          }
+        },
+        "alt": "Zones un, deux et trois",
+        "decorative": false,
+        "contentName": "Image",
+        "expandImage": "Agrandir l&#039;image",
+        "minimizeImage": "Réduire l&#039;image"
+      },
+      "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+      "metadata": {
+        "title": "Image de recette",
+        "license": "PD",
+        "contentType": "Image"
+      }
+    },
+    "disableImageZooming": false
+  },
+  "ariaYourResult": "Vous avez obtenu @score sur @total points",
+  "ariaNavigatedToSolution": "Navigation vers la solution.",
+  "submitAnswer": "Submit",
+  "ariaCheck": "Check the answers.",
+  "ariaShowSolution": "Show the solution. You will be provided with a sample solution.",
+  "ariaRetry": "Retry the task. You can improve your previous answer if the author allowed that."
+}

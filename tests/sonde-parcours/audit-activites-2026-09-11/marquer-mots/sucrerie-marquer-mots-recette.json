@@ -1,0 +1,150 @@
+[
+  {
+    "id": "marquer-mots-complet",
+    "contenu": {
+      "taskDescription": "Sélectionne les capitales. RELU dans Sucrerie.",
+      "textField": "*Paris* Lyon *Rome* Milan Nice Toulouse",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": true,
+        "showScorePoints": true
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Repère les capitales."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Les capitales sont trouvées."
+        }
+      ],
+      "checkAnswerButton": "Vérifier",
+      "tryAgainButton": "Recommencer",
+      "showSolutionButton": "Afficher la solution",
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-36f2af43.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "correctAnswer": "Correct !",
+      "incorrectAnswer": "Incorrect !",
+      "missedAnswer": "Manqué !",
+      "displaySolutionDescription": "La tâche est mise à jour pour contenir la solution.",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "submitAnswerButton": "Valider",
+      "a11yFullTextLabel": "Texte complet lisible",
+      "a11yClickableTextLabel": "Texte complet où les mots peuvent être marqués",
+      "a11ySolutionModeHeader": "Mode solution",
+      "a11yCheckingHeader": "Mode de vérification",
+      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "title": "Texte à trous — complet"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "marquer-mots-sans-aides",
+    "contenu": {
+      "taskDescription": "Sélectionne les capitales. RELU dans Sucrerie.",
+      "textField": "*Paris* Lyon *Rome* Milan Nice Toulouse",
+      "behaviour": {
+        "enableRetry": false,
+        "enableSolutionsButton": false,
+        "enableCheckButton": true,
+        "showScorePoints": false
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Repère les capitales."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Les capitales sont trouvées."
+        }
+      ],
+      "checkAnswerButton": "Vérifier",
+      "tryAgainButton": "Recommencer",
+      "showSolutionButton": "Afficher la solution",
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-36f2af43.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "correctAnswer": "Correct !",
+      "incorrectAnswer": "Incorrect !",
+      "missedAnswer": "Manqué !",
+      "displaySolutionDescription": "La tâche est mise à jour pour contenir la solution.",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "submitAnswerButton": "Valider",
+      "a11yFullTextLabel": "Texte complet lisible",
+      "a11yClickableTextLabel": "Texte complet où les mots peuvent être marqués",
+      "a11ySolutionModeHeader": "Mode solution",
+      "a11yCheckingHeader": "Mode de vérification",
+      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "title": "Texte à trous — sans-aides"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

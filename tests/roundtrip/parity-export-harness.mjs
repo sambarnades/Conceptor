@@ -85,7 +85,7 @@ const INIT_SCRIPT = `
 // ===========================================================================
 function startServer() {
   return new Promise((res, rej) => {
-    const srv = spawn('python3', ['-m', 'http.server', String(PORT)], { cwd: REPO_ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+    const srv = spawn('python3', ['tests/serveur-statique.py', String(PORT)], { cwd: REPO_ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
     let settled = false;
     srv.stderr.on('data', () => {});
     srv.on('error', (e) => { if (!settled) { settled = true; rej(e); } });

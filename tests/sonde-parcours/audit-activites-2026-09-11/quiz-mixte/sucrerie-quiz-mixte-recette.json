@@ -1,0 +1,832 @@
+[
+  {
+    "id": "quiz-mixte-complet",
+    "contenu": {
+      "questions": [
+        {
+          "library": "H5P.MultiChoice 1.16",
+          "subContentId": "quiz-q1",
+          "metadata": {
+            "title": "France"
+          },
+          "params": {
+            "question": "Capitale de la France ?",
+            "answers": [
+              {
+                "text": "Paris",
+                "correct": true
+              },
+              {
+                "text": "Rome",
+                "correct": false
+              }
+            ],
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "enableCheckButton": true,
+              "type": "auto",
+              "singlePoint": true,
+              "randomAnswers": false,
+              "showSolutionsRequiresInput": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "passPercentage": 100,
+              "showScorePoints": true
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "UI": {
+              "checkAnswerButton": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgainButton": "Recommencer",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswerButton": "Valider",
+              "tipsLabel": "Indice",
+              "tipAvailable": "Indice disponible",
+              "feedbackAvailable": "Feedback disponible",
+              "readFeedback": "Lire le commentaire",
+              "wrongAnswer": "Mauvaise réponse",
+              "correctAnswer": "Bonne réponse",
+              "shouldCheck": "Il fallait cocher ici",
+              "shouldNotCheck": "Il ne fallait pas cocher ici !",
+              "noInput": "Répondez s'il vous plait avant de visionner la solution.",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "overallFeedback": [
+              {
+                "from": 0,
+                "to": 100,
+                "feedback": ""
+              }
+            ]
+          }
+        },
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "subContentId": "quiz-q2",
+          "metadata": {
+            "title": "Italie"
+          },
+          "params": {
+            "question": "Rome est la capitale de l’Italie.",
+            "correct": "true",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "",
+              "feedbackOnWrong": ""
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "media": {
+              "disableImageZooming": false
+            }
+          }
+        },
+        {
+          "library": "H5P.Blanks 1.14",
+          "subContentId": "quiz-q3",
+          "metadata": {
+            "title": "Espagne"
+          },
+          "params": {
+            "text": "Complète la capitale.",
+            "questions": [
+              "La capitale de l’Espagne est *Madrid*."
+            ],
+            "media": {
+              "disableImageZooming": false
+            },
+            "showSolutions": "Afficher la solution",
+            "tryAgain": "Recommencer",
+            "checkAnswer": "Vérifier",
+            "notFilledOut": "Veuillez remplir tous les champs.",
+            "answerIsCorrect": "&#039;:ans&#039; est correct",
+            "answerIsWrong": "&#039;:ans&#039; est incorrect",
+            "answeredCorrectly": "Réponse correcte",
+            "answeredIncorrectly": "Réponse incorrecte",
+            "solutionLabel": "Réponse correcte :",
+            "inputLabel": "Champ @num sur @total",
+            "inputHasTipLabel": "Indice disponible",
+            "tipLabel": "Indice",
+            "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+            "submitAnswer": "Valider",
+            "behaviour": {
+              "enableSolutionsButton": true,
+              "autoCheck": false,
+              "caseSensitive": true,
+              "showSolutionsRequiresInput": true,
+              "separateLines": false,
+              "enableRetry": true,
+              "allowRetryIfCorrect": false,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "acceptSpellingErrors": false,
+              "enableCheckButton": true
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "overallFeedback": [
+              {
+                "from": 0,
+                "to": 100,
+                "feedback": "Vous avez @score sur @total blancs corrects."
+              }
+            ],
+            "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+            "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+            "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+            "a11yCheckingModeHeader": "Mode de vérification",
+            "a11yHeader": "Mode de vérification"
+          }
+        }
+      ],
+      "progressType": "textual",
+      "passPercentage": 60,
+      "randomQuestions": false,
+      "texts": {
+        "prevButton": "Précédent",
+        "nextButton": "Suivant",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "previousbutton": "Précédent",
+        "nextbutton": "Suivant",
+        "finishButton": "Terminer",
+        "submitButton": "Valider",
+        "textualProgress": "Question @current sur @total",
+        "jumpToQuestion": "Question %d sur %total",
+        "answeredText": "Réponse donnée",
+        "unansweredText": "Pas de réponse donnée",
+        "questionLabel": "Question",
+        "readSpeakerProgress": "Question @current sur @total",
+        "currentQuestionText": "Question en cours",
+        "navigationLabel": "Questions",
+        "questionSetInstruction": "Choisir la question à afficher"
+      },
+      "endGame": {
+        "showResultPage": true,
+        "showSolutionButton": true,
+        "showRetryButton": true,
+        "noResultMessage": "Terminé RELU",
+        "message": "Vos résultats :",
+        "scoreBarLabel": "Vous avez obtenu @finals sur @totals points",
+        "amountCorrect": "@finals bonnes réponses sur @totals",
+        "scoreHeader": "Score",
+        "skipButtonText": "Passer la vidéo",
+        "solutionButtonText": "Afficher la solution",
+        "retryButtonText": "Recommencer",
+        "finishButtonText": "Terminer",
+        "submitButtonText": "Valider",
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100,
+            "feedback": "RELU : relie chaque capitale à son pays."
+          }
+        ],
+        "showAnimations": false,
+        "skippable": false
+      },
+      "introPage": {
+        "showIntroPage": true,
+        "title": "Avant de commencer RELU",
+        "introduction": "RELU Sucrerie : relie les capitales aux pays.",
+        "startButtonText": "Commencer RELU",
+        "backgroundImage": {
+          "path": "images/recette-zones.png",
+          "mime": "image/png",
+          "width": 800,
+          "height": 450,
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          }
+        },
+        "backgroundImageAltText": "Trois zones colorées"
+      },
+      "disableBackwardsNavigation": false,
+      "override": {
+        "checkButton": true,
+        "showSolutionButton": "on",
+        "retryButton": "on"
+      },
+      "title": "Capitales RELU",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "quiz-mixte-tirage",
+    "contenu": {
+      "questions": [
+        {
+          "library": "H5P.MultiChoice 1.16",
+          "subContentId": "quiz-q1",
+          "metadata": {
+            "title": "France"
+          },
+          "params": {
+            "question": "Capitale de la France ?",
+            "answers": [
+              {
+                "text": "Paris",
+                "correct": true
+              },
+              {
+                "text": "Rome",
+                "correct": false
+              }
+            ],
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "enableCheckButton": true,
+              "type": "auto",
+              "singlePoint": true,
+              "randomAnswers": false,
+              "showSolutionsRequiresInput": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "passPercentage": 100,
+              "showScorePoints": true
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "UI": {
+              "checkAnswerButton": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgainButton": "Recommencer",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswerButton": "Valider",
+              "tipsLabel": "Indice",
+              "tipAvailable": "Indice disponible",
+              "feedbackAvailable": "Feedback disponible",
+              "readFeedback": "Lire le commentaire",
+              "wrongAnswer": "Mauvaise réponse",
+              "correctAnswer": "Bonne réponse",
+              "shouldCheck": "Il fallait cocher ici",
+              "shouldNotCheck": "Il ne fallait pas cocher ici !",
+              "noInput": "Répondez s'il vous plait avant de visionner la solution.",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "overallFeedback": [
+              {
+                "from": 0,
+                "to": 100,
+                "feedback": ""
+              }
+            ]
+          }
+        },
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "subContentId": "quiz-q2",
+          "metadata": {
+            "title": "Italie"
+          },
+          "params": {
+            "question": "Rome est la capitale de l’Italie.",
+            "correct": "true",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "",
+              "feedbackOnWrong": ""
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "media": {
+              "disableImageZooming": false
+            }
+          }
+        },
+        {
+          "library": "H5P.Blanks 1.14",
+          "subContentId": "quiz-q3",
+          "metadata": {
+            "title": "Espagne"
+          },
+          "params": {
+            "text": "Complète la capitale.",
+            "questions": [
+              "La capitale de l’Espagne est *Madrid*."
+            ],
+            "media": {
+              "disableImageZooming": false
+            },
+            "showSolutions": "Afficher la solution",
+            "tryAgain": "Recommencer",
+            "checkAnswer": "Vérifier",
+            "notFilledOut": "Veuillez remplir tous les champs.",
+            "answerIsCorrect": "&#039;:ans&#039; est correct",
+            "answerIsWrong": "&#039;:ans&#039; est incorrect",
+            "answeredCorrectly": "Réponse correcte",
+            "answeredIncorrectly": "Réponse incorrecte",
+            "solutionLabel": "Réponse correcte :",
+            "inputLabel": "Champ @num sur @total",
+            "inputHasTipLabel": "Indice disponible",
+            "tipLabel": "Indice",
+            "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+            "submitAnswer": "Valider",
+            "behaviour": {
+              "enableSolutionsButton": true,
+              "autoCheck": false,
+              "caseSensitive": true,
+              "showSolutionsRequiresInput": true,
+              "separateLines": false,
+              "enableRetry": true,
+              "allowRetryIfCorrect": false,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "acceptSpellingErrors": false,
+              "enableCheckButton": true
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "overallFeedback": [
+              {
+                "from": 0,
+                "to": 100,
+                "feedback": "Vous avez @score sur @total blancs corrects."
+              }
+            ],
+            "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+            "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+            "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+            "a11yCheckingModeHeader": "Mode de vérification",
+            "a11yHeader": "Mode de vérification"
+          }
+        }
+      ],
+      "progressType": "dots",
+      "passPercentage": 60,
+      "randomQuestions": false,
+      "texts": {
+        "prevButton": "Précédent",
+        "nextButton": "Suivant",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "previousbutton": "Précédent",
+        "nextbutton": "Suivant",
+        "finishButton": "Terminer",
+        "submitButton": "Valider",
+        "textualProgress": "Question @current sur @total",
+        "jumpToQuestion": "Question %d sur %total",
+        "answeredText": "Réponse donnée",
+        "unansweredText": "Pas de réponse donnée",
+        "questionLabel": "Question",
+        "readSpeakerProgress": "Question @current sur @total",
+        "currentQuestionText": "Question en cours",
+        "navigationLabel": "Questions",
+        "questionSetInstruction": "Choisir la question à afficher"
+      },
+      "endGame": {
+        "showResultPage": true,
+        "showSolutionButton": true,
+        "showRetryButton": true,
+        "noResultMessage": "Terminé RELU",
+        "message": "Vos résultats :",
+        "scoreBarLabel": "Vous avez obtenu @finals sur @totals points",
+        "amountCorrect": "@finals bonnes réponses sur @totals",
+        "scoreHeader": "Score",
+        "skipButtonText": "Passer la vidéo",
+        "solutionButtonText": "Afficher la solution",
+        "retryButtonText": "Recommencer",
+        "finishButtonText": "Terminer",
+        "submitButtonText": "Valider",
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100,
+            "feedback": "RELU : relie chaque capitale à son pays."
+          }
+        ],
+        "showAnimations": true,
+        "skippable": true,
+        "successVideo": [
+          {
+            "path": "videos/video-f2c92659.webm",
+            "mime": "video/webm"
+          }
+        ],
+        "failVideo": [
+          {
+            "path": "videos/video-f2c92659.webm",
+            "mime": "video/webm"
+          }
+        ]
+      },
+      "introPage": {
+        "showIntroPage": true,
+        "title": "Avant de commencer RELU",
+        "introduction": "RELU Sucrerie : relie les capitales aux pays.",
+        "startButtonText": "Commencer RELU",
+        "backgroundImageAltText": ""
+      },
+      "disableBackwardsNavigation": true,
+      "override": {
+        "checkButton": true,
+        "showSolutionButton": "on",
+        "retryButton": "on"
+      },
+      "title": "Capitales RELU",
+      "poolSize": 2,
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "quiz-mixte-sans-resultats",
+    "contenu": {
+      "questions": [
+        {
+          "library": "H5P.MultiChoice 1.16",
+          "subContentId": "quiz-q1",
+          "metadata": {
+            "title": "France"
+          },
+          "params": {
+            "question": "Capitale de la France ?",
+            "answers": [
+              {
+                "text": "Paris",
+                "correct": true
+              },
+              {
+                "text": "Rome",
+                "correct": false
+              }
+            ],
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "enableCheckButton": true,
+              "type": "auto",
+              "singlePoint": true,
+              "randomAnswers": false,
+              "showSolutionsRequiresInput": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "passPercentage": 100,
+              "showScorePoints": true
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "UI": {
+              "checkAnswerButton": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgainButton": "Recommencer",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswerButton": "Valider",
+              "tipsLabel": "Indice",
+              "tipAvailable": "Indice disponible",
+              "feedbackAvailable": "Feedback disponible",
+              "readFeedback": "Lire le commentaire",
+              "wrongAnswer": "Mauvaise réponse",
+              "correctAnswer": "Bonne réponse",
+              "shouldCheck": "Il fallait cocher ici",
+              "shouldNotCheck": "Il ne fallait pas cocher ici !",
+              "noInput": "Répondez s'il vous plait avant de visionner la solution.",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "overallFeedback": [
+              {
+                "from": 0,
+                "to": 100,
+                "feedback": ""
+              }
+            ]
+          }
+        },
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "subContentId": "quiz-q2",
+          "metadata": {
+            "title": "Italie"
+          },
+          "params": {
+            "question": "Rome est la capitale de l’Italie.",
+            "correct": "true",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "",
+              "feedbackOnWrong": ""
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "media": {
+              "disableImageZooming": false
+            }
+          }
+        },
+        {
+          "library": "H5P.Blanks 1.14",
+          "subContentId": "quiz-q3",
+          "metadata": {
+            "title": "Espagne"
+          },
+          "params": {
+            "text": "Complète la capitale.",
+            "questions": [
+              "La capitale de l’Espagne est *Madrid*."
+            ],
+            "media": {
+              "disableImageZooming": false
+            },
+            "showSolutions": "Afficher la solution",
+            "tryAgain": "Recommencer",
+            "checkAnswer": "Vérifier",
+            "notFilledOut": "Veuillez remplir tous les champs.",
+            "answerIsCorrect": "&#039;:ans&#039; est correct",
+            "answerIsWrong": "&#039;:ans&#039; est incorrect",
+            "answeredCorrectly": "Réponse correcte",
+            "answeredIncorrectly": "Réponse incorrecte",
+            "solutionLabel": "Réponse correcte :",
+            "inputLabel": "Champ @num sur @total",
+            "inputHasTipLabel": "Indice disponible",
+            "tipLabel": "Indice",
+            "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+            "submitAnswer": "Valider",
+            "behaviour": {
+              "enableSolutionsButton": true,
+              "autoCheck": false,
+              "caseSensitive": true,
+              "showSolutionsRequiresInput": true,
+              "separateLines": false,
+              "enableRetry": true,
+              "allowRetryIfCorrect": false,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "acceptSpellingErrors": false,
+              "enableCheckButton": true
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Êtes-vous sûr de vouloir terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Terminer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Êtes-vous sûr de vouloir recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "overallFeedback": [
+              {
+                "from": 0,
+                "to": 100,
+                "feedback": "Vous avez @score sur @total blancs corrects."
+              }
+            ],
+            "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+            "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+            "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+            "a11yCheckingModeHeader": "Mode de vérification",
+            "a11yHeader": "Mode de vérification"
+          }
+        }
+      ],
+      "progressType": "dots",
+      "passPercentage": 60,
+      "randomQuestions": false,
+      "texts": {
+        "prevButton": "Précédent",
+        "nextButton": "Suivant",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "previousbutton": "Précédent",
+        "nextbutton": "Suivant",
+        "finishButton": "Terminer",
+        "submitButton": "Valider",
+        "textualProgress": "Question @current sur @total",
+        "jumpToQuestion": "Question %d sur %total",
+        "answeredText": "Réponse donnée",
+        "unansweredText": "Pas de réponse donnée",
+        "questionLabel": "Question",
+        "readSpeakerProgress": "Question @current sur @total",
+        "currentQuestionText": "Question en cours",
+        "navigationLabel": "Questions",
+        "questionSetInstruction": "Choisir la question à afficher"
+      },
+      "endGame": {
+        "showResultPage": false,
+        "showSolutionButton": false,
+        "showRetryButton": false,
+        "noResultMessage": "Terminé RELU",
+        "message": "Vos résultats :",
+        "scoreBarLabel": "Vous avez obtenu @finals sur @totals points",
+        "amountCorrect": "@finals bonnes réponses sur @totals",
+        "scoreHeader": "Score",
+        "skipButtonText": "Passer la vidéo",
+        "solutionButtonText": "Afficher la solution",
+        "retryButtonText": "Recommencer",
+        "finishButtonText": "Terminer",
+        "submitButtonText": "Valider",
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100,
+            "feedback": "RELU : relie chaque capitale à son pays."
+          }
+        ],
+        "showAnimations": false,
+        "skippable": false
+      },
+      "introPage": {
+        "showIntroPage": true,
+        "title": "Avant de commencer RELU",
+        "introduction": "RELU Sucrerie : relie les capitales aux pays.",
+        "startButtonText": "Commencer RELU",
+        "backgroundImageAltText": ""
+      },
+      "disableBackwardsNavigation": false,
+      "override": {
+        "checkButton": false,
+        "showSolutionButton": "on",
+        "retryButton": "on"
+      },
+      "title": "Capitales RELU",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      }
+    },
+    "annulation": true,
+    "documents": []
+  }
+]

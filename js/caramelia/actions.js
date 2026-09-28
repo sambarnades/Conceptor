@@ -13,6 +13,29 @@ import { CONFIG } from './config.js';
 import { addBotMessage } from './dom.js';
 import { t, tActivity } from './i18n.js';
 
+/** Le parcours reste piloté par son atelier : aucun appel IA ni nouveau brouillon ici. */
+export function parcoursDisponible() {
+    return Boolean(document.querySelector(CONFIG.caramelSelectors.parcoursButton));
+}
+
+export function parcoursAReprendre() {
+    return Boolean(document.querySelector(CONFIG.caramelSelectors.parcoursReprise));
+}
+
+export function ouvrirParcours() {
+    const sel = CONFIG.caramelSelectors;
+    const bouton = document.querySelector(sel.parcoursButton);
+    if (!bouton || bouton.disabled) return false;
+    bouton.click();
+    if (!document.querySelector(sel.parcoursAtelier)) return false;
+    // Le premier cadrage laisse les champs en vue ; seule la reprise d'un plan
+    // défile, via le commutateur lui-même. Ne pas déclencher un second défilement.
+    document.dispatchEvent(new CustomEvent('caramelia:close'));
+    const cible = document.querySelector(sel.parcoursCadrage) ? bouton : document.querySelector(sel.parcoursTitle);
+    cible?.focus({ preventScroll: true });
+    return true;
+}
+
 // ── Remplissage des champs principaux Caramel ──
 // `key` est l'une des clés de CONFIG.caramelSelectors (qui|quoi|niveau|nombreQuestions).
 // Centralise le couplage avec les IDs Caramel.
@@ -329,9 +352,11 @@ async function launchSingleGeneration(moduleKey, idx, total, batchIds, videoUrl,
  *
  * @returns {Promise<string[]>} IDs des notifications ajoutées pendant la chaîne
  */
-export async function launchGenerations(moduleKeys, { qui, quoi, videoUrl, backgroundImageFile } = {}) {
+export async function launchGenerations(moduleKeys, { qui, quoi, niveau, nombreQuestions, videoUrl, backgroundImageFile } = {}) {
     if (qui !== undefined) fillFormField('qui', qui);
     if (quoi !== undefined) fillFormField('quoi', quoi);
+    if (niveau !== undefined) fillFormField('niveau', niveau);
+    if (nombreQuestions != null) fillFormField('nombreQuestions', nombreQuestions);
     triggerPromptGeneration();
 
     const list = moduleKeys.map(k => '- ' + tActivity(k)).join('\n');

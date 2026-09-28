@@ -15,7 +15,7 @@
  * de la vidéo, la bande haute servant de témoin : si elle bouge, les deux passes ne sont
  * pas sur la même image et la mesure ne veut rien dire.
  *
- * Réseau requis (YouTube). Prérequis : `python3 -m http.server 8010` à la racine.
+ * Réseau requis (YouTube). Prérequis : `python3 tests/serveur-statique.py 8010` à la racine.
  * Usage : node tests/qa-manuel/h-sous-titres-youtube.mjs
  */
 import { chromium } from '../roundtrip/node_modules/playwright/index.mjs';

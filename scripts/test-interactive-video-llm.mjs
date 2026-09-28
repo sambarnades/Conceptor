@@ -1,7 +1,7 @@
 // scripts/test-interactive-video-llm.mjs
 // QA E2E de la Vidéo interactive : récupère la transcription RÉELLE d'une vidéo (réplique la cascade
 // PeerTube / PodEduc / YouTube de js/services/video-transcript.js), assemble le prompt comme Caramel,
-// appelle le VRAI LLM (proxy n8n, appels facturés) sur Mistral / Qwen / GPT-OSS, puis valide la sortie :
+// appelle le VRAI LLM (proxy n8n, appels facturés) sur Mistral / Qwen / Gemma, puis valide la sortie :
 // timestamps réels & dans la durée, marqueurs *mot* des Blanks, résidu Markdown dans les feedbacks,
 // langue des questions. Écrit les JSON dans /tmp/iv-llm-test/.
 //
@@ -25,7 +25,7 @@ const ENV = process.argv.includes('--prod') ? 'prod' : 'dev2';
 const WEBHOOK = `https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-video-transcript-${ENV}`;
 const SUBMIT = `https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/submit-${ENV}`;
 const RESULT = `https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/result-${ENV}`;
-const MODELS = ['mistral-small-4-119b', 'qwen-3.6-35b-instruct', 'gpt-oss-120b'];
+const MODELS = ['mistral-small-4-119b', 'qwen-3.8-27b', 'gemma-4-31b'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function fetchTO(url, opts = {}, to = 30000) { const c = new AbortController(); const id = setTimeout(() => c.abort(), to); try { return await fetch(url, { ...opts, signal: c.signal }); } finally { clearTimeout(id); } }
 

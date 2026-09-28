@@ -4,7 +4,7 @@
 - Ton public : [NIVEAU]
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.InteractiveBook]
-- Nombre de chapitres : Au minimum 3 chapitres || [NOMBRE_ELEMENTS] chapitres.
+- Nombre de chapitres : Au minimum 3 chapitres (3 à 50) || [NOMBRE_ELEMENTS] chapitres.
 - Structure : Chaque chapitre est une page de livre qui empile verticalement plusieurs blocs (textes, tableaux, exercices). C'est l'intérêt du Livre interactif : alterner contenu et exercices AU SEIN d'un même chapitre.
 - Richesse des chapitres : Vise 2 à 4 blocs par chapitre (ex : 1-2 paragraphes de texte + 1 exercice). Évite les chapitres à bloc unique, sauf pour un chapitre de synthèse finale.
 - Progression pédagogique : Organise les chapitres dans un ordre logique : introduction → développement → vérification → synthèse. Termine par un chapitre de synthèse avec un exercice récapitulatif.
@@ -193,3 +193,14 @@ Chaque exercice contient `library` suivi des champs décrits ci-dessous. Respect
   ]
 }
 ```
+
+
+Colonnes côte à côte facultatives pour comparer : une à quatre colonnes, contenant les mêmes blocs texte/tableau/image/exercice, sans row imbriquée. Largeurs absentes pour une répartition automatique, sinon total 100 et minimum 10 par colonne.
+```json
+{"type":"row","columns":[{"width":40,"content":[{"type":"text","text":"…"}]},{"width":60,"content":[{"type":"text","text":"…"}]}]}
+```
+
+
+Le livre généré contient de 3 à 50 chapitres. cover.enabled active la couverture ; cover.description est facultatif. progressIndicators, progressAuto et enableRetry règlent la progression et la reprise. progressAuto:false permet une validation manuelle des pages. Un média cover.media est facultatif : action native H5P.Image 1.1 ou H5P.Video 1.6, uniquement avec un média fourni par l’enseignant ; ne pas inventer de fichier ni de lien. Conserver les choix explicites, y compris false.
+
+- Respecte exactement les blocs et les textes imposés. N’ajoute pas d’exercice. Les indices sont facultatifs : omets-les si les faits fournis ne permettent pas d’en écrire un exact sans révéler la réponse.

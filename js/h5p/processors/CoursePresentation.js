@@ -270,6 +270,19 @@ function buildContentElement(type, content, layout) {
 }
 
 /**
+ * Une cellule qui n'est qu'une ellipse (« … », « ... », « *... », « ..., ... »)
+ * est une case À REMPLIR : le modèle dessine volontiers une grille à compléter
+ * (constaté sur un parcours réel, 28 sept. 2026). Affichée telle quelle, elle
+ * montrait des points de suspension, et l'astérisque d'un italique entamé. On
+ * la rend vide. Un tiret (« - », « — ») garde son sens de « néant ».
+ * @param {*} cell
+ * @returns {boolean}
+ */
+export function celluleARemplir(cell) {
+    return /^[\s*_,]*(?:…|\.{3})[\s*_.,…]*$/.test(String(cell ?? ''));
+}
+
+/**
  * Construit les params pour un élément Table H5P.
  * Exporté : réutilisé par le processeur InteractiveBook (mêmes 6 styles de tableaux).
  * @param {Object} tableData - { headers: [], rows: [[]] }
@@ -339,7 +352,7 @@ export function buildTableParams(tableData) {
         const cellStyle = (i % 2 === 1 && s.tdAlt) ? s.tdAlt : s.td;
         html += '<tr>';
         (Array.isArray(row) ? row : []).forEach(cell => {
-            html += `<td style="${cellStyle}">${formatTextToHtml(cell || '')}</td>`;
+            html += `<td style="${cellStyle}">${celluleARemplir(cell) ? '' : formatTextToHtml(cell || '')}</td>`;
         });
         html += '</tr>';
     });
@@ -727,6 +740,14 @@ export default {
      * @returns {Promise<{content: Object, dependencies: Array}>}
      */
     async process(jsonObj, helpers) {
+        if(Array.isArray(jsonObj.presentation?.slides)){
+            const content=JSON.parse(JSON.stringify(jsonObj));
+            const dependencies=[];const seen=new Set();
+            const walk=value=>{if(!value||typeof value!=='object')return;
+                if(typeof value.library==='string'){const m=/^(H5P\.[A-Za-z0-9]+) (\d+)\.(\d+)$/.exec(value.library);if(m&&!seen.has(value.library)){seen.add(value.library);dependencies.push({machineName:m[1],majorVersion:+m[2],minorVersion:+m[3]});}}
+                Object.values(value).forEach(walk);};walk(content);
+            return {content,dependencies};
+        }
         debugLog('CoursePresentation', 'Début du traitement', { slidesCount: jsonObj.slides?.length });
 
         // Healing LaTeX spécifique : envelopper ^{}, _{}, \circ etc. avant traitement
@@ -756,6 +777,7 @@ export default {
             globalBgSelector.fillGlobalBackground = jsonObj.globalBackgroundColor || DEFAULTS.globalBackgroundColor;
         }
 
+        if(jsonObj.globalBackgroundImage?.path)globalBgSelector.imageGlobalBackground=jsonObj.globalBackgroundImage;
         // Assembler le content.json final — prioriser les valeurs utilisateur sur les defaults
         const content = {
             // Conserver le titre pour les métadonnées H5P (h5p-creator.js l'utilise pour h5p.json)
@@ -763,9 +785,9 @@ export default {
             presentation: {
                 slides: processedSlides,
                 keywordListEnabled: jsonObj.keywordListEnabled ?? DEFAULTS.keywordListEnabled,
-                keywordListAlwaysShow: DEFAULTS.keywordListAlwaysShow,
-                keywordListAutoHide: DEFAULTS.keywordListAutoHide,
-                keywordListOpacity: DEFAULTS.keywordListOpacity,
+                keywordListAlwaysShow: jsonObj.keywordListAlwaysShow ?? DEFAULTS.keywordListAlwaysShow,
+                keywordListAutoHide: jsonObj.keywordListAutoHide ?? DEFAULTS.keywordListAutoHide,
+                keywordListOpacity: jsonObj.keywordListOpacity ?? DEFAULTS.keywordListOpacity,
                 globalBackgroundSelector: globalBgSelector
             },
             override: {
@@ -773,10 +795,10 @@ export default {
                 hideSummarySlide: jsonObj.hideSummarySlide ?? DEFAULTS.hideSummarySlide,
                 showSolutionButton: jsonObj.enableSolutionsButton === false ? "off" : "on",
                 retryButton: jsonObj.enableRetry === false ? "off" : "on",
-                summarySlideSolutionButton: true,
-                summarySlideRetryButton: true
+                summarySlideSolutionButton: jsonObj.summarySlideSolutionButton ?? true,
+                summarySlideRetryButton: jsonObj.summarySlideRetryButton ?? true,
+                enablePrintButton: jsonObj.enablePrintButton ?? jsonObj.override?.enablePrintButton ?? false
             },
-            enablePrintButton: jsonObj.enablePrintButton ?? false,
             l10n: buildL10n()
         };
 

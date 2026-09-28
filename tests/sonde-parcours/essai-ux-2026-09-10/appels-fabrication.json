@@ -1,0 +1,58 @@
+[
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 4206,
+    "completionTokens": 851
+  },
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 3709,
+    "completionTokens": 415
+  },
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 5436,
+    "completionTokens": 4646
+  },
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 3891,
+    "completionTokens": 286
+  },
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 4277,
+    "completionTokens": 682
+  },
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 4515,
+    "completionTokens": 1138
+  },
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 4319,
+    "completionTokens": 632
+  },
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 4278,
+    "completionTokens": 1053
+  }
+]

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="138" moduleid="23624" modulename="data" contextid="57782">
+  <data id="138">
+    <name>Base de données : fiches d’observation</name>
+    <intro>&lt;p&gt;Chaque élève ajoute une fiche d’observation.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <comments>0</comments>
+    <timeavailablefrom>0</timeavailablefrom>
+    <timeavailableto>0</timeavailableto>
+    <timeviewfrom>0</timeviewfrom>
+    <timeviewto>0</timeviewto>
+    <requiredentries>0</requiredentries>
+    <requiredentriestoview>0</requiredentriestoview>
+    <maxentries>0</maxentries>
+    <rssarticles>0</rssarticles>
+    <singletemplate>$@NULL@$</singletemplate>
+    <listtemplate>$@NULL@$</listtemplate>
+    <listtemplateheader>$@NULL@$</listtemplateheader>
+    <listtemplatefooter>$@NULL@$</listtemplatefooter>
+    <addtemplate>$@NULL@$</addtemplate>
+    <rsstemplate>$@NULL@$</rsstemplate>
+    <rsstitletemplate>$@NULL@$</rsstitletemplate>
+    <csstemplate>$@NULL@$</csstemplate>
+    <jstemplate>$@NULL@$</jstemplate>
+    <asearchtemplate>$@NULL@$</asearchtemplate>
+    <approval>0</approval>
+    <manageapproved>1</manageapproved>
+    <scale>100</scale>
+    <assessed>0</assessed>
+    <assesstimestart>0</assesstimestart>
+    <assesstimefinish>0</assesstimefinish>
+    <defaultsort>0</defaultsort>
+    <defaultsortdir>0</defaultsortdir>
+    <editany>0</editany>
+    <notification>0</notification>
+    <timemodified>1790541624</timemodified>
+    <config>$@NULL@$</config>
+    <completionentries>1</completionentries>
+    <fields>
+      <field id="1264">
+        <type>text</type>
+        <name>lieu</name>
+        <description>Lieu de l’observation</description>
+        <required>0</required>
+        <param1></param1>
+        <param2></param2>
+        <param3></param3>
+        <param4>$@NULL@$</param4>
+        <param5>$@NULL@$</param5>
+        <param6>$@NULL@$</param6>
+        <param7>$@NULL@$</param7>
+        <param8>$@NULL@$</param8>
+        <param9>$@NULL@$</param9>
+        <param10>$@NULL@$</param10>
+      </field>
+    </fields>
+    <records>
+    </records>
+    <recordstags>
+    </recordstags>
+  </data>
+</activity>

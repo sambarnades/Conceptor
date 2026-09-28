@@ -1,0 +1,486 @@
+[
+  {
+    "id": "mots-croises-fixes",
+    "contenu": {
+      "words": [
+        {
+          "answer": "PARIS",
+          "clue": "Capitale de la France",
+          "fixWord": true,
+          "row": 1,
+          "column": 1,
+          "orientation": "across",
+          "extraClue": {
+            "params": {
+              "text": "<p>RELU</p>"
+            },
+            "library": "H5P.AdvancedText 1.1",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Text Sans titre"
+            },
+            "subContentId": "ca50bf1a-66ed-4010-a089-98d64438d990"
+          }
+        },
+        {
+          "answer": "ROME",
+          "clue": "Capitale de l’Italie",
+          "fixWord": true,
+          "row": 1,
+          "column": 3,
+          "orientation": "down"
+        }
+      ],
+      "taskDescription": "Retrouve les capitales. RELU Sucrerie",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": "Utilise les lettres communes aux capitales."
+        }
+      ],
+      "behaviour": {
+        "enableInstantFeedback": false,
+        "scoreWords": true,
+        "applyPenalties": false,
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "keepCorrectAnswers": true
+      },
+      "l10n": {
+        "across": "Horizontal",
+        "down": "Vertical",
+        "checkAnswer": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "extraClue": "Indice RELU",
+        "closeWindow": "Fermer",
+        "submitAnswer": "Valider",
+        "couldNotGenerateCrossword": "Impossible de générer les mots-croisés avec les mots saisis. Veuillez réessayer avec moins de mots ou utiliser des mots qui ont plus de caractères en commun.",
+        "couldNotGenerateCrosswordTooFewWords": "Impossible de générer les mots-croisés. Vous devez saisir au moins deux mots.",
+        "probematicWords": "Certains mots n&#039;ont pas pu être placés. Mot(s) problématique(s): @words"
+      },
+      "a11y": {
+        "crosswordGrid": "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d&#039;entrée au lieu de la grille.",
+        "column": "Colonne",
+        "row": "Ligne",
+        "across": "Horizontal",
+        "down": "Vertical",
+        "empty": "Vide",
+        "resultFor": "Résultat pour : @clue",
+        "correct": "Réponse correcte",
+        "wrong": "Faux",
+        "point": "point",
+        "solutionFor": "Pour @clue, la solution est : @solution",
+        "extraClueFor": "Afficher l&#039;indice supplémentaire pour @clue",
+        "letterSevenOfNine": "Lettre @position de @length",
+        "lettersWord": "Mot de @length lettres",
+        "check": "Vérifier les caractères. Les réponses seront marquées correctes, incorrectes ou sans réponse.",
+        "showSolution": "Afficher la solution. Le mot-croisé sera ensuite rempli avec la solution correcte.",
+        "retry": "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l&#039;activité.",
+        "yourResult": "Vous avez obtenu @score sur @total points."
+      },
+      "theme": {
+        "backgroundColor": "#173354",
+        "gridColor": "#000000",
+        "cellBackgroundColor": "#ffffff",
+        "cellColor": "#000000",
+        "clueIdColor": "#606060",
+        "cellBackgroundColorHighlight": "#3e8de8",
+        "cellColorHighlight": "#ffffff",
+        "clueIdColorHighlight": "#e0e0e0"
+      },
+      "solutionWord": "ROME",
+      "title": "Capitales"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "mots-croises-image",
+    "contenu": {
+      "words": [
+        {
+          "answer": "PARIS",
+          "clue": "Capitale de la France",
+          "fixWord": false,
+          "row": 1,
+          "column": 1,
+          "orientation": "across",
+          "extraClue": {
+            "params": {
+              "text": "<p>RELU</p>"
+            },
+            "library": "H5P.AdvancedText 1.1",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Text Sans titre"
+            },
+            "subContentId": "ca50bf1a-66ed-4010-a089-98d64438d990"
+          }
+        },
+        {
+          "answer": "ROME",
+          "clue": "Capitale de l’Italie",
+          "fixWord": false,
+          "row": 1,
+          "column": 3,
+          "orientation": "down",
+          "extraClue": {
+            "library": "H5P.Image 1.1",
+            "params": {
+              "file": {
+                "path": "images/recette-zones.png",
+                "mime": "image/png",
+                "width": 800,
+                "height": 450,
+                "copyright": {
+                  "license": "PD",
+                  "version": "CC0 1.0",
+                  "title": "Trois zones de recette"
+                }
+              },
+              "alt": "Zones un, deux et trois",
+              "decorative": false,
+              "contentName": "Image",
+              "expandImage": "Agrandir l&#039;image",
+              "minimizeImage": "Réduire l&#039;image"
+            },
+            "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+            "metadata": {
+              "title": "Image de recette",
+              "license": "PD",
+              "contentType": "Image"
+            }
+          }
+        }
+      ],
+      "taskDescription": "Retrouve les capitales. RELU Sucrerie",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": "Utilise les lettres communes aux capitales."
+        }
+      ],
+      "behaviour": {
+        "enableInstantFeedback": false,
+        "scoreWords": false,
+        "applyPenalties": false,
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "keepCorrectAnswers": true
+      },
+      "l10n": {
+        "across": "Horizontal",
+        "down": "Vertical",
+        "checkAnswer": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "extraClue": "Indice RELU",
+        "closeWindow": "Fermer",
+        "submitAnswer": "Valider",
+        "couldNotGenerateCrossword": "Impossible de générer les mots-croisés avec les mots saisis. Veuillez réessayer avec moins de mots ou utiliser des mots qui ont plus de caractères en commun.",
+        "couldNotGenerateCrosswordTooFewWords": "Impossible de générer les mots-croisés. Vous devez saisir au moins deux mots.",
+        "probematicWords": "Certains mots n&#039;ont pas pu être placés. Mot(s) problématique(s): @words"
+      },
+      "a11y": {
+        "crosswordGrid": "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d&#039;entrée au lieu de la grille.",
+        "column": "Colonne",
+        "row": "Ligne",
+        "across": "Horizontal",
+        "down": "Vertical",
+        "empty": "Vide",
+        "resultFor": "Résultat pour : @clue",
+        "correct": "Réponse correcte",
+        "wrong": "Faux",
+        "point": "point",
+        "solutionFor": "Pour @clue, la solution est : @solution",
+        "extraClueFor": "Afficher l&#039;indice supplémentaire pour @clue",
+        "letterSevenOfNine": "Lettre @position de @length",
+        "lettersWord": "Mot de @length lettres",
+        "check": "Vérifier les caractères. Les réponses seront marquées correctes, incorrectes ou sans réponse.",
+        "showSolution": "Afficher la solution. Le mot-croisé sera ensuite rempli avec la solution correcte.",
+        "retry": "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l&#039;activité.",
+        "yourResult": "Vous avez obtenu @score sur @total points."
+      },
+      "theme": {
+        "backgroundColor": "#173354",
+        "gridColor": "#000000",
+        "cellBackgroundColor": "#ffffff",
+        "cellColor": "#000000",
+        "clueIdColor": "#606060",
+        "cellBackgroundColorHighlight": "#3e8de8",
+        "cellColorHighlight": "#ffffff",
+        "clueIdColorHighlight": "#e0e0e0",
+        "backgroundImage": {
+          "path": "images/recette-zones.png",
+          "mime": "image/png",
+          "width": 800,
+          "height": 450,
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          }
+        }
+      },
+      "solutionWord": "ROME",
+      "title": "Capitales"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "mots-croises-audio",
+    "contenu": {
+      "words": [
+        {
+          "answer": "PARIS",
+          "clue": "Capitale de la France",
+          "fixWord": false,
+          "row": 1,
+          "column": 1,
+          "orientation": "across",
+          "extraClue": {
+            "params": {
+              "text": "<p>RELU</p>"
+            },
+            "library": "H5P.AdvancedText 1.1",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Text Sans titre"
+            },
+            "subContentId": "ca50bf1a-66ed-4010-a089-98d64438d990"
+          }
+        },
+        {
+          "answer": "ROME",
+          "clue": "Capitale de l’Italie",
+          "fixWord": true,
+          "row": 1,
+          "column": 3,
+          "orientation": "down",
+          "extraClue": {
+            "library": "H5P.Audio 1.5",
+            "params": {
+              "playerMode": "minimalistic",
+              "fitToWrapper": false,
+              "controls": true,
+              "autoplay": false,
+              "files": [
+                {
+                  "path": "audios/audio-d913246e.wav",
+                  "mime": "audio/wav"
+                }
+              ]
+            },
+            "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+            "metadata": {
+              "title": "",
+              "license": "U",
+              "contentType": "Image"
+            }
+          }
+        }
+      ],
+      "taskDescription": "Retrouve les capitales. RELU Sucrerie",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": "Utilise les lettres communes aux capitales."
+        }
+      ],
+      "behaviour": {
+        "enableInstantFeedback": false,
+        "scoreWords": false,
+        "applyPenalties": false,
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "keepCorrectAnswers": true
+      },
+      "l10n": {
+        "across": "Horizontal",
+        "down": "Vertical",
+        "checkAnswer": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "extraClue": "Indice RELU",
+        "closeWindow": "Fermer",
+        "submitAnswer": "Valider",
+        "couldNotGenerateCrossword": "Impossible de générer les mots-croisés avec les mots saisis. Veuillez réessayer avec moins de mots ou utiliser des mots qui ont plus de caractères en commun.",
+        "couldNotGenerateCrosswordTooFewWords": "Impossible de générer les mots-croisés. Vous devez saisir au moins deux mots.",
+        "probematicWords": "Certains mots n&#039;ont pas pu être placés. Mot(s) problématique(s): @words"
+      },
+      "a11y": {
+        "crosswordGrid": "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d&#039;entrée au lieu de la grille.",
+        "column": "Colonne",
+        "row": "Ligne",
+        "across": "Horizontal",
+        "down": "Vertical",
+        "empty": "Vide",
+        "resultFor": "Résultat pour : @clue",
+        "correct": "Réponse correcte",
+        "wrong": "Faux",
+        "point": "point",
+        "solutionFor": "Pour @clue, la solution est : @solution",
+        "extraClueFor": "Afficher l&#039;indice supplémentaire pour @clue",
+        "letterSevenOfNine": "Lettre @position de @length",
+        "lettersWord": "Mot de @length lettres",
+        "check": "Vérifier les caractères. Les réponses seront marquées correctes, incorrectes ou sans réponse.",
+        "showSolution": "Afficher la solution. Le mot-croisé sera ensuite rempli avec la solution correcte.",
+        "retry": "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l&#039;activité.",
+        "yourResult": "Vous avez obtenu @score sur @total points."
+      },
+      "theme": {
+        "backgroundColor": "#173354",
+        "gridColor": "#000000",
+        "cellBackgroundColor": "#ffffff",
+        "cellColor": "#000000",
+        "clueIdColor": "#606060",
+        "cellBackgroundColorHighlight": "#3e8de8",
+        "cellColorHighlight": "#ffffff",
+        "clueIdColorHighlight": "#e0e0e0"
+      },
+      "solutionWord": "ROME",
+      "title": "Capitales"
+    },
+    "annulation": true,
+    "documents": []
+  },
+  {
+    "id": "mots-croises-video",
+    "contenu": {
+      "words": [
+        {
+          "answer": "PARIS",
+          "clue": "Capitale de la France",
+          "fixWord": false,
+          "row": 1,
+          "column": 1,
+          "orientation": "across",
+          "extraClue": {
+            "params": {
+              "text": "<p>RELU</p>"
+            },
+            "library": "H5P.AdvancedText 1.1",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Text Sans titre"
+            },
+            "subContentId": "ca50bf1a-66ed-4010-a089-98d64438d990"
+          }
+        },
+        {
+          "answer": "ROME",
+          "clue": "Capitale de l’Italie",
+          "fixWord": true,
+          "row": 1,
+          "column": 3,
+          "orientation": "down",
+          "extraClue": {
+            "library": "H5P.Video 1.6",
+            "params": {
+              "visuals": {
+                "controls": true,
+                "fit": true
+              },
+              "playback": {
+                "autoplay": false,
+                "loop": false
+              },
+              "sources": [
+                {
+                  "path": "videos/video-f2c92659.webm",
+                  "mime": "video/webm"
+                }
+              ]
+            },
+            "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+            "metadata": {
+              "title": "",
+              "license": "U",
+              "contentType": "Image"
+            }
+          }
+        }
+      ],
+      "taskDescription": "Retrouve les capitales. RELU Sucrerie",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": "Utilise les lettres communes aux capitales."
+        }
+      ],
+      "behaviour": {
+        "enableInstantFeedback": false,
+        "scoreWords": false,
+        "applyPenalties": false,
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "keepCorrectAnswers": true
+      },
+      "l10n": {
+        "across": "Horizontal",
+        "down": "Vertical",
+        "checkAnswer": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "extraClue": "Indice RELU",
+        "closeWindow": "Fermer",
+        "submitAnswer": "Valider",
+        "couldNotGenerateCrossword": "Impossible de générer les mots-croisés avec les mots saisis. Veuillez réessayer avec moins de mots ou utiliser des mots qui ont plus de caractères en commun.",
+        "couldNotGenerateCrosswordTooFewWords": "Impossible de générer les mots-croisés. Vous devez saisir au moins deux mots.",
+        "probematicWords": "Certains mots n&#039;ont pas pu être placés. Mot(s) problématique(s): @words"
+      },
+      "a11y": {
+        "crosswordGrid": "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d&#039;entrée au lieu de la grille.",
+        "column": "Colonne",
+        "row": "Ligne",
+        "across": "Horizontal",
+        "down": "Vertical",
+        "empty": "Vide",
+        "resultFor": "Résultat pour : @clue",
+        "correct": "Réponse correcte",
+        "wrong": "Faux",
+        "point": "point",
+        "solutionFor": "Pour @clue, la solution est : @solution",
+        "extraClueFor": "Afficher l&#039;indice supplémentaire pour @clue",
+        "letterSevenOfNine": "Lettre @position de @length",
+        "lettersWord": "Mot de @length lettres",
+        "check": "Vérifier les caractères. Les réponses seront marquées correctes, incorrectes ou sans réponse.",
+        "showSolution": "Afficher la solution. Le mot-croisé sera ensuite rempli avec la solution correcte.",
+        "retry": "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l&#039;activité.",
+        "yourResult": "Vous avez obtenu @score sur @total points."
+      },
+      "theme": {
+        "backgroundColor": "#173354",
+        "gridColor": "#000000",
+        "cellBackgroundColor": "#ffffff",
+        "cellColor": "#000000",
+        "clueIdColor": "#606060",
+        "cellBackgroundColorHighlight": "#3e8de8",
+        "cellColorHighlight": "#ffffff",
+        "clueIdColorHighlight": "#e0e0e0"
+      },
+      "solutionWord": "ROME",
+      "title": "Capitales"
+    },
+    "annulation": true,
+    "documents": []
+  }
+]

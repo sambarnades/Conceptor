@@ -1,0 +1,122 @@
+{
+  "numero": 26,
+  "module": "InteractiveBook",
+  "recu": true,
+  "fichier_telechargement": "26-InteractiveBook.h5p",
+  "sha256_source": "6ded165c72f158b7f13301f26246a996e2ac4d9adcb43951e21117e3cf14cce7",
+  "sha256_retour": "97e411129f2fc4d79294377813e42ee5c78d7495265a3279f2c61a33e8e17815",
+  "source_comparee": "a-importer/26-InteractiveBook.h5p",
+  "titre": "RECETTE 26 — Livre interactif",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "chapters[0].metadata.title"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5P.AdvancedText",
+      "version": "1.1.14"
+    },
+    {
+      "nom": "H5P.Audio",
+      "version": "1.5.29"
+    },
+    {
+      "nom": "H5P.Column",
+      "version": "1.22.0"
+    },
+    {
+      "nom": "H5P.Components",
+      "version": "1.0.97"
+    },
+    {
+      "nom": "H5P.Dialogcards",
+      "version": "1.9.40"
+    },
+    {
+      "nom": "H5PEditor.ColorSelector",
+      "version": "1.3.1"
+    },
+    {
+      "nom": "H5PEditor.RangeList",
+      "version": "1.0.13"
+    },
+    {
+      "nom": "H5PEditor.ShowWhen",
+      "version": "1.0.9"
+    },
+    {
+      "nom": "H5PEditor.SummaryTextualEditor",
+      "version": "1.1.12"
+    },
+    {
+      "nom": "H5PEditor.TableList",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "H5PEditor.VerticalTabs",
+      "version": "1.3.14"
+    },
+    {
+      "nom": "H5P.FontIcons",
+      "version": "1.0.11"
+    },
+    {
+      "nom": "H5P.Image",
+      "version": "1.1.33"
+    },
+    {
+      "nom": "H5P.InteractiveBook",
+      "version": "1.15.0"
+    },
+    {
+      "nom": "H5P.JoubelUI",
+      "version": "1.3.45"
+    },
+    {
+      "nom": "H5P.Question",
+      "version": "1.5.53"
+    },
+    {
+      "nom": "H5P.Row",
+      "version": "1.3.0"
+    },
+    {
+      "nom": "H5P.RowColumn",
+      "version": "1.3.0"
+    },
+    {
+      "nom": "H5P.Summary",
+      "version": "1.10.32"
+    },
+    {
+      "nom": "H5P.Transition",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "jQuery.ui",
+      "version": "1.10.22"
+    }
+  ],
+  "medias_sources": [
+    {
+      "chemin": "content/audios/audio-4695cd14.wav",
+      "identique_dans_retour": true
+    },
+    {
+      "chemin": "content/images/image-64f40959.jpg",
+      "identique_dans_retour": true
+    }
+  ],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 6,
+    "normalisation_html": 4,
+    "ajout_natif": 7,
+    "retrait_natif": 2,
+    "taille_liste": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "description": "Écris la capitale avant de retourner la carte.",
+  "cards": [
+    {
+      "text": "France",
+      "answer": "Paris",
+      "tip": "Pense à la Seine.",
+      "image": {
+        "path": "images/drapeau.png",
+        "mime": "image/png",
+        "width": 120,
+        "height": 80,
+        "copyright": {
+          "title": "Drapeau tricolore",
+          "author": "Atelier de test",
+          "license": "CC BY",
+          "version": "4.0"
+        }
+      },
+      "imageAltText": ""
+    },
+    {
+      "text": "Italie",
+      "answer": "Rome",
+      "tip": ""
+    }
+  ],
+  "progressText": "Carte @card sur @total",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "checkAnswerText": "Vérifier",
+  "showSolutionsRequiresInput": false,
+  "defaultAnswerText": "Votre réponse",
+  "correctAnswerText": "Bonne réponse",
+  "incorrectAnswerText": "Mauvaise réponse",
+  "showSolutionText": "Réponse correcte",
+  "results": "Résultats",
+  "ofCorrect": "@score réponses correctes sur un total de @total",
+  "showResults": "Montrer les résultats",
+  "answerShortText": "R :",
+  "retry": "Recommencer",
+  "caseSensitive": false,
+  "cardAnnouncement": "Réponse incorrecte. La réponse correcte était @answer",
+  "correctAnswerAnnouncement": "@answer est correct.",
+  "pageAnnouncement": "Page @current sur @total",
+  "randomCards": false
+}

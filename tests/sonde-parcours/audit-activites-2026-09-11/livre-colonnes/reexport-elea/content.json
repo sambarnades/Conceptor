@@ -1,0 +1,294 @@
+{
+  "showCoverPage": false,
+  "chapters": [
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "bd116485-4881-4cc0-b027-1b13b774fb53",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Observer puis répondre"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "library": "H5P.Row 1.3",
+              "subContentId": "3c3912b6-6d2c-4b3c-8ec1-9247a92557f9",
+              "metadata": {
+                "title": "Row Sans titre",
+                "license": "U",
+                "contentType": "Row"
+              },
+              "params": {
+                "columns": [
+                  {
+                    "width": 45,
+                    "content": {
+                      "library": "H5P.RowColumn 1.3",
+                      "subContentId": "3a1db742-ccec-4b36-b941-44daddd7310f",
+                      "metadata": {
+                        "contentType": "Column",
+                        "license": "U",
+                        "title": "Chapitre"
+                      },
+                      "params": {
+                        "content": [
+                          {
+                            "library": "H5P.AdvancedText 1.1",
+                            "subContentId": "742f8281-302e-46cd-b307-347397fba13d",
+                            "metadata": {
+                              "contentType": "Text",
+                              "license": "U",
+                              "title": "Texte"
+                            },
+                            "params": {
+                              "text": "Drapeau relu dans Sucrerie."
+                            }
+                          },
+                          {
+                            "library": "H5P.Image 1.1",
+                            "subContentId": "e3528c44-64cd-449e-be59-be16c6c76530",
+                            "metadata": {
+                              "contentType": "Image",
+                              "license": "U",
+                              "title": "Image"
+                            },
+                            "params": {
+                              "file": {
+                                "path": "images/image-64f40959.jpg",
+                                "mime": "image/jpeg",
+                                "width": 120,
+                                "height": 80,
+                                "copyright": {
+                                  "license": "U"
+                                }
+                              },
+                              "alt": "Drapeau tricolore",
+                              "decorative": false,
+                              "contentName": "Image",
+                              "expandImage": "Agrandir l&#039;image",
+                              "minimizeImage": "Réduire l&#039;image"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "width": 55,
+                    "content": {
+                      "library": "H5P.RowColumn 1.3",
+                      "subContentId": "24b91af3-0e9b-4545-815c-8f7949083fb4",
+                      "metadata": {
+                        "contentType": "Column",
+                        "license": "U",
+                        "title": "Chapitre"
+                      },
+                      "params": {
+                        "content": [
+                          {
+                            "subContentId": "88e8553d-1b33-4d6b-a8cc-275316cb1326",
+                            "library": "H5P.Dialogcards 1.9",
+                            "metadata": {
+                              "title": "Exercice",
+                              "contentType": "Dialog Cards",
+                              "license": "U"
+                            },
+                            "params": {
+                              "description": "Associe le pays et sa capitale.",
+                              "dialogs": [
+                                {
+                                  "text": "France",
+                                  "answer": "Paris, en France.",
+                                  "tips": {
+                                    "front": "Pense à la Seine.",
+                                    "back": "Capitale française."
+                                  },
+                                  "audio": [
+                                    {
+                                      "path": "audios/audio-4695cd14.wav",
+                                      "mime": "audio/wav",
+                                      "copyright": {
+                                        "license": "U"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "behaviour": {
+                                "enableRetry": true,
+                                "disableBackwardsNavigation": false,
+                                "scaleTextNotCard": true,
+                                "randomCards": false,
+                                "maxProficiency": 3,
+                                "quickProgression": true
+                              },
+                              "answer": "Retourner",
+                              "next": "Suivant",
+                              "prev": "Précédent",
+                              "retry": "Recommencer",
+                              "progressText": "Carte @card sur @total",
+                              "cardFrontLabel": "Recto de la carte",
+                              "cardBackLabel": "Verso de la carte",
+                              "tipButtonLabel": "Indice",
+                              "audioNotSupported": "Votre navigateur ne supporte pas ce format audio",
+                              "mode": "repetition",
+                              "correctAnswer": "J&#039;ai eu bon !",
+                              "incorrectAnswer": "Je me suis trompé",
+                              "round": "Manche @round",
+                              "cardsLeft": "Cartes restantes : @number",
+                              "nextRound": "Passer à la manche @round",
+                              "startOver": "Recommencer",
+                              "showSummary": "Suivant",
+                              "summary": "Résumé",
+                              "summaryCardsRight": "Cartes que vous avez réussies :",
+                              "summaryCardsWrong": "Cartes que vous avez manquées :",
+                              "summaryCardsNotShown": "Cartes non montrées :",
+                              "summaryOverallScore": "Score global",
+                              "summaryCardsCompleted": "Cartes que vous avez apprises :",
+                              "summaryCompletedRounds": "Manches terminées :",
+                              "summaryAllDone": "Bien joué ! Vous avez réussi toutes les @cards cartes @max fois de suite !",
+                              "confirmStartingOver": {
+                                "header": "Terminer ?",
+                                "body": "Êtes-vous sûr de vouloir terminer ?",
+                                "cancelLabel": "Annuler",
+                                "confirmLabel": "Terminer"
+                              },
+                              "title": ""
+                            }
+                          },
+                          {
+                            "subContentId": "2bffcdcf-87b7-46ef-939f-504309ef177c",
+                            "library": "H5P.Summary 1.10",
+                            "metadata": {
+                              "title": "Exercice",
+                              "contentType": "Summary",
+                              "license": "U"
+                            },
+                            "params": {
+                              "intro": "Repère le pays.",
+                              "summaries": [
+                                {
+                                  "summary": [
+                                    "Paris est en France.",
+                                    "Paris est en Italie."
+                                  ],
+                                  "tip": "Observe les trois couleurs.",
+                                  "subContentId": "ada2babf-df1b-4d81-9f37-0a1fd23b471f"
+                                }
+                              ],
+                              "overallFeedback": [
+                                {
+                                  "from": 0,
+                                  "to": 50,
+                                  "feedback": ""
+                                },
+                                {
+                                  "from": 51,
+                                  "to": 100,
+                                  "feedback": ""
+                                }
+                              ],
+                              "solvedLabel": "Progression :",
+                              "scoreLabel": "Mauvaises réponses :",
+                              "resultLabel": "Votre résultat",
+                              "labelCorrect": "Correct.",
+                              "labelIncorrect": "Incorrect ! Veuillez réessayer.",
+                              "labelCorrectAnswers": "Réponses correctes.",
+                              "tipButtonLabel": "Indice",
+                              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                              "progressText": "Progression :num sur :total",
+                              "alternativeIncorrectLabel": "Incorrect"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "a9fff561-a935-4053-9c03-6a69c6ef8eb5",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Bilan"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "42978c2c-e026-4853-8c2c-a7f3ea04d820",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Texte"
+              },
+              "params": {
+                "text": "Explique ton choix."
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    }
+  ],
+  "behaviour": {
+    "baseColor": "#1768c4",
+    "defaultTableOfContents": true,
+    "progressIndicators": true,
+    "progressAuto": true,
+    "displaySummary": true,
+    "enableRetry": true
+  },
+  "read": "Lire",
+  "displayTOC": "Afficher la table des matières",
+  "hideTOC": "Masquer la table des matières",
+  "nextPage": "Page suivante",
+  "previousPage": "Page précédente",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "page": "Page",
+  "chapterCompleted": "Page terminée !",
+  "partCompleted": "@pages sur @total terminées",
+  "incompleteChapter": "Page incomplète",
+  "navigateToTop": "Aller en haut",
+  "markAsFinished": "J&#039;ai terminé cette page",
+  "fullscreen": "Plein écran",
+  "exitFullscreen": "Quitter le plein écran",
+  "bookProgressSubtext": "@count sur @total pages",
+  "interactionsProgressSubtext": "@count sur @total interactions",
+  "submitReport": "Soumettre le rapport",
+  "restartLabel": "Recommencer",
+  "summaryHeader": "Résumé",
+  "allInteractions": "Toutes les interactions",
+  "unansweredInteractions": "Interactions sans réponse",
+  "scoreText": "@score / @maxscore",
+  "leftOutOfTotalCompleted": "@left sur @max interactions terminées",
+  "noInteractions": "Aucune interaction",
+  "score": "Score",
+  "summaryAndSubmit": "Résumé &amp; envoi",
+  "noChapterInteractionBoldText": "Vous n&#039;avez interagi avec aucune page.",
+  "noChapterInteractionText": "Vous devez interagir avec au moins une page avant de voir le résumé.",
+  "yourAnswersAreSubmittedForReview": "Vos réponses ont été soumises pour évaluation !",
+  "bookProgress": "Progression du livre",
+  "interactionsProgress": "Progression des interactions",
+  "totalScoreLabel": "Score total",
+  "a11y": {
+    "progress": "Page @page sur @total.",
+    "menu": "Afficher/masquer le menu de navigation"
+  },
+  "bookCover": {
+    "coverDescription": "<p style=\"text-align: center;\"></p>"
+  }
+}

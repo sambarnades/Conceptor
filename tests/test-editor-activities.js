@@ -183,8 +183,6 @@ const PERTES_ASSUMEES = [
       raison: 'la grille n\'accepte que des lettres : espaces retirés, LaTeX converti (\\(\\pi\\) → PI)' },
     { cle: 'FindTheWords', chemin: /^wordList$/,
       raison: 'grille de lettres : les mots non alphabétiques (LaTeX, symboles) sont retirés' },
-    { cle: 'InteractiveVideo', chemin: /^videoSource\.type$/,
-      raison: 'le type de source est redérivé de l\'URL à l\'export' },
     { cle: 'FindTheHotspot', chemin: /^hotspots\[\]\.[xy]$/,
       raison: 'coordonnées converties du CENTRE (éditeur) vers le coin haut-gauche (H5P)' },
     { cle: 'FindMultipleHotspots', chemin: /^hotspots\[\]\.[xy]$/,
@@ -583,6 +581,124 @@ export async function runAllTests() {
     await loadTranslations('fr');
     assert(t('editor_title') !== 'editor_title', 'Locale fr chargée');
 
+    group('Vidéo native');
+    {
+        const {prepareNativeVideoSchema,serializeNativeVideo}=await import('../js/editor/native-presentation-schema.js');
+        const schema=await prepareNativeVideoSchema(new URL('../js/vendor/h5p-libs/',import.meta.url).href);
+        const native=await fetch(new URL('./sonde-parcours/audit-activites-2026-09-11/lot-utilisateur-26/retours-elea/InteractiveVideo/content.json',import.meta.url)).then(r=>r.json());
+        assertEqual(detectContentType(native).moduleKey,'InteractiveVideo','Vidéo native détectée');
+        assertEqual(serializeNativeVideo(native,native),native,'Vidéo native sans retouche conservée');
+        const item=schema.sections.find(s=>s.id==='interactions').fields['interactiveVideo.assets.interactions'].itemSchema;
+        assert(Object.keys(item.action.schema.params.schemas).length===18,'Les 18 interactions natives ont leur formulaire');
+        const empty=structuredClone(native);empty.interactiveVideo.assets.interactions[0].adaptivity.wrong.seekTo=null;empty.override.startVideoAt=null;empty.override.showSolutionButton='';
+        const saved=serializeNativeVideo(empty,native);
+        assert(!('seekTo' in saved.interactiveVideo.assets.interactions[0].adaptivity.wrong)&&!('startVideoAt' in saved.override),'Valeurs vides retirées sans saut fantôme');
+        assert(!('showSolutionButton' in saved.override),'Option héritée non forcée');
+        const invalid=structuredClone(native);invalid.interactiveVideo.assets.interactions[0].duration={from:5,to:2};
+        assert(getValidationErrors(invalid,schema).some(e=>e.path.endsWith('.duration')),'Durée inversée refusée');
+        const {processH5PContent}=await import('../js/h5p/processors/index.js');
+        const processed=await processH5PContent('InteractiveVideo',{title:'Essai',videoSource:{url:'https://example.invalid/video.mp4'},interactions:[],override:{retryButton:'off',autoplay:false},bookmarks:[{time:2,label:'Repère'}],endscreens:[{time:9,label:'Fin'}],startScreenOptions:{hideStartTitle:true},summary:{statements:[['Oui','Non']],displayAt:0}});
+        assert(processed.content.override.retryButton==='off'&&processed.content.interactiveVideo.video.startScreenOptions.hideStartTitle,'Options explicites du modèle généré respectées');
+        assert(processed.content.interactiveVideo.assets.bookmarks[0].time===2&&processed.content.interactiveVideo.assets.endscreens[0].time===9&&processed.content.interactiveVideo.summary.displayAt===0,'Signets, écran final et résumé à zéro conservés');
+        const {formatContentForDocument}=await import('../js/export/document-formatter.js');
+        const action=(library,params)=>({duration:{from:2,to:4},action:{library,params}});
+        const document=await formatContentForDocument('InteractiveVideo',{interactiveVideo:{video:{},assets:{interactions:[action('H5P.Text 1.1',{text:'Annotation RELU'}),action('H5P.GoToQuestion 1.3',{text:'Choisis',choices:[{text:'Revoir',goTo:1}]}),action('H5P.FreeTextQuestion 1.0',{question:'Explique ton choix'})]}}});
+        assert(JSON.stringify(document).includes('Annotation RELU')&&JSON.stringify(document).includes('Revoir')&&JSON.stringify(document).includes('Explique ton choix')&&!document.sections.some(s=>s.style==='code'),'Interactions textuelles imprimées sans JSON technique');
+    }
+
+    group('Livre natif');
+    {
+        const {prepareNativeBookSchema,serializeNativeBook}=await import('../js/editor/native-presentation-schema.js');
+        const schema=await prepareNativeBookSchema(new URL('../js/vendor/h5p-libs/',import.meta.url).href);
+        const native=await fetch(new URL('./sonde-parcours/audit-activites-2026-09-11/lot-utilisateur-26/retours-elea/InteractiveBook/content.json',import.meta.url)).then(r=>r.json());
+        assertEqual(detectContentType(native).moduleKey,'InteractiveBook','Livre Éléa natif détecté');
+        assertEqual(serializeNativeBook(native,native),native,'Livre sans retouche strictement conservé');
+        const chapter=schema.sections.find(s=>s.id==='chapters').fields.chapters;
+        const column=chapter.itemSchema.params.schemas['H5P.Column 1.22'].content.itemSchema.content.schema.params.schemas;
+        assert(Object.keys(column).length===35,'Les 35 blocs autorisés par Column ont leurs champs natifs');
+        assert(column['H5P.Video 1.6'].a11y.itemSchema.track.type==='vtt','Pistes vidéo natives éditables');
+        assert(column['H5P.Summary 1.10'].summaries.itemSchema.tip.type==='richtext','Indice Summary transparent, sans objet parasite');
+        const changed=structuredClone(native);changed.chapters[0].params.content[0].content.params.columns[1].width=95;
+        assert(getValidationErrors(changed,schema).some(e=>e.path.endsWith('.columns')),'Largeurs natives incohérentes rejetées');
+        const {formatContentForDocument}=await import('../js/export/document-formatter.js');
+        const formatted=await formatContentForDocument('InteractiveBook',native,{keepLatex:true});
+        assert(JSON.stringify(formatted).includes('Paris, en France.')&&formatted.sections.some(s=>s.type==='image'),'Livre natif : cartes, image et corrigé présents sur papier');
+    }
+
+    group('Conservation des sous-questions dans les conteneurs natifs');
+    {
+        const actions=[
+            {library:'H5P.Blanks 1.14',params:{text:'Complétez.',questions:['La capitale est *Paris*.']}},
+            {library:'H5P.TrueFalse 1.8',params:{question:'Paris ?',correct:'true',behaviour:{feedbackOnCorrect:'Exact natif',feedbackOnWrong:'À revoir natif'}}},
+            {library:'H5P.MultiChoice 1.16',params:{question:'Capitale ?',answers:[{text:'Paris',correct:true}],behaviour:{type:'single'}}}
+        ];
+        const containers={
+            CoursePresentation:{presentation:{slides:[{elements:actions.map(action=>({action}))}]}},
+            InteractiveBook:{chapters:[{library:'H5P.Column 1.22',params:{content:actions.map(content=>({content}))}}]},
+            InteractiveVideo:{interactiveVideo:{assets:{interactions:actions.map(action=>({action}))}}}
+        };
+        for(const [type,source] of Object.entries(containers)) {
+            const edited=normalizeDataForEditor(structuredClone(source),type);
+            assertEqual(edited,source,type+' : champs natifs non déplacés à l’ouverture');
+            assertEqual(denormalizeDataForSave(edited,type),source,type+' : texte et retours natifs conservés à la sauvegarde');
+        }
+    }
+
+    group('Présentation native');
+    {
+        const {prepareNativePresentationSchema,serializeNativePresentation}=await import('../js/editor/native-presentation-schema.js');
+        const native={presentation:{slides:[{elements:[{x:2,y:2,width:96,height:96,action:{library:'H5P.AdvancedText 1.1',params:{text:'<p>Original</p>'},subContentId:'stable-id'}}]}]}};
+        const schema=await prepareNativePresentationSchema(new URL('../js/vendor/h5p-libs/',import.meta.url).href);
+        assertEqual(detectContentType(native).moduleKey,'CoursePresentation','Présentation native détectée sans titre de notification');
+        assertEqual(serializeNativePresentation(native,native),native,'Enregistrement natif sans retouche strictement conservatif');
+        const modified=structuredClone(native);modified.presentation.slides[0].elements[0].action.params.text='**RELU**';
+        const saved=serializeNativePresentation(modified,native);
+        assert(saved.presentation.slides[0].elements[0].action.params.text.includes('<strong>RELU</strong>'),'Texte natif retouché reconverti en HTML');
+        assert(saved.presentation.slides[0].elements[0].action.subContentId==='stable-id','Sous-identifiant conservé');
+        const fields=schema.sections[0].fields['presentation.slides'].itemSchema.elements.itemSchema;
+        assert(fields.x.type==='number' && fields.solution.type==='richtext' && fields.buttonLabel.type==='text','Placement et commentaire natifs éditables');
+        const invalid=structuredClone(native);invalid.presentation.slides[0].elements[0].action.params.text='';
+        assert(getValidationErrors(invalid,schema).some(e=>e.path.endsWith('params.text')),'Texte requis vidé détecté dans un bloc natif');
+    }
+
+    {
+        const {formatContentForDocument}=await import('../js/export/document-formatter.js');
+        const q=(question)=>({action:{library:'H5P.TrueFalse 1.8',params:{question,correct:'true'}}});
+        const result=await formatContentForDocument('CoursePresentation',{presentation:{slides:[{elements:[q('Première question'),q('Deuxième question'),{action:{library:'H5P.Table 1.2',params:{text:'<table><tr><th>Pays</th><th>Capitale</th></tr><tr><td>France</td><td>Paris</td></tr></table>'}}}]}]}});
+        const text=JSON.stringify(result);
+        assert(text.includes('Première question')&&text.includes('Deuxième question'),'Tous les exercices natifs d’une diapositive imprimés');
+        assert(result.sections.some(s=>s.type==='table'&&s.rows[0][1]==='Paris'),'Tableau natif conservé comme tableau documentaire');
+    }
+
+    group('Types natifs à signatures identiques');
+    const motsAmbigus = { taskDescription: 'Repère les capitales.', textField: '*Paris* Lyon' };
+    assertEqual(detectContentType(motsAmbigus, 'h5p_markthewords_name').moduleKey, 'MarkTheWords', 'Nom machine MarkTheWords prioritaire');
+    assertEqual(detectContentType(motsAmbigus, 'h5p_dragtext_name').moduleKey, 'DragTheWords', 'Nom machine DragText prioritaire');
+
+    group('Options natives des cartes et des séries');
+    {
+        const copyright = { license: 'CC BY', version: '4.0', author: 'Atelier pédagogique', title: 'Image de sonde' };
+        const source = { title: 'Cartes', description: 'Associer', mode: 'repetition', dialogs: [{
+            text: 'Question', answer: 'Réponse', tips: { front: 'Indice sans balise', back: 'Retour' },
+            audio: [{ path: 'audios/carte.wav', mime: 'audio/wav', copyright }],
+            image: { path: 'images/carte.png', mime: 'image/png', copyright }
+        }], behaviour: { disableBackwardsNavigation: true, scaleTextNotCard: false, maxProficiency: 3, quickProgression: true } };
+        const processed = await processH5PContent('DialogCards', source);
+        assertEqual(processed.dialogs[0].audio, source.dialogs[0].audio, 'Cartes de dialogue : audio et crédits conservés au traitement');
+        assertEqual(processed.dialogs[0].image.copyright, copyright, 'Cartes de dialogue : crédits image conservés');
+        assertEqual(processed.dialogs[0].tips.front, 'Indice sans balise', 'Cartes de dialogue : aucun HTML ajouté dans un indice natif brut');
+        const flash = { description: 'Saisie facultative', cards: [{ text: 'Question', answer: 'Réponse' }], showSolutionsRequiresInput: false, randomCards: true, caseSensitive: true };
+        const normalized = normalizeDataForEditor(structuredClone(flash), 'Flashcards');
+        assertEqual(normalized.behaviour.showSolutionsRequiresInput, false, 'Flashcards : réglage natif repris dans le formulaire');
+        normalized.behaviour.randomCards = false;
+        const saved = denormalizeDataForSave(normalized, 'Flashcards');
+        const again = await processH5PContent('Flashcards', saved);
+        assertEqual([again.showSolutionsRequiresInput, again.randomCards, again.caseSensitive], [false, false, true], 'Flashcards : retouches et false conservés dans le paquet');
+        const choices = { choices: [{question: 'Question', answers: ['Oui', 'Non']}], behaviour: {autoContinue:true,timeoutCorrect:0,timeoutWrong:2300} };
+        const series = await processH5PContent('SingleChoiceSet', choices);
+        assertEqual([series.behaviour.timeoutCorrect,series.behaviour.timeoutWrong], [0,2300], 'Série : délais conservés, y compris zéro');
+    }
+
     const cas = await chargerFixtures();
     const schemas = getSupportedTypes();
 
@@ -699,12 +815,12 @@ export async function runAllTests() {
                 questions: [{
                     library: 'H5P.MultiChoice 1.16',
                     metadata: { title: 'Q1' },
-                    params: { question: 'Énoncé', answers: [{ text: 'seule réponse', correct: true }] }
+                    params: { question: 'Énoncé', answers: [] }
                 }]
             };
             const surLeTableau = getValidationErrors(quiz, getSchemaForType('QuizSet'))
                 .find(e => e.path === 'questions.0.params.answers');
-            assert(!!surLeTableau, 'Une sous-question à une seule réponse est signalée');
+            assert(!!surLeTableau, 'Une sous-question sans proposition est signalée');
             if (surLeTableau) {
                 assert(!estCheminBrut(surLeTableau.field) && !estCleI18nBrute(surLeTableau.field),
                     `Le libellé de l\u2019erreur de cardinalité est lisible (« ${surLeTableau.field} »)`);

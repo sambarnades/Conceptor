@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="291" moduleid="14009" modulename="folder" contextid="17737">
+  <folder id="291">
+    <name>Documents du chapitre</name>
+    <intro>&lt;p&gt;Tous les documents utiles au chapitre.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <revision>1</revision>
+    <timemodified>1790541041</timemodified>
+    <display>0</display>
+    <showexpanded>1</showexpanded>
+    <showdownloadfolder>1</showdownloadfolder>
+    <forcedownload>1</forcedownload>
+  </folder>
+</activity>

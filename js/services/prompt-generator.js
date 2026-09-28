@@ -10,6 +10,7 @@
  */
 
 import { showNotification } from '../core/utils.js';
+import { texteAffiche } from '../core/texte-affiche.js';
 import { translations } from '../core/translation.js';
 import { h5pModules, moodleModules } from '../core/definitions.js';
 import { activeTile } from '../ui/ui.js';
@@ -327,9 +328,18 @@ export function hasImageHotspotZones() {
  * @param {boolean} params.isAdvanced - Mode avancé ou rapide
  * @returns {string} Le prompt complet
  */
-function buildActivityPrompt(activityPrefix, params) {
+export function buildActivityPrompt(activityPrefix, params) {
     const pt = translations;
-    const { qui, quoi, niveau, nombreQuestions, ocrContent, isAdvanced } = params;
+    const { qui, quoi, niveau, ocrContent, isAdvanced } = params;
+    let { nombreQuestions } = params;
+    // Le graphique conserve les séries fournies ; sans série, son prompt prévoit 5 données.
+    if (activityPrefix === 'prompt_chart' && !String(nombreQuestions ?? '').trim()) nombreQuestions = 5;
+    // Minimum pédagogique du livre généré, y compris en mode guidé.
+    // Les livres importés restent régis par leur contrat H5P natif.
+    if (activityPrefix === 'prompt_interactive_book' && String(nombreQuestions ?? '').trim()) {
+        const requestedChapters = Number(nombreQuestions);
+        if (Number.isFinite(requestedChapters) && requestedChapters < 3) nombreQuestions = 3;
+    }
 
     // 1. CONTEXTE PÉDAGOGIQUE (commune à toutes les activités)
     let contextePedagogique = pt.prompt_contexte_pedagogique_commun || '';
@@ -356,7 +366,7 @@ function buildActivityPrompt(activityPrefix, params) {
     if (nombreQuestions && nombreQuestions.toString().trim()) {
         // Si nombreQuestions est renseigné : garder le label + la partie après ||
         reglesSpecifiques = reglesSpecifiques.replace(
-            /([^:\n]+:\s*)([^|\n]+)\|\|([^|\n]+)/g,
+            /([^:：\n]+[:：]\s*)([^|\n]+)\|\|([^|\n]+)/g,
             (match, label, rapid, advanced) => {
                 return label + advanced.trim().replace(/\[NOMBRE_ELEMENTS\]/g, nombreQuestions);
             }
@@ -366,7 +376,7 @@ function buildActivityPrompt(activityPrefix, params) {
     } else {
         // Si nombreQuestions est vide : garder le label + la partie avant || (valeur par défaut)
         reglesSpecifiques = reglesSpecifiques.replace(
-            /([^:\n]+:\s*)([^|\n]+)\|\|([^|\n]+)/g,
+            /([^:：\n]+[:：]\s*)([^|\n]+)\|\|([^|\n]+)/g,
             (match, label, rapid, advanced) => label + rapid
         );
     }
@@ -430,10 +440,22 @@ ${sources}
         if (rappel) prompt += `\n${rappel}`;
     } else {
         prompt += structureBlock;
+        // Sources jointes par l'enseignant : l'exemple de rendu, lu EN DERNIER, tirait le
+        // modèle vers son propre thème et ses propres œuvres au détriment du document
+        // (constaté en réel, 25-09-2026). Un rappel clôt donc le prompt. Pas pour une
+        // activité qui cadre elle-même ses sources (`${prefix}_sources` : zones d'image).
+        if (sources && !pt[`${activityPrefix}_sources`] && pt.prompt_sources_rappel_final) {
+            prompt += `\n\n${pt.prompt_sources_rappel_final}`;
+        }
     }
 
     return prompt;
 }
+
+// `buildActivityPrompt` est EXPORTÉE (et non plus locale) pour l'atelier de parcours :
+// il fabrique le prompt d'une activité sans passer par le DOM — pas de tuile ouverte,
+// pas de textarea à lire, juste la carte du plan. Le chemin de la page d'accueil
+// (`generatePrompts` → `getPrompts`) est inchangé.
 
 // ============================================================================
 // FONCTION PRINCIPALE DE GÉNÉRATION
@@ -508,6 +530,17 @@ export function generatePrompts() {
 // ============================================================================
 
 /**
+ * Texte des SOURCES jointes par l'enseignant (zone #ocr-output : fichiers déposés,
+ * pages web importées, texte collé), tel qu'il part vers l'IA. Seul point de lecture
+ * pour la génération simple ET par lots : la zone est masquée en mode Rapide, et un
+ * `innerText` y recollait les lignes bout à bout (cf. core/texte-affiche.js).
+ * @returns {string}
+ */
+export function lireCorpusSources() {
+    return texteAffiche(document.getElementById('ocr-output')).trim();
+}
+
+/**
  * Génère tous les prompts pour toutes les activités
  * @param {string} qui - Le rôle/public cible
  * @param {string} quoi - L'objectif pédagogique
@@ -517,9 +550,7 @@ export function generatePrompts() {
  * @returns {Object} Objet contenant tous les prompts par clé
  */
 function getPrompts(qui, quoi, niveau, nombreQuestions, isAdvanced) {
-    // Récupérer le contenu OCR/RAG
-    const ocrOutput = document.getElementById('ocr-output');
-    const ocrContent = ocrOutput ? ocrOutput.innerText.trim() : '';
+    const ocrContent = lireCorpusSources();
 
     // Paramètres communs pour la construction des prompts
     const params = {
@@ -650,10 +681,11 @@ export function getTranscriptAnchors(segments, opts = {}) {
  * des questions aux ruptures d'idées + transcription horodatée en SOURCES.
  * @param {Array<{start:number,end:number,text:string}>} segments - Segments de la transcription.
  * @param {number|null} [durationSeconds] - Durée de la vidéo (indice pour borner les timestamps).
+ * @param {Object|null} [contextParams] - Contexte explicite (parcours), sinon formulaire individuel.
  * @returns {string} Le prompt complet.
  */
-export function buildVideoInteractivePrompt(segments, durationSeconds = null) {
-    const params = readContextParams();
+export function buildVideoInteractivePrompt(segments, durationSeconds = null, contextParams = null) {
+    const params = contextParams || readContextParams();
     const transcriptText = formatTranscriptForPrompt(segments);
     const cap = videoMaxQuestions(segments);
     // Borne le nombre demandé au plafond physique déduit des segments (cohérent avec l'en-tête).
@@ -670,10 +702,11 @@ export function buildVideoInteractivePrompt(segments, durationSeconds = null) {
  * @param {{width?:number,height?:number}|null} [imageMeta] - Dimensions de l'image (référence des %).
  * @param {string} [imageDescription] - Description globale de l'image (vision).
  * @param {string} [promptPrefix] - Préfixe i18n du prompt de l'activité (défaut : Image interactive).
+ * @param {Object|null} [contextParams] - Contexte explicite (parcours), sinon formulaire individuel.
  * @returns {string} Le prompt complet.
  */
-export function buildImageHotspotsPrompt(zones, imageMeta = null, imageDescription = '', promptPrefix = 'prompt_image_hotspots') {
-    const params = readContextParams();
+export function buildImageHotspotsPrompt(zones, imageMeta = null, imageDescription = '', promptPrefix = 'prompt_image_hotspots', contextParams = null) {
+    const params = contextParams || readContextParams();
     const prefix = HOTSPOT_PROMPT_PREFIXES.has(promptPrefix) ? promptPrefix : 'prompt_image_hotspots';
     // Borne le nombre demandé aux zones effectivement fournies en SOURCES (cohérence du prompt).
     const nombreQuestions = clampHotspotCount(params.nombreQuestions, Array.isArray(zones) ? zones.length : null);

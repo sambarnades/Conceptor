@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Iniciante",
     "level_formation_intermediaire": "Intermédio",
-    "level_formation_expert": "Especialista"
+    "level_formation_expert": "Especialista",
+    "sucrerie_bridge_welcome_title_course": "Partilhar o percurso na Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "O percurso completo, com atividades e instruções, ficará acessível a todos os docentes no catálogo Sucrerie.",
+    "sucrerie_bridge_course_close": "Voltar",
+    "sucrerie_bridge_success_title_approved_course": "Percurso publicado!",
+    "sucrerie_bridge_success_title_pending_course": "Percurso guardado",
+    "sucrerie_bridge_success_message_approved_course": "O percurso está disponível no catálogo Sucrerie.",
+    "sucrerie_bridge_success_message_pending_course": "O percurso aparecerá no catálogo após verificação por um moderador.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "O seu envio precisa de ser validado. Acabámos de enviar um link de confirmação para {email}: clique nele no prazo de 2 horas para publicar o seu percurso. Sem confirmação, permanece como rascunho em «As minhas atividades» durante 7 dias.",
+    "sucrerie_bridge_success_email_sent_course": "Um email com o seu link de gestão acaba de ser enviado para {email}. Guarde-o cuidadosamente: permitir-lhe-á modificar ou retirar o seu percurso a qualquer momento."
 }

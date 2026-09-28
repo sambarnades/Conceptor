@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="1162" moduleid="23633" modulename="h5pactivity" contextid="57791">
+  <h5pactivity id="1162">
+    <name>Activité H5P : choix unique</name>
+    <timecreated>1790541632</timecreated>
+    <timemodified>1790541632</timemodified>
+    <intro>&lt;p&gt;Réponds aux questions.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <grade>100</grade>
+    <displayoptions>15</displayoptions>
+    <enabletracking>1</enabletracking>
+    <grademethod>1</grademethod>
+    <reviewmode>1</reviewmode>
+    <attempts>
+    </attempts>
+  </h5pactivity>
+</activity>

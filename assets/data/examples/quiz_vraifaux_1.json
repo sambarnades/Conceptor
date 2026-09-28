@@ -16,9 +16,9 @@
       "metadata": { "title": "Image d'un nombre par la racine carrée" },
       "params": {
         "question": "Pour tout nombre réel \\( x \\geq 0 \\), on a \\( \\sqrt{x^2} = x \\).",
-        "correct": "false",
-        "feedbackOnCorrect": "Exact ! Cette égalité n'est pas toujours vraie, il faut la valeur absolue.",
-        "feedbackOnWrong": "Pas tout à fait ! En réalité, \\( \\sqrt{x^2} = |x| \\). Cela signifie que le résultat est toujours positif. Par exemple, \\( \\sqrt{(-3)^2} = 3 \\), pas \\( -3 \\)."
+        "correct": "true",
+        "feedbackOnCorrect": "Pour x positif ou nul, la valeur absolue de x vaut x : la racine carrée de x² vaut donc x.",
+        "feedbackOnWrong": "La racine carrée de x² vaut |x|. Ici, l’hypothèse x ≥ 0 donne |x| = x : l’égalité est bien vraie."
       }
     },
     {

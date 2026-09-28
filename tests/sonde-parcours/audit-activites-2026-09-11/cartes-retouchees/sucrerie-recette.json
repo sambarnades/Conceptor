@@ -1,0 +1,28 @@
+{
+  "unitaires": 22,
+  "results": [
+    {
+      "moduleKey": "DialogCards",
+      "verification": {
+        "answer": "Paris conservé",
+        "audio": [
+          {
+            "path": "audios/audio-8f13c941.wav",
+            "mime": "audio/wav"
+          }
+        ],
+        "media": true,
+        "image": true,
+        "temporary": false
+      }
+    },
+    {
+      "moduleKey": "Flashcards",
+      "verification": {
+        "showSolutionsRequiresInput": false,
+        "caseSensitive": false,
+        "randomCards": false
+      }
+    }
+  ]
+}

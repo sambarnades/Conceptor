@@ -1,0 +1,156 @@
+[
+  {
+    "id": "vrai-faux-manuel",
+    "contenu": {
+      "question": "Madrid est la capitale de l’Espagne. RELU Sucrerie.",
+      "correct": "true",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "confirmCheckDialog": true,
+        "confirmRetryDialog": true,
+        "autoCheck": false,
+        "enableCheckButton": true,
+        "feedbackOnCorrect": "Madrid est la capitale espagnole. RELU",
+        "feedbackOnWrong": "Madrid est bien la capitale espagnole. RELU Caramel"
+      },
+      "l10n": {
+        "trueText": "Vrai",
+        "falseText": "Faux",
+        "score": "Vous avez obtenu @score sur @total points",
+        "checkAnswer": "Vérifier",
+        "showSolutionButton": "Afficher la solution",
+        "tryAgain": "Recommencer",
+        "wrongAnswerMessage": "Mauvaise réponse",
+        "correctAnswerMessage": "Bonne réponse",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "submitAnswer": "Valider",
+        "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+      },
+      "confirmCheck": {
+        "header": "Madrid relu ?",
+        "body": "Relis tes réponses. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la vérification"
+      },
+      "confirmRetry": {
+        "header": "Reprendre Madrid ?",
+        "body": "Êtes-vous sûr de vouloir recommencer ?",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la reprise"
+      },
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-052635e2.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "title": "Vrai/Faux — manuel"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "vrai-faux-automatique",
+    "contenu": {
+      "question": "Madrid est la capitale de l’Italie. RELU Sucrerie.",
+      "correct": "false",
+      "behaviour": {
+        "enableRetry": false,
+        "enableSolutionsButton": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "enableCheckButton": false,
+        "feedbackOnCorrect": "Rome est la capitale italienne. RELU",
+        "feedbackOnWrong": "Madrid est la capitale espagnole, pas italienne. RELU"
+      },
+      "l10n": {
+        "trueText": "Vrai",
+        "falseText": "Faux",
+        "score": "Vous avez obtenu @score sur @total points",
+        "checkAnswer": "Vérifier",
+        "showSolutionButton": "Afficher la solution",
+        "tryAgain": "Recommencer",
+        "wrongAnswerMessage": "Mauvaise réponse",
+        "correctAnswerMessage": "Bonne réponse",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "submitAnswer": "Valider",
+        "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+      },
+      "confirmCheck": {
+        "header": "Madrid relu ?",
+        "body": "Relis tes réponses. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la vérification"
+      },
+      "confirmRetry": {
+        "header": "Reprendre Madrid ?",
+        "body": "Êtes-vous sûr de vouloir recommencer ?",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la reprise"
+      },
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-052635e2.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "title": "Vrai/Faux — automatique"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

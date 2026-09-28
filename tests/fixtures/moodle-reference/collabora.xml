@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="11" moduleid="22714" modulename="collabora" contextid="55560">
+  <collabora id="11">
+    <name>Doc collaboratif</name>
+    <intro>&lt;p&gt;Description&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>1788524416</timecreated>
+    <timemodified>1788524416</timemodified>
+    <format>wordprocessor</format>
+    <initialtext>$@NULL@$</initialtext>
+    <display>current</display>
+    <height>0</height>
+    <displayname>1</displayname>
+    <displaydescription>1</displaydescription>
+    <documents>
+    </documents>
+  </collabora>
+</activity>

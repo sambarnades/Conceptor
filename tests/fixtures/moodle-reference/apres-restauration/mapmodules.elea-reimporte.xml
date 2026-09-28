@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="1434" moduleid="119969" modulename="mapmodules" contextid="191835">
+  <mapmodules id="1434">
+    <course>6722</course>
+    <name>Carte standard : planisphère</name>
+    <intro>&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;div id="container_game983" style="width:100%;position:relative;margin:0 auto;"&gt;
+    &lt;img id="back_game983" style="width:100%;" src="https://SITE-SOURCE.example/mod/mapmodules/pix/maps/map_planisphere.jpg" alt="bg"&gt;
+    &lt;svg id="path_container_game983" style='position:absolute;top:0px;left:0px;' viewBox="0 0 1000 400" version="1.1" &gt;
+      &lt;path id="path" fill="none" d="M 26 85 C 26 85 111 151 135 153 C 169 155 242 101 263 121 C 289 163 224 206 242 253 C 276 310 314 210 354 240 C 372 295 269 332 314 359 C 390 392 410 282 451 270 C 487 243 520 301 539 299 C 601 285 549 179 534 160 C 520 142 458 129 466 100 C 474 60 537 50 574 51 C 587 51 622 51 646 101 C 670 150 684 209 699 213 C 756 213 768 104 816 128 C 846 143 866 213 864 243 C 849 281 786 283 814 331 C 824 349 857 306 885 322 C 918 341 938 312 970 283" /&gt;
+    &lt;/svg&gt;
+&lt;/div&gt;
+&lt;script src="https://SITE-SOURCE.example/mod/mapmodules/js/maploader.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+YUI().use("node-base", function(Y){
+    Y.on("domready", function(){
+      maploader({
+        mapid: "1434",
+        gameid: "game983",
+        gamewidth: "1000",
+        mapbuttoncheck: "https://SITE-SOURCE.example/mod/mapmodules/pix/icons/button-check-yellow.png",
+        mapbuttonquestion: "https://SITE-SOURCE.example/mod/mapmodules/pix/icons/button-question-red.png",
+        mapbuttonlock: "https://SITE-SOURCE.example/mod/mapmodules/pix/icons/locked.png",
+        buttonwidth: "50"
+      })
+    })
+})
+
+&lt;/script&gt;
+&lt;/div&gt;&lt;div&gt;&lt;/div&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>1788531296</timecreated>
+    <timemodified>1788531296</timemodified>
+    <targetsection>666</targetsection>
+    <path>M 26 85 C 26 85 111 151 135 153 C 169 155 242 101 263 121 C 289 163 224 206 242 253 C 276 310 314 210 354 240 C 372 295 269 332 314 359 C 390 392 410 282 451 270 C 487 243 520 301 539 299 C 601 285 549 179 534 160 C 520 142 458 129 466 100 C 474 60 537 50 574 51 C 587 51 622 51 646 101 C 670 150 684 209 699 213 C 756 213 768 104 816 128 C 846 143 866 213 864 243 C 849 281 786 283 814 331 C 824 349 857 306 885 322 C 918 341 938 312 970 283</path>
+    <iconset>1</iconset>
+    <displaymodulenames>0</displaymodulenames>
+    <buttonwidth>50</buttonwidth>
+    <descriptionheader></descriptionheader>
+    <descriptionheaderformat>1</descriptionheaderformat>
+    <descriptionfooter></descriptionfooter>
+    <descriptionfooterformat>1</descriptionfooterformat>
+  </mapmodules>
+</activity>

@@ -1,0 +1,8 @@
+[
+  {
+    "chemin": "a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "chemin": "a11y.instructionsGrabbed",
+    "type": "normalisation_html",
+    "avant": "Appuyez sur les flèches haut et bas pour changer de position, sur la barre d'espace pour déposer, sur échap pour annuler",
+    "apres": "Appuyez sur les flèches haut et bas pour changer de position, sur la barre d&#039;espace pour déposer, sur échap pour annuler"
+  },
+  {
+    "chemin": "a11y.instructionsSelected",
+    "type": "normalisation_html",
+    "avant": "Appuyez sur la barre d'espace pour réorganiser",
+    "apres": "Appuyez sur la barre d&#039;espace pour réorganiser"
+  },
+  {
+    "chemin": "a11y.retry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "a11y.showSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "l10n.audioDirection",
+    "type": "retrait_natif",
+    "avant": "Direction de l'audio"
+  },
+  {
+    "chemin": "l10n.resume",
+    "type": "retrait_natif",
+    "avant": "Reprendre"
+  },
+  {
+    "chemin": "media.type.metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "media.type.params.contentName",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.params.decorative",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "media.type.params.expandImage",
+    "type": "ajout_natif",
+    "apres": "Agrandir l&#039;image"
+  },
+  {
+    "chemin": "media.type.params.minimizeImage",
+    "type": "ajout_natif",
+    "apres": "Réduire l&#039;image"
+  },
+  {
+    "chemin": "taskDescription",
+    "type": "modification",
+    "avant": "Place Début en premier, Fin en dernier et Observer au milieu.",
+    "apres": "<p>Place Début en premier, Fin en dernier et Observer au milieu. RELU</p>"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "title": "ImageHotspots — relecture Éléa",
+  "language": "und",
+  "mainLibrary": "H5P.ImageHotspots",
+  "embedTypes": [
+    "iframe"
+  ],
+  "license": "U",
+  "defaultLanguage": "fr",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.Text",
+      "majorVersion": "1",
+      "minorVersion": "1"
+    },
+    {
+      "machineName": "H5P.ImageHotspots",
+      "majorVersion": "1",
+      "minorVersion": "11"
+    },
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": "4",
+      "minorVersion": "5"
+    },
+    {
+      "machineName": "H5P.Transition",
+      "majorVersion": "1",
+      "minorVersion": "0"
+    }
+  ]
+}

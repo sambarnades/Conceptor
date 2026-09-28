@@ -1,0 +1,297 @@
+[
+  {
+    "id": "redaction-image",
+    "contenu": {
+      "taskDescription": "Explique le rôle du Soleil. RELU dans Sucrerie.",
+      "keywords": [
+        {
+          "keyword": "énergie",
+          "alternatives": [
+            "energie"
+          ],
+          "options": {
+            "points": 2,
+            "caseSensitive": false,
+            "occurrences": 1,
+            "forgiveMistakes": false,
+            "feedbackIncludedWord": "answer",
+            "feedbackMissedWord": "keyword",
+            "feedbackIncluded": "Énergie bien mentionnée. RELU",
+            "feedbackMissed": "Pense à l’énergie."
+          }
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Précise ce que le Soleil fournit."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Le rôle du Soleil est identifié."
+        }
+      ],
+      "behaviour": {
+        "inputFieldSize": "10",
+        "enableRetry": true,
+        "ignoreScoring": false,
+        "minimumLength": 10,
+        "maximumLength": 200,
+        "percentagePassing": 75,
+        "percentageMastering": 100,
+        "pointsHost": 3,
+        "linebreakReplacement": " "
+      },
+      "solution": {
+        "introduction": "Une proposition",
+        "sample": "Le Soleil fournit de l’énergie."
+      },
+      "checkAnswer": "Vérifier",
+      "tryAgain": "Recommencer",
+      "showSolution": "Afficher la solution",
+      "feedbackHeader": "Commentaire",
+      "solutionTitle": "Exemple de solution",
+      "remainingChars": "Caractères restants : @chars",
+      "notEnoughChars": "Vous devez saisir au moins @chars caractères !",
+      "messageSave": "enregistré",
+      "placeholderText": "Le Soleil...",
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-7149c544.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": ""
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "ariaYourResult": "Vous avez obtenu @score sur @total points",
+      "ariaNavigatedToSolution": "Navigation vers la solution.",
+      "submitAnswer": "Submit",
+      "ariaCheck": "Check the answers.",
+      "ariaShowSolution": "Show the solution. You will be provided with a sample solution.",
+      "ariaRetry": "Retry the task. You can improve your previous answer if the author allowed that.",
+      "title": "Rédaction énergie — image"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "redaction-audio",
+    "contenu": {
+      "taskDescription": "Explique le rôle du Soleil. RELU dans Sucrerie.",
+      "keywords": [
+        {
+          "keyword": "énergie",
+          "alternatives": [
+            "energie"
+          ],
+          "options": {
+            "points": 2,
+            "caseSensitive": false,
+            "occurrences": 1,
+            "forgiveMistakes": false,
+            "feedbackIncludedWord": "answer",
+            "feedbackMissedWord": "keyword",
+            "feedbackIncluded": "Énergie bien mentionnée. RELU",
+            "feedbackMissed": "Pense à l’énergie."
+          }
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Précise ce que le Soleil fournit."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Le rôle du Soleil est identifié."
+        }
+      ],
+      "behaviour": {
+        "inputFieldSize": "10",
+        "enableRetry": true,
+        "ignoreScoring": true,
+        "minimumLength": 10,
+        "maximumLength": 200,
+        "percentagePassing": 75,
+        "percentageMastering": 100,
+        "pointsHost": 3,
+        "linebreakReplacement": " "
+      },
+      "solution": {
+        "introduction": "Une proposition",
+        "sample": "Le Soleil fournit de l’énergie."
+      },
+      "checkAnswer": "Vérifier",
+      "tryAgain": "Recommencer",
+      "showSolution": "Afficher la solution",
+      "feedbackHeader": "Commentaire",
+      "solutionTitle": "Exemple de solution",
+      "remainingChars": "Caractères restants : @chars",
+      "notEnoughChars": "Vous devez saisir au moins @chars caractères !",
+      "messageSave": "enregistré",
+      "placeholderText": "Le Soleil...",
+      "media": {
+        "type": {
+          "library": "H5P.Audio 1.5",
+          "params": {
+            "playerMode": "minimalistic",
+            "fitToWrapper": false,
+            "controls": true,
+            "autoplay": false,
+            "files": [
+              {
+                "path": "audios/audio-b2885c08.wav",
+                "mime": "audio/wav"
+              }
+            ]
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "ariaYourResult": "Vous avez obtenu @score sur @total points",
+      "ariaNavigatedToSolution": "Navigation vers la solution.",
+      "submitAnswer": "Submit",
+      "ariaCheck": "Check the answers.",
+      "ariaShowSolution": "Show the solution. You will be provided with a sample solution.",
+      "ariaRetry": "Retry the task. You can improve your previous answer if the author allowed that.",
+      "title": "Rédaction énergie — audio"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "redaction-video",
+    "contenu": {
+      "taskDescription": "Explique le rôle du Soleil. RELU dans Sucrerie.",
+      "keywords": [
+        {
+          "keyword": "énergie",
+          "alternatives": [
+            "energie"
+          ],
+          "options": {
+            "points": 2,
+            "caseSensitive": false,
+            "occurrences": 1,
+            "forgiveMistakes": false,
+            "feedbackIncludedWord": "answer",
+            "feedbackMissedWord": "keyword",
+            "feedbackIncluded": "Énergie bien mentionnée. RELU",
+            "feedbackMissed": "Pense à l’énergie."
+          }
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 99,
+          "feedback": "Précise ce que le Soleil fournit."
+        },
+        {
+          "from": 100,
+          "to": 100,
+          "feedback": "Le rôle du Soleil est identifié."
+        }
+      ],
+      "behaviour": {
+        "inputFieldSize": "10",
+        "enableRetry": false,
+        "ignoreScoring": false,
+        "minimumLength": 10,
+        "maximumLength": 200,
+        "percentagePassing": 75,
+        "percentageMastering": 100,
+        "pointsHost": 3,
+        "linebreakReplacement": " "
+      },
+      "solution": {
+        "introduction": "Une proposition",
+        "sample": "Le Soleil fournit de l’énergie."
+      },
+      "checkAnswer": "Vérifier",
+      "tryAgain": "Recommencer",
+      "showSolution": "Afficher la solution",
+      "feedbackHeader": "Commentaire",
+      "solutionTitle": "Exemple de solution",
+      "remainingChars": "Caractères restants : @chars",
+      "notEnoughChars": "Vous devez saisir au moins @chars caractères !",
+      "messageSave": "enregistré",
+      "placeholderText": "Le Soleil...",
+      "media": {
+        "type": {
+          "library": "H5P.Video 1.6",
+          "params": {
+            "visuals": {
+              "controls": true,
+              "fit": true
+            },
+            "playback": {
+              "autoplay": false,
+              "loop": false
+            },
+            "sources": [
+              {
+                "path": "videos/video-80f67bc4.webm",
+                "mime": "video/webm"
+              }
+            ]
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "ariaYourResult": "Vous avez obtenu @score sur @total points",
+      "ariaNavigatedToSolution": "Navigation vers la solution.",
+      "submitAnswer": "Submit",
+      "ariaCheck": "Check the answers.",
+      "ariaShowSolution": "Show the solution. You will be provided with a sample solution.",
+      "ariaRetry": "Retry the task. You can improve your previous answer if the author allowed that.",
+      "title": "Rédaction énergie — video"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

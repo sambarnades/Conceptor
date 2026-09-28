@@ -1,6 +1,7 @@
 {
   "taskDescription": "Bonjour à toutes et à tous ! Aujourd'hui, nous allons tester vos connaissances sur les figures géométriques à quatre côtés. Complétez ce résumé de cours en faisant glisser les termes mathématiques appropriés aux bons endroits. Soyez attentifs aux propriétés de chaque figure !",
   "textField": "Un polygone qui possède quatre côtés s'appelle un *quadrilatère*.\nParmi eux, on trouve des figures particulières comme le *parallélogramme* dont les côtés opposés sont parallèles.\nSi cette figure possède quatre angles droits, alors il s'agit d'un *rectangle*.\nLorsqu'un quadrilatère a tous ses côtés de la même longueur, on le nomme *losange*.\nEnfin, le *carré* est une figure exceptionnelle car il possède à la fois quatre angles droits et quatre côtés égaux.\nN'oubliez pas d'utiliser votre équerre pour vérifier la perpendicularité et votre règle graduée pour les longueurs.\n",
+  "distractors": "*triangle* *pentagone*",
   "overallFeedback": [
     {
       "from": 0,

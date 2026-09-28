@@ -1,0 +1,61 @@
+{
+  "taskDescription": "<p>Bonjour à tous ! Dans cet exercice de révision, identifiez les <strong>acteurs</strong> et les <strong>notions clés</strong> qui ont transformé la France à partir de 1789.</p><p>Cliquez sur les termes qui symbolisent le passage de la <em>monarchie absolue</em> à la <em>souveraineté nationale</em>.</p>",
+  "textField": "En 1789 , la France connaît une rupture majeure . Le tiers - état se proclame Assemblée nationale et met fin à l' absolutisme . La rédaction de la *Déclaration* des *droits* de l' homme et du *citoyen* garantit désormais la liberté et l' égalité . La France devient une *monarchie* *constitutionnelle* avant que la chute des Tuileries ne mène à la proclamation de la *République* en 1792 .",
+  "behaviour": {
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "enableCheckButton": true,
+    "showScorePoints": true
+  },
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "C&#039;est un début. Prends le temps de relire ton cours sur les grandes étapes de 1789 pour bien identifier les mots clés de la rupture politique."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu as repéré quelques éléments, mais attention à ne pas passer à côté des textes fondamentaux comme la Déclaration de 1789."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C&#039;est un score encourageant ! Tu commences à bien distinguer les différents régimes politiques de cette période complexe."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! L&#039;essentiel du vocabulaire de la Révolution est compris. Continue ainsi pour maîtriser parfaitement ce chapitre."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu as une lecture très précise des événements et des concepts juridiques nés durant la Révolution."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu maîtrises parfaitement les notions clés du programme de 3e. Tu es prêt pour aborder la suite de l&#039;histoire du XIXe siècle !"
+    }
+  ],
+  "checkAnswerButton": "Vérifier",
+  "tryAgainButton": "Recommencer",
+  "showSolutionButton": "Afficher la solution",
+  "media": {
+    "disableImageZooming": false
+  },
+  "correctAnswer": "Correct !",
+  "incorrectAnswer": "Incorrect !",
+  "missedAnswer": "Manqué !",
+  "displaySolutionDescription": "La tâche est mise à jour pour contenir la solution.",
+  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+  "submitAnswerButton": "Valider",
+  "a11yFullTextLabel": "Texte complet lisible",
+  "a11yClickableTextLabel": "Texte complet où les mots peuvent être marqués",
+  "a11ySolutionModeHeader": "Mode solution",
+  "a11yCheckingHeader": "Mode de vérification",
+  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+  "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+}

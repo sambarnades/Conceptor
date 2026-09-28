@@ -1,0 +1,23 @@
+[
+  {
+    "kind": "image",
+    "minimumVerifie": true,
+    "rows": 10,
+    "maxlength": 200,
+    "texte": "Explique le rôle du Soleil. RELU dans Sucrerie.\nCaractères restants : 170\nCommentaire\nenergie\nÉnergie bien mentionnée. RELU\nLe rôle du Soleil est identifié.\nVous avez obtenu 2 sur 2 points\n2/2\nAfficher la solution\nRights of use"
+  },
+  {
+    "kind": "audio",
+    "minimumVerifie": true,
+    "rows": 10,
+    "maxlength": 200,
+    "texte": "Explique le rôle du Soleil. RELU dans Sucrerie.\nCaractères restants : 173\nVous devez saisir au moins 10 caractères !\nCommentaire\nénergie\nPense à l’énergie.\nVérifier\nRights of use"
+  },
+  {
+    "kind": "video",
+    "minimumVerifie": true,
+    "rows": 10,
+    "maxlength": 200,
+    "texte": "Explique le rôle du Soleil. RELU dans Sucrerie.\nCaractères restants : 173\nVous devez saisir au moins 10 caractères !. Vous avez obtenu 0 sur 2 points. Précise ce que le Soleil fournit.\nCommentaire\nénergie\nPense à l’énergie.\nPrécise ce que le Soleil fournit.\nVous avez obtenu 0 sur 2 points\n0/2\nVérifier\nRights of use"
+  }
+]

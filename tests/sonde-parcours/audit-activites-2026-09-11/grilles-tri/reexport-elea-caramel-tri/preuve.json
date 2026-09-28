@@ -1,0 +1,43 @@
+{
+  "activiteElea": 13846,
+  "h5pId": 400,
+  "titreReexport": "Tri Caramel — relu dans Éléa",
+  "source": "tests/sonde-parcours/audit-activites-2026-09-11/grilles-tri/tri-options.h5p",
+  "reexport": "sort-the-paragraphs-400-400.h5p",
+  "sha256Source": "bf78aa7ec76ce7a6500e834e25413e7ed8b5ebedae24a3e8f8b8c50d811ef987",
+  "sha256Reexport": "0809dc5467a280c8ae938ef0375edecc985e56e9458af2ac7580bb6dae649216",
+  "behaviourIdentique": true,
+  "behaviourSource": {
+    "scoringMode": "positions",
+    "applyPenalties": false,
+    "duplicatesInterchangeable": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "addButtonsForMovement": true
+  },
+  "behaviourReexport": {
+    "scoringMode": "positions",
+    "applyPenalties": false,
+    "duplicatesInterchangeable": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "addButtonsForMovement": true
+  },
+  "bibliotheques": {
+    "FontAwesome-4.5": "4.5.6",
+    "H5P.Components-1.0": "1.0.97",
+    "H5PEditor.RangeList-1.0": "1.0.13",
+    "H5PEditor.ShowWhen-1.0": "1.0.9",
+    "H5PEditor.TableList-1.0": "1.0.4",
+    "H5P.FontIcons-1.0": "1.0.11",
+    "H5P.JoubelUI-1.3": "1.3.45",
+    "H5P.Question-1.5": "1.5.53",
+    "H5P.SortParagraphs-0.11": "0.11.9",
+    "H5P.Transition-1.0": "1.0.4",
+    "jQuery.ui-1.10": "1.10.22"
+  },
+  "contenusConserves": {
+    "paragraphs": true,
+    "taskDescription": true
+  }
+}

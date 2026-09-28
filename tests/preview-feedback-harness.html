@@ -29,6 +29,7 @@ import { healJsonString, healJsonObject, healActivitySpecificFields, healStructu
 import { processH5PContent, getModuleMetadata } from './js/h5p/processors/index.js';
 import { createH5PBlob } from './js/h5p/h5p-creator.js';
 import { H5PManager } from './js/h5p/h5p-manager.js';
+import { getAllMedia } from './js/h5p/image-manager.js';
 import { LIB_PATHS } from './js/core/lib-loader.js';
 
 // h5p-standalone construit les URL de ses assets à partir de l'emplacement de la
@@ -41,6 +42,8 @@ for (const cle of ['H5P_STANDALONE', 'H5P_FRAME_JS', 'H5P_FRAME_CSS', 'H5P_LIBRA
 
 const etat = document.getElementById('etat');
 const manager = new H5PManager();
+// Une archive déjà préparée utilise le même lecteur et son intercepteur ZIP.
+window.__monterArchive = blob => manager.load(blob, document.getElementById('preview'));
 
 /**
  * Construit puis monte une activité dans l'aperçu.
@@ -80,7 +83,7 @@ window.__monter = async function (moduleKey, json) {
         { machineName: meta.machineName, majorVersion: meta.version.major, minorVersion: meta.version.minor },
         ...depsDynamiques
     ];
-    const blob = await createH5PBlob(content, meta.machineName, deps, { title: moduleKey });
+    const blob = await createH5PBlob(content, meta.machineName, deps, { title: moduleKey, mediaFiles: getAllMedia() });
 
     // 3. Montage dans h5p-standalone
     await manager.load(blob, document.getElementById('preview'));

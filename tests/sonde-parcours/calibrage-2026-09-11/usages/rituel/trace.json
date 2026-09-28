@@ -1,0 +1,127 @@
+{
+  "cas": {
+    "id": "rituel",
+    "lang": "fr",
+    "platform": "elea",
+    "format": "presentiel",
+    "ampleur": "courte",
+    "trame": "rituel",
+    "qui": "Professeur de mathématiques en 6e",
+    "quoi": "Réactiver les tables de multiplication en dix minutes."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Réactiver les tables de multiplication en dix minutes.\nL'enseignant : Professeur de mathématiques en 6e\nPlateforme : Éléa\nModalité : presentiel\nLe groupe travaille en présence de l’enseignant. Inclure les échanges ou manipulations utiles dans les consignes et leur durée.\nAmpleur : Une séance\n\nTrame imposée : « Rituel court » — Dix minutes, toujours la même forme. C'est la répétition qui installe, pas la variété.\nElle compte EXACTEMENT 3 étapes, contenant respectivement 1, 1, 1 activité(s). Respecte ce découpage à la lettre.\nIntention pédagogique : Réactiver ; s’exercer brièvement ; retrouver les mots clés. Dix minutes au total, 2 + 4 + 4 minutes.\nPalier de difficulté imposé par étape : entrainement, entrainement, entrainement.\nTypes d'activité suggérés par la trame, étape par étape : étape 1 → TrueFalse ; étape 2 → FillInTheBlanks ; étape 3 → SingleChoiceSet. Suis-les sauf si le sujet appelle clairement autre chose.\n\nBUDGET : 3 activités prévues, dans la limite de 3 à 3 pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.\nSauf durée explicite dans la demande ou la trame, viser une séance de 30 à 55 minutes de travail. Alléger les tâches plutôt que multiplier les exercices.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline) — Frise à CONSULTER : événements déjà placés. Pour remettre des événements en ordre, choisir SortParagraphs.\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion) — Lexique de définitions à consulter ; les apprenants ne complètent pas les entrées.\n- Crossword : Mots croisés (Crosswords) — Retrouver des MOTS à partir de définitions ; pas de résultats chiffrés dans la grille.\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary) — Choisir l’affirmation correcte parmi plusieurs propositions pour construire une synthèse ; pas de texte à trous.\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop) — Déplacer des étiquettes textuelles dans des zones ; ne pas exiger un schéma ou des images absents.\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards) — Cartes recto-verso à retourner pour comparer et réviser ; aucun appariement par glisser-déposer.\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart) — Graphique à LIRE, construit depuis les données fournies ; aucune saisie de données par l’apprenant.\n- CoursePresentation : Présentation de cours (CoursePresentation) — Diaporama de textes et questions intégrées ; pas de vidéo à regarder ni de média fourni automatiquement.\n- InteractiveBook : Livre interactif (InteractiveBook) — Livre de textes et exercices intégrés ; pas de vidéo ou de média fourni automatiquement.\n- test_elea : Test (test_elea)\n- Millionnaire : Millionnaire (Millionnaire)\n- Appariement : Appariement (Appariement)\n- QCM : QCM (QCM)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir) — Consigne et critères d’un travail à remettre ou réaliser ; pas de correction automatique immédiate.\n- parcours_etiquette : Texte de liaison (label) — Texte ou consigne affichés dans le cours ; aucun champ de réponse.\n- parcours_forum : Forum (forum) — Consigne d’un échange asynchrone ; les participants écriront ensuite, pas de discussion préremplie.\n- parcours_sondage : Sondage (choice)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 3 à 6 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.\n- La consigne doit correspondre au geste réellement permis par le module décrit dans le catalogue. Pour faire ORDONNER des événements, utiliser SortParagraphs ; Timeline sert à les CONSULTER.\n- Aucun média externe n’est ajouté automatiquement : ne demande pas de regarder une vidéo, une photo ou un schéma absent. Prévoir des ressources textuelles autonomes. Si une manipulation en présence nécessite du matériel, l’annoncer explicitement comme matériel à préparer.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 3 à 3 activités pour TOUT le parcours, répartition 1 + 1 + 1. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 2,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788928",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Rituel tables de multiplication\",\n  \"objectifGeneral\": \"Réactiver les connaissances sur les tables de multiplication\",\n  \"notionsPivots\": [\n    \"les tables de multiplication\",\n    \"un produit\",\n    \"une égalité\",\n    \"un nombre entier\",\n    \"un facteur\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Vérification rapide\",\n      \"objectif\": \"Identifier les égalités correctes\",\n      \"cartes\": [\n        {\n          \"titre\": \"Vrai ou faux ?\",\n          \"objectif\": \"Vérifier la justesse d'une égalité\",\n          \"module\": \"TrueFalse\",\n          \"palier\": \"entrainement\",\n          \"duree\": 2,\n          \"consigne\": \"L’enseignant lit à voix haute 10 égalités simples (exemples : 7 x 8 = 56, 9 x 5 = 44). Après chaque énoncé, vous cochez Vrai ou Faux directement sur la carte. L’enseignant corrige collectivement à la fin.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Comblage des cases\",\n      \"objectif\": \"Retrouver les facteurs manquants\",\n      \"cartes\": [\n        {\n          \"titre\": \"Trouve le bon nombre\",\n          \"objectif\": \"Compléter une multiplication\",\n          \"module\": \"FillInTheBlanks\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"5 opérations à trous s’affichent (exemple : 6 x __ = 42). Utilisez les chiffres proposés dans le menu déroulant pour compléter chaque égalité. Validez après chaque réponse.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Choix multiples\",\n      \"objectif\": \"Sélectionner le résultat exact\",\n      \"cartes\": [\n        {\n          \"titre\": \"Le bon produit\",\n          \"objectif\": \"Choisir la bonne réponse parmi des propositions\",\n          \"module\": \"SingleChoiceSet\",\n          \"palier\": \"entrainement\",\n          \"duree\": 4,\n          \"consigne\": \"Pour 5 produits à calculer mentalement, une liste de 3 ou 4 résultats possibles est proposée. Cliquez sur celui qui correspond à l’opération (exemple : 8 x 7 → choisissez parmi 54, 56, 58).\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 563,
+      "prompt_tokens": 2274,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "fr",
+    "exporteLe": "2026-09-10T22:17:29.617Z",
+    "cadrage": {
+      "platform": "elea",
+      "format": "presentiel",
+      "ampleur": "courte",
+      "trame": "rituel"
+    },
+    "plan": {
+      "titre": "Rituel tables de multiplication",
+      "objectifGeneral": "Réactiver les connaissances sur les tables de multiplication",
+      "notionsPivots": [
+        "les tables de multiplication",
+        "un produit",
+        "une égalité",
+        "un nombre entier",
+        "un facteur"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Vérification rapide",
+          "objectif": "Identifier les égalités correctes",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Vrai ou faux ?",
+              "objectif": "Vérifier la justesse d'une égalité",
+              "consigne": "L’enseignant lit à voix haute 10 égalités simples (exemples : 7 x 8 = 56, 9 x 5 = 44). Après chaque énoncé, vous cochez Vrai ou Faux directement sur la carte. L’enseignant corrige collectivement à la fin.",
+              "module": "TrueFalse",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 2,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e3",
+          "titre": "Comblage des cases",
+          "objectif": "Retrouver les facteurs manquants",
+          "cartes": [
+            {
+              "id": "c4",
+              "titre": "Trouve le bon nombre",
+              "objectif": "Compléter une multiplication",
+              "consigne": "5 opérations à trous s’affichent (exemple : 6 x __ = 42). Utilisez les chiffres proposés dans le menu déroulant pour compléter chaque égalité. Validez après chaque réponse.",
+              "module": "FillInTheBlanks",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 4,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "titre": "Choix multiples",
+          "objectif": "Sélectionner le résultat exact",
+          "cartes": [
+            {
+              "id": "c6",
+              "titre": "Le bon produit",
+              "objectif": "Choisir la bonne réponse parmi des propositions",
+              "consigne": "Pour 5 produits à calculer mentalement, une liste de 3 ou 4 résultats possibles est proposée. Cliquez sur celui qui correspond à l’opération (exemple : 8 x 7 → choisissez parmi 54, 56, 58).",
+              "module": "SingleChoiceSet",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 4,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "La fabrication démarre dès ce clic : chaque activité est générée une par une, dans l'ordre, sous vos yeux."
+}

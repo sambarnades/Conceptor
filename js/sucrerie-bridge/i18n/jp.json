@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "初級",
     "level_formation_intermediaire": "中級",
-    "level_formation_expert": "上級"
+    "level_formation_expert": "上級",
+    "sucrerie_bridge_welcome_title_course": "コースをSucrerieで共有",
+    "sucrerie_bridge_welcome_subtitle_course": "活動と指示を含むコース全体が、Sucrerieカタログですべての教員に公開されます。",
+    "sucrerie_bridge_course_close": "戻る",
+    "sucrerie_bridge_success_title_approved_course": "コースを公開しました！",
+    "sucrerie_bridge_success_title_pending_course": "コースを保存しました",
+    "sucrerie_bridge_success_message_approved_course": "コースはSucrerieカタログで利用できます。",
+    "sucrerie_bridge_success_message_pending_course": "コースはモデレーターの確認後にカタログに表示されます。",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "投稿を検証する必要があります。確認リンクを {email} に送信しました。2時間以内にクリックしてコースを公開してください。確認しない場合は「マイコース」に7日間下書きのまま残ります。",
+    "sucrerie_bridge_success_email_sent_course": "管理リンクを記載したメールを {email} に送信しました。いつでもコースの編集・削除ができるよう、大切に保管してください。"
 }

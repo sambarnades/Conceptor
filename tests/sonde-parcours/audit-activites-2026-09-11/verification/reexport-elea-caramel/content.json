@@ -1,0 +1,346 @@
+{
+  "showCoverPage": false,
+  "bookCover": {
+    "coverDescription": ""
+  },
+  "chapters": [
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "a06bca90-6450-4256-84a8-840c5f06b548",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Comparer les capitales"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "subContentId": "74583b97-ada4-400e-920c-56a4ac480ebd",
+              "library": "H5P.MultiChoice 1.16",
+              "metadata": {
+                "title": "Quelle ville est la capitale de la France ?",
+                "contentType": "Multiple Choice",
+                "license": "U"
+              },
+              "params": {
+                "question": "Quelle ville est la capitale de la France ?",
+                "answers": [
+                  {
+                    "text": "Paris",
+                    "correct": true,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "",
+                      "notChosenFeedback": ""
+                    }
+                  },
+                  {
+                    "text": "Rome",
+                    "correct": false,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "",
+                      "notChosenFeedback": ""
+                    }
+                  }
+                ],
+                "behaviour": {
+                  "type": "single",
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "randomAnswers": false,
+                  "autoCheck": false,
+                  "singlePoint": false,
+                  "showScorePoints": true,
+                  "passPercentage": 50,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "enableCheckButton": true,
+                  "showSolutionsRequiresInput": false
+                },
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 50,
+                    "feedback": ""
+                  },
+                  {
+                    "from": 51,
+                    "to": 100,
+                    "feedback": ""
+                  }
+                ],
+                "UI": {
+                  "checkAnswerButton": "Vérifier",
+                  "showSolutionButton": "Afficher la solution",
+                  "tryAgainButton": "Recommencer",
+                  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                  "submitAnswerButton": "Valider",
+                  "tipsLabel": "Indice",
+                  "tipAvailable": "Indice disponible",
+                  "feedbackAvailable": "Feedback disponible",
+                  "readFeedback": "Lire le commentaire",
+                  "wrongAnswer": "Mauvaise réponse",
+                  "correctAnswer": "Bonne réponse",
+                  "shouldCheck": "Il fallait cocher ici",
+                  "shouldNotCheck": "Il ne fallait pas cocher ici !",
+                  "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+                  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                  "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                },
+                "media": {
+                  "disableImageZooming": false
+                },
+                "confirmCheck": {
+                  "header": "Terminer ?",
+                  "body": "Êtes-vous certain de vouloir terminer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Terminer"
+                },
+                "confirmRetry": {
+                  "header": "Recommencer ?",
+                  "body": "Êtes-vous certain de vouloir recommencer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                }
+              }
+            },
+            "useSeparator": "auto"
+          },
+          {
+            "content": {
+              "subContentId": "4243ae4a-bb0b-47e5-8254-bc3125743263",
+              "library": "H5P.TrueFalse 1.8",
+              "metadata": {
+                "title": "Madrid est la capitale de l’Espagne.",
+                "contentType": "True/False Question",
+                "license": "U"
+              },
+              "params": {
+                "question": "Madrid est la capitale de l’Espagne.",
+                "correct": "true",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "autoCheck": true,
+                  "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+                  "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+                },
+                "l10n": {
+                  "trueText": "Vrai",
+                  "falseText": "Faux",
+                  "score": "Vous avez obtenu @score sur @total points",
+                  "checkAnswer": "Vérifier",
+                  "showSolutionButton": "Afficher la solution",
+                  "tryAgain": "Recommencer",
+                  "wrongAnswerMessage": "Mauvaise réponse",
+                  "correctAnswerMessage": "Bonne réponse",
+                  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                  "submitAnswer": "Valider",
+                  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                  "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                },
+                "media": {
+                  "disableImageZooming": false
+                },
+                "confirmCheck": {
+                  "header": "Terminer ?",
+                  "body": "Voulez-vous vraiment terminer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                },
+                "confirmRetry": {
+                  "header": "Recommencer ?",
+                  "body": "Voulez-vous vraiment recommencer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                }
+              }
+            },
+            "useSeparator": "auto"
+          },
+          {
+            "content": {
+              "subContentId": "0e8b62b7-221f-4f25-a399-98fed6ef0a89",
+              "library": "H5P.Blanks 1.14",
+              "metadata": {
+                "title": "Exercice",
+                "contentType": "Fill in the Blanks",
+                "license": "U"
+              },
+              "params": {
+                "questions": [
+                  "France : *Paris*. Italie : *Rome*."
+                ],
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "caseSensitive": false,
+                  "autoCheck": false,
+                  "acceptSpellingErrors": false,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "enableCheckButton": true,
+                  "showSolutionsRequiresInput": false,
+                  "allowRetryIfCorrect": true
+                },
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 50,
+                    "feedback": ""
+                  },
+                  {
+                    "from": 51,
+                    "to": 100,
+                    "feedback": ""
+                  }
+                ],
+                "text": "Complète les deux capitales.",
+                "checkAnswer": "Vérifier",
+                "tryAgain": "Recommencer",
+                "showSolutions": "Afficher la solution",
+                "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                "notFilledOut": "Veuillez remplir tous les champs.",
+                "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+                "a11yCheckingModeHeader": "Mode de vérification",
+                "media": {
+                  "disableImageZooming": false
+                },
+                "submitAnswer": "Vérifier",
+                "answerIsCorrect": "&#039;:ans&#039; est une réponse exacte",
+                "answerIsWrong": "&#039;:ans&#039; est une réponse inexacte",
+                "answeredCorrectly": "Réponse exacte",
+                "answeredIncorrectly": "Mauvaise réponse",
+                "solutionLabel": "Réponse correcte :",
+                "inputLabel": "Blanc @num sur @total",
+                "inputHasTipLabel": "Indice disponible",
+                "tipLabel": "Indice",
+                "confirmCheck": {
+                  "header": "Terminer ?",
+                  "body": "Êtes-vous sûr de vouloir terminer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Terminer"
+                },
+                "confirmRetry": {
+                  "header": "Recommencer ?",
+                  "body": "Êtes-vous sûr de vouloir recommencer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                }
+              }
+            },
+            "useSeparator": "auto"
+          },
+          {
+            "content": {
+              "subContentId": "656d1e14-998d-4eb3-b035-a586b0a60007",
+              "library": "H5P.MarkTheWords 1.11",
+              "metadata": {
+                "title": "Exercice",
+                "contentType": "Mark the Words",
+                "license": "U"
+              },
+              "params": {
+                "taskDescription": "Sélectionne les capitales.",
+                "textField": "*Paris* Lyon *Rome* Milan",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "showScorePoints": true,
+                  "enableCheckButton": true
+                },
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 50,
+                    "feedback": ""
+                  },
+                  {
+                    "from": 51,
+                    "to": 100,
+                    "feedback": ""
+                  }
+                ],
+                "correctAnswer": "Correct !",
+                "incorrectAnswer": "Incorrect !",
+                "missedAnswer": "Manqué !",
+                "displaySolutionDescription": "La tâche est mise à jour pour contenir la solution.",
+                "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                "submitAnswerButton": "Valider",
+                "a11yFullTextLabel": "Texte complet lisible",
+                "a11yClickableTextLabel": "Texte complet où les mots peuvent être marqués",
+                "a11ySolutionModeHeader": "Mode solution",
+                "a11yCheckingHeader": "Mode de vérification",
+                "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+                "checkAnswerButton": "Vérifier",
+                "tryAgainButton": "Recommencer",
+                "showSolutionButton": "Afficher la solution",
+                "media": {
+                  "disableImageZooming": false
+                }
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    }
+  ],
+  "behaviour": {
+    "baseColor": "#1768c4",
+    "defaultTableOfContents": true,
+    "progressIndicators": true,
+    "progressAuto": true,
+    "displaySummary": true,
+    "enableRetry": true
+  },
+  "read": "Lire",
+  "displayTOC": "Afficher la table des matières",
+  "hideTOC": "Masquer la table des matières",
+  "nextPage": "Page suivante",
+  "previousPage": "Page précédente",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "page": "Page",
+  "chapterCompleted": "Page terminée !",
+  "partCompleted": "@pages sur @total terminées",
+  "incompleteChapter": "Page incomplète",
+  "navigateToTop": "Aller en haut",
+  "markAsFinished": "J&#039;ai terminé cette page",
+  "fullscreen": "Plein écran",
+  "exitFullscreen": "Quitter le plein écran",
+  "bookProgressSubtext": "@count sur @total pages",
+  "interactionsProgressSubtext": "@count sur @total interactions",
+  "submitReport": "Soumettre le rapport",
+  "restartLabel": "Recommencer",
+  "summaryHeader": "Résumé",
+  "allInteractions": "Toutes les interactions",
+  "unansweredInteractions": "Interactions sans réponse",
+  "scoreText": "@score / @maxscore",
+  "leftOutOfTotalCompleted": "@left sur @max interactions terminées",
+  "noInteractions": "Aucune interaction",
+  "score": "Score",
+  "summaryAndSubmit": "Résumé &amp; envoi",
+  "noChapterInteractionBoldText": "Vous n&#039;avez interagi avec aucune page.",
+  "noChapterInteractionText": "Vous devez interagir avec au moins une page avant de voir le résumé.",
+  "yourAnswersAreSubmittedForReview": "Vos réponses ont été soumises pour évaluation !",
+  "bookProgress": "Progression du livre",
+  "interactionsProgress": "Progression des interactions",
+  "totalScoreLabel": "Score total",
+  "a11y": {
+    "progress": "Page @page sur @total.",
+    "menu": "Afficher/masquer le menu de navigation"
+  }
+}

@@ -1,0 +1,238 @@
+[
+  {
+    "id": "choix-multiple-multiple",
+    "contenu": {
+      "question": "Sélectionne les capitales de France et d’Italie. RELU Sucrerie.",
+      "answers": [
+        {
+          "text": "Paris",
+          "correct": true,
+          "tipsAndFeedback": {
+            "tip": "La Seine. RELU",
+            "chosenFeedback": "Paris est la capitale française. RELU Caramel",
+            "notChosenFeedback": "Pense à la capitale française."
+          }
+        },
+        {
+          "text": "Rome",
+          "correct": true,
+          "tipsAndFeedback": {
+            "tip": "Le Colisée.",
+            "chosenFeedback": "Rome est la capitale italienne.",
+            "notChosenFeedback": "Pense à la capitale italienne."
+          }
+        },
+        {
+          "text": "Lyon",
+          "correct": false,
+          "tipsAndFeedback": {
+            "chosenFeedback": "Lyon est une ville française, mais pas sa capitale."
+          }
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": true,
+        "type": "multi",
+        "singlePoint": false,
+        "randomAnswers": false,
+        "showSolutionsRequiresInput": false,
+        "confirmCheckDialog": true,
+        "confirmRetryDialog": true,
+        "autoCheck": false,
+        "passPercentage": 100,
+        "showScorePoints": true
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-e7905ccb.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "UI": {
+        "checkAnswerButton": "Vérifier",
+        "showSolutionButton": "Afficher la solution",
+        "tryAgainButton": "Recommencer",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "submitAnswerButton": "Valider",
+        "tipsLabel": "Indice",
+        "tipAvailable": "Indice disponible",
+        "feedbackAvailable": "Feedback disponible",
+        "readFeedback": "Lire le commentaire",
+        "wrongAnswer": "Mauvaise réponse",
+        "correctAnswer": "Bonne réponse",
+        "shouldCheck": "Il fallait cocher ici",
+        "shouldNotCheck": "Il ne fallait pas cocher ici !",
+        "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+        "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+      },
+      "confirmCheck": {
+        "header": "Choix relus ?",
+        "body": "Relis tes réponses. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la vérification"
+      },
+      "confirmRetry": {
+        "header": "Reprendre les capitales ?",
+        "body": "Êtes-vous sûr de vouloir recommencer ?",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la reprise"
+      },
+      "title": "Choix multiple — multiple"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "choix-multiple-unique",
+    "contenu": {
+      "question": "Quelle ville est la capitale de France ? RELU Sucrerie.",
+      "answers": [
+        {
+          "text": "Paris",
+          "correct": true,
+          "tipsAndFeedback": {
+            "tip": "La Seine. RELU",
+            "chosenFeedback": "Paris est la capitale française. RELU Caramel",
+            "notChosenFeedback": "Pense à la capitale française."
+          }
+        },
+        {
+          "text": "Rome",
+          "correct": false,
+          "tipsAndFeedback": {
+            "tip": "Le Colisée.",
+            "chosenFeedback": "Rome est la capitale italienne.",
+            "notChosenFeedback": "Rome ne convient pas pour la France."
+          }
+        },
+        {
+          "text": "Lyon",
+          "correct": false,
+          "tipsAndFeedback": {
+            "chosenFeedback": "Lyon est une ville française, mais pas sa capitale."
+          }
+        }
+      ],
+      "behaviour": {
+        "enableRetry": false,
+        "enableSolutionsButton": false,
+        "enableCheckButton": false,
+        "type": "single",
+        "singlePoint": false,
+        "randomAnswers": true,
+        "showSolutionsRequiresInput": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "passPercentage": 100,
+        "showScorePoints": true
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-e7905ccb.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "UI": {
+        "checkAnswerButton": "Vérifier",
+        "showSolutionButton": "Afficher la solution",
+        "tryAgainButton": "Recommencer",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "submitAnswerButton": "Valider",
+        "tipsLabel": "Indice",
+        "tipAvailable": "Indice disponible",
+        "feedbackAvailable": "Feedback disponible",
+        "readFeedback": "Lire le commentaire",
+        "wrongAnswer": "Mauvaise réponse",
+        "correctAnswer": "Bonne réponse",
+        "shouldCheck": "Il fallait cocher ici",
+        "shouldNotCheck": "Il ne fallait pas cocher ici !",
+        "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+        "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+      },
+      "confirmCheck": {
+        "header": "Choix relus ?",
+        "body": "Relis tes réponses. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la vérification"
+      },
+      "confirmRetry": {
+        "header": "Reprendre les capitales ?",
+        "body": "Êtes-vous sûr de vouloir recommencer ?",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la reprise"
+      },
+      "title": "Choix multiple — unique"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

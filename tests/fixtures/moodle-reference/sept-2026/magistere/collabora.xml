@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="12" moduleid="23626" modulename="collabora" contextid="57784">
+  <collabora id="12">
+    <name>Document collaboratif : compte rendu</name>
+    <intro>&lt;p&gt;Rédigez ensemble le compte rendu de l’expérience.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>1790541626</timecreated>
+    <timemodified>1790541626</timemodified>
+    <format>text</format>
+    <initialtext>Compte rendu de l’expérience</initialtext>
+    <display>current</display>
+    <height>0</height>
+    <displayname>1</displayname>
+    <displaydescription>1</displaydescription>
+    <documents>
+    </documents>
+  </collabora>
+</activity>

@@ -24,7 +24,10 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO = fileURLToPath(new URL('../..', import.meta.url));
-const DOCX_BUNDLE = join(REPO, 'js/vendor/docx/9.7.1/index.iife.js');
+// Le bundle testé est CELUI QUE CHARGE LE SITE : lu dans LIB_PATHS (lib-loader.js), jamais
+// recopié ici — un chemin en dur restait sur l'ancienne version après chaque montée de docx.
+const DOCX_BUNDLE = join(REPO, readFileSync(join(REPO, 'js/core/lib-loader.js'), 'utf8')
+    .match(/DOCX:\s*'([^']+)'/)[1]);
 
 let passed = 0, failed = 0;
 const fails = [];

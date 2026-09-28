@@ -8,8 +8,9 @@
  *
  *   1. PLAN     : 1 appel court → la « carcasse » (titre, feedback global…) + un PLAN de
  *                 N intitulés/angles DISTINCTS couvrant tout le sujet (1 cerveau voit tout).
- *   2. REMPLISSAGE : ⌈N / BATCH_SIZE⌉ appels (séquentiels) → chaque lot rédige les items
+ *   2. REMPLISSAGE : ⌈N / BATCH_SIZE⌉ appels (deux de front) → chaque lot rédige les items
  *                 de SES intitulés, le plan complet fourni en contexte (zéro recoupement).
+ *                 Un lot en échec est redécoupé en moitiés plutôt que relancé à l'identique.
  *   3. FUSION   : code déterministe → carcasse + concat des items dans `data[path]`.
  *
  * Le JSON fusionné est un objet UNIQUE, conforme au schéma attendu par le `json-healer`
@@ -23,20 +24,33 @@
  */
 
 // ============================================================================
-// RÉGLAGES (validés empiriquement contre le backend dev2 — cf. tests harnais)
+// RÉGLAGES (validés empiriquement contre le backend bas — cf. docs/calibration-batch-2026-09.md)
 // ============================================================================
+// Le mur n'est pas une durée mais un VOLUME : un appel dure « ~4 s + jetons produits / débit »,
+// et le débit d'un même modèle varie du simple au double ou au triple d'un appel à l'autre
+// (ILaaS répartit chaque modèle sur plusieurs serveurs hétérogènes — mesuré le même soir du
+// 2026-09-28 : Mistral Small 4 de ~120 à ~290 jetons/s, Gemma 4 de ~87 à ~236). Un lot doit
+// donc tenir sous 59 s même un jour de forte charge : c'est la taille du lot, pas le choix du
+// modèle, qui achète la marge.
 export const BATCH_CONFIG = Object.freeze({
-    // En dessous (inclus) : 1 seul appel (comportement actuel, ~45 s prouvés). Au-dessus : découpage.
+    // En dessous (inclus) : 1 seul appel. Au-dessus : découpage. Surchargé par activité.
     threshold: 5,
-    // Items par lot. 4 → ~36 s/lot, marge confortable sous le mur des 59 s (fb=0 attendu).
-    batchSize: 4,
+    // Items par lot. 3 QCM ≈ 2 000 jetons → ~12 s au débit courant, < 45 s même à 50 jetons/s.
+    // (Les lots de 4 d'origine montaient à ~3 300 jetons : mur franchi dès que le débit tombe
+    // sous ~60 jetons/s.) Surchargé par activité pour les items légers (Vrai/Faux : 8).
+    batchSize: 3,
     // Plafond « un clic ». Au-delà, l'UI oriente vers « copier le prompt → IA externe ».
     maxItems: 40,
-    // 1 = séquentiel. Le test a montré qu'ILaaS tolère mal la concurrence (fallbacks en
-    // cascade) sur backend partagé → séquentiel = le plus robuste. Passer à 2 = +~30 % vitesse.
-    concurrency: 1,
-    // Relances côté client d'un lot/plan en échec (EN PLUS des 3 fallbacks serveur).
+    // Lots menés de front. 2 : 10 QCM en ~25 s au lieu de 57 à 94 s en séquentiel, sans aucun
+    // secours sur 36 appels (2026-09-28). ILaaS encaissait même 4 flux sans perte de débit par
+    // flux, mais le backend est PARTAGÉ entre tous les enseignants : on reste modeste.
+    // (En 2026-06, 3 lots de 4 simultanés sur un modèle bien plus lent partaient en cascade.)
+    concurrency: 2,
+    // Relances côté client d'un plan ou d'un lot d'UN item en échec (EN PLUS des 3 modèles
+    // du Worker). Un lot de plusieurs items n'est pas relancé tel quel : il est redécoupé.
     retries: 1,
+    // Échecs de lot tolérés sur toute une génération avant d'abandonner (cf. fillWithSplit).
+    maxFailures: 4,
 });
 
 // ============================================================================
@@ -90,6 +104,23 @@ export function normalizeStem(s) {
 }
 
 /**
+ * Bloc SOURCES (document joint par l'enseignant) et rappel final associé, communs au
+ * prompt d'activité, à celui de chaque lot ET à celui du PLAN. Le plan en était privé :
+ * les intitulés des N éléments étaient conçus sans le document, puis chaque lot devait
+ * les remplir — de quoi tirer toute l'activité hors des sources (constaté 25-09-2026).
+ * @returns {{sources: string, rappel: string}} chaînes vides sans document
+ */
+function blocSources(prefix, ocrContent, t) {
+    if (!ocrContent || !ocrContent.trim()) return { sources: '', rappel: '' };
+    const tpl = t[`${prefix}_sources`] || t.prompt_sources_communes || '';
+    return {
+        sources: tpl.replace('[RAG]', ocrContent.trim()),
+        // Pas de rappel pour une activité qui cadre elle-même ses sources (zones d'image).
+        rappel: (!t[`${prefix}_sources`] && t.prompt_sources_rappel_final) || '',
+    };
+}
+
+/**
  * Réplique PURE de buildActivityPrompt (prompt-generator.js) — `t` (translations) passé
  * en argument au lieu de l'import module, pour rester testable hors navigateur.
  * ⚠️ Garder synchronisé avec prompt-generator.buildActivityPrompt.
@@ -118,11 +149,7 @@ export function assembleActivityPrompt(prefix, params, t) {
     }
 
     const pedago = t.prompt_regles_pedagogiques_communes || '';
-    let sources = '';
-    if (ocrContent && ocrContent.trim()) {
-        const tpl = t[`${prefix}_sources`] || t.prompt_sources_communes || '';
-        sources = tpl.replace('[RAG]', ocrContent.trim());
-    }
+    const { sources, rappel } = blocSources(prefix, ocrContent, t);
     const structure = t[`${prefix}_structure_json`] || '';
     const exemple = t[`${prefix}_exemple_rendu`] || '';
 
@@ -141,6 +168,7 @@ ${structure}
 
 # ${t.prompt_header_rendering_example || 'EXEMPLE DE RENDU'}
 ${exemple}`;
+    if (rappel) prompt += `\n\n${rappel}`;
     return prompt;
 }
 
@@ -194,9 +222,13 @@ function contextBlock(params, t) {
  * Prompt de PLAN : carcasse (champs racine SAUF le tableau `path`) + `plan` de N intitulés
  * distincts. S'appuie sur la STRUCTURE de l'activité (multilingue, déjà traduite) pour que
  * le modèle émette les bons champs racine.
+ * @param {string} [o.planHint] - clé i18n d'une consigne propre à l'activité, ajoutée après la
+ *        contrainte (ex. quiz mixte : le plan attribue le TYPE de chaque question — sans elle,
+ *        chaque lot choisit ses types à l'aveugle et 5 questions n'en couvraient que 2 ou 3,
+ *        contre 5 à 7 en un seul appel ; mesuré 2026-09-28).
  * @returns {string}
  */
-export function buildOutlinePrompt({ prefix, params, t, count, path, itemName, carcasse }) {
+export function buildOutlinePrompt({ prefix, params, t, count, path, itemName, carcasse, planHint }) {
     const arrKey = arrayKeyOf(path);
     const structure = t[`${prefix}_structure_json`] || '';
     // Les règles pédagogiques (doctrine de feedback) sont incluses pour que le feedback
@@ -240,6 +272,8 @@ ${contextBlock(params, t)}
     if (pedago) {
         out += `\n# ${t.prompt_header_pedagogical_rules || 'RÈGLES PÉDAGOGIQUES'}\n${pedago}\n`;
     }
+    const { sources, rappel } = blocSources(prefix, params.ocrContent, t);
+    if (sources) out += `\n# ${t.prompt_header_sources || 'SOURCES'}\n${sources}\n`;
     out += `\n# ${pick(t, 'batch_outline_header', 'PLAN DE L\'ACTIVITÉ')}
 ${intro}
 
@@ -256,6 +290,9 @@ ${structure}
 ${fill(taskTpl)}
 
 ${fill(constraint)}`;
+    const hint = planHint && t[planHint];
+    if (hint) out += `\n\n${fill(hint)}`;
+    if (rappel) out += `\n\n${rappel}`;
     return out;
 }
 
@@ -387,6 +424,46 @@ async function withRetry(fn, retries, label, debug) {
 }
 
 /**
+ * Remplit un lot ; s'il échoue, le REDÉCOUPE en deux moitiés remplies l'une après l'autre,
+ * jusqu'à l'item seul (relancé `retries` fois). Relancer le même lot à l'identique, comme avant,
+ * rejouait la même panne : un lot tombé parce que le serveur servait lentement retombe, alors
+ * qu'une moitié produit deux fois moins de jetons et tient sous le mur. L'ordre des items suit
+ * celui de `slice`.
+ *
+ * Le redécoupage est borné par `budget.left`, PARTAGÉ par tous les lots d'une génération : un
+ * échec peut coûter jusqu'à 3 × 59 s côté Worker, et une panne franche d'ILaaS ne doit pas se
+ * transformer en quart d'heure d'attente. Budget épuisé → l'erreur remonte (tout-ou-rien).
+ *
+ * Pure (l'appel au modèle est injecté) → testable sans réseau (tests/test-llm-batch.js).
+ * @param {Array} slice - intitulés du plan confiés à ce lot
+ * @param {(slice:Array) => Promise<Array>} attempt - remplit `slice` ou lève
+ * @param {{retries?:number, budget?:{left:number}, onFailure?:Function, pauseMs?:number}} [ctx]
+ * @returns {Promise<Array>}
+ */
+export async function fillWithSplit(slice, attempt, ctx = {}) {
+    const { retries = BATCH_CONFIG.retries, budget = { left: Infinity }, onFailure = null, pauseMs = 800 } = ctx;
+    let tries = 0;
+    for (;;) {
+        try {
+            return await attempt(slice);
+        } catch (e) {
+            if (e && e.code === 'GENERATION_CANCELLED') throw e;
+            budget.left -= 1;
+            if (onFailure) onFailure(e, slice.length, budget.left);
+            if (budget.left < 0) throw e;
+            if (slice.length > 1) {
+                const mid = Math.ceil(slice.length / 2);
+                const head = await fillWithSplit(slice.slice(0, mid), attempt, ctx);
+                const tail = await fillWithSplit(slice.slice(mid), attempt, ctx);
+                return head.concat(tail);
+            }
+            if (++tries > retries) throw e;
+            if (pauseMs) await sleep(pauseMs);
+        }
+    }
+}
+
+/**
  * Parse une réponse LLM (plan ou lot). Quand `heal` est fourni (healJsonString du
  * json-healer), il est appliqué AVANT le parse — même pipeline que le mono-appel
  * (h5p-creator). Le healing systématique (et pas seulement en rattrapage d'un parse
@@ -451,7 +528,7 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
     const carcasseFields = Array.isArray(chunking.carcasse) ? chunking.carcasse : [];
     const batchSize = batchSizeFor(module);
     const params = promptGen.readContextParams();
-    const ocrContent = document.getElementById('ocr-output')?.innerText?.trim() || '';
+    const ocrContent = promptGen.lireCorpusSources();
     params.ocrContent = ocrContent;
 
     // Contexte RAG (programmes officiels) : injecté UNIQUEMENT sur le plan (ancrage programme).
@@ -467,7 +544,7 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
     const estLots = balancedBatches(N, batchSize).length;
     if (onProgress) onProgress({ phase: 'plan', current: 0, total: estLots, itemsDone: 0, itemsTotal: N });
     const outline = await withRetry(async () => {
-        const planPrompt = buildOutlinePrompt({ prefix, params, t, count: N, path, itemName, carcasse: carcasseFields });
+        const planPrompt = buildOutlinePrompt({ prefix, params, t, count: N, path, itemName, carcasse: carcasseFields, planHint: chunking.planHint });
         const res = await llm.generateRawWithLLM(planPrompt, model, { activityMeta, rag: ragCtx, stats: 'skip' });
         sumPrompt += res.promptTokens; sumCompletion += res.completionTokens;
         const obj = parseJsonStrict(res.content, 'Plan', healJsonString, debug);
@@ -496,7 +573,7 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
     const totalLots = slices.length;
     let doneLots = 0;
 
-    const runLot = (slice) => withRetry(async () => {
+    const fillOnce = async (slice) => {
         const fillPrompt = buildFillPrompt({ prefix, params, t, plan: outline.plan, slice, path, itemName });
         const res = await llm.generateRawWithLLM(fillPrompt, model, { activityMeta, stats: 'skip' });
         sumPrompt += res.promptTokens; sumCompletion += res.completionTokens;
@@ -508,18 +585,31 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
         if (arr.length > slice.length) arr = arr.slice(0, slice.length);
         if (arr.length < slice.length) throw new Error(`Lot incomplet (${arr.length}/${slice.length})`);
         return arr;
-    }, BATCH_CONFIG.retries, 'remplissage', debug);
+    };
+    // Budget d'échecs commun aux lots menés de front (cf. fillWithSplit).
+    const budget = { left: BATCH_CONFIG.maxFailures };
+    const runLot = (slice) => fillWithSplit(slice, fillOnce, {
+        budget,
+        onFailure: (e, size, left) => debug('llm-batch',
+            `Lot de ${size} en échec (${e.message}) — ${size > 1 ? 'redécoupé' : 'relancé'}, budget restant ${left}`),
+    });
 
     const allItems = [];
-    // Pool borné (concurrency=1 → séquentiel). On préserve l'ordre des lots dans le résultat.
+    // Pool borné (BATCH_CONFIG.concurrency lots de front). L'ordre des lots est préservé dans
+    // le résultat, quel que soit l'ordre d'arrivée.
     const limit = Math.max(1, BATCH_CONFIG.concurrency);
     const results = new Array(slices.length);
     let idx = 0;
     let itemsDone = 0;
+    // Tout-ou-rien : dès qu'un lot échoue pour de bon, Promise.all rejette — mais l'autre
+    // worker, lui, continuerait de puiser des lots et d'appeler le modèle pour rien.
+    let abandon = false;
     async function worker() {
-        while (idx < slices.length) {
+        while (!abandon && idx < slices.length) {
             const myIdx = idx++;
-            const arr = await runLot(slices[myIdx]); // throw → propage → échec global (tout ou rien)
+            let arr;
+            try { arr = await runLot(slices[myIdx]); }
+            catch (e) { abandon = true; throw e; } // → échec global (tout ou rien)
             results[myIdx] = arr;
             doneLots++;
             itemsDone += arr.length;

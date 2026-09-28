@@ -17,20 +17,25 @@ const FALLBACK = 'fr';
 
 let translations = {};
 let loadedLang = null;
+let loadVersion = 0;
 
 /**
  * Charge la locale demandée. Idempotent : ne refait rien si déjà chargée.
  * Fallback automatique sur fr si la langue n'est pas supportée ou si fetch échoue.
  */
 export async function loadLocale(lang) {
+    const version = ++loadVersion;
     const target = SUPPORTED.includes(lang) ? lang : FALLBACK;
     if (target === loadedLang) return;
     try {
         const res = await fetch(`js/caramelia/locales/${target}.json`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        translations = await res.json();
+        const next = await res.json();
+        if (version !== loadVersion) return;
+        translations = next;
         loadedLang = target;
     } catch (err) {
+        if (version !== loadVersion) return;
         console.warn(`[Caramelia] i18n: échec chargement ${target}, fallback ${FALLBACK}`, err);
         if (target !== FALLBACK) await loadLocale(FALLBACK);
     }

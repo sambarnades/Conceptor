@@ -9,6 +9,9 @@ import { debugLog, markdownToHtml } from '../core/utils.js';
 import { mathRenderer } from '../renderers/math-renderer.js';
 import { sanitizeSync } from '../export/sanitizer.js';
 import { escapeHtml as escapeHtmlCanonical } from '../core/escape.js';
+import { parseClozeGaps, parseGapAnswers } from '../moodle/mbz-course-builder.js';
+import { dansTolerance, correspondanceCourte, fractionTrouCloze, pourcentageTest } from '../moodle/test-evaluation.js';
+import { canonicalizeTestModel, numericalAnswers } from '../moodle/moodle-formats.js';
 
 /**
  * Normalise la bonne réponse d'une question Vrai/Faux en booléen.
@@ -27,6 +30,7 @@ function isTrueAnswer(value) {
  * @param {{mode?: 'teacher'|'student'}} [options] - mode d'affichage.
  */
 export default function renderEleaTest(container, data, _previewHtml, options = {}) {
+    data = canonicalizeTestModel(Array.isArray(data) ? { questions: data } : data);
     debugLog('simulators', "renderEleaTest called with:", data);
     if (!container) {
         console.error("renderEleaTest: No container provided");
@@ -282,7 +286,7 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
 
     function renderMultichoice(container, content, qIdx) {
         const answers = content.answers || [];
-        const isSingle = String(content.single) !== 'false';
+        const isSingle = ![false, 0, 'false', '0'].includes(content.single);
 
         const list = document.createElement('div');
         list.className = 'elea-options-list';
@@ -453,7 +457,7 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
         // LEC-01 : questiontext peut être absent (content_json backend, import non-MBZ).
         // Sans garde, text.split() jette un TypeError qui casse tout le rendu du Test.
         const text = content.questiontext || '';
-        const parts = text.split(/(\{\d+:[^}]+\})/);
+        const parts = text.split(/(\{\d*:[A-Z_]+:(?:\\[\s\S]|[^}\\])+\})/);
 
         const wrapper = document.createElement('div');
         wrapper.className = 'elea-cloze-text';
@@ -461,7 +465,7 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
         userAnswers[qIdx] = userAnswers[qIdx] || {};
 
         parts.forEach((part, partIdx) => {
-            if (part.match(/^\{\d+:[^}]+\}$/)) {
+            if (part.match(/^\{\d*:[A-Z_]+:(?:\\[\s\S]|[^}\\])+\}$/)) {
                 const inner = part.slice(1, -1);
                 const firstColon = inner.indexOf(':');
                 const secondColon = inner.indexOf(':', firstColon + 1);
@@ -473,21 +477,22 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
                     return;
                 }
 
-                const typeInfo = inner.substring(firstColon + 1, secondColon);
-                const answersStr = inner.substring(secondColon + 1);
-                const answers = answersStr.split('~');
-
-                if (typeInfo.toUpperCase().includes('MULTICHOICE') || typeInfo.toUpperCase().includes('GAPSELECT')) {
+                const gap = parseClozeGaps(part).gaps[0];
+                if (!gap) { wrapper.appendChild(document.createTextNode(part)); return; }
+                const parsed = parseGapAnswers(gap);
+                if (parsed.kind === 'multichoice') {
                     const select = document.createElement('select');
                     select.className = 'elea-cloze-select';
                     select.disabled = feedbackState[qIdx]?.show;
-                    select.innerHTML = '<option value="">?</option>' +
-                        answers.map(a => {
-                            const cleanA = a.replace(/^=/, '');
-                            return `<option value="${escapeHtml(cleanA)}" ${userAnswers[qIdx][partIdx] === cleanA ? 'selected' : ''}>${escapeHtml(cleanA)}</option>`;
-                        }).join('');
-
-                    select.onchange = (e) => { userAnswers[qIdx][partIdx] = e.target.value; };
+                    select.multiple = parsed.single === false;
+                    select.setAttribute('aria-label', tr('simulator_short_answer_placeholder', 'Votre réponse'));
+                    if (!select.multiple) select.appendChild(new Option('?', ''));
+                    for (const answer of parsed.answers) {
+                        const option = new Option(answer.text, answer.text);
+                        option.selected = select.multiple ? (userAnswers[qIdx][partIdx] || []).includes(answer.text) : userAnswers[qIdx][partIdx] === answer.text;
+                        select.appendChild(option);
+                    }
+                    select.onchange = () => { userAnswers[qIdx][partIdx] = select.multiple ? [...select.selectedOptions].map(o => o.value) : select.value; };
                     wrapper.appendChild(select);
                 } else {
                     const input = document.createElement('input');
@@ -513,47 +518,41 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
     function handleCheck(type, content, idx) {
         if (feedbackState[idx]?.show) return;
 
-        let isCorrect = false;
-        let isPartial = false;
+        let fraction = 0;
         let message = content.feedback || '';
 
         switch (type) {
             case 'multichoice': {
                 const uAns = userAnswers[idx];
                 const answers = content.answers;
-                if (content.single !== 'false' && content.single !== false) {
+                if (![false, 0, 'false', '0'].includes(content.single)) {
                     if (uAns !== undefined && answers[uAns]) {
-                        if (answers[uAns].fraction > 0) isCorrect = true;
+                        fraction = Number(answers[uAns].fraction) / 100;
                         if (answers[uAns].feedback) message += "<br><br>" + answers[uAns].feedback;
                     }
                 } else {
                     const selected = uAns || [];
-                    const allCorrect = answers.every((a, i) => (a.fraction > 0) === selected.includes(i));
-                    const someCorrect = selected.some(i => answers[i]?.fraction > 0);
-                    isCorrect = allCorrect;
-                    isPartial = !allCorrect && someCorrect;
+                    fraction = selected.reduce((n, i) => n + (Number(answers[i]?.fraction) || 0) / 100, 0);
                 }
                 break;
             }
             case 'truefalse':
-                isCorrect = (userAnswers[idx] === isTrueAnswer(content.answer.value));
-                message += "<br><br>" + (isCorrect ? content.answer.feedback_true : content.answer.feedback_false);
+                fraction = userAnswers[idx] === isTrueAnswer(content.answer.value) ? 1 : 0;
+                message += "<br><br>" + (userAnswers[idx] === true ? content.answer.feedback_true || '' : userAnswers[idx] === false ? content.answer.feedback_false || '' : '');
                 break;
             case 'numerical': {
-                const num = parseFloat(userAnswers[idx]);
-                const target = parseFloat(content.answer.number);
-                const tol = parseFloat(content.answer.tolerance || 0);
-                if (!isNaN(num) && Math.abs(num - target) <= tol) {
-                    isCorrect = true;
-                    message += "<br>" + (content.answer.feedback || '');
+                const answer = numericalAnswers(content).find(a => dansTolerance(userAnswers[idx], a.number, a.tolerance));
+                if (answer) {
+                    fraction = Number(answer.fraction) / 100;
+                    message += "<br>" + (answer.feedback || '');
                 }
                 break;
             }
             case 'shortanswer': {
-                const val = (userAnswers[idx] || '').trim().toLowerCase();
-                const match = content.answers.find(a => a.text.trim().toLowerCase() === val && a.fraction > 0);
+                const val = String(userAnswers[idx] ?? '').trim();
+                const match = content.answers.find(a => correspondanceCourte(val, a.text, [true, 1, '1', 'true'].includes(content.usecase)));
                 if (match) {
-                    isCorrect = true;
+                    fraction = Number(match.fraction) / 100;
                     message += "<br>" + (match.feedback || '');
                 }
                 break;
@@ -562,49 +561,27 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
                 const subquestions = content.subquestions;
                 const matches = userAnswers[idx] || {};
                 const matchCount = subquestions.filter((sq, i) => matches[i] === sq.answer).length;
-                isCorrect = matchCount === subquestions.length;
-                isPartial = !isCorrect && matchCount > 0;
+                fraction = subquestions.length ? matchCount / subquestions.length : 0;
                 break;
             }
             case 'cloze': {
-                // LEC-01 : même garde côté correction (handleCheck).
-                const text = content.questiontext || '';
-                const parts = text.split(/(\{\d+:[^}]+\})/);
-                const clozeAnswers = userAnswers[idx] || {};
-                let clozeCorrectCount = 0;
-                let gapsFound = 0;
-
+                const parts = (content.questiontext || '').split(/(\{\d*:[A-Z_]+:(?:\\[\s\S]|[^}\\])+\})/);
+                let score = 0, total = 0;
                 parts.forEach((part, partIdx) => {
-                    if (part.match(/^\{\d+:[^}]+\}$/)) {
-                        gapsFound++;
-                        const inner = part.slice(1, -1);
-                        const firstColon = inner.indexOf(':');
-                        const secondColon = inner.indexOf(':', firstColon + 1);
-
-                        if (secondColon !== -1) {
-                            const answersPart = inner.substring(secondColon + 1);
-                            const options = answersPart.split('~');
-
-                            const correctChoices = options
-                                .filter(opt => opt.startsWith('='))
-                                .map(opt => {
-                                    let clean = opt.substring(1).split('#')[0].trim();
-                                    return clean.split('/').map(sub => sub.toLowerCase().trim());
-                                })
-                                .flat();
-
-                            const userAns = (clozeAnswers[partIdx] || '').trim().toLowerCase();
-                            if (correctChoices.includes(userAns)) {
-                                clozeCorrectCount++;
-                            }
-                        }
-                    }
+                    const gap = parseClozeGaps(part).gaps[0];
+                    if (!gap) return;
+                    const weight = Number(gap.weight) || 1;
+                    total += weight;
+                    score += weight * fractionTrouCloze(gap, (userAnswers[idx] || {})[partIdx]);
                 });
-                isCorrect = gapsFound > 0 && clozeCorrectCount === gapsFound;
-                isPartial = !isCorrect && clozeCorrectCount > 0;
+                fraction = total > 0 ? score / total : 0;
                 break;
             }
         }
+
+        fraction = Math.max(0, Math.min(1, Number(fraction) || 0));
+        const isCorrect = fraction >= 1 - 1e-7;
+        const isPartial = !isCorrect && fraction > 0;
 
         // Gestion des hints
         const hints = Array.isArray(content.hints) ? content.hints : [];
@@ -632,7 +609,7 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
             }
         }
 
-        feedbackState[idx] = { show: true, isCorrect, isPartial, message, hintShown: false };
+        feedbackState[idx] = { show: true, isCorrect, isPartial, fraction, message, hintShown: false };
         rerender();
     }
 
@@ -677,9 +654,8 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
         mathRenderer.renderMath(container);
 
         // Test terminé : signale la complétion au parcours collection (mode
-        // élève uniquement). Score = proportion de questions vérifiées correctes.
-        const correct = Object.values(feedbackState).filter(f => f && f.isCorrect).length;
-        const scorePct = questions.length ? Math.round((correct / questions.length) * 100) : 0;
+        // élève uniquement), avec les points et crédits partiels du Test.
+        const scorePct = pourcentageTest(questions, feedbackState);
         emitSimulatorCompleted(container, mode, scorePct);
     }
 

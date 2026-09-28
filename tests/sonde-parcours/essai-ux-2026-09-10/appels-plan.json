@@ -1,0 +1,9 @@
+[
+  {
+    "status": "done",
+    "model": "mistral-small-4-119b",
+    "fallback": 0,
+    "promptTokens": 1275,
+    "completionTokens": 1174
+  }
+]

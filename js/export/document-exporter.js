@@ -162,6 +162,21 @@ async function prepareImages(formattedContent) {
         });
 
     await Promise.all(promises);
+
+    // Les grilles et graphiques fournissent déjà imageData, sans URL à résoudre.
+    // Ils doivent recevoir leurs octets DOCX eux aussi : un Blob passé directement
+    // à ImageRun fait partager le même identifiant à l'énoncé et à sa correction.
+    const embeddedImages = new Set();
+    const collect = item => { if (item?.imageData && !item.imageData.docxBytes) embeddedImages.add(item.imageData); };
+    for (const section of formattedContent.sections) {
+        collect(section);
+        if (section.type === 'flashcardTable') {
+            for (const row of section.rows || []) { collect(row.left); collect(row.right); }
+        } else if (section.type === 'table') {
+            for (const row of section.rows || []) row.forEach(collect);
+        }
+    }
+    await Promise.all([...embeddedImages].map(ensureDocxCompatibleImage));
 }
 
 /**
@@ -623,10 +638,10 @@ function createDOCXDocument(formattedContent) {
     );
 
     // Contenu
-    formattedContent.sections.forEach(section => {
+    formattedContent.sections.forEach((section, index) => {
         switch (section.type) {
             case 'header':
-                children.push(createDOCXHeader(section));
+                children.push(createDOCXHeader({ ...section, pageBreakBefore: formattedContent.sections[index - 1]?.type === 'pageBreak' }));
                 break;
             case 'paragraph': {
                 const paras = createDOCXParagraphOrList(section);
@@ -641,7 +656,7 @@ function createDOCXDocument(formattedContent) {
                 children.push(createDOCXCheckbox(section));
                 break;
             case 'separator':
-                children.push(createDOCXSeparator());
+                if (formattedContent.sections[index + 1]?.type !== 'pageBreak') children.push(createDOCXSeparator());
                 break;
             case 'image':
                 const imageNodes = createDOCXImage(section);
@@ -657,7 +672,9 @@ function createDOCXDocument(formattedContent) {
                 children.push(createDOCXTable(section));
                 break;
             case 'pageBreak':
-                children.push(createDOCXPageBreak());
+                // Un paragraphe vide peut déborder seul puis sauter encore une
+                // page : porter la rupture sur le titre évite cette page blanche.
+                if (formattedContent.sections[index + 1]?.type !== 'header') children.push(createDOCXPageBreak());
                 break;
         }
     });
@@ -723,9 +740,15 @@ function createDOCXDocument(formattedContent) {
                         color: "000000"
                     },
                     paragraph: {
-                        alignment: AlignmentType.CENTER
+                        alignment: AlignmentType.CENTER,
+                        keepNext: true
                     }
                 },
+                // Un titre reste avec le paragraphe qu'il annonce (keepNext) et ne se coupe pas
+                // (keepLines). Écrit ici en clair : docx ≥ 9.8 déclare un style « Normal »
+                // explicite, et LibreOffice cessait alors de prêter à nos titres le « garder avec
+                // le suivant » de ses propres titres — « Question 4 » restait seul en bas de page
+                // (constaté le 28-09-2026, 12 exports sur 67). Word en profite aussi.
                 {
                     id: "Heading1",
                     name: "Heading 1",
@@ -736,6 +759,10 @@ function createDOCXDocument(formattedContent) {
                         bold: true,
                         color: "0066CC",
                         font: "Arial"
+                    },
+                    paragraph: {
+                        keepNext: true,
+                        keepLines: true
                     }
                 },
                 {
@@ -748,6 +775,10 @@ function createDOCXDocument(formattedContent) {
                         bold: true,
                         color: "0066CC",
                         font: "Arial"
+                    },
+                    paragraph: {
+                        keepNext: true,
+                        keepLines: true
                     }
                 },
                 {
@@ -760,6 +791,10 @@ function createDOCXDocument(formattedContent) {
                         bold: true,
                         color: "0066CC",
                         font: "Arial"
+                    },
+                    paragraph: {
+                        keepNext: true,
+                        keepLines: true
                     }
                 }
             ]
@@ -772,13 +807,18 @@ function createDOCXDocument(formattedContent) {
  * Crée un document DOCX spécifique pour les cartes imprimables
  * Configuration : marges 1,27 cm, tableaux 2x4 pour impression recto-verso
  */
+function annexesCartes(formattedContent) {
+    // Les textes ne doivent ni disparaître, ni décaler les grilles recto/verso.
+    // Les regrouper après toutes les paires, sur une feuille indépendante.
+    return formattedContent.sections.filter(s => s.type === 'paragraph' || (s.type === 'header' && s.level !== 1));
+}
+
 function createDOCXFlashcardDocument(formattedContent) {
     const { Document, Paragraph, PageOrientation, convertMillimetersToTwip, TextRun, AlignmentType, HeadingLevel } = window.docx;
 
     // Grouper les sections par pages (chaque flashcardTable = une page)
     const docSections = [];
     let currentPageChildren = [];
-    let titleEmitted = false;
 
     formattedContent.sections.forEach((section, index) => {
         if (section.type === 'flashcardTable') {
@@ -836,10 +876,8 @@ function createDOCXFlashcardDocument(formattedContent) {
                 );
             }
 
-            // Titre de l'activité, une seule fois en tête du document (audit
-            // Sucrerie 2026-07-05, F6 : les cartes sortaient sans aucun titre).
-            if (!titleEmitted && formattedContent.title) {
-                titleEmitted = true;
+            // Répéter le titre sur chaque face pour aligner les grilles recto verso.
+            if (formattedContent.title) {
                 currentPageChildren.push(new Paragraph({
                     children: [new TextRun({ text: formattedContent.title, bold: true, size: 28 })],
                     alignment: AlignmentType.CENTER,
@@ -871,6 +909,15 @@ function createDOCXFlashcardDocument(formattedContent) {
                 }
             },
             children: currentPageChildren
+        });
+    }
+
+    const annexes = annexesCartes(formattedContent);
+    if (annexes.length) {
+        docSections.push({
+            properties: docSections[0].properties,
+            children: annexes.flatMap(section => section.type === 'header'
+                ? [createDOCXHeader(section)] : [createDOCXParagraphOrList(section)].flat())
         });
     }
 
@@ -935,8 +982,10 @@ function createDOCXHeader(section) {
     };
 
     return new Paragraph({
+        keepNext: section.keepWithNext || undefined,
         children: parseTextWithMath(section.text),
         heading: headingLevels[section.level] || HeadingLevel.HEADING_2,
+        pageBreakBefore: section.pageBreakBefore || undefined,
         spacing: { before: 240, after: 120 }
     });
 }
@@ -971,13 +1020,14 @@ function createDOCXParagraphOrList(section) {
         if (!trimmed) continue;
 
         const bulletMatch = trimmed.match(/^[•\-]\s+(.*)/);
-        const numberMatch = trimmed.match(/^\d+\.\s+(.*)/);
+        const numberMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
 
         if (bulletMatch || numberMatch) {
             inList = true;
             listItems.push({
-                text: bulletMatch ? bulletMatch[1] : numberMatch[1],
-                isNumbered: !!numberMatch
+                text: bulletMatch ? bulletMatch[1] : numberMatch[2],
+                isNumbered: !!numberMatch,
+                number: numberMatch?.[1]
             });
         } else if (inList) {
             pastList = true;
@@ -997,12 +1047,12 @@ function createDOCXParagraphOrList(section) {
     }
 
     // Items de liste
-    listItems.forEach((item, idx) => {
+    listItems.forEach(item => {
         if (item.isNumbered) {
             // Liste numérotée : simulée avec un TextRun numéroté (pas de numbering natif simple)
             paragraphs.push(new Paragraph({
                 children: [
-                    new TextRun({ text: `${idx + 1}. `, bold: true, ...baseStyle }),
+                    new TextRun({ text: `${item.number}. `, bold: true, ...baseStyle }),
                     ...parseTextWithMath(item.text, baseStyle)
                 ],
                 indent: { left: 360 },
@@ -1059,6 +1109,7 @@ function createDOCXParagraph(section) {
     const style = styles[section.style] || { size: 24 };
 
     return new Paragraph({
+        keepNext: section.keepWithNext || undefined,
         children: parseTextWithMath(section.text, style),
         spacing: { before: 120, after: 120 }
     });
@@ -1098,6 +1149,7 @@ function createDOCXCheckbox(section) {
     const style = styles[section.style] || {};
 
     return new Paragraph({
+        keepNext: section.keepWithNext || undefined,
         children: [
             new TextRun({ text: "[  ] ", size: 24, ...style }),
             ...parseTextWithMath(section.text, { size: 24, ...style })
@@ -1601,7 +1653,31 @@ async function createPDFDocument(formattedContent) {
     y += 15;
 
     // Contenu
-    formattedContent.sections.forEach(section => {
+    formattedContent.sections.forEach((section, index) => {
+        // Garder un petit exercice avec son intitulé, y compris sans cases à
+        // cocher (texte à trous, mots à sélectionner). Les groupes plus
+        // longs qu'une page conservent le découpage ligne par ligne du moteur.
+        if (section.type === 'header' && section.level >= 2) {
+            const group = [section];
+            for (const next of formattedContent.sections.slice(index + 1)) {
+                if (!['paragraph', 'checkbox'].includes(next.type) && !(group.at(-1).keepWithNext && next.type === 'header')) break;
+                group.push(next);
+            }
+            if (group.length > 1) {
+                const height = group.reduce((total, part) => {
+                    const size = part.type === 'header' ? (part.level === 2 ? 14 : 12) : 11;
+                    doc.setFont(PDF_FONT, part.type === 'header' ? 'bold' : 'normal');
+                    doc.setFontSize(size);
+                    const plain = (part.text || '').replace(/<[^>]*>/g, '').replace(/[*_]/g, '');
+                    const lines = doc.splitTextToSize(plain, maxWidth - 10).length;
+                    return total + lines * size * 0.5 + (part.type === 'header' ? 7 : 5);
+                }, 0);
+                if (height < pageHeight - bottomMargin - 20 && y + height > pageHeight - bottomMargin) {
+                    doc.addPage();
+                    y = 20;
+                }
+            }
+        }
         // Vérifier si on doit ajouter une nouvelle page
         if (y > pageHeight - bottomMargin) {
             doc.addPage();
@@ -2047,7 +2123,7 @@ function addPDFImage(doc, section, y, margin, maxWidth, pageHeight) {
             doc.setTextColor(102, 102, 102);
             const text = section.caption || section.alt;
             const lines = doc.splitTextToSize(text, maxWidth);
-            doc.text(lines, margin + maxWidth / 2, finalY, { align: 'center' });
+            doc.text(lines, margin + maxWidth / 2, finalY, { align: 'center', baseline: 'top' });
             finalY += (lines.length * 4) + 4;
         } else {
             finalY += 3;
@@ -2107,10 +2183,8 @@ async function createPDFFlashcardDocument(formattedContent) {
             doc.setFont(PDF_FONT, 'italic');
             doc.text(t('doc_fmt_generation_date') + dateStr, pageWidth - FLASHCARD_CONFIG.pdfMargin, 25, { align: 'right' });
 
-            // Titre de l'activité, une seule fois en tête (audit Sucrerie
-            // 2026-07-05, F6). Les tableaux démarrent à startY=50 → pas de
-            // chevauchement.
-            if (isFirstPage && formattedContent.title) {
+            // Garder le même en-tête sur chaque face ; les grilles démarrent à 50 mm.
+            if (formattedContent.title) {
                 doc.setFontSize(14);
                 doc.setFont(PDF_FONT, 'bold');
                 doc.text(formattedContent.title, pageWidth / 2, 35, { align: 'center' });
@@ -2128,6 +2202,17 @@ async function createPDFFlashcardDocument(formattedContent) {
         }
     });
 
+    const annexes = annexesCartes(formattedContent);
+    if (annexes.length) {
+        doc.addPage();
+        let y = 20;
+        const margin = FLASHCARD_CONFIG.pdfMargin;
+        for (const section of annexes) {
+            y = section.type === 'header'
+                ? addPDFHeader(doc, section, y, margin, 210 - 2 * margin, 297, 20)
+                : addPDFParagraph(doc, section, y, margin, 210 - 2 * margin, 297, 20);
+        }
+    }
     return doc;
 }
 
@@ -2183,7 +2268,9 @@ function addPDFFlashcardTable(doc, section) {
                 const cellY = data.cell.y;
                 const cellWidth = data.cell.width;
                 const cellHeight = data.cell.height;
-                const padding = data.cell.padding('horizontal');
+                // « horizontal » renvoie la somme gauche + droite : l'employer
+                // comme marge supérieure tassait le texte contre son indice.
+                const padding = data.cell.padding('left');
 
                 let contentY = cellY + padding;
 
@@ -2511,11 +2598,17 @@ async function createODTDocument(formattedContent) {
         colorStylesXml += `\n    <style:style style:name="Color_${hex}" style:family="text"><style:text-properties fo:color="#${hex}"/></style:style>`;
     });
 
+    const odtSectionStyle = section => section.type==='header' ? `Heading_${section.level||1}`
+        : section.type==='checkbox' ? (section.style ? `P_checkbox_${section.style}` : 'P_checkbox')
+        : `P_${section.style||'default'}`;
+    const linkedStyles=[...new Set(formattedContent.sections.filter(s=>s.keepWithNext).map(odtSectionStyle))];
+    const keepStylesXml=linkedStyles.map(name=>`<style:style style:name="Keep_${escapeXml(name)}" style:family="paragraph" style:parent-style-name="${escapeXml(name)}"><style:paragraph-properties fo:keep-with-next="always"/></style:style>`).join('');
+
     // ODF 1.2 lie `svg:` à son espace « svg-compatible » — pas à celui du W3C.
     // LibreOffice tolère les deux, mais les parseurs stricts (import ODT de Word) non.
     let contentXml = `<?xml version="1.0" encoding="UTF-8"?>
 <office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" office:version="1.2">
-  <office:automatic-styles>${tableStylesXml}${colorStylesXml}
+  <office:automatic-styles>${tableStylesXml}${colorStylesXml}${keepStylesXml}
     <style:style style:name="fr_math" style:family="graphic" style:parent-style-name="Formula"><style:graphic-properties style:vertical-pos="middle" style:vertical-rel="text" draw:ole-draw-aspect="1"/></style:style>
   </office:automatic-styles>
   <office:body>
@@ -2530,10 +2623,10 @@ async function createODTDocument(formattedContent) {
         switch (section.type) {
             case 'header':
                 const level = section.level || 1;
-                contentXml += `      <text:h text:outline-level="${level}" text:style-name="Heading_${level}">${parseODTWithMath(section.text)}</text:h>\n`;
+                contentXml += `      <text:h text:outline-level="${level}" text:style-name="${section.keepWithNext ? 'Keep_' : ''}Heading_${level}">${parseODTWithMath(section.text)}</text:h>\n`;
                 break;
             case 'paragraph': {
-                const pStyle = `P_${section.style || 'default'}`;
+                const pStyle = `${section.keepWithNext ? 'Keep_' : ''}P_${section.style || 'default'}`;
                 // Détecter les listes dans le texte (• item ou 1. item)
                 const pLines = (section.text || '').split('\n').filter(l => l.trim());
                 const hasList = pLines.some(l => /^\s*[•\-]\s/.test(l) || /^\s*\d+\.\s/.test(l));
@@ -2543,11 +2636,11 @@ async function createODTDocument(formattedContent) {
                     let isNumbered = false;
                     for (const line of pLines) {
                         const bulletMatch = line.trim().match(/^[•\-]\s+(.*)/);
-                        const numMatch = line.trim().match(/^\d+\.\s+(.*)/);
+                        const numMatch = line.trim().match(/^(\d+)\.\s+(.*)/);
                         if (bulletMatch || numMatch) {
                             inList = true;
                             if (numMatch) isNumbered = true;
-                            listItems.push(bulletMatch ? bulletMatch[1] : numMatch[1]);
+                            listItems.push({ text: bulletMatch ? bulletMatch[1] : numMatch[2], number: numMatch?.[1] });
                         } else if (inList) {
                             after.push(line.trim());
                         } else {
@@ -2560,7 +2653,10 @@ async function createODTDocument(formattedContent) {
                         const listStyle = isNumbered ? 'L2' : 'L1';
                         contentXml += `      <text:list text:style-name="${listStyle}">\n`;
                         for (const item of listItems) {
-                            contentXml += `        <text:list-item><text:p text:style-name="P_bullet_default">${parseODTWithMath(item)}</text:p></text:list-item>\n`;
+                            // Conserver le numéro explicite même si le formateur a
+                            // produit une section distincte pour chaque paragraphe.
+                            const start = item.number === undefined ? '' : ` text:start-value="${item.number}"`;
+                            contentXml += `        <text:list-item${start}><text:p text:style-name="P_bullet_default">${parseODTWithMath(item.text)}</text:p></text:list-item>\n`;
                         }
                         contentXml += `      </text:list>\n`;
                     }
@@ -2575,7 +2671,7 @@ async function createODTDocument(formattedContent) {
                 contentXml += `      <text:list text:style-name="L1"><text:list-item><text:p text:style-name="${bullStyle}">${parseODTWithMath(section.text)}</text:p></text:list-item></text:list>\n`;
                 break;
             case 'checkbox':
-                const checkStyle = section.style ? `P_checkbox_${section.style}` : 'P_checkbox';
+                const checkStyle = (section.keepWithNext ? 'Keep_' : '')+(section.style ? `P_checkbox_${section.style}` : 'P_checkbox');
                 contentXml += `      <text:p text:style-name="${checkStyle}">[  ] ${parseODTWithMath(section.text)}</text:p>\n`;
                 break;
             case 'separator':
@@ -3170,6 +3266,13 @@ async function createODTFlashcardDocument(formattedContent) {
       <style:paragraph-properties fo:text-align="center" fo:margin-top="0cm" fo:margin-bottom="0.35cm"/>
       <style:text-properties style:font-name="Arial" fo:font-size="18pt" fo:font-weight="bold" fo:color="#0066CC"/>
     </style:style>
+    <style:style style:name="TitleNewPage" style:family="paragraph">
+      <style:paragraph-properties fo:break-before="page" fo:text-align="center" fo:margin-top="0cm" fo:margin-bottom="0.35cm"/>
+      <style:text-properties style:font-name="Arial" fo:font-size="18pt" fo:font-weight="bold" fo:color="#0066CC"/>
+    </style:style>
+    <style:style style:name="AnnexParagraph" style:family="paragraph">
+      <style:paragraph-properties fo:margin-bottom="0.4cm" fo:line-height="115%"/>
+    </style:style>
     <!-- Date : 10pt italique alignée à droite -->
     <style:style style:name="Date" style:family="paragraph">
       <style:paragraph-properties fo:text-align="end" fo:margin-top="0cm" fo:margin-bottom="0.70cm"/>
@@ -3241,18 +3344,14 @@ async function createODTFlashcardDocument(formattedContent) {
         if (section.type === 'flashcardTable') {
             tableCounter++;
 
-            // Saut de page avant chaque tableau sauf le premier
-            if (!isFirstTable) {
-                contentXml += `      <text:p text:style-name="PageBreakStyle"/>\n`;
-            }
+            // Porter le saut sur le titre : un paragraphe vide ajoutait une
+            // ligne uniquement au verso et décalait toutes les découpes.
+            contentXml += `      <text:p text:style-name="${isFirstTable ? 'Title' : 'TitleNewPage'}">${escapeXml(t('doc_fmt_header_title'))}</text:p>
+      <text:p text:style-name="Date">${escapeXml(t('doc_fmt_generation_date') + new Date().toLocaleDateString(currentLang || 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }))}</text:p>\n`;
             isFirstTable = false;
 
-            contentXml += `      <text:p text:style-name="Title">${escapeXml(t('doc_fmt_header_title'))}</text:p>
-      <text:p text:style-name="Date">${escapeXml(t('doc_fmt_generation_date') + new Date().toLocaleDateString(currentLang || 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }))}</text:p>\n`;
-
-            // Titre de l'activité, une seule fois en tête du document (audit
-            // Sucrerie 2026-07-05, F6 : les cartes sortaient sans aucun titre).
-            if (tableCounter === 1 && formattedContent.title) {
+            // Répéter le titre sur chaque face pour aligner les grilles recto verso.
+            if (formattedContent.title) {
                 contentXml += `      <text:p text:style-name="ActivityTitle">${escapeXml(formattedContent.title)}</text:p>\n`;
             }
 
@@ -3262,6 +3361,15 @@ async function createODTFlashcardDocument(formattedContent) {
         }
     });
 
+    const annexes = annexesCartes(formattedContent);
+    if (annexes.length) {
+        contentXml += `      <text:p text:style-name="PageBreakStyle"/>\n`;
+        for (const section of annexes) {
+            contentXml += section.type === 'header'
+                ? `      <text:h text:outline-level="2" text:style-name="ActivityTitle">${escapeXml(section.text)}</text:h>\n`
+                : `      <text:p text:style-name="AnnexParagraph">${parseODTWithMath(section.text)}</text:p>\n`;
+        }
+    }
     contentXml += `    </office:text>
   </office:body>
 </office:document-content>`;
@@ -4236,6 +4344,9 @@ function _smNode(node) {
             return node.value || '';
 
         case 'operator':
+            // Les crochets nus d’un intervalle français ne sont pas des paires
+            // StarMath : [a,b[ et ]a,b] doivent rester des caractères littéraux.
+            if(node.value==='[' || node.value===']')return '"'+node.value+'"';
             return node.value || '';
 
         case 'symbol': {

@@ -1,0 +1,83 @@
+{
+  "title": "<p>Cartes avec audio</p>",
+  "description": "Observe le drapeau, écoute et nomme la capitale.",
+  "dialogs": [
+    {
+      "text": "France",
+      "answer": "Paris",
+      "tips": {
+        "front": "La Seine traverse cette ville.",
+        "back": "Capitale française."
+      },
+      "image": {
+        "path": "images/drapeau.png",
+        "mime": "image/png",
+        "width": 120,
+        "height": 80,
+        "copyright": {
+          "title": "Drapeau tricolore",
+          "author": "Atelier de test",
+          "license": "CC BY",
+          "version": "4.0"
+        }
+      },
+      "imageAltText": "",
+      "audio": [
+        {
+          "path": "audios/audio-6aa3f20f72acf.wav",
+          "mime": "audio/x-wav",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    {
+      "text": "Italie",
+      "answer": "Rome",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    }
+  ],
+  "behaviour": {
+    "enableRetry": true,
+    "disableBackwardsNavigation": false,
+    "scaleTextNotCard": false,
+    "randomCards": false,
+    "maxProficiency": 3,
+    "quickProgression": true
+  },
+  "answer": "Retourner",
+  "next": "Suivant",
+  "prev": "Précédent",
+  "retry": "Recommencer",
+  "progressText": "Carte @card sur @total",
+  "cardFrontLabel": "Recto de la carte",
+  "cardBackLabel": "Verso de la carte",
+  "tipButtonLabel": "Indice",
+  "audioNotSupported": "Votre navigateur ne supporte pas ce format audio",
+  "mode": "repetition",
+  "correctAnswer": "J&#039;ai eu bon !",
+  "incorrectAnswer": "Je me suis trompé",
+  "round": "Manche @round",
+  "cardsLeft": "Cartes restantes : @number",
+  "nextRound": "Passer à la manche @round",
+  "startOver": "Recommencer",
+  "showSummary": "Suivant",
+  "summary": "Résumé",
+  "summaryCardsRight": "Cartes que vous avez réussies :",
+  "summaryCardsWrong": "Cartes que vous avez manquées :",
+  "summaryCardsNotShown": "Cartes non montrées :",
+  "summaryOverallScore": "Score global",
+  "summaryCardsCompleted": "Cartes que vous avez apprises :",
+  "summaryCompletedRounds": "Manches terminées :",
+  "summaryAllDone": "Bien joué ! Vous avez réussi toutes les @cards cartes @max fois de suite !",
+  "confirmStartingOver": {
+    "header": "Terminer ?",
+    "body": "Êtes-vous sûr de vouloir terminer ?",
+    "cancelLabel": "Annuler",
+    "confirmLabel": "Terminer"
+  }
+}

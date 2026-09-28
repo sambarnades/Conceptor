@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="707" moduleid="14029" modulename="geogebra" contextid="17757">
+  <geogebra id="707">
+    <name>GeoGebra : placer un point</name>
+    <intro>&lt;p&gt;Manipule la figure.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <url>figure.ggb</url>
+    <attributes>enableRightClick=0&amp;enableLabelDrags=0&amp;showResetIcon=0&amp;showMenuBar=0&amp;showToolBar=0&amp;showToolBarHelp=0&amp;showAlgebraInput=0&amp;useBrowserForJS=1&amp;language=en</attributes>
+    <urlggb></urlggb>
+    <seed>0</seed>
+    <width>800</width>
+    <height>600</height>
+    <showsubmit>0</showsubmit>
+    <grade>100</grade>
+    <autograde>0</autograde>
+    <maxattempts>-1</maxattempts>
+    <grademethod>1</grademethod>
+    <timeavailable>0</timeavailable>
+    <timedue>0</timedue>
+    <timecreated>1790541067</timecreated>
+    <timemodified>0</timemodified>
+    <attempts>
+    </attempts>
+  </geogebra>
+</activity>

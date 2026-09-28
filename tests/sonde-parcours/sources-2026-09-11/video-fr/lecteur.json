@@ -1,0 +1,12 @@
+{
+  "etat": {
+    "temps": 1.3341909885559082,
+    "duree": 287,
+    "lecteur": true,
+    "questions": 4,
+    "cadres": [
+      "https://www.youtube-nocookie.com/embed/kdQc9LXR1n4?origin=http%3A%2F%2F127.0.0.1%3A8149&autoplay=0&controls=0&disablekb=1&fs=0&loop=0&rel=0&showinfo=0&iv_load_policy=3&wmode=opaque&start=0&playsinline=1&widget_referrer=http%3A%2F%2F127.0.0.1%3A8149%2Findex.html&enablejsapi=1&widgetid=1&forigin=http%3A%2F%2F127.0.0.1%3A8149%2Findex.html&aoriginsup=1&aorigins=http%3A%2F%2F127.0.0.1%3A8149&gporigin=http%3A%2F%2F127.0.0.1%3A8149%2Findex.html&vf=1"
+    ]
+  },
+  "erreurs": []
+}

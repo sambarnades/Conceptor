@@ -16,14 +16,20 @@ import { decideRagContextFromDom } from './rag-orchestrator.js';
  * Liste des modèles d'IA disponibles via l'API du LLM.
  */
 
+// Cycle ILaaS de l'automne 2026 : `gpt-oss-120b` et `mistral-small-3.2-24b` sont arrêtés le
+// 30-09-2026, `llama-3.3-70b` avait déjà quitté le catalogue ; retirés d'ici.
+// `qwen-3.8-27b` remplace progressivement `qwen-3.6-35b-instruct`. Au 28-09-2026 il n'est PAS
+// encore au catalogue : le Worker n8n échoue alors en ~2 s et retombe sur son premier fallback,
+// `qwen-3.6-35b-instruct` (mesuré : `fallback_level: 1`, 6 s en tout). C'est voulu — « 3.8 sinon
+// 3.6 » sans toucher n8n. L'id est déduit de la convention ILaaS (`qwen-3.6-35b-instruct`) :
+// le vérifier au catalogue dès son arrivée (sonde n8n, mode `liste`), faute de quoi Qwen
+// resterait en 3.6 à vie, sans rien dire.
 export const AVAILABLE_MODELS = [
-    { id: 'qwen-3.6-35b-instruct', displayName: 'Qwen 3.6', param: '35', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 1, sizeTag: 'large' },
-    { id: 'mistral-small-4-119b', displayName: 'Mistral Small 4', param: '119', owned_by: 'Mistral AI', type: 'text-generation', featured: true, order: 2, sizeTag: 'xl' },
-    { id: 'gpt-oss-120b', displayName: 'GPT-OSS', param: '120', owned_by: 'OpenAI', type: 'text-generation', featured: true, order: 3, sizeTag: 'xl' },
-    { id: 'mistral-small-3.2-24b', displayName: 'Mistral-Small-3.2', param: '24', owned_by: 'Mistral AI', type: 'text-generation', sizeTag: 'small' },
-    { id: 'llama-3.3-70b', displayName: 'LLaMa-3.3', param: '70', owned_by: 'RedHatAI', type: 'text-generation' },
+    { id: 'gemma-4-31b', displayName: 'Gemma 4', param: '31', owned_by: 'Google', type: 'text-generation', featured: true, order: 1, sizeTag: 'small' },
+    { id: 'qwen-3.8-27b', displayName: 'Qwen 3.8', param: '27', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },
+    { id: 'mistral-small-4-119b', displayName: 'Mistral Small 4', param: '119', owned_by: 'Mistral AI', type: 'text-generation', featured: true, order: 3, sizeTag: 'xl' },
+    { id: 'qwen-3.6-35b-instruct', displayName: 'Qwen 3.6', param: '35', owned_by: 'Qwen', type: 'text-generation' },
     { id: 'llama-3.1-8b', displayName: 'LLaMa-3.1-8B', param: '8', owned_by: 'Neural Magic', type: 'text-generation' },
-    { id: 'gemma-4-31b', displayName: 'Gemma 4', param: '31', owned_by: 'Google', type: 'text-generation' },
     { id: 'mistral-medium-latest', displayName: 'Mistral Medium', param: '~70', owned_by: 'Mistral AI', type: 'text-generation' }
 ];
 
@@ -55,8 +61,9 @@ export const ACTIVITY_MODEL_OVERRIDES = {
     // Appels ISOLÉS obligatoires : trois requêtes rapprochées saturent le backend PARTAGÉ et
     // fabriquent des fallbacks en cascade qu'on prend à tort pour un défaut du modèle.
     //
-    // Anciens overrides (à réactiver après benchmark, pour un motif de QUALITÉ ou de VITESSE
-    // reproductible — jamais pour une panne du jour) :
+    // Anciens overrides, pour mémoire : `gpt-oss-120b` est arrêté par ILaaS le 30-09-2026, ils ne
+    // peuvent plus être réactivés tels quels. Un override futur exige un benchmark, pour un motif
+    // de QUALITÉ ou de VITESSE reproductible — jamais pour une panne du jour :
     // 'QuizSetQCM': 'gpt-oss-120b',        // Plus rapide et plus fiable pour les QCM
     // 'QuizSetVF': 'gpt-oss-120b',         // Idem pour les Vrai/Faux
     // 'QuizSet': 'gpt-oss-120b',           // Idem pour les Quiz génériques

@@ -1,0 +1,24 @@
+{
+  "ok": 4,
+  "ko": 0,
+  "prefixe": "RECETTE CARTES",
+  "titre": "Recette Caramel — audio, indices et réglages",
+  "activites": [
+    {
+      "module": "DialogCards",
+      "fichier": "dialogues-audio-edites.h5p"
+    },
+    {
+      "module": "Flashcards",
+      "fichier": "flashcards-editees.h5p"
+    },
+    {
+      "module": "Summary",
+      "fichier": "resume-indice.h5p"
+    },
+    {
+      "module": "SingleChoiceSet",
+      "fichier": "choix-unique-delais.h5p"
+    }
+  ]
+}

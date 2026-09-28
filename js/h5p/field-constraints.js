@@ -163,6 +163,7 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'taskDescription':              { render: 'html+latex' },
             'textField':                    { render: 'unicode+markers', markerType: 'dragtext' },
+            'distractors':                  { render: 'unicode+markers', markerType: 'dragtext' },
             'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
@@ -184,6 +185,9 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'taskDescription':              { render: 'html+latex' },
             'keywords[].keyword':           { render: 'plain' },
+            'keywords[].alternatives[]':    { render: 'plain' },
+            'keywords[].options.feedbackIncluded': { render: 'plain' },
+            'keywords[].options.feedbackMissed':   { render: 'plain' },
             'solution.introduction':        { render: 'html+latex' },
             'solution.sample':              { render: 'html+latex' },
             'overallFeedback[].feedback':   { render: 'latex' }
@@ -271,7 +275,8 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             // H5P.FindTheWords : `taskDescription` est un `text` sans tags
             'taskDescription':              { render: 'latex' },
-            'wordList':                     { render: 'plain' }
+            'wordList':                     { render: 'plain' },
+            'behaviour.fillPool':           { render: 'plain' }
         }
     },
 
@@ -326,11 +331,16 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'title':                                  { render: 'plain' },
             'cover.description':                      { render: 'html+latex' },
+            'cover.imageAlt':                        { render: 'plain' },
             'chapters[].title':                       { render: 'plain' },
             'chapters[].content[].text':              { render: 'html+latex' },
             'chapters[].content[].table.headers[]':   { render: 'html+latex' },
             'chapters[].content[].table.rows[][]':    { render: 'html+latex' },
-            'chapters[].content[].alt':               { render: 'plain' }
+            'chapters[].content[].alt':               { render: 'plain' },
+            'chapters[].content[].columns[].content[].text': { render: 'html+latex' },
+            'chapters[].content[].columns[].content[].table.headers[]': { render: 'html+latex' },
+            'chapters[].content[].columns[].content[].table.rows[][]': { render: 'html+latex' },
+            'chapters[].content[].columns[].content[].alt': { render: 'plain' }
             // chapters[].content[] exercices → délégué au processeur enfant selon library
         }
     },

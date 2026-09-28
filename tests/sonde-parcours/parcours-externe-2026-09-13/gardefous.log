@@ -1,0 +1,68 @@
+
+── Le plan de référence passe tout ─────────────────────────
+  ✓ la relecture rend exactement six constats
+  ✓ aucun point d’attention sur un plan sain
+  ✓ chaque constat porte une clé i18n
+  ✓ les six clés sont distinctes
+
+── 1. Le parcours annonce où il va ─────────────────────────
+  ✓ un objectif général absent est signalé
+  ✓ un objectif qui recopie le titre est signalé (le défaut réel du modèle)
+  ✓ la recopie est vue malgré la casse, les espaces et la ponctuation
+  ✓ un objectif qui PROLONGE le titre n’est pas une recopie
+
+── 2. Au moins une activité qui vérifie ────────────────────
+  ✓ un parcours sans aucune activité auto-corrective est signalé
+  ✓ le constat dit COMBIEN d’activités vérifient
+  ✓ DragTheWords compte comme une vérification (il corrige à la seconde)
+  ✓ Devoir n’en est PAS une (l’enseignant corrige, des jours plus tard)
+
+── 3. Pas trois fois le même type d’affilée ────────────────
+  ✓ DEUX activités identiques d’affilée passent
+  ✓ TROIS identiques d’affilée sont signalées
+  ✓ le constat nomme les trois activités en cause
+  ✓ la série est vue MÊME à cheval sur deux étapes
+  ✓ une activité différente au milieu casse la série
+
+── 4. Un objectif par étape, distinct de son titre ──────────
+  ✓ une étape sans objectif est signalée
+  ✓ le constat nomme l’étape en cause
+  ✓ le constat dit combien d’étapes sur combien
+  ✓ un objectif qui recopie le titre de l’étape est signalé
+
+── 5. Le volume horaire tient debout ───────────────────────
+  ✓ 30 minutes pour une activité, c’est la borne et elle passe
+  ✓ 31 minutes, c’est une séance déguisée : signalée
+  ✓ le constat nomme l’activité trop longue
+  ✓ et le message parle de l’ACTIVITÉ, pas du total
+  ✓ deux heures pile ne déclenchent rien
+  ✓ au-delà de deux heures, le total est SIGNALÉ
+  ✓ et le constat livre le total en minutes, que l’écran écrira en heures et minutes
+  ✓ un total trop long ne montre du doigt AUCUNE activité (ce n’est pas leur faute)
+
+── 6. À l’entraînement, l’élève sait s’il a juste ──────────
+  ✓ une Page en palier « entraînement » est signalée
+  ✓ le constat nomme l’activité muette
+  ✓ la MÊME Page en découverte ne l’est pas (c’est sa place)
+  ✓ un Devoir en transfert non plus (on n’y attend pas de correction immédiate)
+
+── La relecture ne bloque jamais ───────────────────────────
+  ✓ null → six constats, aucune exception
+  ✓ undefined → six constats, aucune exception
+  ✓ une chaîne → six constats, aucune exception
+  ✓ un objet vide → six constats, aucune exception
+  ✓ un tableau → six constats, aucune exception
+  ✓ des étapes non tableau → six constats, aucune exception
+  ✓ une étape sans cartes → six constats, aucune exception
+  ✓ une carte sans module → six constats, aucune exception
+  ✓ une durée en toutes lettres → six constats, aucune exception
+
+── Ce que l’écran doit surligner ───────────────────────────
+  ✓ un plan bancal accumule les points d’attention
+  ✓ l’étape sans objectif est à surligner
+  ✓ les trois activités le sont aussi
+  ✓ un plan sain ne surligne rien
+
+========================================
+parcours — relecture didactique : 46 PASS / 0 FAIL
+========================================

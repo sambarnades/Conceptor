@@ -1,0 +1,20 @@
+[
+  {
+    "kind": "multiple",
+    "score": "2/2",
+    "texte": "Sélectionne les capitales de France et d’Italie. RELU Sucrerie.\nParis\nParis est la capitale française. RELU Caramel\nRome\nRome est la capitale italienne.\nLyon\nVous avez obtenu 2 sur 2 points\n2/2\nRights of use"
+  },
+  {
+    "kind": "unique",
+    "score": "1/1",
+    "texte": "Quelle ville est la capitale de France ? RELU Sucrerie.\nLyon\nParis\nParis est la capitale française. RELU Caramel\nRome\nRome ne convient pas pour la France.\nVous avez obtenu 1 sur 1 points\n1/1\nRights of use"
+  },
+  {
+    "kind": "point-unique-seuil-100",
+    "scores": [
+      "0/1",
+      "1/1"
+    ],
+    "texte": "Sélectionne les capitales de France et d’Italie. RELU Sucrerie.\nParis\nParis est la capitale française. RELU Caramel\nRome\nRome est la capitale italienne.\nLyon\nVous avez obtenu 1 sur 1 points\n1/1\nRights of use"
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "activiteElea": 13848,
+  "h5pId": 402,
+  "titreReexport": "Tri Sucrerie — relu dans Éléa",
+  "source": "tests/sonde-parcours/audit-activites-2026-09-11/grilles-tri/sucrerie/sucrerie-tri-options.h5p",
+  "reexport": "sort-the-paragraphs-402-402.h5p",
+  "sha256Source": "6104ef7f096af2621692d459e491e7417bbf106dc8272b3440d5824f87954ec4",
+  "sha256Reexport": "17cc9f6ad2a5174717ef0b5cef63411043586cf1303578716ab8f19b51caca3c",
+  "behaviourIdentique": true,
+  "behaviourSource": {
+    "scoringMode": "positions",
+    "applyPenalties": false,
+    "duplicatesInterchangeable": false,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "addButtonsForMovement": false
+  },
+  "behaviourReexport": {
+    "scoringMode": "positions",
+    "applyPenalties": false,
+    "duplicatesInterchangeable": false,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "addButtonsForMovement": false
+  },
+  "bibliotheques": {
+    "FontAwesome-4.5": "4.5.6",
+    "H5P.Components-1.0": "1.0.97",
+    "H5PEditor.RangeList-1.0": "1.0.13",
+    "H5PEditor.ShowWhen-1.0": "1.0.9",
+    "H5PEditor.TableList-1.0": "1.0.4",
+    "H5P.FontIcons-1.0": "1.0.11",
+    "H5P.JoubelUI-1.3": "1.3.45",
+    "H5P.Question-1.5": "1.5.53",
+    "H5P.SortParagraphs-0.11": "0.11.9",
+    "H5P.Transition-1.0": "1.0.4",
+    "jQuery.ui-1.10": "1.10.22"
+  },
+  "contenusConserves": {
+    "paragraphs": true,
+    "taskDescription": true
+  }
+}

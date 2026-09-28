@@ -1,0 +1,30 @@
+[
+  {
+    "kind": "image",
+    "mediasConserves": 1,
+    "sauvegarde": true,
+    "lectureVideo": false,
+    "identifiantConserve": "7e8b4b16-06be-431c-8f0e-524fd88336d4",
+    "reouverture": true,
+    "annulation": true,
+    "exports": [
+      "docx",
+      "odt",
+      "pdf-local"
+    ]
+  },
+  {
+    "kind": "video",
+    "mediasConserves": 2,
+    "sauvegarde": true,
+    "lectureVideo": true,
+    "identifiantConserve": "1a4be133-959b-4178-851b-a6e35c8b394d",
+    "reouverture": true,
+    "annulation": true,
+    "exports": [
+      "docx",
+      "odt",
+      "pdf-local"
+    ]
+  }
+]

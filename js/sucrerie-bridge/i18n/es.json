@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Principiante",
     "level_formation_intermediaire": "Intermedio",
-    "level_formation_expert": "Experto"
+    "level_formation_expert": "Experto",
+    "sucrerie_bridge_welcome_title_course": "Compartir el itinerario en Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "El itinerario completo, sus actividades e instrucciones estarán disponibles para todo el profesorado en el catálogo Sucrerie.",
+    "sucrerie_bridge_course_close": "Atrás",
+    "sucrerie_bridge_success_title_approved_course": "¡Itinerario publicado!",
+    "sucrerie_bridge_success_title_pending_course": "Itinerario guardado",
+    "sucrerie_bridge_success_message_approved_course": "Tu itinerario está disponible en el catálogo Sucrerie.",
+    "sucrerie_bridge_success_message_pending_course": "El itinerario aparecerá en el catálogo tras la revisión de un moderador.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Su envío debe ser validado. Acabamos de enviar un enlace de confirmación a {email}: haga clic en él en un plazo de 2 horas para publicar su actividad. Sin confirmación, permanece como borrador en «Mis actividades» durante 7 días.",
+    "sucrerie_bridge_success_email_sent_course": "Acabamos de enviar un correo con tu enlace de gestión a {email}. Consérvalo cuidadosamente: te permitirá modificar o retirar tu itinerario en cualquier momento."
 }

@@ -1,0 +1,12 @@
+presentation-complet : sauvegarde, réouverture, annulation ; 3 documents vérifiés
+presentation-sans-bilan : sauvegarde, réouverture, annulation ; 3 documents vérifiés
+Conservation native : 22 contrôles réussis.
+Adaptateurs natifs : 65 contrôles réussis.
+livre-natif-manuel : sauvegarde, réouverture, annulation ; 3 documents vérifiés
+livre-natif-automatique : sauvegarde, réouverture, annulation ; 3 documents vérifiés
+Conservation native : 22 contrôles réussis.
+Adaptateurs natifs : 65 contrôles réussis.
+video-native-affiche : sauvegarde, réouverture, annulation ; 3 documents vérifiés
+video-native-bouton : sauvegarde, réouverture, annulation ; 3 documents vérifiés
+Conservation native : 22 contrôles réussis.
+Adaptateurs natifs : 65 contrôles réussis.

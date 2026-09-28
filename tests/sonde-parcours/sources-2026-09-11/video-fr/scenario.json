@@ -1,0 +1,164 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-10T22:46:27.655Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "auto"
+  },
+  "plan": {
+    "titre": "Comprendre la démarche HACCP",
+    "objectifGeneral": "Comprendre la démarche HACCP",
+    "notionsPivots": [
+      "danger",
+      "prévention",
+      "contrôle"
+    ],
+    "origine": "ia",
+    "personnalise": true,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    },
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Comprendre la démarche HACCP",
+        "objectif": "",
+        "cartes": [
+          {
+            "id": "c1",
+            "titre": "Comprendre la démarche HACCP",
+            "objectif": "Comprendre la démarche HACCP",
+            "consigne": "Poser des questions sur les principes présentés dans la vidéo.",
+            "module": "InteractiveVideo",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Comprendre la démarche HACCP",
+              "interactions": [
+                {
+                  "timestamp": 50,
+                  "pause": true,
+                  "type": "multichoice",
+                  "question": "Quelle est la définition correcte de l'acronyme HACCP selon la vidéo ?",
+                  "answers": [
+                    {
+                      "text": "Hygiène alimentaire et contrôle des produits",
+                      "correct": false,
+                      "feedback": "Non, l'acronyme correspond à \"analyse des dangers et maîtrise des points critiques\"."
+                    },
+                    {
+                      "text": "*Analyse des dangers et maîtrise des points critiques*",
+                      "correct": true,
+                      "feedback": "Exact, c'est une méthode pour garantir la sécurité des aliments à chaque étape."
+                    },
+                    {
+                      "text": "Hygiène alimentaire et sécurité des consommateurs",
+                      "correct": false,
+                      "feedback": "Ce n'est pas la définition exacte de l'acronyme, même si c'est un objectif lié."
+                    }
+                  ]
+                },
+                {
+                  "timestamp": 129,
+                  "pause": true,
+                  "type": "multichoice",
+                  "question": "Parmi ces éléments, lequel N'est PAS un principe fondamental de l'HACCP selon la vidéo ?",
+                  "answers": [
+                    {
+                      "text": "Déterminer les points critiques de maîtrise",
+                      "correct": false,
+                      "feedback": "C'est bien un principe, par exemple la cuisson à 75°C."
+                    },
+                    {
+                      "text": "*Évaluer le coût des matières premières*",
+                      "correct": true,
+                      "feedback": "Ce n'est pas un principe de l'HACCP, qui porte sur la sécurité et non sur les coûts."
+                    },
+                    {
+                      "text": "Documenter tout le système",
+                      "correct": false,
+                      "feedback": "C'est le 7e principe, essentiel pour tracer les actions."
+                    }
+                  ]
+                },
+                {
+                  "timestamp": 229,
+                  "pause": true,
+                  "type": "truefalse",
+                  "question": "Les bonnes pratiques d'hygiène (PRP) ne sont pas nécessaires avant d'appliquer les 7 principes de l'HACCP.",
+                  "correct": false,
+                  "feedbackOnCorrect": "Effectivement, les PRP forment la base de tout système HACCP, sans elles il n'est pas efficace.",
+                  "feedbackOnWrong": "Non, la vidéo explique que les PRP sont indispensables comme fondation avant d'appliquer les principes HACCP."
+                }
+              ],
+              "summary": {
+                "intro": "Retiens les idées clés de la vidéo :",
+                "statements": [
+                  [
+                    "HACCP signifie *analyse des dangers et maîtrise des points critiques* et repose sur l'identification des risques et la mise en place de contrôles.",
+                    "HACCP est un ensemble de contrôles pour éviter les accidents, sans lien avec les coûts des matières premières.",
+                    "HACCP ne nécessite aucune méthode, il suffit de suivre les bonnes pratiques de nettoyage."
+                  ],
+                  [
+                    "Les 7 principes de l'HACCP incluent l'analyse des dangers, la fixation de limites critiques et la documentation.",
+                    "Les 7 principes sont uniquement axés sur la production, pas sur la qualité de l'eau ou la gestion des déchets.",
+                    "Les 7 principes ne concernent que les opérateurs de production."
+                  ],
+                  [
+                    "Les PRP (bonnes pratiques d'hygiène) sont la base essentielle avant d'appliquer les principes HACCP.",
+                    "Les PRP remplacent les principes HACCP dans les petites entreprises.",
+                    "Les PRP sont optionnelles et peuvent être ignorées si les ressources sont limitées."
+                  ],
+                  [
+                    "Une erreur fréquente est de recopier un système HACCP d'un autre site sans l'adapter.",
+                    "Une erreur fréquente est de former uniquement le responsable qualité.",
+                    "Une erreur fréquente est de ne jamais documenter les actions."
+                  ],
+                  [
+                    "Appliquer l'HACCP permet de produire des aliments plus sûrs et d'améliorer la qualité.",
+                    "Appliquer l'HACCP réduit uniquement les coûts de production.",
+                    "Appliquer l'HACCP est obligatoire uniquement pour les grandes entreprises."
+                  ]
+                ]
+              },
+              "videoSource": {
+                "type": "html5",
+                "url": "https://www.youtube.com/watch?v=kdQc9LXR1n4",
+                "mime": "video/YouTube"
+              },
+              "duration": 288.14,
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              }
+            },
+            "source": {
+              "type": "video",
+              "url": "https://www.youtube.com/watch?v=kdQc9LXR1n4",
+              "transcription": "WEBVTT\n\n00:00:00.000 --> 00:00:10.000\n[Musique]\n\n00:00:10.000 --> 00:00:13.000\nDans l'industrie agroalimentaire, le mot\n\n00:00:13.000 --> 00:00:15.000\nHACCP revient partout. Mais au fond,\n\n00:00:15.000 --> 00:00:17.000\nc'est quoi exactement ? Comment le\n\n00:00:17.000 --> 00:00:19.000\nmettre en place efficacement ? Et\n\n00:00:19.000 --> 00:00:21.000\nsurtout, comment éviter les erreurs que\n\n00:00:21.000 --> 00:00:23.000\nfont la majorité des entreprises ? Ce\n\n00:00:23.000 --> 00:00:25.000\nguide vous explique clairement le\n\n00:00:25.000 --> 00:00:28.000\nsystème HACCP, même si vous partez de\n\n00:00:28.000 --> 00:00:31.000\nzéro, avec des exemples, des étapes\n\n00:00:31.000 --> 00:00:33.000\nsimples et des conseils pratiques à\n\n00:00:33.000 --> 00:00:36.000\nappliquer dès aujourd'hui. Premièrement,\n\n00:00:36.000 --> 00:00:39.000\ncomprendre l'HCP.\n\n00:00:39.000 --> 00:00:40.000\n[Musique]\n\n00:00:40.000 --> 00:00:44.000\nHacp signifie hasard analysis and\n\n00:00:44.000 --> 00:00:47.000\ncritical control point ou en français\n\n00:00:47.000 --> 00:00:48.000\nanalyse des dangers et maîtrise des\n\n00:00:48.000 --> 00:00:50.000\npoints critiques. C'est une méthode qui\n\n00:00:50.000 --> 00:00:52.000\npermet de garantir la sécurité des\n\n00:00:52.000 --> 00:00:53.000\naliments à chaque étape de la\n\n00:00:53.000 --> 00:00:56.000\nfabrication. Elle repose sur un principe\n\n00:00:56.000 --> 00:00:58.000\nsimple. Identifier les risques. Imaginez\n\n00:00:58.000 --> 00:01:01.000\nque vous produisez du yaourt. Un risque\n\n00:01:01.000 --> 00:01:03.000\npeut venir du lait cru ou d'un mauvais\n\n00:01:03.000 --> 00:01:06.000\nnettoyage. Avec HCP, on identifie ses\n\n00:01:06.000 --> 00:01:08.000\nrisques. Puis on installe des contrôles.\n\n00:01:08.000 --> 00:01:11.000\nAnalyse du lait, lavage validé, contrôle\n\n00:01:11.000 --> 00:01:13.000\nde température. Deuxièmement, les sep\n\n00:01:13.000 --> 00:01:15.000\nprincipes clés de\n\n00:01:15.000 --> 00:01:16.000\n[Musique]\n\n00:01:16.000 --> 00:01:19.000\nl'acp. Le système HACCP repose sur se\n\n00:01:19.000 --> 00:01:22.000\nprincipes fondamentaux. Voici chacun\n\n00:01:22.000 --> 00:01:24.000\nexpliqué simplement avec un exemple\n\n00:01:24.000 --> 00:01:26.000\nconcret. Première, analyser les dangers.\n\n00:01:26.000 --> 00:01:28.000\nOn identifie tous les dangers possibles\n\n00:01:28.000 --> 00:01:30.000\nà chaque étape. Bactéries, produits\n\n00:01:30.000 --> 00:01:33.000\nchimiques, corps étranger. Deuxième,\n\n00:01:33.000 --> 00:01:35.000\ndéterminer les points critiques. Ce sont\n\n00:01:35.000 --> 00:01:37.000\nles étapes où le danger peut être\n\n00:01:37.000 --> 00:01:40.000\nmaîtrisé efficacement. Exemple : cuisson\n\n00:01:40.000 --> 00:01:44.000\nà 75° Celus. 3è, fixer des limites\n\n00:01:44.000 --> 00:01:46.000\ncritiques. Il faut définir une valeur\n\n00:01:46.000 --> 00:01:49.000\ncible. Exemple : cuisson à 72° Celus\n\n00:01:49.000 --> 00:01:52.000\nminimum. 4è mettre en place un système\n\n00:01:52.000 --> 00:01:54.000\nde surveillance. Comment vérifier que\n\n00:01:54.000 --> 00:01:57.000\ntout reste sous contrôle ? Exemple :\n\n00:01:57.000 --> 00:01:59.000\nthermomètre digital vérifié toutes les\n\n00:01:59.000 --> 00:02:01.000\nheures. 5: définir des actions\n\n00:02:01.000 --> 00:02:03.000\ncorrectives si la température tombe à\n\n00:02:03.000 --> 00:02:06.000\n65° Celus, il faut réagir, isoler le\n\n00:02:06.000 --> 00:02:09.000\nlot, analyser, ne pas livrer, 6e.\n\n00:02:09.000 --> 00:02:11.000\nVérifier le système audit. Test analyse\n\n00:02:11.000 --> 00:02:14.000\nconfirme que le système fonctionne. 7e\n\n00:02:14.000 --> 00:02:16.000\ndocumenter tout le système. Chaque\n\n00:02:16.000 --> 00:02:17.000\naction doit être enregistrée et\n\n00:02:17.000 --> 00:02:22.000\narchivée. Les fondements de\n\n00:02:22.000 --> 00:02:24.000\nHACP. Avant d'appliquer les sept\n\n00:02:24.000 --> 00:02:26.000\nprincipes de l'achat CCP, il faut\n\n00:02:26.000 --> 00:02:29.000\ncomprendre ce qui les rend possible. Ce\n\n00:02:29.000 --> 00:02:31.000\nsont les bonnes pratiques d'hygiène\n\n00:02:31.000 --> 00:02:34.000\nqu'on appelle aussi les PRP, programme\n\n00:02:34.000 --> 00:02:36.000\nprérequis. Elle forme la base de tout\n\n00:02:36.000 --> 00:02:39.000\nsystème HACCP. Sans elle, l'arbre ne\n\n00:02:39.000 --> 00:02:42.000\ndonnera pas de fruit. 1er, nettoyage et\n\n00:02:42.000 --> 00:02:45.000\ndésinfection. 2, hygiène du personnel.\n\n00:02:45.000 --> 00:02:47.000\n3, lutte contre les nuisibles. 4,\n\n00:02:47.000 --> 00:02:50.000\nqualité de l'eau et de l'air 5. Contrôle\n\n00:02:50.000 --> 00:02:53.000\ndes matières premières. 6e entretien des\n\n00:02:53.000 --> 00:02:57.000\néquipements. 7e gestion des déchets. Les\n\n00:02:57.000 --> 00:02:59.000\ncinq étapes pratiques pour l'appliquer\n\n00:02:59.000 --> 00:03:00.000\nen\n\n00:03:00.000 --> 00:03:02.000\nusine. Passons maintenant aux étapes\n\n00:03:02.000 --> 00:03:04.000\nconcrètes pour appliquer un système\n\n00:03:04.000 --> 00:03:07.000\nHACP dans votre usine. Forme les\n\n00:03:07.000 --> 00:03:09.000\néquipes, chaque opérateur doit\n\n00:03:09.000 --> 00:03:10.000\ncomprendre les risques et gestes de\n\n00:03:10.000 --> 00:03:14.000\nsécurité. Former une équipe HACP, une\n\n00:03:14.000 --> 00:03:17.000\néquipe interservice, production qualité\n\n00:03:17.000 --> 00:03:19.000\nmaintenance. Exemple : réception,\n\n00:03:19.000 --> 00:03:21.000\nstockage, mélange, pasteurisation,\n\n00:03:21.000 --> 00:03:24.000\nemballage. Identifier les dangers et les\n\n00:03:24.000 --> 00:03:27.000\nCCP. À chaque étape, on évalue les\n\n00:03:27.000 --> 00:03:29.000\nrisques et fixe les CCP. Écrire les\n\n00:03:29.000 --> 00:03:31.000\nprocédures et les fiches de suivi. Ces\n\n00:03:31.000 --> 00:03:34.000\ndocuments précisent qui fait quoi,\n\n00:03:34.000 --> 00:03:37.000\ncomment et quand. Les erreurs à\n\n00:03:37.000 --> 00:03:39.000\n[Musique]\n\n00:03:39.000 --> 00:03:41.000\néviter. Voici les erreurs fréquentes\n\n00:03:41.000 --> 00:03:44.000\ndans l'application de l'HAC CCP. Et\n\n00:03:44.000 --> 00:03:46.000\ncomment les éviter ? Erreur hein. Copier\n\n00:03:46.000 --> 00:03:49.000\nun HACCP d'un autre site. Chaque site\n\n00:03:49.000 --> 00:03:51.000\nest unique. Copier un plan, c'est\n\n00:03:51.000 --> 00:03:54.000\nignorer vos vrais risques. Erreur 2, ne\n\n00:03:54.000 --> 00:03:57.000\npas impliquer le terrain. Les opérateurs\n\n00:03:57.000 --> 00:03:59.000\nont des infos clés. Ne pas les écouter\n\n00:03:59.000 --> 00:04:02.000\nest une erreur. Erreur 3 : ne pas\n\n00:04:02.000 --> 00:04:04.000\nactualiser le système. Si une recette\n\n00:04:04.000 --> 00:04:07.000\nchange, le plan doit être mise à jour.\n\n00:04:07.000 --> 00:04:10.000\nErreur 4 : Contrôler sans comprendre.\n\n00:04:10.000 --> 00:04:12.000\nMesurer le pH sans savoir pourquoi,\n\n00:04:12.000 --> 00:04:14.000\nc'est inutile.\n\n00:04:14.000 --> 00:04:17.000\nHCP n'est pas juste un document. C'est\n\n00:04:17.000 --> 00:04:19.000\nun outil vivant et puissant. Il permet\n\n00:04:19.000 --> 00:04:22.000\nde produire plus sûr, plus serein. En\n\n00:04:22.000 --> 00:04:24.000\nappliquant les principes, vous protégez\n\n00:04:24.000 --> 00:04:26.000\nles consommateurs et améliorer la\n\n00:04:26.000 --> 00:04:28.000\nqualité. Pour continuer à progresser\n\n00:04:28.000 --> 00:04:30.000\nensemble dans l'industrie, n'hésitez pas\n\n00:04:30.000 --> 00:04:33.000\nà explorer les autres vidéos disponibles\n\n00:04:33.000 --> 00:04:34.000\nsur la chaîne et dites-moi en\n\n00:04:34.000 --> 00:04:36.000\ncommentaire si vous avez déjà mis en\n\n00:04:36.000 --> 00:04:39.000\nplace l'achat CCP. Quels ont été les\n\n00:04:39.000 --> 00:04:43.000\ndéfis ?\n\n00:04:43.000 --> 00:04:48.000\n[Musique]"
+            },
+            "sourceUtilisee": "{\"type\":\"video\",\"url\":\"https://www.youtube.com/watch?v=kdQc9LXR1n4\",\"transcription\":\"WEBVTT\\n\\n00:00:00.000 --> 00:00:10.000\\n[Musique]\\n\\n00:00:10.000 --> 00:00:13.000\\nDans l'industrie agroalimentaire, le mot\\n\\n00:00:13.000 --> 00:00:15.000\\nHACCP revient partout. Mais au fond,\\n\\n00:00:15.000 --> 00:00:17.000\\nc'est quoi exactement ? Comment le\\n\\n00:00:17.000 --> 00:00:19.000\\nmettre en place efficacement ? Et\\n\\n00:00:19.000 --> 00:00:21.000\\nsurtout, comment éviter les erreurs que\\n\\n00:00:21.000 --> 00:00:23.000\\nfont la majorité des entreprises ? Ce\\n\\n00:00:23.000 --> 00:00:25.000\\nguide vous explique clairement le\\n\\n00:00:25.000 --> 00:00:28.000\\nsystème HACCP, même si vous partez de\\n\\n00:00:28.000 --> 00:00:31.000\\nzéro, avec des exemples, des étapes\\n\\n00:00:31.000 --> 00:00:33.000\\nsimples et des conseils pratiques à\\n\\n00:00:33.000 --> 00:00:36.000\\nappliquer dès aujourd'hui. Premièrement,\\n\\n00:00:36.000 --> 00:00:39.000\\ncomprendre l'HCP.\\n\\n00:00:39.000 --> 00:00:40.000\\n[Musique]\\n\\n00:00:40.000 --> 00:00:44.000\\nHacp signifie hasard analysis and\\n\\n00:00:44.000 --> 00:00:47.000\\ncritical control point ou en français\\n\\n00:00:47.000 --> 00:00:48.000\\nanalyse des dangers et maîtrise des\\n\\n00:00:48.000 --> 00:00:50.000\\npoints critiques. C'est une méthode qui\\n\\n00:00:50.000 --> 00:00:52.000\\npermet de garantir la sécurité des\\n\\n00:00:52.000 --> 00:00:53.000\\naliments à chaque étape de la\\n\\n00:00:53.000 --> 00:00:56.000\\nfabrication. Elle repose sur un principe\\n\\n00:00:56.000 --> 00:00:58.000\\nsimple. Identifier les risques. Imaginez\\n\\n00:00:58.000 --> 00:01:01.000\\nque vous produisez du yaourt. Un risque\\n\\n00:01:01.000 --> 00:01:03.000\\npeut venir du lait cru ou d'un mauvais\\n\\n00:01:03.000 --> 00:01:06.000\\nnettoyage. Avec HCP, on identifie ses\\n\\n00:01:06.000 --> 00:01:08.000\\nrisques. Puis on installe des contrôles.\\n\\n00:01:08.000 --> 00:01:11.000\\nAnalyse du lait, lavage validé, contrôle\\n\\n00:01:11.000 --> 00:01:13.000\\nde température. Deuxièmement, les sep\\n\\n00:01:13.000 --> 00:01:15.000\\nprincipes clés de\\n\\n00:01:15.000 --> 00:01:16.000\\n[Musique]\\n\\n00:01:16.000 --> 00:01:19.000\\nl'acp. Le système HACCP repose sur se\\n\\n00:01:19.000 --> 00:01:22.000\\nprincipes fondamentaux. Voici chacun\\n\\n00:01:22.000 --> 00:01:24.000\\nexpliqué simplement avec un exemple\\n\\n00:01:24.000 --> 00:01:26.000\\nconcret. Première, analyser les dangers.\\n\\n00:01:26.000 --> 00:01:28.000\\nOn identifie tous les dangers possibles\\n\\n00:01:28.000 --> 00:01:30.000\\nà chaque étape. Bactéries, produits\\n\\n00:01:30.000 --> 00:01:33.000\\nchimiques, corps étranger. Deuxième,\\n\\n00:01:33.000 --> 00:01:35.000\\ndéterminer les points critiques. Ce sont\\n\\n00:01:35.000 --> 00:01:37.000\\nles étapes où le danger peut être\\n\\n00:01:37.000 --> 00:01:40.000\\nmaîtrisé efficacement. Exemple : cuisson\\n\\n00:01:40.000 --> 00:01:44.000\\nà 75° Celus. 3è, fixer des limites\\n\\n00:01:44.000 --> 00:01:46.000\\ncritiques. Il faut définir une valeur\\n\\n00:01:46.000 --> 00:01:49.000\\ncible. Exemple : cuisson à 72° Celus\\n\\n00:01:49.000 --> 00:01:52.000\\nminimum. 4è mettre en place un système\\n\\n00:01:52.000 --> 00:01:54.000\\nde surveillance. Comment vérifier que\\n\\n00:01:54.000 --> 00:01:57.000\\ntout reste sous contrôle ? Exemple :\\n\\n00:01:57.000 --> 00:01:59.000\\nthermomètre digital vérifié toutes les\\n\\n00:01:59.000 --> 00:02:01.000\\nheures. 5: définir des actions\\n\\n00:02:01.000 --> 00:02:03.000\\ncorrectives si la température tombe à\\n\\n00:02:03.000 --> 00:02:06.000\\n65° Celus, il faut réagir, isoler le\\n\\n00:02:06.000 --> 00:02:09.000\\nlot, analyser, ne pas livrer, 6e.\\n\\n00:02:09.000 --> 00:02:11.000\\nVérifier le système audit. Test analyse\\n\\n00:02:11.000 --> 00:02:14.000\\nconfirme que le système fonctionne. 7e\\n\\n00:02:14.000 --> 00:02:16.000\\ndocumenter tout le système. Chaque\\n\\n00:02:16.000 --> 00:02:17.000\\naction doit être enregistrée et\\n\\n00:02:17.000 --> 00:02:22.000\\narchivée. Les fondements de\\n\\n00:02:22.000 --> 00:02:24.000\\nHACP. Avant d'appliquer les sept\\n\\n00:02:24.000 --> 00:02:26.000\\nprincipes de l'achat CCP, il faut\\n\\n00:02:26.000 --> 00:02:29.000\\ncomprendre ce qui les rend possible. Ce\\n\\n00:02:29.000 --> 00:02:31.000\\nsont les bonnes pratiques d'hygiène\\n\\n00:02:31.000 --> 00:02:34.000\\nqu'on appelle aussi les PRP, programme\\n\\n00:02:34.000 --> 00:02:36.000\\nprérequis. Elle forme la base de tout\\n\\n00:02:36.000 --> 00:02:39.000\\nsystème HACCP. Sans elle, l'arbre ne\\n\\n00:02:39.000 --> 00:02:42.000\\ndonnera pas de fruit. 1er, nettoyage et\\n\\n00:02:42.000 --> 00:02:45.000\\ndésinfection. 2, hygiène du personnel.\\n\\n00:02:45.000 --> 00:02:47.000\\n3, lutte contre les nuisibles. 4,\\n\\n00:02:47.000 --> 00:02:50.000\\nqualité de l'eau et de l'air 5. Contrôle\\n\\n00:02:50.000 --> 00:02:53.000\\ndes matières premières. 6e entretien des\\n\\n00:02:53.000 --> 00:02:57.000\\néquipements. 7e gestion des déchets. Les\\n\\n00:02:57.000 --> 00:02:59.000\\ncinq étapes pratiques pour l'appliquer\\n\\n00:02:59.000 --> 00:03:00.000\\nen\\n\\n00:03:00.000 --> 00:03:02.000\\nusine. Passons maintenant aux étapes\\n\\n00:03:02.000 --> 00:03:04.000\\nconcrètes pour appliquer un système\\n\\n00:03:04.000 --> 00:03:07.000\\nHACP dans votre usine. Forme les\\n\\n00:03:07.000 --> 00:03:09.000\\néquipes, chaque opérateur doit\\n\\n00:03:09.000 --> 00:03:10.000\\ncomprendre les risques et gestes de\\n\\n00:03:10.000 --> 00:03:14.000\\nsécurité. Former une équipe HACP, une\\n\\n00:03:14.000 --> 00:03:17.000\\néquipe interservice, production qualité\\n\\n00:03:17.000 --> 00:03:19.000\\nmaintenance. Exemple : réception,\\n\\n00:03:19.000 --> 00:03:21.000\\nstockage, mélange, pasteurisation,\\n\\n00:03:21.000 --> 00:03:24.000\\nemballage. Identifier les dangers et les\\n\\n00:03:24.000 --> 00:03:27.000\\nCCP. À chaque étape, on évalue les\\n\\n00:03:27.000 --> 00:03:29.000\\nrisques et fixe les CCP. Écrire les\\n\\n00:03:29.000 --> 00:03:31.000\\nprocédures et les fiches de suivi. Ces\\n\\n00:03:31.000 --> 00:03:34.000\\ndocuments précisent qui fait quoi,\\n\\n00:03:34.000 --> 00:03:37.000\\ncomment et quand. Les erreurs à\\n\\n00:03:37.000 --> 00:03:39.000\\n[Musique]\\n\\n00:03:39.000 --> 00:03:41.000\\néviter. Voici les erreurs fréquentes\\n\\n00:03:41.000 --> 00:03:44.000\\ndans l'application de l'HAC CCP. Et\\n\\n00:03:44.000 --> 00:03:46.000\\ncomment les éviter ? Erreur hein. Copier\\n\\n00:03:46.000 --> 00:03:49.000\\nun HACCP d'un autre site. Chaque site\\n\\n00:03:49.000 --> 00:03:51.000\\nest unique. Copier un plan, c'est\\n\\n00:03:51.000 --> 00:03:54.000\\nignorer vos vrais risques. Erreur 2, ne\\n\\n00:03:54.000 --> 00:03:57.000\\npas impliquer le terrain. Les opérateurs\\n\\n00:03:57.000 --> 00:03:59.000\\nont des infos clés. Ne pas les écouter\\n\\n00:03:59.000 --> 00:04:02.000\\nest une erreur. Erreur 3 : ne pas\\n\\n00:04:02.000 --> 00:04:04.000\\nactualiser le système. Si une recette\\n\\n00:04:04.000 --> 00:04:07.000\\nchange, le plan doit être mise à jour.\\n\\n00:04:07.000 --> 00:04:10.000\\nErreur 4 : Contrôler sans comprendre.\\n\\n00:04:10.000 --> 00:04:12.000\\nMesurer le pH sans savoir pourquoi,\\n\\n00:04:12.000 --> 00:04:14.000\\nc'est inutile.\\n\\n00:04:14.000 --> 00:04:17.000\\nHCP n'est pas juste un document. C'est\\n\\n00:04:17.000 --> 00:04:19.000\\nun outil vivant et puissant. Il permet\\n\\n00:04:19.000 --> 00:04:22.000\\nde produire plus sûr, plus serein. En\\n\\n00:04:22.000 --> 00:04:24.000\\nappliquant les principes, vous protégez\\n\\n00:04:24.000 --> 00:04:26.000\\nles consommateurs et améliorer la\\n\\n00:04:26.000 --> 00:04:28.000\\nqualité. Pour continuer à progresser\\n\\n00:04:28.000 --> 00:04:30.000\\nensemble dans l'industrie, n'hésitez pas\\n\\n00:04:30.000 --> 00:04:33.000\\nà explorer les autres vidéos disponibles\\n\\n00:04:33.000 --> 00:04:34.000\\nsur la chaîne et dites-moi en\\n\\n00:04:34.000 --> 00:04:36.000\\ncommentaire si vous avez déjà mis en\\n\\n00:04:36.000 --> 00:04:39.000\\nplace l'achat CCP. Quels ont été les\\n\\n00:04:39.000 --> 00:04:43.000\\ndéfis ?\\n\\n00:04:43.000 --> 00:04:48.000\\n[Musique]\"}"
+          }
+        ]
+      }
+    ]
+  }
+}

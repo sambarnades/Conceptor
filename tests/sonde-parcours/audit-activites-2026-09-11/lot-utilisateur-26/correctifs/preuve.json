@@ -1,0 +1,18 @@
+{
+  "fichier": "23-FindTheHotspot-corrige.h5p",
+  "sha256": "60a00b4468c9ac2a5d24368b7003ba446e8051624f1f7c6048116d48c3656858",
+  "correction": "imageHotspotQuestion.backgroundImageSettings est l’objet image directement, sans sous-clé backgroundImage",
+  "verification_locale": {
+    "image_chargee": true,
+    "clic_zone_2": true,
+    "score": "1/1",
+    "commande": "node tests/run_lot_manuel_preview.mjs --only=FindTheHotspot --archive=correctifs/23-FindTheHotspot-corrige.h5p"
+  },
+  "validation_elea": {
+    "statut": "réexport reçu et conforme",
+    "titre": "RECETTE 23 — Trouver la zone — image corrigée RELU",
+    "image_identique": true,
+    "zones_et_reglages_identiques": true,
+    "seul_ecart_contenu": "normalisation HTML sans changement de texte"
+  }
+}

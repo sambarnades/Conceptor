@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="178" moduleid="14033" modulename="epikmatch" contextid="17761">
+  <epikmatch id="178">
+    <course>801</course>
+    <name>Appariement : mots et définitions</name>
+    <intro>&lt;p&gt;Associe chaque mot à sa définition.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <associations>{"questions":{"1":"&lt;p&gt;\u00c9vaporation&lt;\/p&gt;","2":"&lt;p&gt;Condensation&lt;\/p&gt;","3":"&lt;p&gt;Infiltration&lt;\/p&gt;"},"responses":{"1":"&lt;p&gt;Liquide vers gaz&lt;\/p&gt;","2":"&lt;p&gt;Gaz vers liquide&lt;\/p&gt;","3":"&lt;p&gt;L\u2019eau p\u00e9n\u00e8tre dans le sol&lt;\/p&gt;"}}</associations>
+    <grade>100</grade>
+    <timecreated>1790541178</timecreated>
+    <timemodified>1790541178</timemodified>
+    <completionminattempts>1</completionminattempts>
+  </epikmatch>
+</activity>

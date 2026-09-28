@@ -1,0 +1,80 @@
+{
+  "documents": [
+    {
+      "fichier": "grille-options.docx",
+      "sha256": "b2c7bb6b6deae398916e7e3fb66ca558634c317612e797739e3a6c6b8c284d40",
+      "taille": 74907,
+      "pages": 2,
+      "imagesDistinctes": 2
+    },
+    {
+      "fichier": "grille-options.odt",
+      "sha256": "a039245185e67d2bb034e45f486d9f3976c927a61d104543a1ea8e1a2c8eb314",
+      "taille": 101100,
+      "pages": 2
+    },
+    {
+      "fichier": "grille-options.pdf",
+      "sha256": "542fb6642094250df88408eeba779ac724c80deef8efc09d5d9f7e93a44de839",
+      "taille": 121513,
+      "pages": 2
+    },
+    {
+      "fichier": "sucrerie/sucrerie-grille-options.docx",
+      "sha256": "91ad5daddf45934ca14f6042dde6ff2da8a0a69e32417b9a8f114f2605705409",
+      "taille": 91367,
+      "pages": 2,
+      "imagesDistinctes": 2
+    },
+    {
+      "fichier": "sucrerie/sucrerie-grille-options.odt",
+      "sha256": "2d6a53b0cb46f7681dd13db095cf2f986ef14554ef6a5885f45b11f1f94aa897",
+      "taille": 118362,
+      "pages": 2
+    },
+    {
+      "fichier": "sucrerie/sucrerie-grille-options.pdf",
+      "sha256": "af9c26fb463b537e6f838192f1ca118ac11e510b0b63193338f8aad6ed736a28",
+      "taille": 135048,
+      "pages": 2
+    },
+    {
+      "fichier": "sucrerie/sucrerie-tri-options.docx",
+      "sha256": "04c54e1428e9a8c4415aca17cf9b8104da939d44ba29dbc1e08eff473d8b5adb",
+      "taille": 10018,
+      "pages": 2
+    },
+    {
+      "fichier": "sucrerie/sucrerie-tri-options.odt",
+      "sha256": "c784bda785ba60ef375c6325bc618daaa28172398aaeefc60fdc737c27d5e81b",
+      "taille": 18771,
+      "pages": 2
+    },
+    {
+      "fichier": "sucrerie/sucrerie-tri-options.pdf",
+      "sha256": "ee0bac5930b18ae3d1e52c22acf79766d2799fc1eb8d62eb266c2b896a7970b4",
+      "taille": 79809,
+      "pages": 2
+    },
+    {
+      "fichier": "tri-options.docx",
+      "sha256": "311c487414d553525c80e6c078d4aac12f87f79b3d282afeff7f4a22e33df6e5",
+      "taille": 10018,
+      "pages": 2
+    },
+    {
+      "fichier": "tri-options.odt",
+      "sha256": "251491cb4d5ad1bad4634e80333ae1ea12d8135f710c67cdde31ba14bc53a185",
+      "taille": 18778,
+      "pages": 2
+    },
+    {
+      "fichier": "tri-options.pdf",
+      "sha256": "cf4de85232e2a4617a7e96531325031b6259547cec4629c9d31482729070c8fc",
+      "taille": 79568,
+      "pages": 2
+    }
+  ],
+  "nombre": 12,
+  "relecture": "Énoncés et corrigés ; grille DOCX vérifiée à 150 dpi après correction de la collision des images ; numérotation DOCX/ODT 1 à 4."
+}

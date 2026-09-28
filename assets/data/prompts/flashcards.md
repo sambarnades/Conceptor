@@ -37,6 +37,8 @@
     - \`answer\` : La réponse attendue (verso), telle que l'élève doit la taper. Règles de normalisation : un seul mot simple ou un nombre (pas de mots composés), minuscules (sauf noms propres), sans article ni ponctuation, nombres en chiffres.
     - \`tip\` (optionnel) : Indice pour aider l'élève. Tu peux utiliser \`**mot**\` pour le gras et \`*mot*\` pour l'italique.
 
+- Dans `behaviour`, `showSolutionsRequiresInput` indique si une saisie est exigée avant la solution. Conserve les crédits des images fournies ; n’invente aucun fichier média.
+
 # EXEMPLE DE RENDU
 ```json
 {
@@ -68,6 +70,13 @@
       "answer": "Fe",
       "tip": "Du latin *ferrum*."
     }
-  ]
+  ],
+  "behaviour": {
+    "showSolutionsRequiresInput": true,
+    "randomCards": false,
+    "caseSensitive": false
+  }
 }
 ```
+
+- Respecte aussi `behaviour.caseSensitive` (false) et `behaviour.randomCards` (false) si des réglages sont demandés.

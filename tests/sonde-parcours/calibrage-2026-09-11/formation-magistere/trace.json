@@ -1,0 +1,200 @@
+{
+  "cas": {
+    "id": "formation-magistere",
+    "lang": "fr",
+    "platform": "magistere",
+    "format": "hybride",
+    "ampleur": "longue",
+    "trame": "formation",
+    "qui": "Formatrice d’enseignants",
+    "quoi": "Concevoir une évaluation formative, se préparer à distance, expérimenter en regroupement puis partager son retour de classe."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Concevoir une évaluation formative, se préparer à distance, expérimenter en regroupement puis partager son retour de classe.\nL'enseignant : Formatrice d’enseignants\nPlateforme : Magistère\nModalité : hybride\nArticuler explicitement des moments à distance et en présence : préciser où et quand se déroule chaque activité, et comment elle prépare la suivante.\nAmpleur : Une séquence entière\n\nTrame imposée : « Formation hybride en trois temps » — L'amont à distance, le regroupement, puis la mise en œuvre et le retour d'expérience. Le format des parcours de formation.\nElle compte EXACTEMENT 3 étapes, contenant respectivement 3, 3, 3 activité(s). Respecte ce découpage à la lettre.\nIntention pédagogique : Avant, à distance : se positionner et se préparer ; en présence : expérimenter et confronter les pratiques ; après : mettre en œuvre et partager un retour d’expérience.\nPalier de difficulté imposé par étape : decouverte, entrainement, transfert.\nTypes d'activité suggérés par la trame, étape par étape : étape 1 → test_elea, Livre, Page ; étape 2 → Page, CoursePresentation, Devoir ; étape 3 → Devoir, Essay, Page. Suis-les sauf si le sujet appelle clairement autre chose.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline)\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion)\n- Crossword : Mots croisés (Crosswords)\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary)\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop)\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards)\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart)\n- CoursePresentation : Présentation de cours (CoursePresentation)\n- InteractiveBook : Livre interactif (InteractiveBook)\n- test_elea : Test (test_elea)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir)\n- parcours_etiquette : Texte de liaison (label)\n- parcours_forum : Forum (forum)\n- parcours_sondage : Sondage (choice)\n- parcours_nuage_mots : Nuage de mots (collabwordcloud)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 8 à 12 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 9 à 9 activités pour TOUT le parcours, répartition 3 + 3 + 3. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"transfert\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"transfert\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"transfert\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788848",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Concevoir une évaluation formative à distance\",\n  \"objectifGeneral\": \"Créer une séquence hybride intégrant un temps de préparation, une expérimentation en présentiel et un retour d’expérience collaboratif\",\n  \"notionsPivots\": [\n    \"une évaluation formative\",\n    \"l'évaluation sommative\",\n    \"le feedback constructif\",\n    \"une remédiation\",\n    \"l'auto-évaluation\",\n    \"un critère de réussite\",\n    \"une situation-problème\",\n    \"le travail collaboratif\",\n    \"le retour d'expérience\",\n    \"l'ajustement pédagogique\",\n    \"l'alignement pédagogique\",\n    \"l'engagement de classe\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Préparer une évaluation formative à distance\",\n      \"objectif\": \"Identifier les critères de qualité d'une évaluation formative et sélectionner des outils adaptés\",\n      \"cartes\": [\n        {\n          \"titre\": \"Auto-positionnement sur l'évaluation formative\",\n          \"objectif\": \"Diagnostiquer ses conceptions initiales sur l'évaluation formative\",\n          \"module\": \"test_elea\",\n          \"palier\": \"decouverte\",\n          \"duree\": 15,\n          \"consigne\": \"Répondez à un quiz initial pour évaluer vos connaissances sur les spécificités de l'évaluation formative et son utilité en classe.\"\n        },\n        {\n          \"titre\": \"Analyse de dispositifs existants\",\n          \"objectif\": \"Repérer des exemples concrets d'évaluation formative dans des ressources pédagogiques\",\n          \"module\": \"Livre\",\n          \"palier\": \"decouverte\",\n          \"duree\": 20,\n          \"consigne\": \"Consultez un livre interactif présentant 5 dispositifs d'évaluation formative et identifiez les points communs et les différences.\"\n        },\n        {\n          \"titre\": \"Sélectionner un outil pour une évaluation\",\n          \"objectif\": \"Choisir un outil de création d'évaluation en ligne adapté à une situation pédagogique donnée\",\n          \"module\": \"Page\",\n          \"palier\": \"decouverte\",\n          \"duree\": 25,\n          \"consigne\": \"Rédigez une fiche synthétique argumentant le choix d'une plateforme (Quizlet, Socrative, etc.) pour concevoir une évaluation formative sur un thème au programme.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Concevoir et expérimenter un dispositif en présentiel\",\n      \"objectif\": \"Construire une évaluation formative et la tester en classe pour en tirer des enseignements\",\n      \"cartes\": [\n        {\n          \"titre\": \"Élaborer une grille d'évaluation partagée\",\n          \"objectif\": \"Créer une grille d'observation critériée pour objectiver les réussites et difficultés des élèves\",\n          \"module\": \"Page\",\n          \"palier\": \"entrainement\",\n          \"duree\": 30,\n          \"consigne\": \"Rédigez une grille d'évaluation formative adaptée à un objectif d'apprentissage précis avec des indicateurs observables et hiérarchisés.\"\n        },\n        {\n          \"titre\": \"Présenter ses outils et sa démarche\",\n          \"objectif\": \"Organiser et justifier ses choix pédagogiques devant ses pairs\",\n          \"module\": \"CoursePresentation\",\n          \"palier\": \"entrainement\",\n          \"duree\": 20,\n          \"consigne\": \"Préparez une présentation de 5 minutes exposant votre dispositif d'évaluation formative, les outils utilisés et les modalités de remontée d'informations.\"\n        },\n        {\n          \"titre\": \"Tester et adapter en classe\",\n          \"objectif\": \"Mettre en œuvre son dispositif et en analyser l'efficacité\",\n          \"module\": \"Devoir\",\n          \"palier\": \"entrainement\",\n          \"duree\": 40,\n          \"consigne\": \"Conduisez une séance en classe avec votre évaluation formative, puis notez les ajustements nécessaires pour améliorer sa pertinence ou son cadrage.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Retour d'expérience et mutualisation\",\n      \"objectif\": \"Partager ses analyses et enrichir ses pratiques grâce aux retours de pairs\",\n      \"cartes\": [\n        {\n          \"titre\": \"Rédiger un compte-rendu d'expérimentation\",\n          \"objectif\": \"Analyser objectivement les effets de son dispositif sur les apprentissages des élèves\",\n          \"module\": \"Devoir\",\n          \"palier\": \"transfert\",\n          \"duree\": 30,\n          \"consigne\": \"Produisez un retour structuré incluant des traces d'élèves, des observations et une interprétation des données recueillies lors de l'évaluation formative.\"\n        },\n        {\n          \"titre\": \"Évaluer les critères de réussite collectifs\",\n          \"objectif\": \"Campagne un débat argumenté sur les indicateurs d'une évaluation formative efficace\",\n          \"module\": \"Essay\",\n          \"palier\": \"transfert\",\n          \"duree\": 45,\n          \"consigne\": \"Rédigez un texte de 2 pages synthétisant vos apprentissages et proposant une définition partagée des critères de réussite d'une évaluation formative.\"\n        },\n        {\n          \"titre\": \"Créer un répertoire collaboratif\",\n          \"objectif\": \"Capitaliser les bonnes pratiques sous forme de ressources réutilisables\",\n          \"module\": \"Page\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"Contribuez à la création d'un document partagé regroupant vos évaluations formatives expérimentées, enrichi de conseils pour une mise en œuvre aisée.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 1306,
+      "prompt_tokens": 2116,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "fr",
+    "exporteLe": "2026-09-10T22:12:13.993Z",
+    "cadrage": {
+      "platform": "magistere",
+      "format": "hybride",
+      "ampleur": "longue",
+      "trame": "formation"
+    },
+    "plan": {
+      "titre": "Concevoir une évaluation formative à distance",
+      "objectifGeneral": "Créer une séquence hybride intégrant un temps de préparation, une expérimentation en présentiel et un retour d’expérience collaboratif",
+      "notionsPivots": [
+        "une évaluation formative",
+        "l'évaluation sommative",
+        "le feedback constructif",
+        "une remédiation",
+        "l'auto-évaluation",
+        "un critère de réussite",
+        "une situation-problème",
+        "le travail collaboratif",
+        "le retour d'expérience",
+        "l'ajustement pédagogique",
+        "l'alignement pédagogique",
+        "l'engagement de classe"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Préparer une évaluation formative à distance",
+          "objectif": "Identifier les critères de qualité d'une évaluation formative et sélectionner des outils adaptés",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Auto-positionnement sur l'évaluation formative",
+              "objectif": "Diagnostiquer ses conceptions initiales sur l'évaluation formative",
+              "consigne": "Répondez à un quiz initial pour évaluer vos connaissances sur les spécificités de l'évaluation formative et son utilité en classe.",
+              "module": "test_elea",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 15,
+              "verrouillee": false
+            },
+            {
+              "id": "c3",
+              "titre": "Analyse de dispositifs existants",
+              "objectif": "Repérer des exemples concrets d'évaluation formative dans des ressources pédagogiques",
+              "consigne": "Consultez un livre interactif présentant 5 dispositifs d'évaluation formative et identifiez les points communs et les différences.",
+              "module": "Livre",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c4",
+              "titre": "Sélectionner un outil pour une évaluation",
+              "objectif": "Choisir un outil de création d'évaluation en ligne adapté à une situation pédagogique donnée",
+              "consigne": "Rédigez une fiche synthétique argumentant le choix d'une plateforme (Quizlet, Socrative, etc.) pour concevoir une évaluation formative sur un thème au programme.",
+              "module": "Page",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 25,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "titre": "Concevoir et expérimenter un dispositif en présentiel",
+          "objectif": "Construire une évaluation formative et la tester en classe pour en tirer des enseignements",
+          "cartes": [
+            {
+              "id": "c6",
+              "titre": "Élaborer une grille d'évaluation partagée",
+              "objectif": "Créer une grille d'observation critériée pour objectiver les réussites et difficultés des élèves",
+              "consigne": "Rédigez une grille d'évaluation formative adaptée à un objectif d'apprentissage précis avec des indicateurs observables et hiérarchisés.",
+              "module": "Page",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 30,
+              "verrouillee": false
+            },
+            {
+              "id": "c7",
+              "titre": "Présenter ses outils et sa démarche",
+              "objectif": "Organiser et justifier ses choix pédagogiques devant ses pairs",
+              "consigne": "Préparez une présentation de 5 minutes exposant votre dispositif d'évaluation formative, les outils utilisés et les modalités de remontée d'informations.",
+              "module": "CoursePresentation",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c8",
+              "titre": "Tester et adapter en classe",
+              "objectif": "Mettre en œuvre son dispositif et en analyser l'efficacité",
+              "consigne": "Conduisez une séance en classe avec votre évaluation formative, puis notez les ajustements nécessaires pour améliorer sa pertinence ou son cadrage.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 40,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e9",
+          "titre": "Retour d'expérience et mutualisation",
+          "objectif": "Partager ses analyses et enrichir ses pratiques grâce aux retours de pairs",
+          "cartes": [
+            {
+              "id": "c10",
+              "titre": "Rédiger un compte-rendu d'expérimentation",
+              "objectif": "Analyser objectivement les effets de son dispositif sur les apprentissages des élèves",
+              "consigne": "Produisez un retour structuré incluant des traces d'élèves, des observations et une interprétation des données recueillies lors de l'évaluation formative.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 30,
+              "verrouillee": false
+            },
+            {
+              "id": "c11",
+              "titre": "Évaluer les critères de réussite collectifs",
+              "objectif": "Campagne un débat argumenté sur les indicateurs d'une évaluation formative efficace",
+              "consigne": "Rédigez un texte de 2 pages synthétisant vos apprentissages et proposant une définition partagée des critères de réussite d'une évaluation formative.",
+              "module": "Essay",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 45,
+              "verrouillee": false
+            },
+            {
+              "id": "c12",
+              "titre": "Créer un répertoire collaboratif",
+              "objectif": "Capitaliser les bonnes pratiques sous forme de ressources réutilisables",
+              "consigne": "Contribuez à la création d'un document partagé regroupant vos évaluations formatives expérimentées, enrichi de conseils pour une mise en œuvre aisée.",
+              "module": "Page",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 20,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "La fabrication démarre dès ce clic : chaque activité est générée une par une, dans l'ordre, sous vos yeux."
+}

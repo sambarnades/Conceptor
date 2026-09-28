@@ -1,0 +1,759 @@
+{
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "title": "Définition de la fonction racine carrée",
+        "license": "U",
+        "contentType": "Multiple Choice"
+      },
+      "params": {
+        "question": "Quelle est la définition correcte de la fonction racine carrée sur l'ensemble des réels positifs ?",
+        "answers": [
+          {
+            "text": "La fonction qui à tout réel positif x associe son carré.",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          },
+          {
+            "text": "La fonction qui à tout réel positif x associe le nombre dont le carré est égal à x.",
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          },
+          {
+            "text": "La fonction qui à tout réel x associe \\(\\sqrt{x}\\) pour tout x réel.",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          },
+          {
+            "text": "La fonction qui à tout réel x associe \\(x^2\\).",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          }
+        ],
+        "behaviour": {
+          "type": "single",
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "randomAnswers": true,
+          "enableCheckButton": true,
+          "singlePoint": false,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Il semble que tu aies besoin de revoir la définition de la racine carrée. N&#039;hésite pas à consulter ton manuel ou à revoir les exemples donnés en classe."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Tu es sur la bonne voie, mais il y a encore des confusions. Revois attentivement la relation entre une racine carrée et son carré."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Tu as une bonne compréhension partielle. Essaye de préciser davantage la relation entre un nombre et sa racine carrée."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Bien joué ! Tu as compris le principe fondamental. Continue à t&#039;entraîner avec des exemples concrets."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Excellent ! Tu maîtrises bien la définition. Tu es prêt à passer à des applications plus complexes."
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Parfait ! Tu as une excellente maîtrise du concept. Continue ainsi, tu es en voie de devenir un expert en fonctions."
+          }
+        ],
+        "UI": {
+          "checkAnswerButton": "Vérifier",
+          "showSolutionButton": "Afficher la solution",
+          "tryAgainButton": "Recommencer",
+          "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+          "submitAnswerButton": "Valider",
+          "tipsLabel": "Indice",
+          "tipAvailable": "Indice disponible",
+          "feedbackAvailable": "Feedback disponible",
+          "readFeedback": "Lire le commentaire",
+          "wrongAnswer": "Mauvaise réponse",
+          "correctAnswer": "Bonne réponse",
+          "shouldCheck": "Il fallait cocher ici",
+          "shouldNotCheck": "Il ne fallait pas cocher ici !",
+          "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+          "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+          "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+          "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+        },
+        "media": {
+          "disableImageZooming": false
+        },
+        "confirmCheck": {
+          "header": "Terminer ?",
+          "body": "Êtes-vous certain de vouloir terminer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Terminer"
+        },
+        "confirmRetry": {
+          "header": "Recommencer ?",
+          "body": "Êtes-vous certain de vouloir recommencer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Confirmer"
+        }
+      },
+      "subContentId": "51ae1407-6884-4e51-b4d3-afcdee845fad"
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "metadata": {
+        "title": "Compléter les propriétés",
+        "license": "U",
+        "contentType": "Fill in the Blanks"
+      },
+      "params": {
+        "questions": [
+          "La *racine carrée* d'un nombre réel *positif* est le nombre *non négatif* dont le *carré* est égal à ce nombre.",
+          "Pour tout nombre réel *positif* a, on a : \\(\\sqrt{a^2} = a\\).",
+          "L'ensemble de définition de la fonction \\(f(x) = \\sqrt{x}\\) est l'ensemble des nombres *positifs* ou *nuls*."
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Il y a encore des lacunes dans ta compréhension des propriétés de la racine carrée. Revois les bases avec des exemples numériques."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Tu as quelques bonnes idées, mais des erreurs de formulation. Travaille sur les définitions précises."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Tu t&#039;approches du bon niveau. Vérifie bien les conditions d&#039;existence et les propriétés fondamentales."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Très bien ! Tu maîtrises les grandes lignes. Continue à t&#039;entraîner pour consolider tes connaissances."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Excellent ! Tu as bien compris les propriétés essentielles. Tu es prêt à résoudre des problèmes plus complexes."
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Parfait ! Tu as une maîtrise totale des propriétés. Tu es en excellente position pour aborder les applications."
+          }
+        ],
+        "text": "Complète les phrases suivantes en utilisant les mots clés : <em>positif</em>, <em>racine carrée</em>, <em>carré</em>, <em>non négatif</em>.",
+        "checkAnswer": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolutions": "Afficher les solutions",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "notFilledOut": "Veuillez remplir tous les champs.",
+        "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+        "a11yCheckingModeHeader": "Mode de vérification",
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "caseSensitive": false,
+          "autoCheck": false,
+          "allowRetryIfCorrect": false,
+          "enableCheckButton": true,
+          "showSolutionsRequiresInput": true,
+          "separateLines": false,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "acceptSpellingErrors": false
+        },
+        "media": {
+          "disableImageZooming": false
+        },
+        "submitAnswer": "Vérifier",
+        "answerIsCorrect": "&#039;:ans&#039; est une réponse exacte",
+        "answerIsWrong": "&#039;:ans&#039; est une réponse inexacte",
+        "answeredCorrectly": "Réponse exacte",
+        "answeredIncorrectly": "Mauvaise réponse",
+        "solutionLabel": "Réponse correcte :",
+        "inputLabel": "Blanc @num sur @total",
+        "inputHasTipLabel": "Indice disponible",
+        "tipLabel": "Indice",
+        "confirmCheck": {
+          "header": "Terminer ?",
+          "body": "Êtes-vous sûr de vouloir terminer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Terminer"
+        },
+        "confirmRetry": {
+          "header": "Recommencer ?",
+          "body": "Êtes-vous sûr de vouloir recommencer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Confirmer"
+        }
+      },
+      "subContentId": "b72b05df-d164-4a0f-929a-92d827f32fdf"
+    },
+    {
+      "library": "H5P.DragText 1.10",
+      "metadata": {
+        "title": "Associer les expressions",
+        "license": "U",
+        "contentType": "Drag the Words"
+      },
+      "params": {
+        "taskDescription": "Glisse les expressions de la colonne de gauche vers les valeurs correspondantes dans la colonne de droite.",
+        "textField": "Les expressions suivantes ont pour valeur : *√(16)*, *√(25)*, *√(0)*, *√(49)*. Les valeurs sont : *4*, *5*, *0*, *7*.",
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Il semble que tu aies du mal à calculer les racines carrées simples. Utilise une calculatrice ou revois les carrés parfaits."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Tu as quelques bonnes correspondances, mais des erreurs importantes. Revois les définitions des racines carrées."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Tu t&#039;approches du bon niveau. Vérifie bien que la racine carrée est toujours *non négative*."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Très bien ! Tu as bien compris les calculs de base. Continue à t&#039;entraîner pour gagner en rapidité."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Excellent ! Tu maîtrises parfaitement les racines carrées simples. Tu es prêt à passer à des expressions plus complexes."
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Parfait ! Tu as une excellente intuition des racines carrées. Continue ainsi, tu es en voie de devenir un expert."
+          }
+        ],
+        "dropZoneIndex": "Zone de dépôt @index.",
+        "empty": "La zone de dépôt @index est vide.",
+        "contains": "La zone de dépôt @index contient l&#039;élément @draggable.",
+        "tipLabel": "Indice",
+        "correctText": "Correct !",
+        "incorrectText": "Incorrect !",
+        "resetDropTitle": "Réinitialiser le dépôt",
+        "resetDropDescription": "Êtes-vous certain de vouloir réinitialiser cette zone de dépôt ?",
+        "grabbed": "L&#039;élément est saisi.",
+        "cancelledDragging": "Déplacement annulé.",
+        "correctAnswer": "Réponse correcte :",
+        "feedbackHeader": "Commentaire de retour",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "submitAnswer": "Valider",
+        "ariaDraggableIndex": "@index sur @count éléments.",
+        "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+        "checkAnswer": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "instantFeedback": false,
+          "enableCheckButton": true
+        },
+        "media": {
+          "disableImageZooming": false
+        }
+      },
+      "subContentId": "3729e233-e7d1-4236-9567-5901ace745a9"
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "metadata": {
+        "title": "Identifier les erreurs",
+        "license": "U",
+        "contentType": "Mark the Words"
+      },
+      "params": {
+        "taskDescription": "Surligne les mots ou expressions incorrects dans le texte suivant.",
+        "textField": "La fonction racine carrée est définie pour tout réel x. Elle associe à chaque nombre x son *carré*. Par exemple, √(9) = 3, car 3 est *le* *seul* nombre dont le carré est 9. Cependant, √(4) = -2 est aussi correct car (-2)² = 4.",
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Tu as du mal à identifier les erreurs dans les propriétés de la racine carrée. Revois l&#039;ensemble de définition et la définition de la racine carrée."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Tu as repéré certaines erreurs, mais pas toutes. Attention : la racine carrée est toujours *non négative*."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Tu as bien repéré les points clés. Vérifie que la racine carrée d&#039;un nombre positif est toujours positive."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Très bien ! Tu as identifié les erreurs importantes. Tu comprends bien les limites de la racine carrée."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Excellent ! Tu as une excellente sensibilité aux erreurs fréquentes. Continue à être vigilant."
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Parfait ! Tu as une maîtrise totale des subtilités de la racine carrée. Tu es en excellente position pour enseigner ce concept."
+          }
+        ],
+        "correctAnswer": "Correct !",
+        "incorrectAnswer": "Incorrect !",
+        "missedAnswer": "Manqué !",
+        "displaySolutionDescription": "La tâche est mise à jour pour contenir la solution.",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "submitAnswerButton": "Valider",
+        "a11yFullTextLabel": "Texte complet lisible",
+        "a11yClickableTextLabel": "Texte complet où les mots peuvent être marqués",
+        "a11ySolutionModeHeader": "Mode solution",
+        "a11yCheckingHeader": "Mode de vérification",
+        "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+        "checkAnswerButton": "Vérifier",
+        "tryAgainButton": "Recommencer",
+        "showSolutionButton": "Afficher la solution",
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "showScorePoints": true
+        },
+        "media": {
+          "disableImageZooming": false
+        }
+      },
+      "subContentId": "ebc363dc-54b8-4d77-9905-007e8e29b492"
+    },
+    {
+      "library": "H5P.Essay 1.5",
+      "metadata": {
+        "title": "Rédaction libre",
+        "license": "U",
+        "contentType": "Essay"
+      },
+      "params": {
+        "taskDescription": "Explique, en quelques phrases, pourquoi la fonction \\(f(x) = \\sqrt{x}\\) n'est pas définie pour les nombres négatifs dans l'ensemble des réels.",
+        "keywords": [
+          {
+            "keyword": "réel",
+            "options": {
+              "points": 1,
+              "caseSensitive": false,
+              "occurrences": 1,
+              "forgiveMistakes": false,
+              "feedbackIncludedWord": "keyword",
+              "feedbackMissedWord": "none"
+            }
+          },
+          {
+            "keyword": "carré",
+            "options": {
+              "points": 1,
+              "caseSensitive": false,
+              "occurrences": 1,
+              "forgiveMistakes": false,
+              "feedbackIncludedWord": "keyword",
+              "feedbackMissedWord": "none"
+            }
+          },
+          {
+            "keyword": "racine carrée",
+            "options": {
+              "points": 1,
+              "caseSensitive": false,
+              "occurrences": 1,
+              "forgiveMistakes": false,
+              "feedbackIncludedWord": "keyword",
+              "feedbackMissedWord": "none"
+            }
+          },
+          {
+            "keyword": "ensemble de définition",
+            "options": {
+              "points": 1,
+              "caseSensitive": false,
+              "occurrences": 1,
+              "forgiveMistakes": false,
+              "feedbackIncludedWord": "keyword",
+              "feedbackMissedWord": "none"
+            }
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Ton explication manque de clarté. Revois la relation entre les carrés et les racines carrées. Essaie de t&#039;imaginer un nombre dont le carré serait négatif."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Tu as quelques idées correctes, mais tu n&#039;as pas bien articulé la raison fondamentale. Pense à la propriété des carrés des réels."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Tu t&#039;approches du bon raisonnement. Essaie de préciser que le carré d&#039;un réel ne peut pas être négatif."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Très bien ! Tu as bien compris le lien entre les carrés et les racines carrées. Tu pourrais aller plus loin en précisant l&#039;ensemble de définition."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Excellent ! Tu as bien expliqué pourquoi les racines carrées des nombres négatifs ne sont pas définies dans les réels."
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Parfait ! Ton explication est claire, complète et rigoureuse. Tu maîtrises parfaitement le concept. Bravo !"
+          }
+        ],
+        "checkAnswer": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "feedbackHeader": "Commentaire",
+        "solutionTitle": "Exemple de solution",
+        "remainingChars": "Caractères restants : @chars",
+        "notEnoughChars": "Vous devez saisir au moins @chars caractères !",
+        "messageSave": "enregistré",
+        "placeholderText": "Commencez à rédiger ici...",
+        "submitAnswer": "Submit",
+        "ariaYourResult": "Vous avez obtenu @score sur @total points",
+        "ariaNavigatedToSolution": "Navigation vers la solution.",
+        "ariaCheck": "Check the answers.",
+        "ariaShowSolution": "Show the solution. You will be provided with a sample solution.",
+        "ariaRetry": "Retry the task. You can improve your previous answer if the author allowed that.",
+        "behaviour": {
+          "inputFieldSize": "10",
+          "enableRetry": true,
+          "ignoreScoring": false,
+          "minimumLength": 10,
+          "maximumLength": 10000,
+          "percentagePassing": 50,
+          "percentageMastering": 100,
+          "pointsHost": 1,
+          "linebreakReplacement": " ",
+          "overrideForgiveMistakes": "on"
+        },
+        "solution": {
+          "introduction": "",
+          "sample": ""
+        },
+        "media": {
+          "disableImageZooming": false
+        }
+      },
+      "subContentId": "a4167b16-c09f-41c3-8d2f-46b2e9303866"
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": {
+        "title": "Vrai ou Faux ?",
+        "license": "U",
+        "contentType": "True/False Question"
+      },
+      "params": {
+        "question": "La fonction \\(f(x) = \\sqrt{x}\\) est définie pour tout réel x.",
+        "correct": "false",
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "feedbackOnCorrect": "",
+          "feedbackOnWrong": ""
+        },
+        "l10n": {
+          "trueText": "Vrai",
+          "falseText": "Faux",
+          "score": "Vous avez obtenu @score sur @total points",
+          "checkAnswer": "Vérifier",
+          "showSolutionButton": "Afficher la solution",
+          "tryAgain": "Recommencer",
+          "wrongAnswerMessage": "Mauvaise réponse",
+          "correctAnswerMessage": "Bonne réponse",
+          "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+          "submitAnswer": "Valider",
+          "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+          "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+          "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+        },
+        "media": {
+          "disableImageZooming": false
+        },
+        "confirmCheck": {
+          "header": "Terminer ?",
+          "body": "Voulez-vous vraiment terminer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Confirmer"
+        },
+        "confirmRetry": {
+          "header": "Recommencer ?",
+          "body": "Voulez-vous vraiment recommencer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Confirmer"
+        }
+      },
+      "subContentId": "9ec55c98-bdd3-40d5-8970-3dc13dfb9271"
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "title": "Calcul de racine carrée",
+        "license": "U",
+        "contentType": "Multiple Choice"
+      },
+      "params": {
+        "question": "Quelle est la valeur de \\(\\sqrt{121} + \\sqrt{25}\\) ?",
+        "answers": [
+          {
+            "text": "16",
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          },
+          {
+            "text": "17",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          },
+          {
+            "text": "18",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          },
+          {
+            "text": "11",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            }
+          }
+        ],
+        "behaviour": {
+          "type": "single",
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "randomAnswers": true,
+          "enableCheckButton": true,
+          "singlePoint": false,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Il semble que tu aies du mal à calculer les racines carrées. Revois les carrés parfaits jusqu&#039;à 144."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Tu es sur la bonne voie, mais il y a une erreur de calcul. Vérifie que \\(\\sqrt{121} = 11\\) et \\(\\sqrt{25} = 5\\)."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Tu as bien calculé une partie, mais l&#039;addition est erronée. Fais attention aux calculs."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Bien joué ! Tu as trouvé la bonne réponse. Continue à t&#039;entraîner pour gagner en rapidité."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Excellent ! Tu maîtrises bien les calculs de racines carrées. Tu es prêt à passer à des expressions plus complexes."
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Parfait ! Tu as une excellente maîtrise des calculs. Tu es en voie de devenir un expert en calculs algébriques."
+          }
+        ],
+        "UI": {
+          "checkAnswerButton": "Vérifier",
+          "showSolutionButton": "Afficher la solution",
+          "tryAgainButton": "Recommencer",
+          "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+          "submitAnswerButton": "Valider",
+          "tipsLabel": "Indice",
+          "tipAvailable": "Indice disponible",
+          "feedbackAvailable": "Feedback disponible",
+          "readFeedback": "Lire le commentaire",
+          "wrongAnswer": "Mauvaise réponse",
+          "correctAnswer": "Bonne réponse",
+          "shouldCheck": "Il fallait cocher ici",
+          "shouldNotCheck": "Il ne fallait pas cocher ici !",
+          "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+          "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+          "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+          "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+        },
+        "media": {
+          "disableImageZooming": false
+        },
+        "confirmCheck": {
+          "header": "Terminer ?",
+          "body": "Êtes-vous certain de vouloir terminer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Terminer"
+        },
+        "confirmRetry": {
+          "header": "Recommencer ?",
+          "body": "Êtes-vous certain de vouloir recommencer ?",
+          "cancelLabel": "Annuler",
+          "confirmLabel": "Confirmer"
+        }
+      },
+      "subContentId": "b912fa07-4cf4-4981-b529-3d292634177e"
+    }
+  ],
+  "progressType": "dots",
+  "passPercentage": 50,
+  "randomQuestions": false,
+  "texts": {
+    "prevButton": "Précédent",
+    "nextButton": "Suivant",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "finishButton": "Terminer",
+    "submitButton": "Valider",
+    "textualProgress": "Question @current sur @total",
+    "jumpToQuestion": "Question %d sur %total",
+    "answeredText": "Réponse donnée",
+    "unansweredText": "Pas de réponse donnée",
+    "questionLabel": "Question",
+    "readSpeakerProgress": "Question @current sur @total",
+    "currentQuestionText": "Question en cours",
+    "navigationLabel": "Questions",
+    "questionSetInstruction": "Choisir la question à afficher"
+  },
+  "endGame": {
+    "showResultPage": true,
+    "showSolutionButton": true,
+    "showRetryButton": true,
+    "noResultMessage": "Terminé",
+    "message": "Vos résultats :",
+    "scoreBarLabel": "Vous avez obtenu @finals sur @totals points",
+    "amountCorrect": "@finals bonnes réponses sur @totals",
+    "scoreHeader": "Score",
+    "skipButtonText": "Passer la vidéo",
+    "solutionButtonText": "Afficher la solution",
+    "retryButtonText": "Recommencer",
+    "finishButtonText": "Terminer",
+    "submitButtonText": "Valider",
+    "overallFeedback": [
+      {
+        "from": 0,
+        "to": 10,
+        "feedback": "Résultat faible. Il est important de revoir les bases des fonctions racines carrées : définition, ensemble de définition, calculs simples."
+      },
+      {
+        "from": 11,
+        "to": 30,
+        "feedback": "Résultat insuffisant. Tu as des lacunes importantes. Revois les définitions et fais des exercices simples pour consolider."
+      },
+      {
+        "from": 31,
+        "to": 50,
+        "feedback": "Résultat moyen. Tu as compris certains points, mais il reste des erreurs fréquentes. Travaille sur les propriétés fondamentales."
+      },
+      {
+        "from": 51,
+        "to": 70,
+        "feedback": "Bon résultat. Tu as une bonne compréhension du concept. Continue à t&#039;entraîner pour atteindre la maîtrise."
+      },
+      {
+        "from": 71,
+        "to": 90,
+        "feedback": "Très bon résultat. Tu maîtrises bien les fonctions racines carrées. Tu es prêt à aborder des applications plus avancées."
+      },
+      {
+        "from": 91,
+        "to": 100,
+        "feedback": "Excellent résultat. Tu as une excellente maîtrise du sujet. Bravo, tu es un véritable expert en fonctions racines carrées !"
+      }
+    ],
+    "showAnimations": false,
+    "skippable": false
+  },
+  "introPage": {
+    "showIntroPage": false,
+    "startButtonText": "Commencer",
+    "introduction": ""
+  },
+  "disableBackwardsNavigation": false,
+  "override": {
+    "checkButton": true
+  }
+}

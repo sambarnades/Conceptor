@@ -11,67 +11,118 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
-import { buildMediaStructure } from '../image-manager.js';
+import { prepareQuestionMedia } from '../question-media.js';
+
+function normaliserMotCle(kw) {
+    const item = kw && typeof kw === 'object' ? kw : { keyword: String(kw ?? '') };
+    const result = { ...item, keyword: item.keyword || item.word || '', options: {
+        points: 1, caseSensitive: true, occurrences: 1, forgiveMistakes: false,
+        feedbackIncludedWord: 'keyword', feedbackMissedWord: 'none', ...(item.options || {})
+    } };
+    if (item.points !== undefined) result.options.points = item.points;
+    if (item.caseSensitive !== undefined) result.options.caseSensitive = item.caseSensitive;
+    if (item.explanation !== undefined) result.options.feedbackMissed = item.explanation;
+    for (const key of ['word', 'points', 'caseSensitive', 'explanation']) delete result[key];
+    return result;
+}
+
+/**
+ * Rattache les ALTERNATIVES orphelines à leur mot-clé.
+ *
+ * Le modèle écrit parfois les variantes d'un mot-clé comme une entrée à part,
+ * `{ "alternatives": [...] }` sans `keyword`, juste après le mot-clé qu'elles
+ * complètent. Vide, cette entrée faisait rejeter TOUTE la rédaction (« au moins
+ * un mot-clé non vide ») — et, dans un parcours, écarter la carte à l'assemblage
+ * sous « erreur de mise en forme » (constaté le 28 sept. 2026). On la replie dans
+ * les `alternatives` du mot-clé précédent ; s'il n'y en a pas, sa première
+ * alternative devient le mot-clé. Une entrée vide de tout est simplement retirée.
+ * Appliqué au traitement même (et pas seulement à la génération) : un contenu
+ * déjà enregistré passe sans être régénéré.
+ */
+export function replierAlternativesOrphelines(keywords) {
+    if (!Array.isArray(keywords)) return keywords;
+    const sortie = [];
+    for (const kw of keywords) {
+        const objet = kw && typeof kw === 'object';
+        const mot = objet ? String(kw.keyword || kw.word || '').trim() : String(kw ?? '').trim();
+        const alternatives = objet && Array.isArray(kw.alternatives)
+            ? kw.alternatives.map(a => String(a ?? '').trim()).filter(Boolean) : [];
+        if (mot) { sortie.push(kw); continue; }
+        if (!alternatives.length) continue;
+        const precedent = sortie[sortie.length - 1];
+        if (precedent && typeof precedent === 'object') {
+            const deja = Array.isArray(precedent.alternatives) ? precedent.alternatives : [];
+            sortie[sortie.length - 1] = { ...precedent, alternatives: [...new Set([...deja, ...alternatives])] };
+        } else {
+            const [premier, ...reste] = alternatives;
+            sortie.push({ ...kw, keyword: premier, alternatives: reste });
+        }
+    }
+    return sortie;
+}
+
+function validerRedaction(data) {
+    data.keywords = replierAlternativesOrphelines(data.keywords);
+    if (!Array.isArray(data.keywords) || !data.keywords.length || data.keywords.map(normaliserMotCle).some(k => !String(k.keyword).trim())) throw Error('Essay: au moins un mot-clé non vide est requis.');
+    const behaviour = data.behaviour || {};
+    for (const [key,max] of [['minimumLength',Infinity],['maximumLength',Infinity],['percentagePassing',100],['percentageMastering',100],['pointsHost',Infinity]]) {
+        const value = behaviour[key];
+        if (value != null && value !== '' && (!Number.isFinite(Number(value)) || Number(value)<0 || Number(value)>max)) throw Error('Essay: valeur hors limites pour '+key);
+    }
+    for (const keyword of data.keywords.map(normaliserMotCle)) {
+        const options = keyword.options || {};
+        if (options.points != null && (!Number.isFinite(Number(options.points)) || Number(options.points)<0)) throw Error('Essay: points invalides.');
+        if (options.occurrences != null && (!Number.isInteger(Number(options.occurrences)) || Number(options.occurrences)<1)) throw Error('Essay: occurrences invalides.');
+    }
+}
 
 export default {
     process: (jsonObj) => {
+        validerRedaction(jsonObj);
         return {
             ...jsonObj,
             taskDescription: formatTextToHtml(jsonObj.taskDescription),
-            keywords: (jsonObj.keywords || []).map(kw => {
-                const isObj = typeof kw === 'object' && kw !== null;
-                return {
-                    keyword: isObj ? (kw.keyword || "") : kw,
-                    options: {
-                        points: 1,
-                        caseSensitive: false,
-                        occurrences: 1,
-                        forgiveMistakes: false,
-                        feedbackIncludedWord: "keyword",
-                        feedbackMissedWord: "none",
-                        ...(isObj ? kw.options : {})
-                    }
-                };
-            }),
+            keywords: (jsonObj.keywords || []).map(normaliserMotCle),
             behaviour: {
                 inputFieldSize: "10",
                 enableRetry: true,
                 ignoreScoring: false,
-                minimumLength: 10,
-                maximumLength: 10000,
-                percentagePassing: 50,
-                percentageMastering: 100,
+                minimumLength: undefined,
+                maximumLength: undefined,
+                percentagePassing: undefined,
+                percentageMastering: undefined,
                 pointsHost: 1,
                 linebreakReplacement: " ",
-                overrideForgiveMistakes: "on",
-                overrideCaseSensitive: "off",
+                overrideForgiveMistakes: undefined,
+                overrideCaseSensitive: undefined,
                 ...(jsonObj.behaviour || {})
             },
             overallFeedback: jsonObj.overallFeedback || [{ from: 0, to: 100, feedback: "" }],
-            checkAnswer: translations.h5p_check_answer || "Vérifier",
-            tryAgain: translations.h5p_try_again || "Recommencer",
-            showSolution: translations.h5p_show_solution || "Afficher la solution",
-            feedbackHeader: translations.h5p_essay_feedback_header || "Commentaire",
-            solutionTitle: translations.h5p_essay_solution_title || "Exemple de solution",
-            remainingChars: translations.h5p_essay_remaining_chars || "Caractères restants : @chars",
-            notEnoughChars: translations.h5p_essay_not_enough_chars || "Vous devez saisir au moins @chars caractères !",
-            messageSave: translations.h5p_essay_message_save || "enregistré",
-            placeholderText: translations.h5p_essay_placeholder_text || "Commencez à rédiger ici...",
+            checkAnswer: jsonObj.checkAnswer ?? (translations.h5p_check_answer || "Vérifier"),
+            tryAgain: jsonObj.tryAgain ?? (translations.h5p_try_again || "Recommencer"),
+            showSolution: jsonObj.showSolution ?? (translations.h5p_show_solution || "Afficher la solution"),
+            feedbackHeader: jsonObj.feedbackHeader ?? (translations.h5p_essay_feedback_header || "Commentaire"),
+            solutionTitle: jsonObj.solutionTitle ?? (translations.h5p_essay_solution_title || "Exemple de solution"),
+            remainingChars: jsonObj.remainingChars ?? (translations.h5p_essay_remaining_chars || "Caractères restants : @chars"),
+            notEnoughChars: jsonObj.notEnoughChars ?? (translations.h5p_essay_not_enough_chars || "Vous devez saisir au moins @chars caractères !"),
+            messageSave: jsonObj.messageSave ?? (translations.h5p_essay_message_save || "enregistré"),
+            placeholderText: jsonObj.placeholderText ?? (translations.h5p_essay_placeholder_text ?? "Commencez à rédiger ici..."),
             solution: {
                 introduction: formatTextToHtml(jsonObj.solution?.introduction || ""),
-                sample: formatTextToHtml(jsonObj.solution?.sample || (jsonObj.keywords ? jsonObj.keywords.map(k => k.keyword || k).join(', ') : ""))
+                sample: formatTextToHtml(jsonObj.solution?.sample ?? "")
             },
-            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
-            ariaYourResult: translations.h5p_essay_aria_your_result || "Vous avez obtenu @score sur @total points",
-            ariaNavigatedToSolution: translations.h5p_essay_aria_navigated_to_solution || "Navigation vers la solution.",
-            submitAnswer: translations.h5p_submit_answer || "Submit",
-            ariaCheck: translations.h5p_a11y_check || "Check the answers.",
-            ariaShowSolution: translations.h5p_a11y_show_solution || "Show the solution. You will be provided with a sample solution.",
-            ariaRetry: translations.h5p_a11y_retry || "Retry the task. You can improve your previous answer if the author allowed that."
+            media: prepareQuestionMedia(jsonObj),
+            ariaYourResult: jsonObj.ariaYourResult ?? (translations.h5p_essay_aria_your_result || "Vous avez obtenu @score sur @total points"),
+            ariaNavigatedToSolution: jsonObj.ariaNavigatedToSolution ?? (translations.h5p_essay_aria_navigated_to_solution || "Navigation vers la solution."),
+            submitAnswer: jsonObj.submitAnswer ?? (translations.h5p_submit_answer || "Submit"),
+            ariaCheck: jsonObj.ariaCheck ?? (translations.h5p_a11y_check || "Check the answers."),
+            ariaShowSolution: jsonObj.ariaShowSolution ?? (translations.h5p_a11y_show_solution || "Show the solution. You will be provided with a sample solution."),
+            ariaRetry: jsonObj.ariaRetry ?? (translations.h5p_a11y_retry || "Retry the task. You can improve your previous answer if the author allowed that.")
         };
     },
 
     transformForQuizSet: (question) => {
+        validerRedaction(question.params);
         // 1. Convertir le Markdown de la consigne en HTML (cohérence avec process())
         if (question.params.taskDescription) {
             question.params.taskDescription = formatTextToHtml(question.params.taskDescription);
@@ -79,90 +130,53 @@ export default {
 
         // 2. Normaliser les mots-clés : accepter word/keyword, points plats ou imbriqués
         if (question.params.keywords && Array.isArray(question.params.keywords)) {
-            question.params.keywords = question.params.keywords.map(kw => {
-                if (typeof kw === 'string') {
-                    return {
-                        keyword: kw,
-                        options: { points: 1, caseSensitive: false, occurrences: 1, forgiveMistakes: false, feedbackIncludedWord: "keyword", feedbackMissedWord: "none" }
-                    };
-                }
-                const isObj = typeof kw === 'object' && kw !== null;
-                if (!isObj) {
-                    return {
-                        keyword: String(kw),
-                        options: { points: 1, caseSensitive: false, occurrences: 1, forgiveMistakes: false, feedbackIncludedWord: "keyword", feedbackMissedWord: "none" }
-                    };
-                }
-                // Accepter "word" (format QuizSet/IA) ou "keyword" (format H5P)
-                const keywordText = kw.keyword || kw.word || "";
-                // Accepter points plat ou imbriqué dans options (attention aux valeurs 0 qui sont falsy)
-                const points = kw.points !== undefined && kw.points !== null ? kw.points
-                    : (kw.options && kw.options.points !== undefined && kw.options.points !== null ? kw.options.points : 1);
-                const caseSensitive = kw.caseSensitive !== undefined ? kw.caseSensitive
-                    : (kw.options && kw.options.caseSensitive !== undefined ? kw.options.caseSensitive : false);
-                return {
-                    keyword: keywordText,
-                    options: {
-                        points: points,
-                        caseSensitive: caseSensitive,
-                        occurrences: (kw.options && kw.options.occurrences) || 1,
-                        forgiveMistakes: (kw.options && kw.options.forgiveMistakes) || false,
-                        feedbackIncludedWord: (kw.options && kw.options.feedbackIncludedWord) || "keyword",
-                        feedbackMissedWord: (kw.options && kw.options.feedbackMissedWord) || "none"
-                    }
-                };
-            });
+            question.params.keywords = question.params.keywords.map(normaliserMotCle);
         }
 
         // 3. Traductions complètes (alignées sur process())
-        question.params.checkAnswer = translations.h5p_check_answer || "Vérifier";
-        question.params.tryAgain = translations.h5p_try_again || "Recommencer";
-        question.params.showSolution = translations.h5p_show_solution || "Afficher la solution";
-        question.params.feedbackHeader = translations.h5p_essay_feedback_header || "Commentaire";
-        question.params.solutionTitle = translations.h5p_essay_solution_title || "Exemple de solution";
-        question.params.remainingChars = translations.h5p_essay_remaining_chars || "Caractères restants : @chars";
-        question.params.notEnoughChars = translations.h5p_essay_not_enough_chars || "Vous devez saisir au moins @chars caractères !";
-        question.params.messageSave = translations.h5p_essay_message_save || "enregistré";
-        question.params.placeholderText = translations.h5p_essay_placeholder_text || "Commencez à rédiger ici...";
-        question.params.submitAnswer = translations.h5p_submit_answer || "Submit";
-        question.params.ariaYourResult = translations.h5p_essay_aria_your_result || "Vous avez obtenu @score sur @total points";
-        question.params.ariaNavigatedToSolution = translations.h5p_essay_aria_navigated_to_solution || "Navigation vers la solution.";
-        question.params.ariaCheck = translations.h5p_a11y_check || "Check the answers.";
-        question.params.ariaShowSolution = translations.h5p_a11y_show_solution || "Show the solution. You will be provided with a sample solution.";
-        question.params.ariaRetry = translations.h5p_a11y_retry || "Retry the task. You can improve your previous answer if the author allowed that.";
+        question.params.checkAnswer ??= translations.h5p_check_answer || "Vérifier";
+        question.params.tryAgain ??= translations.h5p_try_again || "Recommencer";
+        question.params.showSolution ??= translations.h5p_show_solution || "Afficher la solution";
+        question.params.feedbackHeader ??= translations.h5p_essay_feedback_header || "Commentaire";
+        question.params.solutionTitle ??= translations.h5p_essay_solution_title || "Exemple de solution";
+        question.params.remainingChars ??= translations.h5p_essay_remaining_chars || "Caractères restants : @chars";
+        question.params.notEnoughChars ??= translations.h5p_essay_not_enough_chars || "Vous devez saisir au moins @chars caractères !";
+        question.params.messageSave ??= translations.h5p_essay_message_save || "enregistré";
+        question.params.placeholderText ??= translations.h5p_essay_placeholder_text || "Commencez à rédiger ici...";
+        question.params.submitAnswer ??= translations.h5p_submit_answer || "Submit";
+        question.params.ariaYourResult ??= translations.h5p_essay_aria_your_result || "Vous avez obtenu @score sur @total points";
+        question.params.ariaNavigatedToSolution ??= translations.h5p_essay_aria_navigated_to_solution || "Navigation vers la solution.";
+        question.params.ariaCheck ??= translations.h5p_a11y_check || "Check the answers.";
+        question.params.ariaShowSolution ??= translations.h5p_a11y_show_solution || "Show the solution. You will be provided with a sample solution.";
+        question.params.ariaRetry ??= translations.h5p_a11y_retry || "Retry the task. You can improve your previous answer if the author allowed that.";
 
         // 4. Comportement complet (aligné sur process())
         question.params.behaviour = {
             inputFieldSize: "10",
             enableRetry: true,
             ignoreScoring: false,
-            minimumLength: 10,
-            maximumLength: 10000,
-            percentagePassing: 50,
-            percentageMastering: 100,
+            minimumLength: undefined,
+            maximumLength: undefined,
+            percentagePassing: undefined,
+            percentageMastering: undefined,
             pointsHost: 1,
             linebreakReplacement: " ",
-            overrideForgiveMistakes: "on",
-            overrideCaseSensitive: "off",
+            overrideForgiveMistakes: undefined,
+            overrideCaseSensitive: undefined,
             ...question.params.behaviour
         };
 
         // 5. Feedback global par défaut
         question.params.overallFeedback = question.params.overallFeedback || [{ from: 0, to: 100, feedback: "" }];
 
-        // 6. Solution auto-générée à partir des mots-clés si absente
-        if (!question.params.solution) {
-            const keywordsList = (question.params.keywords || []).map(k => k.keyword || '').filter(Boolean);
-            question.params.solution = {
-                introduction: "",
-                sample: keywordsList.length > 0 ? `<div>${keywordsList.join(', ')}</div>` : ""
-            };
-        }
+        // 6. La solution est une réponse modèle fournie par l’auteur ou l’IA.
+        question.params.solution = {
+            ...(question.params.solution || {}),
+            introduction: formatTextToHtml(question.params.solution?.introduction || ''),
+            sample: formatTextToHtml(question.params.solution?.sample || '')
+        };
 
-        // 7. Media — construire la structure si mediaImage présent
-        if (!question.params.media || !question.params.media.type) {
-            question.params.media = buildMediaStructure(question.params.mediaImage, question.params.mediaImageAlt);
-        }
+        question.params.media = prepareQuestionMedia(question.params);
 
         return question;
     }

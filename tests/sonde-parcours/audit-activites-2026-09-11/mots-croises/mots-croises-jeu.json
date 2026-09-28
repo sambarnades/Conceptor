@@ -1,0 +1,48 @@
+[
+  {
+    "kind": "fixes",
+    "score": "2/2",
+    "partiel": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\n\t\n\t\n\n\n\t\n\t\n3\n\t\n\t\n\n\n\t\n\t\n4\n\t\n\t\nR\n1\n\t\n2\n\t\n3\n\t\n4\nHorizontal\n1\nCapitale de la France(5)\nPARIS\nVertical\n2\nCapitale de l’Italie(4)\nR ＿＿\nUtilise les lettres communes aux capitales.\nVous avez obtenu 1 sur 2 points\n1/2\nAfficher la solutionRecommencer",
+    "retained": "PARIS",
+    "solution": "R\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4",
+    "mediasLus": [],
+    "texte": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\nO\n\t\n\t\n\n\n\t\n\t\n3\nM\n\t\n\t\n\n\n\t\n\t\n4\nE\n\t\n\t\nR\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4\nHorizontal\n1\nCapitale de la France(5)\nPARIS\nVertical\n2\nCapitale de l’Italie(4)\nROME\nUtilise les lettres communes aux capitales.\nVous avez obtenu 2 sur 2 points\n2/2\nAfficher la solutionRecommencer"
+  },
+  {
+    "kind": "image",
+    "score": "8/8",
+    "partiel": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\n\t\n\t\n\n\n\t\n\t\n3\n\t\n\t\n\n\n\t\n\t\n4\n\t\n\t\nR\n1\n\t\n2\n\t\n3\n\t\n4\nHorizontal\n1\nCapitale de la France(5)\nP\nA\nR\nI\nS\nVertical\n2\nCapitale de l’Italie(4)\nR\nUtilise les lettres communes aux capitales.\nVous avez obtenu 5 sur 8 points\n5/8\nAfficher la solutionRecommencer\nRights of use",
+    "retained": "PARIS",
+    "solution": "R\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4",
+    "mediasLus": [],
+    "texte": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\nO\n\t\n\t\n\n\n\t\n\t\n3\nM\n\t\n\t\n\n\n\t\n\t\n4\nE\n\t\n\t\nR\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4\nHorizontal\n1\nCapitale de la France(5)\nP\nA\nR\nI\nS\nVertical\n2\nCapitale de l’Italie(4)\nR\nO\nM\nE\nUtilise les lettres communes aux capitales.\nVous avez obtenu 8 sur 8 points\n8/8\nAfficher la solutionRecommencer\nRights of use"
+  },
+  {
+    "kind": "audio",
+    "score": "8/8",
+    "partiel": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\n\t\n\t\n\n\n\t\n\t\n3\n\t\n\t\n\n\n\t\n\t\n4\n\t\n\t\nR\n1\n\t\n2\n\t\n3\n\t\n4\nHorizontal\n1\nCapitale de la France(5)\nP\nA\nR\nI\nS\nVertical\n2\nCapitale de l’Italie(4)\nR\nUtilise les lettres communes aux capitales.\nVous avez obtenu 5 sur 8 points\n5/8\nAfficher la solutionRecommencer",
+    "retained": "PARIS",
+    "solution": "R\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4",
+    "mediasLus": [
+      {
+        "duration": 1.964943,
+        "currentTime": 0.040589
+      }
+    ],
+    "texte": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\nO\n\t\n\t\n\n\n\t\n\t\n3\nM\n\t\n\t\n\n\n\t\n\t\n4\nE\n\t\n\t\nR\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4\nHorizontal\n1\nCapitale de la France(5)\nP\nA\nR\nI\nS\nVertical\n2\nCapitale de l’Italie(4)\nR\nO\nM\nE\nUtilise les lettres communes aux capitales.\nVous avez obtenu 8 sur 8 points\n8/8\nAfficher la solutionRecommencer"
+  },
+  {
+    "kind": "video",
+    "score": "8/8",
+    "partiel": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\n\t\n\t\n\n\n\t\n\t\n3\n\t\n\t\n\n\n\t\n\t\n4\n\t\n\t\nR\n1\n\t\n2\n\t\n3\n\t\n4\nHorizontal\n1\nCapitale de la France(5)\nP\nA\nR\nI\nS\nVertical\n2\nCapitale de l’Italie(4)\nR\nUtilise les lettres communes aux capitales.\nVous avez obtenu 5 sur 8 points\n5/8\nAfficher la solutionRecommencer",
+    "retained": "PARIS",
+    "solution": "R\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4",
+    "mediasLus": [
+      {
+        "duration": 1.362712,
+        "currentTime": 0.258571
+      }
+    ],
+    "texte": "Retrouve les capitales. RELU Sucrerie\nP\n1\n\t\nA\n\t\n1\nR\n2\n\t\nI\n\t\nS\n\n\n\t\n\t\n2\nO\n\t\n\t\n\n\n\t\n\t\n3\nM\n\t\n\t\n\n\n\t\n\t\n4\nE\n\t\n\t\nR\n1\n\t\nO\n2\n\t\nM\n3\n\t\nE\n4\nHorizontal\n1\nCapitale de la France(5)\nP\nA\nR\nI\nS\nVertical\n2\nCapitale de l’Italie(4)\nR\nO\nM\nE\nUtilise les lettres communes aux capitales.\nVous avez obtenu 8 sur 8 points\n8/8\nAfficher la solutionRecommencer"
+  }
+]

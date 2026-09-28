@@ -13,6 +13,9 @@
  */
 
 import { formatContentForDocument } from '../js/export/document-formatter.js';
+import { generateFindTheWordsGrid, generateFindTheWordsGridImages } from '../js/renderers/find-the-words-grid-generator.js';
+import { orientationFns } from '../js/renderers/grid-canvas-utils.js';
+import { loadTranslations } from '../js/core/translation.js';
 
 // =======================================================================
 // UTILITAIRES DE TEST
@@ -69,9 +72,40 @@ function makeFakeGridImage() {
 // =======================================================================
 
 async function runStep1_FormatterGridIntegration() {
+    await loadTranslations('fr');
     console.group('Etape 1 : Formatage avec images de grille');
     _ctx = { step: 1, stepName: 'Formatage grille', file: 'document-formatter.js', module: '', source: '' };
     const t0 = performance.now();
+    const orientations = Object.fromEntries(Object.keys(orientationFns).map(key => [key, key === 'vertical']));
+    const grid = generateFindTheWordsGrid(['ÉCOLE', 'CLASSE', 'ÉCOLE'], { fillPool: 'Z', orientations, preferOverlap: false }, () => 0.25);
+    assert(grid.wordLocations.length === 2 && grid.wordLocations.every(p => p.orientation === 'vertical'), 'Grille : mots uniques placés dans la seule orientation autorisée');
+    const used = new Set();
+    for (const p of grid.wordLocations) {
+        const cells = [...p.word].map((_, i) => orientationFns[p.orientation](p.x, p.y, i));
+        assert(cells.map(c => grid.wordGrid[c.y][c.x]).join('') === p.word, 'Grille : chaque solution correspond aux lettres réellement imprimées, accents inclus');
+        cells.forEach(c => used.add(`${c.x},${c.y}`));
+    }
+    assert(grid.wordGrid.every((row, y) => row.every((letter, x) => used.has(`${x},${y}`) || letter === 'Z')), 'Grille : toutes les cases restantes respectent l’alphabet choisi');
+    const overlap = preferOverlap => generateFindTheWordsGrid(['CHATON', 'CHAT'], { preferOverlap }, () => 0.25).wordLocations[1].overlap;
+    assert(overlap(true) === 4 && overlap(false) === 0, 'Grille : préférer le chevauchement modifie réellement la disposition');
+    assert(generateFindTheWordsGrid(['CHAT'], { orientations: Object.fromEntries(Object.keys(orientationFns).map(k => [k, false])) }) === null, 'Grille : aucune boucle si toutes les orientations sont désactivées');
+    assert(generateFindTheWordsGrid(['CHAT'], { fillPool: '' }) === null, 'Grille : refus d’un alphabet vide');
+    const dense = Array.from({ length: 40 }, (_, i) => 'MOT' + String.fromCharCode(65 + Math.floor(i / 26), 65 + i % 26));
+    assert(generateFindTheWordsGrid(dense, { orientations }, () => 0.25)?.wordLocations.length === 40, 'Grille dense : aucun mot perdu silencieusement');
+    const images = await generateFindTheWordsGridImages('CHAT,CHIEN', { fillPool: 'Z', orientations });
+    assert(images.emptyGrid?.blob.size > 100 && images.solutionGrid?.blob.size > 100, 'Grille : deux vrais PNG après application des options');
+    const hidden = await formatContentForDocument('FindTheWords', { wordList: 'CHAT,CHIEN', behaviour: { showVocabulary: false } });
+    const split = hidden.sections.findIndex(s => s.type === 'pageBreak');
+    assert(!JSON.stringify(hidden.sections.slice(0, split)).includes('CHAT') && JSON.stringify(hidden.sections.slice(split)).includes('CHAT'), 'Vocabulaire masqué : absent de la fiche élève, présent dans le corrigé');
+    const repeated = await formatContentForDocument('FindTheWords', { wordList: 'CHAT,CHIEN, CHAT,' });
+    assert(repeated.sections.find(s => s.style === 'instructions').text.includes('2') && repeated.sections.filter(s => s.type === 'bulletPoint').length === 2, 'Liste répétée : nombre annoncé et corrigé comptent les deux mots uniques');
+    const random = Math.random;
+    let sortedDocument;
+    try {
+        Math.random = () => 0.999;
+        sortedDocument = await formatContentForDocument('SortParagraphs', { paragraphs: ['Début', 'Observer', 'Observer', 'Fin'] });
+    } finally { Math.random = random; }
+    assert(sortedDocument.sections.filter(s => s.style === 'orderedParagraph').map(s => s.text.slice(3)).join('|') !== 'Début|Observer|Observer|Fin', 'Tri papier : une permutation aléatoire identique ne livre pas un exercice déjà résolu');
 
     // --- 1a. Crossword SANS images (cas de base) ---
     const crosswordFixture = await fetch('../assets/data/examples/crosswords_1.json').then(r => r.json());

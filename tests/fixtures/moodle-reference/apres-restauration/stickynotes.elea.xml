@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="22" moduleid="119953" modulename="stickynotes" contextid="191817">
+  <stickynotes id="22">
+    <course>6722</course>
+    <name>Sonde — Mur de post-it</name>
+    <intro>Dépose une note dans la colonne qui correspond à ce que tu ressens.</intro>
+    <introformat>1</introformat>
+    <colors>1</colors>
+    <votes>0</votes>
+    <limitvotes>0</limitvotes>
+    <maxlimitvotes>$@NULL@$</maxlimitvotes>
+    <limitstickynotes>0</limitstickynotes>
+    <maxstickynotes>$@NULL@$</maxstickynotes>
+    <orderstickynotes>desc</orderstickynotes>
+    <viewauthor>0</viewauthor>
+    <rotate>1</rotate>
+    <color1>1</color1>
+    <color1_meaning></color1_meaning>
+    <color2>1</color2>
+    <color2_meaning></color2_meaning>
+    <color3>1</color3>
+    <color3_meaning></color3_meaning>
+    <color4>1</color4>
+    <color4_meaning></color4_meaning>
+    <color5>1</color5>
+    <color5_meaning></color5_meaning>
+    <color6>1</color6>
+    <color6_meaning></color6_meaning>
+    <timecreated>1788529314</timecreated>
+    <timemodified>0</timemodified>
+    <displaystickycaption>0</displaystickycaption>
+    <moveallnotes>0</moveallnotes>
+    <seeallnotes>1</seeallnotes>
+    <completionstickynotes>1</completionstickynotes>
+    <stickynotescolumns>
+      <stickynotescolumn id="42">
+        <title>Je sais</title>
+        <column_order>1</column_order>
+        <stickynotesnotes>
+        </stickynotesnotes>
+      </stickynotescolumn>
+      <stickynotescolumn id="43">
+        <title>Ce que je crois</title>
+        <column_order>2</column_order>
+        <stickynotesnotes>
+        </stickynotesnotes>
+      </stickynotescolumn>
+      <stickynotescolumn id="44">
+        <title>À vérifier : 20 car.</title>
+        <column_order>3</column_order>
+        <stickynotesnotes>
+        </stickynotesnotes>
+      </stickynotescolumn>
+    </stickynotescolumns>
+  </stickynotes>
+</activity>

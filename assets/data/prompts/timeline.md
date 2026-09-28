@@ -5,8 +5,8 @@
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.Timeline]
 - Nombre d'événements : Au minimum 5 événements || [NOMBRE_ELEMENTS] événements.
-- Périodes (era) : Au minimum 2 périodes couvrant des groupes d'événements.
-- Médias : Ajoute des crédits et légendes pour chaque actif si possible. Recherche activement une image pertinente et libre de droits (ex: Wikimedia Commons).
+
+- Les périodes sont facultatives. Utilise uniquement les URL de médias fournies ; sinon laisse asset.media vide, sans inventer de source.
 
 # RÈGLES PÉDAGOGIQUES
 - Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
@@ -43,6 +43,9 @@
   - \`asset\` : (Optionnel) Objet média (\`media\` : URL directe Wikimedia Commons, \`caption\`, \`credit\`).
   - \`tag\` : Mot-clé court (ex: 'Politique', 'Science') permettant le filtrage.
 - **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : \`\\\\( ... \\\\)\`. N'utilise JAMAIS le signe \`$\` seul. Exemples : \`\\\\( \\\\frac{1}{2} \\\\)\`, \`\\\\( \\\\sqrt{2} \\\\)\`, \`\\\\( \\\\alpha \\\\)\`, \`\\\\( x^{2} \\\\)\`, \`\\\\( \\\\mathbb{R} \\\\)\`, \`\\\\( \\\\sin(\\\\theta) \\\\)\`, \`\\\\( \\\\sum_{k=0}^{n} k \\\\)\`, \`\\\\( x \\\\geq 0 \\\\)\`, \`\\\\( \\\\forall x \\\\in \\\\mathbb{R} \\\\)\`.
+
+
+`timeline.height`: 600; `timeline.defaultZoomLevel`: "0"; `timeline.language`: "fr" | "en" | "ja" | …; `timeline.backgroundImage`: optional image object. `timeline.date[].asset.thumbnail`: optional image object. `timeline.era`: [] allowed. `date[].endDate`: optional; `era[].endDate`: required.
 
 # EXEMPLE DE RENDU
 ```json

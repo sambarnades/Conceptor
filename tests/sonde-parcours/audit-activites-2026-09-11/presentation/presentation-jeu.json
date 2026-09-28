@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "complet",
+    "initial": {
+      "score": 6,
+      "max": 7,
+      "slides": 6
+    },
+    "reprise": true,
+    "medias": true
+  },
+  {
+    "kind": "sans-bilan",
+    "initial": {
+      "score": 6,
+      "max": 7,
+      "slides": 5
+    },
+    "reprise": false,
+    "medias": true
+  }
+]

@@ -2,6 +2,10 @@
     0. VARIABLES GLOBALES — Z-INDEX & BACKDROPS
    ======================================================================= */
 :root {
+    /* Bleu commun aux choix actifs de l'accueil : filtres et activité/parcours. */
+    --selection-blue: #51779c;
+    --selection-on-blue: #fff;
+
     /* Navigation globale */
     --z-banner: 900;
     --z-dropdown: 1000;
@@ -768,8 +772,8 @@ body {
 }
 
 .filter-chip--activity.active {
-    background: #0055B3;
-    color: white;
+    background: var(--selection-blue);
+    color: var(--selection-on-blue);
     border-color: transparent;
 }
 
@@ -1482,12 +1486,11 @@ textarea::placeholder {
 }
 
 /* Optimisation pour très petits écrans */
-@media (max-width: 480px) {
-    .header-right {
-        /* Espacement resserré : 5 boutons icône doivent tenir sans scroll horizontal */
-        gap: 2px;
-    }
-
+/* Sous 600 px, les boutons d'en-tête ne gardent que leur icône. Ce seuil était
+   à 480 px avec cinq boutons ; l'entrée de l'atelier de parcours en fait six
+   (D38 du PRD parcours), et six boutons à libellé débordaient entre 480 et
+   600 px — mesuré, pas supposé. Les icônes seules y tiennent largement. */
+@media (max-width: 600px) {
     /* Masquer UNIQUEMENT les textes des boutons - garder toutes les icônes visibles */
     .language-btn span:not(.fi),
     .help-btn span:not(.fas),
@@ -1496,10 +1499,37 @@ textarea::placeholder {
     #sucrerie-button span {
         display: none !important;
     }
+}
+
+@media (max-width: 480px) {
+    .header-right {
+        /* Espacement resserré : 6 boutons icône doivent tenir sans scroll horizontal */
+        gap: 2px;
+    }
+
+    /* Marges de la barre resserrées elles aussi : avec le commutateur
+       « Une activité | Un parcours » au centre (D46 du PRD parcours), la barre
+       débordait de 40 px à 360 px ; ces 23 px-là, plus ceux du commutateur,
+       la font tenir. Mesuré à treize largeurs. */
+    .app-bar { padding: 5px 12px; }
+    .header-left { gap: 8px; }
+
+    /* Le mot « Caramel » s'efface : le logo EST la marque, et le sous-titre est
+       déjà masqué sous 768 px. Six boutons icône plus le mot débordaient de 30 px
+       sur un iPhone ; sans le mot, ils tiennent jusqu'à 360 px. Le titre reste
+       dans l'arbre d'accessibilité (masquage visuel, pas `display: none`). */
+    .app-bar h1 {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
 
     /* Ajuster les boutons pour qu'ils soient compacts et faciles à toucher.
-       min-width 40px (au lieu de 44) : avec 5 boutons le header tient sans
-       scroll horizontal jusqu'à 360px de large tout en restant tactile. */
+       min-width 40px (au lieu de 44) : avec 6 boutons et le mot-titre effacé,
+       le header tient sans scroll horizontal jusqu'à 360px tout en restant tactile. */
     .language-btn,
     .help-btn,
     .notification-btn,
@@ -1530,6 +1560,21 @@ textarea::placeholder {
     .sucrerie-icon {
         width: 20px;
         height: 20px;
+    }
+}
+
+/* Sous 400 px (petits Android à 360), les cinq portes passent à 36 px de
+   large — toujours 44 px de haut — pour que la barre tienne avec le
+   commutateur « Une activité | Un parcours ». À 320 px (iPhone SE de 2016)
+   elle déborde encore, comme avant. */
+@media (max-width: 400px) {
+    .language-btn,
+    .help-btn,
+    .notification-btn,
+    #tchap-button,
+    #sucrerie-button {
+        min-width: 36px;
+        padding: 6px 4px;
     }
 }
 

@@ -18,6 +18,8 @@ import * as JSONHealer from './json-healer.js';
 import { loadClientZip } from '../core/lib-loader.js';
 import * as perf from '../core/perf-tracker.js';
 import { getAllMedia, hasMedia, clearAllImages } from './image-manager.js';
+import { normaliserImagesDuPaquet } from './package-images.js';
+import { validateBlanksContent } from './validate-blanks.js';
 
 let downloadZip;
 
@@ -363,7 +365,15 @@ export function stripMarkdownAndHtml(text) {
  * @returns {Promise<Blob>} Le blob ZIP brut (tel que produit par client-zip).
  */
 export async function createH5PBlob(contentJson, mainLibraryName, dependencies, options = {}) {
+    // Contrôle final, y compris les contenus natifs qui ne repassent pas par
+    // FillInTheBlanks.process (quiz, livres, présentations, vidéos importés).
+    validateBlanksContent(contentJson, mainLibraryName);
     const dlZip = downloadZip || await loadClientZip();
+
+    // Un ancien scénario ou une activité importée peut encore porter un WebP.
+    // Convertir les octets ET leurs références avant d’écrire le JSON du paquet.
+    const compatibles = await normaliserImagesDuPaquet(contentJson, options.mediaFiles || options.imageFiles);
+    contentJson = compatibles.contenu;
 
     const contentJsonString = JSON.stringify(contentJson, null, 2);
     const hasMathFormulas = detectMathInContent(contentJsonString);
@@ -389,7 +399,7 @@ export async function createH5PBlob(contentJson, mainLibraryName, dependencies, 
         (contentJsonString.match(/"(?:images|audios|videos)\/[A-Za-z0-9._-]+"/g) || [])
             .map(m => m.slice(1, -1))
     );
-    let mediaFiles = options.mediaFiles || options.imageFiles;
+    let mediaFiles = compatibles.medias;
     if (mediaFiles && mediaFiles.size > 0 && referencedMediaPaths.size > 0) {
         const filtered = new Map([...mediaFiles].filter(([path]) => referencedMediaPaths.has(path)));
         if (filtered.size !== mediaFiles.size) {

@@ -150,6 +150,9 @@ export function addBotMessage(text, quickReplies = []) {
     announceSr(text);
 
     if (quickReplies.length) {
+        // Seul le dernier choix reste actif : une ancienne réponse ne doit pas
+        // relancer une intention que la conversation a déjà dépassée.
+        state.elements.messages.querySelectorAll('.caramelia-quick-replies').forEach(e => e.remove());
         const qr = document.createElement('div');
         qr.className = 'caramelia-quick-replies';
         for (const r of quickReplies) {
@@ -158,6 +161,7 @@ export function addBotMessage(text, quickReplies = []) {
             b.className = 'caramelia-quick-btn';
             b.textContent = r.label;
             b.addEventListener('click', () => {
+                if (!b.isConnected || state.generationRunning) return;
                 state.elements.messages.querySelectorAll('.caramelia-quick-replies').forEach(e => e.remove());
                 r.action();
             });
@@ -281,6 +285,7 @@ export function addCheckboxList(moduleKeys, preselected = [], introKey = 'checkl
     valBtn.className = 'caramelia-quick-btn caramelia-quick-btn--primary';
     valBtn.textContent = t('checklist_validate');
     valBtn.addEventListener('click', () => {
+        if (!wrapper.isConnected || state.generationRunning) return;
         const selected = Array.from(form.querySelectorAll('input:checked')).map(cb => cb.value);
         if (!selected.length) { addBotMessage(t('checklist_empty')); return; }
         wrapper.remove();

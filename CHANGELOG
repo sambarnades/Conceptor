@@ -1,6 +1,55 @@
-# Journal des modifications - Caramel
+# Journal des modifications — Caramel
 
-Toutes les modifications notables apportées au projet **Caramel** sont consignées dans ce fichier. Cette présentation suit les standards du web pour garantir une lecture claire, structurée et accessible, que vous soyez enseignant ou développeur.
+## [7.0.0] - 28-09-2026
+
+**Créez des parcours complets pour Éléa, Magistère et Moodle, personnalisez davantage vos activités H5P et retrouvez des exports plus fidèles.**
+
+### Créer un parcours complet
+
+- **Une activité ou un parcours** : choisissez directement depuis le formulaire habituel. L’atelier vous accompagne en quatre étapes : cadrage, plan, fabrication et livraison.
+- **Un plan à votre main** : partez d’une trame ou demandez un plan à l’IA, puis modifiez les objectifs, étapes, activités, consignes et durées. Ajoutez, déplacez ou retirez des activités avant de les générer. Le type de chaque activité se choisit dans une mosaïque illustrée, avec un filtre. Deux nouvelles trames, « Débat argumenté » et « Travail d’équipe », s’appuient sur les outils de la plateforme.
+- **L’IA de votre choix** : utilisez l’IA intégrée ou copiez un prompt vers une IA externe, puis importez sa réponse pour le plan ou les activités. Les deux méthodes peuvent être combinées.
+- **Une fabrication progressive** : suivez la création des activités, arrêtez et reprenez le travail, relancez une activité en erreur, prévisualisez et retouchez chaque contenu.
+- **Les modules de votre plateforme** : en plus des activités générées par Caramel, le plan propose forum, sondage, questionnaire, enquête, leçon, atelier d’évaluation par les pairs, tableau, wiki, glossaire et base de données à construire, document collaboratif, partage de fichiers, classe virtuelle, choix de groupe et lien web, selon ce que propose Éléa, Magistère ou Moodle. L’IA en rédige les consignes, questions, pages, critères ou colonnes ; ce qui reste à régler sur la plateforme est listé dans une note cachée aux élèves, en tête du cours. Dans la mosaïque, vous pouvez aussi choisir un paquetage IMS : un mini-site de plusieurs pages, avec sa table des matières, entièrement rédigé par Caramel.
+- **Des confirmations dans l’atelier** : remplacer le parcours en cours se confirme dans une fenêtre de Caramel, qui propose aussi d’exporter le scénario avant de continuer ; les chiffres clés du plan et de la livraison sont illustrés.
+- **Des trames relues à la lumière de la recherche** : chaque trame a été confrontée à ABC Learning Design, aux didactiques et aux sciences cognitives de l’apprentissage. Révisions et rituels commencent par une série de vrai/faux ; le test de fin reprend tout le parcours, notions mélangées ; la démarche de projet fait améliorer la production après la relecture des pairs ; la formation hybride va de l’exemple commenté au plan d’action, puis à la mise en œuvre en classe et au retour d’expérience. Un test ne note plus des habitudes ou des opinions, et le plan n’ouvre plus deux espaces collaboratifs pour le même travail. Nouvelle trame « Apprendre à apprendre » : les méthodes qui aident vraiment à retenir, essayées sur le sujet du cours. Le bilan « Ce que ce parcours fait travailler » distingue désormais **Discuter** et **Coopérer**.
+- **Des textes cohérents d’une activité à l’autre** : le tutoiement ou le vouvoiement se déduit du public et reste le même dans tout le parcours ; les notions clés sont reprises avec les mêmes mots, là où elles ont leur place.
+- **Vos propres supports** : joignez les vidéos, transcriptions et images nécessaires aux activités. Sur Éléa, personnalisez aussi le fond de la carte de progression et choisissez, si besoin, l’ouverture successive des étapes.
+- **Un cours prêt à importer** : téléchargez le parcours en `.mbz`, avec ses sections, consignes et activités, ainsi que sa fiche de séquence et ses documents en Word, ODT ou PDF. L’écran final commence par votre cours et les étapes pour l’importer.
+- **Reprendre plus tard** : exportez le scénario avec ses contenus, depuis une section distincte de l’écran final, et réimportez-le pour continuer. Le brouillon reste aussi disponible dans l’onglet ouvert. Caramelia permet d’accéder directement à la création ou à la reprise d’un parcours.
+
+### Des éditeurs H5P plus complets
+
+- **Davantage de réglages** : indices, explications par réponse, médias de consigne, confirmations, limites de saisie, seuils de réussite et possibilités de recommencer, selon l’activité.
+- **Quiz** : introduction illustrée, tirage de questions, navigation, résultats et vidéos de fin.
+- **Mots et repères** : distracteurs facultatifs pour Glisser les mots ; mot-solution, positions imposées et indices multimédias pour les mots croisés ; zoom, fond, miniatures et hauteur pour les frises.
+- **Présentations et livres interactifs** : édition plus fidèle des contenus imbriqués et des réglages existants. Un accès aux options avancées complète l’éditeur des livres et vidéos créés avec le modèle simplifié.
+- **Vidéos interactives** : sources nommées, sous-titres WebVTT, signets, résumé et écran final ; réglages de l’affichage, de la durée et des pauses des interactions.
+
+### Génération et documents améliorés
+
+- **Des consignes de génération enrichies** pour les 27 activités H5P, dans les 12 langues. Les livres générés comportent au moins trois chapitres ; les pauses et le résumé des vidéos sont facultatifs.
+- **Des documents plus complets** : meilleure reprise des indices, variantes de réponse, explications, crédits et contenus imbriqués dans Word, ODT et PDF. Les questions ouvertes conservent leur corrigé rédigé, leurs pondérations et leurs retours.
+- **Des modèles d’IA renouvelés** : Gemma 4, Qwen 3.8 et Mistral Small 4, toujours proposé par défaut, remplacent Qwen 3.6 et GPT-OSS, qu’ILaaS arrête le 30 septembre 2026. Tant que Qwen 3.8 n’est pas servi, Qwen 3.6 répond à sa place, y compris pour l’analyse des images. Caramelia se replie désormais sur Gemma 4.
+- **Des quiz générés plus vite, sans plantage** : même en mode Rapide, le quiz est désormais préparé par petits lots, rédigés deux par deux ; un lot qui échoue est aussitôt repris en plus petit au lieu de faire échouer toute la génération. Cinq questions arrivent en une quinzaine de secondes, dix en une demi-minute environ, et le quiz mixte garde des exercices de types variés.
+- **Une interface plus confortable** : champs du plan adaptés à la longueur du texte, commandes regroupées et présentation adaptée au téléphone. Le vocabulaire suit le contexte scolaire, universitaire ou de formation.
+
+### Corrections
+
+- **Bibliothèques du navigateur actualisées** : mise à niveau de PDF.js, Mammoth, JSZip, client-zip, DOMPurify, pako et docx ; les autres dépendances embarquées étaient déjà à jour. Dans les documents Word, un intertitre reste désormais sur la même page que ce qu'il annonce, et une racine carrée à compléter ne montre plus de case parasite.
+- **Tutoriel illustré et Caramelia mieux informée** : captures d’écran refaites (le choix « Une activité | Un parcours » y figure désormais) et sept captures des étapes du parcours dans le tutoriel et le wiki, dans les 12 langues. Caramelia connaît les vingt trames de parcours et peut en conseiller une selon votre besoin.
+- **Tutoriel des parcours complété** : les six étapes vont désormais du cadrage à la livraison, dans le bon ordre, avec la fabrication avant la relecture et les indications d’export vers Éléa, Magistère ou Moodle.
+- **Parcours plus lisibles et mieux documentés** : correction du lien ABC Learning Design, présentation des activités à ajouter manuellement sur la plateforme et alignement des aperçus de trames. Les cartes sont plus compactes et leurs descriptions longues peuvent être dépliées. Les types d'activité, dont les mots croisés, sont désormais affichés séparément et leur remplacement dans le plan est explicité.
+- **Quiz à trous** : les exercices incomplets sont signalés avant l’export, pour empêcher l’apparition de la question de démonstration sur Oslo.
+- **Vidéos PeerTube dans Firefox** : correction des durées infinies qui perturbaient les repères et le résumé final. Lorsqu’une source progressive est disponible, elle est incluse dans le H5P pour préserver aussi la navigation dans Chromium. Le fichier contient alors la vidéo, dans la limite de 80 Mio.
+- **Édition et reprise** : meilleure conservation des médias, consignes, réponses, glossaires et réglages. Les suppressions volontaires sont respectées ; une erreur d’import ou de stockage ne remplace plus le brouillon existant.
+- **Tests Éléa/Moodle** : correction des énoncés numériques avec réponses intégrées, conservation des questions à la réédition, des tolérances et des crédits partiels. L’aperçu respecte les points et les retours Vrai/Faux. Une question à trous dont un trou ne peut jamais être réussi (aucune bonne réponse, ou une réponse numérique qui n’est pas un nombre) est signalée au lieu d’être livrée.
+- **Rédaction** : un mot-clé que l’IA n’avait écrit que sous forme de variantes n’empêche plus la génération ; les variantes sont rattachées au mot-clé voisin.
+- **Présentations et livres interactifs** : dans un texte à trous intégré, le gras écrit par l’IA ne perturbe plus les trous ; les cases d’un tableau à compléter s’affichent vides au lieu de points de suspension.
+- **Retours des exercices dans un parcours** : les exemples donnés à l’IA y sont impersonnels ; les retours d’un parcours destiné à des adultes restent au vouvoiement. La création d’une activité seule n’est pas modifiée.
+- **Images et documents** : conversion des images WebP en PNG pour Éléa, transparence préservée ; correction des images doublées, de la pagination, des corrigés séparés et des intervalles mathématiques dans LibreOffice.
+- **Affichage et lecture** : accents et lettres non latines conservés dans les grilles, cartes sans image et sauts vidéo involontaires corrigés. Dans l’aperçu Caramel, correction du pointage des mots mêlés et de la reprise du tri après affichage de la solution.
+- **Actions plus fiables** : les clics répétés ne lancent plus plusieurs exports ; les réponses tardives de Caramelia ne remplacent plus une conversation arrêtée ou réinitialisée.
 
 ---
 

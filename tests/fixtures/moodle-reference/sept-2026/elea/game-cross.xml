@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="82" moduleid="14036" modulename="game" contextid="17764">
+  <game id="82">
+    <name>Mots croisés : le vocabulaire de l’eau</name>
+    <intro>&lt;p&gt;Complète la grille à l’aide des définitions.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <sourcemodule>glossary</sourcemodule>
+    <timeopen>0</timeopen>
+    <timeclose>0</timeclose>
+    <quizid>2820</quizid>
+    <glossaryid>73</glossaryid>
+    <glossarycategoryid>0</glossarycategoryid>
+    <questioncategoryid>$@NULL@$</questioncategoryid>
+    <bookid>$@NULL@$</bookid>
+    <gamekind>cross</gamekind>
+    <param1>0</param1>
+    <param2>0</param2>
+    <param3>0</param3>
+    <param4>0</param4>
+    <param5>$@NULL@$</param5>
+    <param6>0</param6>
+    <param7>0</param7>
+    <param8>2</param8>
+    <param9>$@NULL@$</param9>
+    <param10>$@NULL@$</param10>
+    <shuffle>1</shuffle>
+    <timemodified>1790541258</timemodified>
+    <toptext></toptext>
+    <bottomtext></bottomtext>
+    <grademethod>1</grademethod>
+    <grade>100</grade>
+    <decimalpoints>$@NULL@$</decimalpoints>
+    <popup>$@NULL@$</popup>
+    <review>$@NULL@$</review>
+    <attempts>$@NULL@$</attempts>
+    <glossaryid2>$@NULL@$</glossaryid2>
+    <glossarycategoryid2>$@NULL@$</glossarycategoryid2>
+    <language>$@NULL@$</language>
+    <subcategories>0</subcategories>
+    <maxattempts>0</maxattempts>
+    <userlanguage>$@NULL@$</userlanguage>
+    <disablesummarize>0</disablesummarize>
+    <glossaryonlyapproved>0</glossaryonlyapproved>
+    <completionattemptsexhausted>0</completionattemptsexhausted>
+    <completionpass>0</completionpass>
+    <highscore>0</highscore>
+    <game_bookquiz_questions>
+    </game_bookquiz_questions>
+    <game_export_htmls>
+    </game_export_htmls>
+    <game_export_javames>
+    </game_export_javames>
+  </game>
+</activity>

@@ -6,8 +6,9 @@
 import { translations } from '../core/translation.js';
 import { loadJSZip, loadClientZip } from '../core/lib-loader.js';
 import { allModules, formatHelpKeys, xmlHelpByActivity } from '../core/definitions.js';
-import { downloadFile, debugLog, setupModalAccessibility, horodatageFichier } from '../core/utils.js';
+import { downloadFile, debugLog, setupModalAccessibility, horodatageFichier, classifyError } from '../core/utils.js';
 import { escapeHtml } from '../core/escape.js';
+import { CONFIG as CONFIG_PARCOURS } from '../parcours/config.js';
 
 // ============= IMPORTS DYNAMIQUES (chargés à la demande) =============
 // Les modules lourds ci-dessous sont chargés via import() dynamique au moment
@@ -22,7 +23,7 @@ let h5pManager = null;
  * Retourne l'instance H5PManager, en la créant au premier appel.
  * @returns {Promise<H5PManager>}
  */
-async function getH5PManager() {
+export async function getH5PManager() {
     if (!h5pManager) {
         const { H5PManager } = await import('../h5p/h5p-manager.js');
         h5pManager = new H5PManager();
@@ -157,7 +158,12 @@ function createNotification(data) {
         userMessage: data.userMessage || null,
         technicalMessage: data.technicalMessage || null,
         _debugRawJson: data._debugRawJson || null,
-        _debugHealedJson: data._debugHealedJson || null
+        _debugHealedJson: data._debugHealedJson || null,
+        // Parcours (atelier de parcours, D65) : l'instantané du plan, et ce que le
+        // pont Sucrerie attend d'un cours (`isCourse`, `courseText`).
+        parcours: data.parcours || null,
+        isCourse: Boolean(data.isCourse),
+        courseText: data.courseText || null
     };
 }
 
@@ -555,7 +561,8 @@ function renderNotificationItem(notification) {
     if (notification.titleKey) {
         moduleDef = Object.values(allModules).find(m => m.name === notification.titleKey);
     }
-    const iconHtml = moduleDef && moduleDef.image ? `<img src="${moduleDef.image}" class="notification-item__icon" alt="">` : '';
+    const iconHtml = moduleDef && moduleDef.image ? `<img src="${moduleDef.image}" class="notification-item__icon" alt="">`
+        : notification.parcours ? '<span class="notification-item__icon notification-parcours-icone" aria-hidden="true"><i class="fas fa-route"></i></span>' : '';
 
     if (isError) {
         // Template erreur avec message utilisateur + bouton Détails (collapse)
@@ -818,7 +825,8 @@ function showToast(notification) {
     if (notification.titleKey) {
         moduleDef = Object.values(allModules).find(m => m.name === notification.titleKey);
     }
-    const iconHtml = moduleDef && moduleDef.image ? `<img src="${moduleDef.image}" class="notification-toast__icon" alt="">` : '';
+    const iconHtml = moduleDef && moduleDef.image ? `<img src="${moduleDef.image}" class="notification-toast__icon" alt="">`
+        : notification.parcours ? '<span class="notification-toast__icon notification-parcours-icone" aria-hidden="true"><i class="fas fa-route"></i></span>' : '';
 
     // Construire le contenu du toast
     toast.innerHTML = `
@@ -1012,6 +1020,9 @@ async function openPreviewModal(notificationId) {
 
     if (!overlay || !modal) return;
 
+    // Une retouche en cours dans la vue d'un parcours ne se perd pas en silence.
+    if (modal._vueParcours && !(await modal._vueParcours.fermetureAutorisee())) return;
+
     // Réinitialiser l'état du mode édition (au cas où il serait resté actif)
     if (isEditModeActive || savedFooterContent) {
         await resetEditModeState(modal);
@@ -1058,6 +1069,10 @@ async function openPreviewModal(notificationId) {
         return;
     }
 
+    // Parcours : partage vers la Sucrerie coupé (D67). Posé avant l'affichage de
+    // la modale — le bouton statique n'apparaît donc jamais, même un instant.
+    modal.classList.toggle('preview-modal--parcours-sans-sucrerie', sansPartageSucrerie(notification));
+
     // Mettre à jour le titre et l'icône (avec échappement XSS)
     const titleElement = modal.querySelector('.preview-modal__title');
     const iconElement = modal.querySelector('.preview-modal__icon');
@@ -1086,7 +1101,7 @@ async function openPreviewModal(notificationId) {
     const contentDiv = modal.querySelector('.preview-modal__content');
 
     if (warningDiv && contentDiv) {
-        if (notification.type === 'h5p') {
+        if (notification.type === 'h5p' || notification.parcours) {
             warningDiv.style.display = 'none';
             contentDiv.classList.remove('has-warning');
         } else {
@@ -1112,8 +1127,10 @@ async function openPreviewModal(notificationId) {
             moduleDef = Object.values(allModules).find(m => m.name === notification.titleKey);
         }
 
-        // Utiliser les formats définis, sinon fallback sur le type de la notification
-        const supportedFormats = (moduleDef && moduleDef.formats) ? moduleDef.formats : [notification.type?.toUpperCase() || 'FILE'];
+        // Utiliser les formats définis, sinon fallback sur le type de la notification.
+        // Un parcours se télécharge en cours (.mbz) et en scénario (.json).
+        const supportedFormats = notification.parcours ? ['MBZ', 'JSON']
+            : (moduleDef && moduleDef.formats) ? moduleDef.formats : [notification.type?.toUpperCase() || 'FILE'];
 
         // Formats qui n'ont pas besoin d'aide (bureautique standard)
         const formatsWithoutHelp = ['DOCX', 'ODT', 'PDF'];
@@ -1133,7 +1150,7 @@ async function openPreviewModal(notificationId) {
             // Ajouter le bouton d'aide si ce format en a besoin
             if (!formatsWithoutHelp.includes(format)) {
                 // Déterminer la clé d'aide appropriée
-                let helpKey = formatHelpKeys[format];
+                let helpKey = notification.parcours ? (format === 'MBZ' ? 'parcours_liv_import_aide' : null) : formatHelpKeys[format];
 
                 // Cas spécial pour XML : dépend du type d'activité
                 if (format === 'XML' && notification.titleKey) {
@@ -1167,7 +1184,9 @@ async function openPreviewModal(notificationId) {
         }
 
         // Récupérer les platforms depuis definitions.js dans l'ordre exact
-        if (moduleDef && moduleDef.platforms && moduleDef.platforms.length > 0) {
+        if (notification.parcours) {
+            platforms = [{ elea: 'Éléa', magistere: 'Magistère', moodle: 'Moodle' }[notification.parcours.platform] || 'Éléa'];
+        } else if (moduleDef && moduleDef.platforms && moduleDef.platforms.length > 0) {
             platforms = [...moduleDef.platforms];
         } else {
             // Si aucune donnée n'est trouvée, afficher Éléa par défaut
@@ -1242,6 +1261,35 @@ async function renderPreview(notification, modal) {
     const loadingText = translations.loading || 'Chargement...';
     const errorText = translations.preview_error || 'Impossible de prévisualiser ce fichier';
     const placeholderText = translations.preview_placeholder || 'Preview disponible prochainement';
+
+    // Un parcours : sa vue (accueil, étapes, forum, activités), aperçu et édition
+    // de chaque activité sans quitter la modale (D65).
+    if (notification.parcours) {
+        modal.classList.add('preview-modal--wide');
+        previewContainer.classList.add('preview-modal__preview--parcours');
+        // Même attente qu'une activité seule pendant le chargement des modules.
+        previewContainer.innerHTML = `
+            <div class="json-editor__loading preview-modal__loader">
+                <div class="json-editor__loading-spinner"></div>
+                <span>${escapeHtml(loadingText)}</span>
+            </div>
+        `;
+        const [{ monterVueParcours }, { regenererNotificationParcours }] = await Promise.all([
+            import('../parcours/vue-parcours.js'), import('../parcours/notification-parcours.js'),
+        ]);
+        if (currentRenderGen !== previewRenderGeneration) return;
+        modal._vueParcours = monterVueParcours(previewContainer, notification, {
+            surEdition: etat => {
+                // Le pied d'abord : « Éditer » en fait partie, et l'entrée comme la
+                // sortie d'édition le reconstruisent. Le bouton est relu ensuite.
+                piedEditionParcours(modal, etat);
+                // « Éditer » n'a de sens que sur une activité ouverte, et pas pendant l'édition.
+                modal.querySelector('.preview-modal__edit-btn')?.classList.toggle('hidden', !ENABLE_EDIT_BUTTON || !etat.editable || etat.enEdition);
+            },
+            surModification: () => regenererNotificationParcours(notification),
+        });
+        return;
+    }
 
     // Si c'est un fichier H5P
     if (notification.type === 'h5p') {
@@ -1387,6 +1435,16 @@ let _h5pRenderPromise = null;
 function cleanupPreview() {
     _h5pRenderPromise = null;
 
+    // Vue d'un parcours : détruire son éditeur ou son lecteur, rendre « Éditer ».
+    const modalParcours = document.querySelector('.preview-modal');
+    if (modalParcours?._vueParcours) {
+        modalParcours._vueParcours.detruire();
+        modalParcours._vueParcours = null;
+        // Fermée pendant une édition : rendre le pied de téléchargement, puis « Éditer ».
+        piedEditionParcours(modalParcours, { enEdition: false });
+        modalParcours.querySelector('.preview-modal__edit-btn')?.classList.remove('hidden');
+    }
+
     // Si une URL blob a été créée pour la preview H5P, la révoquer
     if (currentPreviewBlobUrl) {
         URL.revokeObjectURL(currentPreviewBlobUrl);
@@ -1404,6 +1462,7 @@ function cleanupPreview() {
         if (previewContainer) {
             previewContainer.classList.remove('preview-modal__preview--h5p');
             previewContainer.classList.remove('preview-modal__preview--simulator');
+            previewContainer.classList.remove('preview-modal__preview--parcours');
             previewContainer.innerHTML = '';
         }
     }
@@ -1512,6 +1571,9 @@ async function closePreviewModal() {
     const modal = document.querySelector('.preview-modal');
 
     if (!overlay || !modal) return;
+
+    // Parcours : une retouche non enregistrée demande confirmation.
+    if (modal._vueParcours && !(await modal._vueParcours.fermetureAutorisee())) return;
 
     // --- Logic for Edit Mode ---
     if (isEditModeActive) {
@@ -1740,21 +1802,19 @@ export function initPreviewModal() {
             const format = btn.dataset.format;
             let fileName = notification.fileName || (notification.title || 'download');
 
+            try {
             // --- Logique de téléchargement par format ---
             if (format === 'GIFT' && notification.jsonData) {
                 const { generateMoodleGift } = await import('../moodle/moodle-formats.js');
+                if ((notification.jsonData.questions || []).some(q => q.type === 'cloze')) {
+                    addNotification({ type: 'alert', title: translations.test_gift_incompatible, status: 'error' });
+                    return;
+                }
                 const giftContent = generateMoodleGift(notification.jsonData);
                 const baseName = fileName.replace(/\.[^/.]+$/, ""); // Retire l'ancienne extension
                 fileName = `${baseName}.gift.txt`;
                 downloadFile(giftContent, fileName, 'text/plain');
 
-                // Le format GIFT ne prend pas en charge le type « texte à trous » (cloze) :
-                // ces questions sont omises de l'export → prévenir l'utilisateur.
-                const clozeOmises = (notification.jsonData.questions || []).filter(q => q && q.type === 'cloze').length;
-                if (clozeOmises > 0) {
-                    const tmpl = translations.elea_test_gift_cloze_warning || "{count} question(s) « texte à trous » (cloze) ne sont pas prises en charge par le format GIFT et ont été omises. Utilisez l'export XML pour les conserver.";
-                    addNotification({ type: 'alert', title: tmpl.replace('{count}', clozeOmises), status: 'error' });
-                }
             }
             else if (format === 'XML' && notification.jsonData && notification.titleKey !== 'elea_glossaire_xml_name') {
                 // Pour les banques de questions (pas pour le Glossaire XML qui a son propre format)
@@ -1763,6 +1823,19 @@ export function initPreviewModal() {
                 const baseName = fileName.replace(/\.[^/.]+$/, "");
                 fileName = `${baseName}.xml`;
                 downloadFile(xmlContent, fileName, 'text/xml');
+            }
+            else if (format === 'JSON' && notification.parcours) {
+                // Le scénario du parcours, pour le rouvrir dans l'atelier.
+                const { scenarioDeNotification } = await import('../parcours/notification-parcours.js');
+                const { blob, nom } = await scenarioDeNotification(notification);
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = nom;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
             }
             else if (format === 'HTML' && notification.previewHtml) {
                 const baseName = fileName.replace(/\.[^/.]+$/, "");
@@ -1881,6 +1954,11 @@ export function initPreviewModal() {
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+            }
+            } catch (error) {
+                const { userMessageKey } = classifyError(error);
+                addNotification({ type: 'alert', title: translations[userMessageKey], status: 'error' });
+                console.error('Export de l’activité impossible', error);
             }
         });
         modal._downloadListenerAttached = true;
@@ -2047,6 +2125,9 @@ export function initPreviewModal() {
         const notification = getNotificationById(currentPreviewModal);
         if (!notification) return;
 
+        // Parcours : « Éditer » ouvre l'éditeur de l'activité affichée, dans la vue.
+        if (notification.parcours) { modal._vueParcours?.basculerEdition(); return; }
+
         await toggleEditMode(notification, modal);
     });
 
@@ -2093,55 +2174,16 @@ async function enterEditMode(notification, previewContainer, editBtn) {
     // Sauvegarder et remplacer le footer
     if (footer) {
         savedFooterContent = footer.innerHTML;
-        const editorModuleKey = notification.moduleKey;
-        const helpBtnHtml = editorModuleKey ? `
-                <button class="preview-modal__editor-help-btn" type="button">
-                    <i class="fas fa-circle-question"></i>
-                    <span>${translations.editor_help_tooltip || 'Aide'}</span>
-                </button>` : '';
-        footer.innerHTML = `
-            <div class="preview-modal__footer-col">
-                <button class="preview-modal__cancel-btn" type="button">
-                    <i class="fas fa-times"></i>
-                    <span>${translations.editor_cancel || 'Annuler'}</span>
-                </button>
-            </div>
-            <div class="preview-modal__footer-col preview-modal__footer-col--center">
-                ${helpBtnHtml}
-            </div>
-            <div class="preview-modal__footer-col preview-modal__footer-col--right">
-                <button class="preview-modal__save-btn" type="button">
-                    <i class="fas fa-save"></i>
-                    <span>${translations.editor_save || 'Enregistrer'}</span>
-                </button>
-            </div>
-        `;
-
-        // Ajouter les event listeners aux nouveaux boutons
-        const cancelBtn = footer.querySelector('.preview-modal__cancel-btn');
-        const saveBtn = footer.querySelector('.preview-modal__save-btn');
-
-        cancelBtn?.addEventListener('click', () => {
-            exitEditMode(notification, previewContainer, editBtn);
+        const editorModuleName = (notification.titleKey && translations[notification.titleKey]) || notification.titleKey || notification.moduleKey;
+        poserPiedEdition(footer, {
+            moduleKey: notification.moduleKey,
+            moduleName: editorModuleName,
+            surAnnuler: () => exitEditMode(notification, previewContainer, editBtn),
+            surEnregistrer: async () => {
+                const { saveChanges } = await import('../editor/index.js');
+                await handleEditorSave(await saveChanges(), notification, previewContainer, editBtn);
+            },
         });
-
-        saveBtn?.addEventListener('click', async () => {
-            const { saveChanges } = await import('../editor/index.js');
-            await handleEditorSave(await saveChanges(), notification, previewContainer, editBtn);
-        });
-
-        if (editorModuleKey) {
-            const editorModuleName = (notification.titleKey && translations[notification.titleKey]) || notification.titleKey || editorModuleKey;
-            const helpBtn = footer.querySelector('.preview-modal__editor-help-btn');
-            helpBtn?.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const { loadAndShowEditorHelp } = await import('../editor/field-renderers.js');
-                // Utiliser la clé éditeur résolue par detectContentType (ex: 'elea_devoir' au lieu de 'Devoir')
-                const { editorState } = await import('../editor/index.js');
-                const resolvedKey = (editorState.isActive && editorState.moduleKey) ? editorState.moduleKey : editorModuleKey;
-                await loadAndShowEditorHelp(resolvedKey, editorModuleName);
-            });
-        }
     }
 
     // Afficher le chargement
@@ -2205,6 +2247,102 @@ async function enterEditMode(notification, previewContainer, editBtn) {
 }
 
 /**
+ * Pose le pied d'édition de la modale : Annuler · Aide · Enregistrer.
+ * Partagé par l'édition d'une activité seule et celle d'une activité de parcours,
+ * pour que « Enregistrer » soit au même endroit dans les deux cas.
+ * @param {HTMLElement} footer
+ * @param {Object} o
+ * @param {string} [o.moduleKey] - Sans clé, pas de bouton Aide.
+ * @param {string} [o.moduleName]
+ * @param {Function} o.surAnnuler
+ * @param {Function} o.surEnregistrer - Peut être asynchrone ; le bouton reste
+ *   désactivé pendant l'enregistrement, pour ne pas le déclencher deux fois.
+ */
+function poserPiedEdition(footer, { moduleKey, moduleName, surAnnuler, surEnregistrer }) {
+    const helpBtnHtml = moduleKey ? `
+            <button class="preview-modal__editor-help-btn" type="button">
+                <i class="fas fa-circle-question"></i>
+                <span>${translations.editor_help_tooltip || 'Aide'}</span>
+            </button>` : '';
+    footer.innerHTML = `
+        <div class="preview-modal__footer-col">
+            <button class="preview-modal__cancel-btn" type="button">
+                <i class="fas fa-times"></i>
+                <span>${translations.editor_cancel || 'Annuler'}</span>
+            </button>
+        </div>
+        <div class="preview-modal__footer-col preview-modal__footer-col--center">
+            ${helpBtnHtml}
+        </div>
+        <div class="preview-modal__footer-col preview-modal__footer-col--right">
+            <button class="preview-modal__save-btn" type="button">
+                <i class="fas fa-save"></i>
+                <span>${translations.editor_save || 'Enregistrer'}</span>
+            </button>
+        </div>
+    `;
+
+    footer.querySelector('.preview-modal__cancel-btn')?.addEventListener('click', () => surAnnuler());
+
+    const saveBtn = footer.querySelector('.preview-modal__save-btn');
+    saveBtn?.addEventListener('click', async () => {
+        if (saveBtn.disabled) return;
+        saveBtn.disabled = true;
+        try { await surEnregistrer(); }
+        finally { saveBtn.disabled = false; }
+    });
+
+    if (moduleKey) {
+        footer.querySelector('.preview-modal__editor-help-btn')?.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const { loadAndShowEditorHelp } = await import('../editor/field-renderers.js');
+            // Utiliser la clé éditeur résolue par detectContentType (ex: 'elea_devoir' au lieu de 'Devoir')
+            const { editorState } = await import('../editor/index.js');
+            const resolvedKey = (editorState.isActive && editorState.moduleKey) ? editorState.moduleKey : moduleKey;
+            await loadAndShowEditorHelp(resolvedKey, moduleName || moduleKey);
+        });
+    }
+}
+
+/**
+ * Parcours : en édition, le pied de la modale devient celui d'une activité seule ;
+ * à la sortie, il redevient Télécharger · Vers la Sucrerie · Éditer.
+ * @param {HTMLElement} modal
+ * @param {{enEdition:boolean, module?:string, aide?:boolean}} etat - Fourni par la vue du parcours.
+ */
+function piedEditionParcours(modal, { enEdition, module, aide }) {
+    // Comme en éditant une activité seule : ni la tuile ni la zone ne défilent,
+    // l'éditeur s'en charge (sinon, sur un écran bas, la tuile glisse et rogne son en-tête).
+    modal.querySelector('.preview-modal__preview')?.classList.toggle('preview-modal__preview--parcours-edition', Boolean(enEdition));
+    modal.querySelector('.preview-modal__content')?.classList.toggle('preview-modal__content--editor', Boolean(enEdition));
+    const footer = modal.querySelector('.preview-modal__footer');
+    if (!footer) return;
+    if (!enEdition) {
+        if (savedFooterContent) restoreFooter(footer, modal.querySelector('.preview-modal__edit-btn'));
+        return;
+    }
+    // Le pied d'origine n'est gardé qu'une fois : une seconde édition d'affilée
+    // (enregistrement refusé par la validation) ne doit pas l'écraser.
+    if (!savedFooterContent) savedFooterContent = footer.innerHTML;
+    poserPiedEdition(footer, {
+        moduleKey: aide ? module : null,
+        moduleName: module ? translations[allModules[module]?.name] || module : '',
+        surAnnuler: () => modal._vueParcours?.annulerEdition(),
+        surEnregistrer: () => modal._vueParcours?.enregistrerEdition(),
+    });
+}
+
+/**
+ * Un parcours ne se partage pas vers la Sucrerie tant que `partageSucrerie`
+ * est coupé dans `parcours/config.js` (D67) : bouton masqué, pont non monté.
+ * @param {Object} notification
+ * @returns {boolean}
+ */
+function sansPartageSucrerie(notification) {
+    return Boolean(notification?.parcours) && !CONFIG_PARCOURS.partageSucrerie;
+}
+
+/**
  * (Re)monte le pont « Vers la Sucrerie » dans le footer de la modale.
  *
  * Le bouton est statique dans le footer, mais son handler de clic est attaché
@@ -2216,7 +2354,7 @@ async function enterEditMode(notification, previewContainer, editBtn) {
  * éducatif et discipline (ex. "Formateur en sciences cognitives" → formation).
  */
 function mountSucrerieBridge(modal, notification) {
-    if (!modal || !notification) return;
+    if (!modal || !notification || sansPartageSucrerie(notification)) return;
     const userIntent = {
         qui:  document.getElementById('qui')?.value.trim() || '',
         quoi: document.getElementById('quoi')?.value.trim() || ''
@@ -2600,18 +2738,12 @@ async function regenerateMoodleTestXMLFile(editedData) {
 async function regenerateMBZFile(notification, editedData, moduleKey) {
     try {
         // Import dynamique pour éviter la dépendance circulaire
-        const [{ createMbz, healLatexForTest, buildTestMbz, prepareIntroHtml }, MoodleProcessors, { escapeXml, escapeXmlPreservingEntities }] = await Promise.all([
-            import('../moodle/moodle-creator.js'),
-            import('../moodle/processors/index.js'),
-            import('../moodle/moodle-formats.js')
-        ]);
-        // Pipeline LaTeX complet pour Moodle (identique à moodle-creator.js)
-        const healLatex = healLatexForTest;
+        const { createMbz, healLatexForTest, buildTestMbz } = await import('../moodle/moodle-creator.js');
 
         // Test (mod_quiz) : le .mbz restaurable est régénéré par le MÊME builder que
         // la génération initiale (generate == edit-regenerate). Heal puis buildTestMbz.
         if (notification.titleKey === 'elea_test_xml_name') {
-            const healed = healLatex(editedData);
+            const healed = healLatexForTest(editedData);
             const { blob } = await buildTestMbz(healed);
             return blob;
         }
@@ -2634,200 +2766,15 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
             return notification.blob;
         }
 
-        // Générer les données de base (IDs, timestamps) - même logique que moodle-creator.js
-        const baseData = MoodleProcessors.generateBaseData(editedData.title || notification.title || 'Activity');
-
-        // Appliquer les transformations SPÉCIFIQUES à chaque type d'activité
-        // (identique à ce qui est fait dans moodle-creator.js)
-        let activitySpecificData = {};
-
-        switch (moodleType) {
-            case 'Appariement': {
-                // Pipeline LaTeX complet pour MathJax Moodle
-                editedData = healLatex(editedData);
-                // Transformation des pairs en ASSOCIATIONS_JSON (identique à handleAppariementCreation)
-                if (Array.isArray(editedData.pairs)) {
-                    const questions = {};
-                    const responses = {};
-                    editedData.pairs.forEach((pair, index) => {
-                        let q = String(pair.question ?? '').trim();
-                        let a = String(pair.answer ?? '').trim();
-                        // Envelopper dans <p> si pas déjà HTML
-                        if (!q.match(/^\s*<p[\s>]/i)) {
-                            q = `<p dir="ltr" style="text-align: left;">${q}</p>`;
-                        }
-                        if (!a.match(/^\s*<p[\s>]/i)) {
-                            a = `<p dir="ltr" style="text-align: left;">${a}</p>`;
-                        }
-                        questions[index + 1] = q;
-                        responses[index + 1] = a;
-                    });
-                    activitySpecificData.ASSOCIATIONS_JSON = escapeXml(JSON.stringify({ questions, responses }));
-                }
-                // Intro HTML — normalisation identique à la génération (prepareIntroHtml) :
-                // Markdown → HTML, pas de <p> autour d'un bloc, échappement entité-safe.
-                activitySpecificData.ACTIVITY_INTRO_HTML = prepareIntroHtml(
-                    editedData.intro,
-                    translations.appariement_activity_intro || "Trouvez les paires correspondantes."
-                );
-                break;
-            }
-
-            case 'Millionnaire': {
-                // Transformation des questions en QUESTIONS_JSON (identique à handleMillionnaireCreation)
-                if (Array.isArray(editedData.questions)) {
-                    // S'assurer que badanswer est un tableau pour chaque question
-                    const cleanedQuestions = editedData.questions.map(q => {
-                        let badanswer = q.badanswer;
-                        // Convertir en tableau si c'est une string (après édition avec stringArray)
-                        if (!Array.isArray(badanswer)) {
-                            badanswer = typeof badanswer === 'string'
-                                ? badanswer.split('\n').map(s => s.trim()).filter(s => s.length > 0)
-                                : [];
-                        }
-                        return {
-                            question: q.question || '',
-                            goodanswer: q.goodanswer || '',
-                            badanswer: badanswer
-                        };
-                    });
-                    activitySpecificData.QUESTIONS_JSON = escapeXml(JSON.stringify(cleanedQuestions));
-                }
-                activitySpecificData.ACTIVITY_INTRO_HTML = `<p>${translations.millionnaire_activity_intro || "Bienvenue dans ce quiz de type Millionnaire !"}</p>`;
-                break;
-            }
-
-            case 'QCM': {
-                // Pipeline LaTeX complet pour MathJax Moodle
-                editedData = healLatex(editedData);
-                // Transformation des questions avec formatage HTML (identique à handleQCMCreation)
-                // Convertit markdown **gras** et *italique* en HTML
-                const formatMarkdown = (text) => {
-                    if (!text) return '';
-                    return text
-                        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                        .replace(/\*(.*?)\*/g, '<i>$1</i>');
-                };
-
-                if (Array.isArray(editedData.questions)) {
-                    const formattedQuestions = editedData.questions.map(question => {
-                        const formatted = { ...question };
-                        if (formatted.text) {
-                            let text = formatMarkdown(formatted.text);
-                            if (!text.match(/^\s*<p[\s>]/i)) {
-                                text = `<p>${text}</p>`;
-                            }
-                            formatted.text = text;
-                        }
-                        if (Array.isArray(formatted.answers)) {
-                            formatted.answers = formatted.answers.map(answer => {
-                                const formattedAnswer = { ...answer };
-                                if (formattedAnswer.text) {
-                                    let text = formatMarkdown(formattedAnswer.text);
-                                    if (!text.match(/^\s*<p[\s>]/i)) {
-                                        text = `<p>${text}</p>`;
-                                    }
-                                    formattedAnswer.text = text;
-                                }
-                                return formattedAnswer;
-                            });
-                        }
-                        return formatted;
-                    });
-                    activitySpecificData.QUESTIONS_JSON = escapeXml(JSON.stringify(formattedQuestions));
-                }
-                activitySpecificData.ACTIVITY_INTRO_HTML = escapeXml(`<p dir="ltr" style="text-align: left;">${translations.qcm_activity_intro || "Répondez aux questions suivantes."}</p>`);
-                break;
-            }
-
-            case 'Page': {
-                // Pipeline LaTeX complet pour MathJax Moodle
-                editedData = healLatex(editedData);
-                // Pour Page, on a besoin de CONTENT et INTRO
-                // Import dynamique de la fonction de génération HTML
-                let generatedHtml = null;
-                try {
-                    const { generateHtmlFromBlocks } = await import('../moodle/moodle-creator.js');
-                    if (typeof generateHtmlFromBlocks === 'function' && Array.isArray(editedData.blocks)) {
-                        generatedHtml = await generateHtmlFromBlocks(editedData);
-                        activitySpecificData.CONTENT = escapeXml(generatedHtml);
-                    }
-                } catch (e) {
-                    // Fallback: si generateHtmlFromBlocks n'est pas exportée, on utilise le contenu brut
-                    console.warn('[Regenerate MBZ] generateHtmlFromBlocks not available, using raw content');
-                    activitySpecificData.CONTENT = escapeXml(editedData.content || '');
-                }
-                activitySpecificData.PAGE_NAME = escapeXml(editedData.title || notification.title || 'Page');
-                activitySpecificData.INTRO = escapeXml(editedData.intro || '');
-                // Stocker le HTML généré pour le retourner plus tard (pour previewHtml)
-                activitySpecificData._generatedPreviewHtml = generatedHtml;
-                break;
-            }
-
-            case 'Livre': {
-                // Pipeline LaTeX complet pour MathJax Moodle
-                editedData = healLatex(editedData);
-                // Healing Livre : injecte les défauts numbering/customtitles + valide la séquence des chapitres
-                const { healStructureForActivity } = await import('../h5p/json-healer.js');
-                editedData = healStructureForActivity(editedData, 'Livre');
-
-                // Composition du bloc XML <chapter>...</chapter> et du HTML de prévisualisation
-                let chaptersXml = '';
-                let previewHtml = null;
-                try {
-                    const { buildChaptersXml, buildLivrePreviewHtml } = await import('../moodle/moodle-creator.js');
-                    const theme = editedData.theme || 'elea';
-                    chaptersXml = await buildChaptersXml(editedData.chapters || [], theme);
-                    previewHtml = await buildLivrePreviewHtml(editedData);
-                } catch (e) {
-                    console.warn('[Regenerate MBZ] buildChaptersXml/buildLivrePreviewHtml not available:', e);
-                }
-
-                // Import des utilitaires de formatage (intro)
-                const { formatTextToHtml } = await import('../core/utils.js');
-
-                activitySpecificData.BOOK_NAME = escapeXml(editedData.title || notification.title || 'Livre');
-                activitySpecificData.INTRO = escapeXmlPreservingEntities(formatTextToHtml(editedData.intro || ''));
-                activitySpecificData.NUMBERING = String(editedData.numbering ?? 1);
-                // navstyle forcé à 0 (table des matières) — Éléa n'expose pas les autres modes
-                activitySpecificData.NAVSTYLE = '0';
-                // Toujours 0 : option Moodle interne, non exposée à l'utilisateur
-                activitySpecificData.CUSTOMTITLES = '0';
-                activitySpecificData.CHAPTERS_XML = chaptersXml;
-                // Stocker le HTML de preview pour le retourner plus tard (mode Fidelity)
-                activitySpecificData._generatedPreviewHtml = previewHtml;
-                break;
-            }
-
-            case 'Devoir': {
-                // Transformation identique à handleDevoirCreation (moodle-creator.js)
-                // Intro HTML depuis la description
-                // Normalisation identique à la génération (prepareIntroHtml).
-                activitySpecificData.ACTIVITY_INTRO_HTML = prepareIntroHtml(
-                    editedData.description,
-                    translations.devoir_activity_intro || "Consultez la grille d'évaluation ci-dessous pour connaître les critères de réussite."
-                );
-                activitySpecificData.RUBRIC_NAME = editedData.rubricName || editedData.title || 'Grille d\'évaluation';
-                activitySpecificData.CRITERIA = editedData.criteria || [];
-                break;
-            }
-
-            default:
-                console.warn('[Regenerate MBZ] No specific transformation for:', moodleType);
-        }
-
-        // Fusionner les données de base avec les données spécifiques à l'activité
-        const data = {
-            ...baseData,
-            ACTIVITY_TITLE: escapeXml(editedData.title || notification.title || 'Activity'),
-            COURSE_FULLNAME: escapeXml(editedData.title || notification.title || 'Activity'),
-            ...activitySpecificData
-        };
-
-        debugLog('notifications', '[Regenerate MBZ] Building files for:', moodleType, 'with data keys:', Object.keys(data));
-
-        // Générer les fichiers via le processeur
-        let files = MoodleProcessors.getActivityFiles(moodleType, data);
+        // La MISE EN FORME (JSON → placeholders de processeur) vit dans
+        // `moodle/mono-activity-files.js` : l'atelier de parcours en a besoin lui
+        // aussi, et deux copies de la même mise en forme finissent toujours par
+        // diverger — l'éditeur et le parcours produiraient alors deux Livres
+        // différents à partir du même JSON.
+        const { construireFichiersActivite } = await import('../moodle/mono-activity-files.js');
+        const { files, previewHtml } = await construireFichiersActivite(moodleType, editedData, {
+            titreParDefaut: notification.title || 'Activity',
+        });
         files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
 
         // Créer le nouveau MBZ avec createMbz (identique à moodle-creator.js)
@@ -2837,8 +2784,8 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
         debugLog('notifications', '[Regenerate MBZ] Successfully regenerated:', moodleType, 'Size:', mbzBlob.size);
 
         // Pour les Pages et Livres, retourner aussi le previewHtml pour le mode Fidelity
-        if ((moodleType === 'Page' || moodleType === 'Livre') && activitySpecificData._generatedPreviewHtml) {
-            return { blob: mbzBlob, previewHtml: activitySpecificData._generatedPreviewHtml };
+        if ((moodleType === 'Page' || moodleType === 'Livre') && previewHtml) {
+            return { blob: mbzBlob, previewHtml };
         }
         return mbzBlob;
     } catch (error) {

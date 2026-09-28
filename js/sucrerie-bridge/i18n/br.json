@@ -235,5 +235,14 @@
     "level_master": "Master",
     "level_formation_debutant": "Deraouer",
     "level_formation_intermediaire": "Etre-daou",
-    "level_formation_expert": "Mailh"
+    "level_formation_expert": "Mailh",
+    "sucrerie_bridge_welcome_title_course": "Rannañ an hentad e Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "An hentad a-bezh, gant e obererezhioù hag e gemennoù, a vo hegerz d’an holl gelennerien e katalog Sucrerie.",
+    "sucrerie_bridge_course_close": "Distreiñ",
+    "sucrerie_bridge_success_title_approved_course": "Embannet eo an hentad !",
+    "sucrerie_bridge_success_title_pending_course": "Enrollet eo an hentad",
+    "sucrerie_bridge_success_message_approved_course": "Hegerz eo hoc’h hentad e katalog Sucrerie.",
+    "sucrerie_bridge_success_message_pending_course": "Gwelus e vo hoc’h hentad er c’hatalog goude bezañ bet gwiriekaet gant un evezhier.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Ret eo kadarnaat ho lakadenn. Ul liamm kadarnaat a zo bet kaset da {email} : klikit warnañ a-benn 2 eurvezh evit embann hoc'h hentad. Hep kadarnaat e chomo an hentad e brouilhed e « Ma oberezhioù » e-pad 7 devezh.",
+    "sucrerie_bridge_success_email_sent_course": "Ur postel gant ho liamm merañ a zo bet kaset da {email}. Mirit anezhañ mat : gantañ e c'hallot kemmañ pe dennañ kuit hoc'h hentad forzh pegoulz."
 }

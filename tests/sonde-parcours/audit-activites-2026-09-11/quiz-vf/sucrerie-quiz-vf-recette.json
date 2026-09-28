@@ -1,0 +1,524 @@
+[
+  {
+    "id": "quiz-vf-standard",
+    "contenu": {
+      "questions": [
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "metadata": {
+            "title": "Domaine RELU",
+            "license": "U",
+            "contentType": "True/False Question"
+          },
+          "params": {
+            "question": "La fonction \\( f(x) = \\sqrt{x} \\) est définie pour toutes les valeurs réelles de \\( x \\).",
+            "correct": "false",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "Bien vu ! La fonction racine carrée n&#039;est effectivement pas définie pour tous les réels.",
+              "feedbackOnWrong": "Attention ! La fonction racine carrée n&#039;est définie que pour les valeurs de \\( x \\) supérieures ou égales à zéro. Essayez de penser à ce que signifie la racine carrée d&#039;un nombre négatif."
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Voulez-vous vraiment terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Voulez-vous vraiment recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            }
+          },
+          "subContentId": "167ba9d0-d7a9-417e-8a46-11debf0541f3"
+        },
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "metadata": {
+            "title": "Image d&#039;un nombre par la racine carrée",
+            "license": "U",
+            "contentType": "True/False Question"
+          },
+          "params": {
+            "question": "Pour tout nombre réel \\( x \\geq 0 \\), on a \\( \\sqrt{x^2} = x \\).",
+            "correct": "true",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "Pour x positif ou nul, |x| = x : la racine carrée de x² vaut x. RELU",
+              "feedbackOnWrong": "La valeur absolue vaut x sous l’hypothèse x ≥ 0 : l’égalité est vraie."
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Voulez-vous vraiment terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Voulez-vous vraiment recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            }
+          },
+          "subContentId": "04dc1f2f-3856-48a9-8102-bc8cfb5ccdee"
+        },
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "metadata": {
+            "title": "Domaine de définition",
+            "license": "U",
+            "contentType": "True/False Question"
+          },
+          "params": {
+            "question": "Le domaine de définition de la fonction \\( f(x) = \\sqrt{2x - 4} \\) est \\( [2, +\\infty[ \\).",
+            "correct": "true",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "Bravo ! Tu as bien identifié que l&#039;expression sous la racine doit être positive : \\( 2x - 4 \\geq 0 \\) donne \\( x \\geq 2 \\). C&#039;est exactement le domaine attendu.",
+              "feedbackOnWrong": "Revois le calcul : il faut résoudre \\( 2x - 4 \\geq 0 \\), ce qui donne bien \\( x \\geq 2 \\). L&#039;affirmation est donc vraie."
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Voulez-vous vraiment terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Voulez-vous vraiment recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            }
+          },
+          "subContentId": "f10b1bc7-6f76-4635-9336-e94700ef9f36"
+        }
+      ],
+      "progressType": "textual",
+      "passPercentage": 60,
+      "randomQuestions": false,
+      "texts": {
+        "prevButton": "Précédent",
+        "nextButton": "Suivant",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "previousbutton": "Précédent",
+        "nextbutton": "Suivant",
+        "finishButton": "Terminer",
+        "submitButton": "Valider",
+        "textualProgress": "Question @current sur @total",
+        "jumpToQuestion": "Question %d sur %total",
+        "answeredText": "Réponse donnée",
+        "unansweredText": "Pas de réponse donnée",
+        "questionLabel": "Question",
+        "readSpeakerProgress": "Question @current sur @total",
+        "currentQuestionText": "Question en cours",
+        "navigationLabel": "Questions",
+        "questionSetInstruction": "Choisir la question à afficher"
+      },
+      "endGame": {
+        "showResultPage": true,
+        "showSolutionButton": true,
+        "showRetryButton": true,
+        "noResultMessage": "Terminé",
+        "message": "Vos résultats :",
+        "scoreBarLabel": "Vous avez obtenu @finals sur @totals points",
+        "amountCorrect": "@finals bonnes réponses sur @totals",
+        "scoreHeader": "Score",
+        "skipButtonText": "Passer la vidéo",
+        "solutionButtonText": "Afficher la solution",
+        "retryButtonText": "Recommencer",
+        "finishButtonText": "Terminer",
+        "submitButtonText": "Valider",
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Résultat faible. Revoyez les bases du domaine de définition et des propriétés de la racine carrée."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Résultat insuffisant. Continuez vos efforts et reprenez les notions clés comme le domaine et les valeurs prises par la fonction."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Résultat moyen. Vous progressez, mais certaines idées doivent être consolidées, notamment sur les égalités et les signes."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Bon résultat. Vous maîtrisez plusieurs notions importantes de la fonction racine carrée."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Très bon résultat. Vous êtes sur la bonne voie, continuez comme ça !"
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Excellent résultat. Félicitations ! Vous maîtrisez parfaitement les fonctions racines carrées."
+          }
+        ],
+        "showAnimations": false,
+        "skippable": false
+      },
+      "introPage": {
+        "showIntroPage": false,
+        "startButtonText": "Voir les questions",
+        "title": "",
+        "introduction": "",
+        "backgroundImageAltText": ""
+      },
+      "disableBackwardsNavigation": false,
+      "override": {
+        "checkButton": true,
+        "showSolutionButton": "on",
+        "retryButton": "on"
+      },
+      "title": "Racines carrées RELU Sucrerie",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "quiz-vf-sans-solution",
+    "contenu": {
+      "questions": [
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "metadata": {
+            "title": "Domaine RELU",
+            "license": "U",
+            "contentType": "True/False Question"
+          },
+          "params": {
+            "question": "La fonction \\( f(x) = \\sqrt{x} \\) est définie pour toutes les valeurs réelles de \\( x \\).",
+            "correct": "false",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "Bien vu ! La fonction racine carrée n&#039;est effectivement pas définie pour tous les réels.",
+              "feedbackOnWrong": "Attention ! La fonction racine carrée n&#039;est définie que pour les valeurs de \\( x \\) supérieures ou égales à zéro. Essayez de penser à ce que signifie la racine carrée d&#039;un nombre négatif."
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Voulez-vous vraiment terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Voulez-vous vraiment recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            }
+          },
+          "subContentId": "167ba9d0-d7a9-417e-8a46-11debf0541f3"
+        },
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "metadata": {
+            "title": "Image d&#039;un nombre par la racine carrée",
+            "license": "U",
+            "contentType": "True/False Question"
+          },
+          "params": {
+            "question": "Pour tout nombre réel \\( x \\geq 0 \\), on a \\( \\sqrt{x^2} = x \\).",
+            "correct": "true",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "Pour x positif ou nul, |x| = x : la racine carrée de x² vaut x. RELU",
+              "feedbackOnWrong": "La valeur absolue vaut x sous l’hypothèse x ≥ 0 : l’égalité est vraie."
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Voulez-vous vraiment terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Voulez-vous vraiment recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            }
+          },
+          "subContentId": "04dc1f2f-3856-48a9-8102-bc8cfb5ccdee"
+        },
+        {
+          "library": "H5P.TrueFalse 1.8",
+          "metadata": {
+            "title": "Domaine de définition",
+            "license": "U",
+            "contentType": "True/False Question"
+          },
+          "params": {
+            "question": "Le domaine de définition de la fonction \\( f(x) = \\sqrt{2x - 4} \\) est \\( [2, +\\infty[ \\).",
+            "correct": "true",
+            "behaviour": {
+              "enableRetry": true,
+              "enableSolutionsButton": true,
+              "confirmCheckDialog": false,
+              "confirmRetryDialog": false,
+              "autoCheck": false,
+              "enableCheckButton": true,
+              "feedbackOnCorrect": "Bravo ! Tu as bien identifié que l&#039;expression sous la racine doit être positive : \\( 2x - 4 \\geq 0 \\) donne \\( x \\geq 2 \\). C&#039;est exactement le domaine attendu.",
+              "feedbackOnWrong": "Revois le calcul : il faut résoudre \\( 2x - 4 \\geq 0 \\), ce qui donne bien \\( x \\geq 2 \\). L&#039;affirmation est donc vraie."
+            },
+            "l10n": {
+              "trueText": "Vrai",
+              "falseText": "Faux",
+              "score": "Vous avez obtenu @score sur @total points",
+              "checkAnswer": "Vérifier",
+              "showSolutionButton": "Afficher la solution",
+              "tryAgain": "Recommencer",
+              "wrongAnswerMessage": "Mauvaise réponse",
+              "correctAnswerMessage": "Bonne réponse",
+              "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+              "submitAnswer": "Valider",
+              "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+              "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+              "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+            },
+            "media": {
+              "disableImageZooming": false
+            },
+            "confirmCheck": {
+              "header": "Terminer ?",
+              "body": "Voulez-vous vraiment terminer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            },
+            "confirmRetry": {
+              "header": "Recommencer ?",
+              "body": "Voulez-vous vraiment recommencer ?",
+              "cancelLabel": "Annuler",
+              "confirmLabel": "Confirmer"
+            }
+          },
+          "subContentId": "f10b1bc7-6f76-4635-9336-e94700ef9f36"
+        }
+      ],
+      "progressType": "textual",
+      "passPercentage": 60,
+      "randomQuestions": false,
+      "texts": {
+        "prevButton": "Précédent",
+        "nextButton": "Suivant",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "previousbutton": "Précédent",
+        "nextbutton": "Suivant",
+        "finishButton": "Terminer",
+        "submitButton": "Valider",
+        "textualProgress": "Question @current sur @total",
+        "jumpToQuestion": "Question %d sur %total",
+        "answeredText": "Réponse donnée",
+        "unansweredText": "Pas de réponse donnée",
+        "questionLabel": "Question",
+        "readSpeakerProgress": "Question @current sur @total",
+        "currentQuestionText": "Question en cours",
+        "navigationLabel": "Questions",
+        "questionSetInstruction": "Choisir la question à afficher"
+      },
+      "endGame": {
+        "showResultPage": true,
+        "showSolutionButton": false,
+        "showRetryButton": true,
+        "noResultMessage": "Terminé",
+        "message": "Vos résultats :",
+        "scoreBarLabel": "Vous avez obtenu @finals sur @totals points",
+        "amountCorrect": "@finals bonnes réponses sur @totals",
+        "scoreHeader": "Score",
+        "skipButtonText": "Passer la vidéo",
+        "solutionButtonText": "Afficher la solution",
+        "retryButtonText": "Recommencer",
+        "finishButtonText": "Terminer",
+        "submitButtonText": "Valider",
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 10,
+            "feedback": "Résultat faible. Revoyez les bases du domaine de définition et des propriétés de la racine carrée."
+          },
+          {
+            "from": 11,
+            "to": 30,
+            "feedback": "Résultat insuffisant. Continuez vos efforts et reprenez les notions clés comme le domaine et les valeurs prises par la fonction."
+          },
+          {
+            "from": 31,
+            "to": 50,
+            "feedback": "Résultat moyen. Vous progressez, mais certaines idées doivent être consolidées, notamment sur les égalités et les signes."
+          },
+          {
+            "from": 51,
+            "to": 70,
+            "feedback": "Bon résultat. Vous maîtrisez plusieurs notions importantes de la fonction racine carrée."
+          },
+          {
+            "from": 71,
+            "to": 90,
+            "feedback": "Très bon résultat. Vous êtes sur la bonne voie, continuez comme ça !"
+          },
+          {
+            "from": 91,
+            "to": 100,
+            "feedback": "Excellent résultat. Félicitations ! Vous maîtrisez parfaitement les fonctions racines carrées."
+          }
+        ],
+        "showAnimations": false,
+        "skippable": false
+      },
+      "introPage": {
+        "showIntroPage": false,
+        "startButtonText": "Voir les questions",
+        "title": "",
+        "introduction": "",
+        "backgroundImageAltText": ""
+      },
+      "disableBackwardsNavigation": false,
+      "override": {
+        "checkButton": true,
+        "showSolutionButton": "off",
+        "retryButton": "on"
+      },
+      "title": "Racines carrées RELU Sucrerie",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

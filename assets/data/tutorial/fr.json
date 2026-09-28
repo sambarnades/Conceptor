@@ -149,6 +149,10 @@
           "alt": "La grille des tuiles d'activités disponibles dans Caramel."
         },
         {
+          "type": "tip",
+          "text": "Sous le formulaire, **Une activité** affiche ces tuiles ; **Un parcours** ouvre l’atelier qui assemble plusieurs activités en un cours complet (voir « Créer et reprendre un parcours complet »)."
+        },
+        {
           "type": "h",
           "text": "Deux grandes familles"
         },
@@ -623,6 +627,106 @@
       ]
     },
     {
+      "id": "parcours",
+      "icon": "grid",
+      "title": "Créer et reprendre un parcours complet",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-cadrage.webp",
+          "alt": "Le formulaire, le commutateur « Un parcours » et le cadrage : plateforme, modalité et ampleur."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-trames.webp",
+          "alt": "Le choix de la trame : chaque carte montre ses étapes, ses paliers et ses activités."
+        },
+        {
+          "type": "tip",
+          "text": "Depuis le menu de Caramelia, **Créer un parcours** ouvre directement l’atelier, sans appel à l’IA. Si un brouillon existe, **Reprendre mon parcours** le retrouve. Les champs et les sources déjà présents sont conservés. Le cadrage et le plan se relisent dans l’atelier avant de lancer la génération."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur et une trame. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.",
+            "Dans **Plan**, modifiez le titre, l’objectif général, les notions du parcours, les étapes et les activités. Déplacez les activités avec les flèches ou leur vignette. **Consigne et palier** permet d’ajuster les indications de génération. Les repères pédagogiques vous aident à relire sans imposer un modèle. Le maximum est de **12 activités**.",
+            "Dans la carte d’une **Vidéo interactive**, collez le lien de la vidéo. La transcription est récupérée pendant la fabrication ; vous pouvez aussi la coller manuellement. Pour **Image interactive**, **Trouver la zone** ou **Trouver les zones**, joignez une image dans la carte : elle sera analysée avant la génération. Ces supports peuvent aussi être complétés dans **Fabrication**. Sans support, l’activité attend et les autres avancent. Le scénario conserve les images et les liens propres aux activités ; les documents du formulaire d’accueil restent à part. Pour un **Lien web**, collez l’adresse de la ressource dans la carte : l’IA rédige la consigne de lecture sans ouvrir la page.",
+            "Validez le plan pour lancer la fabrication. Vous pouvez arrêter, reprendre les activités manquantes ou refaire une activité. Le cadenas **Ne pas générer cette activité** réserve son contenu à une saisie manuelle : l’IA ne la remplit pas. Une tentative de régénération ratée conserve le contenu précédent. Les activités absentes sont nommées avant l’export.",
+            "Quand un contenu est prêt, **Modifier le contenu** ouvre l’éditeur habituel et **Aperçu** ouvre son lecteur. **Relire le parcours** permet de les parcourir dans l’ordre avec **Précédente** et **Suivante**. Enregistrez vos retouches pour les retrouver dans le plan et dans les exports. Modifier une consigne du plan ne réécrit pas un contenu déjà généré.",
+            "Dans **Livraison**, téléchargez le **.mbz**, puis utilisez l’import de parcours ou la restauration de cours de votre plateforme. Ce fichier de cours ne se dépose pas dans une activité H5P. Le parcours rejoint aussi la zone de notifications : **Visualiser** y ouvre la **Vue du parcours**, avec l’accueil, chaque étape et ses activités, que l’on revoit et modifie avant de retélécharger. Gardez aussi le **.json** pour revenir dans Caramel. La fiche de séquence et le détail des activités s’exportent en **DOCX, ODT ou PDF**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-plan.webp",
+          "alt": "Le plan, relu avant toute génération : objectif, étapes, activités, durées et relecture du plan."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-fabrication.webp",
+          "alt": "La fabrication : les activités se génèrent l’une après l’autre ; chacune peut être prévisualisée, modifiée ou générée à nouveau."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-livraison.webp",
+          "alt": "La livraison : le cours .mbz et ses étapes d’import, les documents à imprimer et le scénario .json."
+        },
+        {
+          "type": "tip",
+          "text": "**Exporter le scénario (.json)** garde le plan et les contenus déjà prêts dans un fichier **.json**. Le bouton **Personnaliser le plan**, à côté de **Composer le plan**, ouvre la même fenêtre que pour une activité : on y copie le prompt vers l’IA de son choix, puis on y colle sa réponse. **Reprendre un scénario** se trouve dans cette fenêtre ; le fichier **.json** se télécharge à la livraison, à côté du **.mbz**. Le brouillon n’est gardé que dans l’onglet : exportez le scénario avant de le fermer. Le scénario ne contient pas le sujet, le public ni les documents joints ; renseignez-les à nouveau avant de générer de nouveaux contenus."
+        },
+        {
+          "type": "tip",
+          "text": "Sur Éléa, dans **Réglages du cours**, activez la carte de progression puis utilisez la tuile **+ Ajouter mon image** pour choisir votre propre fond. Vous pouvez changer ou retirer l’image et revenir aux thèmes proposés. Le fond est conservé dans le scénario **.json** et intégré au parcours **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG ou TIFF · 12 Mo max. Conversion automatique, sans recadrage."
+        },
+        {
+          "type": "warn",
+          "text": "La carte de progression est propre à Éléa. La carte et l’ouverture progressive sont facultatives et demandent encore une vérification en situation sur la plateforme. La trame de différenciation ne crée pas de branches automatiques selon une note. Les échanges collaboratifs ont lieu sur la plateforme."
+        },
+        {
+          "type": "h",
+          "text": "Les modules de la plateforme"
+        },
+        {
+          "type": "p",
+          "text": "Le plan propose aussi les modules de votre Éléa, Magistère ou Moodle, rangés dans le menu de chaque activité sous **Modules de la plateforme**. L’IA en écrit ce que la plateforme conserve à l’import :"
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-mosaique.webp",
+          "alt": "La mosaïque des types : les activités générées par Caramel, puis les modules de la plateforme."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Forum**, **Sondage**, **Questionnaire**, **Enquête (Feedback)** : faire échanger, recueillir des avis, un diagnostic ou un bilan.",
+            "**Leçon** : des pages à lire, dont certaines se terminent par une question qui ne laisse passer qu’avec la bonne réponse. Le **Paquetage IMS** — des pages à lire avec leur table des matières, entièrement écrites par Caramel — se choisit dans la mosaïque ; le plan ne le propose pas.",
+            "**Atelier** : produire, puis évaluer le travail de ses pairs avec une grille de critères.",
+            "**Tableau**, **Wiki**, **Document collaboratif**, **Glossaire** et **Base de données à construire** : écrire et construire à plusieurs ; ils arrivent vides, avec leur consigne.",
+            "**Classe virtuelle**, **Choix de groupe**, **Partage de fichiers**, **Lien web** : se retrouver en direct, former des équipes, déposer des fichiers, consulter une ressource en ligne.",
+            "**Selon la plateforme** : Etherpad et Nuage de mots sur Magistère, Feedback sur Éléa et Moodle. Capytale, GeoGebra, un paquetage SCORM ou un fichier s’ajoutent encore à la main après l’import dans Éléa, Magistère ou Moodle."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Quand un module demande un réglage sur la plateforme (phases de l’atelier, heure de la classe virtuelle, groupes), Caramel l’écrit dans une note **À faire avant d’ouvrir le cours**, cachée aux élèves, en tête du cours importé. Supprimez-la une fois ces réglages faits."
+        },
+        {
+          "type": "p",
+          "text": "Pour aller plus loin : [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) aide à réfléchir aux activités d’apprentissage. Les sept familles affichées dans Caramel, dont **Discuter** et **Coopérer**, sont des repères simplifiés liés aux outils, pas les six types ABC ni une évaluation de votre pédagogie."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-miroir.webp",
+          "alt": "Ce que ce parcours fait travailler : les sept familles, et celles qui sont absentes."
+        }
+      ]
+    },
+    {
       "id": "integrate",
       "icon": "upload",
       "title": "Intégrer dans Éléa / Magistère / Moodle",
@@ -820,6 +924,10 @@
         {
           "type": "plain",
           "text": "Pour répondre juste, Caramélia s'appuie sur une **base documentaire** (un « RAG ») : au lieu d'improviser, elle **pioche des extraits fiables** de la documentation de Caramel et reprend les libellés exacts des boutons que vous voyez à l'écran. (Le **RAG** est aussi ce qui permet d'ancrer la génération sur les programmes officiels — voir l'étape « Décrire votre besoin ».)"
+        },
+        {
+          "type": "tip",
+          "text": "Depuis le menu de Caramelia, **Créer un parcours** ouvre directement l’atelier, sans appel à l’IA. Si un brouillon existe, **Reprendre mon parcours** le retrouve. Les champs et les sources déjà présents sont conservés. Le cadrage et le plan se relisent dans l’atelier avant de lancer la génération."
         }
       ]
     },

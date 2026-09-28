@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Anfänger",
     "level_formation_intermediaire": "Mittelstufe",
-    "level_formation_expert": "Experte"
+    "level_formation_expert": "Experte",
+    "sucrerie_bridge_welcome_title_course": "Lernpfad in Sucrerie teilen",
+    "sucrerie_bridge_welcome_subtitle_course": "Der vollständige Lernpfad mit Aktivitäten und Anweisungen wird im Sucrerie-Katalog für alle Lehrkräfte zugänglich.",
+    "sucrerie_bridge_course_close": "Zurück",
+    "sucrerie_bridge_success_title_approved_course": "Lernpfad veröffentlicht!",
+    "sucrerie_bridge_success_title_pending_course": "Lernpfad gespeichert",
+    "sucrerie_bridge_success_message_approved_course": "Ihr Lernpfad ist im Sucrerie-Katalog verfügbar.",
+    "sucrerie_bridge_success_message_pending_course": "Ihr Lernpfad erscheint nach Prüfung durch die Moderation im Katalog.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Ihr Beitrag muss bestätigt werden. Ein Bestätigungslink wurde soeben an {email} gesendet: Klicken Sie ihn innerhalb von 2 Stunden an, um Ihr Lernpfad zu veröffentlichen. Ohne Bestätigung bleibt sie 7 Tage lang ein Entwurf unter „Meine Aktivitäten“.",
+    "sucrerie_bridge_success_email_sent_course": "Eine E-Mail mit Ihrem Verwaltungslink wurde an {email} gesendet. Bewahren Sie sie sorgfältig auf: Damit können Sie Ihr Lernpfad jederzeit bearbeiten oder entfernen."
 }

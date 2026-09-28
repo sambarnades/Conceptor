@@ -11,18 +11,18 @@
 
 export const LIB_PATHS = {
     // OCR / Extraction de texte
-    PDF_JS: 'js/vendor/pdf-js/6.2.108/pdf.min.mjs',
-    PDF_JS_WORKER: 'js/vendor/pdf-js/6.2.108/pdf.worker.compat.mjs',
+    PDF_JS: 'js/vendor/pdf-js/6.3.289/pdf.min.mjs',
+    PDF_JS_WORKER: 'js/vendor/pdf-js/6.3.289/pdf.worker.compat.mjs',
     TESSERACT: 'js/vendor/tesseract/7.0.0/tesseract.min.js',
     // Fichiers Tesseract auto-hébergés (sinon téléchargés depuis cdn.jsdelivr.net au runtime, sans SRI)
     TESSERACT_WORKER: 'js/vendor/tesseract/7.0.0/worker.min.js',
     TESSERACT_CORE: 'js/vendor/tesseract/7.0.0/core',   // répertoire : le worker y choisit la variante *-lstm.wasm.js
     TESSERACT_LANG: 'js/vendor/tesseract/7.0.0/lang',   // répertoire : contient <lang>.traineddata.gz
-    MAMMOTH: 'js/vendor/mammoth/1.12.1/mammoth.browser.min.js',
-    JSZIP: 'js/vendor/jszip/3.10.1/jszip.min.js',
+    MAMMOTH: 'js/vendor/mammoth/1.13.0/mammoth.browser.min.js',
+    JSZIP: 'js/vendor/jszip/3.10.2/jszip.min.js',
 
     // H5P
-    CLIENT_ZIP: 'js/vendor/client-zip/2.5.0/index.js',
+    CLIENT_ZIP: 'js/vendor/client-zip/2.5.1/index.js',
     H5P_STANDALONE: 'js/vendor/h5p-standalone/3.8.2/main.bundle.js',
     H5P_FRAME_JS: 'js/vendor/h5p-standalone/3.8.2/frame.bundle.js',
     H5P_FRAME_CSS: 'js/vendor/h5p-standalone/3.8.2/styles/h5p.css',
@@ -38,10 +38,10 @@ export const LIB_PATHS = {
     // Document export
     JSPDF: 'js/vendor/jspdf/4.2.1/jspdf.umd.min.js',
     JSPDF_AUTOTABLE: 'js/vendor/jspdf-autotable/5.0.8/jspdf.plugin.autotable.min.js',
-    DOCX: 'js/vendor/docx/9.7.1/index.iife.js',
+    DOCX: 'js/vendor/docx/9.8.1/index.iife.js',
 
     // Security
-    DOMPURIFY: 'js/vendor/dompurify/3.4.14/purify.min.js',
+    DOMPURIFY: 'js/vendor/dompurify/3.4.16/purify.min.js',
 
     // QR code (génération du QR de la vidéo source dans les exports documentaires)
     QRCODE: 'js/vendor/qrcode/2.0.4/qrcode.js',
@@ -50,7 +50,7 @@ export const LIB_PATHS = {
     // UNIQUEMENT si l'utilisateur joint un fichier de ce type :
     HEIC2ANY: 'js/vendor/heic2any/0.0.4/heic2any.min.js', // HEIC/HEIF (photos iPhone) → JPEG/PNG (inclut libheif, worker blob)
     UTIF: 'js/vendor/utif/3.1.0/UTIF.js',                 // TIFF → RGBA → PNG
-    PAKO: 'js/vendor/pako/3.0.1/pako.umd.min.js',         // zlib (MIT AND Zlib) — requis par UTIF pour les TIFF compressés (deflate)
+    PAKO: 'js/vendor/pako/3.0.2/pako.umd.min.js',         // zlib (MIT AND Zlib) — requis par UTIF pour les TIFF compressés (deflate)
 
     // Caramelia (chatbot flottant)
     CARAMELIA: 'js/caramelia/index.js',

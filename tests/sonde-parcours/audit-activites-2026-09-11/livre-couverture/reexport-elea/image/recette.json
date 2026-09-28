@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-11",
+  "cours": 794,
+  "activite": 13841,
+  "h5pId": 395,
+  "titreReexport": "Couverture image — relue dans Éléa",
+  "sha256Reexport": "193814ee6488c646229de729f1ac061aef612ac4bc45f3d9f2eeaac92e480891",
+  "sha256PaquetLocalCompare": "9a7c1ae8b0f7768c39f886cdc552fc513f0a7b439cf34d523882544d523cd194",
+  "noteSource": "Le paquet local a été régénéré pour la dernière recette de visibilité ; ses contenus et médias sont comparés au réexport, sans présumer des horodatages du ZIP déposé.",
+  "sousIdentifiantsConserves": 3,
+  "mediasConserves": {
+    "content/images/image-766c732e.jpg": "66fef39602c5b762ca2f0e38b5aa7006819b54430eb6ed7c877a4c29bf413382"
+  },
+  "validationManuelle": "Case J’ai terminé cette page observée décochée puis cochée.",
+  "lecture": "Image et texte alternatif affichés.",
+  "enregistrement": "Titre retouché au clavier dans l’éditeur natif, sauvegarde puis réexport."
+}

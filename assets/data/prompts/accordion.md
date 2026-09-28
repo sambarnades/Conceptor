@@ -27,17 +27,18 @@
 ---
 
 # STRUCTURE DU JSON ATTENDUE
-- Génère UNIQUEMENT un JSON complet et valide dans un bloc de code. Ta réponse DOIT commencer par \`{\` et finir par \`}\`. Aucun autre texte ou commentaire.
-- Le JSON généré doit être un TABLEAU avec autant d'objets que de termes mentionnés précédemment.
-- \`title\` : Le mot-clé, l'expression ou la question à définir.
-- \`text\` : La définition. Utilise \`**mot**\` pour le gras, \`*mot*\` pour l'italique et \`\\n\` pour les retours à la ligne.
-- **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : \`\\\\( ... \\\\)\`. N'utilise JAMAIS le signe \`$\` seul. Exemples : \`\\\\( \\\\frac{1}{2} \\\\)\`, \`\\\\( \\\\sqrt{2} \\\\)\`, \`\\\\( \\\\alpha \\\\)\`, \`\\\\( x^{2} \\\\)\`, \`\\\\( \\\\mathbb{R} \\\\)\`, \`\\\\( \\\\sin(\\\\theta) \\\\)\`, \`\\\\( \\\\sum_{k=0}^{n} k \\\\)\`, \`\\\\( x \\\\geq 0 \\\\)\`, \`\\\\( \\\\forall x \\\\in \\\\mathbb{R} \\\\)\`.
-- **Titres :** Les \`title\` des panneaux NE DOIVENT PAS contenir de LaTeX ni de HTML. Texte brut uniquement (les formules seront converties en Unicode : α, β, √, ², etc.).
+- Objet JSON uniquement, sans bloc de code ni commentaire.
+- {"panels":[{"title":"…","text":"…"}],"hTag":"h2"}
+- De 1 à 100 entrées. hTag : h2, h3 ou h4 ; ce niveau sémantique ne change pas la taille visuelle.
+- `text` : Définition
+- `title` : Le mot-clé, l'expression ou la question à définir.
+- **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : `\\( ... \\)`. N'utilise JAMAIS le signe `$` seul. Exemples : `\\( \\frac{1}{2} \\)`, `\\( \\sqrt{2} \\)`, `\\( \\alpha \\)`, `\\( x^{2} \\)`, `\\( \\mathbb{R} \\)`, `\\( \\sin(\\theta) \\)`, `\\( \\sum_{k=0}^{n} k \\)`, `\\( x \\geq 0 \\)`, `\\( \\forall x \\in \\mathbb{R} \\)`.
+- **Titres :** Les `title` des panneaux NE DOIVENT PAS contenir de LaTeX ni de HTML. Texte brut uniquement (les formules seront converties en Unicode : α, β, √, ², etc.).
 
 # EXEMPLE DE RENDU
 ```json
-[
-  {"title": "Photosynthèse", "text": "Processus par lequel les plantes transforment la **lumière** du **soleil** en énergie.\\nC'est la base de la chaîne alimentaire."},
+{"hTag":"h2","panels":[
+  {"title": "Photosynthèse", "text": "Processus par lequel les plantes transforment la **lumière** du **soleil** en énergie.\nC'est la base de la chaîne alimentaire."},
   {"title": "Cellule", "text": "**Unité** de base de tous les êtres vivants. Il en existe des *eucaryotes* et des *procaryotes*."}
-]
+]}
 ```

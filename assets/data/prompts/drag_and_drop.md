@@ -11,7 +11,7 @@
 - Texte des étiquettes : Chaque étiquette doit être concise (1 à 4 mots maximum).
 - Unicité : Chaque étiquette doit appartenir à exactement une seule zone correcte.
 - Équilibre : Répartis les étiquettes de façon relativement équilibrée entre les zones (pas de zone vide, pas de zone surchargée).
-- Rétroaction : seul le feedback global (`overallFeedback`) est possible (pas de message par étiquette) — gradue-le par niveau de maîtrise et renvoie à la notion (cf. RÈGLES PÉDAGOGIQUES).
+- Les indices et rétroactions par zone sont possibles dans `_native.tipsAndFeedback` : `tip`, `feedbackOnCorrect`, `feedbackOnIncorrect`. Respecte les réglages demandés ; sinon conserve les valeurs par défaut.
 
 # RÈGLES PÉDAGOGIQUES
 - Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
@@ -42,6 +42,11 @@ L'objet doit contenir :
   - `text` : Le texte de l'étiquette (1 à 4 mots).
 - `overallFeedback` : tableau de 4 objets pour le score final (0-25, 26-50, 51-75, 76-100).
 - **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : `\\( ... \\)`. N'utilise JAMAIS le signe `$` seul. Exemples : `\\( \\frac{1}{2} \\)`, `\\( \\sqrt{2} \\)`, `\\( \\alpha \\)`, `\\( x^{2} \\)`, `\\( \\mathbb{R} \\)`, `\\( \\sin(\\theta) \\)`, `\\( \\sum_{k=0}^{n} k \\)`, `\\( x \\geq 0 \\)`, `\\( \\forall x \\in \\mathbb{R} \\)`.
+
+Les indices et rétroactions par zone sont possibles dans `_native.tipsAndFeedback` : `tip`, `feedbackOnCorrect`, `feedbackOnIncorrect`. Respecte les réglages demandés ; sinon conserve les valeurs par défaut.
+`behaviour`: {"enableRetry":true,"enableCheckButton":true,"singlePoint":false,"applyPenalties":true,"enableScoreExplanation":true,"dropZoneHighlighting":"dragging","autoAlignSpacing":2,"enableFullScreen":true,"showScorePoints":true,"showTitle":true,"dragHandleVisibility":true}. `dropZoneHighlighting`: "dragging" | "always" | "never"; `autoAlignSpacing` ≥ 0.
+`dropZones[]._native`: {"showLabel":true,"single":false,"autoAlign":true,"backgroundOpacity":100,"tipsAndFeedback":{"tip":"","feedbackOnCorrect":"","feedbackOnIncorrect":""}}.
+`elements[]._native`: {"multiple":false,"backgroundOpacity":100}; `backgroundOpacity`: 0–100.
 
 # EXEMPLE DE RENDU
 

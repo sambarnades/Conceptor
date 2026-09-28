@@ -1,0 +1,2501 @@
+{
+  "date": "2026-09-11",
+  "bilan": {
+    "paquets": 27,
+    "paquetsSansBibliotheques": 0,
+    "bibliotheques": 89,
+    "absentes": 0,
+    "versionsDifferentes": 10,
+    "semanticsDifferentes": 2,
+    "conflitsEntrePaquets": 0,
+    "dependancesAbsentes": [],
+    "optionsAbsentes": [
+      "H5P.Row-1.3"
+    ]
+  },
+  "paquets": [
+    {
+      "fichier": "accordion-368-368 (2).h5p",
+      "sha256": "53c6966a3a70c7eabd7b1960a8280e151831702da73820cfdface70de655b572",
+      "mainLibrary": "H5P.Accordion",
+      "bibliotheques": 3,
+      "valide": true
+    },
+    {
+      "fichier": "chart-382-382 (1).h5p",
+      "sha256": "f83fff076f5be1c8e77a9c45f90775e57f558fdbf39bee3c33c3c32907106cde",
+      "mainLibrary": "H5P.Chart",
+      "bibliotheques": 2,
+      "valide": true
+    },
+    {
+      "fichier": "course-presentation-383-383 (1).h5p",
+      "sha256": "20699f8326ec2d7bfd5ff1e6e0f11ee6b03dc6a7e85239f0d32b76d72fb7d517",
+      "mainLibrary": "H5P.CoursePresentation",
+      "bibliotheques": 64,
+      "valide": true
+    },
+    {
+      "fichier": "crossword-369-369 (2).h5p",
+      "sha256": "bd0aa31d425006a7d0467940e2da06ea995ec06cb6767a6f02a5ba9a277ad4a1",
+      "mainLibrary": "H5P.Crossword",
+      "bibliotheques": 16,
+      "valide": true
+    },
+    {
+      "fichier": "dialog-cards-362-362 (2).h5p",
+      "sha256": "860b66b60dc7e90e960866f92fad4d3e9e1f1c7907cae28a6b141f1a0098fad5",
+      "mainLibrary": "H5P.Dialogcards",
+      "bibliotheques": 10,
+      "valide": true
+    },
+    {
+      "fichier": "dictation-381-381 (1).h5p",
+      "sha256": "b43162a98f845c216fa9df55e8f7ba6e02ec346421bb75a8bf4b478d534c3bfa",
+      "mainLibrary": "H5P.Dictation",
+      "bibliotheques": 15,
+      "valide": true
+    },
+    {
+      "fichier": "drag-and-drop-373-373 (2).h5p",
+      "sha256": "61ac1bc5070bea607652796f31b16a7cb566624e90a2e0a7b1c9176c3ccdcd1c",
+      "mainLibrary": "H5P.DragQuestion",
+      "bibliotheques": 18,
+      "valide": true
+    },
+    {
+      "fichier": "drag-the-words-372-372 (2).h5p",
+      "sha256": "2b9dd48fa422286f89dfb403d02fe6cd13b1bd9873b95fadd7f5a8bee0b58c95",
+      "mainLibrary": "H5P.DragText",
+      "bibliotheques": 11,
+      "valide": true
+    },
+    {
+      "fichier": "essay-370-370 (2).h5p",
+      "sha256": "5bb8583121d1f0d6d35ca89e4cff430b4be1ada4d8efe2a8107169849e650d4c",
+      "mainLibrary": "H5P.Essay",
+      "bibliotheques": 13,
+      "valide": true
+    },
+    {
+      "fichier": "fill-in-the-blanks-374-374 (2).h5p",
+      "sha256": "8894f13697f35bb9b007c709d6b62cb8ed58d5522013b09d11fff35225381ce8",
+      "mainLibrary": "H5P.Blanks",
+      "bibliotheques": 12,
+      "valide": true
+    },
+    {
+      "fichier": "find-multiple-hotspots-388-388 (1).h5p",
+      "sha256": "eff7f4e99bba89ae3637a6c77775e55fabcdc1b3dd05b8ad6b957d80c3c62d20",
+      "mainLibrary": "H5P.ImageMultipleHotspotQuestion",
+      "bibliotheques": 11,
+      "valide": true
+    },
+    {
+      "fichier": "find-the-hotspot-387-387 (1).h5p",
+      "sha256": "7864e125b67865c313ca8163ec1b50f1e5c1692d30b62385650f06568a145eb5",
+      "mainLibrary": "H5P.ImageHotspotQuestion",
+      "bibliotheques": 13,
+      "valide": true
+    },
+    {
+      "fichier": "find-the-words-378-378 (2).h5p",
+      "sha256": "477ef11a416e8b1047ee1275d39e0602637acf2eafa7f33aad85616dd10c19ea",
+      "mainLibrary": "H5P.FindTheWords",
+      "bibliotheques": 6,
+      "valide": true
+    },
+    {
+      "fichier": "flashcards-364-364 (2).h5p",
+      "sha256": "8d26a6a226de6143179638431e82738987bde592ebe2a8edf29fc2a9692f990b",
+      "mainLibrary": "H5P.Flashcards",
+      "bibliotheques": 6,
+      "valide": true
+    },
+    {
+      "fichier": "image-hotspots-386-386 (1).h5p",
+      "sha256": "b2c94d9604faff960d1ee75734e325f8a9751648fdddc5dc02df83da322ce1c4",
+      "mainLibrary": "H5P.ImageHotspots",
+      "bibliotheques": 8,
+      "valide": true
+    },
+    {
+      "fichier": "interactive-book-384-384 (1).h5p",
+      "sha256": "d823752416e870e60ca91f5604682d1c098bb09cb756624bcb73566f9efbb587",
+      "mainLibrary": "H5P.InteractiveBook",
+      "bibliotheques": 23,
+      "valide": true
+    },
+    {
+      "fichier": "interactive-video-385-385 (1).h5p",
+      "sha256": "0a960f728b32461faa227fb8309457262ce444d075ddadb3d3fd6ace1cfd7905",
+      "mainLibrary": "H5P.InteractiveVideo",
+      "bibliotheques": 54,
+      "valide": true
+    },
+    {
+      "fichier": "mark-the-words-375-375 (2).h5p",
+      "sha256": "c94a499b339e14f4659ab733096e9131b9bd38c05b555196b71ae9527302fd85",
+      "mainLibrary": "H5P.MarkTheWords",
+      "bibliotheques": 11,
+      "valide": true
+    },
+    {
+      "fichier": "multiple-choice-377-377 (2).h5p",
+      "sha256": "16abd11b925f9b322b2b4748e5a769754172457abe016a5376f49621762c7885",
+      "mainLibrary": "H5P.MultiChoice",
+      "bibliotheques": 11,
+      "valide": true
+    },
+    {
+      "fichier": "question-set-365-365 (2).h5p",
+      "sha256": "d38cc4cded0632074844a1f8999c303309bec49cb93f04a0ce56f64d8f35b4b8",
+      "mainLibrary": "H5P.QuestionSet",
+      "bibliotheques": 23,
+      "valide": true
+    },
+    {
+      "fichier": "question-set-366-366 (2).h5p",
+      "sha256": "863808caa00a5348ddc4a258f6fdeacb01fe2ad78826f95ecb7689769a2260d2",
+      "mainLibrary": "H5P.QuestionSet",
+      "bibliotheques": 16,
+      "valide": true
+    },
+    {
+      "fichier": "question-set-367-367 (2).h5p",
+      "sha256": "19645b81114d0bb26c0a322c005f2aa7c23a9f426b84cd4bfdb5194cff05ba4a",
+      "mainLibrary": "H5P.QuestionSet",
+      "bibliotheques": 17,
+      "valide": true
+    },
+    {
+      "fichier": "single-choice-set-380-380 (1).h5p",
+      "sha256": "e9fe500057c7d1586438f249feefcbb66f5273c35289c6e3633653f4884cf87e",
+      "mainLibrary": "H5P.SingleChoiceSet",
+      "bibliotheques": 13,
+      "valide": true
+    },
+    {
+      "fichier": "sort-the-paragraphs-379-379 (1).h5p",
+      "sha256": "800d9d3cf801cf51911bf7e151c368e1de958291b8cb64c443211a0a5ca481a3",
+      "mainLibrary": "H5P.SortParagraphs",
+      "bibliotheques": 11,
+      "valide": true
+    },
+    {
+      "fichier": "summary-371-371 (2).h5p",
+      "sha256": "5796f92e66e3ebf2cd7a8ac9e7605b33817a54bcb1f20c4659001af765f3a94f",
+      "mainLibrary": "H5P.Summary",
+      "bibliotheques": 11,
+      "valide": true
+    },
+    {
+      "fichier": "timeline-363-363 (2).h5p",
+      "sha256": "d67b8870eac73eb567cced9f8ddf9467adb195503ef51a43fd61312f313947c5",
+      "mainLibrary": "H5P.Timeline",
+      "bibliotheques": 2,
+      "valide": true
+    },
+    {
+      "fichier": "true-false-question-376-376 (2).h5p",
+      "sha256": "1a021fa97e15c9ffd1137980346996b8462eb6a4fc383fa1480e5ea3dda72031",
+      "mainLibrary": "H5P.TrueFalse",
+      "bibliotheques": 10,
+      "valide": true
+    }
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome-4.5",
+      "elea": "4.5.6",
+      "local": "4.5.4",
+      "comparaisonVersion": 1,
+      "paquets": [
+        "accordion-368-368 (2).h5p",
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "find-multiple-hotspots-388-388 (1).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "find-the-words-378-378 (2).h5p",
+        "flashcards-364-364 (2).h5p",
+        "image-hotspots-386-386 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 4,
+          "elea": 6
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Accordion-1.0",
+      "elea": "1.0.33",
+      "local": "1.0.47",
+      "comparaisonVersion": -1,
+      "paquets": [
+        "accordion-368-368 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "4a3bdfabb69f09e1a419c66c037c2dc921b0bce0e11ab5483a3989884fca7241",
+      "hashSemanticsLocal": "4a3bdfabb69f09e1a419c66c037c2dc921b0bce0e11ab5483a3989884fca7241",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 47,
+          "elea": 33
+        },
+        {
+          "chemin": "$.coreApi.minorVersion",
+          "local": 28,
+          "elea": 5
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.AdvancedText-1.1",
+      "elea": "1.1.14",
+      "local": "1.1.14",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "accordion-368-368 (2).h5p",
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "5081e8b8c55d8f0c86503cea38f38ea01353a7e1648d10f672aa2b161d9af2a2",
+      "hashSemanticsLocal": "5081e8b8c55d8f0c86503cea38f38ea01353a7e1648d10f672aa2b161d9af2a2",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Audio-1.5",
+      "elea": "1.5.29",
+      "local": "1.5.29",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "095e0ddf0c3293a559b48bc2261c259873c9d570be4d0e607a2c843a317145b9",
+      "hashSemanticsLocal": "095e0ddf0c3293a559b48bc2261c259873c9d570be4d0e607a2c843a317145b9",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.AudioRecorder-1.0",
+      "elea": "1.0.54",
+      "local": "1.0.54",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "a893b49ee4465d8511119d3172f3937b0714ab92c9fbc727614136ddaae55b8f",
+      "hashSemanticsLocal": "a893b49ee4465d8511119d3172f3937b0714ab92c9fbc727614136ddaae55b8f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.Blanks-1.14",
+      "elea": "1.14.37",
+      "local": "1.14.37",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "question-set-365-365 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "f8a554382476122b6ffed13392a54925ef6378a0834b1e056a362b6fe0ee141d",
+      "hashSemanticsLocal": "f8a554382476122b6ffed13392a54925ef6378a0834b1e056a362b6fe0ee141d",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.CKEditor-1.0",
+      "elea": "1.0.24",
+      "local": "1.0.24",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Chart-1.2",
+      "elea": "1.2.22",
+      "local": "1.2.33",
+      "comparaisonVersion": -1,
+      "paquets": [
+        "chart-382-382 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "c9661b14a131ef2169c8e11659506131ca3044daab0462012fd3b2df5c02a86c",
+      "hashSemanticsLocal": "c9661b14a131ef2169c8e11659506131ca3044daab0462012fd3b2df5c02a86c",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 33,
+          "elea": 22
+        },
+        {
+          "chemin": "$.coreApi.minorVersion",
+          "local": 28,
+          "elea": 21
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Column-1.22",
+      "elea": "1.22.0",
+      "local": "1.22.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "interactive-book-384-384 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "a17c54790428385a14c17f175eaf0fbb24a06be605f540a8218754d1a81728e3",
+      "hashSemanticsLocal": "a17c54790428385a14c17f175eaf0fbb24a06be605f540a8218754d1a81728e3",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [
+        "H5P.Row-1.3"
+      ],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Components-1.0",
+      "elea": "1.0.97",
+      "local": "1.0.97",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.ContinuousText-1.2",
+      "elea": "1.2.16",
+      "local": "1.2.16",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "5292cc0ba36f087f0e1ddd69c43abde6e140d0e53d60ed5d8aaadf12c961057a",
+      "hashSemanticsLocal": "5292cc0ba36f087f0e1ddd69c43abde6e140d0e53d60ed5d8aaadf12c961057a",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.CoursePresentation-1.27",
+      "elea": "1.27.15",
+      "local": "1.27.15",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "8bb4e7a224ec3f33697574c8fc75ba36ece6aada4730ee38037e94e2c5c04b1b",
+      "hashSemanticsLocal": "8bb4e7a224ec3f33697574c8fc75ba36ece6aada4730ee38037e94e2c5c04b1b",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.Crossword-0.5",
+      "elea": "0.5.13",
+      "local": "0.5.13",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "crossword-369-369 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "bcbec9d57841f5e7ca3eb3a0e136a27f3d34e8b5edb7388546fcef1ef05f494f",
+      "hashSemanticsLocal": "bcbec9d57841f5e7ca3eb3a0e136a27f3d34e8b5edb7388546fcef1ef05f494f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Dialogcards-1.9",
+      "elea": "1.9.40",
+      "local": "1.9.40",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "dialog-cards-362-362 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "50a8c61fa812b886b39c5e752c2499a76585b2d8fe2e82c2e7956720dd73a299",
+      "hashSemanticsLocal": "50a8c61fa812b886b39c5e752c2499a76585b2d8fe2e82c2e7956720dd73a299",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.Dictation-1.3",
+      "elea": "1.3.3",
+      "local": "1.3.3",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "dictation-381-381 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "11fbc4575542630e90b0a60c8fd78065b05b4f36191660848a659f55f62cdb1a",
+      "hashSemanticsLocal": "11fbc4575542630e90b0a60c8fd78065b05b4f36191660848a659f55f62cdb1a",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.DragNBar-1.4",
+      "elea": "1.4.8",
+      "local": "1.4.8",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "find-multiple-hotspots-388-388 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.DragNBar-1.5",
+      "elea": "1.5.26",
+      "local": "1.5.26",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.DragNDrop-1.1",
+      "elea": "1.1.5",
+      "local": "1.1.5",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "find-multiple-hotspots-388-388 (1).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.DragNResize-1.2",
+      "elea": "1.2.6",
+      "local": "1.2.6",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "find-multiple-hotspots-388-388 (1).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.DragQuestion-1.15",
+      "elea": "1.15.37",
+      "local": "1.15.37",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "a60c5103bd87119edbb4149f0d59f4eb3a97b92e431172dfd36f60d4adadffbb",
+      "hashSemanticsLocal": "a60c5103bd87119edbb4149f0d59f4eb3a97b92e431172dfd36f60d4adadffbb",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.DragText-1.10",
+      "elea": "1.10.50",
+      "local": "1.10.50",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "question-set-365-365 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "5db03d18343af6576b4bf1dacef501ecf0bf27064719349e93800d9f35ec17ae",
+      "hashSemanticsLocal": "5db03d18343af6576b4bf1dacef501ecf0bf27064719349e93800d9f35ec17ae",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.Essay-1.5",
+      "elea": "1.5.13",
+      "local": "1.5.20",
+      "comparaisonVersion": -1,
+      "paquets": [
+        "essay-370-370 (2).h5p",
+        "question-set-365-365 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": false,
+      "hashSemanticsElea": "d2bcb69785de55098f621b4b36a380e64a2c6336fbb6f50935778af2fb612a70",
+      "hashSemanticsLocal": "5c2c644ee86318fd99ef090ad29ce727ba0174fd6e65ae786187cbc056a69852",
+      "sansSemantics": false,
+      "ecartsSemantics": [
+        {
+          "chemin": "$.behaviour.fields.minimumLength.min",
+          "local": 0,
+          "elea": "0"
+        },
+        {
+          "chemin": "$.behaviour.fields.maximumLength.min",
+          "local": 0,
+          "elea": "0"
+        }
+      ],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 20,
+          "elea": 13
+        },
+        {
+          "chemin": "$.coreApi.minorVersion",
+          "local": 28,
+          "elea": 27
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.ExportableTextArea-1.3",
+      "elea": "1.3.22",
+      "local": "1.3.22",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "40134bd0ba26682021c86c28b26bdc1dd763331615fdcabefeacf38a867684db",
+      "hashSemanticsLocal": "40134bd0ba26682021c86c28b26bdc1dd763331615fdcabefeacf38a867684db",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.FindTheWords-1.4",
+      "elea": "1.4.4",
+      "local": "1.4.4",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "find-the-words-378-378 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "b38e030fe506f412e3193aeecc047317fcceb50d6a085f6943b666c36cfedcf3",
+      "hashSemanticsLocal": "b38e030fe506f412e3193aeecc047317fcceb50d6a085f6943b666c36cfedcf3",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Flashcards-1.7",
+      "elea": "1.7.10",
+      "local": "1.7.23",
+      "comparaisonVersion": -1,
+      "paquets": [
+        "flashcards-364-364 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": false,
+      "hashSemanticsElea": "a28b6c0e118d49d92c29d34d4fff12096c124f7d37ba5145a9a4bdd3a1ddf706",
+      "hashSemanticsLocal": "d3d873aefe2777df64400499714e15601f109cb02a6788786aae3f9c246812f1",
+      "sansSemantics": false,
+      "ecartsSemantics": [
+        {
+          "chemin": "$.cardsHeader",
+          "local": {
+            "label": "Header for results table describing the cards",
+            "name": "cardsHeader",
+            "type": "text",
+            "default": "Cards",
+            "importance": "low",
+            "common": true
+          },
+          "elea": null
+        },
+        {
+          "chemin": "$.scoreHeader",
+          "local": {
+            "label": "Header for results table describing the score",
+            "name": "scoreHeader",
+            "type": "text",
+            "default": "Score",
+            "importance": "low",
+            "common": true
+          },
+          "elea": null
+        },
+        {
+          "chemin": "$.ordre",
+          "local": [
+            "description",
+            "cards",
+            "progressText",
+            "next",
+            "previous",
+            "checkAnswerText",
+            "showSolutionsRequiresInput",
+            "defaultAnswerText",
+            "correctAnswerText",
+            "incorrectAnswerText",
+            "showSolutionText",
+            "results",
+            "cardsHeader",
+            "scoreHeader",
+            "ofCorrect",
+            "showResults",
+            "answerShortText",
+            "retry",
+            "caseSensitive",
+            "cardAnnouncement",
+            "correctAnswerAnnouncement",
+            "pageAnnouncement",
+            "randomCards"
+          ],
+          "elea": [
+            "description",
+            "cards",
+            "progressText",
+            "next",
+            "previous",
+            "checkAnswerText",
+            "showSolutionsRequiresInput",
+            "defaultAnswerText",
+            "correctAnswerText",
+            "incorrectAnswerText",
+            "showSolutionText",
+            "results",
+            "ofCorrect",
+            "showResults",
+            "answerShortText",
+            "retry",
+            "caseSensitive",
+            "cardAnnouncement",
+            "correctAnswerAnnouncement",
+            "pageAnnouncement",
+            "randomCards"
+          ]
+        }
+      ],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 23,
+          "elea": 10
+        },
+        {
+          "chemin": "$.coreApi.minorVersion",
+          "local": 28,
+          "elea": 4
+        },
+        {
+          "chemin": "$.preloadedDependencies.3",
+          "local": {
+            "machineName": "H5P.Components",
+            "majorVersion": 1,
+            "minorVersion": 0
+          },
+          "elea": null
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.FontIcons-1.0",
+      "elea": "1.0.11",
+      "local": "1.0.11",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "find-multiple-hotspots-388-388 (1).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "find-the-words-378-378 (2).h5p",
+        "flashcards-364-364 (2).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.FreeTextQuestion-1.0",
+      "elea": "1.0.22",
+      "local": "1.0.22",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "f5f26b1c5e15b8ca0d49d7a73f680fcd87164bcd10dc30fced85d9225fae936f",
+      "hashSemanticsLocal": "f5f26b1c5e15b8ca0d49d7a73f680fcd87164bcd10dc30fced85d9225fae936f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.GoToQuestion-1.3",
+      "elea": "1.3.23",
+      "local": "1.3.23",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "6fe013dfa0b35171c2876b3b0e0560e6829ceed87abe019759a70b6de89fa5e4",
+      "hashSemanticsLocal": "6fe013dfa0b35171c2876b3b0e0560e6829ceed87abe019759a70b6de89fa5e4",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.GuidedTour-1.0",
+      "elea": "1.0.6",
+      "local": "1.0.6",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.IVHotspot-1.2",
+      "elea": "1.2.26",
+      "local": "1.2.26",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "8be2e52d4f07596560b0774f86b7d36b045fe0da0702b633018ecf50e02cc056",
+      "hashSemanticsLocal": "8be2e52d4f07596560b0774f86b7d36b045fe0da0702b633018ecf50e02cc056",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Image-1.1",
+      "elea": "1.1.33",
+      "local": "1.1.33",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "0c2f029cb5d13b8846530271548089b3f9fc87c1035d7af8c3dadedabf5aee1a",
+      "hashSemanticsLocal": "0c2f029cb5d13b8846530271548089b3f9fc87c1035d7af8c3dadedabf5aee1a",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.ImageHotspotQuestion-1.8",
+      "elea": "1.8.22",
+      "local": "1.8.34",
+      "comparaisonVersion": -1,
+      "paquets": [
+        "find-the-hotspot-387-387 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "834924281409c2ffbe30313ac455a3bba79d49729d1e8c27ab6f9255b2aa67d3",
+      "hashSemanticsLocal": "834924281409c2ffbe30313ac455a3bba79d49729d1e8c27ab6f9255b2aa67d3",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 34,
+          "elea": 22
+        },
+        {
+          "chemin": "$.coreApi.minorVersion",
+          "local": 28,
+          "elea": 23
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.ImageHotspots-1.11",
+      "elea": "1.11.6",
+      "local": "1.11.6",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "image-hotspots-386-386 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "ef551187f6772bf2630b13e7664f7ca4a2949b876be7eeaa5f485f56fe33e225",
+      "hashSemanticsLocal": "ef551187f6772bf2630b13e7664f7ca4a2949b876be7eeaa5f485f56fe33e225",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.ImageMultipleHotspotQuestion-1.0",
+      "elea": "1.0.1",
+      "local": "1.0.1",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "find-multiple-hotspots-388-388 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "6f4f8d971f3e36667e9182002e0349175058acd79ac71ed6b0e94d9dd3c99ba3",
+      "hashSemanticsLocal": "6f4f8d971f3e36667e9182002e0349175058acd79ac71ed6b0e94d9dd3c99ba3",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.InteractiveBook-1.15",
+      "elea": "1.15.0",
+      "local": "1.15.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "interactive-book-384-384 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "0e7c0817e04ce006b7e77ca0ade6fc988b8c458f76c68700161f02eaaac63f02",
+      "hashSemanticsLocal": "0e7c0817e04ce006b7e77ca0ade6fc988b8c458f76c68700161f02eaaac63f02",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.InteractiveVideo-1.28",
+      "elea": "1.28.35",
+      "local": "1.28.36",
+      "comparaisonVersion": -1,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "e0469c380d03f5ffca6bb4e81536b7dc8405ca501e5b6fc954448c7d8a46cf50",
+      "hashSemanticsLocal": "e0469c380d03f5ffca6bb4e81536b7dc8405ca501e5b6fc954448c7d8a46cf50",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 36,
+          "elea": 35
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.JoubelUI-1.3",
+      "elea": "1.3.45",
+      "local": "1.3.45",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "find-multiple-hotspots-388-388 (1).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "find-the-words-378-378 (2).h5p",
+        "flashcards-364-364 (2).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Link-1.3",
+      "elea": "1.3.25",
+      "local": "1.3.25",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "ea736df60b3ba0929f2adf037223d9b872119e73a79991e3a41f2c4d7ef72875",
+      "hashSemanticsLocal": "ea736df60b3ba0929f2adf037223d9b872119e73a79991e3a41f2c4d7ef72875",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.MarkTheWords-1.11",
+      "elea": "1.11.24",
+      "local": "1.11.24",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "question-set-365-365 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "700a86f67f7b6c80f0a5f47054518f5860c0c1664d6b53684b8834bbf2cd6004",
+      "hashSemanticsLocal": "700a86f67f7b6c80f0a5f47054518f5860c0c1664d6b53684b8834bbf2cd6004",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.MaterialDesignIcons-1.0",
+      "elea": "1.0.0",
+      "local": "1.0.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.MathDisplay-1.0",
+      "elea": "1.0.7",
+      "local": "1.0.6",
+      "comparaisonVersion": 1,
+      "paquets": [
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 6,
+          "elea": 7
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.MultiChoice-1.16",
+      "elea": "1.16.27",
+      "local": "1.16.27",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "57435fbb96627f7de33e3289d266aa78cccb95148ff44141818a06c2d1ea4f55",
+      "hashSemanticsLocal": "57435fbb96627f7de33e3289d266aa78cccb95148ff44141818a06c2d1ea4f55",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.MultiMediaChoice-0.3",
+      "elea": "0.3.77",
+      "local": "0.3.77",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "7453d3223f7e2e8f35bb2a33dcb136af7bd98964fae3e67f87cc6f454383c82c",
+      "hashSemanticsLocal": "7453d3223f7e2e8f35bb2a33dcb136af7bd98964fae3e67f87cc6f454383c82c",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.Nil-1.0",
+      "elea": "1.0.14",
+      "local": "1.0.14",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "415fafd57e62fb46cb39f1a39c8872fad1d981ee2ab16b08144a544de6a21c65",
+      "hashSemanticsLocal": "415fafd57e62fb46cb39f1a39c8872fad1d981ee2ab16b08144a544de6a21c65",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.OpenEndedQuestion-1.0",
+      "elea": "1.0.28",
+      "local": "1.0.28",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "6579f54e0651ef84e49b7a643603ff7e2b56faa980a9af3ee152dc3a0ccaee60",
+      "hashSemanticsLocal": "6579f54e0651ef84e49b7a643603ff7e2b56faa980a9af3ee152dc3a0ccaee60",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Question-1.4",
+      "elea": "1.4.10",
+      "local": "1.4.10",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "find-multiple-hotspots-388-388 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Question-1.5",
+      "elea": "1.5.53",
+      "local": "1.5.53",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.QuestionSet-1.21",
+      "elea": "1.21.13",
+      "local": "1.21.13",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "b536484024fd2d71a36cb2ed928147273e58230d3ec28cef7bb8710a8570550e",
+      "hashSemanticsLocal": "b536484024fd2d71a36cb2ed928147273e58230d3ec28cef7bb8710a8570550e",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.Questionnaire-1.3",
+      "elea": "1.3.11",
+      "local": "1.3.11",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "01036e73f4f535d59b5f929b09324b0e4d2c7be0faeb5631efec15ad7d06e994",
+      "hashSemanticsLocal": "01036e73f4f535d59b5f929b09324b0e4d2c7be0faeb5631efec15ad7d06e994",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Shape-1.0",
+      "elea": "1.0.5",
+      "local": "1.0.5",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "e2a66a90279132fa11b3f2a373a619b855d503aef5986ec2d9f7f2477e298849",
+      "hashSemanticsLocal": "e2a66a90279132fa11b3f2a373a619b855d503aef5986ec2d9f7f2477e298849",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.SimpleMultiChoice-1.1",
+      "elea": "1.1.22",
+      "local": "1.1.22",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "70544f0f9bcdd2ba491adc38c93f09eb4d7c9366573b6fe7bca07543a662319c",
+      "hashSemanticsLocal": "70544f0f9bcdd2ba491adc38c93f09eb4d7c9366573b6fe7bca07543a662319c",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.SingleChoiceSet-1.11",
+      "elea": "1.11.88",
+      "local": "1.11.88",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "single-choice-set-380-380 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "5a83474907fff81233b3f1aa326da80a3fac5c9ddde274af4e1e66271f50b07a",
+      "hashSemanticsLocal": "5a83474907fff81233b3f1aa326da80a3fac5c9ddde274af4e1e66271f50b07a",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.SortParagraphs-0.11",
+      "elea": "0.11.9",
+      "local": "0.11.9",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "sort-the-paragraphs-379-379 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "2b958078040bada56581d08c5706f9d2f28db4bcfdab322dfe1a60cddbcce34f",
+      "hashSemanticsLocal": "2b958078040bada56581d08c5706f9d2f28db4bcfdab322dfe1a60cddbcce34f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Summary-1.10",
+      "elea": "1.10.32",
+      "local": "1.10.32",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "summary-371-371 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "eaea19c7827281e6344bca76df1c2ab64e8c4be2f748bc88edf5ed3077250367",
+      "hashSemanticsLocal": "eaea19c7827281e6344bca76df1c2ab64e8c4be2f748bc88edf5ed3077250367",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Table-1.2",
+      "elea": "1.2.8",
+      "local": "1.2.8",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "898c15835bc10cc8116774943915bf2c7f628dba9a0a0e03afd694fa7e3140e1",
+      "hashSemanticsLocal": "898c15835bc10cc8116774943915bf2c7f628dba9a0a0e03afd694fa7e3140e1",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Text-1.1",
+      "elea": "1.1.24",
+      "local": "1.1.24",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "image-hotspots-386-386 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "15b83b529799e0e09bdd0eec1d0ccef276872feb13305ee0fd0ba261952b4c0f",
+      "hashSemanticsLocal": "15b83b529799e0e09bdd0eec1d0ccef276872feb13305ee0fd0ba261952b4c0f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.TextUtilities-1.3",
+      "elea": "1.3.0",
+      "local": "1.3.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "dictation-381-381 (1).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "question-set-365-365 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Timeline-1.1",
+      "elea": "1.1.25",
+      "local": "1.1.27",
+      "comparaisonVersion": -1,
+      "paquets": [
+        "timeline-363-363 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "82ed3f55e7723778bb31cc71f94d4e5337aaaf30cb67e77befbaeb993bfa3d75",
+      "hashSemanticsLocal": "82ed3f55e7723778bb31cc71f94d4e5337aaaf30cb67e77befbaeb993bfa3d75",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 27,
+          "elea": 25
+        },
+        {
+          "chemin": "$.coreApi",
+          "local": {
+            "majorVersion": 1,
+            "minorVersion": 28
+          },
+          "elea": null
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Timer-0.4",
+      "elea": "0.4.2",
+      "local": "0.4.2",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "find-the-words-378-378 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Transition-1.0",
+      "elea": "1.0.4",
+      "local": "1.0.4",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "find-multiple-hotspots-388-388 (1).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "find-the-words-378-378 (2).h5p",
+        "flashcards-364-364 (2).h5p",
+        "image-hotspots-386-386 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.TrueFalse-1.8",
+      "elea": "1.8.21",
+      "local": "1.8.21",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "0f4da26f5cd452e84b1c042608f999e588e4e9e0033030d18fc50500b873a22f",
+      "hashSemanticsLocal": "0f4da26f5cd452e84b1c042608f999e588e4e9e0033030d18fc50500b873a22f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.TwitterUserFeed-1.0",
+      "elea": "1.0.21",
+      "local": "1.0.21",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "3622b953aae78826ce6769eedd32a26c0453d93244ecabda5ff93d0940151a80",
+      "hashSemanticsLocal": "3622b953aae78826ce6769eedd32a26c0453d93244ecabda5ff93d0940151a80",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Video-1.6",
+      "elea": "1.6.79",
+      "local": "1.6.73",
+      "comparaisonVersion": 1,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "e038ddb4e62056579d3dee021edc3b35fc29a73be961856efca349b40c72d93f",
+      "hashSemanticsLocal": "e038ddb4e62056579d3dee021edc3b35fc29a73be961856efca349b40c72d93f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 73,
+          "elea": 79
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.AudioRecorder-1.0",
+      "elea": "1.0.11",
+      "local": "1.0.11",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "dictation-381-381 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.ColorSelector-1.3",
+      "elea": "1.3.1",
+      "local": "1.3.1",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "chart-382-382 (1).h5p",
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "image-hotspots-386-386 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.CoursePresentation-1.26",
+      "elea": "1.26.6",
+      "local": "1.26.6",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.DragQuestion-1.10",
+      "elea": "1.10.27",
+      "local": "1.10.27",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5PEditor.Duration-1.1",
+      "elea": "1.1.14",
+      "local": "1.1.14",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.ImageCoordinateSelector-1.2",
+      "elea": "1.2.7",
+      "local": "1.2.7",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "image-hotspots-386-386 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.ImageHotspotQuestion-1.8",
+      "elea": "1.8.12",
+      "local": "1.8.12",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "find-the-hotspot-387-387 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.ImageMultipleHotspotQuestion-1.0",
+      "elea": "1.0.0",
+      "local": "1.0.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "find-multiple-hotspots-388-388 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.InteractiveVideo-1.26",
+      "elea": "1.26.3",
+      "local": "1.26.3",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.QuestionSetTextualEditor-1.3",
+      "elea": "1.3.18",
+      "local": "1.3.18",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.RadioGroup-1.1",
+      "elea": "1.1.4",
+      "local": "1.1.4",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.RadioSelector-1.2",
+      "elea": "1.2.2",
+      "local": "1.2.2",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.RangeList-1.0",
+      "elea": "1.0.13",
+      "local": "1.0.13",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.SelectToggleFields-1.1",
+      "elea": "1.1.1",
+      "local": "1.1.1",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.Shape-1.0",
+      "elea": "1.0.0",
+      "local": "1.0.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.ShowWhen-1.0",
+      "elea": "1.0.9",
+      "local": "1.0.9",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "image-hotspots-386-386 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.SingleChoiceSetTextualEditor-1.0",
+      "elea": "1.0.10",
+      "local": "1.0.10",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "single-choice-set-380-380 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.SummaryTextualEditor-1.1",
+      "elea": "1.1.12",
+      "local": "1.1.12",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "summary-371-371 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.TableList-1.0",
+      "elea": "1.0.4",
+      "local": "1.0.4",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.Timecode-1.2",
+      "elea": "1.2.14",
+      "local": "1.2.14",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.UrlField-1.2",
+      "elea": "1.2.2",
+      "local": "1.2.2",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.VerticalTabs-1.3",
+      "elea": "1.3.14",
+      "local": "1.3.14",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "essay-370-370 (2).h5p",
+        "flashcards-364-364 (2).h5p",
+        "image-hotspots-386-386 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.Wizard-1.2",
+      "elea": "1.2.17",
+      "local": "1.2.17",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "find-multiple-hotspots-388-388 (1).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "Shepherd-1.0",
+      "elea": "1.0.7",
+      "local": "1.0.7",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "interactive-video-385-385 (1).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "TimelineJS-1.1",
+      "elea": "1.1.1",
+      "local": "1.1.1",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "timeline-363-363 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "jQuery.ui-1.10",
+      "elea": "1.10.22",
+      "local": "1.10.22",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "course-presentation-383-383 (1).h5p",
+        "crossword-369-369 (2).h5p",
+        "dialog-cards-362-362 (2).h5p",
+        "dictation-381-381 (1).h5p",
+        "drag-and-drop-373-373 (2).h5p",
+        "drag-the-words-372-372 (2).h5p",
+        "essay-370-370 (2).h5p",
+        "fill-in-the-blanks-374-374 (2).h5p",
+        "find-the-hotspot-387-387 (1).h5p",
+        "interactive-book-384-384 (1).h5p",
+        "interactive-video-385-385 (1).h5p",
+        "mark-the-words-375-375 (2).h5p",
+        "multiple-choice-377-377 (2).h5p",
+        "question-set-365-365 (2).h5p",
+        "question-set-366-366 (2).h5p",
+        "question-set-367-367 (2).h5p",
+        "single-choice-set-380-380 (1).h5p",
+        "sort-the-paragraphs-379-379 (1).h5p",
+        "summary-371-371 (2).h5p",
+        "true-false-question-376-376 (2).h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    }
+  ]
+}

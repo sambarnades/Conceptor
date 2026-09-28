@@ -1,0 +1,16 @@
+{
+  "autoContinue": true,
+  "timeoutCorrect": 0,
+  "timeoutWrong": 2300,
+  "mauvaiseReponse": "Rome",
+  "bonneReponse": "Paris",
+  "scoresObserves": [
+    "0/1",
+    "1/1"
+  ],
+  "retourEncoreVisibleApresMs": 171,
+  "cours": 794,
+  "activite": 13839,
+  "sha256": "d2fd87b28e0ab2f995a3a748a13c86cc8d196b1c350cdccd7385af00ce624972",
+  "enregistrementNatif": true
+}

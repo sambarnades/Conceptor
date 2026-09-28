@@ -149,6 +149,10 @@
           "alt": "The grid of activity tiles available in Caramel."
         },
         {
+          "type": "tip",
+          "text": "Below the form, **An activity** shows these tiles; **A pathway** opens the workshop that assembles several activities into a complete course (see “Create and reopen a complete course”)."
+        },
+        {
           "type": "h",
           "text": "Two main families"
         },
@@ -623,6 +627,106 @@
       ]
     },
     {
+      "id": "parcours",
+      "icon": "grid",
+      "title": "Create and reopen a complete course",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "In Caramel, **A pathway** creates a course for Éléa, Magistère or Moodle: several activities organised into sections in one **.mbz** file. Start with the usual form: topic, audience and attached documents."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-cadrage.webp",
+          "alt": "The form, the “A pathway” switch and the setup: platform, delivery mode and scope."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-trames.webp",
+          "alt": "Choosing a template: each card shows its stages, levels and activities."
+        },
+        {
+          "type": "tip",
+          "text": "In the Caramelia menu, **Create a course** opens the workshop directly, without an AI request. If a draft exists, **Resume my course** reopens it. Existing fields and sources are preserved. Review the setup and plan in the workshop before starting generation."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Choose **A pathway** below the form, then the platform, delivery mode, scope and template. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.",
+            "In **Plan**, edit the title, overall objective, key concepts, stages and activities. Move activities with the arrows or by dragging their thumbnail. **Instructions and stage** adjusts the generation instructions. Teaching prompts help you review without enforcing a model. The limit is **12 activities**.",
+            "In an **Interactive Video** card, paste the video link. The transcript is retrieved during generation; you can also paste it manually. For **Image Hotspots**, **Find the Hotspot** or **Find Multiple Hotspots**, attach an image to the card: it will be analysed before generation. You can also add these sources during the generation stage. An activity without its source waits while the others continue. The scenario keeps activity images and links; documents attached to the home form remain separate. For a **Web link**, paste the resource’s address into the card: the AI writes the reading instructions without opening the page.",
+            "Approve the plan to start generation. You can stop, resume missing activities or regenerate one activity. The **Do not generate this activity** lock reserves its content for manual entry: AI will not fill it. A failed regeneration keeps the previous content. Missing activities are listed before export.",
+            "Once content is ready, **Edit the content** opens the usual editor and **Preview** opens its player. **Review the course** lets you review them in order with **Previous** and **Next**. Save edits to include them in the plan and exports. Changing a plan instruction does not rewrite existing content.",
+            "In **Delivery**, download the **.mbz** and use your platform’s course import or restore feature. Do not upload this course file into an H5P activity. The course also appears in the notifications area: **View** opens the **Course overview**, with the welcome text, each step and its activities, which you can review and edit before downloading again. Keep the **.json** to return to Caramel. The lesson plan and activity details can be exported as **DOCX, ODT or PDF**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-plan.webp",
+          "alt": "The plan, reviewed before anything is generated: objective, stages, activities, durations and plan review."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-fabrication.webp",
+          "alt": "Production: activities are generated one after another; each can be previewed, edited or generated again."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-livraison.webp",
+          "alt": "Delivery: the .mbz course and how to import it, the printable documents and the .json scenario."
+        },
+        {
+          "type": "tip",
+          "text": "**Export the scenario (.json)** saves the plan and completed content in a **.json** file. The **Customize the plan** button, next to **Compose the plan**, opens the same window as for an activity: copy the prompt into the AI of your choice, then paste its response back. **Open a scenario** is in this window; the **.json** file is downloaded at delivery, next to the **.mbz**. The draft is kept only in this tab: export the scenario before closing it. The scenario excludes the topic, audience and attachments; enter them again before generating new content."
+        },
+        {
+          "type": "tip",
+          "text": "On Éléa, open **Course settings**, enable the progress map and use the **+ Add my image** tile to choose your own background. You can replace or remove the image and return to the suggested themes. The background is saved in the **.json** scenario and included in the **.mbz** course. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG or TIFF · Max. 12 MB. Converted automatically, without cropping."
+        },
+        {
+          "type": "warn",
+          "text": "The progression map is specific to Éléa. The map and progressive access are optional and still require checks in actual platform use. The differentiation template does not create automatic score-based branches. Collaboration takes place on the platform."
+        },
+        {
+          "type": "h",
+          "text": "Platform modules"
+        },
+        {
+          "type": "p",
+          "text": "The plan also offers the modules of your Éléa, Magistère or Moodle platform, grouped in each activity’s menu under **Platform modules**. The AI writes the parts that the platform keeps on import:"
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-mosaique.webp",
+          "alt": "The activity-type mosaic: activities generated by Caramel, then the platform’s own modules."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Forum**, **Poll**, **Questionnaire**, **Survey (Feedback)**: get students discussing, and collect opinions, a diagnostic or a review.",
+            "**Lesson**: pages to read, some ending with a question that only lets students move on with the right answer. The **IMS content package** — pages to read with their table of contents, written entirely by Caramel — is chosen from the mosaic; the plan does not suggest it.",
+            "**Workshop**: produce work, then assess classmates’ work with a set of criteria.",
+            "**Board**, **Wiki**, **Collaborative document**, **Class glossary** and **Database**: write and build together; they arrive empty, with their instructions.",
+            "**Virtual classroom**, **Group choice**, **File sharing**, **Web link**: meet live, form teams, submit files, consult an online resource.",
+            "**Depending on the platform**: Etherpad and Word cloud on Magistère, Feedback on Éléa and Moodle. Capytale, GeoGebra, a SCORM package or a file still have to be added manually after import into Éléa, Magistère or Moodle."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "When a module needs a setting on the platform (workshop phases, virtual classroom time, groups), Caramel writes it in a **To do before opening the course** note, hidden from students, at the top of the imported course. Delete it once these settings are done."
+        },
+        {
+          "type": "p",
+          "text": "To explore further: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) helps you reflect on learning activities. Caramel’s seven families, including **Discuss** and **Collaborate**, are simplified guides based on tools, not the six ABC types or an assessment of your teaching."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-miroir.webp",
+          "alt": "What this pathway works on: the seven families, and those that are missing."
+        }
+      ]
+    },
+    {
       "id": "integrate",
       "icon": "upload",
       "title": "Integrate into Éléa / Magistère / Moodle",
@@ -820,6 +924,10 @@
         {
           "type": "plain",
           "text": "To answer accurately, Caramélia relies on a **document base** (a \"RAG\"): instead of improvising, she **draws reliable excerpts** from Caramel's documentation and uses the exact labels of the buttons you see on screen. (The **RAG** is also what makes it possible to ground the generation in the official curriculum — see the step \"Describe your need\".)"
+        },
+        {
+          "type": "tip",
+          "text": "In the Caramelia menu, **Create a course** opens the workshop directly, without an AI request. If a draft exists, **Resume my course** reopens it. Existing fields and sources are preserved. Review the setup and plan in the workshop before starting generation."
         }
       ]
     },

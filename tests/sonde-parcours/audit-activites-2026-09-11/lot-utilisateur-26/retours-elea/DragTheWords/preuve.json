@@ -1,0 +1,69 @@
+{
+  "numero": 3,
+  "module": "DragTheWords",
+  "recu": true,
+  "fichier_telechargement": "03-DragTheWords.h5p",
+  "sha256_source": "88b2d552a0086d5fffae27b2bcfe0e10551eab9f8cb68b214a9103312370c9f5",
+  "sha256_retour": "671eb71ac35a594dd3164929cdb16ad54305aed60fc4e26e8fc4683851cb19cf",
+  "source_comparee": "a-importer/03-DragTheWords.h5p",
+  "titre": "RECETTE 03 — Glisser les mots",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "taskDescription"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5P.Components",
+      "version": "1.0.97"
+    },
+    {
+      "nom": "H5P.DragText",
+      "version": "1.10.50"
+    },
+    {
+      "nom": "H5PEditor.RangeList",
+      "version": "1.0.13"
+    },
+    {
+      "nom": "H5PEditor.ShowWhen",
+      "version": "1.0.9"
+    },
+    {
+      "nom": "H5PEditor.TableList",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "H5P.FontIcons",
+      "version": "1.0.11"
+    },
+    {
+      "nom": "H5P.JoubelUI",
+      "version": "1.3.45"
+    },
+    {
+      "nom": "H5P.Question",
+      "version": "1.5.53"
+    },
+    {
+      "nom": "H5P.Transition",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "jQuery.ui",
+      "version": "1.10.22"
+    }
+  ],
+  "medias_sources": [],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 1,
+    "normalisation_html": 8,
+    "ajout_natif": 0,
+    "retrait_natif": 0,
+    "taille_liste": 0
+  }
+}

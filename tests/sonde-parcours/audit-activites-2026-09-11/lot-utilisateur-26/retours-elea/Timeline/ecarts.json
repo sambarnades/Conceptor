@@ -1,0 +1,38 @@
+[
+  {
+    "chemin": "behaviour",
+    "type": "retrait_natif",
+    "avant": {
+      "enableRetry": true,
+      "enableSolutionsButton": true
+    }
+  },
+  {
+    "chemin": "overallFeedback",
+    "type": "retrait_natif",
+    "avant": [
+      {
+        "from": 0,
+        "to": 100,
+        "feedback": ""
+      }
+    ]
+  },
+  {
+    "chemin": "timeline.asset",
+    "type": "ajout_natif",
+    "apres": {}
+  },
+  {
+    "chemin": "timeline.date[0].headline",
+    "type": "modification",
+    "avant": "Lire",
+    "apres": "Lire RELU"
+  },
+  {
+    "chemin": "timeline.text",
+    "type": "normalisation_html",
+    "avant": "<p>Une séance en trois temps.</p>",
+    "apres": "Une séance en trois temps."
+  }
+]

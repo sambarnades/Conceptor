@@ -1,0 +1,138 @@
+{
+  "cas": {
+    "id": "inversee-en",
+    "lang": "en",
+    "platform": "moodle",
+    "format": "hybride",
+    "ampleur": "courte",
+    "trame": "inversee",
+    "qui": "University economics lecturer",
+    "quoi": "Understand supply and demand, prepare independently then solve a case together in class."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Understand supply and demand, prepare independently then solve a case together in class.\nL'enseignant : University economics lecturer\nPlateforme : Moodle\nModalité : hybride\nArticuler explicitement des moments à distance et en présence : préciser où et quand se déroule chaque activité, et comment elle prépare la suivante.\nAmpleur : One session\n\nTrame imposée : « Flipped classroom » — The video and its check at home, the task you cannot do alone in class, the review afterwards.\nElle compte EXACTEMENT 3 étapes, contenant respectivement 2, 1, 1 activité(s). Respecte ce découpage à la lettre.\nIntention pédagogique : À distance : découvrir et vérifier la compréhension ; en présence : résoudre ensemble une tâche ; après : faire le bilan. Indiquer ces moments dans les consignes.\nPalier de difficulté imposé par étape : decouverte, transfert, entrainement.\nTypes d'activité suggérés par la trame, étape par étape : étape 1 → CoursePresentation, SingleChoiceSet ; étape 2 → Devoir ; étape 3 → test_elea. Suis-les sauf si le sujet appelle clairement autre chose.\n\nBUDGET : 4 activités prévues, dans la limite de 4 à 4 pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.\nSauf durée explicite dans la demande ou la trame, viser une séance de 30 à 55 minutes de travail. Alléger les tâches plutôt que multiplier les exercices.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Timeline (Timeline)\n- Flashcards : Flashcards (Flashcards)\n- QuizSet : Mixed Quiz (Quiz (Question Set))\n- QuizSetQCM : MCQ Quiz (Quiz (Question Set))\n- QuizSetVF : True/False Quiz (Quiz (Question Set))\n- Glossary : Glossary (Accordion)\n- Crossword : Crossword (Crosswords)\n- Essay : Essay (Essay)\n- Summary : Summary (Summary)\n- DragTheWords : Drag the Words (Drag the Words)\n- DragAndDrop : Drag and Drop (Drag and Drop)\n- FillInTheBlanks : Fill in the Blanks (Fill in the Blanks)\n- MarkTheWords : Mark the Words (Mark the Words)\n- TrueFalse : True/False (True/False Question)\n- MultipleChoice : Multiple Choice (Multiple Choice)\n- FindTheWords : Find the Words (Find the Words)\n- SortParagraphs : Sort the Paragraphs (Sort the Paragraphs)\n- SingleChoiceSet : Single Choice Set (Single Choice Set)\n- DialogCards : Dialog Cards (Dialog Cards)\n- Dictation : Dictation (Dictation)\n- Chart : Chart (Chart)\n- CoursePresentation : Course Presentation (CoursePresentation)\n- InteractiveBook : Interactive Book (InteractiveBook)\n- test_elea : Quiz (test_elea)\n- Page : Page (Page)\n- Livre : Book (Livre)\n- Devoir : Assignment (Devoir)\n- parcours_etiquette : Linking text (label)\n- parcours_forum : Forum (forum)\n- parcours_sondage : Poll (choice)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 3 à 6 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en English.\n- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 4 à 4 activités pour TOUT le parcours, répartition 2 + 1 + 1. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"transfert\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788901",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Supply and Demand Explained\",\n  \"objectifGeneral\": \"Evaluate the accuracy of supply and demand analyses when applied to a real-world case study.\",\n  \"notionsPivots\": [\n    \"demand curve\",\n    \"supply curve\",\n    \"equilibrium price\",\n    \"market forces\",\n    \"scarcity\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Discover at home\",\n      \"objectif\": \"Identify core principles of supply and demand using provided resources.\",\n      \"cartes\": [\n        {\n          \"titre\": \"Watch the instructional video\",\n          \"objectif\": \"Explore fundamental supply and demand concepts\",\n          \"module\": \"CoursePresentation\",\n          \"palier\": \"decouverte\",\n          \"duree\": 20,\n          \"consigne\": \"Watch the 10-minute video explaining supply and demand curves, equilibrium price, and market forces. Note key terms in your notebook.\"\n        },\n        {\n          \"titre\": \"Complete the self-check quiz\",\n          \"objectif\": \"Confirm understanding of supply and demand concepts\",\n          \"module\": \"SingleChoiceSet\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"Answer 5 multiple-choice questions based directly on the video content to verify comprehension.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Apply in class\",\n      \"objectif\": \"Collaboratively solve a supply and demand case study\",\n      \"cartes\": [\n        {\n          \"titre\": \"Case study analysis\",\n          \"objectif\": \"Solve a problem that required advanced application\",\n          \"module\": \"Devoir\",\n          \"palier\": \"transfert\",\n          \"duree\": 30,\n          \"consigne\": \"In small groups, analyze a real-world case study where supply constraints impact demand. Prepare graphical and written justifications for your solution to present.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Review after class\",\n      \"objectif\": \"Assess the accuracy of solutions and correct misconceptions\",\n      \"cartes\": [\n        {\n          \"titre\": \"Mastery check\",\n          \"objectif\": \"Demonstrate retained knowledge of supply and demand analysis\",\n          \"module\": \"test_elea\",\n          \"palier\": \"entrainement\",\n          \"duree\": 15,\n          \"consigne\": \"Complete a 10-question quiz that mixes graph interpretation and real-world application scenarios to evaluate your understanding.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 561,
+      "prompt_tokens": 1879,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "en",
+    "exporteLe": "2026-09-10T22:15:31.689Z",
+    "cadrage": {
+      "platform": "moodle",
+      "format": "hybride",
+      "ampleur": "courte",
+      "trame": "inversee"
+    },
+    "plan": {
+      "titre": "Supply and Demand Explained",
+      "objectifGeneral": "Evaluate the accuracy of supply and demand analyses when applied to a real-world case study.",
+      "notionsPivots": [
+        "demand curve",
+        "supply curve",
+        "equilibrium price",
+        "market forces",
+        "scarcity"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Discover at home",
+          "objectif": "Identify core principles of supply and demand using provided resources.",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Watch the instructional video",
+              "objectif": "Explore fundamental supply and demand concepts",
+              "consigne": "Watch the 10-minute video explaining supply and demand curves, equilibrium price, and market forces. Note key terms in your notebook.",
+              "module": "CoursePresentation",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c3",
+              "titre": "Complete the self-check quiz",
+              "objectif": "Confirm understanding of supply and demand concepts",
+              "consigne": "Answer 5 multiple-choice questions based directly on the video content to verify comprehension.",
+              "module": "SingleChoiceSet",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 10,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e4",
+          "titre": "Apply in class",
+          "objectif": "Collaboratively solve a supply and demand case study",
+          "cartes": [
+            {
+              "id": "c5",
+              "titre": "Case study analysis",
+              "objectif": "Solve a problem that required advanced application",
+              "consigne": "In small groups, analyze a real-world case study where supply constraints impact demand. Prepare graphical and written justifications for your solution to present.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 30,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e6",
+          "titre": "Review after class",
+          "objectif": "Assess the accuracy of solutions and correct misconceptions",
+          "cartes": [
+            {
+              "id": "c7",
+              "titre": "Mastery check",
+              "objectif": "Demonstrate retained knowledge of supply and demand analysis",
+              "consigne": "Complete a 10-question quiz that mixes graph interpretation and real-world application scenarios to evaluate your understanding.",
+              "module": "test_elea",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "Building starts with this click: each activity is generated one at a time, in order, in front of you."
+}

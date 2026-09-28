@@ -1,0 +1,92 @@
+[
+  {
+    "id": "graphique-secteurs",
+    "contenu": {
+      "graphMode": "pieChart",
+      "figureDefinition": "Répartition fictive d’une heure de lecture — relue dans Sucrerie",
+      "listOfTypes": [
+        {
+          "text": "Lecture individuelle",
+          "value": 0.125,
+          "color": "#336699",
+          "fontColor": "#ffffff"
+        },
+        {
+          "text": "Lecture en binôme",
+          "value": 0.375,
+          "color": "#663399",
+          "fontColor": "#ffffff"
+        },
+        {
+          "text": "Discussion collective",
+          "value": 0.5,
+          "color": "#996600",
+          "fontColor": "#fff"
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      },
+      "title": "graphique-secteurs"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "graphique-barres",
+    "contenu": {
+      "graphMode": "barChart",
+      "figureDefinition": "Mesures fictives — petites valeurs décimales — relues dans Sucrerie",
+      "listOfTypes": [
+        {
+          "text": "Mesure A",
+          "value": 0.0001,
+          "color": "#336699",
+          "fontColor": "#ffffff"
+        },
+        {
+          "text": "Mesure B",
+          "value": 0.0005,
+          "color": "#663399",
+          "fontColor": "#ffffff"
+        },
+        {
+          "text": "Mesure C",
+          "value": 0.0012,
+          "color": "#996600",
+          "fontColor": "#fff"
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      },
+      "title": "graphique-barres"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

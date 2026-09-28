@@ -1,0 +1,75 @@
+{
+  "imageHotspotQuestion": {
+    "backgroundImageSettings": {
+      "path": "",
+      "copyright": {
+        "license": "U"
+      }
+    },
+    "hotspotSettings": {
+      "hotspot": [
+        {
+          "userSettings": {
+            "correct": false,
+            "feedbackText": "Non : le pétale sert à attirer les insectes pollinisateurs."
+          },
+          "computedSettings": {
+            "x": 21.5,
+            "y": 12,
+            "width": 20,
+            "height": 20,
+            "figure": "circle"
+          }
+        },
+        {
+          "userSettings": {
+            "correct": false,
+            "feedbackText": "Non : l&#039;étamine est l&#039;organe mâle, elle produit le pollen."
+          },
+          "computedSettings": {
+            "x": 45.25,
+            "y": 41.75,
+            "width": 13.5,
+            "height": 13.5,
+            "figure": "circle"
+          }
+        },
+        {
+          "userSettings": {
+            "correct": true,
+            "feedbackText": "Bravo ! Le pistil, au centre de la fleur, est bien l&#039;organe femelle."
+          },
+          "computedSettings": {
+            "x": 43.25,
+            "y": 56.25,
+            "width": 13.5,
+            "height": 13.5,
+            "figure": "circle"
+          }
+        },
+        {
+          "userSettings": {
+            "correct": false,
+            "feedbackText": "Non : la tige soutient la fleur et conduit la sève."
+          },
+          "computedSettings": {
+            "x": 37,
+            "y": 76,
+            "width": 20,
+            "height": 20,
+            "figure": "circle"
+          }
+        }
+      ],
+      "taskDescription": "Cliquez sur l&#039;organe femelle de la fleur.",
+      "noneSelectedFeedback": "Vous n&#039;avez cliqué sur aucune zone connue. Essayez encore !",
+      "showFeedbackAsPopup": true,
+      "l10n": {
+        "retryText": "Recommencer",
+        "closeText": "Fermer"
+      }
+    }
+  },
+  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+}

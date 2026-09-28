@@ -1,0 +1,188 @@
+[
+  {
+    "id": "texte-trous-manuel",
+    "contenu": {
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-2dbfd3b1.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "text": "<p dir=\"ltr\" style=\"text-align: left;\">Complète les capitales. RELU dans Sucrerie.</p>",
+      "questions": [
+        "France : *Paris:La Seine*. Italie : *Rome/Roma:Le Colisée*."
+      ],
+      "showSolutions": "Afficher la solution",
+      "tryAgain": "Recommencer",
+      "checkAnswer": "Vérifier",
+      "notFilledOut": "Veuillez remplir tous les champs.",
+      "answerIsCorrect": "&#039;:ans&#039; est correct",
+      "answerIsWrong": "&#039;:ans&#039; est incorrect",
+      "answeredCorrectly": "Réponse correcte",
+      "answeredIncorrectly": "Réponse incorrecte",
+      "solutionLabel": "Réponse correcte :",
+      "inputLabel": "Champ @num sur @total",
+      "inputHasTipLabel": "Indice disponible",
+      "tipLabel": "Indice",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "submitAnswer": "Valider",
+      "behaviour": {
+        "enableSolutionsButton": true,
+        "autoCheck": false,
+        "caseSensitive": false,
+        "showSolutionsRequiresInput": false,
+        "separateLines": false,
+        "enableRetry": true,
+        "allowRetryIfCorrect": true,
+        "confirmCheckDialog": true,
+        "confirmRetryDialog": true,
+        "acceptSpellingErrors": false,
+        "enableCheckButton": true
+      },
+      "confirmCheck": {
+        "header": "Capitales relues ?",
+        "body": "Relis tes réponses. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la vérification"
+      },
+      "confirmRetry": {
+        "header": "Reprendre les capitales ?",
+        "body": "Êtes-vous sûr de vouloir recommencer ?",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la reprise"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "a11yCheckingModeHeader": "Mode de vérification",
+      "a11yHeader": "Mode de vérification",
+      "title": "Texte à trous — manuel"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "texte-trous-automatique",
+    "contenu": {
+      "media": {
+        "type": {
+          "library": "H5P.Image 1.1",
+          "params": {
+            "file": {
+              "path": "images/image-2dbfd3b1.jpg",
+              "mime": "image/jpeg",
+              "width": 800,
+              "height": 450
+            },
+            "alt": "Zones un, deux et trois",
+            "decorative": false,
+            "contentName": "Image",
+            "expandImage": "Agrandir l&#039;image",
+            "minimizeImage": "Réduire l&#039;image"
+          },
+          "subContentId": "63e60b42-e015-5c3a-8f6b-664519729191",
+          "metadata": {
+            "title": "Image de recette",
+            "license": "PD",
+            "contentType": "Image"
+          }
+        },
+        "disableImageZooming": false
+      },
+      "text": "<p dir=\"ltr\" style=\"text-align: left;\">Complète les capitales. RELU dans Sucrerie.</p>",
+      "questions": [
+        "France : *Paris:La Seine*. Italie : *Rome/Roma:Le Colisée*."
+      ],
+      "showSolutions": "Afficher la solution",
+      "tryAgain": "Recommencer",
+      "checkAnswer": "Vérifier",
+      "notFilledOut": "Veuillez remplir tous les champs.",
+      "answerIsCorrect": "&#039;:ans&#039; est correct",
+      "answerIsWrong": "&#039;:ans&#039; est incorrect",
+      "answeredCorrectly": "Réponse correcte",
+      "answeredIncorrectly": "Réponse incorrecte",
+      "solutionLabel": "Réponse correcte :",
+      "inputLabel": "Champ @num sur @total",
+      "inputHasTipLabel": "Indice disponible",
+      "tipLabel": "Indice",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "submitAnswer": "Valider",
+      "behaviour": {
+        "enableSolutionsButton": true,
+        "autoCheck": true,
+        "caseSensitive": false,
+        "showSolutionsRequiresInput": true,
+        "separateLines": true,
+        "enableRetry": true,
+        "allowRetryIfCorrect": true,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "acceptSpellingErrors": true,
+        "enableCheckButton": false
+      },
+      "confirmCheck": {
+        "header": "Capitales relues ?",
+        "body": "Relis tes réponses. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la vérification"
+      },
+      "confirmRetry": {
+        "header": "Reprendre les capitales ?",
+        "body": "Êtes-vous sûr de vouloir recommencer ?",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Confirmer la reprise"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "a11yCheckingModeHeader": "Mode de vérification",
+      "a11yHeader": "Mode de vérification",
+      "title": "Texte à trous — automatique"
+    },
+    "annulation": true,
+    "suppressionMedia": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

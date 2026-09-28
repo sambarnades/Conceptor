@@ -5,7 +5,7 @@
 
 ## 1. Le problème
 
-Chaque appel LLM passe par le proxy n8n dont **chaque requête vers `llm.ilaas.fr` a un timeout dur de ~59 s** (`timeout: 59000`, non modifiable côté infra). Mesures (modèle par défaut `mistral-small-4-119b`) :
+Chaque appel LLM passe par le proxy n8n dont **chaque requête vers `llm.ilaas.fr` a un timeout dur de ~59 s** (`timeout: 59000`, non modifiable côté infra). Mesures de 2026-06 (modèle par défaut `mistral-small-4-119b`) — le modèle a depuis gagné en débit, pas en régularité (§2) :
 
 - 5 questions ≈ **45 s** (passe, mais juste).
 - **10 questions ≈ échec** (la génération mono-appel dépasse 59 s, les 3 fallbacks retentent le même bloc trop gros et échouent aussi).
@@ -22,9 +22,11 @@ Le polling client (`POLL_TIMEOUT_MS = 300000`) donne 5 min PAR appel — donc le
   │       intitulés/angles DISTINCTS (un seul cerveau voit tout → couverture + non-répétition).
   │       Ancré sur la RAG programmes (collection 56) car le plan envoie le contexte rag.
   │
-  ├─ PHASE 2 — REMPLISSAGE · ⌈N / batchSize⌉ appels SÉQUENTIELS
+  ├─ PHASE 2 — REMPLISSAGE · ⌈N / batchSize⌉ appels, DEUX DE FRONT
   │     → chaque lot rédige les items de SES intitulés, le plan complet fourni en contexte
   │       (anti-recoupement). Les lots omettent le rag (plus rapides).
+  │     → un lot en échec est REDÉCOUPÉ en moitiés (jusqu'à l'item seul), dans la limite
+  │       d'un budget d'échecs partagé (`fillWithSplit`) — jamais relancé à l'identique.
   │
   ├─ PHASE 3 — FUSION · code déterministe (pas d'IA)
   │     → carcasse (plan retiré) + concat des items dans data[path].
@@ -34,17 +36,37 @@ Le polling client (`POLL_TIMEOUT_MS = 300000`) donne 5 min PAR appel — donc le
 
 Le JSON fusionné est **identique en forme** à ce qu'un appel unique aurait produit → il passe par le `json-healer` puis le processor existant sans traitement spécial.
 
-### Pourquoi séquentiel (et pas parallèle) ?
+### Deux lots de front, lots de 3 (recalibré le 2026-09-28)
 
-Tests empiriques (N=20) : le backend ILaaS **tolère mal la concurrence** — 3 lots simultanés déclenchent des fallbacks en cascade (le modèle principal timeout à 59 s sous charge). La concurrence 3 n'était même pas plus rapide que la 2 tout en consommant le filet de fallback. Le backend étant **partagé** (plusieurs profs en même temps), on ajoute volontairement zéro concurrence intra-génération. Séquentiel + lots de 4 (~36 s/lot) → `fb=0` quasi systématique, filet de sécurité préservé.
+En 2026-06, avec des lots de 4 à ~36 s, trois lots simultanés partaient en cascade : on avait
+choisi le séquentiel. La recalibration du 2026-09-28 (`docs/calibration-batch-2026-09.md`) a
+renversé ce choix. Mistral Small 4 débite désormais ~160 jetons/s et ILaaS encaissait 2, 3 et
+même 4 flux sans perte de débit par flux ; 10 QCM passent de 57-94 s (séquentiel) à ~25 s.
+On reste à **deux** : le backend est partagé entre tous les enseignants.
+
+Le vrai danger n'est pas la durée moyenne mais sa **variabilité**. Un appel dure « ~4 s + jetons
+produits / débit ». Or le débit d'un même modèle varie du simple au double ou au triple d'un
+appel à l'autre, car ILaaS répartit chaque modèle sur plusieurs serveurs hétérogènes. La taille
+du lot se règle donc en **jetons** : un QCM pèse 650-800 jetons, un item de quiz mixte ~500, un
+Vrai/Faux ~230. Un lot doit rester autour de 2 000 jetons (< 45 s même à 50 jetons/s).
 
 | Réglage (`BATCH_CONFIG` dans `js/services/llm-batch.js`) | Valeur | Raison |
 |---|---|---|
-| `threshold` | 5 | N ≤ 5 → 1 appel (inchangé). N > 5 → découpage. |
-| `batchSize` | 4 | ~36 s/lot, marge sous 59 s → `fb=0`. |
+| `threshold` | 5 | Défaut ; les quiz le surchargent (voir §4). |
+| `batchSize` | 3 | 3 QCM ≈ 2 000 jetons ≈ 12 s au débit courant (les lots de 4 montaient à 3 300). |
 | `maxItems` | 40 | Plafond un-clic (au-delà → message vers IA externe). |
-| `concurrency` | 1 | Séquentiel (backend partagé). Passer à 2 = +~30 % vitesse, filet entamé. |
-| `retries` | 1 | Relance client d'un lot/plan en échec, EN PLUS des 3 fallbacks serveur. |
+| `concurrency` | 2 | Deux lots de front. |
+| `retries` | 1 | Relance client d'un plan ou d'un lot d'UN item. Un lot de plusieurs items est redécoupé. |
+| `maxFailures` | 4 | Budget d'échecs de lot sur toute la génération (une panne franche ne doit pas durer 15 min). |
+
+### Pourquoi redécouper plutôt que relancer
+
+Mesure du 2026-09-28 : sur ~50 appels, **3 lots sont revenus en erreur « échoué après 3
+tentatives »**, en 15 à 65 s. Toute la cascade du Worker s'était effondrée : Mistral en échec
+passager, puis Qwen 3.6, dont le JSON casse souvent sur le quiz mixte (`"to": 25",`), puis
+Gemma 4, « *temporarily unavailable* ». En mono-appel, cette erreur arrive telle quelle à
+l'enseignant. Par lots, le redécoupage a sauvé les 3 générations : la moitié repart sur Mistral
+et produit deux fois moins de jetons.
 
 ## 3. Fichiers
 
@@ -79,6 +101,16 @@ Le moteur est **générique**. Pour activer le découpage sur une activité « l
 
 3. **Rien d'autre.** Pas de modif du prompt-generator, ni du processor (il itère déjà sur `data[path]`), ni du healer. La couture `generateActivityContent` (ui.js) détecte `module.chunking` via `shouldChunk()`.
 
+   Deux options facultatives :
+   - `defaultCount` : nombre d'items à générer PAR LOTS quand l'enseignant n'a pas fixé de
+     nombre (mode Rapide, ou champ vide). Sans elle, le mode Rapide reste un mono-appel sur la
+     consigne « N minimum », dont la sortie n'est pas bornée : le quiz « 5 questions minimum »
+     en produisait jusqu'à 9 (4 600 jetons).
+   - `planHint` : clé i18n d'une consigne ajoutée au prompt du PLAN. Le quiz mixte s'en sert
+     pour que le plan attribue le TYPE de chaque question : chaque lot choisissant ses types à
+     l'aveugle, 5 questions n'en couvraient que 2-3 (contre 5-7 en un appel) ; avec la consigne,
+     5 sur 5. La clé doit exister dans les 12 locales ; absente, le plan est inchangé.
+
 4. **Tester** (cf. §6).
 
 ### Activités candidates (list-shaped) vs non
@@ -108,7 +140,8 @@ Le moteur est **générique**. Pour activer le découpage sur une activité « l
 
 | Activité | `threshold` | `batchSize` | Note |
 |---|---|---|---|
-| QuizSet / QCM / VF | 5 | 4 | référence |
+| QuizSet (mixte) / QCM | 3 | 3 | `defaultCount: 5` : le mode Rapide passe AUSSI par les lots (voir ci-dessous) ; QuizSet : `planHint` |
+| Vrai/Faux | 8 | 8 | items légers (~230 jetons) ; le mode Rapide reste en un appel |
 | Éléa-Test (`test_elea`) | 12 | 8 | types mixtes ; mono 15 ≈ 47 s, 20 → fallback |
 | QCM (Éléa) | 30 | 20 | mono-type ; N=40 = 52 s |
 | Devoir | 30 | 15 | critères de barème lourds ; N=35 = 55 s |
@@ -146,4 +179,8 @@ node -e 'const fr=require("./js/locales/fr.json"); for(const l of ["en","es","de
 - **Placeholders des clés `batch_*`** : `{n} {t} {max} {count} {item} {arrayKey} {mine}` sont remplacés en code (`.replace`), pas par le helper i18n — les préserver verbatim dans toutes les langues. De même, les noms de champs JSON littéraux (`title`, `overallFeedback`, `questions`, `plan`, `intitule`, `angle`) ne se traduisent pas.
 - **Le fill renvoie `{ <dernier segment de path> : [...] }`** (ex. `path:"timeline.date"` → clé `date`). `arrayKeyOf()` gère le chemin pointé.
 - **Cardinalité fixe** (ex. Millionnaire = 6) : à valider après fusion si on l'active.
+- **Deux lots de front = arrêt coordonné** : le premier échec définitif lève le drapeau
+  `abandon` du pool, sinon l'autre worker continuerait d'appeler le modèle pour rien.
+- **Le parcours n'emprunte PAS ce moteur** : `parcours-runner.js` génère chaque activité en un
+  appel (`generateH5PWithLLM`), jusqu'à 8 éléments. Un quiz de parcours reste donc exposé au mur.
 - **Builders purs vs orchestrateur** : `llm-batch.js` n'a AUCUN import DOM au top-level (imports dynamiques dans `generateInBatches`) → reste chargeable en Node pour les tests. Ne pas y ajouter d'import statique de `translation.js`/`ui.js`.

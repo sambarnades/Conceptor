@@ -1,0 +1,134 @@
+{
+  "showCoverPage": true,
+  "bookCover": {
+    "coverDescription": "Observe la couverture relue dans Sucrerie.",
+    "coverMedium": {
+      "library": "H5P.Video 1.6",
+      "params": {
+        "visuals": {
+          "fit": true,
+          "controls": true,
+          "poster": {
+            "path": "images/image-deb86f24.jpg",
+            "mime": "image/jpeg",
+            "width": 300,
+            "height": 200,
+            "copyright": {
+              "license": "U"
+            }
+          }
+        },
+        "playback": {
+          "autoplay": false,
+          "loop": false,
+          "hasNoAutoPause": false
+        },
+        "sources": [
+          {
+            "path": "videos/video-faa0c231.webm",
+            "mime": "video/webm",
+            "copyright": {
+              "license": "U"
+            }
+          }
+        ],
+        "l10n": {
+          "name": "Video",
+          "loading": "Chargement du lecteur vidéo...",
+          "noPlayers": "Aucun lecteur vidéo trouvé pour supporter le format video utilisé.",
+          "noSources": "La vidéo n&#039;a pas de source associée.",
+          "aborted": "La lecture du média a été abandonnée.",
+          "networkFailure": "Problème de connexion au réseau.",
+          "cannotDecode": "Impossible de décoder la vidéo.",
+          "formatNotSupported": "Format vidéo non supporté.",
+          "mediaEncrypted": "Vidéo cryptée.",
+          "unknownError": "Erreur inconnue.",
+          "invalidYtId": "Identifiant YouTube invalide.",
+          "unknownYtId": "Impossible de trouver la vidéo avec cet identifiant YouTube.",
+          "restrictedYt": "Le propriétaire de cette vidéo n&#039;autorise pas son inclusion."
+        }
+      },
+      "metadata": {
+        "contentType": "Video",
+        "license": "U",
+        "title": "Sans titre Video"
+      },
+      "subContentId": "1a4be133-959b-4178-851b-a6e35c8b394d"
+    }
+  },
+  "chapters": [
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "8b6a284d-856f-47c9-a0e5-4c6aad655604",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Une seule page"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "f563bccd-90f7-447d-853b-63b8a2e87de4",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Texte"
+              },
+              "params": {
+                "text": "Le drapeau français est bleu, blanc et rouge."
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    }
+  ],
+  "behaviour": {
+    "baseColor": "#ffffff",
+    "defaultTableOfContents": false,
+    "progressIndicators": true,
+    "progressAuto": false,
+    "displaySummary": true,
+    "enableRetry": false
+  },
+  "read": "Lire",
+  "displayTOC": "Afficher la table des matières",
+  "hideTOC": "Masquer la table des matières",
+  "nextPage": "Page suivante",
+  "previousPage": "Page précédente",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "page": "Page",
+  "chapterCompleted": "Page terminée !",
+  "partCompleted": "@pages sur @total terminées",
+  "incompleteChapter": "Page incomplète",
+  "navigateToTop": "Aller en haut",
+  "markAsFinished": "J&#039;ai terminé cette page",
+  "fullscreen": "Plein écran",
+  "exitFullscreen": "Quitter le plein écran",
+  "bookProgressSubtext": "@count sur @total pages",
+  "interactionsProgressSubtext": "@count sur @total interactions",
+  "submitReport": "Soumettre le rapport",
+  "restartLabel": "Recommencer",
+  "summaryHeader": "Résumé",
+  "allInteractions": "Toutes les interactions",
+  "unansweredInteractions": "Interactions sans réponse",
+  "scoreText": "@score / @maxscore",
+  "leftOutOfTotalCompleted": "@left sur @max interactions terminées",
+  "noInteractions": "Aucune interaction",
+  "score": "Score",
+  "summaryAndSubmit": "Résumé &amp; envoi",
+  "noChapterInteractionBoldText": "Vous n&#039;avez interagi avec aucune page.",
+  "noChapterInteractionText": "Vous devez interagir avec au moins une page avant de voir le résumé.",
+  "yourAnswersAreSubmittedForReview": "Vos réponses ont été soumises pour évaluation !",
+  "bookProgress": "Progression du livre",
+  "interactionsProgress": "Progression des interactions",
+  "totalScoreLabel": "Score total",
+  "a11y": {
+    "progress": "Page @page sur @total.",
+    "menu": "Afficher/masquer le menu de navigation"
+  }
+}

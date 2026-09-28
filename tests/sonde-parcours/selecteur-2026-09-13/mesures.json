@@ -1,0 +1,82 @@
+[
+  {
+    "viewport": 1280,
+    "mode": "simple",
+    "kind": "activites",
+    "above": 12,
+    "below": 12,
+    "width": 480,
+    "height": 38.234375,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "simple",
+    "kind": "parcours",
+    "above": 12,
+    "below": 12,
+    "width": 480,
+    "height": 38.234375,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "advanced",
+    "kind": "activites",
+    "above": 12,
+    "below": 12,
+    "width": 480,
+    "height": 38.234375,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "advanced",
+    "kind": "parcours",
+    "above": 12,
+    "below": 12,
+    "width": 480,
+    "height": 38.234375,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "simple",
+    "kind": "activites",
+    "above": 12,
+    "below": 12,
+    "width": 350,
+    "height": 45.28125,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "simple",
+    "kind": "parcours",
+    "above": 12,
+    "below": 12,
+    "width": 350,
+    "height": 45.28125,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "advanced",
+    "kind": "activites",
+    "above": 12,
+    "below": 12,
+    "width": 350,
+    "height": 45.28125,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "advanced",
+    "kind": "parcours",
+    "above": 12,
+    "below": 12,
+    "width": 350,
+    "height": 45.28125,
+    "overflow": false
+  }
+]

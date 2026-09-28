@@ -1,0 +1,391 @@
+[
+  {
+    "chemin": "l10n.containsOnlyCorrect",
+    "type": "normalisation_html",
+    "avant": "@slideName n'a que des réponses correctes",
+    "apres": "@slideName n&#039;a que des réponses correctes"
+  },
+  {
+    "chemin": "override.social",
+    "type": "ajout_natif",
+    "apres": {
+      "showFacebookShare": false,
+      "facebookShare": {
+        "url": "@currentpageurl",
+        "quote": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl."
+      },
+      "showTwitterShare": false,
+      "twitterShare": {
+        "statement": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl.",
+        "url": "@currentpageurl",
+        "hashtags": "h5p, cours"
+      },
+      "showGoogleShare": false,
+      "googleShareUrl": "@currentpageurl"
+    }
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.metadata.contentType",
+    "type": "modification",
+    "avant": "Exercise",
+    "apres": "Multiple Choice"
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.params.UI.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.params.UI.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.params.UI.noInput",
+    "type": "normalisation_html",
+    "avant": "Répondez s'il vous plait avant de visionner la solution.",
+    "apres": "Répondez s&#039;il vous plait avant de visionner la solution."
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous certain de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous certain de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].action.params.question",
+    "type": "modification",
+    "avant": "Quelle ville est la capitale de la France ?",
+    "apres": "<p>Quelle ville est la capitale de la France ? RELU</p>"
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].alwaysDisplayComments",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].buttonSize",
+    "type": "ajout_natif",
+    "apres": "big"
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].goToSlideType",
+    "type": "ajout_natif",
+    "apres": "specified"
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].invisible",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].solution",
+    "type": "ajout_natif",
+    "apres": ""
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].x",
+    "type": "modification",
+    "avant": 2,
+    "apres": 2.3923444976076556
+  },
+  {
+    "chemin": "presentation.slides[0].elements[0].y",
+    "type": "modification",
+    "avant": 2,
+    "apres": 2.362842878037139
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].action.metadata.contentType",
+    "type": "modification",
+    "avant": "Exercise",
+    "apres": "True/False Question"
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].action.metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].action.params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Voulez-vous vraiment terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].action.params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Voulez-vous vraiment recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].action.params.l10n.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].action.params.l10n.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].action.params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].alwaysDisplayComments",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].buttonSize",
+    "type": "ajout_natif",
+    "apres": "big"
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].goToSlideType",
+    "type": "ajout_natif",
+    "apres": "specified"
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].invisible",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[1].elements[0].solution",
+    "type": "ajout_natif",
+    "apres": ""
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.metadata.contentType",
+    "type": "modification",
+    "avant": "Exercise",
+    "apres": "Fill in the Blanks"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.a11yHeader",
+    "type": "retrait_natif",
+    "avant": "Mode de vérification"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.answerIsCorrect",
+    "type": "ajout_natif",
+    "apres": "&#039;:ans&#039; est une réponse exacte"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.answerIsWrong",
+    "type": "ajout_natif",
+    "apres": "&#039;:ans&#039; est une réponse inexacte"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.answeredCorrectly",
+    "type": "ajout_natif",
+    "apres": "Réponse exacte"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.answeredIncorrectly",
+    "type": "ajout_natif",
+    "apres": "Mauvaise réponse"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous sûr de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous sûr de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.inputHasTipLabel",
+    "type": "ajout_natif",
+    "apres": "Indice disponible"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.inputLabel",
+    "type": "ajout_natif",
+    "apres": "Blanc @num sur @total"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.solutionLabel",
+    "type": "ajout_natif",
+    "apres": "Réponse correcte :"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.submitAnswer",
+    "type": "ajout_natif",
+    "apres": "Vérifier"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.taskDescription",
+    "type": "retrait_natif",
+    "avant": "Complète les deux capitales."
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].action.params.tipLabel",
+    "type": "ajout_natif",
+    "apres": "Indice"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].alwaysDisplayComments",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].buttonSize",
+    "type": "ajout_natif",
+    "apres": "big"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].goToSlideType",
+    "type": "ajout_natif",
+    "apres": "specified"
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].invisible",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[2].elements[0].solution",
+    "type": "ajout_natif",
+    "apres": ""
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].action.metadata.contentType",
+    "type": "modification",
+    "avant": "Exercise",
+    "apres": "Mark the Words"
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].action.metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].action.params.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].action.params.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].action.params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].alwaysDisplayComments",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].buttonSize",
+    "type": "ajout_natif",
+    "apres": "big"
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].goToSlideType",
+    "type": "ajout_natif",
+    "apres": "specified"
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].invisible",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "presentation.slides[3].elements[0].solution",
+    "type": "ajout_natif",
+    "apres": ""
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "MultipleChoice"
+  }
+]

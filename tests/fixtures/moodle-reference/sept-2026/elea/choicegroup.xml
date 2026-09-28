@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="57" moduleid="14038" modulename="choicegroup" contextid="17766">
+  <choicegroup id="57">
+    <name>Choix de groupe : ton équipe</name>
+    <intro>&lt;p&gt;Choisis ton équipe pour le projet.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <publish>1</publish>
+    <multipleenrollmentspossible>0</multipleenrollmentspossible>
+    <showresults>3</showresults>
+    <display>0</display>
+    <allowupdate>0</allowupdate>
+    <showunanswered>0</showunanswered>
+    <limitanswers>0</limitanswers>
+    <timeopen>0</timeopen>
+    <timeclose>0</timeclose>
+    <timemodified>1790541435</timemodified>
+    <completionsubmit>1</completionsubmit>
+    <sortgroupsby>0</sortgroupsby>
+    <onlyactive>0</onlyactive>
+    <options>
+      <option id="92">
+        <groupid>707</groupid>
+        <maxanswers>0</maxanswers>
+        <timemodified>1790541435</timemodified>
+      </option>
+      <option id="93">
+        <groupid>708</groupid>
+        <maxanswers>0</maxanswers>
+        <timemodified>1790541435</timemodified>
+      </option>
+    </options>
+  </choicegroup>
+</activity>

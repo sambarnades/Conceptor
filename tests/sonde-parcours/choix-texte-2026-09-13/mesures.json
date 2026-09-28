@@ -1,0 +1,90 @@
+[
+  {
+    "viewport": 1280,
+    "mode": "simple",
+    "kind": "activites",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 1008,
+    "height": 36,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "simple",
+    "kind": "parcours",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 1008,
+    "height": 36,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "advanced",
+    "kind": "activites",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 1008,
+    "height": 36,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "advanced",
+    "kind": "parcours",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 1008,
+    "height": 36,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "simple",
+    "kind": "activites",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 298,
+    "height": 44,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "simple",
+    "kind": "parcours",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 298,
+    "height": 44,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "advanced",
+    "kind": "activites",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 298,
+    "height": 44,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "advanced",
+    "kind": "parcours",
+    "inside": true,
+    "beforeDocuments": true,
+    "gap": 16,
+    "width": 298,
+    "height": 44,
+    "overflow": false
+  }
+]

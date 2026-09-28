@@ -1,0 +1,37 @@
+[
+  {
+    "id": "image-fr",
+    "genere": true,
+    "exporte": true,
+    "erreurs": [],
+    "message": ""
+  },
+  {
+    "id": "zone-fr",
+    "genere": true,
+    "exporte": true,
+    "erreurs": [],
+    "message": ""
+  },
+  {
+    "id": "zones-fr",
+    "genere": true,
+    "exporte": true,
+    "erreurs": [],
+    "message": ""
+  },
+  {
+    "id": "image-br",
+    "genere": true,
+    "exporte": true,
+    "erreurs": [],
+    "message": ""
+  },
+  {
+    "id": "video-fr",
+    "genere": true,
+    "exporte": true,
+    "erreurs": [],
+    "message": ""
+  }
+]

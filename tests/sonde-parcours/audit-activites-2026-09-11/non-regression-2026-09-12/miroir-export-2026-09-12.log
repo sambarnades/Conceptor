@@ -1,0 +1,27 @@
+Comparaison export documentaire Sucrerie vs Caramel (source de vérité)
+Caramel  : /Users/egaunard/Desktop/Forge/Caramel/bas
+Sucrerie : /Users/egaunard/Desktop/Forge/Caramel/sucrerie.forge.apps.education.fr
+
+  OK     assets/js/core/escape.js                     (130 l.)
+  OK     assets/js/core/language-codes.js             (73 l.)
+  OK     assets/js/export/course-formatter.js         (208 l.)
+  OK     assets/js/export/document-exporter.js        (4498 l.)
+  OK     assets/js/export/document-formatter.js       (4940 l.)
+  OK     assets/js/export/latex-parser.js             (933 l.)
+  OK     assets/js/export/latex-to-mathml.js          (461 l.)
+  OK     assets/js/export/latex-to-omml.js            (602 l.)
+  OK     assets/js/export/math-catalog.js             (325 l.)
+  OK     assets/js/export/sanitizer.js                (179 l.)
+  OK     assets/js/renderers/image-utils.js           (212 l.)
+  OK     assets/js/renderers/grid-canvas-utils.js     (195 l.)
+  OK     assets/js/renderers/crossword-grid-generator.js (429 l.)
+  OK     assets/js/renderers/find-the-words-grid-generator.js (259 l.)
+  OK     assets/js/renderers/chart-renderer.js        (292 l.)
+
+Total : 15 identique(s), 0 divergent(s), 0 absent(s).
+
+Pour mettre à jour un fichier divergent :
+  cp <caramel>/<fichier-source> <sucrerie>/<fichier-cible>
+
+Rappel : export-bridge.js, h5p/json-healer.js (shim) et core/lib-loader.js
+sont intentionnellement exclus (couture host-spécifique, pas byte-identique).

@@ -1,0 +1,30 @@
+{
+  "taskDescription": "Retrouve les capitales de la France, de l’Italie et de l’Espagne.",
+  "wordList": "PARIS,ROME,MADRID",
+  "behaviour": {
+    "preferOverlap": false,
+    "showVocabulary": true,
+    "enableShowSolution": true,
+    "enableRetry": true,
+    "orientations": {
+      "horizontal": false,
+      "horizontalBack": false,
+      "vertical": true,
+      "verticalUp": false,
+      "diagonal": false,
+      "diagonalBack": false,
+      "diagonalUp": false,
+      "diagonalUpBack": false
+    },
+    "fillPool": "Q"
+  },
+  "l10n": {
+    "check": "Vérifier",
+    "tryAgain": "Recommencer",
+    "showSolution": "Afficher la solution",
+    "found": "@found sur @totalWords mots trouvés",
+    "timeSpent": "Temps écoulé",
+    "score": "Vous avez obtenu @score sur @total points",
+    "wordListHeader": "Liste de mots"
+  }
+}

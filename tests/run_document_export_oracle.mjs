@@ -120,7 +120,7 @@ async function inlinerImages(noeud) {
 }
 
 // ---------------------------------------------------------------- serveur
-const server = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'],
+const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'],
     { cwd: ROOT, stdio: 'ignore' });
 const stop = () => { try { server.kill('SIGTERM'); } catch { /* déjà mort */ } };
 process.on('exit', stop);
@@ -298,8 +298,15 @@ try {
          * ainsi distinguables (contrairement à un masquage par joker) : un référencement
          * croisé accidentel resterait détecté.
          */
-        async function empreinteArchive(blob) {
+        async function empreinteArchive(blob, { imagesDessinees = false } = {}) {
             const zip = await new window.JSZip().loadAsync(await blob.arrayBuffer());
+            // Les PNG DESSINÉS au canvas (graphiques) dépendent des polices du système et de
+            // la version de Chromium : leurs octets changent d'une machine à l'autre sans que
+            // le code bouge (constaté le 15 sept. 2026 sur les 4 images de graphique, identiques
+            // entre deux passages mais différentes de la baseline). On en garde la PRÉSENCE et
+            // la validité, pas les pixels. Les images servies par l'oracle restent comparées
+            // à l'octet : ce sont elles qui protègent le chemin d'intégration des médias.
+            const dessine = (n) => imagesDessinees && /\.png$/i.test(n);
             const noms = Object.keys(zip.files).filter(n => !zip.files[n].dir).sort();
 
             const estXml = (n) => /\.(xml|rels|txt)$/i.test(n) || n === 'mimetype';
@@ -308,7 +315,7 @@ try {
             // 1. empreinte de contenu de chaque média, pour construire le renommage
             const medias = [];
             for (const nom of noms.filter(estMedia)) {
-                medias.push({ nom, sha: await sha256(await zip.files[nom].async('arraybuffer')) });
+                medias.push({ nom, sha: dessine(nom) ? `dessin:${nom}` : await sha256(await zip.files[nom].async('arraybuffer')) });
             }
             medias.sort((a, b) => a.sha.localeCompare(b.sha) || a.nom.localeCompare(b.nom));
             const renommage = new Map();
@@ -337,6 +344,10 @@ try {
                     for (const [orig, canon] of basenames) txt = txt.replace(new RegExp(reEchap(orig), 'g'), canon);
                     for (const [re, rep] of NORMALISATIONS) txt = txt.replace(re, rep);
                     out[cle] = { taille: txt.length, sha: await sha256(new TextEncoder().encode(txt)) };
+                } else if (dessine(nom)) {
+                    const octets = new Uint8Array(await f.async('arraybuffer'));
+                    const signature = [0x89, 0x50, 0x4e, 0x47].every((o, i) => octets[i] === o);
+                    out[cle] = { image: 'png dessinée', valide: signature && octets.byteLength > 1000 };
                 } else {
                     const bin = await f.async('arraybuffer');
                     out[cle] = { taille: bin.byteLength, sha: await sha256(bin) };
@@ -369,7 +380,7 @@ try {
                 try {
                     await fn(cas.moduleKey, structuredClone(cas.data));
                     if (!capture) { res[cle] = { erreur: 'aucun blob produit', alertes: [...alertes] }; continue; }
-                    res[cle] = { type: capture.type, entrees: await empreinteArchive(capture) };
+                    res[cle] = { type: capture.type, entrees: await empreinteArchive(capture, { imagesDessinees: cas.moduleKey === 'Chart' }) };
                     if (alertes.length) res[cle].alertes = [...alertes];
                 } catch (e) {
                     res[cle] = { erreur: String(e && e.message || e) };

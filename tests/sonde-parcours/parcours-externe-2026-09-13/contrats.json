@@ -1,0 +1,166 @@
+[
+  {
+    "module": "Timeline",
+    "ok": true
+  },
+  {
+    "module": "Flashcards",
+    "ok": true
+  },
+  {
+    "module": "Glossary",
+    "ok": true
+  },
+  {
+    "module": "Crossword",
+    "ok": true
+  },
+  {
+    "module": "Essay",
+    "ok": true
+  },
+  {
+    "module": "Summary",
+    "ok": true
+  },
+  {
+    "module": "DragTheWords",
+    "ok": true
+  },
+  {
+    "module": "DragAndDrop",
+    "ok": true
+  },
+  {
+    "module": "FillInTheBlanks",
+    "ok": true
+  },
+  {
+    "module": "MarkTheWords",
+    "ok": true
+  },
+  {
+    "module": "TrueFalse",
+    "ok": true
+  },
+  {
+    "module": "MultipleChoice",
+    "ok": true
+  },
+  {
+    "module": "FindTheWords",
+    "ok": true
+  },
+  {
+    "module": "SortParagraphs",
+    "ok": true
+  },
+  {
+    "module": "SingleChoiceSet",
+    "ok": true
+  },
+  {
+    "module": "DialogCards",
+    "ok": true
+  },
+  {
+    "module": "Chart",
+    "ok": true
+  },
+  {
+    "module": "CoursePresentation",
+    "ok": true
+  },
+  {
+    "module": "InteractiveBook",
+    "ok": true
+  },
+  {
+    "module": "InteractiveVideo",
+    "ok": true
+  },
+  {
+    "module": "ImageHotspots",
+    "ok": true
+  },
+  {
+    "module": "Dictation",
+    "ok": true
+  },
+  {
+    "module": "FindMultipleHotspots",
+    "ok": true
+  },
+  {
+    "module": "FindTheHotspot",
+    "ok": true
+  },
+  {
+    "module": "QuizSetQCM",
+    "ok": true
+  },
+  {
+    "module": "QuizSetVF",
+    "ok": true
+  },
+  {
+    "module": "QuizSet",
+    "ok": true
+  },
+  {
+    "module": "Millionnaire",
+    "ok": true
+  },
+  {
+    "module": "Appariement",
+    "ok": true
+  },
+  {
+    "module": "QCM",
+    "ok": true
+  },
+  {
+    "module": "Devoir",
+    "ok": true
+  },
+  {
+    "module": "Page",
+    "ok": true
+  },
+  {
+    "module": "Livre",
+    "ok": true
+  },
+  {
+    "module": "test_elea",
+    "ok": true
+  },
+  {
+    "module": "parcours_etiquette",
+    "ok": true
+  },
+  {
+    "module": "parcours_forum",
+    "ok": true
+  },
+  {
+    "module": "parcours_sondage",
+    "ok": true
+  },
+  {
+    "module": "parcours_nuage_mots",
+    "ok": true
+  },
+  {
+    "module": "parcours_mur_notes",
+    "ok": true
+  },
+  {
+    "module": "Alternative de l’image conservée",
+    "ok": true
+  },
+  {
+    "module": "Réponse vide refusée",
+    "ok": true
+  }
+]

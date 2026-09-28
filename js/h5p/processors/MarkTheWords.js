@@ -12,7 +12,7 @@
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml, debugLog } from '../../core/utils.js';
 import { latexToUnicode } from '../json-healer.js';
-import { buildMediaStructure } from '../image-manager.js';
+import { prepareQuestionMedia } from '../question-media.js';
 
 /**
  * Libellés d'interface de H5P.MarkTheWords.
@@ -41,7 +41,7 @@ function libelles() {
     };
 }
 
-export default {
+const MarkTheWords = {
     process: (jsonObj) => {
         debugLog('mark-the-words', '[MarkTheWords Processor] Processing...');
         debugLog('mark-the-words', '[MarkTheWords Processor] translations.h5p_check_answer:', translations.h5p_check_answer);
@@ -55,38 +55,21 @@ export default {
                 showScorePoints: true,
                 ...(jsonObj.behaviour || {})
             },
-            overallFeedback: jsonObj.overallFeedback || [{ "from": 0, "to": 100, "feedback": "You got @score of @total points." }],
-            checkAnswerButton: translations.h5p_check_answer || "Vérifier",
-            tryAgainButton: translations.h5p_try_again || "Recommencer",
-            showSolutionButton: translations.h5p_show_solution || "Afficher la solution",
-            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
-            ...libelles()
+            overallFeedback: jsonObj.overallFeedback || [{ from:0, to:100, feedback:"" }],
+            checkAnswerButton: jsonObj.checkAnswerButton ?? (translations.h5p_check_answer || "Vérifier"),
+            tryAgainButton: jsonObj.tryAgainButton ?? (translations.h5p_try_again || "Recommencer"),
+            showSolutionButton: jsonObj.showSolutionButton ?? (translations.h5p_show_solution || "Afficher la solution"),
+            media: prepareQuestionMedia(jsonObj),
+            ...Object.fromEntries(Object.entries(libelles()).map(([key, value]) => [key,jsonObj[key] ?? value]))
         };
     },
 
     transformForQuizSet: (question) => {
-        if (question.params.taskDescription) {
-            // Preservation of markdown for the editor
-            question.params.taskDescription = formatTextToHtml(question.params.taskDescription);
-        }
-        if (question.params.textField) {
-            question.params.textField = cleanMarkTheWordsTextField(question.params.textField);
-        }
-        // Mêmes libellés que l'activité autonome (cf. libelles()) : sans ça, la
-        // question intégrée affichait « Submit », « Correct! », « Answer not found! »…
-        Object.assign(question.params, libelles(), {
-            checkAnswerButton: translations.h5p_check_answer || "Vérifier",
-            tryAgainButton: translations.h5p_try_again || "Recommencer",
-            showSolutionButton: translations.h5p_show_solution || "Afficher la solution"
-        });
-        question.params.behaviour = {
-            enableRetry: true,
-            enableSolutionsButton: true,
-            ...question.params.behaviour
-        };
+        question.params = {...question.params, ...MarkTheWords.process(question.params)};
         return question;
     }
 };
+export default MarkTheWords;
 
 /**
  * Nettoie et formate le champ texte de MarkTheWords.

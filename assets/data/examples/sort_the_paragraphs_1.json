@@ -37,5 +37,9 @@
       "to": 100,
       "feedback": "Excellent ! Tu maîtrises parfaitement la logique révolutionnaire. Tu as su lier la crise initiale à la transformation finale de l'État avec brio."
     }
-  ]
+  ],
+  "behaviour": {
+    "duplicatesInterchangeable": true,
+    "addButtonsForMovement": true
+  }
 }

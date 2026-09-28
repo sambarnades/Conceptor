@@ -1,0 +1,405 @@
+[
+  {
+    "chemin": "behaviour",
+    "type": "retrait_natif",
+    "avant": {
+      "enableRetry": true,
+      "enableSolutionsButton": true
+    }
+  },
+  {
+    "chemin": "endGame.showAnimations",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "endGame.skippable",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "introPage.introduction",
+    "type": "modification",
+    "avant": "<p>Réponds aux questions puis consulte le résultat.</p>",
+    "apres": "<p>Réponds aux questions puis consulte le résultat. RELU</p>"
+  },
+  {
+    "chemin": "override",
+    "type": "ajout_natif",
+    "apres": {
+      "checkButton": true
+    }
+  },
+  {
+    "chemin": "questions[0].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Multiple Choice"
+  },
+  {
+    "chemin": "questions[0].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[0].params.UI.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[0].params.UI.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[0].params.UI.noInput",
+    "type": "normalisation_html",
+    "avant": "Répondez s'il vous plait avant de visionner la solution.",
+    "apres": "Répondez s&#039;il vous plait avant de visionner la solution."
+  },
+  {
+    "chemin": "questions[0].params.behaviour.autoCheck",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[0].params.behaviour.confirmCheckDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[0].params.behaviour.confirmRetryDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[0].params.behaviour.enableCheckButton",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[0].params.behaviour.passPercentage",
+    "type": "ajout_natif",
+    "apres": 100
+  },
+  {
+    "chemin": "questions[0].params.behaviour.showScorePoints",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[0].params.behaviour.showSolutionsRequiresInput",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[0].params.behaviour.singlePoint",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[0].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous certain de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "questions[0].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous certain de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[0].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[0].params.overallFeedback[0].feedback",
+    "type": "normalisation_html",
+    "avant": "Attention, la racine carrée n'est définie que pour les nombres positifs ou nuls. Revois la définition de la fonction racine carrée.",
+    "apres": "Attention, la racine carrée n&#039;est définie que pour les nombres positifs ou nuls. Revois la définition de la fonction racine carrée."
+  },
+  {
+    "chemin": "questions[0].params.question",
+    "type": "normalisation_html",
+    "avant": "Quelle est la condition nécessaire pour que \\( \\sqrt{x} \\) soit définie dans l&#39;ensemble des nombres réels ?",
+    "apres": "Quelle est la condition nécessaire pour que \\( \\sqrt{x} \\) soit définie dans l'ensemble des nombres réels ?"
+  },
+  {
+    "chemin": "questions[1].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Multiple Choice"
+  },
+  {
+    "chemin": "questions[1].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[1].metadata.title",
+    "type": "normalisation_html",
+    "avant": "Image d'un nombre par la fonction racine carrée",
+    "apres": "Image d&#039;un nombre par la fonction racine carrée"
+  },
+  {
+    "chemin": "questions[1].params.UI.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[1].params.UI.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[1].params.UI.noInput",
+    "type": "normalisation_html",
+    "avant": "Répondez s'il vous plait avant de visionner la solution.",
+    "apres": "Répondez s&#039;il vous plait avant de visionner la solution."
+  },
+  {
+    "chemin": "questions[1].params.behaviour.autoCheck",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[1].params.behaviour.confirmCheckDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[1].params.behaviour.confirmRetryDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[1].params.behaviour.enableCheckButton",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[1].params.behaviour.passPercentage",
+    "type": "ajout_natif",
+    "apres": 100
+  },
+  {
+    "chemin": "questions[1].params.behaviour.showScorePoints",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[1].params.behaviour.showSolutionsRequiresInput",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[1].params.behaviour.singlePoint",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[1].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous certain de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "questions[1].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous certain de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[1].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[1].params.overallFeedback[0].feedback",
+    "type": "normalisation_html",
+    "avant": "Rappelle-toi que la racine carrée principale d'un nombre positif est toujours positive. Essaye de calculer \\( \\sqrt{16} \\) à la main.",
+    "apres": "Rappelle-toi que la racine carrée principale d&#039;un nombre positif est toujours positive. Essaye de calculer \\( \\sqrt{16} \\) à la main."
+  },
+  {
+    "chemin": "questions[1].params.overallFeedback[1].feedback",
+    "type": "normalisation_html",
+    "avant": "Tu as une idée, mais attention : la racine carrée d'un nombre positif est toujours positive.",
+    "apres": "Tu as une idée, mais attention : la racine carrée d&#039;un nombre positif est toujours positive."
+  },
+  {
+    "chemin": "questions[1].params.overallFeedback[2].feedback",
+    "type": "normalisation_html",
+    "avant": "Tu es proche de la bonne réponse. N'oublie pas que \\( \\sqrt{16} = 4 \\), pas \\( -4 \\).",
+    "apres": "Tu es proche de la bonne réponse. N&#039;oublie pas que \\( \\sqrt{16} = 4 \\), pas \\( -4 \\)."
+  },
+  {
+    "chemin": "questions[1].params.question",
+    "type": "normalisation_html",
+    "avant": "Quelle est l&#39;image de \\( 16 \\) par la fonction \\( f(x) = \\sqrt{x} \\) ?",
+    "apres": "Quelle est l'image de \\( 16 \\) par la fonction \\( f(x) = \\sqrt{x} \\) ?"
+  },
+  {
+    "chemin": "questions[2].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Multiple Choice"
+  },
+  {
+    "chemin": "questions[2].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[2].metadata.title",
+    "type": "normalisation_html",
+    "avant": "Ensemble de définition d'une fonction racine carrée",
+    "apres": "Ensemble de définition d&#039;une fonction racine carrée"
+  },
+  {
+    "chemin": "questions[2].params.UI.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[2].params.UI.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[2].params.UI.noInput",
+    "type": "normalisation_html",
+    "avant": "Répondez s'il vous plait avant de visionner la solution.",
+    "apres": "Répondez s&#039;il vous plait avant de visionner la solution."
+  },
+  {
+    "chemin": "questions[2].params.behaviour.autoCheck",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[2].params.behaviour.confirmCheckDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[2].params.behaviour.confirmRetryDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[2].params.behaviour.enableCheckButton",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[2].params.behaviour.passPercentage",
+    "type": "ajout_natif",
+    "apres": 100
+  },
+  {
+    "chemin": "questions[2].params.behaviour.showScorePoints",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[2].params.behaviour.showSolutionsRequiresInput",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "questions[2].params.behaviour.singlePoint",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "questions[2].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous certain de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "questions[2].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous certain de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[2].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[2].params.overallFeedback[0].feedback",
+    "type": "normalisation_html",
+    "avant": "Rappelle-toi que l'expression sous la racine doit être \\( \\geq 0 \\). Résous l'inéquation \\( 2x - 6 \\geq 0 \\).",
+    "apres": "Rappelle-toi que l&#039;expression sous la racine doit être \\( \\geq 0 \\). Résous l&#039;inéquation \\( 2x - 6 \\geq 0 \\)."
+  },
+  {
+    "chemin": "questions[2].params.overallFeedback[2].feedback",
+    "type": "normalisation_html",
+    "avant": "Tu es sur la bonne voie. N'oublie pas que l'égalité est autorisée dans la racine carrée.",
+    "apres": "Tu es sur la bonne voie. N&#039;oublie pas que l&#039;égalité est autorisée dans la racine carrée."
+  },
+  {
+    "chemin": "questions[2].params.overallFeedback[4].feedback",
+    "type": "normalisation_html",
+    "avant": "Très bien ! Tu as parfaitement déterminé l'ensemble de définition.",
+    "apres": "Très bien ! Tu as parfaitement déterminé l&#039;ensemble de définition."
+  },
+  {
+    "chemin": "questions[2].params.question",
+    "type": "normalisation_html",
+    "avant": "Quel est l&#39;ensemble de définition de la fonction \\( f(x) = \\sqrt{2x - 6} \\) ?",
+    "apres": "Quel est l'ensemble de définition de la fonction \\( f(x) = \\sqrt{2x - 6} \\) ?"
+  },
+  {
+    "chemin": "texts.nextbutton",
+    "type": "retrait_natif",
+    "avant": "Suivant"
+  },
+  {
+    "chemin": "texts.previousbutton",
+    "type": "retrait_natif",
+    "avant": "Précédent"
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Quiz QCM - Fonctions racines carrées"
+  }
+]

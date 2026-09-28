@@ -41,9 +41,18 @@ function assert(condition, message) {
 }
 
 function assertEqual(actual, expected, message) {
-    const pass = JSON.stringify(actual) === JSON.stringify(expected);
+    const stable = value => Array.isArray(value) ? value.map(stable) : value && typeof value === 'object' ? Object.fromEntries(Object.keys(value).sort().map(key=>[key,stable(value[key])])) : value;
+    const pass = JSON.stringify(stable(actual)) === JSON.stringify(stable(expected));
     if (!pass) {
-        message += ` (attendu: ${JSON.stringify(expected)}, obtenu: ${JSON.stringify(actual)})`;
+        const differences = [];
+        const compare = (a,b,path='') => {
+            if(JSON.stringify(stable(a)) === JSON.stringify(stable(b)))return;
+            if(a && b && typeof a === 'object' && typeof b === 'object') {
+                for(const key of new Set([...Object.keys(a),...Object.keys(b)]))compare(a[key],b[key],path+'.'+key);
+            } else differences.push(`${path}: attendu ${JSON.stringify(b)}, obtenu ${JSON.stringify(a)}`);
+        };
+        compare(actual,expected);
+        message += ' ('+differences.slice(0,5).join('; ')+')';
     }
     assert(pass, message);
 }
@@ -123,7 +132,7 @@ export async function runAllTests() {
     const chaptersField = chaptersSection.fields.chapters;
     assertDefined(chaptersField, 'Champ chapters existe');
     assertEqual(chaptersField.type, 'array', 'chapters est un array');
-    assertEqual(chaptersField.minItems, 2, 'chapters minItems = 2');
+    assertEqual(chaptersField.minItems, 1, 'chapters minItems = 1 (semantics)');
     assertEqual(chaptersField.dynamicTitleField, 'title', 'dynamicTitleField = title');
     assertDefined(chaptersField.itemSchema, 'chapters a un itemSchema');
     assertDefined(chaptersField.itemSchema.title, 'Champ chapitre.title existe');
@@ -140,7 +149,7 @@ export async function runAllTests() {
     const blockSchema = contentField.itemSchema;
     assertDefined(blockSchema._blockType, 'Champ _blockType existe');
     assertEqual(blockSchema._blockType.type, 'select', '_blockType est un select');
-    assertEqual(blockSchema._blockType.options.length, 4, '4 types de blocs (text, table, image, exercise)');
+    assertEqual(blockSchema._blockType.options.length, 5, '5 types de blocs dont row');
     assertDefined(blockSchema.text, 'Champ text existe');
     assertDefined(blockSchema.tableStyle, 'Champ tableStyle existe');
     assertDefined(blockSchema.table, 'Champ table existe');
@@ -182,6 +191,12 @@ export async function runAllTests() {
 
     const ex1 = await loadExample('interactive_book_1.json');
     const ex2 = await loadExample('interactive_book_2.json');
+    // Éprouver les colonnes du nouvel exemple, puis le modèle historique à plat.
+    const withRows = normalizeDataForEditor(deepClone(ex1), 'InteractiveBook');
+    const savedRows = denormalizeDataForSave(deepClone(withRows), 'InteractiveBook');
+    assertEqual(savedRows.chapters[0].content[0].columns.map(c=>c.width), [40,60], 'Largeurs des colonnes conservées');
+    assertEqual(savedRows.chapters[0].content[0].columns[1].content[0].table.headers, ['Planète','Type','Lunes'], 'Tableau imbriqué conservé');
+    for(const chapter of ex1.chapters)chapter.content=chapter.content.flatMap(b=>b.type==='row'?b.columns.flatMap(c=>c.content):[b]);
 
     const det1 = detectContentType(deepClone(ex1));
     assertDefined(det1, 'Exemple 1 detecte');
@@ -272,11 +287,11 @@ export async function runAllTests() {
     group('Robustesse');
 
     // Couverture vide → supprimee a la sauvegarde
-    const emptyCover = denormalizeDataForSave({
+    const emptyCover = denormalizeDataForSave(normalizeDataForEditor({
         title: 'T', cover: { description: '  ' },
         chapters: [{ title: 'A', content: [{ _blockType: 'text', text: 'x' }] }]
-    }, 'InteractiveBook');
-    assert(!('cover' in emptyCover), 'Couverture vide supprimee');
+    }, 'InteractiveBook'), 'InteractiveBook');
+    assert(emptyCover.cover.enabled === false && !emptyCover.cover.media, 'Couverture vide désactivée, aucun média inventé');
 
     // Bloc sans _blockType ni type → infere text
     const noType = denormalizeDataForSave({

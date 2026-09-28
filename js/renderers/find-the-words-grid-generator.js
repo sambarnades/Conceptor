@@ -38,12 +38,12 @@ const FILL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 // ===================== Normalisation =====================
 
 /**
- * Normalise un mot pour le placement (majuscules, sans accents, sans espaces/tirets).
+ * Normalise un mot pour le placement (majuscules, accents conservés, sans espaces/tirets).
  */
 function normalizeWord(word) {
     return word
         .toUpperCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .normalize('NFC')
         .replace(/[\s\-']/g, '');
 }
 
@@ -51,109 +51,80 @@ function normalizeWord(word) {
 
 /**
  * Genere une grille de mots meles a partir d'une liste de mots.
- * @param {string[]} words - Mots normalises a placer
+ * @param {string[]} words - Mots à placer
+ * @param {object} behaviour - Alphabet, orientations et préférence de chevauchement
+ * @param {Function} random - Source aléatoire injectable pour rejouer une disposition
  * @returns {{ wordGrid: string[][], wordLocations: Array, height: number, width: number } | null}
  */
-function generateGrid(words) {
-    if (!words || words.length === 0) return null;
-
-    // Trier par longueur decroissante pour placer les plus longs d'abord
-    const sorted = [...words].sort((a, b) => b.length - a.length);
-    const longestWord = sorted[0].length;
-
-    // Dimensionner la grille : au moins longestWord, avec marge pour les mots croises
-    const gridSize = Math.max(longestWord + 2, Math.ceil(Math.sqrt(words.join('').length * 2.5)), 10);
-    const height = gridSize;
-    const width = gridSize;
-
-    // Grille vide (null = pas encore rempli)
-    const grid = Array.from({ length: height }, () => Array(width).fill(null));
-    const wordLocations = [];
-
-    // Essayer de placer chaque mot
-    for (const word of sorted) {
-        const placed = placeWord(grid, word, height, width);
-        if (placed) {
+export function generateFindTheWordsGrid(words, behaviour = {}, random = Math.random) {
+    if (!Array.isArray(words) || !words.length) return null;
+    const sorted = [...new Set(words.map(normalizeWord).filter(Boolean))].sort((a, b) => b.length - a.length);
+    // Même ordre de grandeur que les limites d'import Caramel ; aucune liste
+    // partiellement placée ne doit être présentée comme une grille complète.
+    if (!sorted.length || sorted.length > 50 || sorted.some(word => word.length > 30)) return null;
+    const orientations = DEFAULT_ORIENTATIONS.filter(key => behaviour.orientations?.[key] !== false);
+    const pool = Array.from(String(behaviour.fillPool ?? FILL_LETTERS).normalize('NFC').toUpperCase());
+    if (!orientations.length || !pool.length || !pool.some(letter => letter.trim())) return null;
+    const preferOverlap = behaviour.preferOverlap !== false;
+    const initialSize = Math.max(sorted[0].length + 2, Math.ceil(Math.sqrt(sorted.join('').length * 2.5)), 10);
+    const maxSize = Math.max(initialSize, sorted.length + sorted[0].length + 2);
+    for (let size = initialSize; size <= maxSize; size = Math.min(maxSize, size + 5)) {
+        const grid = Array.from({ length: size }, () => Array(size).fill(null));
+        const wordLocations = [];
+        for (const word of sorted) {
+            const placed = placeWord(grid, word, orientations, preferOverlap, random);
+            if (!placed) break;
             wordLocations.push(placed);
         }
-    }
-
-    if (wordLocations.length === 0) return null;
-
-    // Remplir les cases vides avec des lettres aleatoires
-    for (let r = 0; r < height; r++) {
-        for (let c = 0; c < width; c++) {
-            if (grid[r][c] === null) {
-                grid[r][c] = FILL_LETTERS[Math.floor(Math.random() * FILL_LETTERS.length)];
-            }
-        }
-    }
-
-    return { wordGrid: grid, wordLocations, height, width };
-}
-
-/**
- * Essaie de placer un mot dans la grille avec un placement aleatoire.
- * Teste toutes les orientations et positions possibles dans un ordre aleatoire.
- */
-function placeWord(grid, word, height, width) {
-    const orientations = shuffle([...DEFAULT_ORIENTATIONS]);
-
-    for (const orientation of orientations) {
-        const check = checkOrientations[orientation];
-        const next = orientationFns[orientation];
-
-        // Generer toutes les positions valides pour cette orientation
-        const positions = [];
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                if (check(x, y, height, width, word.length)) {
-                    positions.push({ x, y });
+        if (wordLocations.length === sorted.length) {
+            for (const row of grid) {
+                for (let x = 0; x < row.length; x++) {
+                    if (row[x] === null) row[x] = pool[Math.floor(random() * pool.length)];
                 }
             }
+            return { wordGrid: grid, wordLocations, height: size, width: size };
         }
-
-        // Melanger les positions pour un placement aleatoire
-        shuffle(positions);
-
-        for (const pos of positions) {
-            if (canPlace(grid, word, pos.x, pos.y, next)) {
-                // Placer le mot
-                for (let i = 0; i < word.length; i++) {
-                    const p = next(pos.x, pos.y, i);
-                    grid[p.y][p.x] = word[i];
-                }
-                return { x: pos.x, y: pos.y, orientation, word, overlap: word.length };
-            }
-        }
+        if (size === maxSize) break;
     }
-
     return null;
 }
 
-/**
- * Verifie si un mot peut etre place a la position donnee sans conflit.
- */
-function canPlace(grid, word, x, y, next) {
-    for (let i = 0; i < word.length; i++) {
-        const pos = next(x, y, i);
-        const existing = grid[pos.y]?.[pos.x];
-        if (existing !== null && existing !== word[i]) {
-            return false;
+/** Choisir parmi tous les placements valides, ou seulement le chevauchement maximal. */
+function placeWord(grid, word, orientations, preferOverlap, random) {
+    let positions = [];
+    let maxOverlap = -1;
+    const height = grid.length, width = grid[0].length;
+    for (const orientation of orientations) {
+        const check = checkOrientations[orientation], next = orientationFns[orientation];
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                if (!check(x, y, height, width, word.length)) continue;
+                const overlap = countOverlap(grid, word, x, y, next);
+                if (overlap < 0 || (preferOverlap && overlap < maxOverlap)) continue;
+                if (preferOverlap && overlap > maxOverlap) positions = [];
+                maxOverlap = Math.max(maxOverlap, overlap);
+                positions.push({ x, y, orientation, word, overlap });
+            }
         }
     }
-    return true;
+    if (!positions.length) return null;
+    const position = positions[Math.floor(random() * positions.length)];
+    for (let i = 0; i < word.length; i++) {
+        const p = orientationFns[position.orientation](position.x, position.y, i);
+        grid[p.y][p.x] = word[i];
+    }
+    return position;
 }
 
-/**
- * Melange un tableau en place (Fisher-Yates).
- */
-function shuffle(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+/** Nombre de lettres communes, ou -1 si une lettre est incompatible. */
+function countOverlap(grid, word, x, y, next) {
+    let overlap = 0;
+    for (let i = 0; i < word.length; i++) {
+        const p = next(x, y, i), existing = grid[p.y][p.x];
+        if (existing === word[i]) overlap++;
+        else if (existing !== null) return -1;
     }
-    return arr;
+    return overlap;
 }
 
 // ===================== Rendu Canvas =====================
@@ -242,9 +213,10 @@ async function renderAndExport(wordGrid, wordLocations) {
  * Ne necessite aucun rendu H5P.
  *
  * @param {string} wordList - Liste de mots separee par des virgules (ex: "BASTILLE,NATION,CITOYEN")
- * @returns {Promise<{emptyGrid: Object|null, solutionGrid: Object|null}>}
+ * @param {object} behaviour - Options natives de la grille
+ * @returns {Promise<{emptyGrid: Object|null, solutionGrid: Object|null, grid?: Object}>}
  */
-export async function generateFindTheWordsGridImages(wordList) {
+export async function generateFindTheWordsGridImages(wordList, behaviour = {}) {
     const result = { emptyGrid: null, solutionGrid: null };
 
     try {
@@ -264,11 +236,13 @@ export async function generateFindTheWordsGridImages(wordList) {
         }
 
         // Generer la grille
-        const gridResult = generateGrid(words);
+        const gridResult = generateFindTheWordsGrid(words, behaviour);
         if (!gridResult) {
             console.warn('[FindTheWordsGenerator] Generation de grille impossible');
             return result;
         }
+
+        result.grid = gridResult;
 
         // Grille vide (lettres sans surlignage)
         result.emptyGrid = await renderAndExport(gridResult.wordGrid, null);

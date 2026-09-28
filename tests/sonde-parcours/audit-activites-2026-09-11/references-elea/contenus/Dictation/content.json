@@ -1,0 +1,155 @@
+{
+  "media": {
+    "disableImageZooming": false
+  },
+  "taskDescription": "Écoute chaque phrase puis écris-la sans faute.",
+  "sentences": [
+    {
+      "sample": [
+        {
+          "path": "audios/sonde-collecte-0.mp3",
+          "mime": "audio/mpeg",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ],
+      "text": "Les hirondelles reviennent au début du printemps."
+    },
+    {
+      "sample": [
+        {
+          "path": "audios/sonde-collecte-1.mp3",
+          "mime": "audio/mpeg",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ],
+      "text": "Dans le jardin, les cerisiers sont déjà en fleurs."
+    },
+    {
+      "sample": [
+        {
+          "path": "audios/sonde-collecte-2.mp3",
+          "mime": "audio/mpeg",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ],
+      "text": "Nous écoutons chaque matin le chant des oiseaux."
+    },
+    {
+      "sample": [
+        {
+          "path": "audios/sonde-collecte-3.mp3",
+          "mime": "audio/mpeg",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ],
+      "text": "Les enfants cueillent des jonquilles près du vieux mur."
+    },
+    {
+      "sample": [
+        {
+          "path": "audios/sonde-collecte-4.mp3",
+          "mime": "audio/mpeg",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ],
+      "text": "Après la pluie, l&#039;air sent bon l&#039;herbe coupée."
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Réécoute chaque phrase en lecture lente et écris-la mot après mot, puis relis-toi."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Bon début : appuie-toi sur la lecture lente pour repérer les mots difficiles et vérifie les accords."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Presque : relis ta dictée en vérifiant les terminaisons, les accents et les homophones."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Bravo : les phrases sont fidèles, accents et accords compris."
+    }
+  ],
+  "behaviour": {
+    "disablePause": false,
+    "shuffleSentences": "never",
+    "scoring": {
+      "ignorePunctuation": true,
+      "zeroMistakeMode": false,
+      "typoFactor": "50"
+    },
+    "textual": {
+      "wordSeparator": " ",
+      "overrideRTL": "auto",
+      "autosplit": true
+    },
+    "feedbackPresentation": {
+      "customTypoDisplay": false,
+      "alternateSolution": "first"
+    },
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "enableSolutionOnCheck": false
+  },
+  "l10n": {
+    "generalFeedback": "Vous avez fait @total faute(s).",
+    "generalFeedbackZeroMistakesMode": "Vous avez écrit @total mot(s) correctement et @typo mot(s) avec de petites erreurs.",
+    "checkAnswer": "Vérifier",
+    "submitAnswer": "Envoyer",
+    "tryAgain": "Recommencer",
+    "showSolution": "Voir la solution",
+    "audioNotSupported": "Votre navigateur ne supporte pas ce fichier audio."
+  },
+  "a11y": {
+    "check": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou sans réponse.",
+    "showSolution": "Afficher la solution. La tâche sera marquée avec sa solution correcte.",
+    "retry": "Recommencer la tâche. Toutes les réponses seront réinitialisées.",
+    "play": "Écouter",
+    "playSlowly": "Écouter lentement",
+    "triesLeft": "Nombre d&#039;écoutes restantes : @number",
+    "infinite": "illimité",
+    "enterText": "Écrivez ce que vous entendez.",
+    "yourResult": "Vous avez obtenu @score points sur @total",
+    "solution": "Solution",
+    "sentence": "Phrase",
+    "item": "Élément",
+    "correct": "correct",
+    "wrong": "faux",
+    "typo": "petite erreur",
+    "missing": "manquant",
+    "added": "ajouté",
+    "shouldHaveBeen": "La bonne réponse était",
+    "or": "ou",
+    "point": "point",
+    "points": "points",
+    "period": "point",
+    "exclamationPoint": "point d&#039;exclamation",
+    "questionMark": "point d&#039;interrogation",
+    "comma": "virgule",
+    "singleQuote": "apostrophe",
+    "doubleQuote": "guillemets",
+    "colon": "deux-points",
+    "semicolon": "point-virgule",
+    "plus": "plus",
+    "minus": "moins",
+    "asterisk": "astérisque",
+    "forwardSlash": "barre oblique"
+  }
+}

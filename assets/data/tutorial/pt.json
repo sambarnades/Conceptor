@@ -149,6 +149,10 @@
           "alt": "A grelha dos mosaicos de atividades disponíveis no Caramel."
         },
         {
+          "type": "tip",
+          "text": "Abaixo do formulário, **Uma atividade** mostra estes mosaicos; **Um percurso** abre o atelier que reúne várias atividades num curso completo (ver «Criar e retomar um curso completo»)."
+        },
+        {
           "type": "h",
           "text": "Duas grandes famílias"
         },
@@ -623,6 +627,106 @@
       ]
     },
     {
+      "id": "parcours",
+      "icon": "grid",
+      "title": "Criar e retomar um curso completo",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "No Caramel, **Um percurso** cria um curso para Éléa, Magistère ou Moodle: várias atividades organizadas em secções num único ficheiro **.mbz**. O ponto de partida continua a ser o formulário habitual: tema, público e documentos anexos."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-cadrage.webp",
+          "alt": "O formulário, o seletor «Um percurso» e a configuração: plataforma, modalidade e extensão."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-trames.webp",
+          "alt": "A escolha do modelo: cada cartão mostra as etapas, os níveis e as atividades."
+        },
+        {
+          "type": "tip",
+          "text": "No menu da Caramelia, **Criar um percurso** abre diretamente o ateliê sem chamar a IA. Se existir um rascunho, **Retomar o meu percurso** recupera-o. Os campos e as fontes existentes são mantidos. Revê o enquadramento e o plano no ateliê antes de iniciar a geração."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão e modelo. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.",
+            "Em **Plano**, edite o título, objetivo geral, conceitos-chave, etapas e atividades. Mova as atividades com as setas ou arrastando a miniatura. **Instruções e etapa** permite ajustar as instruções de geração. As orientações pedagógicas ajudam a rever sem impor um modelo. O máximo é de **12 atividades**.",
+            "Na ficha de um **Vídeo interativo**, cole a ligação do vídeo. A transcrição é obtida durante a geração; também pode colá-la manualmente. Para **Imagem interativa**, **Encontrar a zona** ou **Encontrar as zonas**, anexe uma imagem à ficha: será analisada antes da geração. Também pode adicionar estes recursos na fase de geração. Uma atividade sem recurso aguarda enquanto as restantes avançam. O cenário conserva as imagens e ligações das atividades; os documentos do formulário inicial ficam separados. Para uma **Ligação web**, cole o endereço do recurso na ficha: a IA redige a instrução de leitura sem abrir a página.",
+            "Aprove o plano para iniciar a geração. Pode parar, retomar atividades em falta ou gerar novamente uma atividade. O cadeado **Não gerar esta atividade** reserva o conteúdo para preenchimento manual: a IA não o preenche. Uma nova geração falhada conserva o conteúdo anterior. As atividades ausentes são identificadas antes da exportação.",
+            "Quando o conteúdo está pronto, **Alterar o conteúdo** abre o editor habitual e **Pré-visualização** o leitor. **Rever o curso** permite rever as atividades por ordem com **Anterior** e **Seguinte**. Guarde as alterações para as incluir no plano e nas exportações. Alterar uma instrução do plano não reescreve os conteúdos existentes.",
+            "Em **Entrega**, descarregue o **.mbz** e use a importação ou o restauro de cursos da plataforma. Este ficheiro de curso não deve ser carregado numa atividade H5P. O percurso aparece também na zona de notificações: **Visualizar** abre a **Vista do percurso**, com as boas-vindas, cada etapa e as suas atividades, que pode rever e modificar antes de voltar a descarregar. Conserve também o **.json** para voltar ao Caramel. A ficha de sequência e os detalhes das atividades podem ser exportados em **DOCX, ODT ou PDF**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-plan.webp",
+          "alt": "O plano, revisto antes de qualquer geração: objetivo, etapas, atividades, durações e revisão do plano."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-fabrication.webp",
+          "alt": "A produção: as atividades são geradas uma após a outra; cada uma pode ser pré-visualizada, editada ou gerada de novo."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-livraison.webp",
+          "alt": "A entrega: o curso .mbz e os passos de importação, os documentos para imprimir e o cenário .json."
+        },
+        {
+          "type": "tip",
+          "text": "**Exportar o guião (.json)** guarda o plano e os conteúdos prontos num ficheiro **.json**. O botão **Personalizar o plano**, junto a **Compor o plano**, abre a mesma janela que para uma atividade: copie o prompt para a IA da sua escolha e cole a resposta. **Retomar um guião** está nesta janela; o ficheiro **.json** descarrega-se na entrega, junto ao **.mbz**. O rascunho fica apenas neste separador: exporte o cenário antes de o fechar. O cenário não inclui tema, público nem anexos; introduza-os novamente antes de gerar novos conteúdos."
+        },
+        {
+          "type": "tip",
+          "text": "No Éléa, abra **Definições do curso**, ative o mapa de progresso e use o bloco **+ Adicionar a minha imagem** para escolher o seu fundo. Pode alterar ou remover a imagem e voltar aos temas propostos. O fundo é guardado no cenário **.json** e incluído no curso **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG ou TIFF · Máx. 12 MB. Conversão automática, sem recorte."
+        },
+        {
+          "type": "warn",
+          "text": "O mapa de progressão é específico do Éléa. O mapa e o acesso progressivo são opcionais e ainda requerem verificações em utilização real. O modelo de diferenciação não cria ramificações automáticas segundo a nota. A colaboração acontece na plataforma."
+        },
+        {
+          "type": "h",
+          "text": "Os módulos da plataforma"
+        },
+        {
+          "type": "p",
+          "text": "O plano propõe também os módulos do seu Éléa, Magistère ou Moodle, agrupados no menu de cada atividade em **Módulos da plataforma**. A IA redige o que a plataforma conserva na importação:"
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-mosaique.webp",
+          "alt": "O mosaico de tipos: as atividades geradas pelo Caramel e, depois, os módulos da plataforma."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Fórum**, **Sondagem**, **Questionário**, **Inquérito (Feedback)**: pôr os alunos a trocar ideias, recolher opiniões, um diagnóstico ou um balanço.",
+            "**Lição**: páginas para ler, algumas das quais terminam com uma pergunta que só deixa avançar com a resposta certa. O **pacote de conteúdo IMS** — páginas para ler com o seu índice, escritas inteiramente pelo Caramel — escolhe-se no mosaico; o plano não o propõe.",
+            "**Workshop**: produzir um trabalho e depois avaliar o dos colegas com uma grelha de critérios.",
+            "**Quadro**, **Wiki**, **Documento colaborativo**, **Glossário** e **Base de dados a construir**: escrever e construir em conjunto; chegam vazios, com a respetiva instrução.",
+            "**Sala de aula virtual**, **Escolha de grupo**, **Partilha de ficheiros**, **Ligação web**: encontrar-se em direto, formar equipas, entregar ficheiros, consultar um recurso online.",
+            "**Consoante a plataforma**: Etherpad e Nuvem de palavras no Magistère, Feedback no Éléa e no Moodle. Capytale, GeoGebra, um pacote SCORM ou um ficheiro continuam a ser adicionados manualmente após a importação no Éléa, Magistère ou Moodle."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Quando um módulo exige uma definição na plataforma (fases do workshop, hora da sala de aula virtual, grupos), o Caramel escreve-a numa nota **A fazer antes de abrir o curso**, oculta para os alunos, no início do curso importado. Elimine-a depois de feitas estas definições."
+        },
+        {
+          "type": "p",
+          "text": "Para saber mais: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) ajuda a refletir sobre as atividades de aprendizagem. As sete famílias do Caramel, entre as quais **Discutir** e **Colaborar**, são orientações simplificadas baseadas nas ferramentas, não os seis tipos ABC nem uma avaliação do seu ensino."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-miroir.webp",
+          "alt": "O que este percurso trabalha: as sete famílias e as que faltam."
+        }
+      ]
+    },
+    {
       "id": "integrate",
       "icon": "upload",
       "title": "Integrar no Éléa / Magistère / Moodle",
@@ -820,6 +924,10 @@
         {
           "type": "plain",
           "text": "Para responder com exatidão, a Caramélia apoia-se numa **base documental** (um « RAG »): em vez de improvisar, ela **recolhe excertos fiáveis** da documentação do Caramel e retoma os rótulos exatos dos botões que você vê no ecrã. (O **RAG** é também o que permite ancorar a geração nos programas oficiais — ver a etapa « Descrever a sua necessidade ».)"
+        },
+        {
+          "type": "tip",
+          "text": "No menu da Caramelia, **Criar um percurso** abre diretamente o ateliê sem chamar a IA. Se existir um rascunho, **Retomar o meu percurso** recupera-o. Os campos e as fontes existentes são mantidos. Revê o enquadramento e o plano no ateliê antes de iniciar a geração."
         }
       ]
     },

@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Αρχάριος",
     "level_formation_intermediaire": "Μεσαίος",
-    "level_formation_expert": "Έμπειρος"
+    "level_formation_expert": "Έμπειρος",
+    "sucrerie_bridge_welcome_title_course": "Κοινοποίηση διαδρομής στη Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "Η πλήρης διαδρομή, οι δραστηριότητες και οι οδηγίες της θα είναι προσβάσιμες σε όλους τους εκπαιδευτικούς στον κατάλογο Sucrerie.",
+    "sucrerie_bridge_course_close": "Πίσω",
+    "sucrerie_bridge_success_title_approved_course": "Η διαδρομή δημοσιεύτηκε!",
+    "sucrerie_bridge_success_title_pending_course": "Η διαδρομή αποθηκεύτηκε",
+    "sucrerie_bridge_success_message_approved_course": "Η διαδρομή σας είναι διαθέσιμη στον κατάλογο Sucrerie.",
+    "sucrerie_bridge_success_message_pending_course": "Η διαδρομή θα εμφανιστεί στον κατάλογο μετά τον έλεγχο από συντονιστή.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Η υποβολή σας πρέπει να επικυρωθεί. Μόλις στάλθηκε ένας σύνδεσμος επιβεβαίωσης στο {email}: κάντε κλικ εντός 2 ωρών για να δημοσιεύσετε τη διαδρομή σας. Χωρίς επιβεβαίωση, παραμένει πρόχειρο στις «Οι δραστηριότητές μου» για 7 ημέρες.",
+    "sucrerie_bridge_success_email_sent_course": "Ένα email με τον σύνδεσμο διαχείρισής σας μόλις στάλθηκε στο {email}. Φυλάξτε το προσεκτικά: θα σας επιτρέψει να επεξεργαστείτε ή να αποσύρετε τη διαδρομή σας ανά πάσα στιγμή."
 }

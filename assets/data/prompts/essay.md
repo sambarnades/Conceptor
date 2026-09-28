@@ -61,3 +61,9 @@ L'objet doit contenir :
   ]
 }
 ```
+
+
+Si utile, ajoute des variantes de mots-clés dans `keywords[].alternatives`, des retours spécifiques dans `options.feedbackIncluded` et `options.feedbackMissed` (texte brut), et un exemple de réponse rédigée dans `solution.sample` avec sa présentation dans `solution.introduction`. Respecte le sens des variantes ; une liste de mots-clés ne constitue pas un corrigé rédigé.
+
+
+Respecte les réglages demandés : limites en caractères (behaviour.minimumLength/maximumLength), taille de saisie inputFieldSize ("1", "3", "10"), seuils percentagePassing/percentageMastering (0–100), ignoreScoring et pointsHost. Pour chaque mot-clé, options.occurrences ≥ 1, points ≥ 0, forgiveMistakes et caseSensitive sont configurables. Les remplacements globaux overrideCaseSensitive/overrideForgiveMistakes valent "on" ou "off" ; omets-les pour respecter chaque mot-clé. Les retours peuvent préciser feedbackIncludedWord (keyword/alternative/answer/none) et feedbackMissedWord (keyword/none). Le média facultatif media.type (H5P.Image 1.1, H5P.Audio 1.5, H5P.Video 1.6) utilise uniquement un fichier ou une URL fourni, jamais inventé.

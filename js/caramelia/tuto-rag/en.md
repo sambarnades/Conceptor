@@ -86,6 +86,8 @@ display: **All**, **Quiz & Tests**, **Text Manipulation**,
 **Memorization & Discovery**, as well as the platforms
 **H5P**, **Éléa**, **Moodle**.
 
+Below the form, **An activity** shows these tiles; **A pathway** opens the workshop that assembles several activities into a complete course (see “Create and reopen a complete course”).
+
 ### H5P activities
 
 Activities in H5P format. Those marked with a star (★) include
@@ -259,7 +261,7 @@ No personal data is collected or stored. No tracking cookie is used.
 
 #### Artificial Intelligence models
 
-The Caramel application relies, only during one-click generation, on AI models operated by ILaaS, a federation of pooled AI infrastructures. Requests are routed through an n8n workflow hosted by the Incubateur, then transmitted to ILaaS for execution on trusted servers hosted in data centres certified by the French Higher Education and Research sector (ESR). Caramel does not run the models and does not process or store data on its own behalf; data is used solely to execute the request and is not sent to consumer-grade AI services. Currently available models include Mistral-Small-3.2 (24 B parameters), Qwen 3.6 (35 B parameters) and GPT-OSS (120 B parameters). Any hosting, logging or retention practices carried out by ILaaS are governed by their own privacy policy and terms of service, which should be consulted directly.
+The Caramel application relies, only during one-click generation, on AI models operated by ILaaS, a federation of pooled AI infrastructures. Requests are routed through an n8n workflow hosted by the Incubateur, then transmitted to ILaaS for execution on trusted servers hosted in data centres certified by the French Higher Education and Research sector (ESR). Caramel does not run the models and does not process or store data on its own behalf; data is used solely to execute the request and is not sent to consumer-grade AI services. Currently available models include Gemma 4 (31 B parameters), Qwen 3.8 (27 B parameters) and Mistral Small 4 (119 B parameters). Any hosting, logging or retention practices carried out by ILaaS are governed by their own privacy policy and terms of service, which should be consulted directly.
 
 #### Processing of user requests via n8n and the Incubateur of the French Ministry of Education
 
@@ -291,3 +293,59 @@ The application is designed for desktop use, with light/dark modes, keyboard nav
   most suitable type but NEVER generates the JSON of an activity.
 - For any integration question, Caramelia gives the precise
   steps above.
+
+<!-- parcours-complet -->
+## Create and reopen a complete course
+
+In Caramel, **A pathway** creates a course for Éléa, Magistère or Moodle: several activities organised into sections in one **.mbz** file. Start with the usual form: topic, audience and attached documents.
+
+In the Caramelia menu, **Create a course** opens the workshop directly, without an AI request. If a draft exists, **Resume my course** reopens it. Existing fields and sources are preserved. Review the setup and plan in the workshop before starting generation.
+
+Choose **A pathway** below the form, then the platform, delivery mode, scope and template. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.
+
+In **Plan**, edit the title, overall objective, key concepts, stages and activities. Move activities with the arrows or by dragging their thumbnail. **Instructions and stage** adjusts the generation instructions. Teaching prompts help you review without enforcing a model. The limit is **12 activities**.
+
+In an **Interactive Video** card, paste the video link. The transcript is retrieved during generation; you can also paste it manually. For **Image Hotspots**, **Find the Hotspot** or **Find Multiple Hotspots**, attach an image to the card: it will be analysed before generation. You can also add these sources during the generation stage. An activity without its source waits while the others continue. The scenario keeps activity images and links; documents attached to the home form remain separate. For a **Web link**, paste the resource’s address into the card: the AI writes the reading instructions without opening the page.
+
+Once content is ready, **Edit the content** opens the usual editor and **Preview** opens its player. **Review the course** lets you review them in order with **Previous** and **Next**. Save edits to include them in the plan and exports. Changing a plan instruction does not rewrite existing content.
+
+Approve the plan to start generation. You can stop, resume missing activities or regenerate one activity. The **Do not generate this activity** lock reserves its content for manual entry: AI will not fill it. A failed regeneration keeps the previous content. Missing activities are listed before export.
+
+**Export the scenario (.json)** saves the plan and completed content in a **.json** file. The **Customize the plan** button, next to **Compose the plan**, opens the same window as for an activity: copy the prompt into the AI of your choice, then paste its response back. **Open a scenario** is in this window; the **.json** file is downloaded at delivery, next to the **.mbz**. The draft is kept only in this tab: export the scenario before closing it. The scenario excludes the topic, audience and attachments; enter them again before generating new content.
+
+In **Delivery**, download the **.mbz** and use your platform’s course import or restore feature. Do not upload this course file into an H5P activity. The course also appears in the notifications area: **View** opens the **Course overview**, with the welcome text, each step and its activities, which you can review and edit before downloading again. Keep the **.json** to return to Caramel. The lesson plan and activity details can be exported as **DOCX, ODT or PDF**.
+
+The plan also offers the modules of your Éléa, Magistère or Moodle platform, grouped in each activity’s menu under **Platform modules**: forum, poll, questionnaire, survey, lesson, peer-assessment workshop, board, wiki, collaborative document, glossary and database to build together, virtual classroom, group choice, file sharing and web link. The AI writes the parts that the platform keeps on import; collaborative spaces arrive empty, with their instructions. When a module needs a setting on the platform (workshop phases, virtual classroom time, groups), Caramel writes it in a **To do before opening the course** note, hidden from students, at the top of the imported course. The **IMS content package** — pages to read with their table of contents, written entirely by Caramel — is chosen from the mosaic; the plan does not suggest it.
+
+The progression map is specific to Éléa. The map and progressive access are optional and still require checks in actual platform use. The differentiation template does not create automatic score-based branches. Collaboration takes place on the platform. Publishing a complete course to Sucrerie is not yet available.
+
+To explore further: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) helps you reflect on learning activities. Caramel’s seven families, including **Discuss** and **Collaborate**, are simplified guides based on tools, not the six ABC types or an assessment of your teaching.
+On Éléa, open **Course settings**, enable the progress map and use the **+ Add my image** tile to choose your own background. You can replace or remove the image and return to the suggested themes. The background is saved in the **.json** scenario and included in the **.mbz** course. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG or TIFF · Max. 12 MB. Converted automatically, without cropping.
+
+<!-- parcours-trames -->
+### Choosing a template
+
+After **A pathway**, the template sets the sequence that the AI adapts to your topic. The list shown depends on the delivery mode and scope you choose; every activity can still be changed in the plan.
+
+- **Revise before the test** — Find out what is already known, put the essentials back in view, practise, then self-test. *(One session · Two or three sessions)*
+- **Prepare and sit a test** — Practice in the exam format, the graded test, the answer key. Three activities, no more. *(One session)*
+- **Remedy after the test** — Start from the actual mistakes: name them, re-explain the exact point, redo, then check again. *(One session · Two or three sessions · Remote · Both)*
+- **Short ritual** — Ten minutes, always the same shape. It is repetition that makes it stick, not variety. *(One session)*
+- **Discover a new idea** — A situation that raises questions, documents to explore, then the summary, and only then the application. *(Two or three sessions · A full unit)*
+- **Flipped classroom** — The video and its check at home, the task you cannot do alone in class, the review afterwards. *(One session · Two or three sessions · Both)*
+- **Study a work** — Enter the text or the image, spot, situate, interpret, then produce your own reading. *(Two or three sessions · A full unit)*
+- **Run an investigation** — A question, a hypothesis, data, a conclusion: the scientific method, in order. *(Two or three sessions · A full unit · In class · Both)*
+- **Analyse a source** — Where the information comes from, who produces it, what it leaves out. Equip the eye before judging. *(One session · Two or three sessions)*
+- **Structured debate** — A vote to say where you start, sources to get informed, a forum to debate, a text to conclude. *(Two or three sessions · A full unit)*
+- **Three-speed differentiation** — A placement test, then activities to consolidate, continue or explore further. Instructions guide the choices; there is no automatic branching by score. *(Two or three sessions · A full unit · Remote · Both)*
+- **Modern language unit** — Vocabulary first, comprehension next, production last. *(Two or three sessions)*
+- **Prepare a spoken presentation** — What you will say, in what order, and how you rehearse saying it. *(One session · Two or three sessions · In class · Both)*
+- **Learning to learn** — What really helps you remember, tried out on the course topic: self-testing, spacing, explaining. Then everyone plans their revision. *(One session · Two or three sessions)*
+- **Learn on your own** — Nobody behind the screen: the course must stand on its own, from contents page to final test. *(Two or three sessions · A full unit · Remote)*
+- **Blended training in three phases** — Preparation at a distance, the group session, then classroom implementation and feedback. The standard training format. *(A full unit · Both)*
+- **Project-based work** — A brief with its criteria, documentation, teamwork, a deliverable reviewed by peers, then improved. *(A full unit · In class · Both)*
+- **Teamwork** — Form teams, gather ideas, write together, review each other's work with a set of criteria. *(Two or three sessions · A full unit)*
+- **Escape game** — A mission, clues, puzzles of rising difficulty, a final code, and the debrief. *(One session · Two or three sessions · In class · Both)*
+- **Free structure** — No imposed sequence: you compose the steps yourself and Caramel fills in whatever you place there. *(One session · Two or three sessions · A full unit)*
+<!-- /parcours-trames -->
+<!-- /parcours-complet -->

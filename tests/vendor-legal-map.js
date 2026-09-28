@@ -87,7 +87,11 @@ export const VENDOR_CSS_A_MENTION = [
  * (captures du tutoriel, logo) n'a rien à y faire.
  */
 export const ASSETS_A_MENTION = [
-    { fichier: 'images/flags/bzh.svg', cle: 'legal_library_gwenn_ha_du' }
+    { fichier: 'images/flags/bzh.svg', cle: 'legal_library_gwenn_ha_du' },
+    // Les trente cartes standard de la Carte de progression (greffon Éléa
+    // mod_mapmodules, GPL v2), réduites : un DOSSIER entier, inventorié
+    // fichier par fichier par le contrôle Node.
+    { dossier: 'images/parcours/cartes', cle: 'legal_library_mapmodules_maps' }
 ];
 
 /**

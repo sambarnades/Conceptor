@@ -1,0 +1,51 @@
+{
+  "cours": 794,
+  "activite": 13843,
+  "h5p": 397,
+  "source": "tests/sonde-parcours/audit-activites-2026-09-11/livre-genere/livre-genere-relu.h5p",
+  "sha256Source": "9ef102c1f433a08f27ed43c4964c51ed830e765c9714aaeb0274ffd00496fe69",
+  "sha256Reexport": "e738c35a23d042cab3a68a46f739522e6a21430498586efc20e0e2e973f55b7e",
+  "tests": {
+    "titreNatif": true,
+    "identifiants": true,
+    "unePageUnBloc": true,
+    "largeurs": true,
+    "troisCartes": true,
+    "indiceErroneAbsent": true,
+    "progressionManuelle": true,
+    "repriseDesactivee": true,
+    "sommaireFerme": true
+  },
+  "identifiants": [
+    "e3b79016-1c1c-4263-a52a-d0ca1e2dbd97",
+    "b84b0a5e-5eec-48e9-91a8-7eb1c47f2153",
+    "069ac4fe-a48e-4ffb-ac88-e70d5d0c6eab",
+    "d3226a8c-5c07-466f-881e-ba291c07fff1",
+    "82b5d123-92e3-492d-a9c0-916ba10de5b1",
+    "70fa6a57-8717-4d0c-8243-2a56dbaee422"
+  ],
+  "bibliotheques": [
+    "FontAwesome-4.5",
+    "H5P.AdvancedText-1.1",
+    "H5P.Audio-1.5",
+    "H5P.Column-1.22",
+    "H5P.Components-1.0",
+    "H5P.Dialogcards-1.9",
+    "H5P.FontIcons-1.0",
+    "H5P.InteractiveBook-1.15",
+    "H5P.JoubelUI-1.3",
+    "H5P.Row-1.3",
+    "H5P.RowColumn-1.3",
+    "H5P.Transition-1.0",
+    "H5PEditor.ColorSelector-1.3",
+    "H5PEditor.ShowWhen-1.0",
+    "H5PEditor.VerticalTabs-1.3",
+    "jQuery.ui-1.10"
+  ],
+  "essaisUI": [
+    "Couverture : consigne exacte",
+    "Cartes retournées : France–Paris, Italie–Rome, Espagne–Madrid",
+    "J’ai terminé cette page : décoché puis coché",
+    "Titre natif retouché, enregistrement, réexport reçu"
+  ]
+}

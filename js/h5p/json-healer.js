@@ -26,11 +26,11 @@ const H5P_LIB_VERSIONS = {
     'H5P.Essay': '1.5',
     'H5P.SingleChoiceSet': '1.11',
     'H5P.Summary': '1.10',
-    'H5P.DragQuestion': '1.14',
+    'H5P.DragQuestion': '1.15',
     'H5P.Dialogcards': '1.9',
-    'H5P.CoursePresentation': '1.26',
-    'H5P.InteractiveBook': '1.11',
-    'H5P.InteractiveVideo': '1.27'
+    'H5P.CoursePresentation': '1.27',
+    'H5P.InteractiveBook': '1.15',
+    'H5P.InteractiveVideo': '1.28'
 };
 
 /** Palette de couleurs par défaut pour Chart */
@@ -657,6 +657,52 @@ export function checkLatexBalance(item) {
  * @param {string} moduleKey - Le type de module.
  * @returns {Object} L'objet réparé.
  */
+/** Clés que H5P reconnaît dans le `metadata` d'un contenu (h5p.json / sous-contenus). */
+const CLES_METADATA_H5P = new Set([
+    'title', 'a11yTitle', 'license', 'licenseVersion', 'licenseExtras', 'authors', 'changes',
+    'extraTitle', 'contentType', 'source', 'yearFrom', 'yearTo', 'authorComments', 'defaultLanguage'
+]);
+
+/**
+ * Sous-contenu H5P (`{library, metadata, params}`) dont l'IA a rangé le CONTENU dans
+ * `metadata` et laissé `params` absent ou vide. Deux variantes constatées en réel sur
+ * un Quiz mixte (25-09-2026, mistral-small-4-119b) :
+ *   { library: "H5P.Blanks 1.14", metadata: { title, taskDescription, questions, … } }
+ *   { library: "H5P.Essay 1.5",   metadata: { title, params: { taskDescription, keywords, … } } }
+ * L'enveloppe `params` posée ensuite restait VIDE et le processeur refusait la question
+ * (« Blanks : un paragraphe à compléter est requis ») : génération perdue pour
+ * l'enseignant. Toute clé de `metadata` que H5P ne connaît pas y est ramenée vers
+ * `params`. Parcours profond : quiz, diapositives, chapitres, interactions vidéo.
+ * Un `params` déjà renseigné n'est jamais touché.
+ * @param {*} item
+ * @returns {*}
+ */
+export function rangerContenuHorsMetadata(item) {
+    if (Array.isArray(item)) return item.map(rangerContenuHorsMetadata);
+    if (!item || typeof item !== 'object') return item;
+    const noeud = {};
+    for (const [k, v] of Object.entries(item)) noeud[k] = rangerContenuHorsMetadata(v);
+    const meta = noeud.metadata;
+    const paramsVide = noeud.params == null
+        || (typeof noeud.params === 'object' && !Array.isArray(noeud.params) && Object.keys(noeud.params).length === 0);
+    if (typeof noeud.library === 'string' && /^H5P\./i.test(noeud.library) && paramsVide
+        && meta && typeof meta === 'object' && !Array.isArray(meta)) {
+        const egares = Object.keys(meta).filter(k => !CLES_METADATA_H5P.has(k));
+        if (egares.length) {
+            const deplaces = Object.fromEntries(egares.map(k => [k, meta[k]]));
+            // Seconde variante constatée (même jour, Rédaction d'un Quiz mixte) : l'objet
+            // `params` ENTIER rangé dans metadata → `metadata.params`, à désimbriquer.
+            const { params: imbrique, ...autres } = deplaces;
+            noeud.params = imbrique && typeof imbrique === 'object' && !Array.isArray(imbrique)
+                ? { ...autres, ...imbrique }
+                : deplaces;
+            noeud.metadata = Object.fromEntries(Object.entries(meta).filter(([k]) => CLES_METADATA_H5P.has(k)));
+            debugLog('json-healer', `[JSON Healer] ${noeud.library} : ${egares.length} champ(s) ramené(s) de metadata vers params`);
+        }
+    }
+    return noeud;
+}
+
 export function healJsonObject(obj, moduleKey) {
     if (!obj) return obj;
 
@@ -706,9 +752,14 @@ export function healJsonObject(obj, moduleKey) {
     // DOCX/ODT/PDF reçoivent le caractère Unicode et le rendent correctement.
     healed = normalizeFontCommandsDeep(healed);
 
+    // 1j. Contenu d'un sous-contenu H5P rangé dans `metadata` au lieu de `params`
+    healed = rangerContenuHorsMetadata(healed);
+
     // 2. Réparation QuizSet (Structure aplatie -> Params)
     if ((moduleKey === 'QuizSet' || moduleKey === 'QuizSetQCM' || moduleKey === 'QuizSetVF') && Array.isArray(healed.questions)) {
         healed.questions = healed.questions.map(q => {
+            // Une entrée vide ou une phrase (Texte à trous) : rien à restructurer.
+            if (!q || typeof q !== 'object') return q;
             // Si library est une lib de question H5P mais qu'il n'y a pas de .params
             if (q.library && !q.params) {
                 const libLower = q.library.toLowerCase();
@@ -739,7 +790,8 @@ export function healJsonObject(obj, moduleKey) {
     // 3. Normalisation des versions de librairies (souvent absentes ou erronées chez Gemini)
     if (Array.isArray(healed.questions)) {
         healed.questions.forEach(q => {
-            if (q.library && !q.library.includes(' ')) {
+            // Les questions d'un Texte à trous sont des phrases, et une entrée peut être nulle.
+            if (typeof q?.library === 'string' && !q.library.includes(' ')) {
                 const baseLib = q.library.trim();
                 if (H5P_LIB_VERSIONS[baseLib]) {
                     q.library = `${baseLib} ${H5P_LIB_VERSIONS[baseLib]}`;
@@ -792,6 +844,7 @@ function healQuizSet(healed) {
 
     if (Array.isArray(healed.questions)) {
         healed.questions = healed.questions.map(q => {
+            if (!q || typeof q !== 'object') return q;
             // subContentId manquant → générer UUID
             if (!q.subContentId) q.subContentId = generateUUID();
 
@@ -966,8 +1019,8 @@ function healCrossword(healed) {
             // Détecter symboles Unicode math (pas les lettres grecques déjà converties)
             const hasUnicodeMath = /[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(ans);
             // Mot valide = ≥ 2 caractères alphanumériques (accents inclus) et au moins une lettre
-            const alnumCount = (ans.match(/[a-zA-Z0-9À-ÿ]/g) || []).length;
-            const hasLetter = /[a-zA-ZÀ-ÿ]/.test(ans);
+            const alnumCount = (ans.match(/[\p{L}\p{M}\p{N}]/gu) || []).length;
+            const hasLetter = /\p{L}/u.test(ans);
             const isValidWord = alnumCount >= 2 && hasLetter;
 
             if (hasLatex || hasUnicodeMath || !isValidWord) {
@@ -1130,6 +1183,7 @@ function healDragAndDrop(healed) {
 
 // --- CoursePresentation ---
 function healCoursePresentation(healed) {
+    if(Array.isArray(healed.presentation?.slides))return healed;
     // Assurer que slides est un tableau
     if (!Array.isArray(healed.slides)) {
         if (healed.slide || healed.content) {
@@ -1167,6 +1221,7 @@ function healCoursePresentation(healed) {
 
 // --- InteractiveBook ---
 function healInteractiveBook(healed) {
+    if(healed.chapters?.[0]?.params)return healed;
     // Assurer que chapters est un tableau (accepter chapter/pages/sections comme alias)
     if (!Array.isArray(healed.chapters)) {
         const src = healed.chapter || healed.pages || healed.sections;
@@ -1210,7 +1265,13 @@ function healInteractiveBook(healed) {
         }
 
         // Normaliser chaque bloc : inférer le type si absent, dénouer exercise imbriqué
-        ch.content = (ch.content || []).filter(b => b && typeof b === 'object').map(b => {
+        const normaliserBloc = b => {
+            if (b.type === 'row' || b._blockType === 'row') {
+                b.columns = (Array.isArray(b.columns) ? b.columns : []).map(column => ({
+                    ...column, content: (Array.isArray(column.content) ? column.content : []).filter(v => v && typeof v === 'object').map(normaliserBloc)
+                }));
+                return b;
+            }
             // Format éditeur (déjà normalisé par normalizeDataForEditor : marqueurs
             // _blockType / _exerciseLibrary + wrapper `exercise`). On ne touche PAS :
             // la dénormalisation post-validation reconstruit le format à plat, et
@@ -1238,7 +1299,8 @@ function healInteractiveBook(healed) {
                 if (known) b.library = `${known} ${H5P_LIB_VERSIONS[known]}`;
             }
             return b;
-        });
+        };
+        ch.content = (ch.content || []).filter(b => b && typeof b === 'object').map(normaliserBloc);
 
         return ch;
     });
@@ -1251,6 +1313,7 @@ function healInteractiveBook(healed) {
 
 // --- InteractiveVideo ---
 function healInteractiveVideo(healed) {
+    if(healed.interactiveVideo)return healed;
     // Coercition d'un timestamp (nombre, "HH:MM:SS", "MM:SS") en secondes.
     const ivToSeconds = (t) => {
         if (typeof t === 'number') return Math.max(0, t);
@@ -1492,8 +1555,8 @@ function healFindTheWords(healed) {
         const cleanWords = words.filter(word => {
             // Détecter LaTeX (commandes \cmd ou délimiteurs \( \))
             const hasLatex = /\\[a-zA-Z()\[\]]/.test(word);
-            // Détecter symboles Unicode math (√, π, α-ω, Σ, ∞, etc.)
-            const hasUnicodeMath = /[\u221A\u03B1-\u03C9\u03A0-\u03A9\u2200-\u22FF\u2190-\u21FF\u00B2\u00B3\u2070-\u209F]/.test(word);
+            // Symboles mathématiques ; les lettres grecques restent des lettres valides.
+            const hasUnicodeMath = /[\u221A\u2200-\u22FF\u2190-\u21FF\u00B2\u00B3\u2070-\u209F]/.test(word);
 
             if (hasLatex || hasUnicodeMath) {
                 debugLog('json-healer', `[JSON Healer] FindTheWords wordList : suppression de "${word}" (formule math dans grille de lettres)`);
@@ -1506,7 +1569,7 @@ function healFindTheWords(healed) {
         }
         // Nettoyer chaque mot : ne garder que les lettres (la grille ne supporte que ca)
         let finalWords = cleanWords
-            .map(w => w.replace(/[^a-zA-ZÀ-ÿ]/g, ''))
+            .map(w => w.normalize('NFC').replace(/[^\p{L}\p{M}]/gu, ''))
             .filter(w => w.length > 0);
         // Plafond anti-DoS (S12) : mot trop long → écarté (pas tronqué)
         finalWords = finalWords.filter(w => {
@@ -1742,6 +1805,8 @@ export function healStructureForActivity(data, moduleKey) {
     if (!data || typeof data !== 'object') return data;
 
     let healed = structuredClone(data);
+    if(moduleKey==='InteractiveVideo' && healed.interactiveVideo)return healed;
+    if(moduleKey==='InteractiveBook' && healed.chapters?.[0]?.params)return healed;
 
     // Vidéo interactive : les IA externes (copier le prompt → coller le JSON) renvoient parfois
     // directement le TABLEAU des interactions, sans objet englobant. Envelopper AVANT tout
@@ -1758,7 +1823,12 @@ export function healStructureForActivity(data, moduleKey) {
     }
 
     // --- H5P commun (tous les types H5P) ---
-    if (H5P_MODULE_KEYS.has(moduleKey)) {
+    // Contenu NATIF déjà processé (Présentation, Glossaire) : les processeurs le recopient
+    // tel quel ; y poser overallFeedback/behaviour les ferait fuir dans le content.json
+    // (croissance au deuxième passage, constatée par le banc d'aller-retour T2).
+    const contenuNatif = (moduleKey === 'CoursePresentation' && Array.isArray(healed.presentation?.slides))
+        || (moduleKey === 'Glossary' && healed.panels?.[0]?.content?.params);
+    if (H5P_MODULE_KEYS.has(moduleKey) && !contenuNatif) {
         if (!healed.overallFeedback) {
             healed.overallFeedback = [{ from: 0, to: 100, feedback: "" }];
         }
@@ -2284,7 +2354,8 @@ function cleanMarkTheWordsText(text) {
  */
 function cleanDragTextText(text) {
     if (!text) return "";
-    let cleaned = text;
+    // Un texte rendu en liste de phrases par le modèle : `.trim()` y levait.
+    let cleaned = Array.isArray(text) ? text.join('\n\n') : String(text);
 
     // 1. Supprimer les wrappers \( et \) parasites (texte entier)
     if (cleaned.trim().startsWith('\\(') && cleaned.trim().endsWith('\\)')) {
@@ -2308,6 +2379,132 @@ function cleanDragTextText(text) {
     return cleaned;
 }
 
+/** Clé de comparaison d'un mot glissable : sans l'indice `:…`, sans casse. */
+const cleMotGlissable = (mot) => String(mot).split(':')[0].trim().toLowerCase();
+
+/**
+ * Normalise les leurres de « Glisser les mots » (`distractors`).
+ *
+ * H5P.DragText attend UNE chaîne de marqueurs : `*stagnation* *campagnes*`. Le
+ * modèle rend parfois une LISTE, dont chaque entrée mélange le bon mot marqué et
+ * son leurre (« *croissance* stagnation ») : le processeur appelait `.trim()` sur
+ * la liste, et l'activité était écartée à la livraison d'un parcours, avec pour
+ * seul motif « erreur de mise en forme » (constaté le 15 sept. 2026).
+ *
+ * Dans une liste, le texte hors marqueurs est le leurre ; à défaut, le contenu des
+ * marqueurs, ou l'entrée entière. Une bonne réponse du texte n'est jamais gardée
+ * comme leurre (le prompt l'interdit : l'étiquette apparaîtrait deux fois). Une
+ * chaîne est laissée telle quelle.
+ *
+ * @param {*} distractors
+ * @param {string} [textField] - Le texte à trous, pour reconnaître les bonnes réponses.
+ * @returns {string|undefined}
+ */
+export function normaliserLeurresDragText(distractors, textField) {
+    if (distractors == null || typeof distractors === 'string') return distractors;
+    const entrees = Array.isArray(distractors) ? distractors : [distractors];
+    const texte = Array.isArray(textField) ? textField.join('\n') : String(textField || '');
+    const reponses = new Set([...texte.matchAll(/\*([^*]+)\*/g)].map(m => cleMotGlissable(m[1])));
+    const leurres = [];
+    for (const entree of entrees) {
+        const brut = String((entree && typeof entree === 'object') ? (entree.text ?? entree.word ?? '') : (entree ?? '')).trim();
+        if (!brut) continue;
+        const marques = [...brut.matchAll(/\*([^*]+)\*/g)].map(m => m[1].trim());
+        const reste = brut.replace(/\*[^*]+\*/g, ' ')
+            .replace(/^[\s:;,/|\-–—→]+|[\s:;,/|\-–—→]+$/g, '')
+            .replace(/\s+/g, ' ');
+        const candidats = reste ? [reste] : (marques.length ? marques : [brut]);
+        for (const candidat of candidats) {
+            const cle = cleMotGlissable(candidat);
+            if (!cle || reponses.has(cle) || leurres.some(l => cleMotGlissable(l) === cle)) continue;
+            leurres.push(candidat);
+        }
+    }
+    return leurres.map(l => `*${l}*`).join(' ');
+}
+
+/**
+ * Retire de la consigne de « Glisser les mots » le texte à compléter qu'elle recopie.
+ *
+ * Constaté le 15 sept. 2026 : le modèle écrit la consigne PUIS le texte entier,
+ * marqueurs compris ; les `*mots*` deviennent de l'italique au-dessus des zones de
+ * dépôt, et toutes les réponses sont sous les yeux de l'élève. Seule une recopie
+ * mot pour mot d'un texte d'au moins 40 caractères est retirée (espaces et sauts
+ * de ligne libres) : une consigne qui cite quelques mots reste intacte.
+ *
+ * @param {*} consigne
+ * @param {*} texte - Le `textField`, AVANT son nettoyage.
+ * @returns {*} La consigne, sans le texte recopié.
+ */
+export function retirerTexteDeLaConsigneDragText(consigne, texte) {
+    if (typeof consigne !== 'string' || typeof texte !== 'string' || texte.trim().length < 40) return consigne;
+    const mots = texte.trim().split(/\s+/).map(m => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const recopie = new RegExp(mots.join('\\s+'));
+    if (!recopie.test(consigne)) return consigne;
+    return consigne.replace(recopie, '').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+/**
+ * Champs dont une liste a un sens propre, normalisés par une fonction dédiée :
+ * la jointure générique leur ferait perdre ce sens (les leurres de « Glisser les
+ * mots » mêlent le bon mot et le leurre, cf. `normaliserLeurresDragText`).
+ */
+const LISTES_A_TRAITEMENT_DEDIE = new Set(['DragTheWords:distractors']);
+
+/**
+ * Un champ TEXTE rendu en LISTE par le modèle redevient une chaîne.
+ *
+ * Constaté le 15 sept. 2026 : un seul champ texte rendu en liste (la question d'un
+ * Vrai/Faux, le texte d'une carte, la consigne…) faisait planter la mise en forme
+ * de 24 modules (`text.trim is not a function`) et l'activité était perdue. Les
+ * champs texte de chaque module sont ceux que déclare `FIELD_CONSTRAINTS` ; une
+ * liste de chaînes (ou de nombres) y est jointe, en paragraphes pour un texte mis
+ * en forme, par une espace pour un libellé. Le stockage de l'éditeur reçoit ainsi
+ * une chaîne, comme si le modèle avait obéi.
+ *
+ * @param {Object} obj - Modifié en place.
+ * @param {string} moduleKey
+ * @param {Object} champs - `FIELD_CONSTRAINTS[moduleKey].fields`
+ */
+function aplatirTextesEnListe(obj, moduleKey, champs) {
+    for (const [chemin, config] of Object.entries(champs)) {
+        if (LISTES_A_TRAITEMENT_DEDIE.has(`${moduleKey}:${chemin}`)) continue;
+        const separateur = ['html', 'html+latex', 'unicode+markers'].includes(config.render) ? '\n\n' : ' ';
+        const aplatir = (valeur) => (Array.isArray(valeur) && valeur.length
+            && valeur.every(x => typeof x === 'string' || typeof x === 'number'))
+            ? valeur.map(String).join(separateur) : valeur;
+        // 'cards[].text' → ['cards', '[]', 'text'] ; 'rows[][]' → ['rows', '[]', '[]']
+        const segments = chemin.split('.').flatMap(part => {
+            const m = part.match(/^([^[]*)((?:\[\])*)$/);
+            return m ? [...(m[1] ? [m[1]] : []), ...Array(m[2].length / 2).fill('[]')] : [part];
+        });
+        const descendre = (courant, i) => {
+            if (courant == null || typeof courant !== 'object') return;
+            const segment = segments[i];
+            const dernier = i === segments.length - 1;
+            if (segment === '[]') {
+                if (!Array.isArray(courant)) return;
+                courant.forEach((item, j) => {
+                    if (dernier) courant[j] = aplatir(item);
+                    else descendre(item, i + 1);
+                });
+            } else if (!Array.isArray(courant)) {
+                if (dernier) { if (segment in courant) courant[segment] = aplatir(courant[segment]); }
+                else descendre(courant[segment], i + 1);
+            }
+        };
+        descendre(obj, 0);
+    }
+}
+
+/** Pose les leurres normalisés sur un objet DragText, ou retire un champ vidé. */
+function soignerLeurresDragText(params) {
+    if (!params || params.distractors == null || typeof params.distractors === 'string') return;
+    const leurres = normaliserLeurresDragText(params.distractors, params.textField);
+    if (leurres) params.distractors = leurres;
+    else delete params.distractors;
+}
+
 /**
  * Applique le nettoyage spécifique par type d'activité sur les champs texte.
  * Doit être appelé APRÈS healJsonObject() et AVANT le stockage de originalJson.
@@ -2324,9 +2521,13 @@ export function healActivitySpecificFields(obj, moduleKey) {
 
     let healed = structuredClone(obj);
 
+    const constraints = getConstraints(moduleKey);
+
+    // --- 0. Champs texte rendus en liste par le modèle ---
+    if (constraints && constraints.fields) aplatirTextesEnListe(healed, moduleKey, constraints.fields);
+
     // --- 1. Conversions automatiques via FIELD_CONSTRAINTS ---
     // Applique les conversions unicode, plain, plain+letters sur les champs déclarés
-    const constraints = getConstraints(moduleKey);
     if (constraints && constraints.fields) {
         for (const [fieldPath, config] of Object.entries(constraints.fields)) {
             const renderType = config.render;
@@ -2360,9 +2561,13 @@ export function healActivitySpecificFields(obj, moduleKey) {
 
     // DragTheWords : *mot* marqueurs avec conversion LaTeX→Unicode
     if (moduleKey === 'DragTheWords') {
+        if (typeof healed.taskDescription === 'string') {
+            healed.taskDescription = retirerTexteDeLaConsigneDragText(healed.taskDescription, healed.textField);
+        }
         if (healed.textField) {
             healed.textField = cleanDragTextText(healed.textField);
         }
+        soignerLeurresDragText(healed);
         return healed;
     }
 
@@ -2392,6 +2597,15 @@ export function healActivitySpecificFields(obj, moduleKey) {
                     if (slide.exercise.question && typeof slide.exercise.question === 'string') {
                         slide.exercise.question = slide.exercise.question.trim();
                     }
+                    // Le modèle écrit la bibliothèque en forme courte (« blanks ») OU
+                    // complète (« H5P.Blanks 1.14 ») ; le processeur accepte les deux.
+                    // Comparée à la seule forme courte, la complète échappait au
+                    // nettoyage : « **notion** » restait tel quel dans un texte à trous
+                    // (parcours réel du 28 sept. 2026), où « * » délimite un trou.
+                    const lib = String(slide.exercise.library || '').toLowerCase().replace(/^h5p\./, '').replace(/\s.*$/, '');
+                    if (lib !== slide.exercise.library && ['blanks', 'dragtext', 'markthewords'].includes(lib)) {
+                        slide.exercise.library = lib;
+                    }
                     // Blanks : nettoyer les questions
                     if (slide.exercise.library === 'blanks' && Array.isArray(slide.exercise.questions)) {
                         slide.exercise.questions = slide.exercise.questions.map(
@@ -2402,6 +2616,7 @@ export function healActivitySpecificFields(obj, moduleKey) {
                     if (slide.exercise.library === 'dragtext' && slide.exercise.textField) {
                         slide.exercise.textField = cleanDragTextText(slide.exercise.textField);
                     }
+                    if (slide.exercise.library === 'dragtext') soignerLeurresDragText(slide.exercise);
                     // MarkTheWords : nettoyer le textField
                     if (slide.exercise.library === 'markthewords' && slide.exercise.textField) {
                         slide.exercise.textField = cleanMarkTheWordsText(slide.exercise.textField);
@@ -2442,6 +2657,7 @@ export function healActivitySpecificFields(obj, moduleKey) {
                         if (lib.includes('dragtext') && b.textField) {
                             b.textField = cleanDragTextText(b.textField);
                         }
+                        if (lib.includes('dragtext')) soignerLeurresDragText(b);
                         if (lib.includes('markthewords') && b.textField) {
                             b.textField = cleanMarkTheWordsText(b.textField);
                         }
@@ -2470,6 +2686,7 @@ export function healActivitySpecificFields(obj, moduleKey) {
             if (libName === 'H5P.DragText' && q.params.textField) {
                 q.params.textField = cleanDragTextText(q.params.textField);
             }
+            if (libName === 'H5P.DragText') soignerLeurresDragText(q.params);
             if (libName === 'H5P.Blanks' && Array.isArray(q.params.questions)) {
                 q.params.questions = q.params.questions.map(s => typeof s === 'string' ? cleanBlanksText(s) : s);
             }
@@ -2534,7 +2751,7 @@ function toLettersOnly(text) {
         cleaned = latexToUnicode(cleaned);
     }
     // Ne garder que les lettres (y compris accentuées) et les chiffres
-    cleaned = cleaned.replace(/[^a-zA-Z0-9À-ÿ]/g, '');
+    cleaned = cleaned.normalize('NFC').replace(/[^\p{L}\p{M}\p{N}]/gu, '');
     return cleaned;
 }
 

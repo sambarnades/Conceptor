@@ -89,6 +89,8 @@ doelstelling. Filters boven de tegels beperken de weergave: **Alles**,
 **Quiz & Tests**, **Tekstmanipulatie**, **Memoriseren & Ontdekken**,
 evenals de platforms **H5P**, **Éléa**, **Moodle**.
 
+Onder het formulier toont **Een activiteit** deze tegels; **Een leerpad** opent de werkplaats die meerdere activiteiten tot een volledige cursus samenvoegt (zie ‘Een volledige cursus maken en hervatten’).
+
 ### H5P-activiteiten
 
 Activiteiten in H5P-formaat. De tegels met een ster (★) bevatten
@@ -263,7 +265,7 @@ Er worden geen persoonsgegevens verzameld of opgeslagen. Er worden geen tracking
 
 #### Modellen voor kunstmatige intelligentie
 
-De Caramel-applicatie maakt, uitsluitend tijdens de generatie met één klik, gebruik van AI-modellen die worden beheerd door ILaaS, een federatie van gedeelde AI-infrastructuren. Verzoeken worden verzonden via een n8n-workflow gehost door de Incubateur en vervolgens doorgegeven aan ILaaS voor uitvoering op vertrouwde servers in datacenters gecertificeerd door het Franse hoger onderwijs en de onderzoekssector (ESR). Caramel voert de modellen niet uit en verwerkt of bewaart geen gegevens op eigen naam; gegevens worden uitsluitend gebruikt om het verzoek uit te voeren en worden niet verzonden naar consumenten-AI-diensten. De momenteel beschikbare modellen omvatten Mistral-Small-3.2 (24 miljard parameters), Qwen 3.6 (35 miljard parameters) en GPT-OSS (120 miljard parameters). Eventuele hosting-, log- en bewaarpraktijken van ILaaS vallen onder hun eigen privacybeleid en servicevoorwaarden, die direct kunnen worden geraadpleegd.
+De Caramel-applicatie maakt, uitsluitend tijdens de generatie met één klik, gebruik van AI-modellen die worden beheerd door ILaaS, een federatie van gedeelde AI-infrastructuren. Verzoeken worden verzonden via een n8n-workflow gehost door de Incubateur en vervolgens doorgegeven aan ILaaS voor uitvoering op vertrouwde servers in datacenters gecertificeerd door het Franse hoger onderwijs en de onderzoekssector (ESR). Caramel voert de modellen niet uit en verwerkt of bewaart geen gegevens op eigen naam; gegevens worden uitsluitend gebruikt om het verzoek uit te voeren en worden niet verzonden naar consumenten-AI-diensten. De momenteel beschikbare modellen omvatten Gemma 4 (31 miljard parameters), Qwen 3.8 (27 miljard parameters) en Mistral Small 4 (119 miljard parameters). Eventuele hosting-, log- en bewaarpraktijken van ILaaS vallen onder hun eigen privacybeleid en servicevoorwaarden, die direct kunnen worden geraadpleegd.
 
 #### Verwerking van gebruikersverzoeken via n8n en de Incubateur van het Franse Ministerie van Onderwijs
 
@@ -295,3 +297,59 @@ De applicatie is ontworpen voor gebruik op een computer, met donkere/lichte modi
   meest geschikte type voor, maar genereert NOOIT de JSON van een activiteit.
 - Voor elke integratievraag geeft Caramelia de hierboven beschreven
   precieze stappen.
+
+<!-- parcours-complet -->
+## Een volledige cursus maken en hervatten
+
+Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten.
+
+In het menu van Caramelia opent **Een cursus maken** direct de werkplaats, zonder AI-aanvraag. Als er een concept bestaat, opent **Mijn cursus hervatten** dit opnieuw. Bestaande velden en bronnen blijven behouden. Controleer de opzet en het plan in de werkplaats voordat je de generatie start.
+
+Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang en sjabloon. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.
+
+In **Plan** bewerkt u titel, algemeen doel, kernbegrippen, stappen en activiteiten. Verplaats activiteiten met de pijlen of door hun miniatuur te slepen. Met **Instructie en leerfase** past u de generatie-instructies aan. Pedagogische aanwijzingen helpen bij het nakijken zonder een model op te leggen. Het maximum is **12 activiteiten**.
+
+Plak de videolink in de kaart van een **interactieve video**. Het transcript wordt tijdens het genereren opgehaald; u kunt het ook zelf plakken. Voeg voor een **interactieve afbeelding** en de activiteiten waarbij één of meer gebieden gezocht worden een afbeelding toe aan de kaart. Deze wordt vóór het genereren geanalyseerd. U kunt deze bronnen ook tijdens de generatiefase toevoegen. Een activiteit zonder bron wacht terwijl de andere doorgaan. Het scenario bewaart de afbeeldingen en links van de activiteiten; de documenten van het startformulier blijven apart. Plak voor een **Weblink** het adres van de bron in de kaart: de AI schrijft de leesopdracht zonder de pagina te openen.
+
+Zodra inhoud klaar is, opent **De inhoud bewerken** de vertrouwde editor en **Voorbeeld** de speler. Met **Cursus nakijken**, **Vorige** en **Volgende** bekijkt u alles op volgorde. Sla wijzigingen op om ze in het plan en de export op te nemen. Een gewijzigde planinstructie herschrijft bestaande inhoud niet.
+
+Keur het plan goed om het genereren te starten. U kunt stoppen, ontbrekende activiteiten hervatten of één activiteit opnieuw genereren. Het slot **Deze activiteit niet maken** reserveert de inhoud voor handmatige invoer: AI vult die niet. Een mislukte nieuwe generatie behoudt de vorige inhoud. Ontbrekende activiteiten worden vóór export vermeld.
+
+**Het scenario exporteren (.json)** bewaart het plan en de voltooide inhoud in een **.json**-bestand. De knop **Plan aanpassen**, naast **Het plan opstellen**, opent hetzelfde venster als bij een activiteit: kopieer de prompt naar de AI van uw keuze en plak het antwoord terug. **Een scenario openen** staat in dit venster; het **.json**-bestand downloadt u bij de oplevering, naast de **.mbz**. Het concept blijft alleen in dit tabblad: exporteer het scenario voordat u het sluit. Onderwerp, doelgroep en bijlagen ontbreken in het scenario; voer ze opnieuw in voordat u nieuwe inhoud genereert.
+
+Download in **Oplevering** de **.mbz** en gebruik de cursusimport of herstelfunctie van uw platform. Dit cursusbestand hoort niet in een H5P-activiteit. Het leerpad verschijnt ook bij de meldingen: **Bekijken** opent het **Overzicht van het leerpad**, met het welkom, elke stap en de activiteiten, die u kunt nakijken en bewerken voordat u opnieuw downloadt. Bewaar ook de **.json** om terug te keren naar Caramel. Het lesplan en de activiteitsdetails kunt u exporteren als **DOCX, ODT of PDF**.
+
+Het plan biedt ook de modules van uw Éléa, Magistère of Moodle aan, gegroepeerd in het menu van elke activiteit onder **Modules van het platform**: forum, peiling, vragenlijst, enquête, les, workshop met peerbeoordeling, bord, wiki, samenwerkingsdocument, woordenlijst en database om samen op te bouwen, virtueel klaslokaal, groepskeuze, bestanden delen en weblink. De AI schrijft wat het platform bij het importeren bewaart; gezamenlijke ruimtes komen leeg aan, met hun opdracht. Als een module een instelling op het platform vereist (fasen van de workshop, tijdstip van het virtuele klaslokaal, groepen), schrijft Caramel die in een notitie **Te doen vóór het openen van de cursus**, verborgen voor de leerlingen, bovenaan de geïmporteerde cursus. Het **IMS-contentpakket** — pagina’s om te lezen met een inhoudsopgave, volledig door Caramel geschreven — kiest u in het mozaïek; het plan stelt het niet voor.
+
+De voortgangskaart is specifiek voor Éléa. De kaart en stapsgewijze toegang zijn optioneel en moeten nog in werkelijk platformgebruik worden gecontroleerd. Het differentiatiesjabloon maakt geen automatische vertakkingen op basis van cijfers. Samenwerking gebeurt op het platform. Een volledige cursus publiceren op Sucrerie is nog niet beschikbaar.
+
+Meer weten: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) helpt bij het nadenken over leeractiviteiten. De zeven categorieën van Caramel, waaronder **Bespreken** en **Samenwerken**, zijn vereenvoudigde richtlijnen op basis van tools, niet de zes ABC-leertypen of een beoordeling van uw onderwijs.
+Open in Éléa **Cursusinstellingen**, schakel de voortgangskaart in en kies met de tegel **+ Eigen afbeelding toevoegen** je eigen achtergrond. Je kunt de afbeelding vervangen of verwijderen en terugkeren naar de voorgestelde thema’s. De achtergrond wordt opgeslagen in het **.json**-scenario en opgenomen in de **.mbz**-cursus. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG of TIFF · Max. 12 MB. Automatische conversie, zonder bijsnijden.
+
+<!-- parcours-trames -->
+### Een sjabloon kiezen
+
+Na **Een leerpad** bepaalt het sjabloon het verloop dat de AI aan uw onderwerp aanpast. De getoonde lijst hangt af van de gekozen lesvorm en omvang; elke activiteit blijft aanpasbaar in het plan.
+
+- **Herhalen vóór de toets** — Nagaan wat al zit, het wezenlijke opnieuw voor ogen brengen, oefenen, jezelf testen. *(Eén les · Twee tot drie lessen)*
+- **Een toets voorbereiden en afleggen** — Oefenen in het toetsformaat, de beoordeelde toets, de verbetersleutel. Drie activiteiten, niet meer. *(Eén les)*
+- **Herstellen na de toets** — Je vertrekt van de vastgestelde fouten: benoemen, het precieze punt opnieuw uitleggen, overdoen, opnieuw nagaan. *(Eén les · Twee tot drie lessen · Op afstand · Allebei)*
+- **Kort ritueel** — Tien minuten, altijd dezelfde vorm. Het is de herhaling die het vastzet, niet de afwisseling. *(Eén les)*
+- **Een begrip ontdekken** — Een situatie die vragen oproept, documenten om te verkennen, dan de samenvatting en pas daarna de toepassing. *(Twee tot drie lessen · Een volledige lessenreeks)*
+- **Omgekeerde klas** — Het filmpje en de controle thuis, de opdracht die je niet alleen aankunt in de klas, de terugblik daarna. *(Eén les · Twee tot drie lessen · Allebei)*
+- **Een werk bestuderen** — De tekst of het beeld binnengaan, opmerken, situeren, duiden en dan je eigen lezing formuleren. *(Twee tot drie lessen · Een volledige lessenreeks)*
+- **Een onderzoek voeren** — Een vraag, een hypothese, gegevens, een besluit: de wetenschappelijke werkwijze, op volgorde. *(Twee tot drie lessen · Een volledige lessenreeks · In de klas · Allebei)*
+- **Een bron doorlichten** — Waar de informatie vandaan komt, wie ze maakt, wat ze weglaat. De blik scherpen vóór het oordeel. *(Eén les · Twee tot drie lessen)*
+- **Onderbouwd debat** — Een stemming om te zeggen waar je begint, bronnen om je te informeren, een forum om te debatteren, een tekst om af te sluiten. *(Twee tot drie lessen · Een volledige lessenreeks)*
+- **Differentiatie op drie snelheden** — Een instaptoets, gevolgd door activiteiten om te versterken, verder te leren of te verdiepen. Instructies begeleiden de keuzes, zonder automatische vertakkingen op basis van de score. *(Twee tot drie lessen · Een volledige lessenreeks · Op afstand · Allebei)*
+- **Reeks moderne vreemde taal** — Eerst de woordenschat, dan het begrijpen, het spreken en schrijven het laatst. *(Twee tot drie lessen)*
+- **Een spreekbeurt voorbereiden** — Wat je gaat zeggen, in welke volgorde, en hoe je het zeggen oefent. *(Eén les · Twee tot drie lessen · In de klas · Allebei)*
+- **Leren leren** — Wat echt helpt om te onthouden, uitgeprobeerd op het onderwerp van de les: jezelf overhoren, spreiden, uitleggen. Daarna plant iedereen zijn eigen herhaling. *(Eén les · Twee tot drie lessen)*
+- **Zelfstandig leren** — Niemand achter het scherm: het leerpad moet op zichzelf staan, van inhoudsopgave tot eindtoets. *(Twee tot drie lessen · Een volledige lessenreeks · Op afstand)*
+- **Blended opleiding in drie fasen** — De voorbereiding op afstand, de samenkomst, dan de uitvoering en de terugkoppeling. Het formaat van opleidingstrajecten. *(Een volledige lessenreeks · Allebei)*
+- **Projectmatig werken** — Een opdracht met criteria, documentatie, teamwerk, een eindproduct dat medeleerlingen beoordelen en dat daarna wordt verbeterd. *(Een volledige lessenreeks · In de klas · Allebei)*
+- **Teamwerk** — Teams vormen, ideeën verzamelen, samen schrijven, elkaars werk beoordelen met criteria. *(Twee tot drie lessen · Een volledige lessenreeks)*
+- **Escape game** — Een missie, aanwijzingen, raadsels van oplopende moeilijkheid, een eindcode en de nabespreking. *(Eén les · Twee tot drie lessen · In de klas · Allebei)*
+- **Vrije structuur** — Geen opgelegd verloop: je stelt de stappen zelf samen en Caramel vult in wat je erin zet. *(Eén les · Twee tot drie lessen · Een volledige lessenreeks)*
+<!-- /parcours-trames -->
+<!-- /parcours-complet -->

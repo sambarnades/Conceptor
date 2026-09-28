@@ -1,0 +1,11 @@
+{
+  "date": "2026-09-11T12:15:13.161Z",
+  "service": "bas",
+  "modelRequested": "mistral-small-4-119b",
+  "modelReturned": "mistral-small-4-119b",
+  "seconds": 4,
+  "cartes": 3,
+  "reglagesVerifies": true,
+  "rag": false,
+  "stats": "skip"
+}

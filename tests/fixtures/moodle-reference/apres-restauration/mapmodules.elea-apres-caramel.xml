@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="1437" moduleid="120043" modulename="mapmodules" contextid="192513">
+  <mapmodules id="1437">
+    <course>6731</course>
+    <name>Carte standard : paysage</name>
+    <intro>&lt;div&gt;Vérifier qu'un .mbz de cours s'importe et se restaure entièrement&lt;/div&gt;&lt;div&gt;&lt;div id="container_game787" style="width:100%;position:relative;margin:0 auto;"&gt;
+    &lt;img id="back_game787" style="width:100%;" src="https://SITE-CIBLE.example/mod/mapmodules/pix/maps/maplandscape.jpg" alt="bg"&gt;
+    &lt;svg id="path_container_game787" style='position:absolute;top:0px;left:0px;' viewBox="0 0 1000 400" version="1.1" &gt;
+      &lt;path id="path" fill="none" d="m 30.156025 69.323593 c 71.750545 -7.27904 85.268755 -12.478355 140.381495 -7.27904 55.11273 5.199314 236.04888 41.594517 263.08532 82.149167 27.03643 40.55466 31.19589 84.2289 -33.27562 106.06602 -24.93569 8.44596 -250.60696 6.23918 -266.2049 44.71411 -15.59795 38.47492 103.98629 82.14917 252.68668 85.26875 148.7004 3.11959 212.13204 -22.87698 245.40765 -42.63437 33.27562 -19.7574 131.02273 -93.58767 110.22547 -150.78013 -20.79726 -57.19246 -94.62752 -7.27904 -132.06259 -31.19588 -37.43506 -23.91685 -29.11616 -73.830272 -15.59794 -85.268764 13.51822 -11.438492 25.99657 -22.876984 25.99657 -22.876984 0 0 40.55465 -24.95671 92.5478 -22.876984 51.99314 2.079726 143.50108 11.438492 173.65711 36.395202 30.15602 24.95671 58.74003 70.54185 39.51479 132.06259 -10.39863 33.27561 -82.14917 72.7904 -83.18903 103.98629 -1.2204 36.61178 32.23574 76.94986 32.23574 76.94986 l 0 0" /&gt;
+    &lt;/svg&gt;
+&lt;/div&gt;
+&lt;script src="https://SITE-CIBLE.example/mod/mapmodules/js/maploader.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+YUI().use("node-base", function(Y){
+    Y.on("domready", function(){
+      maploader({
+        mapid: "1437",
+        gameid: "game787",
+        gamewidth: "1000",
+        mapbuttoncheck: "https://SITE-CIBLE.example/mod/mapmodules/pix/icons/checked.png",
+        mapbuttonquestion: "https://SITE-CIBLE.example/mod/mapmodules/pix/icons/questionmark.png",
+        mapbuttonlock: "https://SITE-CIBLE.example/mod/mapmodules/pix/icons/locked.png",
+        buttonwidth: "50"
+      })
+    })
+})
+
+&lt;/script&gt;
+&lt;/div&gt;&lt;div&gt;&lt;/div&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>1756000000</timecreated>
+    <timemodified>1756000000</timemodified>
+    <targetsection>666</targetsection>
+    <path>m 30.156025 69.323593 c 71.750545 -7.27904 85.268755 -12.478355 140.381495 -7.27904 55.11273 5.199314 236.04888 41.594517 263.08532 82.149167 27.03643 40.55466 31.19589 84.2289 -33.27562 106.06602 -24.93569 8.44596 -250.60696 6.23918 -266.2049 44.71411 -15.59795 38.47492 103.98629 82.14917 252.68668 85.26875 148.7004 3.11959 212.13204 -22.87698 245.40765 -42.63437 33.27562 -19.7574 131.02273 -93.58767 110.22547 -150.78013 -20.79726 -57.19246 -94.62752 -7.27904 -132.06259 -31.19588 -37.43506 -23.91685 -29.11616 -73.830272 -15.59794 -85.268764 13.51822 -11.438492 25.99657 -22.876984 25.99657 -22.876984 0 0 40.55465 -24.95671 92.5478 -22.876984 51.99314 2.079726 143.50108 11.438492 173.65711 36.395202 30.15602 24.95671 58.74003 70.54185 39.51479 132.06259 -10.39863 33.27561 -82.14917 72.7904 -83.18903 103.98629 -1.2204 36.61178 32.23574 76.94986 32.23574 76.94986 l 0 0</path>
+    <iconset>10</iconset>
+    <displaymodulenames>0</displaymodulenames>
+    <buttonwidth>50</buttonwidth>
+    <descriptionheader>Vérifier qu'un .mbz de cours s'importe et se restaure entièrement</descriptionheader>
+    <descriptionheaderformat>1</descriptionheaderformat>
+    <descriptionfooter></descriptionfooter>
+    <descriptionfooterformat>1</descriptionfooterformat>
+  </mapmodules>
+</activity>

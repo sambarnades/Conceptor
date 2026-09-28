@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="27" moduleid="22716" modulename="etherpadlite" contextid="55566">
+  <etherpadlite id="27">
+    <name>Etherpad Lite</name>
+    <intro>&lt;p&gt;Descriptoin&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <guestsallowed>0</guestsallowed>
+    <timecreated>1788524445</timecreated>
+    <timemodified>0</timemodified>
+  </etherpadlite>
+</activity>

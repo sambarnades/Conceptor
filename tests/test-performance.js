@@ -106,18 +106,28 @@ const THRESHOLDS = {
     // Le grec est toujours le plus gros fichier : alphabet à 2 octets/caractère en UTF-8.
     // Historique : 450 Ko (Livre v5.2.0) → 454 Ko (vidéo interactive) → 491 Ko (v5.3.0)
     // → 535 Ko (v6.2.0 : Image interactive + « Trouver la zone » / « Trouver les zones »)
-    // → 563 Ko (v6.3.0 : Dictée + TTS, disposition des zones du Glisser-déposer).
+    // → 563 Ko (v6.3.0 : Dictée + TTS, disposition des zones du Glisser-déposer)
+    // → 620 Ko (atelier de parcours : 114 clés, dont les neuf trames didactiques et le
+    //   tableau de bord du plan ; el passe de 564 à 590 Ko).
+    // → 680 Ko (lot 2 du parcours : les six garde-fous, la fiche de séquence, la Carte
+    //   de progression, l'ouverture progressive et le miroir des types d'apprentissage ;
+    //   el passe de 590 à 607 Ko, et la marge à 620 Ko était retombée à 2,1 %).
     // Vérifié en v6.3.0 avant relèvement — la croissance est du CONTENU, pas du gaspillage :
     // les 11 locales portent exactement 2728 clés (parité stricte), la minification ne
     // gagnerait que 1,9 %, et les valeurs longues dupliquées pèsent 0,6 % du fichier.
-    LOCALE_SIZE: 590 * 1024,    // 590 Ko par fichier (el = 564 Ko → ~4,4 % de marge)
+    // La marge retenue couvre les écrans de fabrication et de livraison à venir : mieux
+    // vaut un relèvement motivé que deux relèvements de rattrapage.
+    // Même raisonnement au relèvement de 2026-09-06 : ce qui reste du lot 2 (Questionnaire,
+    // Leçon, Atelier, différenciation) ajoutera des clés, et un seuil qu'on frôle ne
+    // garde plus rien — il ne fait que se faire relever en catastrophe.
+    LOCALE_SIZE: 680 * 1024,    // 680 Ko par fichier (el = 607 Ko → ~12 % de marge)
     // Le seuil PAR FICHIER ci-dessus est le vrai garde anti-bloat ; le total ne fait que
     // borner le poids servi. Il croît donc mécaniquement d'un fichier entier à chaque
     // langue ajoutée : 4,5 Mo couvrait 11 locales, le breton (2026-08-28) porte le total
     // à ~4,85 Mo. Relevé à 5,5 Mo — marge pour la croissance du breton une fois traduit
     // (le breton est un peu plus long que le français) sans masquer un emballement, qui
     // se verrait de toute façon d'abord sur LOCALE_SIZE.
-    TOTAL_LOCALES_SIZE: 5.5 * 1024 * 1024, // 5,5 Mo total (4,85 Mo avec 12 locales ; ~12 % de marge)
+    TOTAL_LOCALES_SIZE: 6 * 1024 * 1024, // 6 Mo total (5,09 Mo avec 12 locales ; ~18 % de marge)
     TRANSLATE_PAGE: 200,        // ms
     HEAL_STRING: 100,           // ms par fixture
     HEAL_STRING_AVG: 50,        // ms moyenne

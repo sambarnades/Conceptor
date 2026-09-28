@@ -1,0 +1,64 @@
+[
+  {
+    "kind": "complet",
+    "erreur": {
+      "score": "2/3",
+      "texte": "Vos résultats :\n2 bonnes réponses sur 3\nQuestion\nScore\nFrance\n0/1\nItalie\n1/1\nEspagne\n1/1\nAfficher la solution\nRecommencer\nRights of use\nQuestion 3 sur 3",
+      "questions": [
+        "Capitale de la France ?\nParis\nRome\nVérifier",
+        "Rome est la capitale de l’Italie.\nVrai\nFaux\nVérifier",
+        "Complète la capitale.\nLa capitale de l’Espagne est \n.\nVérifier"
+      ],
+      "videoLue": null
+    },
+    "reussite": {
+      "score": "3/3",
+      "texte": "Vos résultats :\n3 bonnes réponses sur 3\nQuestion\nScore\nFrance\n1/1\nItalie\n1/1\nEspagne\n1/1\nAfficher la solution\nRecommencer\nRights of use\nQuestion 3 sur 3",
+      "questions": [
+        "Capitale de la France ?\nParis\nRome\nVous avez obtenu 0 sur 1 points\n0/1\nVérifier",
+        "Rome est la capitale de l’Italie.\nVrai\nFaux\nVous avez obtenu 1 sur 1 points\nVous avez obtenu 1 sur 1 points\n1/1\nVérifier",
+        "Complète la capitale.\nMode de vérification\nLa capitale de l’Espagne est \n.\nVérifier"
+      ],
+      "videoLue": null
+    },
+    "solution": true
+  },
+  {
+    "kind": "tirage",
+    "erreur": {
+      "score": "1/2",
+      "texte": "Vos résultats :\n1 bonnes réponses sur 2\nQuestion\nScore\nItalie\n0/1\nFrance\n1/1\nAfficher la solution\nRecommencer\nQuestion 2 sur 2",
+      "questions": [
+        "Rome est la capitale de l’Italie.\nVrai\nFaux\nVérifier",
+        "Capitale de la France ?\nParis\nRome\nVérifier"
+      ],
+      "videoLue": {
+        "duration": 1.362712,
+        "currentTime": 0.000048
+      }
+    },
+    "reussite": {
+      "score": "2/2",
+      "texte": "Vos résultats :\n2 bonnes réponses sur 2\nQuestion\nScore\nEspagne\n1/1\nItalie\n1/1\nAfficher la solution\nRecommencer\nQuestion 2 sur 2",
+      "questions": [
+        "Complète la capitale.\nLa capitale de l’Espagne est \n.\nVérifier",
+        "Rome est la capitale de l’Italie.\nVrai\nFaux\nVérifier"
+      ],
+      "videoLue": {
+        "duration": 1.362712,
+        "currentTime": 0.267433
+      }
+    },
+    "solution": true
+  },
+  {
+    "kind": "sans-resultats",
+    "texte": "Terminé RELU\n3 bonnes réponses sur 3\nQuestion\nScore\nFrance\n1/1\nItalie\n1/1\nEspagne\n1/1\nQuestion 3 sur 3",
+    "questions": [
+      "Capitale de la France ?\nParis\nRome",
+      "Rome est la capitale de l’Italie.\nVrai\nFaux",
+      "Complète la capitale.\nLa capitale de l’Espagne est \n."
+    ],
+    "sansResultats": true
+  }
+]

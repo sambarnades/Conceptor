@@ -89,6 +89,8 @@ async function runStep1_TutorielHelpers(doc, win) {
                    'openTutorialModal','initTutorialModal'].every(n => typeof m[n] === 'function');
         // formatInline appelle escapeHtml en interne : c'est CET appel qui levait.
         app('inline',      () => m.formatInline('a **gras** <b>&"\\''));
+        app('inlineLien',  () => m.formatInline('Voir [ABC Learning](https://example.org/a?b=1&c=2).'));
+        app('inlineLienXss', () => m.formatInline('[piège](javascript:alert(1))'));
         app('inlineVide',  () => m.formatInline(''));
         app('inlineNull',  () => m.formatInline(null));
         app('inlineNombre',() => m.formatInline(7));
@@ -132,6 +134,11 @@ async function runStep1_TutorielHelpers(doc, win) {
     assert(r.api === true, '[1.1] tutorial-modal expose son API complète');
     assert(r.inline === 'a <strong>gras</strong> &lt;b&gt;&amp;&quot;&#39;',
         '[1.2] formatInline convertit **gras** et échappe le reste', { obtenu: r.inline });
+    assert(r.inlineLien.includes('<a href="https://example.org/a?b=1&amp;c=2"')
+        && r.inlineLien.includes('target="_blank"') && r.inlineLien.includes('>ABC Learning</a>'),
+        '[1.2b] formatInline rend les liens Markdown http(s) sûrs', { obtenu: r.inlineLien });
+    assert(!r.inlineLienXss.includes('<a ') && r.inlineLienXss.includes('javascript:alert'),
+        '[1.2c] formatInline ne transforme pas un lien javascript en lien cliquable', { obtenu: r.inlineLienXss });
     assert(r.inlineVide === '' && r.inlineNull === '',
         '[1.3] formatInline("") et formatInline(null) rendent une chaîne vide',
         { vide: r.inlineVide, null: r.inlineNull });

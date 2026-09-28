@@ -73,7 +73,10 @@ function sleep(ms) {
 export async function fetchWithRetry(url, opts = {}, { retries = 1, backoffMs = 800, timeoutMs = 15000 } = {}) {
     let lastError = null;
     for (let attempt = 0; attempt <= retries; attempt++) {
+        if (opts.signal?.aborted) throw new DOMException('Requête annulée', 'AbortError');
         const ctrl = new AbortController();
+        const abort = () => ctrl.abort();
+        opts.signal?.addEventListener('abort', abort, { once: true });
         const timer = setTimeout(() => ctrl.abort(), timeoutMs);
         try {
             const res = await fetch(url, { ...opts, signal: ctrl.signal });
@@ -89,6 +92,8 @@ export async function fetchWithRetry(url, opts = {}, { retries = 1, backoffMs = 
             return res; // dernier essai : on laisse l'appelant décider
         } catch (err) {
             clearTimeout(timer);
+            // Une annulation utilisateur n'est ni une panne réseau ni un motif de retry.
+            if (opts.signal?.aborted) throw err;
             // AbortError = notre timeout. TypeError (et autres) = réseau côté client.
             err.kind = err.name === 'AbortError' ? 'timeout' : 'network';
             lastError = err;
@@ -97,6 +102,9 @@ export async function fetchWithRetry(url, opts = {}, { retries = 1, backoffMs = 
                 continue;
             }
             throw err;
+        } finally {
+            clearTimeout(timer);
+            opts.signal?.removeEventListener('abort', abort);
         }
     }
     if (lastError) throw lastError;

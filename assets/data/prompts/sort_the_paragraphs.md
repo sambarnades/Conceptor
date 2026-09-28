@@ -71,3 +71,7 @@
   ]
 }
 ```
+
+- `behaviour.duplicatesInterchangeable` (true): Deux paragraphes dont le texte est identique peuvent échanger leur place. `behaviour.addButtonsForMovement` (true): Ces boutons facilitent le déplacement sur mobile et au clavier.
+
+- `paragraphs` : au moins 3 paragraphes. Média facultatif : `media.type.library` (H5P.Image 1.1, H5P.Audio 1.5, H5P.Video 1.6), avec ses paramètres natifs.

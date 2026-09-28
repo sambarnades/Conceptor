@@ -83,7 +83,31 @@ L'objet principal doit contenir les clés suivantes :
       ]
     }
   }
-  ```\n\n- **Pour le type `multichoice` (QCM à réponses multiples) :**\n  ⚠️ Quand `single` vaut `\"false\"`, plusieurs réponses ont une `fraction` > 0. La somme des fractions positives doit être 100.\n  ```json\n  {\n    \"type\": \"multichoice\",\n    \"content\": {\n      \"name\": \"Q02 - Énergies renouvelables\",\n      \"questiontext\": \"Parmi les sources d'énergie suivantes, lesquelles sont renouvelables ?\",\n      \"feedback\": \"Le solaire, l'éolien et l'hydraulique sont des énergies renouvelables.\",\n      \"single\": \"false\",\n      \"correctfeedback\": \"Bravo, toutes les bonnes réponses sont cochées !\",\n      \"partiallycorrectfeedback\": \"Certaines réponses sont correctes, mais pas toutes.\",\n      \"incorrectfeedback\": \"Aucune bonne réponse sélectionnée.\",\n      \"answers\": [\n        { \"text\": \"Énergie solaire\", \"fraction\": 33.33333, \"feedback\": \"Oui : le rayonnement du Soleil se renouvelle en permanence.\" },\n        { \"text\": \"Énergie éolienne\", \"fraction\": 33.33333, \"feedback\": \"Oui : le vent est une ressource inépuisable.\" },\n        { \"text\": \"Énergie hydraulique\", \"fraction\": 33.33334, \"feedback\": \"Oui : l'eau en mouvement se renouvelle grâce au cycle de l'eau.\" },\n        { \"text\": \"Énergie nucléaire\", \"fraction\": 0, \"feedback\": \"Le nucléaire dépend de l'uranium, une ressource épuisable : il n'est pas renouvelable.\" },\n        { \"text\": \"Pétrole\", \"fraction\": 0, \"feedback\": \"Le pétrole est une énergie fossile en quantité limitée : il n'est pas renouvelable.\" }\n      ]\n    }\n  }\n  ```
+  ```
+
+- **Pour le type `multichoice` (QCM à réponses multiples) :**
+  ⚠️ Quand `single` vaut `"false"`, plusieurs réponses ont une `fraction` > 0. La somme des fractions positives doit être 100.
+  ```json
+  {
+    "type": "multichoice",
+    "content": {
+      "name": "Q02 - Énergies renouvelables",
+      "questiontext": "Parmi les sources d'énergie suivantes, lesquelles sont renouvelables ?",
+      "feedback": "Le solaire, l'éolien et l'hydraulique sont des énergies renouvelables.",
+      "single": "false",
+      "correctfeedback": "Bravo, toutes les bonnes réponses sont cochées !",
+      "partiallycorrectfeedback": "Certaines réponses sont correctes, mais pas toutes.",
+      "incorrectfeedback": "Aucune bonne réponse sélectionnée.",
+      "answers": [
+        { "text": "Énergie solaire", "fraction": 33.33333, "feedback": "Oui : le rayonnement du Soleil se renouvelle en permanence." },
+        { "text": "Énergie éolienne", "fraction": 33.33333, "feedback": "Oui : le vent est une ressource inépuisable." },
+        { "text": "Énergie hydraulique", "fraction": 33.33334, "feedback": "Oui : l'eau en mouvement se renouvelle grâce au cycle de l'eau." },
+        { "text": "Énergie nucléaire", "fraction": 0, "feedback": "Le nucléaire dépend de l'uranium, une ressource épuisable : il n'est pas renouvelable." },
+        { "text": "Pétrole", "fraction": 0, "feedback": "Le pétrole est une énergie fossile en quantité limitée : il n'est pas renouvelable." }
+      ]
+    }
+  }
+  ```
 
 - **Pour le type `matching` (Appariement) :**
   ⚠️ Le champ `text` est rendu en HTML (LaTeX OK), mais `answer` est affiché dans un menu déroulant (Unicode uniquement, JAMAIS de LaTeX).
@@ -165,3 +189,8 @@ L'objet principal doit contenir les clés suivantes :
     }
   }
   ```
+
+- Numérique : `content.questiontext` contient uniquement l’énoncé, sans code Cloze. Place la valeur et la tolérance dans `content.answer.number` et `content.answer.tolerance`. Les marqueurs `{1:NUMERICAL:...}` sont réservés au type `cloze`.
+
+
+Dans un trou Cloze à réponse courte, chaque variante acceptée porte son propre signe = et se sépare par ~ : {1:SHORTANSWER:=Éthiopie~=Abyssinie}. Une barre oblique entre deux mots exige littéralement les deux mots ; ne pas l’utiliser pour proposer des synonymes. Fournir des retours utiles pour les réponses erronées et partielles.

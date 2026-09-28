@@ -159,7 +159,8 @@ async function packageH5P(moduleKey, content, options = {}) {
     // 6. Blob H5P (createH5PBlob gère le filtrage MathDisplay et le h5p.json).
     const zipBlob = await createH5PBlob(finalContent, metadata.machineName, dependencies, {
         title,
-        lang
+        lang,
+        mediaFiles: options.mediaFiles,
     });
     const blob = new Blob([zipBlob], { type: 'application/octet-stream' });
     const bytes = new Uint8Array(await zipBlob.arrayBuffer());
@@ -192,10 +193,11 @@ async function packageH5P(moduleKey, content, options = {}) {
  * @param {'h5p'|'moodle'} [params.platform] - Forçage de plateforme (sinon auto-détectée).
  * @param {string} [params.title] - Titre explicite.
  * @param {string} [params.lang] - Langue (défaut: currentLang).
+ * @param {Map<string, Blob>} [params.mediaFiles] - Médias locaux propres à cette activité.
  * @returns {Promise<PackagedActivity>}
  * @throws {Error} si le module est inconnu, le contenu invalide, ou la plateforme non supportée.
  */
-export async function packageActivity({ moduleKey, content, platform, title, lang } = {}) {
+export async function packageActivity({ moduleKey, content, platform, title, lang, mediaFiles } = {}) {
     if (!moduleKey || typeof moduleKey !== 'string') {
         throw new Error('packageActivity: `moduleKey` requis (chaîne).');
     }
@@ -206,7 +208,7 @@ export async function packageActivity({ moduleKey, content, platform, title, lan
     const resolvedPlatform = platform || detectPlatform(moduleKey);
 
     if (resolvedPlatform === 'h5p') {
-        return packageH5P(moduleKey, content, { title, lang });
+        return packageH5P(moduleKey, content, { title, lang, mediaFiles });
     }
 
     if (resolvedPlatform === 'moodle') {

@@ -32,5 +32,8 @@
       "to": 100,
       "feedback": "Excellent ! Tu maîtrises parfaitement les notions clés du programme de 3e. Tu es prêt pour aborder la suite de l'histoire du XIXe siècle !"
     }
-  ]
+  ],
+  "behaviour": {
+    "enableCheckButton": true
+  }
 }

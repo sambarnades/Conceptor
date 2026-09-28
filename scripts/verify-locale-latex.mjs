@@ -8,7 +8,9 @@ const checks = [
   ['accordion', 'prompt_accordion_structure_json', ['frac{1}{2}', 'α, β, √'], ['(2^3)^2']],
   ['chart', 'prompt_chart_structure_json', ['α, β, π'], []],
   ['multiple_choice', 'prompt_multiple_choice_structure_json', ['frac{1}{2}', 'tipsAndFeedback'], ['(2^3)^2']],
-  ['crossword', 'prompt_crossword_structure_json', ['frac{1}{2}', 'alphabétiques'], []],
+  // Mots croisés : « lettres alphabétiques » est devenu « lettres de la langue cible, accents
+  // conservés » (grilles accentuées et non latines) ; l'interdiction du LaTeX dans `answer` demeure.
+  ['crossword', 'prompt_crossword_structure_json', ['frac{1}{2}', 'Aucun espace, symbole mathématique ou LaTeX'], []],
   ['drag_the_words', 'prompt_drag_the_words_structure_json', ['DragTheWords', 'Unicode'], []],
   ['essay', 'prompt_essay_structure_json', ['frac{1}{2}', 'texte brut'], []],
   ['flashcards', 'prompt_flashcards_structure_json', ['frac{1}{2}', 'texte brut'], []],
@@ -19,7 +21,8 @@ const checks = [
   ['true_false', 'prompt_true_false_structure_json', ['frac{1}{2}', 'tipsAndFeedback'], []],
   ['quizset', 'prompt_quizset_structure_json', ['frac{1}{2}', 'tipsAndFeedback'], []],
   ['find_the_words', 'prompt_find_the_words_structure_json', ['FindTheWords'], []],
-  ['fill_blanks', 'prompt_fill_in_the_blanks_structure_json', ['FillInTheBlanks'], []],
+  // Texte à trous : la règle ne cite plus la bibliothèque (6.3.0) — maths des trous en Unicode.
+  ['fill_blanks', 'prompt_fill_in_the_blanks_structure_json', ['Maths dans les trous', 'Unicode'], []],
   ['mark_words', 'prompt_mark_the_words_structure_json', ['MarkTheWords'], []],
   ['dialog_cards', 'prompt_dialog_cards_structure_json', ['frac{1}{2}'], []],
   ['drag_and_drop', 'prompt_drag_and_drop_structure_json', ['frac{1}{2}'], ['(2^3)^2']],

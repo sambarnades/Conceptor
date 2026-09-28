@@ -1,0 +1,188 @@
+[
+  {
+    "id": "frise-compacte",
+    "contenu": {
+      "timeline": {
+        "headline": "Séance RELU Sucrerie",
+        "text": "Une séance en trois temps.",
+        "defaultZoomLevel": -1,
+        "height": 550,
+        "language": "fr",
+        "backgroundImage": {
+          "path": "images/recette-frise.png",
+          "mime": "image/png",
+          "width": 800,
+          "height": 450,
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          }
+        },
+        "date": [
+          {
+            "startDate": "2026,9,11",
+            "headline": "Lire et comprendre RELU",
+            "text": "Lire le texte.",
+            "asset": {
+              "thumbnail": {
+                "path": "images/recette-frise.png",
+                "mime": "image/png",
+                "width": 800,
+                "height": 450,
+                "copyright": {
+                  "license": "PD",
+                  "version": "CC0 1.0",
+                  "title": "Trois zones de recette"
+                }
+              },
+              "caption": "Trois étapes",
+              "credit": "Image de recette CC0",
+              "media": ""
+            },
+            "endDate": "2026,9,12",
+            "tag": "Lecture"
+          },
+          {
+            "startDate": "2026,09,12",
+            "headline": "Échanger",
+            "text": "Comparer les idées.",
+            "asset": {}
+          },
+          {
+            "startDate": "2026,09,13",
+            "headline": "Rédiger",
+            "text": "Écrire une synthèse.",
+            "asset": {}
+          }
+        ],
+        "asset": {
+          "media": "",
+          "caption": "",
+          "credit": ""
+        },
+        "era": [
+          {
+            "startDate": "2026,09,11",
+            "endDate": "2026,09,13",
+            "headline": "Séance RELU",
+            "text": "<div>De la lecture à la synthèse.</div>",
+            "tag": "Lecture"
+          }
+        ],
+        "type": "default"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      },
+      "title": "Frise — compacte"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "frise-haute",
+    "contenu": {
+      "timeline": {
+        "headline": "Séance RELU Sucrerie",
+        "text": "Une séance en trois temps.",
+        "defaultZoomLevel": 2,
+        "height": 800,
+        "language": "en",
+        "backgroundImage": {
+          "path": "images/recette-frise.png",
+          "mime": "image/png",
+          "width": 800,
+          "height": 450,
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          }
+        },
+        "date": [
+          {
+            "startDate": "2026,9,11",
+            "headline": "Lire et comprendre RELU",
+            "text": "Lire le texte.",
+            "asset": {
+              "thumbnail": {
+                "path": "images/recette-frise.png",
+                "mime": "image/png",
+                "width": 800,
+                "height": 450,
+                "copyright": {
+                  "license": "PD",
+                  "version": "CC0 1.0",
+                  "title": "Trois zones de recette"
+                }
+              },
+              "caption": "Trois étapes",
+              "credit": "Image de recette CC0",
+              "media": ""
+            },
+            "endDate": "2026,9,12",
+            "tag": "Lecture"
+          },
+          {
+            "startDate": "2026,09,12",
+            "headline": "Échanger",
+            "text": "Comparer les idées.",
+            "asset": {}
+          },
+          {
+            "startDate": "2026,09,13",
+            "headline": "Rédiger",
+            "text": "Écrire une synthèse.",
+            "asset": {}
+          }
+        ],
+        "asset": {
+          "media": "",
+          "caption": "",
+          "credit": ""
+        },
+        "era": [
+          {
+            "startDate": "2026,09,11",
+            "endDate": "2026,09,13",
+            "headline": "Séance RELU",
+            "text": "<div>De la lecture à la synthèse.</div>",
+            "tag": "Lecture"
+          }
+        ],
+        "type": "default"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      },
+      "title": "Frise — haute"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

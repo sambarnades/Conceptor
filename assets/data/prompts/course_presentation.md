@@ -278,3 +278,9 @@ Chaque exercice contient `library` suivi des champs décrits ci-dessous. Respect
   ]
 }
 ```
+
+
+## Options globales
+
+Options globales facultatives : `keywordListEnabled`, `keywordListAlwaysShow`, `keywordListAutoHide`, `hideSummarySlide`, `enablePrintButton`, `enableRetry`, `enableSolutionsButton`, `summarySlideSolutionButton`, `summarySlideRetryButton` (boolean); `keywordListOpacity` (0–100); `globalBackgroundColor` (#RRGGBB).
+Les médias sont joints par l’utilisateur, pas inventés. Les présentations natives peuvent être rééditées directement depuis leurs semantics : placements, commentaires et plusieurs éléments par diapositive sont conservés.

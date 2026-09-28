@@ -1,0 +1,146 @@
+{
+  "cas": {
+    "id": "revision-br",
+    "lang": "br",
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "revision",
+    "qui": "Kelenner istor ha douaroniezh",
+    "quoi": "Adwelet ar brezel-bed kentañ gant skolidi trede klas : ar vuhez er fozioù hag ar gevredigezh e-pad ar brezel."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Adwelet ar brezel-bed kentañ gant skolidi trede klas : ar vuhez er fozioù hag ar gevredigezh e-pad ar brezel.\nL'enseignant : Kelenner istor ha douaroniezh\nPlateforme : Éléa\nModalité : distanciel\nTravail autonome à distance : consignes explicites, ressources suffisantes, retour permettant de comprendre ses erreurs. Aucun échange simultané ni correction immédiate par un enseignant requis.\nAmpleur : Ur prantad\n\nTrame imposée : « Adwelet a-raok ar priziadur » — Lakaat war wel ar pezh a zo gounezet, adkinnig ar pennañ, pleustriñ, en em amprouiñ.\nElle compte EXACTEMENT 4 étapes, contenant respectivement 1, 1, 1, 1 activité(s). Respecte ce découpage à la lettre.\nIntention pédagogique : Repérer les acquis et les erreurs ; rappeler l’essentiel ; s’entraîner sur les difficultés ; vérifier les acquis.\nPalier de difficulté imposé par étape : entrainement, decouverte, entrainement, transfert.\nTypes d'activité suggérés par la trame, étape par étape : étape 1 → TrueFalse ; étape 2 → Page ; étape 3 → FillInTheBlanks ; étape 4 → test_elea. Suis-les sauf si le sujet appelle clairement autre chose.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Linenn-amzer (Timeline)\n- Flashcards : Kartennoù-koun (Flashcards)\n- QuizSet : Quiz mesket (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Gwir/Gaou (Quiz (Question Set))\n- Glossary : Geriadurig (Accordion)\n- Crossword : Gerioù kroaziet (Crosswords)\n- Essay : Skridaozañ (Essay)\n- Summary : Diverradenn (Summary)\n- DragTheWords : Riklañ ar gerioù (Drag the Words)\n- DragAndDrop : Riklañ-leuskel (Drag and Drop)\n- FillInTheBlanks : Testenn gant toulloù (Fill in the Blanks)\n- MarkTheWords : Usskediñ ar gerioù (Mark the Words)\n- TrueFalse : Gwir/Gaou (True/False Question)\n- MultipleChoice : Dibaboù lies (Multiple Choice)\n- FindTheWords : Gerioù kuzhet (Find the Words)\n- SortParagraphs : Urzhiañ ar rannbennadoù (Sort the Paragraphs)\n- SingleChoiceSet : Heuliad dibaboù nemetañ (Single Choice Set)\n- DialogCards : Kartennoù komzadeg (Dialog Cards)\n- Dictation : Diktenn (Dictation)\n- Chart : Diagramm (Chart)\n- CoursePresentation : Kinnigadenn gentel (CoursePresentation)\n- InteractiveBook : Levr etrewezhiat (InteractiveBook)\n- test_elea : Test (test_elea)\n- Millionnaire : Milionour (Millionnaire)\n- Appariement : Kenglotadur (Appariement)\n- QCM : QCM (QCM)\n- Page : Pajenn (Page)\n- Livre : Levr (Livre)\n- Devoir : Devoir (Devoir)\n- parcours_etiquette : Testenn liammañ (label)\n- parcours_forum : Forom (forum)\n- parcours_sondage : Sontadeg (choice)\n- parcours_mur_notes : Moger notennoù (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 3 à 6 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en Breton.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 4 à 4 activités pour TOUT le parcours, répartition 1 + 1 + 1 + 1. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"transfert\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788855",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Adwelet ar Brezel-bed kentañ : ar vuhez er fozioù hag ar gevredigezh\",\n  \"objectifGeneral\": \"Gwiriañ ha stabilaat an anavezadurioù war ar vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ gant skolidi trede klas\",\n  \"notionsPivots\": [\n    \"ar vuhez er fozioù\",\n    \"ar gevredigezh e-pad ar brezel\",\n    \"ar soudarded er fozioù\",\n    \"ar c'hêrioù distrujet\",\n    \"ar c'hementoù evit bevañ er fozioù\",\n    \"ar c'heñverioù etre ar soudarded hag ar siviled\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Gwiriañ ar pezh a zo gounezet\",\n      \"objectif\": \"Diluziañ an anavezadurioù dija tapet gant ar studierien\",\n      \"cartes\": [\n        {\n          \"titre\": \"Gwir pe Gaou ?\",\n          \"objectif\": \"Diluziañ an anavezadurioù dija tapet\",\n          \"module\": \"TrueFalse\",\n          \"palier\": \"entrainement\",\n          \"duree\": 15,\n          \"consigne\": \"Respontit 'Gwir' pe 'Gaou' d'ar frazennoù a denn da vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ. Ar frazennoù a vo displeget en ur mod eeun, hep klask furchal er memor.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Adkinnig an traoù pennañ\",\n      \"objectif\": \"Adkinnig an elfennoù pouezusañ eus ar prantad\",\n      \"cartes\": [\n        {\n          \"titre\": \"Ar vuhez er fozioù : ar pezh a ranker gouzout\",\n          \"objectif\": \"Adkinnig an elfennoù pouezusañ eus ar prantad\",\n          \"module\": \"Page\",\n          \"palier\": \"decouverte\",\n          \"duree\": 20,\n          \"consigne\": \"Lennit ar bajennad a zispleg ar pezh a oa pouezusañ e-keñver ar vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ. Skrivit un notennig a zispleg ar pezh a zo bet anavezet ganeoc'h dija.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Pleustriñ war ar poentoù diaes\",\n      \"objectif\": \"Labourat war ar poentoù a zo bet diaes evit ar studierien\",\n      \"cartes\": [\n        {\n          \"titre\": \"Gerioù a zo da leuniañ\",\n          \"objectif\": \"Pleustriñ war ar gerioù a denn da vuhez er fozioù\",\n          \"module\": \"FillInTheBlanks\",\n          \"palier\": \"entrainement\",\n          \"duree\": 20,\n          \"consigne\": \"Lec'hit ar gerioù a zo aet diwar ar frazennoù a denn da vuhez er fozioù. Implijit ar gerioù a zo roet e-barzh ar c'hasedenn.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Gwiriañ ar pezh a zo bet desket\",\n      \"objectif\": \"Gwiriañ an anavezadurioù tapet war ar prantad\",\n      \"cartes\": [\n        {\n          \"titre\": \"Test diwezhañ\",\n          \"objectif\": \"Gwiriañ an anavezadurioù tapet war ar prantad\",\n          \"module\": \"test_elea\",\n          \"palier\": \"transfert\",\n          \"duree\": 25,\n          \"consigne\": \"Respontit d'ar c'hestioù a denn da vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ. Ar c'hestioù a vo liesseurt : QCM, gwir/gaou, pe leuniañ toulloù. Implijit an holl anavezadurioù a zo bet ganeoc'h.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 996,
+      "prompt_tokens": 1954,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "br",
+    "exporteLe": "2026-09-10T22:12:21.272Z",
+    "cadrage": {
+      "platform": "elea",
+      "format": "distanciel",
+      "ampleur": "courte",
+      "trame": "revision"
+    },
+    "plan": {
+      "titre": "Adwelet ar Brezel-bed kentañ : ar vuhez er fozioù hag ar gevredigezh",
+      "objectifGeneral": "Gwiriañ ha stabilaat an anavezadurioù war ar vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ gant skolidi trede klas",
+      "notionsPivots": [
+        "ar vuhez er fozioù",
+        "ar gevredigezh e-pad ar brezel",
+        "ar soudarded er fozioù",
+        "ar c'hêrioù distrujet",
+        "ar c'hementoù evit bevañ er fozioù",
+        "ar c'heñverioù etre ar soudarded hag ar siviled"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Gwiriañ ar pezh a zo gounezet",
+          "objectif": "Diluziañ an anavezadurioù dija tapet gant ar studierien",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Gwir pe Gaou ?",
+              "objectif": "Diluziañ an anavezadurioù dija tapet",
+              "consigne": "Respontit 'Gwir' pe 'Gaou' d'ar frazennoù a denn da vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ. Ar frazennoù a vo displeget en ur mod eeun, hep klask furchal er memor.",
+              "module": "TrueFalse",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e3",
+          "titre": "Adkinnig an traoù pennañ",
+          "objectif": "Adkinnig an elfennoù pouezusañ eus ar prantad",
+          "cartes": [
+            {
+              "id": "c4",
+              "titre": "Ar vuhez er fozioù : ar pezh a ranker gouzout",
+              "objectif": "Adkinnig an elfennoù pouezusañ eus ar prantad",
+              "consigne": "Lennit ar bajennad a zispleg ar pezh a oa pouezusañ e-keñver ar vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ. Skrivit un notennig a zispleg ar pezh a zo bet anavezet ganeoc'h dija.",
+              "module": "Page",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 20,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "titre": "Pleustriñ war ar poentoù diaes",
+          "objectif": "Labourat war ar poentoù a zo bet diaes evit ar studierien",
+          "cartes": [
+            {
+              "id": "c6",
+              "titre": "Gerioù a zo da leuniañ",
+              "objectif": "Pleustriñ war ar gerioù a denn da vuhez er fozioù",
+              "consigne": "Lec'hit ar gerioù a zo aet diwar ar frazennoù a denn da vuhez er fozioù. Implijit ar gerioù a zo roet e-barzh ar c'hasedenn.",
+              "module": "FillInTheBlanks",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 20,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e7",
+          "titre": "Gwiriañ ar pezh a zo bet desket",
+          "objectif": "Gwiriañ an anavezadurioù tapet war ar prantad",
+          "cartes": [
+            {
+              "id": "c8",
+              "titre": "Test diwezhañ",
+              "objectif": "Gwiriañ an anavezadurioù tapet war ar prantad",
+              "consigne": "Respontit d'ar c'hestioù a denn da vuhez er fozioù hag ar gevredigezh e-pad ar Brezel-bed kentañ. Ar c'hestioù a vo liesseurt : QCM, gwir/gaou, pe leuniañ toulloù. Implijit an holl anavezadurioù a zo bet ganeoc'h.",
+              "module": "test_elea",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 25,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "Kregiñ a ra ar sevel gant ar c'hlik-mañ : pep obererezh a vez ganet unan hag unan, en urzh, dirak ho taoulagad."
+}

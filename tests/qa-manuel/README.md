@@ -34,7 +34,7 @@ complètent ; aucune ne remplace l'autre.
 ## Prérequis
 
 ```bash
-python3 -m http.server 8010        # à la RACINE du dépôt
+python3 tests/serveur-statique.py 8010        # à la RACINE du dépôt
 ```
 
 Playwright est pris dans `tests/roundtrip/node_modules/` (même installation que le banc
@@ -52,25 +52,42 @@ node tests/qa-manuel/f-qcm-sans-reponses.mjs        # (f) QCM sans réponses
 node tests/qa-manuel/g-arret-generation.mjs        # (g) bouton « Arrêter » d'une génération
 node tests/qa-manuel/h-sous-titres-youtube.mjs      # (h) sous-titres YouTube non sollicités (RÉSEAU)
 node tests/qa-manuel/i-langue-caramelia.mjs         # (i) Caramelia suit le drapeau de Caramel
+node tests/qa-manuel/j-sources-document.mjs         # (j) le document joint part bien vers l'IA
+node tests/qa-manuel/k-quiz-lots.mjs                # (k) quiz : mode Rapide par lots, lots de front, redécoupage
 ```
+
+> Le scénario **(k)** pilote `index.html`, webhook LLM bouchonné par un faux Worker qui
+> répond selon le prompt reçu (plan ou lot de N questions) et fait échouer le premier lot de
+> 3, comme la cascade réelle s'effondre ~3 % du temps (recalibration du 2026-09-28,
+> `docs/calibration-batch-2026-09.md`). Il porte sa contre-épreuve (`--contre-epreuve`), sur
+> le modèle de (j) : quatre réglages désarmés dans le module servi, quatre ROUGES exigés.
+
+> Le scénario **(j)** pilote `index.html` comme (g), webhook LLM bouchonné. Son oracle
+> est le **prompt envoyé** (corps de la soumission), jamais le textarea affiché : c'est
+> l'écart entre les deux qui faisait partir des générations sans section SOURCES, ou
+> avec les sources d'un document déjà retiré (constaté en prod le 2026-09-25). Il porte
+> sa propre contre-épreuve (`--contre-epreuve`) : elle réécrit à la volée le module
+> **servi** au navigateur (`page.route`) — le dépôt n'est jamais touché, même sur
+> Ctrl-C — et exige le ROUGE pour chacun des sept correctifs.
 
 Chaque scénario sort en code 0 s'il est conforme, 1 sinon.
 
 `f-qcm-sans-reponses.mjs` couvre un défaut **trouvé et corrigé pendant la campagne** : un
 QCM sans aucune réponse était enregistrable. `validateField` sortait par « si vide et pas
-required, pas d'autres validations » avant de mesurer `minItems` — or les 5 déclarations de
-`answers` portent `minItems: 2` et **pas** `required`. La règle ne se déclenchait donc que
-sur un tableau déjà non vide : 1 réponse était signalée, 0 passait en silence.
+required, pas d'autres validations » avant de mesurer `minItems` — or les déclarations de
+`answers` portent un `minItems` et **pas** `required`. La règle ne se déclenchait donc que
+sur un tableau déjà non vide : 0 réponse passait en silence. (Depuis 60d45a81, la borne est
+celle du H5P natif, `minItems: 1` : une seule proposition est valide.)
 
 Le scénario contrôle aussi le **revers** — un champ masqué par `showWhen` ne doit pas se
 mettre à bloquer (les `answers` d'une interaction non-QCM, le `table` d'une diapositive
 « titre ») : c'est le faux positif qu'une première version du correctif avait produit, et
 que `test-editor-activities.js` a rattrapé.
 
-Il documente enfin une **limite connue, hors périmètre** : la génération IA
-(LLM → healer → processeur → `.h5p`) ne passe pas par la validation, donc un QCM sans
-réponses produit directement par le modèle part encore dans le `.h5p`. Signalé, pas
-asserté.
+Il vérifie enfin la génération IA (LLM → healer → processeur → `.h5p`), qui ne passe pas
+par la validation de l'éditeur : un QCM sans réponses y est désormais REFUSÉ par le
+processeur (« MultiChoice : une proposition est requise. », depuis 60d45a81). Ce n'est plus
+une limite connue : c'est asserté.
 
 ## Contre-épreuves
 

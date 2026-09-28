@@ -1,0 +1,144 @@
+[
+  {
+    "id": "choix-uniques-manuel",
+    "contenu": {
+      "choices": [
+        {
+          "question": "Capitale de la France ? RELU Sucrerie",
+          "answers": [
+            "Paris",
+            "Rome",
+            "Madrid"
+          ],
+          "subContentId": "7dd27f95-bb38-44f0-a86d-372cd3b6351c"
+        },
+        {
+          "question": "Capitale de l’Italie ?",
+          "answers": [
+            "Rome",
+            "Madrid",
+            "Paris"
+          ],
+          "subContentId": "2609cd3c-2076-4ed7-b88c-fcfadfd45b17"
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "timeoutCorrect": 300,
+        "timeoutWrong": 800,
+        "soundEffectsEnabled": false,
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "passPercentage": 100,
+        "autoContinue": false
+      },
+      "l10n": {
+        "retryButtonLabel": "Recommencer",
+        "solutionViewTitle": "Solution",
+        "correctText": "Bonne réponse",
+        "incorrectText": "Mauvaise réponse",
+        "muteButtonLabel": "Désactiver le son",
+        "closeButtonLabel": "Fermer",
+        "slideOfTotal": "Diapositive :num sur :total",
+        "nextButtonLabel": "Suivant",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "solutionListQuestionNumber": "Question :num",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+        "shouldSelect": "Devrait sélectionner",
+        "shouldNotSelect": "Ne devrait pas sélectionner",
+        "nextButton": "Suivant",
+        "showResultsButtonLabel": "Montrer les résultats",
+        "resultHeader": "Votre résultat :",
+        "totalScore": ":score bonnes réponses sur :maxScore",
+        "resultTableHeader": "Question",
+        "resultScoreTableHeader": "Score",
+        "correctAnswerIntroduction": "Bonne réponse"
+      },
+      "title": "Série de choix uniques — manuel"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "choix-uniques-automatique",
+    "contenu": {
+      "choices": [
+        {
+          "question": "Capitale de la France ? RELU Sucrerie",
+          "answers": [
+            "Paris",
+            "Rome",
+            "Madrid"
+          ],
+          "subContentId": "7dd27f95-bb38-44f0-a86d-372cd3b6351c"
+        },
+        {
+          "question": "Capitale de l’Italie ?",
+          "answers": [
+            "Rome",
+            "Madrid",
+            "Paris"
+          ],
+          "subContentId": "2609cd3c-2076-4ed7-b88c-fcfadfd45b17"
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "timeoutCorrect": 300,
+        "timeoutWrong": 800,
+        "soundEffectsEnabled": false,
+        "enableRetry": false,
+        "enableSolutionsButton": false,
+        "passPercentage": 100,
+        "autoContinue": true
+      },
+      "l10n": {
+        "retryButtonLabel": "Recommencer",
+        "solutionViewTitle": "Solution",
+        "correctText": "Bonne réponse",
+        "incorrectText": "Mauvaise réponse",
+        "muteButtonLabel": "Désactiver le son",
+        "closeButtonLabel": "Fermer",
+        "slideOfTotal": "Diapositive :num sur :total",
+        "nextButtonLabel": "Suivant",
+        "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+        "solutionListQuestionNumber": "Question :num",
+        "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+        "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+        "shouldSelect": "Devrait sélectionner",
+        "shouldNotSelect": "Ne devrait pas sélectionner",
+        "nextButton": "Suivant",
+        "showResultsButtonLabel": "Montrer les résultats",
+        "resultHeader": "Votre résultat :",
+        "totalScore": ":score bonnes réponses sur :maxScore",
+        "resultTableHeader": "Question",
+        "resultScoreTableHeader": "Score",
+        "correctAnswerIntroduction": "Bonne réponse"
+      },
+      "title": "Série de choix uniques — automatique"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

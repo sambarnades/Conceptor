@@ -17,7 +17,7 @@
  *  5. le champ JSON ne reçoit PAS un message d'échec — un arrêt volontaire n'est
  *     pas une panne, et l'enseignant n'a rien à effacer avant de relancer.
  *
- * Prérequis : `python3 -m http.server 8010` à la RACINE du dépôt.
+ * Prérequis : `python3 tests/serveur-statique.py 8010` à la RACINE du dépôt.
  * Usage     : node tests/qa-manuel/g-arret-generation.mjs
  */
 import { chromium } from '../roundtrip/node_modules/playwright/index.mjs';

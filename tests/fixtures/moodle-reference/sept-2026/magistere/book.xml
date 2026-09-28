@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="784" moduleid="23613" modulename="book" contextid="57771">
+  <book id="784">
+    <name>Livre : l’eau sur Terre</name>
+    <intro>&lt;p&gt;Un livre en plusieurs chapitres.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <numbering>1</numbering>
+    <navstyle>1</navstyle>
+    <customtitles>0</customtitles>
+    <timecreated>1790541616</timecreated>
+    <timemodified>1790541616</timemodified>
+    <chapters>
+      <chapter id="3735">
+        <pagenum>1</pagenum>
+        <subchapter>0</subchapter>
+        <title>L’eau sur Terre</title>
+        <content>&lt;p&gt;97 % de l’eau de la planète est salée.&lt;/p&gt;</content>
+        <contentformat>1</contentformat>
+        <hidden>0</hidden>
+        <timemodified>1790541692</timemodified>
+        <importsrc></importsrc>
+      </chapter>
+    </chapters>
+    <chaptertags>
+    </chaptertags>
+  </book>
+</activity>

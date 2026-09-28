@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Beginner",
     "level_formation_intermediaire": "Intermediate",
-    "level_formation_expert": "Expert"
+    "level_formation_expert": "Expert",
+    "sucrerie_bridge_welcome_title_course": "Share the course on Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "The complete course, its activities and instructions will be accessible to all teachers in the Sucrerie catalogue.",
+    "sucrerie_bridge_course_close": "Back",
+    "sucrerie_bridge_success_title_approved_course": "Course published!",
+    "sucrerie_bridge_success_title_pending_course": "Course saved",
+    "sucrerie_bridge_success_message_approved_course": "Your course is available in the Sucrerie catalogue.",
+    "sucrerie_bridge_success_message_pending_course": "Your course will appear in the catalogue after a moderator reviews it.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Your submission needs to be validated. A confirmation link has just been sent to {email}: click it within 2 hours to publish your course. Without confirmation, it stays as a draft in “My activities” for 7 days.",
+    "sucrerie_bridge_success_email_sent_course": "An email with your management link has been sent to {email}. Keep it safe: it will allow you to edit or remove your course at any time."
 }

@@ -1,0 +1,255 @@
+#!/usr/bin/env node
+/**
+ * Refait les captures d'écran de l'interface montrées par le tutoriel et le wiki.
+ *
+ * **Pourquoi un script.** Les captures vieillissent sans prévenir : le jour où le
+ * commutateur « Une activité | Un parcours » est apparu sous le formulaire, toutes
+ * celles de l'accueil sont devenues fausses, et personne ne l'a vu. Refaire une
+ * capture à la main, c'est aussi refaire son cadrage, sa taille, son contenu — et
+ * ne jamais tomber deux fois sur la même image. Ici tout est fixé : taille de
+ * fenêtre, densité, langue, sujet saisi, et le parcours montré est un parcours
+ * RÉEL du banc (`tests/fixtures/parcours-reels/revision-fractions.json`), repris
+ * par le vrai bouton d'import de l'atelier. Aucun appel au modèle, réseau coupé.
+ *
+ *   node scripts/captures-interface.mjs                 toutes les captures
+ *   node scripts/captures-interface.mjs --seulement=parcours-plan,accueil-rapide
+ *
+ * Les captures existantes gardent leur nom et leur format (PNG) : douze tutoriels
+ * et le wiki les référencent. Les captures du parcours, nouvelles, sont en WebP
+ * (conversion par PIL : `python3 -c "import PIL"` doit répondre).
+ */
+import { spawn, spawnSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import { dirname, join, resolve } from 'node:path';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const require = createRequire(join(ROOT, 'tests/roundtrip/package.json'));
+const { chromium } = require('playwright');
+const PORT = 8215;
+const DOSSIER = join(ROOT, 'assets/images/wiki');
+const SCENARIO = join(ROOT, 'tests/fixtures/parcours-reels/revision-fractions.json');
+const QUI = 'Professeur de mathématiques';
+const QUOI = 'Les fractions : égalité, simplification, comparaison, addition et soustraction';
+
+/** Figer l'image : ni animation, ni curseur clignotant. */
+const CSS_FIGE = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}';
+/** Pour un cadrage dans la page : l'en-tête fixe et la bulle de Caramelia masqueraient la zone. */
+const CSS_CADRAGE = '.app-bar{position:static!important}#caramelia-fab,#notification-toast-container,#emergency-notification-container{display:none!important}';
+
+const argv = process.argv.slice(2);
+const seulement = (argv.find(a => a.startsWith('--seulement=')) || '').split('=')[1]?.split(',').filter(Boolean);
+const temp = mkdtempSync(join(tmpdir(), 'captures-'));
+
+const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'], { cwd: ROOT, stdio: 'ignore' });
+process.on('exit', () => { try { server.kill('SIGTERM'); } catch { /* déjà arrêté */ } rmSync(temp, { recursive: true, force: true }); });
+await new Promise(r => setTimeout(r, 1500));
+const browser = await chromium.launch();
+
+async function ouvrir({ largeur = 1260, hauteur = 900, densite = 2, cadrage = true } = {}) {
+    const page = await browser.newPage({ viewport: { width: largeur, height: hauteur }, deviceScaleFactor: densite, locale: 'fr-FR' });
+    const erreurs = [];
+    page.on('pageerror', e => erreurs.push(e.message));
+    await page.route('**/*', r => new URL(r.request().url()).hostname === '127.0.0.1' ? r.continue() : r.abort());
+    await page.goto(`http://127.0.0.1:${PORT}/index.html`);
+    await page.waitForFunction(() => document.querySelectorAll('[data-module]').length > 0);
+    await page.waitForTimeout(1200);
+    await page.addStyleTag({ content: CSS_FIGE + (cadrage ? CSS_CADRAGE : '') });
+    page.erreurs = erreurs;
+    return page;
+}
+
+/**
+ * Le rectangle qui englobe tous les éléments donnés, en coordonnées de la page.
+ * `cadre` prend la LARGEUR d'un autre élément (l'atelier entier plutôt que son
+ * contenu, pour ne pas couper sa bordure).
+ */
+async function zone(page, selecteurs, marge = 16, cadre = null) {
+    const r = await page.evaluate(({ selecteurs, marge, cadre }) => {
+        const boites = selecteurs.flatMap(s => [...document.querySelectorAll(s)])
+            .map(n => n.getBoundingClientRect()).filter(b => b.width && b.height);
+        if (!boites.length) return null;
+        const c = cadre && document.querySelector(cadre)?.getBoundingClientRect();
+        const gauche = c ? c.left : Math.min(...boites.map(b => b.left));
+        const droite = c ? c.right : Math.max(...boites.map(b => b.right));
+        const x = Math.max(0, gauche - marge), y = Math.max(0, Math.min(...boites.map(b => b.top)) + window.scrollY - marge);
+        const bas = Math.max(...boites.map(b => b.bottom)) + window.scrollY + marge;
+        return { x, y, width: droite + marge - x, height: bas - y };
+    }, { selecteurs, marge, cadre });
+    if (!r) throw new Error(`rien à capturer : ${selecteurs.join(', ')}`);
+    return r;
+}
+
+/** Capture une zone ; `webp` passe par PIL (les captures du parcours). */
+async function capturer(page, nom, selecteurs, { marge = 16, webp = false, cadre = null } = {}) {
+    const clip = await zone(page, selecteurs, marge, cadre);
+    const png = webp ? join(temp, `${nom}.png`) : join(DOSSIER, nom);
+    await page.screenshot({ path: png, clip, fullPage: true, type: 'png' });
+    if (webp) versWebp(png, join(DOSSIER, `${nom}.webp`));
+    console.log(`  ✓ ${webp ? nom + '.webp' : nom}  (${Math.round(clip.width)}×${Math.round(clip.height)})`);
+}
+
+function versWebp(source, cible) {
+    const r = spawnSync('python3', ['-c',
+        'import sys; from PIL import Image; Image.open(sys.argv[1]).save(sys.argv[2], "WEBP", quality=88, method=6)', source, cible]);
+    if (r.status !== 0) throw new Error(`conversion WebP : ${r.stderr}`);
+}
+
+async function remplirFormulaire(page) {
+    await page.fill('#qui', QUI);
+    await page.fill('#quoi', QUOI);
+}
+
+/**
+ * Le parcours du banc, repris par le vrai bouton d'import de l'atelier.
+ * `aFabriquer` : les N dernières activités arrivent SANS contenu, et une doublure
+ * du modèle (crochet d'essai de l'atelier) rend leur contenu d'origine après un
+ * délai — de quoi montrer une fabrication en cours sans appeler l'IA.
+ */
+async function ouvrirParcours(page, { aFabriquer = 0 } = {}) {
+    await remplirFormulaire(page);
+    await page.click('#parcours-button');
+    await page.waitForTimeout(600);
+    let fichier = SCENARIO;
+    if (aFabriquer) {
+        const scenario = JSON.parse(readFileSync(SCENARIO, 'utf8'));
+        const cartes = scenario.plan.etapes.flatMap(e => e.cartes);
+        const origines = {};
+        for (const c of cartes.slice(-aFabriquer)) { origines[c.id] = c.contenu; c.contenu = null; }
+        fichier = join(temp, 'scenario-a-fabriquer.json');
+        writeFileSync(fichier, JSON.stringify(scenario));
+        await page.evaluate(async (origines) => {
+            const parcours = await import('/js/parcours/index.js');
+            parcours.__testHooks.doublerModele(async (prompt, carte) => {
+                await new Promise(r => setTimeout(r, 2500));
+                return JSON.stringify(origines[carte.id]);
+            });
+        }, origines);
+    }
+    await page.setInputFiles('#pc-scenario-fichier', fichier);
+    await page.waitForSelector('.pc-etape');
+    await page.waitForTimeout(800);
+}
+
+const ATELIER = '#pc-atelier';
+
+const CAPTURES = {
+    // ── Les captures de l'accueil : elles montrent désormais le commutateur.
+    'accueil-rapide': async () => {
+        const page = await ouvrir();
+        await capturer(page, 'caramel-mode-rapide.png', ['.prompt-generator', '.pc-commutateur']);
+        return page;
+    },
+    'accueil-avance': async () => {
+        const page = await ouvrir();
+        await page.click('.mode-tab[data-mode="advanced"]');
+        await page.waitForTimeout(500);
+        await capturer(page, 'caramel-mode-avance.png', ['.prompt-generator', '.pc-commutateur']);
+        return page;
+    },
+    'accueil-activites': async () => {
+        const page = await ouvrir();
+        await capturer(page, 'caramel-activites.png', ['.pc-commutateur', '.filter-bar', '.grid > [data-module]:nth-child(-n+10)']);
+        return page;
+    },
+    'caramelia': async () => {
+        const page = await ouvrir({ largeur: 1256, hauteur: 761, densite: 1, cadrage: false });
+        await page.click('#caramelia-fab');
+        await page.waitForSelector('#caramelia-panel .caramelia-msg__bubble');
+        await page.waitForTimeout(600);
+        await page.screenshot({ path: join(DOSSIER, 'caramelia-assistant.png'), type: 'png' });
+        console.log('  ✓ caramelia-assistant.png  (fenêtre 1256×761)');
+        return page;
+    },
+    'tutoriel': async () => {
+        const page = await ouvrir({ largeur: 1221, hauteur: 878, densite: 1, cadrage: false });
+        await page.click('#help-button');
+        await page.waitForSelector('#tutorial-modal', { state: 'visible' });
+        await page.waitForTimeout(600);
+        await page.screenshot({ path: join(DOSSIER, 'modale_tutoriels.PNG'), type: 'png' });
+        console.log('  ✓ modale_tutoriels.PNG  (fenêtre 1221×878)');
+        return page;
+    },
+
+    // ── Les étapes du parcours, sur un parcours réel.
+    'parcours-cadrage': async () => {
+        const page = await ouvrir();
+        await remplirFormulaire(page);
+        await page.click('#parcours-button');
+        await page.waitForSelector('.pc-choice');
+        await page.waitForTimeout(600);
+        await capturer(page, 'parcours-cadrage', ['.prompt-generator', '.pc-commutateur', '.pc-navigation', '.pc-page > .pc-block:nth-of-type(-n+4)'], { webp: true });
+        return page;
+    },
+    'parcours-trames': async () => {
+        const page = await ouvrir();
+        await remplirFormulaire(page);
+        await page.click('#parcours-button');
+        await page.waitForSelector('.pc-trames');
+        await page.locator('.pc-trames > *', { hasText: 'Réviser avant l' }).first().click();
+        await page.waitForTimeout(600);
+        // L'en-tête et les deux premières rangées : la bibliothèque entière ferait une image démesurée.
+        await capturer(page, 'parcours-trames', ['.pc-page > .pc-block:has(.pc-trames) > .pc-block__head', '.pc-trames > *:nth-child(-n+7)'], { webp: true, cadre: ATELIER });
+        return page;
+    },
+    'parcours-plan': async () => {
+        const page = await ouvrir();
+        await ouvrirParcours(page);
+        await capturer(page, 'parcours-plan', ['.pc-navigation', '.pc-overview', '.pc-relecture', '.pc-etape:nth-of-type(-n+2)'], { webp: true, cadre: ATELIER });
+        return page;
+    },
+    'parcours-mosaique': async () => {
+        const page = await ouvrir({ hauteur: 1000 });
+        await ouvrirParcours(page);
+        await page.click('.pc-select.pc-choix');
+        await page.waitForSelector('dialog.pc-mosaique[open]');
+        await page.waitForTimeout(600);
+        const png = join(temp, 'parcours-mosaique.png');
+        await page.locator('dialog.pc-mosaique').screenshot({ path: png });
+        versWebp(png, join(DOSSIER, 'parcours-mosaique.webp'));
+        console.log('  ✓ parcours-mosaique.webp');
+        return page;
+    },
+    'parcours-miroir': async () => {
+        const page = await ouvrir();
+        await ouvrirParcours(page);
+        await capturer(page, 'parcours-miroir', ['.pc-block:has(> .pc-miroir)', '.pc-block:has(> .pc-miroir) + *'], { webp: true, cadre: ATELIER });
+        return page;
+    },
+    'parcours-fabrication': async () => {
+        const page = await ouvrir();
+        await ouvrirParcours(page, { aFabriquer: 3 });
+        await page.click('#pc-cta');
+        // La première activité prête, la deuxième en cours : la fabrication, sous les yeux.
+        await page.waitForFunction(() => (document.querySelector('.pc-body')?.innerText || '').includes('4 activité(s) sur 6'), null, { timeout: 30000 });
+        await page.waitForTimeout(300);
+        await capturer(page, 'parcours-fabrication', ['.pc-navigation', '.pc-body'], { webp: true, cadre: ATELIER });
+        return page;
+    },
+    'parcours-livraison': async () => {
+        const page = await ouvrir();
+        await ouvrirParcours(page);
+        await page.click('#pc-cta');
+        await page.waitForFunction(() => /Livraison/.test(document.querySelector('#pc-steps .pc-steps__item--current')?.textContent || ''), null, { timeout: 30000 });
+        await page.waitForTimeout(1500);
+        await capturer(page, 'parcours-livraison', ['.pc-navigation', '.pc-body'], { webp: true, cadre: ATELIER });
+        return page;
+    },
+};
+
+let echecs = 0;
+for (const [nom, faire] of Object.entries(CAPTURES)) {
+    if (seulement && !seulement.includes(nom)) continue;
+    console.log(`▶ ${nom}`);
+    try {
+        const page = await faire();
+        if (page.erreurs.length) { echecs++; console.error(`  ✗ erreurs JavaScript : ${page.erreurs.join(' | ')}`); }
+        await page.close();
+    } catch (e) { echecs++; console.error(`  ✗ ${e.message}`); }
+}
+await browser.close();
+// Le serveur tient la boucle d'événements ouverte : sans cet arrêt, le script ne rend jamais la main.
+server.kill('SIGTERM');
+process.exitCode = echecs ? 1 : 0;

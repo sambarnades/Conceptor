@@ -1,0 +1,16 @@
+{
+  "audios": [
+    {
+      "durationSeconds": 2.03,
+      "mime": "audio/mpeg"
+    }
+  ],
+  "gender": "female",
+  "genderFallback": false,
+  "lang": "fr",
+  "slow": false,
+  "supported": true,
+  "voiceUsed": "fr_FR-upmc-medium#jessica",
+  "endpoint": "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-tts-bas",
+  "sha256_audio": "6cc7ee69b38950fc9d84d5dcbe1a2b8335fc5ef8b279283b843db03a3d3b7381"
+}

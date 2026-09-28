@@ -1,0 +1,209 @@
+[
+  {
+    "activity": "MultipleChoice",
+    "case": "verification-MultipleChoice",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/verification-MultipleChoice.docx",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "MultipleChoice",
+    "case": "verification-MultipleChoice",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/verification-MultipleChoice.odt",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "MultipleChoice",
+    "case": "verification-MultipleChoice",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/verification-MultipleChoice.pdf",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "TrueFalse",
+    "case": "verification-TrueFalse",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/verification-TrueFalse.docx",
+    "verifiedTokens": [
+      "Madrid"
+    ]
+  },
+  {
+    "activity": "TrueFalse",
+    "case": "verification-TrueFalse",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/verification-TrueFalse.odt",
+    "verifiedTokens": [
+      "Madrid"
+    ]
+  },
+  {
+    "activity": "TrueFalse",
+    "case": "verification-TrueFalse",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/verification-TrueFalse.pdf",
+    "verifiedTokens": [
+      "Madrid"
+    ]
+  },
+  {
+    "activity": "FillInTheBlanks",
+    "case": "verification-FillInTheBlanks",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/verification-FillInTheBlanks.docx",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "FillInTheBlanks",
+    "case": "verification-FillInTheBlanks",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/verification-FillInTheBlanks.odt",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "FillInTheBlanks",
+    "case": "verification-FillInTheBlanks",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/verification-FillInTheBlanks.pdf",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "MarkTheWords",
+    "case": "verification-MarkTheWords",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/verification-MarkTheWords.docx",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "MarkTheWords",
+    "case": "verification-MarkTheWords",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/verification-MarkTheWords.odt",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "MarkTheWords",
+    "case": "verification-MarkTheWords",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/verification-MarkTheWords.pdf",
+    "verifiedTokens": [
+      "Paris"
+    ]
+  },
+  {
+    "activity": "QuizSet",
+    "case": "verification-quiz",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/verification-quiz.docx",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "QuizSet",
+    "case": "verification-quiz",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/verification-quiz.odt",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "QuizSet",
+    "case": "verification-quiz",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/verification-quiz.pdf",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "CoursePresentation",
+    "case": "verification-presentation",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/verification-presentation.docx",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "CoursePresentation",
+    "case": "verification-presentation",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/verification-presentation.odt",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "CoursePresentation",
+    "case": "verification-presentation",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/verification-presentation.pdf",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "InteractiveBook",
+    "case": "verification-livre",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/verification-livre.docx",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "InteractiveBook",
+    "case": "verification-livre",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/verification-livre.odt",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  },
+  {
+    "activity": "InteractiveBook",
+    "case": "verification-livre",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/verification-livre.pdf",
+    "verifiedTokens": [
+      "Paris",
+      "Madrid",
+      "Rome"
+    ]
+  }
+]

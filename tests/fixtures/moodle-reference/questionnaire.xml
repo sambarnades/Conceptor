@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="497" moduleid="22722" modulename="questionnaire" contextid="55584">
+  <questionnaire id="497">
+    <course>340</course>
+    <name>Questionnaire</name>
+    <intro>&lt;p&gt;Description&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <qtype>0</qtype>
+    <respondenttype>fullname</respondenttype>
+    <resp_eligible>all</resp_eligible>
+    <resp_view>1</resp_view>
+    <notifications>0</notifications>
+    <opendate>0</opendate>
+    <closedate>0</closedate>
+    <resume>0</resume>
+    <navigate>0</navigate>
+    <grade>0</grade>
+    <sid>495</sid>
+    <timemodified>1788524565</timemodified>
+    <completionsubmit>1</completionsubmit>
+    <autonum>3</autonum>
+    <removeafter>0</removeafter>
+    <surveys>
+      <survey id="495">
+        <name>Questionnaire</name>
+        <courseid>340</courseid>
+        <realm>private</realm>
+        <status>0</status>
+        <title>Questionnaire</title>
+        <email></email>
+        <subtitle></subtitle>
+        <info></info>
+        <theme></theme>
+        <thanks_page></thanks_page>
+        <thank_head></thank_head>
+        <thank_body></thank_body>
+        <feedbacksections>0</feedbacksections>
+        <feedbacknotes></feedbacknotes>
+        <feedbackscores>0</feedbackscores>
+        <chart_type>$@NULL@$</chart_type>
+        <questions>
+        </questions>
+        <fb_sections>
+        </fb_sections>
+      </survey>
+    </surveys>
+    <responses>
+    </responses>
+  </questionnaire>
+</activity>

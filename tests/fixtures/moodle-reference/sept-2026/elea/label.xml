@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="1961" moduleid="14004" modulename="label" contextid="17732">
+  <label id="1961">
+    <name>Avant de commencerDans cette partie, tu découvres ...</name>
+    <intro>&lt;h3&gt;Avant de commencer&lt;/h3&gt;&lt;p&gt;Dans cette partie, tu découvres les grandes étapes du cycle de l’eau.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <timemodified>1790541036</timemodified>
+  </label>
+</activity>

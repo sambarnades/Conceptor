@@ -1,0 +1,51 @@
+[
+  {
+    "id": "resume-capitales",
+    "contenu": {
+      "intro": "Choisis la bonne affirmation. RELU dans Sucrerie.",
+      "summaries": [
+        {
+          "summary": [
+            "<p>Paris est la capitale de la France.</p>",
+            "<p>Paris est la capitale de l’Italie.</p>"
+          ],
+          "tip": "La Seine traverse la capitale française. RELU Sucrerie.",
+          "subContentId": "c3039049-003c-464a-b1d8-7adf14def69e"
+        },
+        {
+          "summary": [
+            "Rome est la capitale de l’Italie.",
+            "Madrid est la capitale de l’Italie.",
+            "Paris est la capitale de l’Italie."
+          ],
+          "tip": "Pense au Colisée.",
+          "subContentId": "a52127f6-c9f5-48f8-99e0-55a04b572bb7"
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "solvedLabel": "Progression :",
+      "scoreLabel": "Mauvaises réponses :",
+      "resultLabel": "Votre résultat",
+      "labelCorrect": "Correct.",
+      "labelIncorrect": "Incorrect ! Veuillez réessayer.",
+      "labelCorrectAnswers": "Réponses correctes.",
+      "tipButtonLabel": "Indice",
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "progressText": "Progression :num sur :total",
+      "alternativeIncorrectLabel": "Incorrect",
+      "title": "Résumé des capitales"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

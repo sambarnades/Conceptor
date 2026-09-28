@@ -1,0 +1,18 @@
+[
+  {
+    "kind": "positions",
+    "score": "4/4",
+    "erreur": "Classe les étapes. RELU Sucrerie\n\nFin\n\nObserver\n\nObserver\n\nDébut\n\nVérifier\nParagraphe Saisi. Position actuelle dans la liste: 3 sur 4. Appuyez sur les flèches haut et bas pour changer de position, sur la barre d'espace pour déposer, sur échap pour annuler. Paragraphe Déposé. Position finale: 1 sur 4. Paragraphe Saisi. Position actuelle dans la liste: 4 sur 4. . Paragraphe Déposé. Position finale: 3 sur 4.\nRights of use",
+    "reprise": true,
+    "erreursNatives": [],
+    "texte": "Classe les étapes. RELU Sucrerie\n\nDébut\n\nObserver\n\nObserver\n\nFin\n\nVous avez obtenu 4 sur 4 points\n4/4\nRecommencer\nRights of use"
+  },
+  {
+    "kind": "transitions",
+    "score": "3/3",
+    "erreur": "Classe les étapes. RELU Sucrerie\n\nFin\n\nObserver\n\nObserver\n\nDébut\n\nVérifier\nParagraphe Saisi. Position actuelle dans la liste: 2 sur 4. Appuyez sur les flèches haut et bas pour changer de position, sur la barre d'espace pour déposer, sur échap pour annuler. Paragraphe Déposé. Position finale: 1 sur 4.\nRights of use",
+    "reprise": true,
+    "erreursNatives": [],
+    "texte": "Classe les étapes. RELU Sucrerie\n\nDébut\n\nObserver\n\nObserver\n\nFin\n\nVous avez obtenu 3 sur 3 points\n3/3\nRecommencer\nRights of use"
+  }
+]

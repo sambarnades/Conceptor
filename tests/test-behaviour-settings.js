@@ -144,7 +144,7 @@ const minimalData = {
 
 const behaviourTests = {
     MultipleChoice: {
-        defaults: { enableRetry: true, randomAnswers: true, autoCheck: false, singlePoint: false, passPercentage: 50, showScorePoints: true },
+        defaults: { enableRetry: true, randomAnswers: true, autoCheck: false, singlePoint: false, passPercentage: 100, showScorePoints: true },
         overrides: { enableRetry: false, randomAnswers: false, autoCheck: true, passPercentage: 80 },
         path: 'behaviour'
     },
@@ -154,7 +154,7 @@ const behaviourTests = {
         path: 'behaviour'
     },
     FillInTheBlanks: {
-        defaults: { caseSensitive: false, acceptSpellingErrors: false, autoCheck: true, separateLines: false },
+        defaults: { caseSensitive: true, acceptSpellingErrors: false, autoCheck: false, separateLines: false },
         overrides: { caseSensitive: true, acceptSpellingErrors: true, autoCheck: false, separateLines: true },
         path: 'behaviour'
     },
@@ -186,7 +186,7 @@ const behaviourTests = {
         path: 'behaviour'
     },
     Essay: {
-        defaults: { enableRetry: true, minimumLength: 10, maximumLength: 10000, overrideCaseSensitive: 'off', overrideForgiveMistakes: 'on' },
+        defaults: { enableRetry: true, minimumLength: undefined, maximumLength: undefined, overrideCaseSensitive: undefined, overrideForgiveMistakes: undefined },
         overrides: { minimumLength: 50, maximumLength: 500, overrideCaseSensitive: 'on' },
         path: 'behaviour'
     },
@@ -198,11 +198,6 @@ const behaviourTests = {
     SingleChoiceSet: {
         defaults: { soundEffectsEnabled: true, autoContinue: true, passPercentage: 100 },
         overrides: { soundEffectsEnabled: false, autoContinue: false, passPercentage: 50 },
-        path: 'behaviour'
-    },
-    Summary: {
-        defaults: { enableRetry: true, enableSolutionsButton: true, passPercentage: 50 },
-        overrides: { enableRetry: false, passPercentage: 75 },
         path: 'behaviour'
     },
     DialogCards: {
@@ -220,6 +215,8 @@ async function runTests() {
     // ---- Test 1 : Chaque type a une section settings dans le schema ----
     currentModule = 'Schema editeur';
     const typesWithSettings = Object.keys(behaviourTests);
+    assert(!getSchemaForType('Summary').sections.some(s => s.id === 'settings'),
+        'Summary : pas de réglages ignorés par son semantics H5P');
     for (const type of typesWithSettings) {
         const schema = getSchemaForType(type);
         assert(schema !== null, `${type} : schema editeur existe`);
@@ -249,7 +246,7 @@ async function runTests() {
         const settingsSection = timelineSchema.sections.find(s => s.id === 'settings');
         assert(settingsSection !== null && settingsSection !== undefined, 'Timeline : section settings presente');
         if (settingsSection) {
-            assert(settingsSection.fields.height !== undefined, 'Timeline : champ height present');
+            assert(settingsSection.fields['timeline.height'] !== undefined, 'Timeline : champ height present');
         }
     }
 
@@ -350,7 +347,9 @@ async function runTests() {
                     }
                 }
             } else if (config.path === 'root') {
-                assert(denormalized.behaviour !== undefined, `${type} : behaviour survit au round-trip editeur`);
+                for (const [schemaKey, nativeKey] of Object.entries(config.rootFields)) {
+                    assert(denormalized[nativeKey] === config.overrides[schemaKey], `${type} : ${nativeKey} conservé à la racine native après réédition`);
+                }
             }
         } catch (e) {
             assert(false, `${type} : erreur round-trip editeur: ${e.message}`);
@@ -426,7 +425,7 @@ async function runTests() {
             const processed = result.content || result;
             assert(processed.progressType === 'textual', `QuizSet : progressType = textual (recu: ${processed.progressType})`);
             assert(processed.passPercentage === 75, `QuizSet : passPercentage = 75 (recu: ${processed.passPercentage})`);
-            assert(processed.behaviour?.randomQuestions === true, `QuizSet : behaviour.randomQuestions = true (recu: ${processed.behaviour?.randomQuestions})`);
+            assert(processed.randomQuestions === true, `QuizSet : randomQuestions à la racine native (recu: ${processed.randomQuestions})`);
         } catch (e) {
             assert(false, `QuizSet settings: ${e.message}`);
         }
@@ -449,6 +448,57 @@ async function runTests() {
             assert(false, `FindTheWords orientations: ${e.message}`);
         }
     }
+
+    {
+        const { getSchemaForType } = await import('../js/editor/content-detector.js');
+        const { getValidationErrors } = await import('../js/editor/validators.js');
+        const off = Object.fromEntries(['horizontal', 'horizontalBack', 'vertical', 'verticalUp', 'diagonal', 'diagonalBack', 'diagonalUp', 'diagonalUpBack'].map(k => [k, false]));
+        const errors = getValidationErrors({ ...minimalData.FindTheWords, behaviour: { fillPool: '', orientations: off } }, getSchemaForType('FindTheWords'));
+        assert(errors.some(e => e.path === 'behaviour.fillPool') && errors.some(e => e.path === 'behaviour.orientations.horizontal'), 'Mots mêlés : alphabet vide et absence d’orientation bloqués dans le formulaire');
+        const partial = await processH5PContent('FindTheWords', { ...minimalData.FindTheWords, behaviour: { fillPool: 'XYZ', preferOverlap: false, orientations: { horizontal: false } } });
+        assert(partial.behaviour.fillPool === 'XYZ' && partial.behaviour.preferOverlap === false && partial.behaviour.orientations.horizontal === false && partial.behaviour.orientations.vertical === true, 'Mots mêlés : alphabet/false conservés, orientations omises complétées');
+        let rejected = false;
+        try { await processH5PContent('FindTheWords', { ...minimalData.FindTheWords, behaviour: { orientations: off } }); } catch { rejected = true; }
+        assert(rejected, 'Mots mêlés : le processeur refuse également la grille sans orientation');
+    }
+
+    // Options pédagogiques perdues avant l'audit du 11/09 : les exercer dans
+    // la suite existante, sans nouvelle passe de génération ni nouvelle CI.
+    currentModule = 'Sauvegarde des questions imbriquées';
+    const original = { questions: [
+        { library: 'H5P.MultiChoice 1.16', params: { question: 'Choisir', answers: [{text:'A',correct:true},{text:'B',correct:false}], behaviour: { singleAnswer: true } } },
+        { library: 'H5P.Essay 1.5', params: {taskDescription:'Rédiger', keywords:[{keyword:'cellule', alternatives:['cellules'], options:{points:2, occurrences:3, feedbackMissed:'Ancien'}}]} },
+        { library: 'H5P.TrueFalse 1.8', params: {question:'Vrai ?',correct:'true',behaviour:{feedbackOnWrong:'Ancien'}} }
+    ] };
+    const editable = normalizeDataForEditor(structuredClone(original), 'QuizSet');
+    editable.questions[1].params.keywords[0].options.feedbackMissed = 'Retouché';
+    editable.questions[2].params.feedbackOnWrong = 'Correction retouchée';
+    const saved = denormalizeDataForSave(structuredClone(editable), 'QuizSet');
+    const reopened = normalizeDataForEditor(structuredClone(saved), 'QuizSet');
+    assert(reopened.questions[2].params.feedbackOnWrong === 'Correction retouchée', 'Vrai/Faux : réouverture du retour édité');
+    const result = await processH5PContent('QuizSet', saved);
+    const native = (result.content || result).questions;
+    assert(native[0].params.behaviour.type === 'single' && !('singleAnswer' in native[0].params.behaviour), 'QCM : mode natif effectif');
+    assert(native[1].params.keywords[0].alternatives[0] === 'cellules' && native[1].params.keywords[0].options.occurrences === 3 && native[1].params.keywords[0].options.feedbackMissed === 'Retouché', 'Rédaction : variante, occurrences et retour conservés');
+    assert(native[2].params.behaviour.feedbackOnWrong === 'Correction retouchée', 'Vrai/Faux : export du retour édité');
+
+    // 28/09 : le modèle écrit parfois les variantes d'un mot-clé comme une entrée
+    // à part, sans `keyword`. Toute la rédaction était rejetée (et, dans un
+    // parcours, la carte écartée à l'assemblage) : l'entrée se replie désormais
+    // dans le mot-clé précédent, y compris pour un contenu déjà enregistré.
+    currentModule = 'Rédaction : alternatives orphelines';
+    const redaction = await processH5PContent('Essay', { taskDescription: 'Analyser une source', keywords: [
+        { keyword: 'auteur', options: { points: 1 } },
+        { keyword: 'biais', options: { points: 1 } },
+        { alternatives: ['subjectivité', 'parti pris'] },
+        { },
+    ] });
+    const mots = (redaction.content || redaction).keywords;
+    assert(mots.length === 2, 'Rédaction : l’entrée orpheline et l’entrée vide ne deviennent pas des mots-clés');
+    assert(JSON.stringify(mots[1].alternatives) === JSON.stringify(['subjectivité', 'parti pris']), 'Rédaction : les alternatives orphelines rejoignent le mot-clé précédent');
+    const enTete = await processH5PContent('Essay', { taskDescription: 'X', keywords: [{ alternatives: ['source', 'document'] }] });
+    const premier = (enTete.content || enTete).keywords[0];
+    assert(premier.keyword === 'source' && JSON.stringify(premier.alternatives) === '["document"]', 'Rédaction : en tête de liste, la première alternative devient le mot-clé');
 
     return { passCount, failCount, results };
 }

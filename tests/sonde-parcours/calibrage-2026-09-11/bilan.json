@@ -1,0 +1,74 @@
+[
+  {
+    "id": "courte-auto-1",
+    "appels": 2,
+    "ecarts": [
+      "aucun plan"
+    ],
+    "erreurs": []
+  },
+  {
+    "id": "courte-auto-2",
+    "appels": 1,
+    "activites": 4,
+    "etapes": 4,
+    "ecarts": [],
+    "erreurs": []
+  },
+  {
+    "id": "courte-auto-3",
+    "appels": 2,
+    "ecarts": [
+      "aucun plan"
+    ],
+    "erreurs": []
+  },
+  {
+    "id": "moyenne-auto",
+    "appels": 1,
+    "activites": 6,
+    "etapes": 3,
+    "ecarts": [],
+    "erreurs": []
+  },
+  {
+    "id": "longue-auto",
+    "appels": 1,
+    "activites": 12,
+    "etapes": 4,
+    "ecarts": [],
+    "erreurs": []
+  },
+  {
+    "id": "rituel",
+    "appels": 2,
+    "activites": 3,
+    "etapes": 3,
+    "ecarts": [],
+    "erreurs": []
+  },
+  {
+    "id": "inversee-en",
+    "appels": 1,
+    "activites": 4,
+    "etapes": 3,
+    "ecarts": [],
+    "erreurs": []
+  },
+  {
+    "id": "formation-magistere",
+    "appels": 1,
+    "activites": 9,
+    "etapes": 3,
+    "ecarts": [],
+    "erreurs": []
+  },
+  {
+    "id": "revision-br",
+    "appels": 1,
+    "activites": 4,
+    "etapes": 4,
+    "ecarts": [],
+    "erreurs": []
+  }
+]

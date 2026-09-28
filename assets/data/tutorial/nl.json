@@ -149,6 +149,10 @@
           "alt": "Het raster met beschikbare activiteitentegels in Caramel."
         },
         {
+          "type": "tip",
+          "text": "Onder het formulier toont **Een activiteit** deze tegels; **Een leerpad** opent de werkplaats die meerdere activiteiten tot een volledige cursus samenvoegt (zie ‘Een volledige cursus maken en hervatten’)."
+        },
+        {
           "type": "h",
           "text": "Twee grote families"
         },
@@ -623,6 +627,106 @@
       ]
     },
     {
+      "id": "parcours",
+      "icon": "grid",
+      "title": "Een volledige cursus maken en hervatten",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-cadrage.webp",
+          "alt": "Het formulier, de schakelaar ‘Een leerpad’ en de instellingen: platform, lesvorm en omvang."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-trames.webp",
+          "alt": "Een sjabloon kiezen: elke kaart toont de stappen, niveaus en activiteiten."
+        },
+        {
+          "type": "tip",
+          "text": "In het menu van Caramelia opent **Een cursus maken** direct de werkplaats, zonder AI-aanvraag. Als er een concept bestaat, opent **Mijn cursus hervatten** dit opnieuw. Bestaande velden en bronnen blijven behouden. Controleer de opzet en het plan in de werkplaats voordat je de generatie start."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang en sjabloon. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.",
+            "In **Plan** bewerkt u titel, algemeen doel, kernbegrippen, stappen en activiteiten. Verplaats activiteiten met de pijlen of door hun miniatuur te slepen. Met **Instructie en leerfase** past u de generatie-instructies aan. Pedagogische aanwijzingen helpen bij het nakijken zonder een model op te leggen. Het maximum is **12 activiteiten**.",
+            "Plak de videolink in de kaart van een **interactieve video**. Het transcript wordt tijdens het genereren opgehaald; u kunt het ook zelf plakken. Voeg voor een **interactieve afbeelding** en de activiteiten waarbij één of meer gebieden gezocht worden een afbeelding toe aan de kaart. Deze wordt vóór het genereren geanalyseerd. U kunt deze bronnen ook tijdens de generatiefase toevoegen. Een activiteit zonder bron wacht terwijl de andere doorgaan. Het scenario bewaart de afbeeldingen en links van de activiteiten; de documenten van het startformulier blijven apart. Plak voor een **Weblink** het adres van de bron in de kaart: de AI schrijft de leesopdracht zonder de pagina te openen.",
+            "Keur het plan goed om het genereren te starten. U kunt stoppen, ontbrekende activiteiten hervatten of één activiteit opnieuw genereren. Het slot **Deze activiteit niet maken** reserveert de inhoud voor handmatige invoer: AI vult die niet. Een mislukte nieuwe generatie behoudt de vorige inhoud. Ontbrekende activiteiten worden vóór export vermeld.",
+            "Zodra inhoud klaar is, opent **De inhoud bewerken** de vertrouwde editor en **Voorbeeld** de speler. Met **Cursus nakijken**, **Vorige** en **Volgende** bekijkt u alles op volgorde. Sla wijzigingen op om ze in het plan en de export op te nemen. Een gewijzigde planinstructie herschrijft bestaande inhoud niet.",
+            "Download in **Oplevering** de **.mbz** en gebruik de cursusimport of herstelfunctie van uw platform. Dit cursusbestand hoort niet in een H5P-activiteit. Het leerpad verschijnt ook bij de meldingen: **Bekijken** opent het **Overzicht van het leerpad**, met het welkom, elke stap en de activiteiten, die u kunt nakijken en bewerken voordat u opnieuw downloadt. Bewaar ook de **.json** om terug te keren naar Caramel. Het lesplan en de activiteitsdetails kunt u exporteren als **DOCX, ODT of PDF**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-plan.webp",
+          "alt": "Het plan, nagelezen vóór elke generatie: doel, stappen, activiteiten, duur en controle van het plan."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-fabrication.webp",
+          "alt": "Het maken: de activiteiten worden na elkaar gegenereerd; elke activiteit kan worden bekeken, bewerkt of opnieuw gegenereerd."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-livraison.webp",
+          "alt": "De levering: de .mbz-cursus met de importstappen, de afdrukbare documenten en het .json-scenario."
+        },
+        {
+          "type": "tip",
+          "text": "**Het scenario exporteren (.json)** bewaart het plan en de voltooide inhoud in een **.json**-bestand. De knop **Plan aanpassen**, naast **Het plan opstellen**, opent hetzelfde venster als bij een activiteit: kopieer de prompt naar de AI van uw keuze en plak het antwoord terug. **Een scenario openen** staat in dit venster; het **.json**-bestand downloadt u bij de oplevering, naast de **.mbz**. Het concept blijft alleen in dit tabblad: exporteer het scenario voordat u het sluit. Onderwerp, doelgroep en bijlagen ontbreken in het scenario; voer ze opnieuw in voordat u nieuwe inhoud genereert."
+        },
+        {
+          "type": "tip",
+          "text": "Open in Éléa **Cursusinstellingen**, schakel de voortgangskaart in en kies met de tegel **+ Eigen afbeelding toevoegen** je eigen achtergrond. Je kunt de afbeelding vervangen of verwijderen en terugkeren naar de voorgestelde thema’s. De achtergrond wordt opgeslagen in het **.json**-scenario en opgenomen in de **.mbz**-cursus. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG of TIFF · Max. 12 MB. Automatische conversie, zonder bijsnijden."
+        },
+        {
+          "type": "warn",
+          "text": "De voortgangskaart is specifiek voor Éléa. De kaart en stapsgewijze toegang zijn optioneel en moeten nog in werkelijk platformgebruik worden gecontroleerd. Het differentiatiesjabloon maakt geen automatische vertakkingen op basis van cijfers. Samenwerking gebeurt op het platform."
+        },
+        {
+          "type": "h",
+          "text": "De modules van het platform"
+        },
+        {
+          "type": "p",
+          "text": "Het plan biedt ook de modules van uw Éléa, Magistère of Moodle aan, gegroepeerd in het menu van elke activiteit onder **Modules van het platform**. De AI schrijft wat het platform bij het importeren bewaart:"
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-mosaique.webp",
+          "alt": "Het mozaïek van activiteitstypen: de activiteiten die Caramel genereert, daarna de modules van het platform."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Forum**, **Peiling**, **Vragenlijst**, **Enquête (Feedback)**: laten uitwisselen, meningen, een diagnose of een evaluatie verzamelen.",
+            "**Les**: pagina’s om te lezen, waarvan sommige eindigen met een vraag die alleen met het juiste antwoord doorlaat. Het **IMS-contentpakket** — pagina’s om te lezen met een inhoudsopgave, volledig door Caramel geschreven — kiest u in het mozaïek; het plan stelt het niet voor.",
+            "**Workshop**: werk maken en daarna het werk van klasgenoten beoordelen met een criteriaraster.",
+            "**Bord**, **Wiki**, **Samenwerkingsdocument**, **Woordenlijst** en **Database om op te bouwen**: samen schrijven en opbouwen; ze komen leeg aan, met hun opdracht.",
+            "**Virtueel klaslokaal**, **Groepskeuze**, **Bestanden delen**, **Weblink**: live samenkomen, teams vormen, bestanden inleveren, een online bron raadplegen.",
+            "**Afhankelijk van het platform**: Etherpad en Woordwolk op Magistère, Feedback op Éléa en Moodle. Capytale, GeoGebra, een SCORM-pakket of een bestand voegt u na het importeren nog handmatig toe in Éléa, Magistère of Moodle."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Als een module een instelling op het platform vereist (fasen van de workshop, tijdstip van het virtuele klaslokaal, groepen), schrijft Caramel die in een notitie **Te doen vóór het openen van de cursus**, verborgen voor de leerlingen, bovenaan de geïmporteerde cursus. Verwijder de notitie zodra deze instellingen gedaan zijn."
+        },
+        {
+          "type": "p",
+          "text": "Meer weten: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) helpt bij het nadenken over leeractiviteiten. De zeven categorieën van Caramel, waaronder **Bespreken** en **Samenwerken**, zijn vereenvoudigde richtlijnen op basis van tools, niet de zes ABC-leertypen of een beoordeling van uw onderwijs."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-miroir.webp",
+          "alt": "Wat dit leerpad oefent: de zeven categorieën en de ontbrekende."
+        }
+      ]
+    },
+    {
       "id": "integrate",
       "icon": "upload",
       "title": "Integreren in Éléa / Magistère / Moodle",
@@ -820,6 +924,10 @@
         {
           "type": "plain",
           "text": "Om juist te antwoorden, baseert Caramélia zich op een **documentaire basis** (een « RAG »): in plaats van te improviseren, **haalt zij betrouwbare fragmenten** uit de documentatie van Caramel en neemt zij de exacte labels over van de knoppen die u op het scherm ziet. (De **RAG** is ook wat het mogelijk maakt om de generatie te verankeren in de officiële leerplannen — zie de stap « Beschrijf wat u nodig heeft ».)"
+        },
+        {
+          "type": "tip",
+          "text": "In het menu van Caramelia opent **Een cursus maken** direct de werkplaats, zonder AI-aanvraag. Als er een concept bestaat, opent **Mijn cursus hervatten** dit opnieuw. Bestaande velden en bronnen blijven behouden. Controleer de opzet en het plan in de werkplaats voordat je de generatie start."
         }
       ]
     },

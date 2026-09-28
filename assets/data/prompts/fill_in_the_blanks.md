@@ -29,6 +29,7 @@
 ---
 
 # STRUCTURE DU JSON ATTENDUE
+- `behaviour.enableCheckButton` (true): Afficher le bouton Vérifier. Décochez seulement si la vérification est automatique ou déclenchée par le conteneur. `behaviour.showSolutionsRequiresInput` (true): Remplir tous les trous avant de voir la solution. `behaviour.allowRetryIfCorrect` (false): Autoriser une nouvelle tentative après une réponse entièrement correcte.
 - Génère UNIQUEMENT un JSON complet et valide dans un bloc de code. Ta réponse DOIT commencer par \`{\` et finir par \`}\`. Aucun autre texte ou commentaire.
 L'objet doit contenir :
 - \`taskDescription\` : Une consigne COURTE (1-2 phrases maximum) expliquant l'objectif de l'activité. Utilise \`**mot**\` pour le gras (concepts clés) et \`\\n\` pour les sauts de ligne. INTERDIT : ne JAMAIS utiliser \`*mot*\` ni inclure le texte à trous dans ce champ.
@@ -71,3 +72,7 @@ L'objet doit contenir :
   ]
 }
 ```
+
+
+Respecte les réglages demandés. Dans un trou, / sépare les variantes : pour une fraction, utilise un caractère Unicode (⅖) ; ne transforme pas *2/5* en réponse attendue. Pour le média facultatif, utilise seulement un fichier ou une URL fourni, jamais inventé.
+behaviour: autoCheck, caseSensitive, separateLines, acceptSpellingErrors, enableRetry, enableSolutionsButton, enableCheckButton, showSolutionsRequiresInput, allowRetryIfCorrect, confirmCheckDialog, confirmRetryDialog. confirmCheck/confirmRetry: header, body, cancelLabel, confirmLabel. media.type.library: H5P.Image 1.1 | H5P.Audio 1.5 | H5P.Video 1.6.

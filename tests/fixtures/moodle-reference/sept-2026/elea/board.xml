@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="61" moduleid="14014" modulename="board" contextid="17742">
+  <board id="61">
+    <course>801</course>
+    <name>Tableau : ce que nous savons</name>
+    <timemodified>1790541047</timemodified>
+    <intro>&lt;p&gt;Dépose une note dans la colonne qui convient.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <historyid>0</historyid>
+    <background_color></background_color>
+    <addrating>0</addrating>
+    <hideheaders>0</hideheaders>
+    <sortby>3</sortby>
+    <postby>0</postby>
+    <userscanedit>0</userscanedit>
+    <singleusermode>0</singleusermode>
+    <completionnotes>1</completionnotes>
+    <embed>0</embed>
+    <columns>
+      <column id="219">
+        <boardid>61</boardid>
+        <name>Titre</name>
+        <sortorder>1</sortorder>
+        <notes>
+        </notes>
+      </column>
+      <column id="220">
+        <boardid>61</boardid>
+        <name>Titre</name>
+        <sortorder>2</sortorder>
+        <notes>
+        </notes>
+      </column>
+      <column id="221">
+        <boardid>61</boardid>
+        <name>Titre</name>
+        <sortorder>3</sortorder>
+        <notes>
+        </notes>
+      </column>
+    </columns>
+  </board>
+</activity>

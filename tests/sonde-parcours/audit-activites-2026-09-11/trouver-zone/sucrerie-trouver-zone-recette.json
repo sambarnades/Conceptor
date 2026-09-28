@@ -1,0 +1,158 @@
+[
+  {
+    "id": "trouver-zone-popup",
+    "contenu": {
+      "imageHotspotQuestion": {
+        "backgroundImageSettings": {
+          "path": "images/recette-zones.png",
+          "mime": "image/png",
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          },
+          "width": 800,
+          "height": 450
+        },
+        "hotspotSettings": {
+          "taskDescription": "Clique sur la zone violette. RELU Sucrerie",
+          "hotspot": [
+            {
+              "userSettings": {
+                "correct": false,
+                "feedbackText": "Zone 1 sélectionnée."
+              },
+              "computedSettings": {
+                "x": 10,
+                "y": 26.67,
+                "width": 20,
+                "height": 40,
+                "figure": "rectangle"
+              }
+            },
+            {
+              "userSettings": {
+                "correct": true,
+                "feedbackText": "Tu as trouvé le rectangle violet. RELU"
+              },
+              "computedSettings": {
+                "x": 40,
+                "y": 26.67,
+                "width": 20,
+                "height": 40,
+                "figure": "rectangle"
+              },
+              "label": "Violet RELU"
+            },
+            {
+              "userSettings": {
+                "correct": false,
+                "feedbackText": "Zone 3 sélectionnée."
+              },
+              "computedSettings": {
+                "x": 70,
+                "y": 26.67,
+                "width": 20,
+                "height": 40,
+                "figure": "rectangle"
+              }
+            }
+          ],
+          "noneSelectedFeedback": "Clique dans un rectangle. RELU",
+          "showFeedbackAsPopup": true,
+          "l10n": {
+            "retryText": "Réessayer RELU",
+            "closeText": "Fermer RELU"
+          }
+        }
+      },
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "title": "Trouver la zone RELU"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "trouver-zone-integre",
+    "contenu": {
+      "imageHotspotQuestion": {
+        "backgroundImageSettings": {
+          "path": "images/recette-zones.png",
+          "mime": "image/png",
+          "copyright": {
+            "license": "PD",
+            "version": "CC0 1.0",
+            "title": "Trois zones de recette"
+          },
+          "width": 800,
+          "height": 450
+        },
+        "hotspotSettings": {
+          "taskDescription": "Clique sur la zone violette. RELU Sucrerie",
+          "hotspot": [
+            {
+              "userSettings": {
+                "correct": false,
+                "feedbackText": "Zone 1 sélectionnée."
+              },
+              "computedSettings": {
+                "x": 10,
+                "y": 26.67,
+                "width": 20,
+                "height": 40,
+                "figure": "rectangle"
+              }
+            },
+            {
+              "userSettings": {
+                "correct": true,
+                "feedbackText": "Tu as trouvé le rectangle violet. RELU"
+              },
+              "computedSettings": {
+                "x": 40,
+                "y": 26.67,
+                "width": 20,
+                "height": 40,
+                "figure": "circle"
+              },
+              "label": "Violet RELU"
+            },
+            {
+              "userSettings": {
+                "correct": false,
+                "feedbackText": "Zone 3 sélectionnée."
+              },
+              "computedSettings": {
+                "x": 70,
+                "y": 26.67,
+                "width": 20,
+                "height": 40,
+                "figure": "rectangle"
+              }
+            }
+          ],
+          "noneSelectedFeedback": "Clique dans un rectangle. RELU",
+          "showFeedbackAsPopup": false,
+          "l10n": {
+            "retryText": "Réessayer RELU",
+            "closeText": "Fermer RELU"
+          }
+        }
+      },
+      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+      "title": "Trouver la zone RELU"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

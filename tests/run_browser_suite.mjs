@@ -1,7 +1,7 @@
 /**
  * run_browser_suite.mjs — Pilote headless de la suite de tests navigateur.
  *
- * `tests/test-all.html` agrège 40 suites, dont six (`css`, `ui`, `caramelia-ui`,
+ * `tests/test-all.html` agrège 42 suites, dont six (`css`, `ui`, `caramelia-ui`,
  * `ui-chrome`, `embed-bridge`, `integration`) chargent `index.html` dans une iframe :
  * ce sont les seules à couvrir `js/ui/ui.js` dans son vrai DOM, que le banc Node
  * (`tests/roundtrip/harness.mjs`) ne peut pas atteindre.
@@ -35,7 +35,7 @@ const headed = args.includes('--headed');
 const PORT = 8099;
 
 // ----------------------------------------------------------------- serveur
-const server = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'], {
+const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'], {
     cwd: ROOT, stdio: 'ignore'
 });
 const stopServer = () => { try { server.kill('SIGTERM'); } catch { /* déjà mort */ } };
@@ -133,7 +133,7 @@ try {
 
     await browser.close();
 
-    // Référence : 13963 PASS / 0 FAIL sur 40 suites (2026-08-19).
+    // Référence : 14415 PASS / 0 FAIL sur 42 suites (2026-09-28).
     //
     // L'unique échec toléré jusqu'à la v6.3.0 — `[1c.el] Taille el.json = 563 Ko
     // (seuil 560 Ko)` dans `test-performance.js` — était un GARDE ANTI-BLOAT du payload

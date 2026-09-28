@@ -1,73 +1,77 @@
 {
-"question": "Parmi les propositions suivantes, laquelle définit précisément un **losange** ?",
-"answers": [
-{
-"text": "C'est un quadrilatère qui a quatre côtés de même longueur.",
-"correct": true,
-"tipsAndFeedback": {
-"tip": "Pense à la propriété principale qui concerne uniquement la longueur des côtés.",
-"chosenFeedback": "Bravo ! C'est la définition exacte du losange. Ses diagonales se coupent aussi en leur milieu et sont perpendiculaires.",
-"notChosenFeedback": "C'est pourtant la caractéristique essentielle qui distingue le losange des autres parallélogrammes."
-}
-},
-{
-"text": "C'est un quadrilatère qui a quatre angles droits.",
-"correct": false,
-"tipsAndFeedback": {
-"tip": "Attention, cette propriété définit une autre figure géométrique très courante.",
-"chosenFeedback": "Attention, tu confonds avec le rectangle ! Un losange n'a pas forcément d'angles droits.",
-"notChosenFeedback": "Tu as raison de ne pas choisir cette option, car elle définit le rectangle."
-}
-},
-{
-"text": "C'est un quadrilatère qui a seulement deux côtés de même longueur.",
-"correct": false,
-"tipsAndFeedback": {
-"tip": "Le losange est une figure beaucoup plus régulière que cela.",
-"chosenFeedback": "Non, un quadrilatère avec seulement deux côtés égaux n'a pas de nom particulier, alors que le losange en a quatre égaux.",
-"notChosenFeedback": "Exact, cette définition est trop restrictive pour un losange."
-}
-},
-{
-"text": "C'est un quadrilatère dont les diagonales sont de même longueur.",
-"correct": false,
-"tipsAndFeedback": {
-"tip": "Vérifie si les diagonales d'un losange classique (étiré) sont vraiment égales.",
-"chosenFeedback": "Erreur classique ! Ce sont les diagonales du rectangle (ou du carré) qui sont égales. Celles du losange sont perpendiculaires.",
-"notChosenFeedback": "Bien vu, l'égalité des diagonales n'est pas une propriété du losange."
-}
-}
-],
-"overallFeedback": [
-{
-"from": 0,
-"to": 10,
-"feedback": "Il est important de reprendre les definitions de base des figures geometriques."
-},
-{
-"from": 11,
-"to": 30,
-"feedback": "Tu confonds encore certaines proprietes, relis bien ta lecon sur les quadrilateres particuliers."
-},
-{
-"from": 31,
-"to": 50,
-"feedback": "C est un debut encourageant, mais il faut encore stabiliser tes connaissances sur le losange et le rectangle."
-},
-{
-"from": 51,
-"to": 70,
-"feedback": "Bon travail, tu connais les principales caracteristiques des quadrilateres."
-},
-{
-"from": 71,
-"to": 90,
-"feedback": "Tres bon score, tu maîtrises bien les definitions geometriques du programme de sixieme."
-},
-{
-"from": 91,
-"to": 100,
-"feedback": "Parfait, tu es un expert des quadrilateres, bravo pour cette precision."
-}
-]
+  "question": "Parmi les propositions suivantes, laquelle définit précisément un **losange** ?",
+  "answers": [
+    {
+      "text": "C'est un quadrilatère qui a quatre côtés de même longueur.",
+      "correct": true,
+      "tipsAndFeedback": {
+        "tip": "Pense à la propriété principale qui concerne uniquement la longueur des côtés.",
+        "chosenFeedback": "Bravo ! C'est la définition exacte du losange. Ses diagonales se coupent aussi en leur milieu et sont perpendiculaires.",
+        "notChosenFeedback": "C'est pourtant la caractéristique essentielle qui distingue le losange des autres parallélogrammes."
+      }
+    },
+    {
+      "text": "C'est un quadrilatère qui a quatre angles droits.",
+      "correct": false,
+      "tipsAndFeedback": {
+        "tip": "Attention, cette propriété définit une autre figure géométrique très courante.",
+        "chosenFeedback": "Attention, tu confonds avec le rectangle ! Un losange n'a pas forcément d'angles droits.",
+        "notChosenFeedback": "Tu as raison de ne pas choisir cette option, car elle définit le rectangle."
+      }
+    },
+    {
+      "text": "C'est un quadrilatère qui a seulement deux côtés de même longueur.",
+      "correct": false,
+      "tipsAndFeedback": {
+        "tip": "Le losange est une figure beaucoup plus régulière que cela.",
+        "chosenFeedback": "Non, un quadrilatère avec seulement deux côtés égaux n'a pas de nom particulier, alors que le losange en a quatre égaux.",
+        "notChosenFeedback": "Exact, cette définition est trop restrictive pour un losange."
+      }
+    },
+    {
+      "text": "C'est un quadrilatère dont les diagonales sont de même longueur.",
+      "correct": false,
+      "tipsAndFeedback": {
+        "tip": "Vérifie si les diagonales d'un losange classique (étiré) sont vraiment égales.",
+        "chosenFeedback": "Erreur classique ! Ce sont les diagonales du rectangle (ou du carré) qui sont égales. Celles du losange sont perpendiculaires.",
+        "notChosenFeedback": "Bien vu, l'égalité des diagonales n'est pas une propriété du losange."
+      }
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Il est important de reprendre les definitions de base des figures geometriques."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu confonds encore certaines proprietes, relis bien ta lecon sur les quadrilateres particuliers."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C est un debut encourageant, mais il faut encore stabiliser tes connaissances sur le losange et le rectangle."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail, tu connais les principales caracteristiques des quadrilateres."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Tres bon score, tu maîtrises bien les definitions geometriques du programme de sixieme."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Parfait, tu es un expert des quadrilateres, bravo pour cette precision."
+    }
+  ],
+  "behaviour": {
+    "enableCheckButton": true,
+    "showSolutionsRequiresInput": true
+  }
 }

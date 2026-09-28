@@ -70,6 +70,10 @@ const expectations = {
   'son.mp3': 'audio',
   'son.m4a': 'audio',
   'son.wav': 'audio',
+  // Formats ajoutés en 6.3.2 (667082eb), acceptés silencieusement :
+  'archive.zip': 'zip',
+  'data.csv': 'text',
+  'page.html': 'html',
 };
 for (const [name, expected] of Object.entries(expectations)) {
   assert(detectFileType(file(name)) === expected,
@@ -79,7 +83,7 @@ for (const [name, expected] of Object.entries(expectations)) {
 console.log('\n[5] Les formats réellement non supportés restent refusés');
 // .mkv retiré volontairement : Matroska n'est pas démuxé de façon fiable
 // par decodeAudioData (même sur Chrome) → faux espoir, donc refusé en amont.
-for (const name of ['virus.exe', 'archive.zip', 'data.csv', 'page.html', 'film.mkv']) {
+for (const name of ['virus.exe', 'archive.rar', 'archive.7z', 'data.json', 'film.avi', 'film.mkv']) {
   assert(detectFileType(file(name)) === null,
     `${name} → null (refusé)`, { got: detectFileType(file(name)) });
 }

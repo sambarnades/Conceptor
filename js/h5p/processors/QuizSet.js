@@ -24,25 +24,25 @@ export default {
     process: async (jsonObj, helpers) => {
         const content = { ...jsonObj };
 
+        if(content.poolSize===null || content.poolSize==='')delete content.poolSize;
+        for(const group of ['introPage','override'])if(content[group]) {
+            content[group]={...content[group]};
+            for(const key of Object.keys(content[group]))if(content[group][key]===null)delete content[group][key];
+        }
         // Valeurs par défaut
         content.progressType = content.progressType || "dots";
         content.passPercentage = content.passPercentage ?? 50;
-        // randomQuestions : champ éditeur au niveau racine → injecter dans behaviour
-        const randomQuestions = content.randomQuestions ?? false;
-        delete content.randomQuestions;
-        content.behaviour = {
-            enableRetry: true,
-            enableSolutionsButton: true,
-            randomQuestions,
-            ...content.behaviour
-        };
+        // QuestionSet lit ce réglage à la racine ; « behaviour » est ignoré
+        // par la validation H5P de la plateforme. Reprendre aussi les anciens JSON.
+        content.randomQuestions = content.randomQuestions ?? content.behaviour?.randomQuestions ?? false;
 
         const librariesSet = new Set();
         const dependencies = [];
 
         // Traitement des questions (parallélisé car processChild est async)
         if (content.questions && Array.isArray(content.questions)) {
-            content.questions = await Promise.all(content.questions.map(async q => {
+            content.questions = await Promise.all(content.questions.map(async originalQuestion => {
+                const q = { ...originalQuestion };
                 // Génération UUID si absent
                 if (!q.subContentId) {
                     q.subContentId = generateUUID();

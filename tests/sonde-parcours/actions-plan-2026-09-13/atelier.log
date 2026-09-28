@@ -1,0 +1,198 @@
+
+── La file, en série ───────────────────────────────────────
+  ✓ les 3 cartes du plan sont fabriquées
+  ✓ AUCUN recouvrement entre deux appels au modèle
+  ✓ l’ordre du plan est respecté
+  ✓ chaque prompt est complet (pas un gabarit vide)
+
+── Le réparateur, jamais contourné ─────────────────────────
+  ✓ le modèle n’avait pas posé overallFeedback — le healer l’a fait
+  ✓ le JSON en bloc markdown, virgule en trop comprise, est relu
+  ✓ le titre du plan prime sur celui du modèle
+  ✓ reparer() pose overallFeedback ET behaviour sur un H5P
+
+── Le socle commun ─────────────────────────────────────────
+  ✓ les notions pivots y sont mot pour mot
+  ✓ la 1ʳᵉ carte est annoncée comme première, sans acquis supposé
+  ✓ la 3ᵉ carte connaît les deux activités qui la précèdent
+  ✓ elle ne connaît PAS ce qui vient après elle
+  ✓ la consigne « réinvestis, ne réintroduis pas » est posée
+  ✓ le prompt d’une carte porte le cadre du parcours
+  ✓ il porte aussi la structure JSON attendue par le processeur
+  ✓ il annonce le palier de la carte
+  ✓ le nombre d’éléments suit la durée, borné par le palier
+
+── Un échec n’arrête pas la file ───────────────────────────
+  ✓ la carte en panne est marquée en échec
+  ✓ la file a continué APRÈS l’échec
+  ✓ deux cartes sur trois sont tout de même prêtes
+  ✓ la reprise à l’unité rattrape la carte en panne
+
+── Le scénario, aller et retour ────────────────────────────
+  ✓ le titre et le cadrage reviennent
+  ✓ les notions pivots reviennent
+  ✓ les trois cartes reviennent avec leur module
+  ✓ LES CONTENUS GÉNÉRÉS reviennent — rouvrir ne coûte aucune génération
+  ✓ un fichier étranger est refusé, avec un motif traduisible
+  ✓ le réglage de Carte de progression revient avec son thème
+  ✓ un thème disparu du catalogue retombe sur le thème par défaut à la relecture
+  ✓ le réglage d’ouverture progressive revient lui aussi
+
+── Les écrans, dans le DOM réel ────────────────────────────
+  ✓ l’écran de fabrication liste toutes les activités du plan
+  ✓ la carte déjà remplie est montrée prête, les autres en attente
+  ✓ la jauge d’avancement est une vraie barre de progression accessible
+  ✓ l’action primaire propose de reprendre la fabrication
+  ✓ la note dit ce qu’il reste
+  ✓ aucune clé de traduction brute à l’écran
+  ✓ l’écran du plan propose la Carte de progression, décochée par défaut
+  ✓ sa galerie de vignettes reste cachée tant que la case ne l’est pas
+  ✓ elle propose les 30 thèmes du catalogue, sur « paysage » par défaut, une vignette embarquée chacun
+  ✓ les noms des thèmes commencent par une majuscule, et la galerie est un groupe radio à un seul arrêt
+  ✓ cocher la case montre la galerie, et cliquer une vignette change le thème du plan
+  ✓ sur une plateforme sans le greffon, le bloc n’existe pas du tout
+  ✓ l’écran du plan propose l’ouverture progressive, décochée par défaut
+  ✓ cocher la case se retrouve dans le plan
+
+── Le glisser-déposer, en surcouche des flèches ────────────
+  ✓ la vignette est une poignée, avec son intitulé traduit
+  ✓ les quatre boutons de la carte sont TOUJOURS là — jamais à leur place
+  ✓ la poignée reste hors tabulation : les flèches sont le chemin accessible
+  ✓ glisser une carte au-dessus d’une autre les réordonne dans le plan
+  ✓ glisser une carte dans une AUTRE étape l’y déplace vraiment
+  ✓ déplacer une carte VERS L’AVANT tient compte du décalage du splice
+  ✓ reposer une carte sur elle-même ne change rien et ne marque RIEN
+  ✓ le miroir affiche les CINQ familles, en bas de l’écran du plan
+  ✓ ses libellés sont traduits, pas des clés brutes
+  ✓ les familles absentes sont dites EN TOUTES LETTRES, pas seulement pâlies
+  ✓ sur une seule étape la case se ferme, et la raison est ÉCRITE
+  ✓ l’écran de livraison porte le bouton de téléchargement
+  ✓ il porte la marche à suivre en trois temps
+  ✓ il annonce les activités manquantes
+  ✓ il propose DEUX documents papier : la fiche et le détail
+  ✓ chacun dans les trois formats, sans en privilégier un
+  ✓ et leurs libellés distinguent bien le PLAN du CONTENU
+  ✓ l’action primaire y devient « Terminer »
+
+── La relecture didactique, à l’écran ──────────────────────
+  ✓ le bloc de relecture est présent sur l’écran du plan
+  ✓ il annonce un décompte, pas une clé brute
+  ✓ il propose de voir les six repères
+  ✓ une trame ne réclame QUE les objectifs, qui sont à l’enseignant
+  ✓ sa structure, elle, est irréprochable : aucune activité marquée
+  ✓ sur elea, aucune trame ne se replie en silence sur un autre module
+  ✓ sur magistere, aucune trame ne se replie en silence sur un autre module
+  ✓ sur moodle, aucune trame ne se replie en silence sur un autre module
+  ✓ les 17 trames du dépôt tiennent la relecture sur leur STRUCTURE
+  ✓ vider un objectif d’étape allume la relecture SUR-LE-CHAMP
+  ✓ et surligne l’étape en cause
+  ✓ déplier montre les SIX repères, ceux qui passent compris
+
+── Le point de reprise ─────────────────────────────────────
+  ✓ un plan en cours est retenu entre deux ouvertures
+  ✓ le segment « Un parcours » du commutateur porte son point de reprise
+  ✓ le commutateur est sous le formulaire commun, avec ses deux segments
+  ✓ et ni pastille flottante ni ancien bouton ne subsistent
+  ✓ rouvrir l’atelier ramène sur le PLAN, pas sur le cadrage
+
+── L’atelier dans la page, par de vrais clics (D39) ────────
+  ✓ le sélecteur ouvre l’atelier DANS la page, sous le formulaire et le choix du résultat
+  ✓ le formulaire et ses onglets Rapide/Avancé restent visibles
+  ✓ les tuiles et la barre de filtres s’effacent VRAIMENT (display, pas seulement `hidden`)
+  ✓ l’atelier a la largeur du formulaire, ni plus ni moins
+  ✓ l’en-tête du site ne change pas d’un octet (hors l’état du bouton d’entrée)
+  ✓ aucune coquille plein écran, aucun verrou de défilement
+  ✓ ouvert, le segment « Un parcours » est allumé, l’autre éteint : un groupe radio nommé, à un seul arrêt
+  ✓ la tête de l’atelier n’a ni cartouche ni lien de sortie : le nom et le fil, rien d’autre
+  ✓ ouvrir un nouveau parcours garde le focus sur le choix du mode
+  ✓ sujet vide : ouvrir le cadrage ne fait pas défiler la page
+  ✓ sujet vide : cadrage ouvert, action primaire inactive
+  ✓ le contexte n’est plus recopié : le formulaire est juste au-dessus
+  ✓ deux blocs de l’écran sont séparés d’au moins 30 px d’air
+  ✓ taper le sujet dans le formulaire débloque l’action primaire sans rien rouvrir
+  ✓ fr : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ fr/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ fr/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ fr/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ en : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ en/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ en/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ en/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ es : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ es/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ es/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ es/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ de : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ de/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ de/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ de/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ it : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ it/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ it/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ it/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ nl : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ nl/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ nl/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ nl/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ pt : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ pt/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ pt/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ pt/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ ar : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ ar/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ ar/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ ar/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ zh : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ zh/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ zh/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ zh/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ jp : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ jp/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ jp/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ jp/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ el : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ el/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ el/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ el/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ br : changer la langue conserve le vocabulaire de la plateforme choisie
+  ✓ br/elea : libellés adaptés, sélection, focus et sujet conservés
+  ✓ br/magistere : libellés adaptés, sélection, focus et sujet conservés
+  ✓ br/moodle : libellés adaptés, sélection, focus et sujet conservés
+  ✓ rouvrir le cadrage conserve Moodle et le vocabulaire breton correspondant
+  ✓ Magistère s’adresse bien aux stagiaires en français
+  ✓ Moodle s’adresse bien aux étudiants en français
+  ✓ « Structure libre » donne des étapes vides, deux en courte, quatre en longue
+  ✓ avec « Structure libre » choisie, « Partir du modèle » est actif
+  ✓ « Partir du modèle » ouvre alors le plan : des étapes vides, l’action qui attend une activité
+  ✓ sur le plan, l’action primaire dit COMBIEN d’activités le clic va lancer
+  ✓ les titres, objectifs et consignes du plan commencent par une majuscule
+  ✓ la durée s’écrit en heures et minutes : 200 min → « 3 h 20 », 125 → « 2 h 05 », jamais en dixièmes
+  ✓ la tuile « durée totale » porte une infobulle focalisable qui explique l’estimation
+  ✓ sur toutes les cartes, le menu de type a la même largeur et la durée tombe en colonne
+  ✓ la relecture écrit « 2 h 30 » et explique l’estimation au survol
+  ✓ dans le fil, le cadrage déjà vu est un bouton, le plan est courant, la suite est inerte
+  ✓ cliquer « 1 » ramène au cadrage, et « 2 » devient cliquable pour y revenir
+  ✓ et « 2 » ramène bien sur le plan
+  ✓ « Fabriquer » ouvre la fabrication ET la lance, sans second bouton
+  ✓ pendant la fabrication, le fil est gelé : aucune étape n’est cliquable
+  ✓ les six activités se fabriquent l’une après l’autre, sous les yeux, jusqu’au bout
+  ✓ la fabrication finie, le fil se rouvre : cadrage et plan redeviennent cliquables
+  ✓ l’éditeur d’activité est un dialogue qui verrouille la page derrière lui
+  ✓ et la rend en se refermant
+  ✓ revenir sur l’écran de fabrication ne relance rien de lui-même
+  ✓ le formulaire retrouve exactement son style habituel en mode activité
+  ✓ « Une activité » retire l’atelier et rend les tuiles et les filtres
+  ✓ le segment « Une activité » s’allume, « Un parcours » s’éteint et porte le point de reprise, le focus suit
+  ✓ et la page remonte en haut, là où sont les tuiles
+  ✓ « Un parcours » ouvre, recliquer dessus ne referme pas, « Une activité » referme
+  ✓ les flèches du clavier passent d’un segment à l’autre et choisissent
+  ✓ aucune erreur JS de page
+
+── Le libellé de l’entrée, avant l’arrivée du dictionnaire ──
+  ✓ avant le dictionnaire, les segments disent « Une activité » et « Un parcours » — jamais la clé brute
+  ✓ et aucun attribut ne porte une clé brute en attendant
+  ✓ le dictionnaire arrivé, libellé, titre et nom du groupe sont traduits
+
+========================================
+parcours — atelier de fabrication : 172 PASS / 0 FAIL
+========================================

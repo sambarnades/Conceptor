@@ -494,8 +494,4 @@ body.version-modal-open {
     transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-/* Applique le même effet grisé sur les étiquettes de filtre quand les champs sont vides */
-.tiles-disabled .filter-chip {
-    filter: grayscale(40%);
-    opacity: 0.9;
-}
+/* Formulaire vide : les filtres restent disponibles et gardent leurs couleurs. */

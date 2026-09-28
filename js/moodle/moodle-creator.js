@@ -219,10 +219,14 @@ export async function createMbz(files) {
     }
     const dirList = Array.from(dirSet).sort();
     const fileList = allPaths.sort();
-    // 2. Pré-convertir tous les fichiers en Uint8Array (une seule fois)
+    // 2. Pré-convertir tous les fichiers en Uint8Array (une seule fois).
+    //    Un contenu DÉJÀ binaire est repris tel quel : le pool de fichiers d'un
+    //    .mbz de cours (`files/<hash>`) porte les octets bruts d'un `.h5p`, et
+    //    les repasser par `strToU8` les corromprait silencieusement.
     const buffers = new Map();
     for (const path of fileList) {
-        buffers.set(path, fflate.strToU8(files[path]));
+        const contenu = files[path];
+        buffers.set(path, contenu instanceof Uint8Array ? contenu : fflate.strToU8(contenu));
     }
     // 3. Générer le contenu de l'index
     let archiveIndexContent = `Moodle archive file index. Count: ${dirList.length + fileList.length}\n`;
@@ -1419,7 +1423,7 @@ export async function handleTestXmlCreation(jsonInput) {
         let jsonData = JSON.parse(cleanJsonInput(jsonInput));
         const _debugRawJson = DEBUG ? structuredClone(jsonData) : null;
         // Pipeline LaTeX : réparation des commandes cassées + auto-wrap + conversion délimiteurs
-        jsonData = healLatexForMoodle(jsonData);
+        jsonData = canonicalizeTestModel(healLatexForMoodle(jsonData));
         const _debugHealedJson = DEBUG ? structuredClone(jsonData) : null;
         const originalJsonData = structuredClone(jsonData);
 

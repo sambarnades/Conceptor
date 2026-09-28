@@ -149,6 +149,10 @@
           "alt": "Kael teolioù an oberezhioù hegerz e Caramel."
         },
         {
+          "type": "tip",
+          "text": "Dindan ar furmskrid, **Un obererezh** a ziskouez an teolennoù-mañ ; **Un hent** a zigor an atalier a strollad meur a obererezh en ur gentel klok (gwelet « Krouiñ hag adkregiñ gant un heuliad klok »)."
+        },
+        {
           "type": "h",
           "text": "Div familh vras"
         },
@@ -623,6 +627,106 @@
       ]
     },
     {
+      "id": "parcours",
+      "icon": "grid",
+      "title": "Krouiñ hag adkregiñ gant un heuliad klok",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "E Caramel, **Un hent** a grou ur gentel evit Éléa, Magistère pe Moodle : meur a obererezh, renket e rannoù, en ur restr **.mbz** hepken. Ar furmskrid boas eo ar poent loc’hañ : danvez, publik ha teulioù stag."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-cadrage.webp",
+          "alt": "Ar furmskrid, ar bouton « Un hent » hag an dibaboù : savenn, mod kelenn ha ment."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-trames.webp",
+          "alt": "Dibab ar patrom : pep kartenn a ziskouez he fazennoù, he live hag hec’h obererezhioù."
+        },
+        {
+          "type": "tip",
+          "text": "E lañser Caramelia e tigor **Krouiñ un heuliad** an atalier war-eeun, hep goulenn ouzh an NA. Ma’z eus ur brouilhed, e c’haller e adkav gant **Kenderc’hel gant ma heuliad**. Miret e vez ar maeziennoù hag ar mammennoù a zo dija. Adlenn ar stern hag ar steuñv en atalier a-raok loc’hañ ar c’hrouiñ."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment hag ur patrom. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.",
+            "E **Steuñv**, kemmit an titl, ar pal hollek, ar meizadoù pennañ, ar pazennoù hag an obererezhioù. Dilec’hit an obererezhioù gant ar biroù pe o riklañ o skeudennig. **Kemennoù ha pazenn** a servij da azasaat kemennoù ar c’hrouidigezh. Ar c’huzulioù pedagogel a sikour da adlenn hep rediañ ur patrom. **12 obererezh** d’ar muiañ.",
+            "E kartenn ur **Video etreoberiat**, pegit liamm ar video. Adkavet e vo an treuzskrivadur pa vo krouet an obererezh; gallout a rit ivez e begañ dre zorn. Evit ur **Skeudenn etreoberiat** hag an obererezhioù da gavout ur zonenn pe meur a zonenn, stagit ur skeudenn ouzh ar gartenn: dielfennet e vo a-raok ar c’hrouiñ. Gallout a rit ouzhpennañ ar skoroù-se e-pad ar c’hrouiñ ivez. Un obererezh hep skor a c’hortoz tra ma kendalc’h ar re all. Ar senario a vir skeudennoù ha liammoù an obererezhioù; chom a ra teulioù furmskrid ar bajenn degemer a-gostez. Evit ul **Liamm web**, pegit chomlec’h an danvez er gartenn: an IA a skriv an urzhiad lenn hep digeriñ ar bajenn.",
+            "Kadarnait ar steuñv evit kregiñ gant ar c’hrouiñ. Gallout a rit paouez, adkregiñ gant an obererezhioù a vank pe adkrouiñ un obererezh. Ar prenestrig-prenn **Na grouiñ ket an obererezh-mañ** a vir an danvez evit bezañ skrivet dre zorn : ne vo ket leuniet gant an NA. Ma c’hwit an adkrouiñ, e vo miret an danvez kent. An obererezhioù a vank a vez meneget a-raok an ezporzhiañ.",
+            "Pa vez prest an danvez, **Kemmañ an endalc'had** a zigor ar skridaozer boas ha **Alberz** al lenner. **Adlenn an heuliad** a servij da adlenn anezho en urzh gant **Kent** ha **War-lerc’h**. Enrollit ar c’hemmoù evit o adkavout er steuñv hag en ezporzhiadurioù. Kemmañ ur gemenn er steuñv ne adskriv ket an danvez a zo dija.",
+            "E **Kas**, pellgargit ar **.mbz** hag implijit enporzhiadur pe adsevel ar gentel war ho savenn. Ne vez ket lakaet ar restr gentel-mañ en un obererezh H5P. An heuliad a zeu ivez e takad ar c’hemennoù : **Gwelout** a zigor **Gwel an heuliad**, gant an degemer, pep pazenn hag he obererezhioù, da adwelout ha da gemmañ a-raok pellgargañ en-dro. Mirit ivez ar **.json** evit distreiñ da Caramel. Fichenn an heuliad ha munudoù an obererezhioù a c’hall bezañ ezporzhiet e **DOCX, ODT pe PDF**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-plan.webp",
+          "alt": "Ar steuñv adlennet a-raok pep genel : pal, pazennoù, obererezhioù, padelezhioù hag adlenn ar steuñv."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-fabrication.webp",
+          "alt": "Ar fardañ : an obererezhioù a vez ganet an eil goude egile ; pep hini a c’haller rakwelet, kemmañ pe c’henel en-dro."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-livraison.webp",
+          "alt": "An digas : ar gentel .mbz hag ar pazennoù enporzhiañ, an teulioù da voullañ hag ar senario .json."
+        },
+        {
+          "type": "tip",
+          "text": "**Ezporzhiañ ar senario (.json)** a vir ar steuñv hag an danvezioù prest en ur restr **.json**. Ar bouton **Personelaat ar steuñv**, e-kichen **Aozañ ar steuñv**, a zigor ar prenestr hevelep ha evit un obererezh : eilit ar prompt en NA a garit, ha pegit he respont. **Adkemer ur senario** a zo er prenestr-se ; ar restr **.json** a vez pellgarget d’ar mare da reiñ, e-kichen ar **.mbz**. Er ivinell-mañ hepken e chom ar brouilhed : ezporzhiit ar senario a-raok serriñ. N’emañ ket an danvez, ar publik nag an teulioù stag er senario ; leunit anezho en-dro a-raok krouiñ danvezioù nevez."
+        },
+        {
+          "type": "tip",
+          "text": "War Éléa, digorit **Arventennoù ar c’hentel**, gweredekait ar gartenn araokaat hag implijit an deolenn **+ Ouzhpennañ ma skeudenn** evit dibab ho foñs deoc’h. Gallout a rit cheñch pe tennañ ar skeudenn ha distreiñ d’an temoù kinniget. Miret eo ar foñs er senario **.json** hag enframmet eo er parcours **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG pe TIFF · 12 Mo d’ar muiañ. Amdreiñ emgefre, hep troc’hañ."
+        },
+        {
+          "type": "warn",
+          "text": "Kartenn ar c’henderc’hel zo evit Éléa hepken. Diret eo ar gartenn hag an digoradur tamm-ha-tamm, ha ret eo c’hoazh o gwiriañ en implij gwirion war ar savenn. Patrom an diforc’hañ ne grou ket skourroù emgefre hervez an notenn. War ar savenn e vez graet al labour a-stroll."
+        },
+        {
+          "type": "h",
+          "text": "Modulioù ar savenn"
+        },
+        {
+          "type": "p",
+          "text": "Kinnig a ra ar steuñv ivez modulioù hoc’h Éléa, Magistère pe Moodle, renket e lañser pep obererezh dindan **Modulioù ar savenn**. An IA a skriv ar pezh a vez miret gant ar savenn pa vez enporzhiet ar gentel:"
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-mosaique.webp",
+          "alt": "Mozaikenn ar seurtoù : an obererezhioù ganet gant Caramel, ha goude modulennoù ar savenn."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Forom**, **Sontadeg**, **Goulennaoueg**, **Enklask (Feedback)**: lakaat da eskemm, dastum alioù, un diagnostik pe ur bilañs.",
+            "**Kentel**: pajennoù da lenn, ha lod anezho a echu gant ur goulenn ha ne c’haller mont pelloc’h nemet gant ar respont reizh. Ar **pakad danvez IMS** — pajennoù da lenn gant o zaolenn, skrivet penn-da-benn gant Caramel — a zibaber er mozaik ; ar steuñv n’her kinnig ket.",
+            "**Atalier**: sevel ul labour, ha goude priziañ labour ar genskolidi gant ur gael dezverkoù.",
+            "**Taolenn**, **Wiki**, **Teul kenlabour**, **Geriadurig da sevel** ha **Diaz roadennoù**: skrivañ ha sevel a-stroll; goullo e erruont, gant o urzhiad.",
+            "**Klas virtuel**, **Dibab ur strollad**, **Rannañ restroù**, **Liamm web**: en em gavout war-eeun, sevel skipailhoù, kas restroù, sellet ouzh un danvez enlinenn.",
+            "**Hervez ar savenn**: Etherpad ha Koumoulenn gerioù war Magistère, Feedback war Éléa ha Moodle. Capytale, GeoGebra, ur pakad SCORM pe ur restr a vez ouzhpennet c’hoazh gant an dorn goude an enporzhiañ en Éléa, Magistère pe Moodle."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Pa vez ezhomm eus un arventenn war ar savenn evit ur modul (pazennoù an atalier, eur ar c’hlas virtuel, strolladoù), e verk Caramel anezhi en un notenn **Da ober a-raok digeriñ ar gentel**, kuzhet ouzh ar skolidi, e penn ar gentel enporzhiet. Dilamit anezhi pa vo graet an arventennoù-se."
+        },
+        {
+          "type": "p",
+          "text": "Evit mont pelloc’h : [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) a sikour da soñjal en obererezhioù deskiñ. Seizh familh Caramel, en o zouez **Kaozeal** ha **Kenlabourat**, zo reperezhioù eeunaet liammet ouzh an ostilhoù, n’int ket c’hwec’h doare ABC nag ur priziadur eus ho kelenn."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-miroir.webp",
+          "alt": "Ar pezh a labour an hent-mañ : ar seizh familh, hag ar re a vank."
+        }
+      ]
+    },
+    {
       "id": "integrate",
       "icon": "upload",
       "title": "Enframmañ e Éléa / Magistère / Moodle",
@@ -820,6 +924,10 @@
         {
           "type": "plain",
           "text": "Evit respont reizh e ziazez Caramelia war un **diaz teulioù** (ur « RAG ») : e-lec'h ijinañ e **tenn tennadoù fiziadus** eus teuliadur Caramel hag e adkemer libelloù rik ar boutonoù a welit war ar skramm. (Ar **RAG** eo ivez ar pezh a bermet eoriañ ar c'henel war ar programmoù ofisiel — sellit ouzh ar bazenn « Deskrivañ hoc'h ezhomm ».)"
+        },
+        {
+          "type": "tip",
+          "text": "E lañser Caramelia e tigor **Krouiñ un heuliad** an atalier war-eeun, hep goulenn ouzh an NA. Ma’z eus ur brouilhed, e c’haller e adkav gant **Kenderc’hel gant ma heuliad**. Miret e vez ar maeziennoù hag ar mammennoù a zo dija. Adlenn ar stern hag ar steuñv en atalier a-raok loc’hañ ar c’hrouiñ."
         }
       ]
     },

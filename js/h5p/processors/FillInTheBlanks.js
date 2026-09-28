@@ -11,7 +11,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
-import { buildMediaStructure } from '../image-manager.js';
+import { prepareQuestionMedia } from '../question-media.js';
 
 /**
  * Libellés d'interface de H5P.Blanks.
@@ -42,17 +42,13 @@ function libelles() {
     };
 }
 
-export default {
+const FillInTheBlanks = {
     process: (jsonObj) => {
-        // Cas spécifique rétrocompatibilité: ancien format avec `textBlocks`
-        if (jsonObj.textBlocks) {
-            return {
-                questions: jsonObj.textBlocks
-            };
-        }
+        jsonObj = {...jsonObj, questions:jsonObj.questions || jsonObj.textBlocks || []};
+        if (!Array.isArray(jsonObj.questions) || !jsonObj.questions.length) throw Error('Blanks : un paragraphe à compléter est requis.');
 
         // Cas standard — on nettoie le taskDescription si le LLM y a mis des marqueurs de trous *mot*
-        let taskDesc = jsonObj.taskDescription || "";
+        let taskDesc = jsonObj.taskDescription ?? jsonObj.text ?? "";
         const blanksPattern = /\*[^*]+\*/g;
         const blanksMatches = taskDesc.match(blanksPattern);
         if (blanksMatches && blanksMatches.length > 0) {
@@ -61,7 +57,7 @@ export default {
         }
 
         return {
-            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
+            media: prepareQuestionMedia(jsonObj),
             text: formatTextToHtml(taskDesc),
             questions: (jsonObj.questions || []).map(q => {
                 // H5P.Blanks attend des strings avec marqueurs *mot* — normalise si l'IA a généré des objets
@@ -69,27 +65,28 @@ export default {
                 if (typeof q === 'object' && q !== null) return q.text || q.question || '';
                 return String(q);
             }),
-            showSolutions: translations.h5p_show_solution || "Afficher les solutions",
-            tryAgain: translations.h5p_try_again || "Recommencer",
-            checkAnswer: translations.h5p_check_answer || "Vérifier",
-            notFilledOut: translations.h5p_blanks_not_filled_out || "Veuillez remplir tous les champs.",
-            answerIsCorrect: translations.h5p_blanks_answer_is_correct || "&#039;:ans&#039; est correct",
-            answerIsWrong: translations.h5p_blanks_answer_is_wrong || "&#039;:ans&#039; est incorrect",
-            answeredCorrectly: translations.h5p_blanks_answered_correctly || "Réponse correcte",
-            answeredIncorrectly: translations.h5p_blanks_answered_incorrectly || "Réponse incorrecte",
-            solutionLabel: translations.h5p_blanks_solution_label || "Réponse correcte :",
-            inputLabel: translations.h5p_blanks_input_label || "Champ @num sur @total",
-            inputHasTipLabel: translations.h5p_blanks_input_has_tip_label || "Indice disponible",
-            tipLabel: translations.h5p_tip_label || "Indice",
-            scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
-            submitAnswer: translations.h5p_submit_answer || "Valider",
+            showSolutions: jsonObj.showSolutions ?? (translations.h5p_show_solution || "Afficher les solutions"),
+            tryAgain: jsonObj.tryAgain ?? (translations.h5p_try_again || "Recommencer"),
+            checkAnswer: jsonObj.checkAnswer ?? (translations.h5p_check_answer || "Vérifier"),
+            notFilledOut: jsonObj.notFilledOut ?? (translations.h5p_blanks_not_filled_out || "Veuillez remplir tous les champs."),
+            answerIsCorrect: jsonObj.answerIsCorrect ?? (translations.h5p_blanks_answer_is_correct || "&#039;:ans&#039; est correct"),
+            answerIsWrong: jsonObj.answerIsWrong ?? (translations.h5p_blanks_answer_is_wrong || "&#039;:ans&#039; est incorrect"),
+            answeredCorrectly: jsonObj.answeredCorrectly ?? (translations.h5p_blanks_answered_correctly || "Réponse correcte"),
+            answeredIncorrectly: jsonObj.answeredIncorrectly ?? (translations.h5p_blanks_answered_incorrectly || "Réponse incorrecte"),
+            solutionLabel: jsonObj.solutionLabel ?? (translations.h5p_blanks_solution_label || "Réponse correcte :"),
+            inputLabel: jsonObj.inputLabel ?? (translations.h5p_blanks_input_label || "Champ @num sur @total"),
+            inputHasTipLabel: jsonObj.inputHasTipLabel ?? (translations.h5p_blanks_input_has_tip_label || "Indice disponible"),
+            tipLabel: jsonObj.tipLabel ?? (translations.h5p_tip_label || "Indice"),
+            scoreBarLabel: jsonObj.scoreBarLabel ?? (translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points"),
+            submitAnswer: jsonObj.submitAnswer ?? (translations.h5p_submit_answer || "Valider"),
             behaviour: {
                 enableSolutionsButton: true,
-                autoCheck: true,
-                caseSensitive: false,
+                autoCheck: false,
+                caseSensitive: true,
                 showSolutionsRequiresInput: true,
                 separateLines: false,
                 enableRetry: true,
+                allowRetryIfCorrect: false,
                 confirmCheckDialog: false,
                 confirmRetryDialog: false,
                 acceptSpellingErrors: false,
@@ -100,36 +97,30 @@ export default {
                 header: translations.h5p_finish_header || "Terminer ?",
                 body: translations.h5p_finish_body || "Êtes-vous sûr de vouloir terminer ?",
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
-                confirmLabel: translations.h5p_finish_label || "Terminer"
+                confirmLabel: translations.h5p_finish_label || "Terminer",
+                ...(jsonObj.confirmCheck || {})
             },
             confirmRetry: {
                 header: translations.h5p_retry_header || "Recommencer ?",
                 body: translations.h5p_retry_body || "Êtes-vous sûr de vouloir recommencer ?",
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
-                confirmLabel: translations.h5p_retry_confirm_label || "Confirmer"
+                confirmLabel: translations.h5p_retry_confirm_label || "Confirmer",
+                ...(jsonObj.confirmRetry || {})
             },
             overallFeedback: jsonObj.overallFeedback || [{
                 from: 0,
                 to: 100,
                 feedback: translations.h5p_blanks_feedback || "Vous avez @score sur @total blancs corrects."
             }],
-            ...libelles()
+            ...Object.fromEntries(Object.entries(libelles()).map(([key, value]) => [key,jsonObj[key] ?? value]))
         };
     },
 
     // Méthode pour adapter une question FillInTheBlanks dans un QuizSet
     transformForQuizSet: (question) => {
-        if (question.params.taskDescription) {
-            question.params.text = formatTextToHtml(question.params.taskDescription);
-        }
-        Object.assign(question.params, libelles());
-        question.params.behaviour = {
-            enableRetry: true,
-            enableSolutionsButton: true,
-            caseSensitive: false,
-            autoCheck: false,
-            ...question.params.behaviour
-        };
+        question.params = {...question.params, ...FillInTheBlanks.process(question.params)};
+        delete question.params.taskDescription;
         return question;
     }
 };
+export default FillInTheBlanks;

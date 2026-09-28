@@ -62,13 +62,26 @@ import { escapeHtml } from '../core/escape.js';
 export { escapeHtml };
 
 /**
- * Met en forme un texte de contenu : échappe le HTML, puis convertit la SEULE
- * syntaxe autorisée `**gras**` en <strong>. Rien d'autre n'est interprété.
+ * Met en forme un texte de contenu : échappe le HTML, puis convertit le gras et
+ * les liens Markdown http(s). Toute autre syntaxe reste du texte.
  * @param {string} text
  * @returns {string} HTML sûr
  */
 export function formatInline(text) {
-  return escapeHtml(text).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  if (text === null || text === undefined || text === '') return '';
+  const liens = [];
+  const avecJetons = String(text).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/gi, (_, label, href) => {
+    const url = safeHref(href);
+    if (!url) return _;
+    liens.push({ label, url });
+    return `\u0000LIEN${liens.length - 1}\u0000`;
+  });
+  return escapeHtml(avecJetons)
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\u0000LIEN(\d+)\u0000/g, (_, index) => {
+      const lien = liens[Number(index)];
+      return `<a href="${escapeHtml(lien.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(lien.label)}</a>`;
+    });
 }
 
 /**

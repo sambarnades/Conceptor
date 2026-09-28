@@ -2,11 +2,13 @@
 
 > Guide compact. Les playbooks détaillés sont des **skills** dans `.claude/skills/` (chargés à la demande). Les références approfondies sont dans `docs/` (PRD, guides).
 
+> **Reprise du chantier H5P / parcours / Sucrerie** : lire d’abord [SUIVI_H5P_PARCOURS.md](docs/SUIVI_H5P_PARCOURS.md). Il porte les cases de clôture, les limites et les prochains lots. L’audit exhaustif des capacités H5P et la collection parcours unifiée ne sont pas terminés ; les anciens rapports décrivent des lots plus restreints.
+
 ## Identité
 
-**Caramel** v6.3.4 — webapp 100% client-side qui génère des activités H5P (`.h5p`) et Moodle/Éléa (`.mbz`) via IA pour profs francophones. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
+**Caramel** v7.0.0 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
 
-Lancement local : `python3 -m http.server 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL.
+Lancement local : `python3 tests/serveur-statique.py 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL. (Pas `python3 -m http.server` : sa file de 5 connexions fait refuser des modules par macOS au premier chargement, page inerte au hasard ; tous les bancs utilisent ce serveur.)
 
 ## Pipeline (mémoriser)
 
@@ -33,12 +35,27 @@ js/renderers/    chart-renderer, math-renderer, image-utils, crossword-grid-*, f
 js/export/       document-exporter, document-formatter, sanitizer, latex-parser, math-catalog (177 symboles), latex-to-omml, latex-to-mathml
 js/editor/       index, editor-core, content-detector, field-renderers, array-manager, validators, feedback-editor, json-utils, richtext-editor, formula-assistant
 js/caramelia/    chatbot flottant (13 modules) — voir ARCHITECTURE.md local
+js/parcours/     atelier de parcours : intention → plan → N générations → UN .mbz de COURS
+                 (39 modules ; un commutateur « Une activité | Un parcours » sous le
+                 formulaire commun — D63 — met l'atelier à la place des tuiles, sous le
+                 formulaire de l'accueil qui reste en place — D39).
+                 Les modules de la PLATEFORME (forum, questionnaire, leçon, atelier, wiki…)
+                 vivent dans `modules-parcours.js` + `modules-natifs.js`, RELEVÉS sur les
+                 exports Éléa/Magistère de `tests/fixtures/moodle-reference/sept-2026/` (D70) ;
+                 un module sans achèvement ne doit jamais entrer dans l'ouverture progressive (D71).
+                 **Le parcours ne modifie JAMAIS les prompts des activités individuelles** : il
+                 réutilise leur gabarit et lui AJOUTE son cadre ; ce qui lui est propre (retours
+                 d'exemple impersonnels, `retours-impersonnels.js`) se substitue dans SON prompt (D82).
+                 Branche `emmanuel` du dépôt `bas`.
+                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D84 avec leur
+                 raison, pièges, et le journal des allers-retours réels sur plateforme.
+                 Ne rien y rouvrir sans lire ce fichier ; y écrire toute décision nouvelle.
 js/locales/      12 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el, br (~2873 clés/fichier)
 js/vendor/       libs externes versionnées (ne pas régénérer)
 assets/data/     prompts/ (templates IA), examples/ (échantillons JSON)
 docs/            PRD, guides, audits, plans (références approfondies)
 scripts/         outils Node (.mjs) : verify-all-locales, update-locale-latex, translate-cp-*
-tests/           `test-all.html` = 38 suites navigateur (pilote headless : `node tests/run_browser_suite.mjs`)
+tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node tests/run_browser_suite.mjs`)
                  `roundtrip/harness.mjs` = banc Node (T1 déterminisme, T2 idempotence, T3 verbatim, T4 snapshot, T5 Moodle)
                  `run_*.mjs` = contrôles Node ciblés (oracles Playwright, hygiène, mentions légales…)
                  `run_feedback_semantics.mjs` = retours par réponse (À LANCER À LA MAIN, hors CI) :
@@ -46,6 +63,21 @@ tests/           `test-all.html` = 38 suites navigateur (pilote headless : `node
                  posé à la racine d'une réponse au lieu de `tipsAndFeedback` disparaît à l'import Éléa.
                  Embarque sa propre contre-épreuve (cas synthétique) : il vire au ROUGE si on désarme
                  `replierRetoursRacine()` dans `processors/MultipleChoice.js`.
+                 `run_parcours_*.mjs` = les bancs de l'atelier de parcours (le `.mbz` de
+                 COURS, la file de fabrication, la relecture didactique, la fiche de séquence,
+                 le miroir des types, les modules natifs comparés au relevé… — `run_parcours.mjs`
+                 les enchaîne) ; `scripts/generer-parcours-sonde.mjs` fabrique le `.mbz`
+                 à importer pour de vrai — **aucun module de parcours n'est annoncé avant son
+                 aller-retour sur plateforme** (D24 du PRD).
+                 `scripts/generer-parcours-reel.mjs` fabrique des parcours RÉELS (vrai modèle,
+                 vraie file `creerFile`) gardés dans `tests/fixtures/parcours-reels/` ;
+                 `run_parcours_reels.mjs` les rejoue sans modèle et LIT le cours comme la
+                 plateforme l'affichera (texte creux, « … », jargon de prompt, `**`, tutoiement
+                 d'adultes), avec sa contre-épreuve à défauts injectés (D80).
+                 `scripts/captures-interface.mjs` refait les captures d'écran du tutoriel et du
+                 wiki (parcours réel du banc, réseau coupé) ; `scripts/aide-parcours.mjs` écrit ce
+                 que Caramelia sait des parcours (trames, modules, conseils) dans son aide
+                 embarquée et dans les fiches du RAG — `--verifier` en garde-fou (D83).
                  `qa-manuel/` = scénarios Playwright qui CLIQUENT dans le DOM réel (là où la suite
                  mute par `__testing`) + `contre-epreuves.sh`, qui désarme chaque correctif et exige
                  le ROUGE. Serveur sur :8010. Voir `tests/qa-manuel/README.md`.
@@ -74,10 +106,20 @@ tests/           `test-all.html` = 38 suites navigateur (pilote headless : `node
    Appels **isolés** obligatoires : trois requêtes rapprochées saturent le backend PARTAGÉ et fabriquent des fallbacks en cascade qu'on prend pour un défaut du modèle. Deux signatures à ne pas confondre — un échec en **quelques secondes** = modèle en carafe ; un échec à **59 s** = mur du temps (un appel LLM = 59 s max), auquel cas soit on découpe l'activité (`chunking`, skill `caramel-batch-generation`), soit on lui met un modèle plus rapide.
    Épisode de référence (2026-08-26/27, Vidéo interactive) : `mistral-small-4-119b` partait en fallback 6/6 y compris sur un prompt de 90 caractères, pendant que `gpt-oss-120b` et `qwen-3.6-35b-instruct` répondaient en 4-5 s. Panne passagère du modèle — **rien à corriger dans Caramel**. L'annuaire https://bidouiage.forge.apps.education.fr/outils/annuaire-modeles-ia/ liste le catalogue ILaaS (id, contexte) mais **n'appelle pas les modèles** : il ne voit pas une indisponibilité.
 6. **API keys jamais en frontend** : tout passe par `n8n.incubateur.education.gouv.fr/webhook/llmdev2`.
-7. **41 fichiers sont byte-identiques avec Sucrerie — pas seulement `js/editor/`.** La liste faisant autorité est **`scripts/lib/shared-files.mjs` côté Sucrerie** ; ne jamais s'en remettre à une énumération de mémoire. Elle couvre quatre familles :
+7. **42 fichiers sont byte-identiques avec Sucrerie — pas seulement `js/editor/`.** La liste faisant autorité est **`scripts/lib/shared-files.mjs` côté Sucrerie** ; ne jamais s'en remettre à une énumération de mémoire. Elle couvre cinq familles :
    - **éditeur** : 16 fichiers JS (tous sauf `index.js`) + `css/components/{json-editor,richtext-editor,cloze-editor}.css` ;
    - **export documentaire** : `document-exporter.js`, `document-formatter.js`, `course-formatter.js`, `sanitizer.js`, `latex-parser.js`, `latex-to-mathml.js`, `latex-to-omml.js`, `math-catalog.js` ;
    - **thèmes de Page** : `page-themes.js` + les 4 thèmes + `page-themes/shared.js` ;
+   - **assemblage de cours** : `js/moodle/mbz-course-builder.js` — NÉ côté Sucrerie
+     (export « Parcours .mbz » d'une collection), **porté ici le 4 sept. 2026** pour
+     l'atelier de parcours ; Caramel en est désormais la source de vérité. Deux
+     particularités de contrat, dictées par le partage : il n'importe RIEN (l'écriture
+     tar+gzip lui est passée par `ecrireArchive`, OBLIGATOIRE — `createMbz` ici,
+     `buildMbz` là-bas), et l'identité que le backup déclare (`wwwroot`, hash de site,
+     catégorie de cours, hostname des `stamp` de questions, ligne de journal) passe par
+     `IDENTITE_DEFAUT`, dont les valeurs par défaut sont celles de Sucrerie — Caramel
+     fournit `IDENTITE_CARAMEL` (`js/parcours/parcours-builder.js`). Un appel sans
+     `identite` produit exactement le fichier d'avant le portage ;
    - **rendu** : `image-utils.js`, `chart-renderer.js`, les 2 générateurs de grille + `renderers/grid-canvas-utils.js` ;
    - plus `js/core/escape.js` (échappement canonique), `js/core/language-codes.js` (codes de langue) et `js/ui/sync-video-player.js`.
 
@@ -109,6 +151,8 @@ tests/           `test-all.html` = 38 suites navigateur (pilote headless : `node
     (d) **`br` EST le code ISO 639-1** (contrairement à `jp` → `ja`) : locale, `h5p.json:language` et `<html lang>` coïncident. Wordlist LDNOOBW absente → `LANG_ALIAS.br = 'fr'` dans `sucrerie-bridge/services/profanity-filter.js` (repli français plutôt qu'un filtre local inopérant).
     **Point ouvert côté aManDe/Sucrerie** : le dépôt envoie `language: 'br'` et `ui_language: 'br'` (`sucrerie-bridge/ui/panel.js`) — vérifier que le backend accepte la valeur (contrainte SQL / enum) avant d'annoncer le dépôt d'activités en breton.
     Procédure complète pour une 13ᵉ langue : `docs/guide-traduction.md`, section « Ajouter une langue ».
+
+15. **La zone des sources (`#ocr-output`) : écrire = émettre `input`, lire = `lireCorpusSources()` (25-09-2026).** Le bouton « Générer en un clic » envoie le texte du textarea de prompt de la tuile, pas le contexte courant : ce prompt n'est régénéré, et son cache de session (`caramel_prompt_*`) purgé, que sur un événement `input`. Toute écriture programmatique de la zone (`updateRagArea()` de `ocr.js` : dépôt, retrait, import d'URL) doit donc l'émettre — sinon l'IA recevait un prompt SANS section SOURCES, ou celles d'un document retiré (bug prod). La restauration d'un prompt en session est en outre gardée par `signatureContexte()` (mode + champs + corpus). Côté lecture, jamais `innerText` : la zone vit dans les champs du mode Avancé, en `display: none` en mode Rapide, où `innerText` recolle les lignes bout à bout ; passer par `lireCorpusSources()` (`prompt-generator.js`) ou `texteAffiche()` (`core/texte-affiche.js`). Même exigence pour la génération PAR LOTS : le prompt du PLAN porte les SOURCES (`llm-batch.js#blocSources`), faute de quoi les intitulés des N éléments étaient conçus sans le document. Et un PDF garde ses lignes (`hasEOL` de PDF.js, `ocr.js#extractTextFromPdfPage`). Garde-fous : `node tests/qa-manuel/j-sources-document.mjs [--contre-epreuve]` et `node tests/run_sources_prompt_tests.mjs` (CI).
 
 ## Routeur de skills
 
@@ -158,8 +202,10 @@ Pour ne pas oublier l'essentiel quand tu invoques pas le skill :
 
 ## Modèles LLM disponibles (`services/llm.js`)
 
-**Featured (3 visibles UI)** : `qwen-3.6-35b-instruct` (Qwen 3.6, order 1), `mistral-small-4-119b` (Mistral Small 4, order 2, **défaut**), `gpt-oss-120b` (GPT-OSS, order 3).
-**Cachés (visibles en `?debug`)** : `mistral-small-3.2-24b`, `llama-3.3-70b`, `llama-3.1-8b`, `gemma-4-31b`, `mistral-medium-latest`.
+**Featured (3 visibles UI)** : `gemma-4-31b` (Gemma 4, order 1), `qwen-3.8-27b` (Qwen 3.8, order 2), `mistral-small-4-119b` (Mistral Small 4, order 3, **défaut**).
+**Cachés (visibles en `?debug`)** : `qwen-3.6-35b-instruct`, `llama-3.1-8b`, `mistral-medium-latest`.
+**Cycle ILaaS de l'automne 2026 (28-09-2026)** : `gpt-oss-120b` et `mistral-small-3.2-24b` arrêtés le 30-09 ; `llama-3.3-70b` déjà hors catalogue. `qwen-3.8-27b` n'était **pas encore au catalogue** : le Worker retombe alors sur son 1er fallback `qwen-3.6-35b-instruct` (`fallback_level: 1`, mesuré) — voulu, « 3.8 sinon 3.6 ». Son id est **déduit** de la convention ILaaS : le confirmer dès son arrivée (`POST …/webhook/caramel/ia/sonde` `{"mode":"liste"}`), sinon Qwen reste en 3.6 sans rien dire.
+**Côté n8n** (`n8n-bas/_outillage/appliquer-ilaas-automne-2026.py`, appliqué à `n8n-bas/` et `n8n-prod/`) : cascade du Worker `qwen-3.6` → `mistral-small-4` → `gemma-4` (le modèle en échec est sauté) ; secours de Caramelia = `gemma-4-31b` ; Vision = modèle demandé (défaut `qwen-3.8-27b`, `DEFAULT_VISION_MODEL`) puis relances sur `qwen-3.6-35b-instruct`. **Qwen 3.8 raisonne par défaut** (niveau « medium » chez ILaaS) : le raisonnement est coupé (`chat_template_kwargs: {enable_thinking: false}`) pour lui SEUL dans les requêtes du Worker et de la Vision, sinon le mur des 59 s — non vérifiable avant son arrivée. **Ordre de déploiement** : l'ancien workflow Vision relançait trois fois le modèle demandé et échoue aussitôt sur `qwen-3.8-27b` (mesuré) → importer le workflow 12 AVANT de servir le front. Au retrait du 3.6 : remplacer `qwen-3.6-35b-instruct` par `qwen-3.8-27b` dans les deux « Déterminer fallback » du Worker et dans `REPLI_VISION`.
 
 Le cadencement du polling est exporté (`POLL_TIMINGS` : `initialDelayMs` 5 s, `intervalMs` 3 s, `timeoutMs` 5 min) **pour être surchargeable par les tests** — sans quoi le seul cas « délai dépassé » coûterait 5 minutes de suite. `tests/test-llm-service.js` l'abaisse à quelques millisecondes puis vérifie en fin de suite qu'il est revenu aux valeurs de prod. Ne pas le re-privatiser.
 
@@ -169,9 +215,9 @@ Collection `caramelia` (id 55) sur ILaaS, accédée via proxy n8n BYOK : `https:
 
 ## Libs vendor (`core/lib-loader.js`)
 
-pdf.js 6.2.108, Tesseract 7.0.0, Mammoth 1.12.1, JSZip 3.10.1, client-zip 2.5.0, h5p-standalone 3.8.2 (PATCHÉ), fflate 0.8.3, tar-js 0.3.0, MathJax 4.1.3 (voir piège ci-dessous), jsPDF 4.2.1, jsPDF-AutoTable 5.0.8, docx 9.7.1 (aligné avec Sucrerie — cf. piège export images ci-dessous), DOMPurify 3.4.14, qrcode-generator 2.0.4 (QR codes des exports documentaires ; lazy), heic2any 0.0.4 (HEIC/HEIF→JPEG/PNG, inclut libheif LGPL ; lazy — fond « Image interactive »), UTIF 3.1.0 (TIFF→PNG ; lazy), pako 3.0.1 (zlib, MIT AND Zlib ; dépendance d'UTIF pour les TIFF deflate, chargée AVANT UTIF ; lazy).
+pdf.js 6.3.289, Tesseract 7.0.0, Mammoth 1.13.0, JSZip 3.10.2, client-zip 2.5.1, h5p-standalone 3.8.2 (PATCHÉ), fflate 0.8.3, tar-js 0.3.0, MathJax 4.1.3 (voir piège ci-dessous), jsPDF 4.2.1, jsPDF-AutoTable 5.0.8, docx 9.8.1 (aligné avec Sucrerie — cf. piège export images ci-dessous), DOMPurify 3.4.16, qrcode-generator 2.0.4 (QR codes des exports documentaires ; lazy), heic2any 0.0.4 (HEIC/HEIF→JPEG/PNG, inclut libheif LGPL ; lazy — fond « Image interactive »), UTIF 3.1.0 (TIFF→PNG ; lazy), pako 3.0.2 (zlib, MIT AND Zlib ; dépendance d'UTIF pour les TIFF deflate, chargée AVANT UTIF ; lazy).
 
-> **Export images DOCX — `ImageRun` exige un `type` explicite (docx ≥ 8.6)** : depuis docx 8.6 (comportement inchangé en 9.x), un `new ImageRun({...})` SANS `type` produit une extension de média `.undefined` (aucun content-type déclaré) → Word affiche « contenu illisible » et propose de réparer à l'ouverture (le fichier finit par s'ouvrir). `js/export/document-exporter.js` dérive donc `type` du MIME (`docxImageType()`) et **convertit en PNG les formats non natifs** (WebP/AVIF/SVG…) via `ensureDocxCompatibleImage()` — comme le flux « Image interactive » pour tous ses médias. Les deux dépôts DOIVENT rester sur la MÊME version de docx (Caramel `js/vendor/docx/9.7.1/`, Sucrerie `vendor/docx/9.7.1/`) puisque `document-exporter.js` est byte-identique. Garde-fou : `node tests/roundtrip/docx-image-type.mjs`.
+> **Export images DOCX — `ImageRun` exige un `type` explicite (docx ≥ 8.6)** : depuis docx 8.6 (comportement inchangé en 9.x), un `new ImageRun({...})` SANS `type` produit une extension de média `.undefined` (aucun content-type déclaré) → Word affiche « contenu illisible » et propose de réparer à l'ouverture (le fichier finit par s'ouvrir). `js/export/document-exporter.js` dérive donc `type` du MIME (`docxImageType()`) et **convertit en PNG les formats non natifs** (WebP/AVIF/SVG…) via `ensureDocxCompatibleImage()` — comme le flux « Image interactive » pour tous ses médias. Les deux dépôts DOIVENT rester sur la MÊME version de docx (Caramel `js/vendor/docx/9.8.1/`, Sucrerie `vendor/docx/9.8.1/`) puisque `document-exporter.js` est byte-identique. Garde-fou : `node tests/roundtrip/docx-image-type.mjs` (lit le chemin dans `LIB_PATHS`). **docx ≥ 9.8 déclare un style « Normal » explicite** : LibreOffice cesse alors de prêter à nos titres son « garder avec le suivant » (« Question 4 » seul en bas de page, 12 exports sur 67) — d'où `keepNext`/`keepLines` écrits en clair dans les styles de titres de `createDOCXDocument`. Pour une montée de docx, comparer le RENDU (DOCX → PDF par LibreOffice, pages et texte), pas seulement les octets de l'oracle.
 
 > **MathJax 4 : deux fichiers ne suffisent pas.** `tex-svg.js` seul ne marche PAS.
 > (a) Le dossier `sre/` doit être posé À CÔTÉ : MathJax 4 lance un worker de synthèse
@@ -189,3 +235,7 @@ pdf.js 6.2.108, Tesseract 7.0.0, Mammoth 1.12.1, JSZip 3.10.1, client-zip 2.5.0,
 > Cette règle était écrite mais **rien ne la vérifiait** — trois bibliothèques y avaient échappé (audit 2026-07) : `qrcode-generator`, les 221 types de contenu de `js/vendor/h5p-libs/`, et `flag-icons` (`css/vendor/`, drapeaux du sélecteur de langue). Elle est désormais tenue automatiquement des deux côtés : `tests/test-legal-notices.js` (navigateur — HTML ↔ 11 locales ↔ `LIB_PATHS`) et `node tests/run_legal_notices.mjs` (Node — croise avec le contenu RÉEL de `js/vendor/` et `css/vendor/`, et vérifie que le crédit H5P cite les familles de licence effectivement présentes sur disque). Le contrôle Node est le seul capable de voir un dossier vendor posé sans aucun câblage.
 
 Lazy-loadées via `initSmartPreloading()` pendant `requestIdleCallback`.
+
+### Correctifs natifs H5P du 12 septembre 2026
+
+FindTheWords 1.4 (origine canvas du pointeur) et SortParagraphs 0.11 (retrait des indicateurs de score) sont patchés localement. À réévaluer lors de chaque mise à jour vendor, en conservant la parité bas/Sucrerie. [Provenance et contre-épreuves](docs/CORRECTIFS_LECTEURS_H5P_2026-09-12.md). Ces patches ne sont pas installés dans Éléa par un export de contenu.

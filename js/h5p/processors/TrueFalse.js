@@ -11,7 +11,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
-import { buildMediaStructure } from '../image-manager.js';
+import { prepareQuestionMedia } from '../question-media.js';
 
 
 /**
@@ -41,14 +41,24 @@ function libellesL10n() {
     };
 }
 
-export default {
+function feedbacksEffectifs(data) {
+    const ranges = Array.isArray(data.overallFeedback) ? data.overallFeedback : [];
+    return {
+        feedbackOnCorrect: data.feedbackOnCorrect ?? data.behaviour?.feedbackOnCorrect ?? ranges.find(f => Number(f.to) === 100)?.feedback ?? '',
+        feedbackOnWrong: data.feedbackOnWrong ?? data.behaviour?.feedbackOnWrong ?? ranges.find(f => Number(f.from) === 0)?.feedback ?? '',
+    };
+}
+
+const TrueFalse = {
     process: (jsonObj) => {
-        return {
+        if (![true,false,'true','false'].includes(jsonObj.correct)) throw Error('TrueFalse : réponse vraie ou fausse requise.');
+        const result = {
             ...jsonObj,
             question: formatTextToHtml(jsonObj.question),
             correct: String(jsonObj.correct), // Ensure it's a string
             l10n: {
-                ...libellesL10n()
+                ...libellesL10n(),
+                ...(jsonObj.l10n || {})
             },
             behaviour: {
                 enableRetry: true,
@@ -57,76 +67,35 @@ export default {
                 confirmRetryDialog: false,
                 autoCheck: false,
                 enableCheckButton: true,
-                feedbackOnCorrect: jsonObj.feedbackOnCorrect,
-                feedbackOnWrong: jsonObj.feedbackOnWrong,
-                ...(jsonObj.behaviour || {})
+                ...(jsonObj.behaviour || {}),
+                ...feedbacksEffectifs(jsonObj)
             },
             confirmCheck: {
                 header: translations.h5p_finish_header || "Terminer ?",
                 body: translations.h5p_finish_body || "Êtes-vous sûr de vouloir terminer ?",
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
-                confirmLabel: translations.h5p_finish_label || "Terminer"
+                confirmLabel: translations.h5p_finish_label || "Terminer",
+                ...(jsonObj.confirmCheck || {})
             },
             confirmRetry: {
                 header: translations.h5p_retry_header || "Recommencer ?",
                 body: translations.h5p_retry_body || "Êtes-vous sûr de vouloir recommencer ?",
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
-                confirmLabel: translations.h5p_retry_confirm_label || "Confirmer"
+                confirmLabel: translations.h5p_retry_confirm_label || "Confirmer",
+                ...(jsonObj.confirmRetry || {})
             },
-            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt)
+            media: prepareQuestionMedia(jsonObj)
         };
+        for (const key of ['feedbackOnCorrect','feedbackOnWrong','overallFeedback','mediaImage','mediaImageAlt']) delete result[key];
+        return result;
     },
 
     transformForQuizSet: (question) => {
-        // Déplacer les feedbacks au bon endroit (venant de la racine params si présents)
-        if (question.params.feedbackOnCorrect || question.params.feedbackOnWrong) {
-            question.params.behaviour = question.params.behaviour || {};
-            question.params.behaviour.feedbackOnCorrect = question.params.feedbackOnCorrect;
-            question.params.behaviour.feedbackOnWrong = question.params.feedbackOnWrong;
-            delete question.params.feedbackOnCorrect;
-            delete question.params.feedbackOnWrong;
-        }
-
-        // Added: Ensure text formatting is applied
-        question.params.question = formatTextToHtml(question.params.question);
-
-        // Si overallFeedback est présent (généré par l'IA sous forme de plages), on le transforme
-        // pour True/False qui ne supporte que feedbackOnCorrect et feedbackOnWrong
-        if (question.params.overallFeedback && Array.isArray(question.params.overallFeedback)) {
-            const feedbacks = question.params.overallFeedback;
-            // On cherche le feedback pour l'échec (0%)
-            const wrongFeedback = feedbacks.find(f => f.from === 0);
-            if (wrongFeedback && wrongFeedback.feedback) {
-                question.params.behaviour = question.params.behaviour || {};
-                question.params.behaviour.feedbackOnWrong = wrongFeedback.feedback;
-            }
-            // On cherche le feedback pour la réussite (100%)
-            const correctFeedback = feedbacks.find(f => f.to === 100);
-            if (correctFeedback && correctFeedback.feedback) {
-                question.params.behaviour = question.params.behaviour || {};
-                question.params.behaviour.feedbackOnCorrect = correctFeedback.feedback;
-            }
-            // On supprime l'original car True/False ne le gère pas
-            delete question.params.overallFeedback;
-        }
-
-        // Ajouter les traductions de l'interface
-        question.params.l10n = {
-            ...libellesL10n(),
-            ...question.params.l10n
-        };
-
-        // Nettoyer et définir le comportement
-        question.params.behaviour = {
-            enableRetry: true,
-            enableSolutionsButton: true,
-            enableCheckButton: true,
-            confirmCheckDialog: false,
-            confirmRetryDialog: false,
-            autoCheck: false,
-            ...question.params.behaviour
-        };
-
+        question.params = TrueFalse.process(question.params);
+        delete question.params.feedbackOnCorrect;
+        delete question.params.feedbackOnWrong;
+        delete question.params.overallFeedback;
         return question;
     }
 };
+export default TrueFalse;

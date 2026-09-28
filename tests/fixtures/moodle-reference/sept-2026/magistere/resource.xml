@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="2196" moduleid="23615" modulename="resource" contextid="57773">
+  <resource id="2196">
+    <name>Fiche de synthèse (PDF)</name>
+    <intro>&lt;p&gt;Télécharge la fiche et garde-la dans ton classeur.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <tobemigrated>0</tobemigrated>
+    <legacyfiles>0</legacyfiles>
+    <legacyfileslast>$@NULL@$</legacyfileslast>
+    <display>0</display>
+    <displayoptions>a:1:{s:10:"printintro";i:1;}</displayoptions>
+    <filterfiles>0</filterfiles>
+    <revision>1</revision>
+    <timemodified>1790541618</timemodified>
+  </resource>
+</activity>

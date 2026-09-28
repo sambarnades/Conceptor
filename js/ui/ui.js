@@ -6,11 +6,12 @@
 
 import { allModules, customOrder, h5pModules, moodleModules } from '../core/definitions.js';
 import { translations, translatePage, currentLang } from '../core/translation.js';
-import { generatePrompts, buildVideoInteractivePrompt, buildImageHotspotsPrompt, setImageHotspotZones, prefixForModule, resultKeyForModule } from '../services/prompt-generator.js';
+import { generatePrompts, buildVideoInteractivePrompt, buildImageHotspotsPrompt, setImageHotspotZones, prefixForModule, resultKeyForModule, lireCorpusSources } from '../services/prompt-generator.js';
 import { snapInteractions } from '../h5p/processors/interactive-video-snap.js';
 import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility, safeSession, horodatageFichier, classifyError } from '../core/utils.js';
 import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM, beginGeneration, requestCancelGeneration, isCancellation } from '../services/llm.js';
 import { generateInBatches, shouldChunk, BATCH_CONFIG } from '../services/llm-batch.js';
+import { defautsSortieIA, graviteSortieIA } from '../h5p/controle-sortie-ia.js';
 import { addNotification, getNotificationById, getLastDebugNotification, showToastForNotification, revealNotification, hydrateImagesForExport } from './notifications.js';
 import { visionContextSig, alignVideoHelpButton, snapVideoTimestamps } from './media-helpers.js';
 import { initBackgroundImageSection } from './background-image-section.js';
@@ -145,20 +146,6 @@ export function setupFilters() {
     }
 
     // --- Détection des changements de contexte pour réinitialiser les données ---
-
-    /**
-     * Génère un hash du contexte actuel pour détecter les changements.
-     * Inclut les 4 champs de formulaire + le contenu RAG (documents joints).
-     * @returns {string} Hash concaténé des valeurs de contexte.
-     */
-    function getContextHash() {
-        const qui = document.getElementById('qui')?.value || '';
-        const quoi = document.getElementById('quoi')?.value || '';
-        const niveau = document.getElementById('niveau')?.value || '';
-        const nombreQuestions = document.getElementById('nombreQuestions')?.value || '';
-        const ocrContent = document.getElementById('ocr-output')?.innerText || '';
-        return `${qui}|${quoi}|${niveau}|${nombreQuestions}|${ocrContent}`;
-    }
 
     /**
      * Efface les données sauvegardées (prompts et JSON) dans sessionStorage.
@@ -359,6 +346,42 @@ const sidebar = document.getElementById('module-sidebar');
 const sidebarOverlay = document.getElementById('sidebar-overlay');
 
 /**
+ * Génère un hash du contexte actuel pour détecter les changements.
+ * Inclut les 4 champs de formulaire + le contenu RAG (documents joints).
+ * @returns {string} Hash concaténé des valeurs de contexte.
+ */
+function getContextHash() {
+    const qui = document.getElementById('qui')?.value || '';
+    const quoi = document.getElementById('quoi')?.value || '';
+    const niveau = document.getElementById('niveau')?.value || '';
+    const nombreQuestions = document.getElementById('nombreQuestions')?.value || '';
+    return `${qui}|${quoi}|${niveau}|${nombreQuestions}|${lireCorpusSources()}`;
+}
+
+/**
+ * Signature du contexte dont un prompt a été tiré : mode (Rapide/Avancé décide si
+ * niveau et nombre y entrent) + champs + corpus joint, condensés (FNV-1a) pour ne
+ * pas recopier jusqu'à 120 000 caractères de corpus par tuile en session.
+ *
+ * C'est le garde-fou de `restoreModalDataFromSession` : un prompt sauvegardé n'est
+ * rendu que s'il a été construit sur le contexte COURANT. handleContextChange ne
+ * purge la session que sur un événement `input` ; tout changement qui n'en émet
+ * pas (rechargement de page, écriture programmatique du corpus) faisait sinon
+ * repartir vers l'IA un prompt sans SOURCES, ou celles d'un document retiré.
+ * @returns {string}
+ */
+function signatureContexte() {
+    const avance = !document.querySelector('.mode-tab[data-mode="simple"]')?.classList.contains('active');
+    const texte = `${avance ? 'A' : 'R'}|${getContextHash()}`;
+    let h = 0x811c9dc5;
+    for (let i = 0; i < texte.length; i++) {
+        h ^= texte.charCodeAt(i);
+        h = Math.imul(h, 0x01000193);
+    }
+    return `${texte.length}:${(h >>> 0).toString(16)}`;
+}
+
+/**
  * Sauvegarde le prompt et le JSON de la modale dans sessionStorage.
  * Permet de restaurer le travail de l'utilisateur s'il ferme/rouvre la modale
  * sans changer le contexte. En cas de changement de contexte, les données
@@ -382,11 +405,13 @@ function saveModalDataToSession(moduleKey) {
 
     // Sauvegarder le prompt (peut avoir été modifié manuellement par l'utilisateur)
     // On stocke aussi la langue courante pour ne pas restaurer un prompt obsolète
-    // après changement de langue (sinon écrase la nouvelle traduction).
+    // après changement de langue (sinon écrase la nouvelle traduction), et la
+    // signature du contexte dont il est tiré (cf. signatureContexte).
     const promptTextarea = document.getElementById(promptId);
     if (promptTextarea?.value.trim()) {
         safeSession.set(`${STORAGE_PREFIX}prompt_${moduleKey}`, promptTextarea.value);
         safeSession.set(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`, currentLang);
+        safeSession.set(`${STORAGE_PREFIX}prompt_ctx_${moduleKey}`, signatureContexte());
     }
 
     // Sauvegarder le JSON (contenu généré par LLM)
@@ -610,6 +635,12 @@ function getRequestedQuestionCount() {
  */
 async function generateActivityContent(moduleKey, module, prompt, selectedModel, activityMeta) {
     let requestedCount = getRequestedQuestionCount();
+    // Mode Rapide, ou nombre laissé vide : la consigne demande « 5 minimum » et le modèle en
+    // produisait 5 à 9 d'un seul tenant. Une activité qui déclare `chunking.defaultCount` est
+    // générée par lots à ce nombre-là, pour borner la durée de chaque appel.
+    if (requestedCount == null && module && module.chunking && Number.isFinite(module.chunking.defaultCount)) {
+        requestedCount = module.chunking.defaultCount;
+    }
     if (shouldChunk(module, requestedCount)) {
         if (requestedCount > BATCH_CONFIG.maxItems) {
             const tmpl = translations.batch_capped
@@ -633,7 +664,23 @@ async function generateActivityContent(moduleKey, module, prompt, selectedModel,
                 || 'le découpage en plusieurs lots n\'a pas abouti — réessaie dans un instant.');
         }
     }
-    return generateH5PWithLLM(prompt, selectedModel, activityMeta);
+    const contenu = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
+    // Sortie bien formée mais vidée de son sens (trous sans réponse, réponse répétée…) :
+    // le healer n'y peut rien, un second tirage si. On garde le moins grave des deux ;
+    // à égalité, le premier (le second n'a rien apporté).
+    const defauts = defautsSortieIA(moduleKey, contenu);
+    if (!defauts.length) return contenu;
+    debugLog('llm', `Sortie IA inutilisable pour ${moduleKey} (${defauts.join(', ')}) : second essai`);
+    let second;
+    try {
+        second = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
+    } catch (e) {
+        // « Arrêter » reste un arrêt ; une panne du second essai ne fait pas perdre le premier.
+        if (isCancellation(e)) throw e;
+        debugLog('llm', 'Second essai en échec, première sortie conservée :', e);
+        return contenu;
+    }
+    return graviteSortieIA(moduleKey, second) < graviteSortieIA(moduleKey, contenu) ? second : contenu;
 }
 
 
@@ -1213,19 +1260,22 @@ export function toggleActivityContent(moduleKey, tileElement) {
 function restoreModalDataFromSession(moduleKey, promptId, jsonInputId) {
     if (!moduleKey) return;
 
-    // Restaurer le prompt sauvegardé UNIQUEMENT si la langue n'a pas changé depuis la sauvegarde.
-    // Sinon on conserve le prompt fraîchement régénéré dans la nouvelle langue par generatePrompts().
+    // Restaurer le prompt sauvegardé UNIQUEMENT si ni la langue ni le contexte (champs,
+    // mode, documents joints) n'ont changé depuis la sauvegarde. Sinon on conserve le
+    // prompt que generatePrompts() vient de reconstruire sur le contexte courant.
     const savedPrompt = safeSession.get(`${STORAGE_PREFIX}prompt_${moduleKey}`);
     const savedLang = safeSession.get(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
-    if (savedPrompt && promptId && savedLang === currentLang) {
+    const savedCtx = safeSession.get(`${STORAGE_PREFIX}prompt_ctx_${moduleKey}`);
+    if (savedPrompt && promptId && savedLang === currentLang && savedCtx === signatureContexte()) {
         const promptTextarea = document.getElementById(promptId);
         if (promptTextarea) {
             promptTextarea.value = savedPrompt;
         }
-    } else if (savedPrompt && savedLang && savedLang !== currentLang) {
-        // La langue a changé : nettoyer la sauvegarde obsolète pour éviter de re-écraser plus tard
+    } else if (savedPrompt) {
+        // Sauvegarde obsolète : la nettoyer pour qu'elle ne ré-écrase rien plus tard
         safeSession.remove(`${STORAGE_PREFIX}prompt_${moduleKey}`);
         safeSession.remove(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
+        safeSession.remove(`${STORAGE_PREFIX}prompt_ctx_${moduleKey}`);
     }
 
     // Restaurer le JSON sauvegardé (contenu généré par LLM, indépendant de la langue d'UI)
@@ -1442,18 +1492,15 @@ function updateGenerationButton(moduleKey, module) {
 
                     const moodleFormats = await import('../moodle/moodle-formats.js');
                     if (exportType === 'gift') {
+                        if ((data.questions || []).some(q => q.type === 'cloze')) {
+                            showNotification(translations.test_gift_incompatible, 'error');
+                            menu.classList.remove('show');
+                            return;
+                        }
                         const giftContent = moodleFormats.generateMoodleGift(data);
                         const fileName = `banque-de-questions_caramel_${dateString}_${lang}.gift.txt`;
                         const giftBlob = new Blob([giftContent], { type: 'text/plain' });
                         downloadFile(giftContent, fileName, 'text/plain');
-
-                        // Le format GIFT ne prend pas en charge le type « texte à trous » (cloze) :
-                        // ces questions sont omises de l'export → prévenir l'utilisateur.
-                        const clozeOmises = (data.questions || []).filter(q => q && q.type === 'cloze').length;
-                        if (clozeOmises > 0) {
-                            const tmpl = translations.elea_test_gift_cloze_warning || "{count} question(s) « texte à trous » (cloze) ne sont pas prises en charge par le format GIFT et ont été omises. Utilisez l'export XML pour les conserver.";
-                            showNotification(tmpl.replace('{count}', clozeOmises), 'error');
-                        }
 
                         // Ajouter à la liste des notifications avec toast popup
                         addNotification({
@@ -1497,7 +1544,7 @@ function updateGenerationButton(moduleKey, module) {
                         title: title,
                         blob: errorBlob,
                         status: 'error',
-                        errorMessage: error.message
+                        errorMessage: translations[classifyError(error).userMessageKey] || error.message
                     });
                 }
                 menu.classList.remove('show');
@@ -2990,7 +3037,7 @@ async function _captureGridInBackground(moduleKey, jsonData) {
     if (moduleKey === 'Crossword' && jsonData?.words?.length > 0) {
         try {
             const { generateCrosswordGridImages } = await import('../renderers/crossword-grid-generator.js');
-            return await generateCrosswordGridImages(jsonData.words, jsonData.theme);
+            return await generateCrosswordGridImages(jsonData.words, jsonData.theme, jsonData.behaviour, jsonData.solutionWord);
         } catch (err) {
             console.warn('[GridCapture] Génération de grille Crossword échouée, export sans image:', err);
         }
@@ -2998,7 +3045,9 @@ async function _captureGridInBackground(moduleKey, jsonData) {
     if (moduleKey === 'FindTheWords' && jsonData?.wordList) {
         try {
             const { generateFindTheWordsGridImages } = await import('../renderers/find-the-words-grid-generator.js');
-            return await generateFindTheWordsGridImages(jsonData.wordList);
+            return await generateFindTheWordsGridImages(jsonData.wordList, {
+                fillPool: t('h5p_find_words_fill_pool'), ...jsonData.behaviour
+            });
         } catch (err) {
             console.warn('[GridCapture] Génération de grille FindTheWords échouée, export sans image:', err);
         }
@@ -3213,5 +3262,3 @@ export function initGenerationResultModal() {
 
     // Escape géré par setupModalAccessibility dans showGenerationResult()
 }
-
-

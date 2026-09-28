@@ -91,6 +91,8 @@ der Anzeige: **Alle**, **Quiz & Tests**, **Textbearbeitung**,
 **Lernen & Entdecken**, sowie die Plattformen **H5P**, **Éléa**,
 **Moodle**.
 
+Unter dem Formular zeigt **Eine Aktivität** diese Kacheln an; **Ein Lernpfad** öffnet die Werkstatt, die mehrere Aktivitäten zu einem vollständigen Kurs zusammenstellt (siehe „Einen vollständigen Kurs erstellen und wieder öffnen“).
+
 ### H5P-Aktivitäten
 
 Aktivitäten im H5P-Format. Die mit einem Stern (★) markierten enthalten
@@ -266,7 +268,7 @@ Es werden keine personenbezogenen Daten erfasst oder gespeichert. Es werden kein
 
 #### Modelle der künstlichen Intelligenz
 
-Die Anwendung Caramel verwendet, ausschließlich bei der Ein-Klick-Generierung, KI-Modelle, die von ILaaS betrieben werden, einem Verbund gemeinsamer KI-Infrastrukturen. Anfragen werden über einen n8n-Workflow geleitet, der vom Incubateur gehostet wird, und dann zur Ausführung an ILaaS übertragen, auf vertrauenswürdigen Servern in zertifizierten Rechenzentren des französischen Hochschul- und Forschungssektors (ESR). Caramel betreibt die Modelle nicht und verarbeitet oder speichert keine Daten in eigenem Namen; die Daten werden ausschließlich zur Ausführung der Anfrage verwendet und nicht an Verbraucher-KI-Dienste gesendet. Zu den derzeit verfügbaren Modellen gehören Mistral-Small-3.2 (24 Mrd. Parameter), Qwen 3.6 (35 Mrd. Parameter) und GPT-OSS (120 Mrd. Parameter). Etwaige Hosting-, Protokollierungs- oder Aufbewahrungspraktiken von ILaaS unterliegen deren eigener Datenschutzerklärung und Nutzungsbedingungen, die direkt einsehbar sind.
+Die Anwendung Caramel verwendet, ausschließlich bei der Ein-Klick-Generierung, KI-Modelle, die von ILaaS betrieben werden, einem Verbund gemeinsamer KI-Infrastrukturen. Anfragen werden über einen n8n-Workflow geleitet, der vom Incubateur gehostet wird, und dann zur Ausführung an ILaaS übertragen, auf vertrauenswürdigen Servern in zertifizierten Rechenzentren des französischen Hochschul- und Forschungssektors (ESR). Caramel betreibt die Modelle nicht und verarbeitet oder speichert keine Daten in eigenem Namen; die Daten werden ausschließlich zur Ausführung der Anfrage verwendet und nicht an Verbraucher-KI-Dienste gesendet. Zu den derzeit verfügbaren Modellen gehören Gemma 4 (31 Mrd. Parameter), Qwen 3.8 (27 Mrd. Parameter) und Mistral Small 4 (119 Mrd. Parameter). Etwaige Hosting-, Protokollierungs- oder Aufbewahrungspraktiken von ILaaS unterliegen deren eigener Datenschutzerklärung und Nutzungsbedingungen, die direkt einsehbar sind.
 
 #### Verarbeitung der Benutzeranfragen über n8n und den Incubateur des französischen Bildungsministeriums
 
@@ -299,3 +301,59 @@ Die Anwendung ist für die Nutzung am Computer konzipiert, einschließlich Hell-
   den am besten geeigneten Typ vor, generiert aber NIEMALS das JSON einer Aktivität.
 - Bei jeder Integrationsfrage gibt Caramelia die obigen genauen
   Schritte an.
+
+<!-- parcours-complet -->
+## Einen vollständigen Kurs erstellen und wieder öffnen
+
+Mit **Ein Lernpfad** erstellt Caramel einen Kurs für Éléa, Magistère oder Moodle: mehrere Aktivitäten in Abschnitten, in einer einzigen **.mbz**-Datei. Ausgangspunkt bleibt das gewohnte Formular mit Thema, Zielgruppe und angehängten Dokumenten.
+
+Im Menü von Caramelia öffnet **Einen Kurs erstellen** direkt die Werkstatt, ohne KI-Anfrage. Ein vorhandener Entwurf wird mit **Meinen Kurs fortsetzen** wieder geöffnet. Ausgefüllte Felder und Quellen bleiben erhalten. Prüfe Rahmen und Plan in der Werkstatt, bevor du die Generierung startest.
+
+Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang und Vorlage. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.
+
+Unter **Plan** bearbeiten Sie Titel, Gesamtziel, Schlüsselbegriffe, Abschnitte und Aktivitäten. Verschieben Sie Aktivitäten mit den Pfeilen oder an ihrem Vorschaubild. **Arbeitsauftrag und Lernphase** erlaubt das Anpassen der Generierungsanweisungen. Pädagogische Hinweise unterstützen die Durchsicht, ohne ein Modell vorzuschreiben. Maximal **12 Aktivitäten** sind möglich.
+
+Fügen Sie den Videolink in die Karte eines **interaktiven Videos** ein. Das Transkript wird beim Erstellen abgerufen; Sie können es auch selbst einfügen. Hängen Sie für **interaktive Bilder** und die Aktivitäten zum Finden einer oder mehrerer Bildstellen ein Bild an die Karte an. Es wird vor der Erstellung analysiert. Sie können diese Medien auch während der Erstellungsphase ergänzen. Eine Aktivität ohne Medium wartet, während die anderen fortfahren. Die Szenariodatei enthält die Bilder und Links der Aktivitäten; die Dokumente des Startformulars bleiben davon getrennt. Fügen Sie bei einem **Weblink** die Adresse der Ressource in die Karte ein: Die KI verfasst die Leseanweisung, ohne die Seite zu öffnen.
+
+Sobald Inhalt vorliegt, öffnet **Inhalt bearbeiten** den gewohnten Editor und **Vorschau** die Vorschau. Mit **Kurs durchsehen**, **Zurück** und **Weiter** gehen Sie die Aktivitäten der Reihe nach durch. Speichern Sie Änderungen, damit sie im Plan und Export enthalten sind. Geänderte Plananweisungen schreiben vorhandene Inhalte nicht um.
+
+Bestätigen Sie den Plan, um die Erstellung zu starten. Sie können stoppen, fehlende Aktivitäten fortsetzen oder eine Aktivität neu erstellen. Das Schloss **Diese Aktivität nicht erzeugen** reserviert den Inhalt für manuelle Eingabe: Die KI füllt ihn nicht. Eine fehlgeschlagene Neuerstellung erhält den bisherigen Inhalt. Fehlende Aktivitäten werden vor dem Export benannt.
+
+**Szenario exportieren (.json)** speichert Plan und fertige Inhalte in einer **.json**-Datei. Die Schaltfläche **Plan anpassen** neben **Plan zusammenstellen** öffnet dasselbe Fenster wie bei einer Aktivität: Kopieren Sie den Prompt in die KI Ihrer Wahl und fügen Sie deren Antwort ein. **Szenario öffnen** befindet sich in diesem Fenster; die **.json**-Datei wird bei der Bereitstellung neben der **.mbz** heruntergeladen. Der Entwurf bleibt nur in diesem Tab: Exportieren Sie vor dem Schließen das Szenario. Thema, Zielgruppe und Anhänge sind nicht enthalten; geben Sie diese vor neuen Generierungen erneut an.
+
+Unter **Auslieferung** laden Sie die **.mbz**-Datei herunter und nutzen den Kursimport oder die Kurswiederherstellung Ihrer Plattform. Diese Kursdatei gehört nicht in eine H5P-Aktivität. Der Lernpfad erscheint auch im Benachrichtigungsbereich: **Ansehen** öffnet die **Übersicht des Lernpfads** mit Begrüßung, jedem Schritt und seinen Aktivitäten, die Sie vor dem erneuten Herunterladen prüfen und bearbeiten können. Bewahren Sie auch die **.json**-Datei für die weitere Arbeit in Caramel auf. Ablaufplan und Aktivitätsdetails lassen sich als **DOCX, ODT oder PDF** exportieren.
+
+Der Plan bietet auch die Module Ihrer Éléa-, Magistère- oder Moodle-Plattform an; sie stehen im Menü jeder Aktivität unter **Module der Plattform**: Forum, Abstimmung, Fragebogen, Umfrage, Lektion, Workshop mit gegenseitiger Beurteilung, Pinnwand, Wiki, kollaboratives Dokument, Glossar und Datenbank zum gemeinsamen Aufbau, virtuelles Klassenzimmer, Gruppenwahl, Dateiaustausch und Weblink. Die KI verfasst die Inhalte, die die Plattform beim Import übernimmt; gemeinsame Arbeitsbereiche kommen leer an, mit ihrem Arbeitsauftrag. Erfordert ein Modul eine Einstellung auf der Plattform (Phasen des Workshops, Uhrzeit des virtuellen Klassenzimmers, Gruppen), schreibt Caramel sie in eine für die Lernenden verborgene Notiz **Vor dem Öffnen des Kurses zu erledigen** am Anfang des importierten Kurses. Das **IMS-Content-Paket** – Seiten zum Lesen mit Inhaltsverzeichnis, vollständig von Caramel geschrieben – wählen Sie im Mosaik; der Plan schlägt es nicht vor.
+
+Die Fortschrittskarte gibt es nur für Éléa. Karte und schrittweiser Zugang sind optional und müssen noch im tatsächlichen Plattformbetrieb geprüft werden. Die Differenzierungsvorlage erzeugt keine automatischen Verzweigungen nach Note. Zusammenarbeit findet auf der Plattform statt. Die Veröffentlichung eines vollständigen Kurses in Sucrerie ist noch nicht verfügbar.
+
+Zum Weiterlesen: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) unterstützt das Nachdenken über Lernaktivitäten. Die sieben Kategorien in Caramel, darunter **Diskutieren** und **Zusammenarbeiten**, sind vereinfachte, werkzeugbezogene Orientierungshilfen, nicht die sechs ABC-Lerntypen oder eine Bewertung Ihrer Lehre.
+Öffne in Éléa **Kurseinstellungen**, aktiviere die Fortschrittskarte und wähle über die Kachel **+ Eigenes Bild hinzufügen** ein eigenes Hintergrundbild. Du kannst das Bild ersetzen oder entfernen und zu den vorgeschlagenen Motiven zurückkehren. Das Bild wird im **.json**-Szenario gespeichert und in den **.mbz**-Kurs eingebettet. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG oder TIFF · Max. 12 MB. Automatische Umwandlung, ohne Zuschneiden.
+
+<!-- parcours-trames -->
+### Eine Vorlage wählen
+
+Nach **Ein Lernpfad** gibt die Vorlage den Ablauf vor, den die KI an Ihr Thema anpasst. Die angezeigte Liste hängt von Unterrichtsform und Umfang ab; jede Aktivität bleibt im Plan veränderbar.
+
+- **Vor der Prüfung wiederholen** — Feststellen, was sitzt, das Wesentliche wieder sichtbar machen, üben, sich selbst testen. *(Eine Stunde · Zwei bis drei Stunden)*
+- **Eine Prüfung vorbereiten und schreiben** — Üben im Prüfungsformat, die benotete Prüfung, die Lösung. Drei Aktivitäten, mehr nicht. *(Eine Stunde)*
+- **Nach der Prüfung nacharbeiten** — Man geht von den tatsächlichen Fehlern aus: benennen, den genauen Punkt neu erklären, wiederholen, erneut prüfen. *(Eine Stunde · Zwei bis drei Stunden · Auf Distanz · Beides)*
+- **Kurzes Ritual** — Zehn Minuten, immer dieselbe Form. Es ist die Wiederholung, die sitzt, nicht die Abwechslung. *(Eine Stunde)*
+- **Einen Begriff entdecken** — Eine Situation, die Fragen aufwirft, Dokumente zum Erkunden, dann die Zusammenfassung und erst danach die Anwendung. *(Zwei bis drei Stunden · Eine ganze Einheit)*
+- **Umgedrehter Unterricht** — Das Video und seine Kontrolle zu Hause, die Aufgabe, die man allein nicht schafft, im Unterricht, die Auswertung danach. *(Eine Stunde · Zwei bis drei Stunden · Beides)*
+- **Ein Werk erschließen** — In den Text oder das Bild eintreten, erkennen, einordnen, deuten und dann die eigene Lesart formulieren. *(Zwei bis drei Stunden · Eine ganze Einheit)*
+- **Eine Untersuchung führen** — Eine Frage, eine Hypothese, Daten, ein Ergebnis: die wissenschaftliche Vorgehensweise, der Reihe nach. *(Zwei bis drei Stunden · Eine ganze Einheit · Im Unterricht · Beides)*
+- **Eine Quelle prüfen** — Woher die Information kommt, wer sie herstellt, was sie auslässt. Den Blick schulen, bevor man urteilt. *(Eine Stunde · Zwei bis drei Stunden)*
+- **Begründete Debatte** — Eine Abstimmung zum Ausgangspunkt, Quellen zur Information, ein Forum zum Debattieren, ein Text als Abschluss. *(Zwei bis drei Stunden · Eine ganze Einheit)*
+- **Differenzierung in drei Geschwindigkeiten** — Ein Einstufungstest, danach Aktivitäten zum Festigen, Weiterlernen oder Vertiefen. Die Anweisungen leiten die Auswahl; es gibt keine automatische Verzweigung nach Punktzahl. *(Zwei bis drei Stunden · Eine ganze Einheit · Auf Distanz · Beides)*
+- **Fremdsprachliche Einheit** — Zuerst der Wortschatz, dann das Verstehen, zuletzt das Sprechen und Schreiben. *(Zwei bis drei Stunden)*
+- **Einen Vortrag vorbereiten** — Was gesagt wird, in welcher Reihenfolge, und wie man das Sprechen übt. *(Eine Stunde · Zwei bis drei Stunden · Im Unterricht · Beides)*
+- **Lernen lernen** — Was beim Behalten wirklich hilft, am Thema des Kurses ausprobiert: sich selbst abfragen, verteilt wiederholen, erklären. Dann plant jede und jeder die eigenen Wiederholungen. *(Eine Stunde · Zwei bis drei Stunden)*
+- **Selbstständig lernen** — Niemand hinter dem Bildschirm: der Lernpfad muss für sich stehen, vom Inhaltsverzeichnis bis zur Abschlussprüfung. *(Zwei bis drei Stunden · Eine ganze Einheit · Auf Distanz)*
+- **Blended Learning in drei Phasen** — Die Vorbereitung auf Distanz, die Präsenzphase, dann die Umsetzung und der Erfahrungsaustausch. Das Format der Fortbildungspfade. *(Eine ganze Einheit · Beides)*
+- **Projektarbeit** — Ein Auftrag mit Kriterien, Dokumentation, Teamarbeit, ein Ergebnis, das gegenseitig begutachtet und danach verbessert wird. *(Eine ganze Einheit · Im Unterricht · Beides)*
+- **Teamarbeit** — Teams bilden, Ideen sammeln, gemeinsam schreiben, sich gegenseitig mit einem Kriterienraster überarbeiten. *(Zwei bis drei Stunden · Eine ganze Einheit)*
+- **Escape Game** — Ein Auftrag, Hinweise, Rätsel mit steigendem Schwierigkeitsgrad, ein Schlusscode und die Nachbesprechung. *(Eine Stunde · Zwei bis drei Stunden · Im Unterricht · Beides)*
+- **Freie Struktur** — Kein vorgegebener Verlauf: Sie stellen die Schritte selbst zusammen, und Caramel füllt, was Sie hineinsetzen. *(Eine Stunde · Zwei bis drei Stunden · Eine ganze Einheit)*
+<!-- /parcours-trames -->
+<!-- /parcours-complet -->

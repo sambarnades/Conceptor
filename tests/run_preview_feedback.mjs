@@ -182,7 +182,7 @@ async function saisir(page, selecteur, valeur) {
 }
 
 // ------------------------------------------------------------------ serveur
-const server = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'], {
+const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'], {
     cwd: ROOT, stdio: 'ignore'
 });
 const stopServer = () => { try { server.kill('SIGTERM'); } catch { /* déjà mort */ } };

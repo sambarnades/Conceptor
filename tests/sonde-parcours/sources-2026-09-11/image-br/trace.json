@@ -1,0 +1,97 @@
+{
+  "cas": {
+    "id": "image-br",
+    "module": "ImageHotspots",
+    "lang": "br"
+  },
+  "demandes": [
+    {
+      "url": "/webhook/caramel-vision-detect-bas",
+      "image": "[image du fixture Van Gogh]",
+      "context": {
+        "qui": "Kelenner arzoù kaer er skolaj",
+        "quoi": "Sellet ouzh An noz steredennet gant Van Gogh : an oabl, ar stered, ar gwez hag ar gêriadenn. — Sellet ouzh An noz steredennet — Displegañ ar pezh a weler war ar skeudenn, e brezhoneg.",
+        "niveau": "",
+        "corpus": "",
+        "corpusLength": 0,
+        "sources": []
+      },
+      "lang": "br",
+      "model": "qwen-3.6-35b-instruct",
+      "prompt": "Ur mailh out war zielfennañ skeudennoù. Skriv HOLL destennoù da respont (imageDescription, pep label, pep description) E BREZHONEG HEPKEN.\n\nDielfenn ar skeudenn roet en endro pedagogel-mañ : Kelenner arzoù kaer er skolaj · Sellet ouzh An noz steredennet gant Van Gogh : an oabl, ar stered, ar gwez hag ar gêriadenn. — Sellet ouzh An noz steredennet — Displegañ ar pezh a weler war ar skeudenn, e brezhoneg.\n\n1) Ro un deskrivadur BERR HA HOLLEK eus ar skeudenn (1 pe 2 frazenn) : maezienn \"imageDescription\".\n2) Termen etre 3 ha 5 TAKAD/POENT pouezus a zo e gwirionez er skeudenn hag a zegouezh gant an endro-mañ.\nEvit PEP takad, ro RIK :\n- x : lec'hiadur a-blaen KREIZ an takad war ur skeul eus 0 da 1000 (0 = bord kleiz, 1000 = bord dehou) ;\n- y : lec'hiadur a-serzh KREIZ an takad war ur skeul eus 0 da 1000 (0 = krec'h, 1000 = traoñ) ;\n- label : un anv berr-tre (1 da 3 ger) ;\n- description : ar pezh a ziskouez an takad HAG ar pezh a zo en-dro dezhañ (1 pe 2 frazenn).\nPriz x ha y ken RESIS ha ma c'hallez, diouzh gwir lec'hiadur pep takad (niveroù anterin etre 0 ha 1000, disheñvel eus un takad d'egile).\nNa ijin TAKAD EBET ha n'emañ ket er skeudenn.\nRespont RIK e JSON reizh, hep testenn ebet en-dro, er mentrezh-mañ :\n{\"imageDescription\":\"...\",\"zones\":[{\"x\":number,\"y\":number,\"label\":string,\"description\":string}]}"
+    },
+    {
+      "url": "/webhook/caramel/llm/submit-bas",
+      "prompt": "# ENDRO PEDAGOGEL\n- Da roll : Kelenner arzoù kaer er skolaj. Mailh e didaktik hag ijinerezh pedagogel\n- Da bal pedagogel : Sellet ouzh An noz steredennet gant Van Gogh : an oabl, ar stered, ar gwez hag ar gêriadenn.. Sellet ouzh An noz steredennet — L'élève doit : Displegañ ar pezh a weler war ar skeudenn, e brezhoneg. — Titre attendu de l'activité : « Sellet ouzh An noz steredennet » — Durée visée : 10 minutes.\n\n# REOLENNOÙ DIBAR\n- RAKWIR da gemennoù an implijer : ma laka temioù, ur savboent pe un niver a boentoù, douj outo.\n- Ur poent dre dakad dinoet : evit PEP takad roet er MAMMENNOÙ, krou RIK ur poent (hotspot) en ur ADKOPIAÑ e lec'hiadur `x`/`y` (e %). Na ouzhpenn poent ebet hep takad ha na zilam takad ebet.\n- Endalc'had = TESTENN hepken : evit pep poent, skriv un `header` (titl berr 1 betek 4 ger) hag un `text` (displegadenn bedagogel sklaer 1 betek 3 frazenn) azasaet d'an danvez hag al live. Na enlaka SKEUDENN, AUDIO na VIDEO EBET (ouzhpennañ a raio an implijer anezho gant an dorn en aozer ma'z eus ezhomm).\n- Harp war deskrivadur an takad HAG ar pezh zo en-dro dezhañ evit lec'hiañ ha displegañ ; na ijina morse un elfenn ezvezant eus ar skeudenn.\n- Niver a boentoù : 5 poent pennañ.\n- Liv : kinnig ur `globalColor` (c'hwezekredennel) lennadus ha dargemmet ouzh ur skeudenn voutin eus an dodenn (`#981d99` dre ziouer).\n- Perzh : displegadennoù reizh, geriaoueg azasaet d'al live, adlavar ebet eus ur poent d'egile.\n\n# REOLENNOÙ PEDAGOGEL\n- Azasadur : azasa an ton, ar geriaoueg hag an diaester d'ar publik. Dibab an « te » (skolidi) pe ar « c'hwi » (tud deuet/stummadur) ha dalc'h an hevelep live yezh er c'hemennoù hag er feedbackoù.\n- Kenglotusted : azasa an danvezioù ouzh an daveennoù ofisiel (dre ziouer programmoù Eduscol ; testennoù ar stummadur a-vicher evit an dud deuet).\n- Yezh : skriv AN HOLL danvez produet e BREZHONEG — titloù, kemennoù, goulennoù, respontoù, arouezioù ha feedbackoù —, ne vern peseurt yezh a vez er mammennoù roet.\n- Feedbackoù (feedback stummañ) — pa vez re en obererezh :\n  - Sikour da vont war-raok, morse ur varn eeun. Deskriv ar gennad, morse ar skoliad : argas « Gaou/Ket/Da adwelet », an ironiezh, ar c'heñveriadennoù etre skolidi ha meuleudi an den.\n  - Respont fall : anv ar fazi (kemmesk, fed, jedadur, er-maez a endro) ha degas da soñj ar mennozh reizh. Respont mat : lavar PERAK, ket « Brav » hepken. Arouez : un hent na ziskuilh ket ar respont.\n  - Na ijin fed na mammenn ebet ; na gas ket war-du un « teul » pe ur « bajenn » : sturi war-du ar GENNAD da adwelet.\n  - Feedback hollek dre rann : n'anavez ket pe c'houlenn zo bet c'hwitet → na ziskuilh netra ha gradua dre veistroni — 0-25 % frealz ha adkemer an diazezoù ; 26-50 % buk ar pezh a chom diaes ; 51-75 % kreñva an degouezhioù luzius ; 76-100 % kadarna ha kinnig mont pelloc'h. Diwall ouzh « Etre./Mat. » ; gallout a rez pediñ ar skoliad da gavout e-unan ar pezh en deus lakaet anezhañ da arvariñ.\n  - Lennusted (CUA/FALC) : frazennoù berr, gerioù anavezet.\n  - Testenn blaen : Markdown ebet (`**tev**`, `*italek*`) na LaTeX er feedbackoù hag en arouezioù — n'o displeg ket H5P hag e vefent diskouezet ger-ha-ger.\n- Formulennoù matematek : pep bevenner digor en deus e hini serr — ur formulenn el linenn a skriver \\\\( … \\\\) (morse ur \\\\( pe ur \\\\) e-unan), ur formulenn lakaet war wel \\\\[ … \\\\] ; kempouez ivez ar brageroù { } eus pep urzhiad (\\\\frac{a}{b}, \\\\sqrt{x}, x^{2}).\n\n# MAMMENNOÙ\nSetu an TAKADOÙ PENNAÑ dinoet er skeudenn foñs (niver, lec'hiadur `x`/`y` e DREGANTAD eus ar skeudenn, ha deskrivadur an takad hag ar pezh zo en-dro dezhañ). Harp WAR AN TAKADOÙ-MAÑ HEPKEN ha war ar gendestenn bedagogel evit skrivañ endalc'had pep poent. ADKOPI RIK al lec'hiadurioù `x`/`y` roet — na jed anezho morse ha na ijina takad ouzhpenn ebet.\n---\nDESCRIPTION GLOBALE DE L'IMAGE : Skeudenn Van Gogh 'An noz steredennet' gant oabl steredennet, gwez du, kêriadenn ha menezioù.\n\n(Image de fond : 330×261px. Les positions x,y sont des POURCENTAGES 0–100 à RECOPIER tels quels.)\n\nZone 1 — x=50.0% y=20.0% : Oabl steredennet — Oabl glas gant steredoù melen o tiskouez o sked, ha stered bras o tiskouez o sked. Ar stered a zo o tiskouez o sked, hag ar stered bras a zo o tiskouez o sked.\nZone 2 — x=20.0% y=60.0% : Gwez du — Gwez du a zo o tiskouez o sked, hag ar gwez a zo o tiskouez o sked.\nZone 3 — x=50.0% y=80.0% : Kêriadenn — Kêriadenn a zo o tiskouez o sked, hag ar gêriadenn a zo o tiskouez o sked.\nZone 4 — x=70.0% y=70.0% : Menezioù — Menezioù a zo o tiskouez o sked, hag ar menezioù a zo o tiskouez o sked.\nZone 5 — x=80.0% y=15.0% : Moon — Moon a zo o tiskouez o sked, hag ar moon a zo o tiskouez o sked.\n---\n\n# FRAMM AR JSON GORTOZET\n- Gen ur JSON klok ha talvoudek HEPKEN. RET eo da respont kregiñ gant `{` hag echuiñ gant `}`. Testenn ebet all.\n- Na lak KET a vaezienn `image` na skeudenn foñs : Caramel a ouzhpenn anezhi ent emgefreek diwar ar restr stag gant an implijer.\n- Enderc'hel a ra an ergorenn wrizienn :\n  - `title` (string) : un titl berr evit an obererezh.\n  - `globalColor` (string, diret) : liv ar poentoù er mentrezh c'hwezekredennel (sk. `\"#1768c4\"`).\n  - `hotspots` (array) : un ergorenn dre dakad dinoet.\n\n**Framm ur poent (taolenn `hotspots`) :**\n- `x` (number) : lec'hiadur a-blaen e DREGANTAD (0 = bord kleiz, 100 = bord dehou), ADKOPIET diwar an takad.\n- `y` (number) : lec'hiadur a-serzh e DREGANTAD (0 = krec'h, 100 = traoñ), ADKOPIET diwar an takad.\n- `header` (string) : titl berr ar poent.\n- `text` (string) : an displegadenn. HTML eeun aotreet : `<p>`, `<strong>`, `<em>`, `<ul><li>`.\n\n- **Stummañ :** Markdown aotreet evit an druz (`**testenn**`) hag ar stou (`*testenn*`).\n- **LaTeX :** evit ar formulennoù, implij `\\\\( ... \\\\)` HEPKEN. Morse `$`. Skouerioù : `\\\\( \\\\frac{1}{2} \\\\)`, `\\\\( x^{2} \\\\)`.\n\n# SKOUER DISOC'H\n**Skouer glok.** Soñj ez eus er MAMMENNOÙ an takadoù-mañ dinoet war skeudenn ur vleunienn :\n\n```\nZone 1 — x=31.5% y=22.0% : petal livet e krec'h ar vleunienn, petaloù all en-dro dezhañ.\nZone 2 — x=52.0% y=48.5% : garenn voan gant ur chakodig en he fenn (staminen).\nZone 3 — x=50.0% y=63.0% : organ kreiz koeñvet, staminennoù en-dro dezhañ.\nZone 4 — x=47.0% y=86.0% : garenn c'hlas a-serzh o liammañ ar vleunienn ouzh ar blantenn.\n```\n\nReolenn skeudennet : pep `x`/`y` zo ADKOPIET diwar an takad a glot, hag an `header`+`text` a zispleg ar pezh a ziskouez an takad, el live buket :\n\n```json\n{\n  \"title\": \"Anatomiezh ar vleunienn\",\n  \"globalColor\": \"#1768c4\",\n  \"hotspots\": [\n    { \"x\": 31.5, \"y\": 22.0, \"header\": \"Ar petal\", \"text\": \"<p>Ar <strong>petaloù</strong> livet a sach an amprevaned pollenner.</p>\" },\n    { \"x\": 52.0, \"y\": 48.5, \"header\": \"Ar staminen\", \"text\": \"<p>Ar <strong>staminen</strong> eo organ par ar vleunienn : produiñ a ra ar pollen.</p>\" },\n    { \"x\": 50.0, \"y\": 63.0, \"header\": \"Ar pistill\", \"text\": \"<p>Ar <strong>pistill</strong> eo organ parez ar vleunienn, lec'hiet en he c'hreiz.</p>\" },\n    { \"x\": 47.0, \"y\": 86.0, \"header\": \"Ar garenn\", \"text\": \"<p>Ar <strong>garenn</strong> a zalc'h ar vleunienn hag a gas ar sap.</p>\" }\n  ]\n}\n```\n\nSell ouzh al liamm : pep poent a adkemer RIK lec'hiadur `x`/`y` e dakad. Lec'hiadur ebet n'eo ijinet.\n\n# FRAMM AN HEULIAD\nCette activité fait partie d'un parcours intitulé « Sellet ouzh An noz steredennet ».\nObjectif du parcours : Sellet ouzh An noz steredennet\n\nNOTIONS PIVOTS du parcours — emploie ces formulations MOT POUR MOT quand tu parles de ces notions, sans les reformuler ni les traduire :\n- oabl\n- stered\n- gwez\n\nC'est la PREMIÈRE activité du parcours : elle pose les bases, sans supposer aucun acquis préalable sur le sujet.\n\nPalier de cette activité : Dizoloadur.\nRespecte ce palier : une activité de découverte ne piège pas, une activité de transfert ne récite pas.",
+      "model": "mistral-small-4-119b",
+      "activity": {
+        "moduleKey": "ImageHotspots",
+        "category": "parcours"
+      },
+      "rag": {
+        "sujet": "Sellet ouzh An noz steredennet gant Van Gogh : an oabl, ar stered, ar gwez hag ar gêriadenn.",
+        "discipline": "Kelenner arzoù kaer er skolaj",
+        "niveau": "",
+        "cycle": ""
+      }
+    }
+  ],
+  "reponses": [
+    {
+      "url": "/webhook/caramel-vision-detect-bas",
+      "data": {
+        "imageDescription": "Skeudenn Van Gogh 'An noz steredennet' gant oabl steredennet, gwez du, kêriadenn ha menezioù.",
+        "zones": [
+          {
+            "x": 50,
+            "y": 20,
+            "label": "Oabl steredennet",
+            "description": "Oabl glas gant steredoù melen o tiskouez o sked, ha stered bras o tiskouez o sked. Ar stered a zo o tiskouez o sked, hag ar stered bras a zo o tiskouez o sked."
+          },
+          {
+            "x": 20,
+            "y": 60,
+            "label": "Gwez du",
+            "description": "Gwez du a zo o tiskouez o sked, hag ar gwez a zo o tiskouez o sked."
+          },
+          {
+            "x": 50,
+            "y": 80,
+            "label": "Kêriadenn",
+            "description": "Kêriadenn a zo o tiskouez o sked, hag ar gêriadenn a zo o tiskouez o sked."
+          },
+          {
+            "x": 70,
+            "y": 70,
+            "label": "Menezioù",
+            "description": "Menezioù a zo o tiskouez o sked, hag ar menezioù a zo o tiskouez o sked."
+          },
+          {
+            "x": 80,
+            "y": 15,
+            "label": "Moon",
+            "description": "Moon a zo o tiskouez o sked, hag ar moon a zo o tiskouez o sked."
+          }
+        ],
+        "model": "qwen-3.6-35b-instruct",
+        "attempt": 1,
+        "ok": true
+      }
+    },
+    {
+      "url": "/webhook/caramel/llm/result-bas",
+      "data": {
+        "taskId": "1789137",
+        "status": "done",
+        "content": "{\n  \"title\": \"Sellet ouzh An noz steredennet\",\n  \"globalColor\": \"#981d99\",\n  \"hotspots\": [\n    {\n      \"x\": 50.0,\n      \"y\": 20.0,\n      \"header\": \"An oabl\",\n      \"text\": \"<p>An <strong>oabl</strong> a zo leun a steredoù o skedellañ. Gwelet e vez an oabl evel un doare da ziskouez pegen bras eo an oabl hag ar bed.</p>\"\n    },\n    {\n      \"x\": 20.0,\n      \"y\": 60.0,\n      \"header\": \"Ar gwez\",\n      \"text\": \"<p>Ar <strong>gwez</strong> du a zo uhel ha stank. O sked a zegas ur c'hemm bras etre an noz hag an deiz.</p>\"\n    },\n    {\n      \"x\": 50.0,\n      \"y\": 80.0,\n      \"header\": \"Ar gêriadenn\",\n      \"text\": \"<p>Ar <strong>gêriadenn</strong> a zo leun a lochennoùigoù. Gwelet e vez ar gêriadenn evel un doare da ziskouez pegen bras eo ar bed.</p>\"\n    },\n    {\n      \"x\": 70.0,\n      \"y\": 70.0,\n      \"header\": \"Ar menezioù\",\n      \"text\": \"<p>Ar <strong>menezioù</strong> a zo uhel ha stank. O sked a zegas ur c'hemm bras etre an noz hag an deiz.</p>\"\n    },\n    {\n      \"x\": 80.0,\n      \"y\": 15.0,\n      \"header\": \"Al Loar\",\n      \"text\": \"<p>Al <strong>Loar</strong> a zo bras ha skedus. Gwelet e vez al Loar evel un doare da ziskouez pegen bras eo an oabl hag ar bed.</p>\"\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "completion_tokens": 487,
+        "prompt_tokens": 3081,
+        "fallback_level": 0
+      }
+    }
+  ],
+  "erreurs": [],
+  "message": "",
+  "echecExport": null
+}

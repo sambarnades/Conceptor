@@ -15,16 +15,18 @@ import { formatTextToHtml } from '../../core/utils.js';
 export default {
     process: (jsonObj) => {
         // Si la structure "timeline" n'existe pas, on l'enveloppe
-        const timelineData = jsonObj.timeline ? jsonObj : { timeline: jsonObj };
+        const timelineData = structuredClone(jsonObj.timeline ? jsonObj : { timeline: jsonObj });
 
         // Ajout des champs manquants avec des valeurs par défaut
-        timelineData.timeline.defaultZoomLevel = timelineData.timeline.defaultZoomLevel || "0";
+        timelineData.timeline.defaultZoomLevel = String(timelineData.timeline.defaultZoomLevel ?? "0");
         // Code de langue normalisé : TimelineJS charge son fichier de locale à ce
         // nom — `jp` (code pays) ne correspond à aucun fichier, `ja` oui.
         const h5pLang = languageCodes(currentLang).h5p;
         timelineData.timeline.language = timelineData.timeline.language || h5pLang;
         // height peut venir de l'éditeur au niveau racine (pas dans timeline)
         timelineData.timeline.height = timelineData.timeline.height || jsonObj.height || 600;
+
+        delete timelineData.height;
 
         // Formater le texte principal
         if (timelineData.timeline.text) {

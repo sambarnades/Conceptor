@@ -1,0 +1,85 @@
+{
+  "title": "<p>La Rome antique et ses fondements</p>",
+  "description": "Associe chaque <strong>concept clé</strong> à sa <strong>définition précise</strong>.",
+  "dialogs": [
+    {
+      "text": "Le régime politique fondé en <strong>-509</strong> où le pouvoir appartient aux citoyens et à leurs représentants.",
+      "answer": "La <strong>République</strong>",
+      "tips": {
+        "front": "C&#039;est la **chose publique** en latin.",
+        "back": "Res publica."
+      }
+    },
+    {
+      "text": "L'empereur qui a instauré le <strong>Principat</strong> en -27, marquant la fin de la République.",
+      "answer": "<strong>Auguste</strong>",
+      "tips": {
+        "front": "Il s&#039;appelait auparavant *Octave*.",
+        "back": "Le premier empereur **romain**."
+      }
+    },
+    {
+      "text": "La période de stabilité et de prospérité relative au sein de l'Empire aux Ier et IIe siècles.",
+      "answer": "La <strong>Pax Romana</strong>",
+      "tips": {
+        "front": "On l&#039;appelle aussi la &#039;Paix romaine&#039;.",
+        "back": "Expression latine."
+      }
+    },
+    {
+      "text": "Le processus de diffusion de la culture, de la langue et du mode de vie de Rome dans les provinces.",
+      "answer": "La <strong>romanisation</strong>",
+      "tips": {
+        "front": "Pense à l&#039;influence culturelle de Rome.",
+        "back": "Un terme lié à l&#039;intégration des peuples conquis."
+      }
+    },
+    {
+      "text": "Le texte promulgué en <strong>313</strong> qui autorise la liberté de culte aux Chrétiens.",
+      "answer": "L'<strong>Édit de Milan</strong>",
+      "tips": {
+        "front": "Signé par l&#039;empereur Constantin.",
+        "back": "Un tournant pour le christianisme."
+      }
+    }
+  ],
+  "behaviour": {
+    "enableRetry": true,
+    "disableBackwardsNavigation": false,
+    "scaleTextNotCard": true,
+    "randomCards": false,
+    "maxProficiency": 5,
+    "quickProgression": false
+  },
+  "answer": "Retourner",
+  "next": "Suivant",
+  "prev": "Précédent",
+  "retry": "Recommencer",
+  "progressText": "Carte @card sur @total",
+  "cardFrontLabel": "Recto de la carte",
+  "cardBackLabel": "Verso de la carte",
+  "tipButtonLabel": "Indice",
+  "audioNotSupported": "Votre navigateur ne supporte pas ce format audio",
+  "mode": "normal",
+  "correctAnswer": "J&#039;ai eu bon !",
+  "incorrectAnswer": "Je me suis trompé",
+  "round": "Manche @round",
+  "cardsLeft": "Cartes restantes : @number",
+  "nextRound": "Passer à la manche @round",
+  "startOver": "Recommencer",
+  "showSummary": "Suivant",
+  "summary": "Résumé",
+  "summaryCardsRight": "Cartes que vous avez réussies :",
+  "summaryCardsWrong": "Cartes que vous avez manquées :",
+  "summaryCardsNotShown": "Cartes non montrées :",
+  "summaryOverallScore": "Score global",
+  "summaryCardsCompleted": "Cartes que vous avez apprises :",
+  "summaryCompletedRounds": "Manches terminées :",
+  "summaryAllDone": "Bien joué ! Vous avez réussi toutes les @cards cartes @max fois de suite !",
+  "confirmStartingOver": {
+    "header": "Terminer ?",
+    "body": "Êtes-vous sûr de vouloir terminer ?",
+    "cancelLabel": "Annuler",
+    "confirmLabel": "Terminer"
+  }
+}

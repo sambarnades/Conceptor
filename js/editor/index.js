@@ -1,3 +1,4 @@
+import {prepareNativePresentationSchema, serializeNativePresentation, prepareNativeBookSchema, serializeNativeBook, prepareNativeVideoSchema, serializeNativeVideo} from './native-presentation-schema.js';
 /**
  * JSON Editor - Module principal (Orchestrateur)
  *
@@ -5,7 +6,8 @@
  * Gere le cycle de vie de l'editeur et l'integration avec la modale.
  */
 
-import { detectContentType, getSchemaForType, normalizeDataForEditor, denormalizeDataForSave } from './content-detector.js';
+import { detectContentType, getModuleName, getSchemaForType, normalizeDataForEditor, denormalizeDataForSave } from './content-detector.js';
+import { reparerConsignesTest } from '../moodle/moodle-formats.js';
 import { renderEditor, updateEditorState, getEditorData } from './editor-core.js';
 import { validateSchema, getValidationErrors } from './validators.js';
 import { t } from '../core/translation.js';
@@ -31,7 +33,8 @@ let editorState = {
     validationErrors: [],    // Erreurs de validation actuelles
     container: null,         // Container DOM de l'editeur
     onSave: null,            // Callback de sauvegarde
-    onCancel: null           // Callback d'annulation
+    onCancel: null,          // Callback après confirmation d’annulation
+    onRequestCancel: null    // Le conteneur peut prendre en charge la confirmation
 };
 
 // =======================================================================
@@ -44,6 +47,7 @@ let editorState = {
  * @param {HTMLElement} container - Le conteneur DOM pour l'editeur
  * @param {Object} jsonData - Les donnees JSON a editer
  * @param {Object} options - Options supplementaires
+ * @param {Function} [options.onRequestCancel] - Délègue au conteneur la confirmation et l’annulation
  * @returns {Promise<boolean>} - Succes de l'initialisation
  */
 export async function initJsonEditor(notification, container, jsonData, options = {}) {
@@ -78,7 +82,7 @@ export async function initJsonEditor(notification, container, jsonData, options 
                 debugLog('Editor', 'initJsonEditor - moduleKey pre-connu via import:', notification.moduleKey, '→', editorKey);
                 detectionResult = {
                     moduleKey:  editorKey,
-                    moduleName: editorKey,
+                    moduleName: getModuleName(editorKey),
                     source:     'moodle'
                 };
             }
@@ -94,16 +98,15 @@ export async function initJsonEditor(notification, container, jsonData, options 
             return false;
         }
 
-        // Activités à image de fond (Image interactive, Find the Hotspot, Find Multiple Hotspots) :
-        // ré-hydrater les `dataURL` des images depuis le .h5p pour que l'éditeur AFFICHE l'image de
-        // fond (et les images de blocs). Le content.json ne porte que `path` — sans dataURL le widget
-        // image montre une preview vide. (Caramel-only : l'éditeur Sucrerie a son propre
-        // hydrateExistingImages dans son index.js divergent.)
-        if (['ImageHotspots', 'FindTheHotspot', 'FindMultipleHotspots', 'DragAndDrop'].includes(detectionResult.moduleKey) && notification.blob) {
+        // Tous les H5P peuvent contenir des médias (cartes et sous-activités comprises).
+        // Le JSON natif ne porte que leur chemin dans l'archive. Sucrerie possède
+        // son raccordement équivalent dans hydrateExistingImages.
+        if (detectionResult.source === 'h5p' && notification.blob) {
             try { await rehydrateIHImagesFromBlob(notification.blob, jsonData); }
             catch (e) { debugLog('Editor', 'rehydrate IH images échoué:', e && e.message); }
         }
 
+        if (detectionResult.moduleKey === 'elea_test') jsonData = reparerConsignesTest(jsonData);
         // Normaliser les données pour l'éditeur (ex: Glossary tableau -> {items: [...]})
         const normalizedData = normalizeDataForEditor(
             JSON.parse(JSON.stringify(jsonData)),
@@ -122,11 +125,15 @@ export async function initJsonEditor(notification, container, jsonData, options 
             validationErrors: [],
             container: container,
             onSave: options.onSave || null,
-            onCancel: options.onCancel || null
+            onCancel: options.onCancel || null,
+            onRequestCancel: options.onRequestCancel || null
         };
 
+        if (detectionResult.moduleKey==='InteractiveVideo' && jsonData.interactiveVideo) await prepareNativeVideoSchema(new URL('../vendor/h5p-libs/',import.meta.url).href);
+        if (detectionResult.moduleKey==='InteractiveBook' && jsonData.chapters?.[0]?.params) await prepareNativeBookSchema(new URL('../vendor/h5p-libs/',import.meta.url).href);
+        if (detectionResult.moduleKey==='CoursePresentation' && jsonData.presentation?.slides) await prepareNativePresentationSchema(new URL('../vendor/h5p-libs/',import.meta.url).href);
         // Obtenir le schema pour ce type
-        const schema = getSchemaForType(detectionResult.moduleKey);
+        const schema = getSchemaForType(detectionResult.moduleKey, editorState.currentData);
 
         if (!schema) {
             console.error('[JSON Editor] No schema found for:', detectionResult.moduleKey);
@@ -143,9 +150,26 @@ export async function initJsonEditor(notification, container, jsonData, options 
             onCancel: handleCancel
         });
 
+        // Le livre généré garde sa fiche simple ; les réglages complets ouvrent
+        // le même formulaire natif que les réexports Éléa, sans appel réseau IA.
+        if((detectionResult.moduleKey==='InteractiveBook' && !jsonData.chapters?.[0]?.params)||(detectionResult.moduleKey==='InteractiveVideo'&&!jsonData.interactiveVideo)){
+            const advanced=document.createElement('button');advanced.type='button';advanced.className='json-editor__btn json-editor__btn--secondary';advanced.dataset.action=detectionResult.moduleKey==='InteractiveBook'?'book-native':'video-native';advanced.textContent=t('editor_options_advanced');
+            advanced.addEventListener('click',async()=>{
+                advanced.disabled=true;
+                try {
+                    const saved=await saveChanges();if(!saved)return;
+                    const {processH5PContent}=await import('../h5p/processors/index.js');
+                    const result=await processH5PContent(detectionResult.moduleKey,healStructureForActivity(saved.data,detectionResult.moduleKey));
+                    await initJsonEditor(notification,container,result.content,options);
+                } catch(error){debugLog('Editor','Réglages complets du livre :',error);showEditorError(container,t('editor_media_error_processing'));}
+                finally{advanced.disabled=false;}
+            });
+            container.querySelector('.json-editor__actions-left')?.append(advanced);
+        }
+
         // Vidéo interactive : lecteur intégré + « insérer une question à ce moment » (Caramel-only,
         // monté en frère du conteneur pour survivre aux re-rendus).
-        if (detectionResult.moduleKey === 'InteractiveVideo') {
+        if (detectionResult.moduleKey === 'InteractiveVideo' && !jsonData.interactiveVideo) {
             import('./interactive-video-panel.js').then(m => {
                 m.mountInteractiveVideoPanel(container, {
                     getData: () => { const d = getEditorData(); if (d) editorState.currentData = d; return editorState.currentData; },
@@ -315,7 +339,8 @@ export function destroyEditor() {
         validationErrors: [],
         container: null,
         onSave: null,
-        onCancel: null
+        onCancel: null,
+        onRequestCancel: null
     };
 
     debugLog('Editor', 'Destroyed');
@@ -343,7 +368,7 @@ export async function saveChanges() {
     editorState.currentData = healStructureForActivity(editorState.currentData, editorState.moduleKey);
 
     // Valider les donnees (apres healing, ne rejette que les vrais manques de contenu)
-    const schema = getSchemaForType(editorState.moduleKey);
+    const schema = getSchemaForType(editorState.moduleKey, editorState.currentData);
     const errors = getValidationErrors(editorState.currentData, schema);
 
     if (errors.length > 0) {
@@ -353,10 +378,14 @@ export async function saveChanges() {
     }
 
     // Dénormaliser les données pour la sauvegarde (ex: Glossary {items: [...]} -> tableau)
-    const denormalizedData = denormalizeDataForSave(
+    let denormalizedData = denormalizeDataForSave(
         editorState.currentData,
         editorState.moduleKey
     );
+    if(editorState.moduleKey==='InteractiveVideo' && denormalizedData.interactiveVideo)denormalizedData=serializeNativeVideo(denormalizedData,editorState.originalData);
+    if(editorState.moduleKey==='InteractiveBook' && denormalizedData.chapters?.[0]?.params)denormalizedData=serializeNativeBook(denormalizedData,editorState.originalData);
+    if(editorState.moduleKey==='CoursePresentation' && denormalizedData.presentation?.slides)denormalizedData=serializeNativePresentation(denormalizedData,editorState.originalData);
+    if (editorState.moduleKey === 'elea_test') denormalizedData = reparerConsignesTest(denormalizedData);
     debugLog('Editor', 'saveChanges - denormalizedData:', JSON.stringify(denormalizedData, null, 2));
 
     // Retourner les donnees validees
@@ -383,7 +412,7 @@ export function discardChanges() {
     editorState.validationErrors = [];
 
     // Re-rendre l'editeur avec les donnees originales
-    const schema = getSchemaForType(editorState.moduleKey);
+    const schema = getSchemaForType(editorState.moduleKey, editorState.currentData);
     if (schema && editorState.container) {
         renderEditor(editorState.container, editorState.currentData, schema, {
             moduleKey: editorState.moduleKey,
@@ -458,6 +487,9 @@ async function handleSave() {
  * Gere le clic sur Annuler
  */
 async function handleCancel() {
+    // Le parcours protège aussi ses commandes Précédente/Suivante/Fermer :
+    // il centralise leur confirmation, sans empiler deux dialogues.
+    if (editorState.onRequestCancel) return editorState.onRequestCancel();
     if (editorState.hasChanges) {
         const message = t('editor_confirm_discard') || 'Voulez-vous vraiment annuler ? Les modifications non sauvegardées seront perdues.';
         const title = t('editor_confirm_discard_title') || 'Modifications non enregistrées';
@@ -627,7 +659,7 @@ function debounceValidation() {
         clearTimeout(validationTimeout);
     }
     validationTimeout = setTimeout(() => {
-        const schema = getSchemaForType(editorState.moduleKey);
+        const schema = getSchemaForType(editorState.moduleKey, editorState.currentData);
         if (schema) {
             const errors = getValidationErrors(editorState.currentData, schema);
             editorState.validationErrors = errors;
@@ -752,7 +784,7 @@ async function rehydrateIHImagesFromBlob(blob, contentJson) {
     (function walk(node) {
         if (!node || typeof node !== 'object') return;
         if (Array.isArray(node)) { node.forEach(walk); return; }
-        if (typeof node.path === 'string' && !node.dataURL) {
+        if (typeof node.path === 'string' && (!node.dataURL || node.dataURL.startsWith('blob:'))) {
             if (imageRe.test(node.path)) imageTargets.push(node);
             else if (avRe.test(node.path)) avTargets.push(node);
         }

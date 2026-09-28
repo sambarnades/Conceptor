@@ -93,26 +93,29 @@ async function main() {
     // ressources tierces. Le balayer permet de voir un drapeau déposé sans crédit —
     // impossible depuis le navigateur, qui ne sait pas lister un répertoire.
     console.log('\n2 bis. Ressources tierces d\'assets/');
-    const DOSSIER_DRAPEAUX = 'images/flags';
-    const cheminDrapeaux = join(ROOT, 'assets', DOSSIER_DRAPEAUX);
-    if (existsSync(cheminDrapeaux)) {
-        const drapeauxDisque = (await readdir(cheminDrapeaux, { withFileTypes: true }))
+    // Les dossiers d'assets/ qui reçoivent des ressources tierces : chaque
+    // fichier qu'ils contiennent doit être couvert — par une entrée `fichier`
+    // à son nom, ou par une entrée `dossier` qui crédite le dossier entier.
+    const DOSSIERS_TIERS = ['images/flags', ...ASSETS_A_MENTION.filter(e => e.dossier).map(e => e.dossier)];
+    for (const dossier of [...new Set(DOSSIERS_TIERS)]) {
+        const chemin = join(ROOT, 'assets', dossier);
+        if (!existsSync(chemin)) { ok(`assets/${dossier}/ absent — rien à inventorier`); continue; }
+        const surDisque = (await readdir(chemin, { withFileTypes: true }))
             .filter(e => e.isFile() && !e.name.startsWith('.'))
-            .map(e => `${DOSSIER_DRAPEAUX}/${e.name}`)
+            .map(e => `${dossier}/${e.name}`)
             .sort();
-        const inventoriesAssets = new Set(ASSETS_A_MENTION.map(e => e.fichier));
-        const assetsNonInventories = drapeauxDisque.filter(f => !inventoriesAssets.has(f));
-        if (assetsNonInventories.length === 0) {
-            ok(`${drapeauxDisque.length} ressource(s) dans assets/${DOSSIER_DRAPEAUX}/, toutes inventoriées`);
+        const parFichier = new Set(ASSETS_A_MENTION.filter(e => e.fichier).map(e => e.fichier));
+        const parDossier = new Set(ASSETS_A_MENTION.filter(e => e.dossier).map(e => e.dossier));
+        const nonInventories = surDisque.filter(f => !parFichier.has(f) && !parDossier.has(dossier));
+        if (nonInventories.length === 0) {
+            ok(`${surDisque.length} ressource(s) dans assets/${dossier}/, toutes inventoriées`);
         } else {
-            ko(`${assetsNonInventories.length} ressource(s) tierce(s) sans mention légale`, {
-                fichiers: assetsNonInventories,
-                correction: 'ajouter { fichier, cle } dans ASSETS_A_MENTION (tests/vendor-legal-map.js), '
+            ko(`${nonInventories.length} ressource(s) tierce(s) sans mention légale`, {
+                fichiers: nonInventories,
+                correction: 'ajouter { fichier, cle } ou { dossier, cle } dans ASSETS_A_MENTION (tests/vendor-legal-map.js), '
                     + 'le <li> dans assets/templates/mentions-legales.html, et la clé dans les 12 js/locales/*.json'
             });
         }
-    } else {
-        ok('assets/images/flags/ absent — rien à inventorier');
     }
 
     // ---------------------------------------------------------------- 3
@@ -124,8 +127,8 @@ async function main() {
         .filter(e => !existsSync(join(ROOT, 'css/vendor', e.fichier)))
         .map(e => e.fichier);
     const perimesAssets = ASSETS_A_MENTION
-        .filter(e => !existsSync(join(ROOT, 'assets', e.fichier)))
-        .map(e => e.fichier);
+        .filter(e => !existsSync(join(ROOT, 'assets', e.fichier || e.dossier)))
+        .map(e => e.fichier || e.dossier);
     if (perimesJs.length === 0 && perimesCss.length === 0 && perimesAssets.length === 0) {
         ok('Aucune entrée ne pointe un fichier absent');
     } else {

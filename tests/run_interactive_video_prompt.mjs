@@ -41,7 +41,7 @@ const PORT = 8107;
 
 const FIXTURE = JSON.parse(readFileSync(join(ROOT, 'tests/fixtures/interactive-video-transcript.json'), 'utf8'));
 
-const server = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'],
+const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'],
     { cwd: ROOT, stdio: 'ignore' });
 const stop = () => { try { server.kill('SIGTERM'); } catch { /* déjà mort */ } };
 process.on('exit', stop);
@@ -69,6 +69,9 @@ const browser = await chromium.launch();
 const page = await browser.newPage();
 page.on('pageerror', e => { console.error('❌ erreur de page :', e.message); failures++; });
 await page.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'domcontentloaded' });
+// Le dictionnaire complet (fr.json + socle en.json, cf. BASE_LOCALE) arrive APRÈS DOMContentLoaded :
+// sans cette attente, les modèles de prompt sont vides et le cas 1 échoue au hasard.
+await page.evaluate(async () => { await (await import('/js/core/translation.js')).loadTranslations('fr'); });
 
 /**
  * Construit le prompt « Vidéo interactive » DANS LA PAGE, avec le vrai module, pour un jeu de

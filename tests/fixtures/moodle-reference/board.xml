@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="93" moduleid="22725" modulename="board" contextid="55587">
+  <board id="93">
+    <course>340</course>
+    <name>Tableau</name>
+    <timemodified>1788524630</timemodified>
+    <intro>&lt;p&gt;d&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <historyid>0</historyid>
+    <background_color></background_color>
+    <addrating>0</addrating>
+    <hideheaders>0</hideheaders>
+    <sortby>3</sortby>
+    <postby>0</postby>
+    <userscanedit>0</userscanedit>
+    <singleusermode>0</singleusermode>
+    <completionnotes>1</completionnotes>
+    <embed>0</embed>
+    <columns>
+      <column id="374">
+        <boardid>93</boardid>
+        <name>Titre</name>
+        <sortorder>1</sortorder>
+        <notes>
+        </notes>
+      </column>
+      <column id="375">
+        <boardid>93</boardid>
+        <name>Titre</name>
+        <sortorder>2</sortorder>
+        <notes>
+        </notes>
+      </column>
+      <column id="376">
+        <boardid>93</boardid>
+        <name>Titre</name>
+        <sortorder>3</sortorder>
+        <notes>
+        </notes>
+      </column>
+    </columns>
+  </board>
+</activity>

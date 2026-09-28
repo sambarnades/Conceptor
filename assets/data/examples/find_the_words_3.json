@@ -1,4 +1,8 @@
 {
   "taskDescription": "Retrouvez dans la grille les termes mathematiques lies aux fonctions. Rappel : la fonction racine carree \\(\\sqrt{x}\\) est definie pour x positif, et la derivee de \\(x^2\\) est \\(2x\\). La formule de l'aire du cercle est \\(\\pi r^2\\).",
-  "wordList": "RACINE,DERIVEE,\\(\\sqrt{x}\\),CERCLE,π,√(x)"
+  "wordList": "RACINE,DERIVEE,\\(\\sqrt{x}\\),CERCLE,π,√(x)",
+  "behaviour": {
+    "fillPool": "abcdefghijklmnopqrstuvwxyz",
+    "preferOverlap": true
+  }
 }

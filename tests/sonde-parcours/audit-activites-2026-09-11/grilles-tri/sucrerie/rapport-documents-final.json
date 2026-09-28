@@ -1,0 +1,45 @@
+[
+  {
+    "id": "tri-options",
+    "options": {
+      "scoringMode": "positions",
+      "applyPenalties": false,
+      "duplicatesInterchangeable": false,
+      "enableRetry": true,
+      "enableSolutionsButton": true,
+      "addButtonsForMovement": false
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "grille-options",
+    "options": {
+      "preferOverlap": false,
+      "showVocabulary": true,
+      "enableShowSolution": true,
+      "enableRetry": true,
+      "orientations": {
+        "horizontal": false,
+        "horizontalBack": false,
+        "vertical": true,
+        "verticalUp": false,
+        "diagonal": false,
+        "diagonalBack": false,
+        "diagonalUp": false,
+        "diagonalUpBack": false
+      },
+      "fillPool": "Q"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

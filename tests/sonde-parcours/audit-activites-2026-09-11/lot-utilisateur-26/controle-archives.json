@@ -1,0 +1,184 @@
+[
+  {
+    "fichier": "02-Summary.h5p",
+    "sha256": "624eec5d8a333e0aa116c0f2eed5ba69b9920d224fddd920e04244f2bb3c98ed",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 02 — Résumé"
+  },
+  {
+    "fichier": "03-DragTheWords.h5p",
+    "sha256": "88b2d552a0086d5fffae27b2bcfe0e10551eab9f8cb68b214a9103312370c9f5",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 03 — Glisser les mots"
+  },
+  {
+    "fichier": "04-Essay.h5p",
+    "sha256": "06e95383940d67593fa5fdecfdeb5a6fcbeb6955db9c9acff3447de3d7180ad7",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 04 — Rédaction"
+  },
+  {
+    "fichier": "05-FillInTheBlanks.h5p",
+    "sha256": "afac629d958de86806a08762a6d3d16f09877e2a591317e32bb14313b11a8418",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 05 — Texte à trous"
+  },
+  {
+    "fichier": "06-MarkTheWords.h5p",
+    "sha256": "238e31845882c22e86c8826579f05bf13e2195b414012415a6be0d4940f69f96",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 06 — Marquer les mots"
+  },
+  {
+    "fichier": "07-TrueFalse.h5p",
+    "sha256": "34a03277350edbd27f21d3f69229ab0982bdc1428129c1ebc8567be5453e8a80",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 07 — Vrai-Faux"
+  },
+  {
+    "fichier": "08-MultipleChoice.h5p",
+    "sha256": "987abbd4385fd7711871f78aa3a990d8b807b5452b24b7eb3a130ede86453c90",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 08 — Choix multiple"
+  },
+  {
+    "fichier": "09-SingleChoiceSet.h5p",
+    "sha256": "01a30b52f57ddb450442b81d751e01b92ec4b8a556a24051c3a6a131b4eede5f",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 09 — Choix unique en série"
+  },
+  {
+    "fichier": "10-Flashcards.h5p",
+    "sha256": "8194a9cd874c8e7cdb76dd3408091f98d9ac5e470c0e8f94e8e3069db1d5e5f8",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 10 — Cartes mémoire"
+  },
+  {
+    "fichier": "11-DialogCards.h5p",
+    "sha256": "df74e1612cf83deee2b4a7c7bd17496e1d82f7fd84119089080a71133185a642",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 11 — Cartes de dialogue"
+  },
+  {
+    "fichier": "12-Dictation.h5p",
+    "sha256": "a9f9da40c4cdc2fa2f0f954ffe792e44902aca044179775154bc122f7ddc5d6f",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 12 — Dictée"
+  },
+  {
+    "fichier": "13-FindTheWords.h5p",
+    "sha256": "542402cae7120f52c97357f0eabab94becb07d4587182ab48fbf8543607a7eb9",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 13 — Mots mêlés"
+  },
+  {
+    "fichier": "14-SortParagraphs.h5p",
+    "sha256": "087e8fd58975b45f858634a38b2405664510bf60f381427afc930f14fd9560df",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 14 — Classer les paragraphes"
+  },
+  {
+    "fichier": "15-Crossword.h5p",
+    "sha256": "57a3fd6fa531f22ed59756c0a9542aa6ca350ac21d8e9d7081b74154c373f7d3",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 15 — Mots croisés"
+  },
+  {
+    "fichier": "16-Glossary.h5p",
+    "sha256": "2cbb55a75b503ba08b8806df625547da3ef933b2c5d478a3caa34206e5ac1150",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 16 — Glossaire"
+  },
+  {
+    "fichier": "17-QuizSet.h5p",
+    "sha256": "5bf92c4f00f034099ccd1f076bf7b363780c20c6aef9829db5f550090ee6ba14",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 17 — Questionnaire mixte"
+  },
+  {
+    "fichier": "18-QuizSetQCM.h5p",
+    "sha256": "1855720b222a5783280164dd64f3c5ab9a8a9c629c374ee162167de056bc4554",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 18 — Questionnaire QCM"
+  },
+  {
+    "fichier": "19-QuizSetVF.h5p",
+    "sha256": "8a20be473414946e2a72b187e8abf93feb5ad0cd224ad8edddcaec9366002777",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 19 — Questionnaire Vrai-Faux"
+  },
+  {
+    "fichier": "20-DragAndDrop.h5p",
+    "sha256": "80800d9a58ad7be4d9354cebf36466de59ff1a686dc5211d588f99a3c5226071",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 20 — Glisser-déposer"
+  },
+  {
+    "fichier": "21-Timeline.h5p",
+    "sha256": "e4215995c87b07012f18fa7d8528ce20c65a913899f7c980545cd6562a8cc8e5",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 21 — Frise chronologique"
+  },
+  {
+    "fichier": "22-ImageHotspots.h5p",
+    "sha256": "011787b9a532388d3c01ea927f67856867ff9ab0fbaec040dc579536a11c36df",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 22 — Image interactive"
+  },
+  {
+    "fichier": "23-FindTheHotspot.h5p",
+    "sha256": "8634b7a8af50660241aed6919d934e826dd8ae638898b529b97b0305ab1040ff",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 23 — Trouver la zone"
+  },
+  {
+    "fichier": "24-FindMultipleHotspots.h5p",
+    "sha256": "02f3d238e998ca0d990328c70d8a27ab39db343586c8c505b349dc090391e7a6",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 24 — Trouver les zones"
+  },
+  {
+    "fichier": "25-CoursePresentation.h5p",
+    "sha256": "68c1755f230046cd9cd2d13018ddde1ceffecd28440afe39687efcc99b2ea972",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 25 — Présentation"
+  },
+  {
+    "fichier": "26-InteractiveBook.h5p",
+    "sha256": "6ded165c72f158b7f13301f26246a996e2ac4d9adcb43951e21117e3cf14cce7",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 26 — Livre interactif"
+  },
+  {
+    "fichier": "27-InteractiveVideo.h5p",
+    "sha256": "64a11ca6394a2863dd4b3d7650b91490394663bb3629b67bb66983084b65e8c2",
+    "zip_valide": true,
+    "medias_manquants": [],
+    "titre": "RECETTE 27 — Vidéo interactive"
+  }
+]

@@ -14,6 +14,7 @@ import { formatTextToHtml } from '../../core/utils.js';
 
 export default {
     process: (jsonObj) => {
+        if (!Array.isArray(jsonObj.dialogs) || !jsonObj.dialogs.length) throw Error('DialogCards : au moins une carte est requise.');
         const formatDialogText = (text) => {
             if (!text) return '';
             const html = formatTextToHtml(text);
@@ -23,27 +24,34 @@ export default {
         const transformedDialogs = (Array.isArray(jsonObj.dialogs) ? jsonObj.dialogs : []).map(dialog => {
             const { text, answer, tips } = dialog;
             return {
+                ...dialog,
                 text: formatDialogText(text),
                 answer: formatDialogText(answer),
                 tips: {
-                    front: tips?.front ? formatTextToHtml(tips.front) : '',
-                    back: tips?.back ? formatTextToHtml(tips.back) : ''
+                    front: tips?.front || '',
+                    back: tips?.back || ''
                 },
+                // Le champ natif audio est une liste de sources alternatives.
+                // Conserver les crédits et les métadonnées des médias importés.
+                ...(dialog.audio ? { audio: (Array.isArray(dialog.audio) ? dialog.audio : [dialog.audio])
+                    .filter(source => source?.path).map(({ dataURL, kind, ...source }) => source) } : {}),
                 // Image optionnelle — structure attendue par H5P.Dialogcards semantics
                 ...(dialog.image && dialog.image.path ? {
                     image: {
+                        ...dialog.image,
                         path: dialog.image.path,
                         mime: dialog.image.mime || "image/jpeg",
-                        copyright: { license: "U" },
+                        copyright: dialog.image.copyright || { license: "U" },
                         width: dialog.image.width || 0,
                         height: dialog.image.height || 0
                     },
                     imageAltText: dialog.imageAltText || ""
-                } : {})
+                } : {image: undefined})
             };
         });
 
-        return {
+        const result = {
+            ...jsonObj,
             title: (jsonObj.title && !jsonObj.title.startsWith('<p>')) ? `<p>${jsonObj.title}</p>` : jsonObj.title,
             description: formatTextToHtml(jsonObj.description),
             dialogs: transformedDialogs,
@@ -52,6 +60,8 @@ export default {
                 disableBackwardsNavigation: false,
                 scaleTextNotCard: true,
                 randomCards: false,
+                maxProficiency: 5,
+                quickProgression: false,
                 ...(jsonObj.behaviour || {})
             },
             answer: translations.h5p_dialog_cards_answer || "Retourner",
@@ -83,8 +93,13 @@ export default {
                 header: translations.h5p_finish_header || "Terminer ?",
                 body: translations.h5p_finish_body || "Êtes-vous sûr de vouloir terminer ?",
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
-                confirmLabel: translations.h5p_finish_label || "Terminer"
+                confirmLabel: translations.h5p_finish_label || "Terminer",
+                ...(jsonObj.confirmStartingOver || {})
             }
         };
+        for (const [key,value] of Object.entries(jsonObj)) {
+            if (typeof value === 'string' && !['title','description','mode'].includes(key) && key in result) result[key]=value;
+        }
+        return result;
     }
 };

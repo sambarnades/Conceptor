@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="58" moduleid="14013" modulename="feedback" contextid="17741">
+  <feedback id="58">
+    <name>Feedback : ton avis sur la séquence</name>
+    <intro>&lt;p&gt;Dis-nous ce que tu as pensé de cette séquence.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <anonymous>1</anonymous>
+    <email_notification>0</email_notification>
+    <multiple_submit>0</multiple_submit>
+    <autonumbering>0</autonumbering>
+    <site_after_submit></site_after_submit>
+    <page_after_submit>&lt;p&gt;Merci pour ta réponse !&lt;/p&gt;</page_after_submit>
+    <page_after_submitformat>1</page_after_submitformat>
+    <publish_stats>0</publish_stats>
+    <timeopen>0</timeopen>
+    <timeclose>0</timeclose>
+    <timemodified>1790541046</timemodified>
+    <completionsubmit>1</completionsubmit>
+    <items>
+      <item id="728">
+        <template>0</template>
+        <name>As-tu compris le cycle de l’eau ?</name>
+        <label>comprehension</label>
+        <presentation>r&gt;&gt;&gt;&gt;&gt;Oui, très bien
+|En partie
+|Pas encore</presentation>
+        <typ>multichoice</typ>
+        <hasvalue>1</hasvalue>
+        <position>1</position>
+        <required>1</required>
+        <dependitem>0</dependitem>
+        <dependvalue></dependvalue>
+        <options></options>
+      </item>
+      <item id="729">
+        <template>0</template>
+        <name>Qu’est-ce qui t’a aidé ?</name>
+        <label>aide</label>
+        <presentation>40|5</presentation>
+        <typ>textarea</typ>
+        <hasvalue>1</hasvalue>
+        <position>2</position>
+        <required>0</required>
+        <dependitem>0</dependitem>
+        <dependvalue></dependvalue>
+        <options></options>
+      </item>
+    </items>
+    <completeds>
+    </completeds>
+  </feedback>
+</activity>

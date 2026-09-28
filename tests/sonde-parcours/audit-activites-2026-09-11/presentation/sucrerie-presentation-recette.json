@@ -1,0 +1,1382 @@
+[
+  {
+    "id": "presentation-complet",
+    "contenu": {
+      "presentation": {
+        "slides": [
+          {
+            "elements": [
+              {
+                "x": 36,
+                "y": 2.362842878037139,
+                "width": 62,
+                "height": 45,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "207e4728-578d-4d4f-805f-7bf30efb4fa5",
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Quelle ville est la capitale de la France ?",
+                    "contentType": "Multiple Choice",
+                    "license": "U"
+                  },
+                  "params": {
+                    "question": "Quelle ville est la capitale française ? RELU Sucrerie",
+                    "answers": [
+                      {
+                        "text": "Paris",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "",
+                          "chosenFeedback": "",
+                          "notChosenFeedback": ""
+                        }
+                      },
+                      {
+                        "text": "Rome",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "",
+                          "chosenFeedback": "",
+                          "notChosenFeedback": ""
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "type": "single",
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "randomAnswers": false,
+                      "autoCheck": false,
+                      "singlePoint": false,
+                      "showScorePoints": true,
+                      "passPercentage": 50,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "enableCheckButton": true,
+                      "showSolutionsRequiresInput": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 50,
+                        "feedback": ""
+                      },
+                      {
+                        "from": 51,
+                        "to": 100,
+                        "feedback": ""
+                      }
+                    ],
+                    "UI": {
+                      "checkAnswerButton": "Vérifier",
+                      "showSolutionButton": "Afficher la solution",
+                      "tryAgainButton": "Recommencer",
+                      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                      "submitAnswerButton": "Valider",
+                      "tipsLabel": "Indice",
+                      "tipAvailable": "Indice disponible",
+                      "feedbackAvailable": "Feedback disponible",
+                      "readFeedback": "Lire le commentaire",
+                      "wrongAnswer": "Mauvaise réponse",
+                      "correctAnswer": "Bonne réponse",
+                      "shouldCheck": "Il fallait cocher ici",
+                      "shouldNotCheck": "Il ne fallait pas cocher ici !",
+                      "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+                      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                    },
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Êtes-vous certain de vouloir terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Terminer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Êtes-vous certain de vouloir recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": "Commentaire pédagogique RELU",
+                "buttonLabel": "Ouvrir la question RELU"
+              },
+              {
+                "x": 36,
+                "y": 53,
+                "width": 62,
+                "height": 42,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Madrid est la capitale de l’Espagne.",
+                    "contentType": "True/False Question",
+                    "license": "U"
+                  },
+                  "params": {
+                    "question": "Rome est la capitale italienne. RELU",
+                    "correct": "true",
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "enableCheckButton": false,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "autoCheck": true,
+                      "feedbackOnCorrect": "Rome est la capitale italienne.",
+                      "feedbackOnWrong": "Rome est bien la capitale italienne."
+                    },
+                    "l10n": {
+                      "trueText": "Vrai",
+                      "falseText": "Faux",
+                      "score": "Vous avez obtenu @score sur @total points",
+                      "checkAnswer": "Vérifier",
+                      "showSolutionButton": "Afficher la solution",
+                      "tryAgain": "Recommencer",
+                      "wrongAnswerMessage": "Mauvaise réponse",
+                      "correctAnswerMessage": "Bonne réponse",
+                      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                      "submitAnswer": "Valider",
+                      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                    },
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Voulez-vous vraiment terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Voulez-vous vraiment recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "MultipleChoice"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "elements": [
+              {
+                "x": 37.24,
+                "y": 2,
+                "width": 59.519999999999996,
+                "height": 96,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "5bc17782-baf5-4acf-80e6-b54525842fc5",
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Madrid est la capitale de l’Espagne.",
+                    "contentType": "True/False Question",
+                    "license": "U"
+                  },
+                  "params": {
+                    "question": "Madrid est la capitale de l’Espagne.",
+                    "correct": "true",
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "enableCheckButton": false,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "autoCheck": true,
+                      "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+                      "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+                    },
+                    "l10n": {
+                      "trueText": "Vrai",
+                      "falseText": "Faux",
+                      "score": "Vous avez obtenu @score sur @total points",
+                      "checkAnswer": "Vérifier",
+                      "showSolutionButton": "Afficher la solution",
+                      "tryAgain": "Recommencer",
+                      "wrongAnswerMessage": "Mauvaise réponse",
+                      "correctAnswerMessage": "Bonne réponse",
+                      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                      "submitAnswer": "Valider",
+                      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                    },
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Voulez-vous vraiment terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Voulez-vous vraiment recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "TrueFalse"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "elements": [
+              {
+                "x": 37.24,
+                "y": 2,
+                "width": 59.519999999999996,
+                "height": 96,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "f55a5d99-662f-4316-be71-4b16296861ff",
+                  "library": "H5P.Blanks 1.14",
+                  "metadata": {
+                    "title": "Exercice",
+                    "contentType": "Fill in the Blanks",
+                    "license": "U"
+                  },
+                  "params": {
+                    "questions": [
+                      "France : *Paris*. Italie : *Rome*."
+                    ],
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "caseSensitive": false,
+                      "autoCheck": false,
+                      "acceptSpellingErrors": false,
+                      "separateLines": false,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "enableCheckButton": true,
+                      "showSolutionsRequiresInput": false,
+                      "allowRetryIfCorrect": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 50,
+                        "feedback": ""
+                      },
+                      {
+                        "from": 51,
+                        "to": 100,
+                        "feedback": ""
+                      }
+                    ],
+                    "text": "Complète les deux capitales.",
+                    "checkAnswer": "Vérifier",
+                    "tryAgain": "Recommencer",
+                    "showSolutions": "Afficher la solution",
+                    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                    "notFilledOut": "Veuillez remplir tous les champs.",
+                    "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                    "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                    "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+                    "a11yCheckingModeHeader": "Mode de vérification",
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "submitAnswer": "Vérifier",
+                    "answerIsCorrect": "&#039;:ans&#039; est une réponse exacte",
+                    "answerIsWrong": "&#039;:ans&#039; est une réponse inexacte",
+                    "answeredCorrectly": "Réponse exacte",
+                    "answeredIncorrectly": "Mauvaise réponse",
+                    "solutionLabel": "Réponse correcte :",
+                    "inputLabel": "Blanc @num sur @total",
+                    "inputHasTipLabel": "Indice disponible",
+                    "tipLabel": "Indice",
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Êtes-vous sûr de vouloir terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Terminer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Êtes-vous sûr de vouloir recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "FillInTheBlanks"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "elements": [
+              {
+                "x": 37.24,
+                "y": 2,
+                "width": 59.519999999999996,
+                "height": 96,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "e0c34347-7afc-43d6-91dc-fd0bb3b95ab1",
+                  "library": "H5P.MarkTheWords 1.11",
+                  "metadata": {
+                    "title": "Exercice",
+                    "contentType": "Mark the Words",
+                    "license": "U"
+                  },
+                  "params": {
+                    "taskDescription": "Sélectionne les capitales.",
+                    "textField": "*Paris* Lyon *Rome* Milan",
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "showScorePoints": true,
+                      "enableCheckButton": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 50,
+                        "feedback": ""
+                      },
+                      {
+                        "from": 51,
+                        "to": 100,
+                        "feedback": ""
+                      }
+                    ],
+                    "correctAnswer": "Correct !",
+                    "incorrectAnswer": "Incorrect !",
+                    "missedAnswer": "Manqué !",
+                    "displaySolutionDescription": "La tâche est mise à jour pour contenir la solution.",
+                    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                    "submitAnswerButton": "Valider",
+                    "a11yFullTextLabel": "Texte complet lisible",
+                    "a11yClickableTextLabel": "Texte complet où les mots peuvent être marqués",
+                    "a11ySolutionModeHeader": "Mode solution",
+                    "a11yCheckingHeader": "Mode de vérification",
+                    "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                    "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                    "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+                    "checkAnswerButton": "Vérifier",
+                    "tryAgainButton": "Recommencer",
+                    "showSolutionButton": "Afficher la solution",
+                    "media": {
+                      "disableImageZooming": false
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "MarkTheWords"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "keywords": [
+              {
+                "main": "Médias RELU"
+              }
+            ],
+            "elements": [
+              {
+                "x": 37.24,
+                "y": 2,
+                "width": 59.519999999999996,
+                "height": 10,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.AdvancedText 1.1",
+                  "params": {
+                    "text": "Premier texte RELU"
+                  },
+                  "subContentId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+                }
+              },
+              {
+                "x": 37.24,
+                "y": 13,
+                "width": 59.519999999999996,
+                "height": 10,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.AdvancedText 1.1",
+                  "params": {
+                    "text": "Deuxième texte RELU"
+                  },
+                  "subContentId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+                }
+              },
+              {
+                "x": 37.24,
+                "y": 25,
+                "width": 27.9,
+                "height": 45,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.Image 1.1",
+                  "params": {
+                    "file": {
+                      "path": "images/recette-zones.png",
+                      "mime": "image/png",
+                      "copyright": {
+                        "license": "PD",
+                        "version": "CC0 1.0",
+                        "title": "Trois zones de recette"
+                      },
+                      "width": 800,
+                      "height": 450
+                    },
+                    "alt": "Trois rectangles RELU"
+                  },
+                  "subContentId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+                }
+              },
+              {
+                "x": 67,
+                "y": 25,
+                "width": 27.9,
+                "height": 15,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.Audio 1.5",
+                  "params": {
+                    "playerMode": "full",
+                    "fitToWrapper": false,
+                    "controls": true,
+                    "autoplay": false,
+                    "files": [
+                      {
+                        "path": "audios/audio-d913246e.wav",
+                        "mime": "audio/wav"
+                      }
+                    ]
+                  },
+                  "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+                  "metadata": {
+                    "title": "",
+                    "license": "U",
+                    "contentType": "Image"
+                  }
+                }
+              },
+              {
+                "x": 67,
+                "y": 43,
+                "width": 27.9,
+                "height": 45,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.Video 1.6",
+                  "params": {
+                    "visuals": {
+                      "controls": true,
+                      "fit": true
+                    },
+                    "playback": {
+                      "autoplay": false,
+                      "loop": false
+                    },
+                    "sources": [
+                      {
+                        "path": "videos/video-f2c92659.webm",
+                        "mime": "video/webm"
+                      }
+                    ]
+                  },
+                  "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+                  "metadata": {
+                    "title": "",
+                    "license": "U",
+                    "contentType": "Image"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "keywordListEnabled": true,
+        "keywordListAlwaysShow": true,
+        "keywordListAutoHide": false,
+        "keywordListOpacity": 90,
+        "globalBackgroundSelector": {
+          "fillGlobalBackground": "#ffffff"
+        }
+      },
+      "override": {
+        "activeSurface": false,
+        "hideSummarySlide": false,
+        "showSolutionButton": "on",
+        "retryButton": "on",
+        "summarySlideSolutionButton": true,
+        "summarySlideRetryButton": true,
+        "enablePrintButton": false,
+        "social": {
+          "showFacebookShare": false,
+          "facebookShare": {
+            "url": "@currentpageurl",
+            "quote": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl."
+          },
+          "showTwitterShare": false,
+          "twitterShare": {
+            "statement": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl.",
+            "url": "@currentpageurl",
+            "hashtags": "h5p, cours"
+          },
+          "showGoogleShare": false,
+          "googleShareUrl": "@currentpageurl"
+        }
+      },
+      "l10n": {
+        "slide": "Diapositive",
+        "slides": "Diapositives",
+        "currentSlide": "Diapositive actuelle",
+        "nextSlide": "Diapositive suivante",
+        "prevSlide": "Diapositive précédente",
+        "lastSlide": "Dernière diapositive",
+        "score": "Score",
+        "yourScore": "Votre score",
+        "maxScore": "Score maximum",
+        "total": "Total",
+        "totalScore": "Score total",
+        "scoreMessage": "Vous avez obtenu :",
+        "showSolutions": "Afficher la solution",
+        "solutionsButtonTitle": "Afficher les commentaires",
+        "retry": "Recommencer",
+        "exportAnswers": "Exporter les réponses",
+        "summary": "Résumé",
+        "summaryMultipleTaskText": "Plusieurs exercices",
+        "hideKeywords": "Masquer le menu de navigation",
+        "showKeywords": "Afficher le menu de navigation",
+        "fullscreen": "Plein écran",
+        "exitFullscreen": "Quitter le plein écran",
+        "noTitle": "Sans titre",
+        "printTitle": "Imprimer",
+        "printIngress": "Comment souhaitez-vous imprimer cette présentation ?",
+        "printAllSlides": "Imprimer toutes les diapositives",
+        "printCurrentSlide": "Imprimer la diapositive actuelle",
+        "solutionModeTitle": "Quitter le mode solution",
+        "solutionModeText": "Mode solution",
+        "accessibilitySlideNavigationExplanation": "Utilisez les flèches gauche et droite pour naviguer entre les diapositives.",
+        "accessibilityCanvasLabel": "Présentation. Utilisez les flèches pour naviguer.",
+        "accessibilityProgressBarLabel": "Choisir la diapositive à afficher",
+        "accessibilityTotalScore": "Vous avez obtenu @score sur @maxScore points au total",
+        "accessibilityEnteredFullscreen": "Mode plein écran activé",
+        "accessibilityExitedFullscreen": "Mode plein écran désactivé",
+        "containsNotCompleted": "@slideName contient une interaction non terminée",
+        "containsCompleted": "@slideName contient une interaction terminée",
+        "containsOnlyCorrect": "@slideName n&#039;a que des réponses correctes",
+        "containsIncorrectAnswers": "@slideName a des réponses incorrectes",
+        "slideCount": "Diapositive @index sur @total",
+        "confirmDialogHeader": "Soumettre vos réponses",
+        "confirmDialogText": "Cela soumettra vos résultats. Voulez-vous continuer ?",
+        "confirmDialogConfirmText": "Soumettre et voir les résultats",
+        "confirmDialogConfirmLabel": "Confirmer",
+        "confirmDialogCancelLabel": "Annuler",
+        "resultHeader": "Résultats",
+        "amountCorrect": "@value / @max correctes",
+        "amountCorrectAria": "@value sur @max correctes",
+        "shareResult": "Partager le résultat",
+        "shareFacebook": "Partager sur Facebook",
+        "shareTwitter": "Partager sur Twitter",
+        "shareGoogle": "Partager sur Google+",
+        "slideshowNavigationLabel": "Navigation dans le diaporama"
+      },
+      "title": "Présentation RELU Sucrerie",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "presentation-sans-bilan",
+    "contenu": {
+      "presentation": {
+        "slides": [
+          {
+            "elements": [
+              {
+                "x": 36,
+                "y": 2.362842878037139,
+                "width": 62,
+                "height": 45,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "207e4728-578d-4d4f-805f-7bf30efb4fa5",
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Quelle ville est la capitale de la France ?",
+                    "contentType": "Multiple Choice",
+                    "license": "U"
+                  },
+                  "params": {
+                    "question": "Quelle ville est la capitale française ? RELU Sucrerie",
+                    "answers": [
+                      {
+                        "text": "Paris",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "",
+                          "chosenFeedback": "",
+                          "notChosenFeedback": ""
+                        }
+                      },
+                      {
+                        "text": "Rome",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "",
+                          "chosenFeedback": "",
+                          "notChosenFeedback": ""
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "type": "single",
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "randomAnswers": false,
+                      "autoCheck": false,
+                      "singlePoint": false,
+                      "showScorePoints": true,
+                      "passPercentage": 50,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "enableCheckButton": true,
+                      "showSolutionsRequiresInput": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 50,
+                        "feedback": ""
+                      },
+                      {
+                        "from": 51,
+                        "to": 100,
+                        "feedback": ""
+                      }
+                    ],
+                    "UI": {
+                      "checkAnswerButton": "Vérifier",
+                      "showSolutionButton": "Afficher la solution",
+                      "tryAgainButton": "Recommencer",
+                      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                      "submitAnswerButton": "Valider",
+                      "tipsLabel": "Indice",
+                      "tipAvailable": "Indice disponible",
+                      "feedbackAvailable": "Feedback disponible",
+                      "readFeedback": "Lire le commentaire",
+                      "wrongAnswer": "Mauvaise réponse",
+                      "correctAnswer": "Bonne réponse",
+                      "shouldCheck": "Il fallait cocher ici",
+                      "shouldNotCheck": "Il ne fallait pas cocher ici !",
+                      "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+                      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                    },
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Êtes-vous certain de vouloir terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Terminer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Êtes-vous certain de vouloir recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": "Commentaire pédagogique RELU",
+                "buttonLabel": "Ouvrir la question RELU"
+              },
+              {
+                "x": 36,
+                "y": 53,
+                "width": 62,
+                "height": 42,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Madrid est la capitale de l’Espagne.",
+                    "contentType": "True/False Question",
+                    "license": "U"
+                  },
+                  "params": {
+                    "question": "Rome est la capitale italienne. RELU",
+                    "correct": "true",
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "enableCheckButton": false,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "autoCheck": true,
+                      "feedbackOnCorrect": "Rome est la capitale italienne.",
+                      "feedbackOnWrong": "Rome est bien la capitale italienne."
+                    },
+                    "l10n": {
+                      "trueText": "Vrai",
+                      "falseText": "Faux",
+                      "score": "Vous avez obtenu @score sur @total points",
+                      "checkAnswer": "Vérifier",
+                      "showSolutionButton": "Afficher la solution",
+                      "tryAgain": "Recommencer",
+                      "wrongAnswerMessage": "Mauvaise réponse",
+                      "correctAnswerMessage": "Bonne réponse",
+                      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                      "submitAnswer": "Valider",
+                      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                    },
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Voulez-vous vraiment terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Voulez-vous vraiment recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "MultipleChoice"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "elements": [
+              {
+                "x": 2,
+                "y": 2,
+                "width": 96,
+                "height": 96,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "5bc17782-baf5-4acf-80e6-b54525842fc5",
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Madrid est la capitale de l’Espagne.",
+                    "contentType": "True/False Question",
+                    "license": "U"
+                  },
+                  "params": {
+                    "question": "Madrid est la capitale de l’Espagne.",
+                    "correct": "true",
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "enableCheckButton": false,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "autoCheck": true,
+                      "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+                      "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+                    },
+                    "l10n": {
+                      "trueText": "Vrai",
+                      "falseText": "Faux",
+                      "score": "Vous avez obtenu @score sur @total points",
+                      "checkAnswer": "Vérifier",
+                      "showSolutionButton": "Afficher la solution",
+                      "tryAgain": "Recommencer",
+                      "wrongAnswerMessage": "Mauvaise réponse",
+                      "correctAnswerMessage": "Bonne réponse",
+                      "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                      "submitAnswer": "Valider",
+                      "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                      "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                      "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                    },
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Voulez-vous vraiment terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Voulez-vous vraiment recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "TrueFalse"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "elements": [
+              {
+                "x": 2,
+                "y": 2,
+                "width": 96,
+                "height": 96,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "f55a5d99-662f-4316-be71-4b16296861ff",
+                  "library": "H5P.Blanks 1.14",
+                  "metadata": {
+                    "title": "Exercice",
+                    "contentType": "Fill in the Blanks",
+                    "license": "U"
+                  },
+                  "params": {
+                    "questions": [
+                      "France : *Paris*. Italie : *Rome*."
+                    ],
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "caseSensitive": false,
+                      "autoCheck": false,
+                      "acceptSpellingErrors": false,
+                      "separateLines": false,
+                      "confirmCheckDialog": false,
+                      "confirmRetryDialog": false,
+                      "enableCheckButton": true,
+                      "showSolutionsRequiresInput": false,
+                      "allowRetryIfCorrect": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 50,
+                        "feedback": ""
+                      },
+                      {
+                        "from": 51,
+                        "to": 100,
+                        "feedback": ""
+                      }
+                    ],
+                    "text": "Complète les deux capitales.",
+                    "checkAnswer": "Vérifier",
+                    "tryAgain": "Recommencer",
+                    "showSolutions": "Afficher la solution",
+                    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                    "notFilledOut": "Veuillez remplir tous les champs.",
+                    "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                    "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                    "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+                    "a11yCheckingModeHeader": "Mode de vérification",
+                    "media": {
+                      "disableImageZooming": false
+                    },
+                    "submitAnswer": "Vérifier",
+                    "answerIsCorrect": "&#039;:ans&#039; est une réponse exacte",
+                    "answerIsWrong": "&#039;:ans&#039; est une réponse inexacte",
+                    "answeredCorrectly": "Réponse exacte",
+                    "answeredIncorrectly": "Mauvaise réponse",
+                    "solutionLabel": "Réponse correcte :",
+                    "inputLabel": "Blanc @num sur @total",
+                    "inputHasTipLabel": "Indice disponible",
+                    "tipLabel": "Indice",
+                    "confirmCheck": {
+                      "header": "Terminer ?",
+                      "body": "Êtes-vous sûr de vouloir terminer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Terminer"
+                    },
+                    "confirmRetry": {
+                      "header": "Recommencer ?",
+                      "body": "Êtes-vous sûr de vouloir recommencer ?",
+                      "cancelLabel": "Annuler",
+                      "confirmLabel": "Confirmer"
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "FillInTheBlanks"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "elements": [
+              {
+                "x": 2,
+                "y": 2,
+                "width": 96,
+                "height": 96,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "action": {
+                  "subContentId": "e0c34347-7afc-43d6-91dc-fd0bb3b95ab1",
+                  "library": "H5P.MarkTheWords 1.11",
+                  "metadata": {
+                    "title": "Exercice",
+                    "contentType": "Mark the Words",
+                    "license": "U"
+                  },
+                  "params": {
+                    "taskDescription": "Sélectionne les capitales.",
+                    "textField": "*Paris* Lyon *Rome* Milan",
+                    "behaviour": {
+                      "enableRetry": true,
+                      "enableSolutionsButton": true,
+                      "showScorePoints": true,
+                      "enableCheckButton": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 50,
+                        "feedback": ""
+                      },
+                      {
+                        "from": 51,
+                        "to": 100,
+                        "feedback": ""
+                      }
+                    ],
+                    "correctAnswer": "Correct !",
+                    "incorrectAnswer": "Incorrect !",
+                    "missedAnswer": "Manqué !",
+                    "displaySolutionDescription": "La tâche est mise à jour pour contenir la solution.",
+                    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                    "submitAnswerButton": "Valider",
+                    "a11yFullTextLabel": "Texte complet lisible",
+                    "a11yClickableTextLabel": "Texte complet où les mots peuvent être marqués",
+                    "a11ySolutionModeHeader": "Mode solution",
+                    "a11yCheckingHeader": "Mode de vérification",
+                    "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                    "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                    "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+                    "checkAnswerButton": "Vérifier",
+                    "tryAgainButton": "Recommencer",
+                    "showSolutionButton": "Afficher la solution",
+                    "media": {
+                      "disableImageZooming": false
+                    }
+                  }
+                },
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "invisible": false,
+                "solution": ""
+              }
+            ],
+            "keywords": [
+              {
+                "main": "MarkTheWords"
+              }
+            ],
+            "slideBackgroundSelector": {
+              "fillSlideBackground": "#ffffff"
+            }
+          },
+          {
+            "keywords": [
+              {
+                "main": "Médias RELU"
+              }
+            ],
+            "elements": [
+              {
+                "x": 2,
+                "y": 2,
+                "width": 96,
+                "height": 10,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.AdvancedText 1.1",
+                  "params": {
+                    "text": "Premier texte RELU"
+                  },
+                  "subContentId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+                }
+              },
+              {
+                "x": 2,
+                "y": 13,
+                "width": 96,
+                "height": 10,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.AdvancedText 1.1",
+                  "params": {
+                    "text": "Deuxième texte RELU"
+                  },
+                  "subContentId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+                }
+              },
+              {
+                "x": 2,
+                "y": 25,
+                "width": 45,
+                "height": 45,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.Image 1.1",
+                  "params": {
+                    "file": {
+                      "path": "images/recette-zones.png",
+                      "mime": "image/png",
+                      "copyright": {
+                        "license": "PD",
+                        "version": "CC0 1.0",
+                        "title": "Trois zones de recette"
+                      },
+                      "width": 800,
+                      "height": 450
+                    },
+                    "alt": "Trois rectangles RELU"
+                  },
+                  "subContentId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+                }
+              },
+              {
+                "x": 50,
+                "y": 25,
+                "width": 45,
+                "height": 15,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.Audio 1.5",
+                  "params": {
+                    "playerMode": "full",
+                    "fitToWrapper": false,
+                    "controls": true,
+                    "autoplay": false,
+                    "files": [
+                      {
+                        "path": "audios/audio-d913246e.wav",
+                        "mime": "audio/wav"
+                      }
+                    ]
+                  },
+                  "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+                  "metadata": {
+                    "title": "",
+                    "license": "U",
+                    "contentType": "Image"
+                  }
+                }
+              },
+              {
+                "x": 50,
+                "y": 43,
+                "width": 45,
+                "height": 45,
+                "backgroundOpacity": 0,
+                "displayAsButton": false,
+                "alwaysDisplayComments": false,
+                "buttonSize": "big",
+                "goToSlideType": "specified",
+                "action": {
+                  "library": "H5P.Video 1.6",
+                  "params": {
+                    "visuals": {
+                      "controls": true,
+                      "fit": true
+                    },
+                    "playback": {
+                      "autoplay": false,
+                      "loop": false
+                    },
+                    "sources": [
+                      {
+                        "path": "videos/video-f2c92659.webm",
+                        "mime": "video/webm"
+                      }
+                    ]
+                  },
+                  "subContentId": "5ce4d996-a992-43d0-887f-c16f969c1f09",
+                  "metadata": {
+                    "title": "",
+                    "license": "U",
+                    "contentType": "Image"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "keywordListEnabled": true,
+        "keywordListAlwaysShow": false,
+        "keywordListAutoHide": false,
+        "keywordListOpacity": 90,
+        "globalBackgroundSelector": {
+          "fillGlobalBackground": "#ffffff"
+        }
+      },
+      "override": {
+        "activeSurface": false,
+        "hideSummarySlide": true,
+        "showSolutionButton": "on",
+        "retryButton": "on",
+        "summarySlideSolutionButton": true,
+        "summarySlideRetryButton": true,
+        "enablePrintButton": false,
+        "social": {
+          "showFacebookShare": false,
+          "facebookShare": {
+            "url": "@currentpageurl",
+            "quote": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl."
+          },
+          "showTwitterShare": false,
+          "twitterShare": {
+            "statement": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl.",
+            "url": "@currentpageurl",
+            "hashtags": "h5p, cours"
+          },
+          "showGoogleShare": false,
+          "googleShareUrl": "@currentpageurl"
+        }
+      },
+      "l10n": {
+        "slide": "Diapositive",
+        "slides": "Diapositives",
+        "currentSlide": "Diapositive actuelle",
+        "nextSlide": "Diapositive suivante",
+        "prevSlide": "Diapositive précédente",
+        "lastSlide": "Dernière diapositive",
+        "score": "Score",
+        "yourScore": "Votre score",
+        "maxScore": "Score maximum",
+        "total": "Total",
+        "totalScore": "Score total",
+        "scoreMessage": "Vous avez obtenu :",
+        "showSolutions": "Afficher la solution",
+        "solutionsButtonTitle": "Afficher les commentaires",
+        "retry": "Recommencer",
+        "exportAnswers": "Exporter les réponses",
+        "summary": "Résumé",
+        "summaryMultipleTaskText": "Plusieurs exercices",
+        "hideKeywords": "Masquer le menu de navigation",
+        "showKeywords": "Afficher le menu de navigation",
+        "fullscreen": "Plein écran",
+        "exitFullscreen": "Quitter le plein écran",
+        "noTitle": "Sans titre",
+        "printTitle": "Imprimer",
+        "printIngress": "Comment souhaitez-vous imprimer cette présentation ?",
+        "printAllSlides": "Imprimer toutes les diapositives",
+        "printCurrentSlide": "Imprimer la diapositive actuelle",
+        "solutionModeTitle": "Quitter le mode solution",
+        "solutionModeText": "Mode solution",
+        "accessibilitySlideNavigationExplanation": "Utilisez les flèches gauche et droite pour naviguer entre les diapositives.",
+        "accessibilityCanvasLabel": "Présentation. Utilisez les flèches pour naviguer.",
+        "accessibilityProgressBarLabel": "Choisir la diapositive à afficher",
+        "accessibilityTotalScore": "Vous avez obtenu @score sur @maxScore points au total",
+        "accessibilityEnteredFullscreen": "Mode plein écran activé",
+        "accessibilityExitedFullscreen": "Mode plein écran désactivé",
+        "containsNotCompleted": "@slideName contient une interaction non terminée",
+        "containsCompleted": "@slideName contient une interaction terminée",
+        "containsOnlyCorrect": "@slideName n&#039;a que des réponses correctes",
+        "containsIncorrectAnswers": "@slideName a des réponses incorrectes",
+        "slideCount": "Diapositive @index sur @total",
+        "confirmDialogHeader": "Soumettre vos réponses",
+        "confirmDialogText": "Cela soumettra vos résultats. Voulez-vous continuer ?",
+        "confirmDialogConfirmText": "Soumettre et voir les résultats",
+        "confirmDialogConfirmLabel": "Confirmer",
+        "confirmDialogCancelLabel": "Annuler",
+        "resultHeader": "Résultats",
+        "amountCorrect": "@value / @max correctes",
+        "amountCorrectAria": "@value sur @max correctes",
+        "shareResult": "Partager le résultat",
+        "shareFacebook": "Partager sur Facebook",
+        "shareTwitter": "Partager sur Twitter",
+        "shareGoogle": "Partager sur Google+",
+        "slideshowNavigationLabel": "Navigation dans le diaporama"
+      },
+      "title": "Présentation RELU Sucrerie",
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

@@ -69,7 +69,7 @@ function buildAnalysisPrompt() {
  *   déjà redimensionnée (cf. processBackgroundImage d'image-manager.js, 1920 px max).
  * @param {Object} [opts]
  * @param {string} [opts.lang='fr'] - Langue de l'interface (langue de la description).
- * @param {string} [opts.model] - Modèle vision (défaut : Qwen 3.6, cf. hotspot-vision.js).
+ * @param {string} [opts.model] - Modèle vision (défaut : Qwen 3.8, cf. hotspot-vision.js).
  * @param {AbortSignal} [opts.signal] - Pour annuler (bouton « Arrêter » de la zone OCR).
  * @returns {Promise<{description:string, text:string, model?:string}>} `text` = '' si
  *   l'image ne contient aucun texte lisible.

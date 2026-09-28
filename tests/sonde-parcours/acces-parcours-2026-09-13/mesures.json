@@ -1,0 +1,90 @@
+[
+  {
+    "viewport": 1280,
+    "mode": "simple",
+    "kind": "activites",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 193.546875,
+    "height": 48,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "simple",
+    "kind": "parcours",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 210.625,
+    "height": 48,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "advanced",
+    "kind": "activites",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 193.546875,
+    "height": 48,
+    "overflow": false
+  },
+  {
+    "viewport": 1280,
+    "mode": "advanced",
+    "kind": "parcours",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 210.625,
+    "height": 48,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "simple",
+    "kind": "activites",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 125,
+    "height": 52.6875,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "simple",
+    "kind": "parcours",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 125,
+    "height": 52.6875,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "advanced",
+    "kind": "activites",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 125,
+    "height": 52.6875,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "mode": "advanced",
+    "kind": "parcours",
+    "inHeader": true,
+    "gap": 30,
+    "visibleButtons": 1,
+    "width": 125,
+    "height": 52.6875,
+    "overflow": false
+  }
+]

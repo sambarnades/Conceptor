@@ -1,0 +1,34 @@
+[
+  {
+    "kind": "icones",
+    "points": 3,
+    "media": [
+      {
+        "duration": 1.964943,
+        "currentTime": 0.208149,
+        "loop": false
+      },
+      {
+        "duration": 1.362712,
+        "currentTime": 0.261917,
+        "loop": true
+      }
+    ]
+  },
+  {
+    "kind": "image",
+    "points": 3,
+    "media": [
+      {
+        "duration": 1.964943,
+        "currentTime": 0.214163,
+        "loop": false
+      },
+      {
+        "duration": 1.362712,
+        "currentTime": 0.259524,
+        "loop": true
+      }
+    ]
+  }
+]

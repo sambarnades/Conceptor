@@ -1,0 +1,100 @@
+{
+  "backgroundImageAltText": "Trois rectangles numérotés de 1 à 3.",
+  "globalIconType": "numbers",
+  "globalIcon": "plus",
+  "globalColor": "#2266aa",
+  "hotspots": [
+    {
+      "position": {
+        "x": 20,
+        "y": 47,
+        "legacyPositioning": false
+      },
+      "alwaysFullscreen": false,
+      "hotspotIconType": "default",
+      "header": "Zone 1 RELU",
+      "content": [
+        {
+          "library": "H5P.Text 1.1",
+          "params": {
+            "text": "<p>Tu as ouvert la zone 1.</p>"
+          },
+          "subContentId": "129dad77-a035-54e8-90ca-504546b49b6d",
+          "metadata": {
+            "title": "Zone 1",
+            "license": "PD",
+            "contentType": "Text"
+          }
+        }
+      ],
+      "hotspotIcon": "plus",
+      "hotspotColor": "#981d99"
+    },
+    {
+      "position": {
+        "x": 50,
+        "y": 47,
+        "legacyPositioning": false
+      },
+      "alwaysFullscreen": false,
+      "hotspotIconType": "default",
+      "header": "Zone 2",
+      "content": [
+        {
+          "library": "H5P.Text 1.1",
+          "params": {
+            "text": "<p>Tu as ouvert la zone 2.</p>"
+          },
+          "subContentId": "5b9e8abe-d781-50fd-bd1e-5dead675ba63",
+          "metadata": {
+            "title": "Zone 2",
+            "license": "PD",
+            "contentType": "Text"
+          }
+        }
+      ],
+      "hotspotIcon": "plus",
+      "hotspotColor": "#981d99"
+    },
+    {
+      "position": {
+        "x": 80,
+        "y": 47,
+        "legacyPositioning": false
+      },
+      "alwaysFullscreen": true,
+      "hotspotIconType": "default",
+      "header": "Zone 3",
+      "content": [
+        {
+          "library": "H5P.Text 1.1",
+          "params": {
+            "text": "<p>Tu as ouvert la zone 3.</p>"
+          },
+          "subContentId": "dc0a4d8b-400e-574f-8010-b21cd772621e",
+          "metadata": {
+            "title": "Zone 3",
+            "license": "PD",
+            "contentType": "Text"
+          }
+        }
+      ],
+      "hotspotIcon": "plus",
+      "hotspotColor": "#981d99"
+    }
+  ],
+  "untitledHotspotLabel": "Point sans titre",
+  "closeButtonLabel": "Fermer",
+  "containsAudioVideoLabel": "Contient de l&#039;audio ou de la vidéo",
+  "image": {
+    "path": "images/recette-zones.png",
+    "mime": "image/png",
+    "width": 800,
+    "height": 450,
+    "copyright": {
+      "license": "PD",
+      "version": "CC0 1.0",
+      "title": "Trois zones de recette"
+    }
+  }
+}

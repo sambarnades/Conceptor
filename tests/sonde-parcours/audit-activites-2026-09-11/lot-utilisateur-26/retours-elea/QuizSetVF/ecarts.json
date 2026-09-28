@@ -1,0 +1,231 @@
+[
+  {
+    "chemin": "behaviour",
+    "type": "retrait_natif",
+    "avant": {
+      "enableRetry": true,
+      "enableSolutionsButton": true
+    }
+  },
+  {
+    "chemin": "endGame.showAnimations",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "endGame.skippable",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "introPage.introduction",
+    "type": "modification",
+    "avant": "<p>Réponds aux questions puis consulte le résultat.</p>",
+    "apres": "<p>Réponds aux questions puis consulte le résultat. RELU</p>"
+  },
+  {
+    "chemin": "override",
+    "type": "ajout_natif",
+    "apres": {
+      "checkButton": true
+    }
+  },
+  {
+    "chemin": "questions[0].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "True/False Question"
+  },
+  {
+    "chemin": "questions[0].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[0].params.behaviour.feedbackOnCorrect",
+    "type": "normalisation_html",
+    "avant": "Bien vu ! La fonction racine carrée n'est effectivement pas définie pour tous les réels.",
+    "apres": "Bien vu ! La fonction racine carrée n&#039;est effectivement pas définie pour tous les réels."
+  },
+  {
+    "chemin": "questions[0].params.behaviour.feedbackOnWrong",
+    "type": "normalisation_html",
+    "avant": "Attention ! La fonction racine carrée n'est définie que pour les valeurs de \\( x \\) supérieures ou égales à zéro. Essayez de penser à ce que signifie la racine carrée d'un nombre négatif.",
+    "apres": "Attention ! La fonction racine carrée n&#039;est définie que pour les valeurs de \\( x \\) supérieures ou égales à zéro. Essayez de penser à ce que signifie la racine carrée d&#039;un nombre négatif."
+  },
+  {
+    "chemin": "questions[0].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Voulez-vous vraiment terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[0].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Voulez-vous vraiment recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[0].params.l10n.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[0].params.l10n.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[0].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[1].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "True/False Question"
+  },
+  {
+    "chemin": "questions[1].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[1].metadata.title",
+    "type": "normalisation_html",
+    "avant": "Image d'un nombre par la racine carrée",
+    "apres": "Image d&#039;un nombre par la racine carrée"
+  },
+  {
+    "chemin": "questions[1].params.behaviour.feedbackOnCorrect",
+    "type": "normalisation_html",
+    "avant": "Exact ! Cette égalité n'est pas toujours vraie, il faut la valeur absolue.",
+    "apres": "Exact ! Cette égalité n&#039;est pas toujours vraie, il faut la valeur absolue."
+  },
+  {
+    "chemin": "questions[1].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Voulez-vous vraiment terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[1].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Voulez-vous vraiment recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[1].params.l10n.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[1].params.l10n.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[1].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[2].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "True/False Question"
+  },
+  {
+    "chemin": "questions[2].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[2].params.behaviour.feedbackOnCorrect",
+    "type": "normalisation_html",
+    "avant": "Bravo ! Tu as bien identifié que l'expression sous la racine doit être positive : \\( 2x - 4 \\geq 0 \\) donne \\( x \\geq 2 \\). C'est exactement le domaine attendu.",
+    "apres": "Bravo ! Tu as bien identifié que l&#039;expression sous la racine doit être positive : \\( 2x - 4 \\geq 0 \\) donne \\( x \\geq 2 \\). C&#039;est exactement le domaine attendu."
+  },
+  {
+    "chemin": "questions[2].params.behaviour.feedbackOnWrong",
+    "type": "normalisation_html",
+    "avant": "Revois le calcul : il faut résoudre \\( 2x - 4 \\geq 0 \\), ce qui donne bien \\( x \\geq 2 \\). L'affirmation est donc vraie.",
+    "apres": "Revois le calcul : il faut résoudre \\( 2x - 4 \\geq 0 \\), ce qui donne bien \\( x \\geq 2 \\). L&#039;affirmation est donc vraie."
+  },
+  {
+    "chemin": "questions[2].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Voulez-vous vraiment terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[2].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Voulez-vous vraiment recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[2].params.l10n.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[2].params.l10n.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[2].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "texts.nextbutton",
+    "type": "retrait_natif",
+    "avant": "Suivant"
+  },
+  {
+    "chemin": "texts.previousbutton",
+    "type": "retrait_natif",
+    "avant": "Précédent"
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Quiz Vrai/Faux - Fonctions Racines Carrées"
+  }
+]

@@ -1,0 +1,300 @@
+[
+  {
+    "id": "dictee-classique",
+    "contenu": {
+      "title": "Dictée",
+      "media": {
+        "disableImageZooming": false
+      },
+      "taskDescription": "Écoute puis écris. RELU Sucrerie",
+      "sentences": [
+        {
+          "description": "Une capitale européenne RELU",
+          "sample": [
+            {
+              "path": "audios/dictee-paris.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "CC BY",
+                "version": "4.0",
+                "author": "Atelier de test",
+                "title": "Phrase sur Paris"
+              }
+            },
+            {
+              "path": "audios/dictee-paris.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "CC BY",
+                "version": "4.0",
+                "author": "Atelier de test",
+                "title": "Phrase sur Paris"
+              }
+            }
+          ],
+          "sampleAlternative": [
+            {
+              "path": "audios/dictee-paris.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "U"
+              }
+            }
+          ],
+          "text": "Paris est la capitale de la France."
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 25,
+          "feedback": "Réécoute chaque phrase en lecture lente et écris-la mot après mot, puis relis-toi."
+        },
+        {
+          "from": 26,
+          "to": 50,
+          "feedback": "Bon début : appuie-toi sur la lecture lente pour repérer les mots difficiles et vérifie les accords."
+        },
+        {
+          "from": 51,
+          "to": 75,
+          "feedback": "Presque : relis ta dictée en vérifiant les terminaisons, les accents et les homophones."
+        },
+        {
+          "from": 76,
+          "to": 100,
+          "feedback": "Bravo : les phrases sont fidèles, accents et accords compris."
+        }
+      ],
+      "behaviour": {
+        "tries": 1,
+        "triesAlternative": 1,
+        "disablePause": true,
+        "playButtonDelay": 0,
+        "shuffleSentences": "never",
+        "scoring": {
+          "ignorePunctuation": true,
+          "zeroMistakeMode": false,
+          "typoFactor": "50"
+        },
+        "textual": {
+          "wordSeparator": " ",
+          "overrideRTL": "off",
+          "autosplit": true
+        },
+        "feedbackPresentation": {
+          "customTypoDisplay": false,
+          "alternateSolution": "all"
+        },
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableSolutionOnCheck": false
+      },
+      "l10n": {
+        "generalFeedback": "Vous avez fait @total faute(s).",
+        "generalFeedbackZeroMistakesMode": "Vous avez écrit @total mot(s) correctement et @typo mot(s) avec de petites erreurs.",
+        "checkAnswer": "Vérifier",
+        "submitAnswer": "Envoyer",
+        "tryAgain": "Recommencer",
+        "showSolution": "Voir la solution",
+        "audioNotSupported": "Votre navigateur ne supporte pas ce fichier audio."
+      },
+      "a11y": {
+        "check": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou sans réponse.",
+        "showSolution": "Afficher la solution. La tâche sera marquée avec sa solution correcte.",
+        "retry": "Recommencer la tâche. Toutes les réponses seront réinitialisées.",
+        "play": "Écouter",
+        "playSlowly": "Écouter lentement",
+        "triesLeft": "Nombre d&#039;écoutes restantes : @number",
+        "infinite": "illimité",
+        "enterText": "Écrivez ce que vous entendez.",
+        "yourResult": "Vous avez obtenu @score points sur @total",
+        "solution": "Solution",
+        "sentence": "Phrase",
+        "item": "Élément",
+        "correct": "correct",
+        "wrong": "faux",
+        "typo": "petite erreur",
+        "missing": "manquant",
+        "added": "ajouté",
+        "shouldHaveBeen": "La bonne réponse était",
+        "or": "ou",
+        "point": "point",
+        "points": "points",
+        "period": "point",
+        "exclamationPoint": "point d&#039;exclamation",
+        "questionMark": "point d&#039;interrogation",
+        "comma": "virgule",
+        "singleQuote": "apostrophe",
+        "doubleQuote": "guillemets",
+        "colon": "deux-points",
+        "semicolon": "point-virgule",
+        "plus": "plus",
+        "minus": "moins",
+        "asterisk": "astérisque",
+        "forwardSlash": "barre oblique"
+      },
+      "tts": {
+        "lang": "fr",
+        "voice": "female",
+        "slow": true,
+        "slowRate": 0.7
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "dictee-variantes",
+    "contenu": {
+      "title": "Dictée",
+      "media": {
+        "disableImageZooming": false
+      },
+      "taskDescription": "Écoute puis écris. RELU Sucrerie",
+      "sentences": [
+        {
+          "description": "Une capitale européenne RELU",
+          "sample": [
+            {
+              "path": "audios/dictee-paris.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "CC BY",
+                "version": "4.0",
+                "author": "Atelier de test",
+                "title": "Phrase sur Paris"
+              }
+            },
+            {
+              "path": "audios/dictee-paris.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "CC BY",
+                "version": "4.0",
+                "author": "Atelier de test",
+                "title": "Phrase sur Paris"
+              }
+            }
+          ],
+          "sampleAlternative": [
+            {
+              "path": "audios/dictee-paris.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "U"
+              }
+            }
+          ],
+          "text": "Paris est la capitale de la France|République."
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 25,
+          "feedback": "Réécoute chaque phrase en lecture lente et écris-la mot après mot, puis relis-toi."
+        },
+        {
+          "from": 26,
+          "to": 50,
+          "feedback": "Bon début : appuie-toi sur la lecture lente pour repérer les mots difficiles et vérifie les accords."
+        },
+        {
+          "from": 51,
+          "to": 75,
+          "feedback": "Presque : relis ta dictée en vérifiant les terminaisons, les accents et les homophones."
+        },
+        {
+          "from": 76,
+          "to": 100,
+          "feedback": "Bravo : les phrases sont fidèles, accents et accords compris."
+        }
+      ],
+      "behaviour": {
+        "tries": 1,
+        "triesAlternative": 1,
+        "disablePause": true,
+        "playButtonDelay": 0,
+        "shuffleSentences": "never",
+        "scoring": {
+          "ignorePunctuation": true,
+          "zeroMistakeMode": true,
+          "typoFactor": "50"
+        },
+        "textual": {
+          "wordSeparator": " ",
+          "overrideRTL": "off",
+          "autosplit": true
+        },
+        "feedbackPresentation": {
+          "customTypoDisplay": false,
+          "alternateSolution": "all"
+        },
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableSolutionOnCheck": false
+      },
+      "l10n": {
+        "generalFeedback": "Vous avez fait @total faute(s).",
+        "generalFeedbackZeroMistakesMode": "Vous avez écrit @total mot(s) correctement et @typo mot(s) avec de petites erreurs.",
+        "checkAnswer": "Vérifier",
+        "submitAnswer": "Envoyer",
+        "tryAgain": "Recommencer",
+        "showSolution": "Voir la solution",
+        "audioNotSupported": "Votre navigateur ne supporte pas ce fichier audio."
+      },
+      "a11y": {
+        "check": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou sans réponse.",
+        "showSolution": "Afficher la solution. La tâche sera marquée avec sa solution correcte.",
+        "retry": "Recommencer la tâche. Toutes les réponses seront réinitialisées.",
+        "play": "Écouter",
+        "playSlowly": "Écouter lentement",
+        "triesLeft": "Nombre d&#039;écoutes restantes : @number",
+        "infinite": "illimité",
+        "enterText": "Écrivez ce que vous entendez.",
+        "yourResult": "Vous avez obtenu @score points sur @total",
+        "solution": "Solution",
+        "sentence": "Phrase",
+        "item": "Élément",
+        "correct": "correct",
+        "wrong": "faux",
+        "typo": "petite erreur",
+        "missing": "manquant",
+        "added": "ajouté",
+        "shouldHaveBeen": "La bonne réponse était",
+        "or": "ou",
+        "point": "point",
+        "points": "points",
+        "period": "point",
+        "exclamationPoint": "point d&#039;exclamation",
+        "questionMark": "point d&#039;interrogation",
+        "comma": "virgule",
+        "singleQuote": "apostrophe",
+        "doubleQuote": "guillemets",
+        "colon": "deux-points",
+        "semicolon": "point-virgule",
+        "plus": "plus",
+        "minus": "moins",
+        "asterisk": "astérisque",
+        "forwardSlash": "barre oblique"
+      },
+      "tts": {
+        "lang": "fr",
+        "voice": "female",
+        "slow": true,
+        "slowRate": 0.7
+      }
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

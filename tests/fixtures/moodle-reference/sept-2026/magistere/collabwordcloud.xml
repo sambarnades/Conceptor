@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="106" moduleid="23638" modulename="collabwordcloud" contextid="57796">
+  <collabwordcloud id="106">
+    <name>Nuage de mots : l’eau</name>
+    <intro>&lt;p&gt;À quoi te fait penser l’eau ?&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <instructions>&lt;p&gt;Écris un à cinq mots.&lt;/p&gt;</instructions>
+    <wordsallowed>5</wordsallowed>
+    <wordsrequired>1</wordsrequired>
+    <timestart>0</timestart>
+    <timeend>0</timeend>
+    <completionwords>1</completionwords>
+    <timecreated>0</timecreated>
+    <timemodified>1790541744</timemodified>
+  </collabwordcloud>
+</activity>

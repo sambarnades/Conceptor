@@ -1,0 +1,108 @@
+{
+  "choices": [
+    {
+      "question": "Quel événement du 20 juin 1789 marque la volonté des députés de ne pas se séparer avant d'avoir donné une Constitution à la France ?",
+      "answers": [
+        "Le serment du Jeu de paume",
+        "L'ouverture des États généraux",
+        "La prise de la Bastille",
+        "La nuit du 4 août"
+      ],
+      "subContentId": "18b160bf-c8d9-4390-b0ed-6865399134b9"
+    },
+    {
+      "question": "Quel texte fondamental, adopté en août 1789, proclame que « les hommes naissent et demeurent libres et égaux en droits » ?",
+      "answers": [
+        "La Déclaration des droits de l'homme et du citoyen",
+        "Le Code civil",
+        "La Constitution de l'an I",
+        "Le Cahier de doléances"
+      ],
+      "subContentId": "8128315a-6216-49ae-8347-07c14f4beb03"
+    },
+    {
+      "question": "En quelle année la Première République est-elle proclamée après la chute de la monarchie ?",
+      "answers": [
+        "1792",
+        "1789",
+        "1799",
+        "1804"
+      ],
+      "subContentId": "c9085c3c-0a29-4f2a-bd38-bd75f3748719"
+    },
+    {
+      "question": "Qui s'empare du pouvoir par un coup d'État en novembre 1799 (18 Brumaire) et met fin au Directoire ?",
+      "answers": [
+        "Napoléon Bonaparte",
+        "Maximilien de Robespierre",
+        "Louis XVI",
+        "Georges Danton"
+      ],
+      "subContentId": "d9f57da7-d669-42ab-be10-9f4e1584a6c5"
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Il semble que les bases de la période soient encore fragiles. N&#039;hésite pas à relire ta fiche de révision sur les grandes dates de 1789."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu as quelques repères, mais attention aux confusions entre les différents acteurs de la Révolution. Continue tes efforts !"
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C&#039;est un début encourageant. Tu identifies certains moments clés, mais il faut encore consolider la chronologie des régimes politiques."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu maîtrises les principaux événements qui ont marqué la fin de l&#039;Ancien Régime et la naissance de la Nation."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Ta compréhension des enjeux révolutionnaires et du passage à l&#039;Empire est solide. Bravo !"
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu as une parfaite maîtrise du programme d&#039;histoire sur la Révolution et l&#039;Empire. Tu es prêt pour le Brevet !"
+    }
+  ],
+  "behaviour": {
+    "timeoutCorrect": 1000,
+    "timeoutWrong": 1000,
+    "soundEffectsEnabled": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "passPercentage": 100,
+    "autoContinue": true
+  },
+  "l10n": {
+    "retryButtonLabel": "Recommencer",
+    "solutionViewTitle": "Solution",
+    "correctText": "Correct !",
+    "incorrectText": "Incorrect !",
+    "muteButtonLabel": "Désactiver le son",
+    "closeButtonLabel": "Fermer",
+    "slideOfTotal": "Diapositive :num sur :total",
+    "nextButtonLabel": "Suivant",
+    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+    "solutionListQuestionNumber": "Question :num",
+    "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+    "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+    "shouldSelect": "Devrait sélectionner",
+    "shouldNotSelect": "Ne devrait pas sélectionner",
+    "nextButton": "Suivant",
+    "showResultsButtonLabel": "Montrer les résultats",
+    "resultHeader": "Votre résultat :",
+    "totalScore": ":score bonnes réponses sur :maxScore",
+    "resultTableHeader": "Question",
+    "resultScoreTableHeader": "Score",
+    "correctAnswerIntroduction": "Bonne réponse"
+  }
+}

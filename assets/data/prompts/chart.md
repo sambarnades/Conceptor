@@ -4,7 +4,7 @@
 - Ton public : [NIVEAU]
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.Chart]
-- Nombre d'éléments : Au minimum 5 éléments de comparaison || [NOMBRE_ELEMENTS] éléments de comparaison.
+- Données : au moins une. Respecte exactement les libellés et valeurs fournis ; ne complète pas artificiellement la série. Sans série fournie, utilise [NOMBRE_ELEMENTS] données (5 par défaut).
 - Type de graphique : Choisis entre le diagramme circulaire (\`pieChart\`) ou le diagramme en barres (\`barChart\`) selon la pertinence pédagogique.
 - Libellés et couleurs : Les couleurs doivent être contrastées pour une bonne lisibilité. Les libellés doivent être courts et clairs.
 
@@ -30,7 +30,7 @@
 - Génère UNIQUEMENT un JSON complet et valide dans un bloc de code. Ta réponse DOIT commencer par \`{\` et finir par \`}\`. Aucun autre texte ou commentaire.
 - \`graphMode\` : Le type de graphique (\`pieChart\` ou \`barChart\`).
 - \`listOfTypes\` : Un tableau d'objets \`{"value": ..., "color": "...", "fontColor": "...", "text": "..."}\`.
-- \`figureDefinition\` : Le titre du graphique.
+- \`figureDefinition\` : Description accessible du graphique, utilisée comme titre dans les documents.
 - **Formules mathématiques :** Le composant Chart ne supporte PAS le LaTeX. Utilise directement les caractères Unicode pour les symboles mathématiques dans les labels : α, β, π, √, ², ³, ≤, ≥, ≠, ∞, →.
 
 # EXEMPLE DE RENDU
@@ -44,3 +44,6 @@
   "figureDefinition": "Graphique des fruits préférés"
 }
 ```
+# Valeurs natives
+
+Chaque `listOfTypes[].value` doit être un nombre fini de 0,0001 minimum, avec au plus quatre décimales. Conserver les valeurs fournies ; ne pas remplacer une valeur nulle ou négative par une donnée inventée.

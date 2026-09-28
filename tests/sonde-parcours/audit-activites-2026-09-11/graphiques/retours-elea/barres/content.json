@@ -1,0 +1,24 @@
+{
+  "graphMode": "barChart",
+  "figureDefinition": "Mesures fictives — petites valeurs décimales",
+  "listOfTypes": [
+    {
+      "text": "Mesure A",
+      "value": 0.0001,
+      "color": "#003366",
+      "fontColor": "#ffffff"
+    },
+    {
+      "text": "Mesure B",
+      "value": 0.0005,
+      "color": "#663399",
+      "fontColor": "#ffffff"
+    },
+    {
+      "text": "Mesure C",
+      "value": 0.0012,
+      "color": "#996600",
+      "fontColor": "#fff"
+    }
+  ]
+}

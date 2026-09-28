@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="58" moduleid="14019" modulename="studentquiz" contextid="17747">
+  <studentquiz id="58">
+    <coursemodule>14019</coursemodule>
+    <name>Test étudiant : nos questions</name>
+    <intro>&lt;p&gt;Crée une question et réponds à celles des autres.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <grade>100</grade>
+    <anonymrank>1</anonymrank>
+    <questionquantifier>10</questionquantifier>
+    <approvedquantifier>5</approvedquantifier>
+    <ratequantifier>3</ratequantifier>
+    <correctanswerquantifier>2</correctanswerquantifier>
+    <incorrectanswerquantifier>-1</incorrectanswerquantifier>
+    <allowedqtypes>multichoice,truefalse,match,shortanswer,numerical,calculated,calculatedmulti,calculatedsimple,multianswer,ddwtos,ddimageortext,ddmarker,gapselect</allowedqtypes>
+    <aggregated>1</aggregated>
+    <excluderoles></excluderoles>
+    <forcerating>0</forcerating>
+    <forcecommenting>0</forcecommenting>
+    <commentdeletionperiod>10</commentdeletionperiod>
+    <reportingemail>$@NULL@$</reportingemail>
+    <digesttype>0</digesttype>
+    <digestfirstday>1</digestfirstday>
+    <privatecommenting>0</privatecommenting>
+    <opensubmissionfrom>0</opensubmissionfrom>
+    <closesubmissionfrom>0</closesubmissionfrom>
+    <openansweringfrom>0</openansweringfrom>
+    <closeansweringfrom>0</closeansweringfrom>
+    <publishnewquestion>1</publishnewquestion>
+    <completionpoint>1</completionpoint>
+    <completionquestionpublished>0</completionquestionpublished>
+    <completionquestionapproved>0</completionquestionapproved>
+    <attempts>
+    </attempts>
+    <questions>
+    </questions>
+    <progresses>
+    </progresses>
+    <rates>
+    </rates>
+    <comments>
+    </comments>
+    <notifications>
+    </notifications>
+    <statehistories>
+    </statehistories>
+  </studentquiz>
+</activity>

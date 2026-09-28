@@ -1,0 +1,13 @@
+{
+  "correctifs-lecteur.patch": "2cbb4c5ad4f1a965f52584cff7c241a4a9ed66117152dac971cb4b45d9cc1cd6",
+  "mots-meles-cache-jeu.png": "69980f19979418a7318b373437858d9a52b540003f2c659f3dbfc52502f83c3e",
+  "mots-meles-jeu.json": "d884184cf2229b939d3471e7363ec6d89ee41e0633b56321ac9681d46cb2f4fd",
+  "mots-meles-visible-jeu.png": "636d663d122eca24e3d53f237b0af4470c6624e95cebf249f096d934c9084783",
+  "sucrerie-mots-meles-cache.h5p": "eee5fee81ae200f1729b459fd7b4bbfcd2f07866641f968269f88e648c6e791a",
+  "sucrerie-mots-meles-visible.h5p": "0fc6c711d07c199f499db729575da317a4ff46486c3d028fb83e927b9b014403",
+  "sucrerie-tri-paragraphes-positions.h5p": "155ff676b9ec2a466ea51c8cdf49be09d96bdf1b7f6a9f8970103cd77bce186a",
+  "sucrerie-tri-paragraphes-transitions.h5p": "b710f8a7b71cb3d42d60c9bce19d6c604307ea8a11a7ee322c4970998bcb67cc",
+  "tri-paragraphes-jeu.json": "14ca6198bf8dfd6d94392c37a42aeaf124f134f9e458b45135137c356d6ae5a7",
+  "tri-paragraphes-positions-jeu.png": "405c9cb87b13e8b2004222891e1f54afb575abeb39e25591e6f05de03449130a",
+  "tri-paragraphes-transitions-jeu.png": "e23fc77dc3cfcad433bd5481618b0b94dda22cb61c131c5cb09fcbf9b6ee8752"
+}

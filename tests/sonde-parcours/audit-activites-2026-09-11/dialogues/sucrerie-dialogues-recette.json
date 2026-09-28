@@ -1,0 +1,200 @@
+[
+  {
+    "id": "dialogues-normal",
+    "contenu": {
+      "title": "<p>RECETTE 11 — Cartes de dialogue</p>",
+      "description": "Observe et écoute. RELU Sucrerie",
+      "dialogs": [
+        {
+          "text": "France",
+          "answer": "Paris",
+          "tips": {
+            "front": "La Seine traverse cette ville. RELU",
+            "back": "Capitale française."
+          },
+          "audio": [
+            {
+              "path": "audios/audio-8f13c941.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "U"
+              }
+            }
+          ],
+          "image": {
+            "path": "images/drapeau.png",
+            "mime": "image/png",
+            "width": 120,
+            "height": 80,
+            "copyright": {
+              "title": "Drapeau tricolore",
+              "author": "Atelier de test",
+              "license": "CC BY",
+              "version": "4.0"
+            }
+          },
+          "imageAltText": ""
+        },
+        {
+          "text": "Italie",
+          "answer": "Rome",
+          "tips": {
+            "front": "",
+            "back": ""
+          }
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "disableBackwardsNavigation": true,
+        "scaleTextNotCard": false,
+        "randomCards": false,
+        "maxProficiency": 3,
+        "quickProgression": true
+      },
+      "answer": "Retourner",
+      "next": "Suivant",
+      "prev": "Précédent",
+      "retry": "Recommencer",
+      "progressText": "Carte @card sur @total",
+      "cardFrontLabel": "Recto de la carte",
+      "cardBackLabel": "Verso de la carte",
+      "tipButtonLabel": "Indice",
+      "audioNotSupported": "Votre navigateur ne supporte pas ce format audio",
+      "mode": "normal",
+      "correctAnswer": "J&#039;ai eu bon !",
+      "incorrectAnswer": "Je me suis trompé",
+      "round": "Manche @round",
+      "cardsLeft": "Cartes restantes : @number",
+      "nextRound": "Passer à la manche @round",
+      "startOver": "Recommencer",
+      "showSummary": "Suivant",
+      "summary": "Résumé",
+      "summaryCardsRight": "Cartes que vous avez réussies :",
+      "summaryCardsWrong": "Cartes que vous avez manquées :",
+      "summaryCardsNotShown": "Cartes non montrées :",
+      "summaryOverallScore": "Score global",
+      "summaryCardsCompleted": "Cartes que vous avez apprises :",
+      "summaryCompletedRounds": "Manches terminées :",
+      "summaryAllDone": "Bien joué ! Vous avez réussi toutes les @cards cartes @max fois de suite !",
+      "confirmStartingOver": {
+        "header": "Reprendre RELU Sucrerie ?",
+        "body": "Toute progression sera perdue. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Tout recommencer"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ]
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "dialogues-repetition",
+    "contenu": {
+      "title": "<p>RECETTE 11 — Cartes de dialogue</p>",
+      "description": "Observe et écoute. RELU Sucrerie",
+      "dialogs": [
+        {
+          "text": "France",
+          "answer": "Paris",
+          "tips": {
+            "front": "La Seine traverse cette ville. RELU",
+            "back": "Capitale française."
+          },
+          "audio": [
+            {
+              "path": "audios/audio-8f13c941.wav",
+              "mime": "audio/wav",
+              "copyright": {
+                "license": "U"
+              }
+            }
+          ],
+          "image": {
+            "path": "images/drapeau.png",
+            "mime": "image/png",
+            "width": 120,
+            "height": 80,
+            "copyright": {
+              "title": "Drapeau tricolore",
+              "author": "Atelier de test",
+              "license": "CC BY",
+              "version": "4.0"
+            }
+          },
+          "imageAltText": ""
+        },
+        {
+          "text": "Italie",
+          "answer": "Rome",
+          "tips": {
+            "front": "",
+            "back": ""
+          }
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "disableBackwardsNavigation": false,
+        "scaleTextNotCard": false,
+        "randomCards": false,
+        "maxProficiency": 3,
+        "quickProgression": true
+      },
+      "answer": "Retourner",
+      "next": "Suivant",
+      "prev": "Précédent",
+      "retry": "Recommencer",
+      "progressText": "Carte @card sur @total",
+      "cardFrontLabel": "Recto de la carte",
+      "cardBackLabel": "Verso de la carte",
+      "tipButtonLabel": "Indice",
+      "audioNotSupported": "Votre navigateur ne supporte pas ce format audio",
+      "mode": "repetition",
+      "correctAnswer": "J&#039;ai eu bon !",
+      "incorrectAnswer": "Je me suis trompé",
+      "round": "Manche @round",
+      "cardsLeft": "Cartes restantes : @number",
+      "nextRound": "Passer à la manche @round",
+      "startOver": "Recommencer",
+      "showSummary": "Suivant",
+      "summary": "Résumé",
+      "summaryCardsRight": "Cartes que vous avez réussies :",
+      "summaryCardsWrong": "Cartes que vous avez manquées :",
+      "summaryCardsNotShown": "Cartes non montrées :",
+      "summaryOverallScore": "Score global",
+      "summaryCardsCompleted": "Cartes que vous avez apprises :",
+      "summaryCompletedRounds": "Manches terminées :",
+      "summaryAllDone": "Bien joué ! Vous avez réussi toutes les @cards cartes @max fois de suite !",
+      "confirmStartingOver": {
+        "header": "Reprendre RELU Sucrerie ?",
+        "body": "Toute progression sera perdue. RELU Caramel",
+        "cancelLabel": "Annuler",
+        "confirmLabel": "Tout recommencer"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ]
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

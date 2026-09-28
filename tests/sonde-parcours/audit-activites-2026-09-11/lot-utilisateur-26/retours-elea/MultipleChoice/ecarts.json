@@ -1,0 +1,73 @@
+[
+  {
+    "chemin": "UI.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "UI.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "UI.noInput",
+    "type": "normalisation_html",
+    "avant": "Répondez s'il vous plait avant de visionner la solution.",
+    "apres": "Répondez s&#039;il vous plait avant de visionner la solution."
+  },
+  {
+    "chemin": "answers[0].tipsAndFeedback",
+    "type": "ajout_natif",
+    "apres": {
+      "tip": "<p>RELU</p>",
+      "chosenFeedback": "",
+      "notChosenFeedback": ""
+    }
+  },
+  {
+    "chemin": "answers[1].tipsAndFeedback",
+    "type": "ajout_natif",
+    "apres": {
+      "tip": "",
+      "chosenFeedback": "",
+      "notChosenFeedback": ""
+    }
+  },
+  {
+    "chemin": "media.type.metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "media.type.params.contentName",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.params.decorative",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "media.type.params.expandImage",
+    "type": "ajout_natif",
+    "apres": "Agrandir l&#039;image"
+  },
+  {
+    "chemin": "media.type.params.minimizeImage",
+    "type": "ajout_natif",
+    "apres": "Réduire l&#039;image"
+  },
+  {
+    "chemin": "mediaImageAlt",
+    "type": "retrait_natif",
+    "avant": ""
+  }
+]

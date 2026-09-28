@@ -7,7 +7,7 @@
 //                     `hotspot_vision_prompt` comme hotspot-vision.js) → zones [{x,y,label,description}]
 //                   → prompt assemblé comme prompt-generator.js (clés prompt_image_hotspots_* de <lang>.json,
 //                     en-tête SOURCES avec width×height réels de l'image, comme en prod)
-//                   → LLM TEXTE (caramel/llm/submit-bas + result-bas) sur mistral-small-4 / qwen / gpt-oss
+//                   → LLM TEXTE (caramel/llm/submit-bas + result-bas) sur mistral-small-4 / qwen / gemma
 //                   → healer RÉEL (json-healer.js) → processeur RÉEL (processors/ImageHotspots.js)
 //                   → content.json H5P.ImageHotspots 1.11  → VALIDATION
 //
@@ -47,7 +47,7 @@ const SUBMIT = ENDPOINTS.llmSubmit;
 const RESULT = ENDPOINTS.llmResult;
 const VISION = ENDPOINTS.visionDetect;
 const DEFAULT_LLM = 'mistral-small-4-119b';   // = DEFAULT_MODEL (ACTIVITY_MODEL_OVERRIDES vide pour ImageHotspots)
-const VISION_MODEL = 'qwen-3.6-35b-instruct'; // = DEFAULT_VISION_MODEL
+const VISION_MODEL = 'qwen-3.8-27b'; // = DEFAULT_VISION_MODEL (repli n8n sur qwen-3.6-35b-instruct)
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const pct = (n, d) => d ? `${Math.round(100 * n / d)}%` : '—';
@@ -59,11 +59,11 @@ const pos = [];
 for (const a of rawArgs) { const m = a.match(/^--([^=]+)=(.*)$/); if (m) flags[m[1]] = m[2]; else if (a.startsWith('--')) flags[a.slice(2)] = true; else pos.push(a); }
 const IMAGE_PATH = pos[0] || `${REPO}/../../../private/tmp/ih-test/flower.png`;
 const REPEATS = Math.max(1, parseInt(pos[1] || '5', 10));
-const MODELS = (flags.models ? String(flags.models).split(',') : [DEFAULT_LLM, 'qwen-3.6-35b-instruct', 'gpt-oss-120b']).map(s => s.trim()).filter(Boolean);
+const MODELS = (flags.models ? String(flags.models).split(',') : [DEFAULT_LLM, 'qwen-3.8-27b', 'gemma-4-31b']).map(s => s.trim()).filter(Boolean);
 const CTX = { qui: flags.qui || 'un professeur de SVT', quoi: flags.quoi || 'légender les organes d\'une fleur', niveau: flags.niveau || 'Cycle 4 (collège)' };
 const FORCE_COUNT = flags.count ? parseInt(flags.count, 10) : null;
 const LANG = String(flags.lang || 'fr').toLowerCase();
-const JUDGE_MODEL = flags.judge === true ? 'gpt-oss-120b' : (flags.judge ? String(flags.judge) : null);
+const JUDGE_MODEL = flags.judge === true ? 'mistral-small-4-119b' : (flags.judge ? String(flags.judge) : null);
 
 // Locale → on assemble le prompt depuis les MÊMES clés que prod, dans la langue cible.
 let T;

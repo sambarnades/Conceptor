@@ -1,0 +1,139 @@
+{
+  "cas": {
+    "id": "inversee-en",
+    "lang": "en",
+    "platform": "moodle",
+    "format": "hybride",
+    "ampleur": "courte",
+    "trame": "inversee",
+    "qui": "University economics lecturer",
+    "quoi": "Understand supply and demand, prepare independently then solve a case together in class."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Understand supply and demand, prepare independently then solve a case together in class.\nL'enseignant : University economics lecturer\nPlateforme : Moodle\nModalité : hybride\nArticuler explicitement des moments à distance et en présence : préciser où et quand se déroule chaque activité, et comment elle prépare la suivante.\nAmpleur : One session\n\nTrame imposée : « Flipped classroom » — The video and its check at home, the task you cannot do alone in class, the review afterwards.\nElle compte EXACTEMENT 3 étapes, contenant respectivement 2, 1, 1 activité(s). Respecte ce découpage à la lettre.\nIntention pédagogique : À distance : découvrir et vérifier la compréhension ; en présence : résoudre ensemble une tâche ; après : faire le bilan. Indiquer ces moments dans les consignes.\nPalier de difficulté imposé par étape : decouverte, transfert, entrainement.\nTypes d'activité suggérés par la trame, étape par étape : étape 1 → CoursePresentation, SingleChoiceSet ; étape 2 → Devoir ; étape 3 → test_elea. Suis-les sauf si le sujet appelle clairement autre chose.\n\nBUDGET : 4 activités prévues, dans la limite de 4 à 4 pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.\nSauf durée explicite dans la demande ou la trame, viser une séance de 30 à 55 minutes de travail. Alléger les tâches plutôt que multiplier les exercices.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Timeline (Timeline) — Frise à CONSULTER : événements déjà placés. Pour remettre des événements en ordre, choisir SortParagraphs.\n- Flashcards : Flashcards (Flashcards)\n- QuizSet : Mixed Quiz (Quiz (Question Set))\n- QuizSetQCM : MCQ Quiz (Quiz (Question Set))\n- QuizSetVF : True/False Quiz (Quiz (Question Set))\n- Glossary : Glossary (Accordion) — Lexique de définitions à consulter ; les apprenants ne complètent pas les entrées.\n- Crossword : Crossword (Crosswords) — Retrouver des MOTS à partir de définitions ; pas de résultats chiffrés dans la grille.\n- Essay : Essay (Essay)\n- Summary : Summary (Summary) — Choisir l’affirmation correcte parmi plusieurs propositions pour construire une synthèse ; pas de texte à trous.\n- DragTheWords : Drag the Words (Drag the Words)\n- DragAndDrop : Drag and Drop (Drag and Drop) — Déplacer des étiquettes textuelles dans des zones ; ne pas exiger un schéma ou des images absents.\n- FillInTheBlanks : Fill in the Blanks (Fill in the Blanks) — Saisir les mots ou nombres manquants AU CLAVIER dans un texte ; aucun menu déroulant ni liste de choix interactive.\n- MarkTheWords : Mark the Words (Mark the Words)\n- TrueFalse : True/False (True/False Question) — UNE affirmation, avec choix vrai/faux et correction automatique. Pour plusieurs affirmations, choisir QuizSetVF.\n- MultipleChoice : Multiple Choice (Multiple Choice)\n- FindTheWords : Find the Words (Find the Words)\n- SortParagraphs : Sort the Paragraphs (Sort the Paragraphs)\n- SingleChoiceSet : Single Choice Set (Single Choice Set)\n- DialogCards : Dialog Cards (Dialog Cards) — Cartes recto-verso à retourner pour comparer et réviser ; aucun appariement par glisser-déposer.\n- Dictation : Dictation (Dictation)\n- Chart : Chart (Chart) — Graphique à LIRE, construit depuis les données fournies ; aucune saisie de données par l’apprenant.\n- CoursePresentation : Course Presentation (CoursePresentation) — Diaporama de textes et questions intégrées ; pas de vidéo à regarder ni de média fourni automatiquement.\n- InteractiveBook : Interactive Book (InteractiveBook) — Livre de textes et exercices intégrés ; pas de vidéo ou de média fourni automatiquement.\n- test_elea : Quiz (test_elea)\n- Page : Page (Page) — Page de lecture, sans champ de réponse. Pour faire écrire ou remettre en ordre à l’écran, choisir le module adapté ; un travail sur papier doit être explicitement annoncé.\n- Livre : Book (Livre) — Chapitres à lire, sans champ de réponse ; les exercices à réaliser à l’écran doivent utiliser une activité distincte.\n- Devoir : Assignment (Devoir) — Consigne et critères d’un travail à remettre ou réaliser ; pas de correction automatique immédiate.\n- parcours_etiquette : Linking text (label) — Texte ou consigne affichés dans le cours ; aucun champ de réponse.\n- parcours_forum : Forum (forum) — Consigne d’un échange asynchrone ; les participants écriront ensuite, pas de discussion préremplie.\n- parcours_sondage : Poll (choice)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 3 à 6 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en English.\n- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.\n- La consigne doit correspondre au geste réellement permis par le module décrit dans le catalogue. Pour faire ORDONNER des événements, utiliser SortParagraphs ; Timeline sert à les CONSULTER.\n- Aucun média externe n’est ajouté automatiquement : ne demande pas de regarder une vidéo, une photo ou un schéma absent. Prévoir des ressources textuelles autonomes. Si une manipulation en présence nécessite du matériel, l’annoncer explicitement comme matériel à préparer.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 4 à 4 activités pour TOUT le parcours, répartition 2 + 1 + 1. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"transfert\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788962",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Understand supply and demand\",\n  \"objectifGeneral\": \"Examine real-world cases to master supply and demand interaction\",\n  \"notionsPivots\": [\n    \"the law of supply\",\n    \"the law of demand\",\n    \"market equilibrium\",\n    \"price elasticity\",\n    \"consumer surplus\",\n    \"producer surplus\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Prepare at home: core concepts and self-check\",\n      \"objectif\": \"Identify basic supply and demand principles through guided reading and verification\",\n      \"cartes\": [\n        {\n          \"titre\": \"Read supply and demand definitions\",\n          \"objectif\": \"Distinguish key terms related to supply and demand\",\n          \"module\": \"InteractiveBook\",\n          \"palier\": \"decouverte\",\n          \"duree\": 20,\n          \"consigne\": \"Read the provided definitions and examples for 'the law of supply', 'the law of demand', and 'market equilibrium'. Be ready to compare them in the next step.\"\n        },\n        {\n          \"titre\": \"Verify understanding with a quiz\",\n          \"objectif\": \"Check the comprehension of supply and demand fundamentals\",\n          \"module\": \"SingleChoiceSet\",\n          \"palier\": \"decouverte\",\n          \"duree\": 15,\n          \"consigne\": \"Complete the single-choice questions on supply, demand and equilibrium. Use this quiz to identify any gaps before the in-class case study.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Solve together: apply concepts to a case study\",\n      \"objectif\": \"Analyze a real-world situation using supply and demand analysis\",\n      \"cartes\": [\n        {\n          \"titre\": \"Work on the supply and demand case study\",\n          \"objectif\": \"Apply supply and demand principles to evaluate market changes\",\n          \"module\": \"Devoir\",\n          \"palier\": \"transfert\",\n          \"duree\": 25,\n          \"consigne\": \"In class, work in small groups to solve the provided case study. Use graphs and data to support your analysis of shifts in supply, demand, and equilibrium.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Review and assess\",\n      \"objectif\": \"Evaluate your learning and correct misconceptions\",\n      \"cartes\": [\n        {\n          \"titre\": \"Complete self-assessment quiz\",\n          \"objectif\": \"Assess your mastery of supply and demand concepts\",\n          \"module\": \"test_elea\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"Answer the questions about supply, demand and equilibrium based on your class work and the case study. Use this quiz to confirm your understanding and get immediate feedback.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 616,
+      "prompt_tokens": 2369,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "en",
+    "exporteLe": "2026-09-10T22:20:13.873Z",
+    "cadrage": {
+      "platform": "moodle",
+      "format": "hybride",
+      "ampleur": "courte",
+      "trame": "inversee"
+    },
+    "plan": {
+      "titre": "Understand supply and demand",
+      "objectifGeneral": "Examine real-world cases to master supply and demand interaction",
+      "notionsPivots": [
+        "the law of supply",
+        "the law of demand",
+        "market equilibrium",
+        "price elasticity",
+        "consumer surplus",
+        "producer surplus"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Prepare at home: core concepts and self-check",
+          "objectif": "Identify basic supply and demand principles through guided reading and verification",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Read supply and demand definitions",
+              "objectif": "Distinguish key terms related to supply and demand",
+              "consigne": "Read the provided definitions and examples for 'the law of supply', 'the law of demand', and 'market equilibrium'. Be ready to compare them in the next step.",
+              "module": "InteractiveBook",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c3",
+              "titre": "Verify understanding with a quiz",
+              "objectif": "Check the comprehension of supply and demand fundamentals",
+              "consigne": "Complete the single-choice questions on supply, demand and equilibrium. Use this quiz to identify any gaps before the in-class case study.",
+              "module": "SingleChoiceSet",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e4",
+          "titre": "Solve together: apply concepts to a case study",
+          "objectif": "Analyze a real-world situation using supply and demand analysis",
+          "cartes": [
+            {
+              "id": "c5",
+              "titre": "Work on the supply and demand case study",
+              "objectif": "Apply supply and demand principles to evaluate market changes",
+              "consigne": "In class, work in small groups to solve the provided case study. Use graphs and data to support your analysis of shifts in supply, demand, and equilibrium.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 25,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e6",
+          "titre": "Review and assess",
+          "objectif": "Evaluate your learning and correct misconceptions",
+          "cartes": [
+            {
+              "id": "c7",
+              "titre": "Complete self-assessment quiz",
+              "objectif": "Assess your mastery of supply and demand concepts",
+              "consigne": "Answer the questions about supply, demand and equilibrium based on your class work and the case study. Use this quiz to confirm your understanding and get immediate feedback.",
+              "module": "test_elea",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 10,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "Building starts with this click: each activity is generated one at a time, in order, in front of you."
+}

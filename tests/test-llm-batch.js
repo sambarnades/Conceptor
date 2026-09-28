@@ -15,7 +15,7 @@
  * Usage : ouvrir tests/test-llm-batch.html depuis le serveur local (ou via test-all.html).
  */
 
-import { parseJsonStrict, balancedBatches, BATCH_CONFIG } from '../js/services/llm-batch.js';
+import { parseJsonStrict, balancedBatches, BATCH_CONFIG, fillWithSplit, buildOutlinePrompt, shouldChunk, batchSizeFor } from '../js/services/llm-batch.js';
 import { healJsonString } from '../js/h5p/json-healer.js';
 
 // =======================================================================
@@ -251,6 +251,116 @@ export async function runAllTests() {
 
     assert(balancedBatches(0, 4).length === 0,
         'balancedBatches(0, 4) : aucun lot');
+
+    // ===================================================================
+    // 7. Lot en échec : redécoupé, pas relancé à l'identique (calibration 2026-09-28)
+    // ===================================================================
+    section('7. Redécoupage d\'un lot en échec');
+
+    // Faux modèle : échoue sur les lots listés (par taille ou par 1er intitulé), sinon
+    // renvoie un item par intitulé. Journalise chaque appel.
+    function fauxModele({ echoueSi = () => false } = {}) {
+        const appels = [];
+        const attempt = async (slice) => {
+            appels.push(slice.map(p => p.n).join(','));
+            if (echoueSi(slice, appels.length)) throw new Error('panne simulée');
+            return slice.map(p => ({ question: 'Q' + p.n }));
+        };
+        return { appels, attempt };
+    }
+    const tranche = [{ n: 1 }, { n: 2 }, { n: 3 }];
+
+    {
+        const m = fauxModele();
+        const items = await fillWithSplit(tranche, m.attempt, { pauseMs: 0 });
+        assert(m.appels.length === 1 && items.length === 3,
+            'Lot sain : un seul appel, 3 items', `appels : ${JSON.stringify(m.appels)}`);
+    }
+    {
+        // Le lot de 3 échoue (serveur lent) : ses moitiés [1,2] et [3] passent.
+        const m = fauxModele({ echoueSi: (s) => s.length === 3 });
+        let items = [];
+        try { items = await fillWithSplit(tranche, m.attempt, { pauseMs: 0 }); } catch { /* constaté ci-dessous */ }
+        assert(JSON.stringify(m.appels) === JSON.stringify(['1,2,3', '1,2', '3']),
+            'Lot de 3 en échec : redécoupé en [1,2] puis [3], jamais relancé tel quel',
+            `appels : ${JSON.stringify(m.appels)}`);
+        assert(items.map(i => i.question).join() === 'Q1,Q2,Q3',
+            'Redécoupage : l\'ordre des items suit celui du plan');
+    }
+    {
+        // L'item seul est relancé `retries` fois, puis l'erreur remonte.
+        const m = fauxModele({ echoueSi: () => true });
+        let err = null;
+        try { await fillWithSplit([{ n: 7 }], m.attempt, { retries: 1, pauseMs: 0 }); } catch (e) { err = e; }
+        assert(err && m.appels.length === 2,
+            'Item seul en échec : 1 relance (retries = 1) puis l\'erreur remonte',
+            `appels : ${m.appels.length}`);
+    }
+    {
+        // Panne franche sur un lot de 3 : [1,2,3] → [1,2] → [1] relancé une fois → abandon.
+        const m = fauxModele({ echoueSi: () => true });
+        let err = null;
+        try { await fillWithSplit(tranche, m.attempt, { budget: { left: 4 }, pauseMs: 0 }); } catch (e) { err = e; }
+        assert(err && JSON.stringify(m.appels) === JSON.stringify(['1,2,3', '1,2', '1', '1']),
+            'Panne franche : abandon après 4 appels, sans attendre la moitié restante (tout-ou-rien)',
+            `appels : ${JSON.stringify(m.appels)}`);
+    }
+    {
+        // Le budget est PARTAGÉ : épuisé par un autre lot, il coupe court aux relances.
+        const m = fauxModele({ echoueSi: () => true });
+        const budget = { left: 2 };
+        let err = null;
+        try { await fillWithSplit([{ n: 9 }], m.attempt, { budget, retries: 5, pauseMs: 0 }); } catch (e) { err = e; }
+        assert(err && m.appels.length === 3 && budget.left < 0,
+            'Budget de 2 échecs : abandon au 3e appel malgré retries = 5',
+            `appels : ${m.appels.length}, budget : ${budget.left}`);
+    }
+    {
+        // « Arrêter » n'est pas une panne : aucun redécoupage.
+        const m = fauxModele();
+        const attempt = async (slice) => {
+            m.appels.push(slice.length);
+            const e = new Error('annulé'); e.code = 'GENERATION_CANCELLED'; throw e;
+        };
+        let err = null;
+        try { await fillWithSplit(tranche, attempt, { pauseMs: 0 }); } catch (e) { err = e; }
+        assert(err && err.code === 'GENERATION_CANCELLED' && m.appels.length === 1,
+            'Annulation : remonte aussitôt, sans redécoupage ni relance');
+    }
+
+    // ===================================================================
+    // 8. Plan : consigne propre à l'activité (quiz mixte → types attribués)
+    // ===================================================================
+    section('8. Consigne de plan propre à l\'activité');
+
+    const tFaux = { prompt_quizset_structure_json: 'STRUCT', batch_outline_hint_quiz_types: 'TYPES : varie-les sur les {count} éléments.' };
+    const base = { prefix: 'prompt_quizset', params: { qui: 'un prof', quoi: 'la mer', ocrContent: '' }, t: tFaux, count: 5, path: 'questions', itemName: 'question', carcasse: ['title', 'overallFeedback'] };
+    const sansHint = buildOutlinePrompt(base);
+    const avecHint = buildOutlinePrompt({ ...base, planHint: 'batch_outline_hint_quiz_types' });
+    assert(avecHint.includes('TYPES : varie-les sur les 5 éléments.'),
+        'planHint : la consigne est ajoutée au plan, jetons {count} substitués');
+    assert(avecHint.startsWith(sansHint),
+        'planHint : ajoutée APRÈS la contrainte, le reste du prompt de plan est inchangé');
+    assert(buildOutlinePrompt({ ...base, planHint: 'cle_absente' }) === sansHint,
+        'planHint dont la clé manque : prompt de plan identique à celui sans consigne');
+
+    // ===================================================================
+    // 9. Réglages des trois quiz (definitions.js)
+    // ===================================================================
+    section('9. Réglages des quiz');
+
+    const { h5pModules } = await import('../js/core/definitions.js');
+    const qcm = h5pModules.QuizSetQCM, mixte = h5pModules.QuizSet, vf = h5pModules.QuizSetVF;
+    assert(shouldChunk(qcm, qcm.chunking.defaultCount) && shouldChunk(mixte, mixte.chunking.defaultCount),
+        'QCM et quiz mixte : le mode Rapide (defaultCount) passe par les lots');
+    assert(!shouldChunk(qcm, 3) && shouldChunk(qcm, 4),
+        'QCM : 3 questions en un appel, découpage dès 4');
+    assert(!shouldChunk(vf, 8) && shouldChunk(vf, 9) && batchSizeFor(vf) === 8,
+        'Vrai/Faux (items légers) : un appel jusqu\'à 8, lots de 8 au-delà');
+    assert(batchSizeFor(qcm) === 3 && BATCH_CONFIG.concurrency === 2,
+        'QCM : lots de 3, deux lots menés de front');
+    assert(mixte.chunking.planHint === 'batch_outline_hint_quiz_types' && !qcm.chunking.planHint,
+        'Seul le quiz mixte demande au plan d\'attribuer les types');
 
     // ===================================================================
     // RENDER (mode standalone uniquement)

@@ -27,7 +27,8 @@
 import { translations, currentLang } from '../../core/translation.js';
 import { formatTextToHtml, debugLog, showNotification } from '../../core/utils.js';
 import { synthesizeSentences, ttsAudioPath, TTS_LANGS } from '../../services/tts.js';
-import { registerMedia, buildMediaStructure } from '../image-manager.js';
+import { prepareQuestionMedia } from '../question-media.js';
+import { registerMedia } from '../image-manager.js';
 
 /** Un chemin audio produit par la synthèse Caramel (≠ téléversement manuel). */
 const TTS_PATH_RE = /^audios\/dictation-[0-9a-f]{8}\.mp3$/;
@@ -66,6 +67,11 @@ function readSample(value) {
 /** Champ audio H5P.Dictation (semantics `type:"audio"` → tableau de fichiers). */
 function toH5PAudio(path, mime = 'audio/mpeg') {
     return [{ path, mime, copyright: { license: 'U' } }];
+}
+
+/** Conserver toutes les sources et crédits d'un enregistrement importé. */
+function preserveAudio(value) {
+    return (Array.isArray(value) ? value : [value]).filter(f=>f?.path).map(({dataURL,kind,...f})=>({...f,mime:f.mime || 'audio/mpeg',copyright:f.copyright || {license:'U'}}));
 }
 
 /**
@@ -169,10 +175,10 @@ export default {
             const manualAlt = readSample(s.sampleAlternative);
             const sample = s._sampleResolved
                 ? toH5PAudio(s._sampleResolved.path, s._sampleResolved.mime)
-                : (manual ? toH5PAudio(manual.path, manual.mime) : undefined);
+                : (manual ? preserveAudio(s.sample) : undefined);
             const sampleAlternative = s._sampleAlternativeResolved
                 ? toH5PAudio(s._sampleAlternativeResolved.path, s._sampleAlternativeResolved.mime)
-                : (manualAlt && !TTS_PATH_RE.test(manualAlt.path) ? toH5PAudio(manualAlt.path, manualAlt.mime) : undefined);
+                : (manualAlt && !TTS_PATH_RE.test(manualAlt.path) ? preserveAudio(s.sampleAlternative) : undefined);
             return {
                 ...(s.description && String(s.description).trim() ? { description: String(s.description).trim() } : {}),
                 ...(sample ? { sample } : {}),
@@ -197,13 +203,7 @@ export default {
         const b = { ...raw, ...(raw.scoring || {}), ...(raw.textual || {}), ...(raw.feedbackPresentation || {}) };
         return {
             title: jsonObj.title || translations.h5p_dictation_name || 'Dictée',
-            // Bloc « Média » (illustration au-dessus de la consigne) : image téléversée dans
-            // l'éditeur (mediaImage, patron « media context » comme Choix multiples) ; sinon
-            // un media déjà présent (content.json rechargé) est conservé tel quel ; sinon la
-            // valeur par défaut d'Éléa/Lumi (parité de ré-enregistrement, 2026-07).
-            media: (jsonObj.mediaImage && jsonObj.mediaImage.path)
-                ? buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt)
-                : ((jsonObj.media && typeof jsonObj.media === 'object') ? jsonObj.media : { disableImageZooming: false }),
+            media: prepareQuestionMedia(jsonObj),
             taskDescription: formatTextToHtml(jsonObj.taskDescription
                 || translations.h5p_dictation_default_task || 'Écoutez attentivement puis écrivez ce que vous entendez.'),
             sentences: h5pSentences,
@@ -219,10 +219,10 @@ export default {
                 scoring: {
                     ignorePunctuation: b.ignorePunctuation !== false,
                     zeroMistakeMode: b.zeroMistakeMode === true,
-                    typoFactor: ['100', '50', '0'].includes(String(b.typoFactor)) ? String(b.typoFactor) : '50'
+                    typoFactor: ['100', '50', '0'].includes(String(b.typoFactor)) ? String(b.typoFactor) : '100'
                 },
                 textual: {
-                    wordSeparator: b.wordSeparator || ' ',
+                    wordSeparator: b.wordSeparator ?? ' ',
                     overrideRTL: ['auto', 'on', 'off'].includes(b.overrideRTL) ? b.overrideRTL : 'auto',
                     autosplit: b.autosplit !== false
                 },
@@ -242,7 +242,8 @@ export default {
                 submitAnswer: translations.h5p_submit_answer || 'Envoyer',
                 tryAgain: translations.h5p_try_again || 'Recommencer',
                 showSolution: translations.h5p_show_solution || 'Voir la solution',
-                audioNotSupported: translations.h5p_dictation_audio_not_supported || 'Votre navigateur ne supporte pas ce fichier audio.'
+                audioNotSupported: translations.h5p_dictation_audio_not_supported || 'Votre navigateur ne supporte pas ce fichier audio.',
+                ...(jsonObj.l10n || {})
             },
             a11y: {
                 check: translations.h5p_dictation_a11y_check || 'Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou sans réponse.',
@@ -277,7 +278,8 @@ export default {
                 plus: translations.h5p_dictation_a11y_plus || 'plus',
                 minus: translations.h5p_dictation_a11y_minus || 'moins',
                 asterisk: translations.h5p_dictation_a11y_asterisk || 'astérisque',
-                forwardSlash: translations.h5p_dictation_a11y_forward_slash || 'barre oblique'
+                forwardSlash: translations.h5p_dictation_a11y_forward_slash || 'barre oblique',
+                ...(jsonObj.a11y || {})
             }
         };
     }

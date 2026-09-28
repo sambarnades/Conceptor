@@ -1,0 +1,53 @@
+[
+  {
+    "chemin": "a11y.crosswordGrid",
+    "type": "normalisation_html",
+    "avant": "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d'entrée au lieu de la grille.",
+    "apres": "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d&#039;entrée au lieu de la grille."
+  },
+  {
+    "chemin": "a11y.extraClueFor",
+    "type": "normalisation_html",
+    "avant": "Afficher l'indice supplémentaire pour @clue",
+    "apres": "Afficher l&#039;indice supplémentaire pour @clue"
+  },
+  {
+    "chemin": "a11y.retry",
+    "type": "normalisation_html",
+    "avant": "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l'activité.",
+    "apres": "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l&#039;activité."
+  },
+  {
+    "chemin": "l10n.probematicWords",
+    "type": "normalisation_html",
+    "avant": "Certains mots n'ont pas pu être placés. Mot(s) problématique(s): @words",
+    "apres": "Certains mots n&#039;ont pas pu être placés. Mot(s) problématique(s): @words"
+  },
+  {
+    "chemin": "overallFeedback[2].feedback",
+    "type": "normalisation_html",
+    "avant": "C'est un bon début, mais certains quadrilatères restent mal maîtrisés.",
+    "apres": "C&#039;est un bon début, mais certains quadrilatères restent mal maîtrisés."
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Défi des Quadrilatères en 6e"
+  },
+  {
+    "chemin": "words[0].extraClue",
+    "type": "ajout_natif",
+    "apres": {
+      "params": {
+        "text": "<p>RELU</p>"
+      },
+      "library": "H5P.AdvancedText 1.1",
+      "metadata": {
+        "contentType": "Text",
+        "license": "U",
+        "title": "Text Sans titre"
+      },
+      "subContentId": "ca50bf1a-66ed-4010-a089-98d64438d990"
+    }
+  }
+]

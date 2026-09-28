@@ -105,11 +105,11 @@ async function runStep1_FileIntegrity() {
             // ar.json de 465 Ko sur disque qui ne pèse ici que 340 Ko. Relevé de
             // 400 à 450 Ko à l'ajout du breton (2026-08-28) : el.json était déjà à
             // 399 Ko, une seule clé de plus faisait passer la suite au rouge alors
-            // que rien n'était cassé.
+            // que rien n'était cassé. 500 Ko après les champs et prompts natifs des 27 H5P (septembre 2026).
             const sizeKo = Math.round(text.length / 1024);
             assert(
-                sizeKo < 450,
-                `[1d.Size] ${lang}.json : ${sizeKo} Ko (< 450 Ko)`
+                sizeKo < 500,
+                `[1d.Size] ${lang}.json : ${sizeKo} Ko (< 500 Ko)`
             );
 
             loadedLocales[lang] = obj;

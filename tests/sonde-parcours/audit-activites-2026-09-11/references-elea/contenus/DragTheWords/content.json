@@ -1,0 +1,67 @@
+{
+  "taskDescription": "Bonjour à toutes et à tous ! Aujourd'hui, nous allons tester vos connaissances sur les figures géométriques à quatre côtés. Complétez ce résumé de cours en faisant glisser les termes mathématiques appropriés aux bons endroits. Soyez attentifs aux propriétés de chaque figure !",
+  "textField": "Un polygone qui possède quatre côtés s&#039;appelle un *quadrilatère*.\nParmi eux, on trouve des figures particulières comme le *parallélogramme* dont les côtés opposés sont parallèles.\nSi cette figure possède quatre angles droits, alors il s&#039;agit d&#039;un *rectangle*.\nLorsqu&#039;un quadrilatère a tous ses côtés de la même longueur, on le nomme *losange*.\nEnfin, le *carré* est une figure exceptionnelle car il possède à la fois quatre angles droits et quatre côtés égaux.\nN&#039;oubliez pas d&#039;utiliser votre équerre pour vérifier la perpendicularité et votre règle graduée pour les longueurs.\n",
+  "distractors": "*triangle* *pentagone*",
+  "checkAnswer": "Vérifier",
+  "tryAgain": "Recommencer",
+  "showSolution": "Afficher la solution",
+  "behaviour": {
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "instantFeedback": false,
+    "enableCheckButton": true
+  },
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Ne te décourage pas ! Relis bien les définitions de ton cours sur les propriétés des côtés et des angles, puis réessaie."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "C&#039;est un début, mais il semble y avoir des confusions entre les différentes figures. Reprends tes instruments de géométrie pour visualiser les propriétés."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Tu as compris quelques bases ! Attention à bien distinguer le losange (côtés égaux) du rectangle (angles droits)."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu connais l&#039;essentiel des propriétés des quadrilatères particuliers. Continue tes efforts !"
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu maîtrises bien le vocabulaire géométrique de la classe de 6e. C&#039;est presque parfait !"
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu es un véritable expert des quadrilatères. Tu as su identifier parfaitement chaque figure grâce à ses propriétés spécifiques."
+    }
+  ],
+  "media": {
+    "disableImageZooming": false
+  },
+  "dropZoneIndex": "Zone de dépôt @index.",
+  "empty": "La zone de dépôt @index est vide.",
+  "contains": "La zone de dépôt @index contient l&#039;élément @draggable.",
+  "tipLabel": "Indice",
+  "correctText": "Correct !",
+  "incorrectText": "Incorrect !",
+  "resetDropTitle": "Réinitialiser le dépôt",
+  "resetDropDescription": "Êtes-vous certain de vouloir réinitialiser cette zone de dépôt ?",
+  "grabbed": "L&#039;élément est saisi.",
+  "cancelledDragging": "Déplacement annulé.",
+  "correctAnswer": "Réponse correcte :",
+  "feedbackHeader": "Commentaire de retour",
+  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+  "submitAnswer": "Valider",
+  "ariaDraggableIndex": "@index sur @count éléments.",
+  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+  "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+}

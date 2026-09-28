@@ -1,0 +1,95 @@
+{
+  "panels": [
+    {
+      "title": "Monarchie absolue",
+      "content": {
+        "params": {
+          "text": "Régime politique où le <strong>roi</strong> détient tous les pouvoirs (législatif, exécutif et judiciaire). Avant 1789, le roi dit tenir son pouvoir de <strong>Dieu</strong> : on parle de monarchie de droit divin."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "447a4a8f-4b49-4224-8826-47e82314dcc0",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Monarchie absolue"
+        }
+      }
+    },
+    {
+      "title": "États généraux",
+      "content": {
+        "params": {
+          "text": "Assemblée exceptionnelle convoquée par le roi, réunissant les représentants des <strong>trois ordres</strong> du royaume : le Clergé, la Noblesse et le Tiers-État. En 1789, ils sont convoqués pour résoudre la grave crise financière de l'État."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "e74b3891-4b2b-477e-b7bb-28284c542d80",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "États généraux"
+        }
+      }
+    },
+    {
+      "title": "Souveraineté nationale",
+      "content": {
+        "params": {
+          "text": "Principe selon lequel le pouvoir politique appartient à la <strong>Nation</strong> (l'ensemble des citoyens) et non plus à une seule personne (le roi). Ce principe est affirmé dans la Déclaration des Droits de l'Homme et du Citoyen."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "33067fd6-8ff9-410f-884f-75c43c41906b",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Souveraineté nationale"
+        }
+      }
+    },
+    {
+      "title": "Constitution",
+      "content": {
+        "params": {
+          "text": "Texte de loi fondamental qui définit l'organisation des pouvoirs (qui commande ? comment ?) et les droits des citoyens dans un État. La première Constitution française est adoptée en <strong>1791</strong>."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "ebfbda5a-420d-47f9-b278-cff0ccd8c713",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Constitution"
+        }
+      }
+    },
+    {
+      "title": "République",
+      "content": {
+        "params": {
+          "text": "Régime politique dans lequel le pouvoir n'est pas héréditaire. En France, la <strong>Ière République</strong> est proclamée le 22 septembre 1792 après la chute de la monarchie."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "3e33778b-a3e7-48b6-9fe1-259dad197092",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "République"
+        }
+      }
+    },
+    {
+      "title": "Terreur",
+      "content": {
+        "params": {
+          "text": "Période de la Révolution (1793-1794) marquée par une répression brutale. Sous la direction de <strong>Robespierre</strong>, le gouvernement suspend les libertés individuelles pour combattre les ennemis de la Révolution, qu'ils soient à l'intérieur ou aux frontières."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "ec47bb19-5ef9-4127-ac28-455168120ac3",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Terreur"
+        }
+      }
+    }
+  ],
+  "hTag": "h2"
+}

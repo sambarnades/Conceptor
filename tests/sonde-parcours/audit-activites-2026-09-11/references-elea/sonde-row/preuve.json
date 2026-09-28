@@ -1,0 +1,12 @@
+{
+  "activite": 13831,
+  "cours": 794,
+  "sha256": "d729e46943ddf402acfb23eba93f886d3e6dea09eafd5193cf29e876a5bcaa91",
+  "sequence": [
+    "ajouter Row dans la première page",
+    "ajouter Column contenant Text",
+    "modifier le titre par saisie clavier",
+    "enregistrer dans l’éditeur natif",
+    "réexporter en H5P"
+  ]
+}

@@ -1,0 +1,237 @@
+[
+  {
+    "key": "MultipleChoice",
+    "identifiants": [],
+    "options": [
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": true,
+        "type": "single",
+        "singlePoint": false,
+        "randomAnswers": false,
+        "showSolutionsRequiresInput": true,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": false,
+        "passPercentage": 50,
+        "showScorePoints": true
+      }
+    ]
+  },
+  {
+    "key": "TrueFalse",
+    "identifiants": [],
+    "options": [
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "enableCheckButton": false,
+        "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+        "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+      }
+    ]
+  },
+  {
+    "key": "FillInTheBlanks",
+    "identifiants": [],
+    "options": [
+      {
+        "enableSolutionsButton": true,
+        "autoCheck": false,
+        "caseSensitive": false,
+        "showSolutionsRequiresInput": true,
+        "separateLines": false,
+        "enableRetry": true,
+        "allowRetryIfCorrect": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "acceptSpellingErrors": false,
+        "enableCheckButton": true
+      }
+    ]
+  },
+  {
+    "key": "MarkTheWords",
+    "identifiants": [],
+    "options": [
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": true,
+        "showScorePoints": false
+      }
+    ]
+  },
+  {
+    "key": "QuizSet",
+    "identifiants": [
+      "4b164a7d-cd0b-4dc9-884a-25bdc84db71d",
+      "fe489546-612e-445f-b5e4-93d7dcfa98b2",
+      "3977908a-f882-4579-b419-5e8d85ea36c6",
+      "3a66509d-9351-4e49-bd1d-0f34968d8045"
+    ],
+    "options": [
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": true
+      },
+      {
+        "type": "single",
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "randomAnswers": false,
+        "autoCheck": false,
+        "singlePoint": false,
+        "showScorePoints": true,
+        "passPercentage": 50,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+        "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "caseSensitive": false,
+        "autoCheck": false,
+        "acceptSpellingErrors": false,
+        "separateLines": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true,
+        "allowRetryIfCorrect": false
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "showScorePoints": false,
+        "enableCheckButton": true
+      }
+    ]
+  },
+  {
+    "key": "CoursePresentation",
+    "identifiants": [
+      "207e4728-578d-4d4f-805f-7bf30efb4fa5",
+      "5bc17782-baf5-4acf-80e6-b54525842fc5",
+      "f55a5d99-662f-4316-be71-4b16296861ff",
+      "e0c34347-7afc-43d6-91dc-fd0bb3b95ab1"
+    ],
+    "options": [
+      {
+        "type": "single",
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "randomAnswers": false,
+        "autoCheck": false,
+        "singlePoint": false,
+        "showScorePoints": true,
+        "passPercentage": 50,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+        "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "caseSensitive": false,
+        "autoCheck": false,
+        "acceptSpellingErrors": false,
+        "separateLines": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true,
+        "allowRetryIfCorrect": false
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "showScorePoints": false,
+        "enableCheckButton": true
+      }
+    ]
+  },
+  {
+    "key": "InteractiveBook",
+    "identifiants": [
+      "a06bca90-6450-4256-84a8-840c5f06b548",
+      "74583b97-ada4-400e-920c-56a4ac480ebd",
+      "4243ae4a-bb0b-47e5-8254-bc3125743263",
+      "0e8b62b7-221f-4f25-a399-98fed6ef0a89",
+      "656d1e14-998d-4eb3-b035-a586b0a60007"
+    ],
+    "options": [
+      {
+        "type": "single",
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "randomAnswers": false,
+        "autoCheck": false,
+        "singlePoint": false,
+        "showScorePoints": true,
+        "passPercentage": 50,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+        "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "caseSensitive": false,
+        "autoCheck": false,
+        "acceptSpellingErrors": false,
+        "separateLines": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true,
+        "allowRetryIfCorrect": false
+      },
+      {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "showScorePoints": false,
+        "enableCheckButton": true
+      }
+    ]
+  }
+]

@@ -81,10 +81,16 @@ export function getVisionPromptPreview(context = {}, count) {
 }
 
 /**
- * Modèle vision par défaut : Qwen 3.6 (VL). Benchmark interne 2026-06 : grounding des
- * coordonnées PIXEL-PERFECT (≫ Mistral Small, grossier ; ≫ Gemma, instable). Rapide (~1 s).
+ * Modèle vision par défaut : Qwen 3.8 (VL natif, successeur du 3.6 chez ILaaS). Benchmark
+ * interne 2026-06 sur le 3.6 : grounding des coordonnées PIXEL-PERFECT (≫ Mistral Small,
+ * grossier ; ≫ Gemma, instable). Rapide (~2 s).
+ *
+ * Au 28-09-2026, Qwen 3.8 n'est PAS encore au catalogue ILaaS : le workflow n8n Vision
+ * relance alors sur `qwen-3.6-35b-instruct`. Ce repli n'existe que dans le workflow
+ * corrigé (`appliquer-ilaas-automne-2026.py`) ; l'ancien relançait trois fois le modèle
+ * demandé et échouait aussitôt. Importer le workflow AVANT de servir ce fichier.
  */
-export const DEFAULT_VISION_MODEL = 'qwen-3.6-35b-instruct';
+export const DEFAULT_VISION_MODEL = 'qwen-3.8-27b';
 
 /**
  * Détecte les zones clés d'une image via le modèle vision.
@@ -99,7 +105,7 @@ export const DEFAULT_VISION_MODEL = 'qwen-3.6-35b-instruct';
  * @param {number} [opts.count] - Nombre de zones à FORCER (mode Avancé). Omis en Rapide → le
  *   serveur en détermine ~4-5 selon l'image (un peu plus/moins si justifié).
  * @param {string} [opts.lang='fr'] - Langue des descriptions (= langue de l'interface).
- * @param {string} [opts.model] - Modèle vision (défaut : Qwen 3.6).
+ * @param {string} [opts.model] - Modèle vision (défaut : Qwen 3.8, repli n8n sur Qwen 3.6).
  * @param {AbortSignal} [opts.signal] - Pour annuler (bouton « Arrêter » / changement d'image).
  * @returns {Promise<{zones: Array<{x:number,y:number,label:string,description:string}>, imageDescription:string, model?:string}>}
  * @throws {Error} enrichi par classifyError en cas d'échec réseau/HTTP.

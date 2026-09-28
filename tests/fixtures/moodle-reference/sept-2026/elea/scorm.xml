@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="141" moduleid="14028" modulename="scorm" contextid="17756">
+  <scorm id="141">
+    <name>Paquetage SCORM : le cycle de l’eau</name>
+    <scormtype>local</scormtype>
+    <reference>scorm.zip</reference>
+    <intro>&lt;p&gt;Parcours le module SCORM.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <version>SCORM_1.2</version>
+    <maxgrade>100</maxgrade>
+    <grademethod>1</grademethod>
+    <whatgrade>0</whatgrade>
+    <maxattempt>0</maxattempt>
+    <forcecompleted>0</forcecompleted>
+    <forcenewattempt>0</forcenewattempt>
+    <lastattemptlock>0</lastattemptlock>
+    <masteryoverride>1</masteryoverride>
+    <displayattemptstatus>1</displayattemptstatus>
+    <displaycoursestructure>0</displaycoursestructure>
+    <updatefreq>0</updatefreq>
+    <sha1hash>48a17fa52d729c0f46c7d271b03eceb55fe828d3</sha1hash>
+    <md5hash></md5hash>
+    <revision>1</revision>
+    <launch>283</launch>
+    <skipview>2</skipview>
+    <hidebrowse>0</hidebrowse>
+    <hidetoc>1</hidetoc>
+    <nav>1</nav>
+    <navpositionleft>-100</navpositionleft>
+    <navpositiontop>-100</navpositiontop>
+    <auto>0</auto>
+    <popup>0</popup>
+    <options></options>
+    <width>100</width>
+    <height>500</height>
+    <timeopen>0</timeopen>
+    <timeclose>0</timeclose>
+    <timemodified>0</timemodified>
+    <completionstatusrequired>4</completionstatusrequired>
+    <completionscorerequired>$@NULL@$</completionscorerequired>
+    <completionstatusallscos>0</completionstatusallscos>
+    <autocommit>0</autocommit>
+    <scoes>
+      <sco id="282">
+        <manifest>cycle-eau</manifest>
+        <organization></organization>
+        <parent>/</parent>
+        <identifier>org1</identifier>
+        <launch></launch>
+        <scormtype></scormtype>
+        <title>Le cycle de l'eau</title>
+        <sortorder>1</sortorder>
+        <sco_datas>
+        </sco_datas>
+        <seq_ruleconds>
+        </seq_ruleconds>
+        <seq_rolluprules>
+        </seq_rolluprules>
+        <seq_objectives>
+        </seq_objectives>
+        <sco_tracks>
+        </sco_tracks>
+      </sco>
+      <sco id="283">
+        <manifest>cycle-eau</manifest>
+        <organization>org1</organization>
+        <parent>org1</parent>
+        <identifier>item1</identifier>
+        <launch>index.html</launch>
+        <scormtype>sco</scormtype>
+        <title>Le cycle de l'eau</title>
+        <sortorder>2</sortorder>
+        <sco_datas>
+          <sco_data id="289">
+            <name>isvisible</name>
+            <value>true</value>
+          </sco_data>
+          <sco_data id="290">
+            <name>parameters</name>
+            <value></value>
+          </sco_data>
+        </sco_datas>
+        <seq_ruleconds>
+        </seq_ruleconds>
+        <seq_rolluprules>
+        </seq_rolluprules>
+        <seq_objectives>
+        </seq_objectives>
+        <sco_tracks>
+        </sco_tracks>
+      </sco>
+    </scoes>
+  </scorm>
+</activity>

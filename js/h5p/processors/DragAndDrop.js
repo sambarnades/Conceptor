@@ -73,19 +73,32 @@ export default {
                 }
             };
 
+            if (el._native?.type) {
+              const original = el._native.type;
+              if (original.library?.split(' ')[0] === elementType.library.split(' ')[0]) {
+                elementType.subContentId = original.subContentId || elementType.subContentId;
+                elementType.metadata = { ...original.metadata };
+                elementType.params = { ...original.params, ...elementType.params };
+                if (isImage) {
+                  elementType.params.file = { ...original.params?.file, ...elementType.params.file };
+                  elementType.params.decorative = original.params?.decorative ?? false;
+                }
+              }
+            }
             // Dimensions en em dérivées de la position calculée (% → px → em). En layout auto,
             // pos.width/height valent exactement ELEMENT_WIDTH_PX / ELEMENT_HEIGHT_PX (ou
             // IMAGE_ELEMENT_HEIGHT_PX) convertis en % : le résultat est identique à l'historique.
             // En layout personnalisé, l'étiquette redimensionnée dans l'éditeur est respectée.
+            const nat = el._native || {};
             return {
                 type: elementType,
                 x: pos.x,
                 y: pos.y,
                 width: round2((pos.width / 100) * canvasW / 16),
                 height: round2((pos.height / 100) * canvasH / 16),
-                dropZones: allZoneIndices,
-                backgroundOpacity: 100,
-                multiple: false
+                dropZones: Array.isArray(el.allowedZones) ? el.allowedZones.map(String) : Array.isArray(nat.dropZones) ? nat.dropZones.map(String) : allZoneIndices,
+                backgroundOpacity: nat.backgroundOpacity ?? 100,
+                multiple: nat.multiple ?? false
             };
         });
 
@@ -95,22 +108,23 @@ export default {
             const correctEls = Array.isArray(zone.correctElements)
                 ? zone.correctElements.map(idx => String(idx))
                 : [];
+            const nat = zone._native || {};
             return {
                 label: `<div>${formatTextToHtml(zone.label || "")}</div>`,
-                showLabel: true,
+                showLabel: nat.showLabel ?? true,
                 x: pos.x,
                 y: pos.y,
                 width: round2((pos.width / 100) * canvasW / 16),
                 height: round2((pos.height / 100) * canvasH / 16),
                 correctElements: correctEls,
-                backgroundOpacity: 100,
-                tipsAndFeedback: {
+                backgroundOpacity: nat.backgroundOpacity ?? 100,
+                tipsAndFeedback: nat.tipsAndFeedback || {
                     tip: "",
                     feedbackOnCorrect: "",
                     feedbackOnIncorrect: ""
                 },
-                single: false,
-                autoAlign: true
+                single: nat.single ?? false,
+                autoAlign: nat.autoAlign ?? true
             };
         });
 
@@ -124,7 +138,7 @@ export default {
             { from: 91, to: 100, feedback: "Excellent !" }
         ];
 
-        return {
+        const result = {
             title: jsonObj.title || "",
             scoreShow: translations.h5p_check_answer || "Vérifier",
             submit: translations.h5p_submit_answer || "Valider",
@@ -184,6 +198,12 @@ export default {
             a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
             a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
         };
+        const original = jsonObj._nativeRoot || {};
+        for (const key of Object.keys(result)) {
+            if (typeof result[key] === 'string' && typeof original[key] === 'string' && key !== 'title') result[key] = original[key];
+        }
+        result.localize = { ...result.localize, ...original.localize };
+        return { ...original, ...result };
     },
 
     /**

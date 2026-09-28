@@ -1,0 +1,14 @@
+{
+  "commande": "node tests/run_lot_manuel_preview.mjs",
+  "resultat_console_verifie": {
+    "activites": 26,
+    "ouvertures_sans_erreur": 26
+  },
+  "contre_verification_finale": {
+    "commande": "node tests/run_lot_manuel_preview.mjs --only=Timeline",
+    "raison": "Fond de frise sombre et attente du rendu des textes",
+    "ouvertures_sans_erreur": 1,
+    "rapport": "controle-apercus-Timeline.json"
+  },
+  "portee": "Ouverture locale, sans exercice exhaustif ni validation native Éléa. Les 26 captures de ce passage sont conservées."
+}

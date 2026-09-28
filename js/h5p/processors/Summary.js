@@ -2,7 +2,7 @@
  * Processeur H5P — Résumé
  *
  * Génère des affirmations à évaluer avec UUID uniques par résumé,
- * comportement d'essai/solution et feedback global personnalisé.
+ * indices et feedback global personnalisé.
  *
  * @module processors/Summary
  * @exports {Object} default.process - Transformation principale
@@ -37,26 +37,29 @@ export function libellesSummary() {
 
 export default {
     process: (jsonObj) => {
+        if (!Array.isArray(jsonObj.summaries) || jsonObj.summaries.length < 1 || jsonObj.summaries.length > 100) {
+            throw new Error('Summary : entre 1 et 100 groupes sont requis.');
+        }
+        for (const [index, group] of jsonObj.summaries.entries()) {
+            if (!Array.isArray(group?.summary) || group.summary.length < 2 ||
+                group.summary.some(text => typeof text !== 'string' || !text.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim())) {
+                throw new Error(`Summary : le groupe ${index + 1} requiert au moins deux affirmations non vides, la première correcte.`);
+            }
+        }
         return {
             intro: jsonObj.intro || translations.h5p_summary_intro || "Choisissez l'affirmation correcte.",
             summaries: (Array.isArray(jsonObj.summaries) ? jsonObj.summaries : []).map(s => ({
                 ...s,
                 summary: Array.isArray(s.summary) ? s.summary.map(text => formatTextToHtml(text)) : s.summary,
-                subContentId: generateUUID(),
-                tip: s?.tip || ""
+                subContentId: s.subContentId || generateUUID(),
+                tip: (typeof s.tip === "object" ? s.tip?.tip : s.tip) || ""
             })),
-            behaviour: {
-                enableRetry: true,
-                enableSolutionsButton: true,
-                passPercentage: 50,
-                ...(jsonObj.behaviour || {})
-            },
             overallFeedback: jsonObj.overallFeedback || [{
                 from: 0,
                 to: 100,
                 feedback: translations.h5p_summary_feedback || "Vous avez @score sur @total affirmations correctes (@percent %)."
             }],
-            ...libellesSummary()
+            ...Object.fromEntries(Object.entries(libellesSummary()).map(([key, fallback]) => [key, jsonObj[key] ?? fallback]))
         };
     }
 };

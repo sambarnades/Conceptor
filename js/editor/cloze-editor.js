@@ -18,7 +18,7 @@ import { validateField } from './validators.js';
 // =======================================================================
 
 /** Regex pour detecter les trous Cloze */
-const CLOZE_RE = /\{(\d+):(MULTICHOICE|SHORTANSWER|NUMERICAL):([^}]+)\}/g;
+const CLOZE_RE = /\{(\d*):((?:SHORTANSWER_C|SHORTANSWER|NUMERICAL|MULTICHOICE(?:_[A-Z]+)?|MULTIRESPONSE(?:_[A-Z]+)?|SAC|SA|NM|MCVS|MCHS|MRHS|MRVS|MCV|MCH|MCS|MRH|MRS|MWC|MC|MR|MW)):((?:\\[\s\S]|[^}\\])+)\}/g;
 
 /**
  * Parse le contenu d'un trou selon son type.
@@ -28,6 +28,17 @@ const CLOZE_RE = /\{(\d+):(MULTICHOICE|SHORTANSWER|NUMERICAL):([^}]+)\}/g;
  * @returns {object} Donnees structurees du trou
  */
 export function parseGapContent(weight, type, content) {
+    // Les variantes avancées restent intégralement éditables en syntaxe source.
+    // Ne jamais dégrader leurs fractions, retours, casse ou réponses multiples
+    // avec le petit formulaire destiné aux trois formes simples.
+    const advanced = !['NUMERICAL', 'MULTICHOICE', 'SHORTANSWER'].includes(type)
+        || /[%#\\]/.test(content)
+        || (type === 'NUMERICAL' && (content.includes('~') || !content.startsWith('=')))
+        || (type === 'SHORTANSWER' && content.split('~').some(answer => !answer.startsWith('=')))
+        || (type === 'MULTICHOICE' && content.split('~').filter(answer => answer.startsWith('=')).length !== 1);
+    if (advanced) {
+        return { weight, type, source: `{${weight}:${type}:${content}}` };
+    }
     if (type === 'NUMERICAL') {
         const clean = content.replace(/^=/, '');
         const parts = clean.split(':');
@@ -40,9 +51,6 @@ export function parseGapContent(weight, type, content) {
     for (const a of answers) {
         if (a.startsWith('=')) {
             correct.push(a.substring(1));
-        } else if (type === 'SHORTANSWER') {
-            // SHORTANSWER : toutes les réponses sont des alternatives correctes
-            correct.push(a);
         } else {
             wrong.push(a);
         }
@@ -89,6 +97,7 @@ export function parseClozeText(text) {
  * @returns {string} Syntaxe Cloze : {poids:TYPE:=bonne~mauvaise}
  */
 export function serializeGap(gapData) {
+    if (gapData.source !== undefined) return gapData.source;
     const w = gapData.weight || '1';
     if (gapData.type === 'NUMERICAL') {
         const tol = gapData.tolerance && gapData.tolerance !== '0' ? ':' + gapData.tolerance : ':0';
@@ -147,7 +156,9 @@ function _createChip(gapData) {
     chip.setAttribute('data-gap', JSON.stringify(gapData));
 
     // Texte affiche dans le chip
-    if (gapData.type === 'NUMERICAL') {
+    if (gapData.source !== undefined) {
+        chip.textContent = t('editor_test_type_cloze');
+    } else if (gapData.type === 'NUMERICAL') {
         const tol = gapData.tolerance && gapData.tolerance !== '0' ? ` \u00B1 ${gapData.tolerance}` : '';
         chip.textContent = `${gapData.correct}${tol}`;
     } else if (gapData.type === 'MULTICHOICE') {
@@ -242,7 +253,7 @@ function _createClozeToolbar() {
  */
 function _showGapConfigModal(gapData, onSave, onDelete) {
     const isNew = !onDelete;
-    const data = gapData || { weight: '1', type: 'SHORTANSWER', correct: [''], wrong: [] };
+    const data = gapData ? structuredClone(gapData) : { weight: '1', type: 'SHORTANSWER', correct: [''], wrong: [] };
 
     // Overlay
     const overlay = document.createElement('div');
@@ -263,7 +274,7 @@ function _showGapConfigModal(gapData, onSave, onDelete) {
     const header = document.createElement('div');
     header.className = 'json-editor__formula-header';
     header.innerHTML = `
-        <span>${escapeHtml(titles[data.type] || 'Trou')}</span>
+        <span>${escapeHtml(titles[data.type] || t('editor_test_type_cloze'))}</span>
         <button type="button" class="json-editor__formula-close"><i class="fas fa-times"></i></button>
     `;
     panel.appendChild(header);
@@ -294,7 +305,7 @@ function _showGapConfigModal(gapData, onSave, onDelete) {
         });
         typeRow.appendChild(btn);
     });
-    body.appendChild(typeRow);
+    if (data.source === undefined) body.appendChild(typeRow);
 
     // Container des champs (reconstruit selon le type)
     const fieldsContainer = document.createElement('div');
@@ -354,6 +365,15 @@ function _showGapConfigModal(gapData, onSave, onDelete) {
 function _rebuildModalFields(container, data) {
     container.innerHTML = '';
 
+    if (data.source !== undefined) {
+        const label = document.createElement('label');
+        label.textContent = t('editor_test_type_cloze');
+        const textarea = document.createElement('textarea');
+        textarea.className = 'json-editor__textarea';
+        textarea.dataset.field = 'source'; textarea.rows = 5; textarea.value = data.source;
+        label.appendChild(textarea); container.appendChild(label);
+        return;
+    }
     if (data.type === 'NUMERICAL') {
         container.innerHTML = `
             <div class="cloze-modal__field-row">
@@ -422,6 +442,7 @@ function _rebuildModalFields(container, data) {
  * Collecte les donnees depuis les champs de la modale.
  */
 function _collectModalData(container, data) {
+    if (data.source !== undefined) { data.source = container.querySelector('[data-field="source"]').value; return; }
     if (data.type === 'NUMERICAL') {
         data.correct = container.querySelector('[data-field="correct"]')?.value || '';
         data.tolerance = container.querySelector('[data-field="tolerance"]')?.value || '0';

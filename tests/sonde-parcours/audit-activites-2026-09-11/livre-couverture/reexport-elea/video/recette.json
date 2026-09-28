@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-11",
+  "cours": 794,
+  "activite": 13842,
+  "h5pId": 396,
+  "titreReexport": "Couverture vidéo — relue dans Éléa",
+  "sha256Reexport": "b12bcfb0f3bdb959fc1db76bc2795ef623e0ebb7bdc58ba38a9bbbe151bd853a",
+  "sha256PaquetLocalCompare": "9a35f8b5a83eb163445b3fd2c98d0419d8795c9f6e081ac9393673041b3755bd",
+  "noteSource": "Le paquet local a été régénéré pour la dernière recette de visibilité ; ses contenus et médias sont comparés au réexport, sans présumer des horodatages du ZIP déposé.",
+  "sousIdentifiantsConserves": 3,
+  "mediasConserves": {
+    "content/images/image-deb86f24.jpg": "66fef39602c5b762ca2f0e38b5aa7006819b54430eb6ed7c877a4c29bf413382",
+    "content/videos/video-faa0c231.webm": "a17693277ca67779fa303ce0f32f8237dc3f84346dcf5e93e63f384ff42756f9"
+  },
+  "validationManuelle": "Case J’ai terminé cette page observée décochée puis cochée.",
+  "lecture": "Lecture vidéo native achevée : 0:01 / 0:01, point animé dans la dernière image, boucle désactivée.",
+  "enregistrement": "Titre retouché au clavier dans l’éditeur natif, sauvegarde puis réexport."
+}

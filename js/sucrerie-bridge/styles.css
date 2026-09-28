@@ -1127,3 +1127,9 @@
     font-size: 0.9em;
     color: #5e5f5f;
 }
+/* Dépôt d'un parcours : styles présents avant l'ouverture, aucun chargement visuel tardif. */
+.preview-modal-overlay.sucrerie-bridge-course { display:flex; }
+.sucrerie-bridge-course .preview-modal { display:flex; flex-direction:column; width:min(960px, calc(100% - 32px)); height:min(760px, calc(100dvh - 32px)); }
+.sucrerie-bridge-course .preview-modal__title { font-size:1.1rem; margin:0; }
+
+@media (max-width:600px) { .sucrerie-bridge-course .preview-modal { width:100%; height:100dvh; border-radius:0; padding:.65rem; gap:.65rem; } }

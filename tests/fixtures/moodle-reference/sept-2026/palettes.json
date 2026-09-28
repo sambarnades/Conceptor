@@ -1,0 +1,336 @@
+{
+ "releve": "28 septembre 2026, en direct, service core_course_get_course_content_items",
+ "elea": "test03.elea.apps.education.fr (Moodle 5.1.7)",
+ "magistere": "grenoble.magistere.apps.education.fr (Moodle 5.1.7)",
+ "palettes": {
+  "elea": [
+   {
+    "name": "epikmatch",
+    "title": "Appariement",
+    "purpose": "assessment"
+   },
+   {
+    "name": "workshop",
+    "title": "Atelier",
+    "purpose": "assessment"
+   },
+   {
+    "name": "data",
+    "title": "Base de données",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "bigbluebuttonbn",
+    "title": "BigBlueButton",
+    "purpose": "communication"
+   },
+   {
+    "name": "lti_type_9",
+    "title": "Capytale",
+    "purpose": "other"
+   },
+   {
+    "name": "mapmodules",
+    "title": "Carte de progression",
+    "purpose": "content"
+   },
+   {
+    "name": "choicegroup",
+    "title": "Choix de Groupe",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "hvp",
+    "title": "Contenu interactif",
+    "purpose": "other"
+   },
+   {
+    "name": "assign",
+    "title": "Devoir",
+    "purpose": "assessment"
+   },
+   {
+    "name": "collabora",
+    "title": "Document collaboratif",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "folder",
+    "title": "Dossier",
+    "purpose": "content"
+   },
+   {
+    "name": "feedback",
+    "title": "Feedback",
+    "purpose": "communication"
+   },
+   {
+    "name": "resource",
+    "title": "Fichier",
+    "purpose": "content"
+   },
+   {
+    "name": "forum",
+    "title": "Forum",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "geogebra",
+    "title": "GeoGebra",
+    "purpose": "assessment"
+   },
+   {
+    "name": "glossary",
+    "title": "Glossaire",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "h5pactivity",
+    "title": "H5P",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "cross",
+    "title": "Jeu - Mots croisés",
+    "purpose": "assessment"
+   },
+   {
+    "name": "cryptex",
+    "title": "Jeu - Mots mêlés",
+    "purpose": "assessment"
+   },
+   {
+    "name": "lesson",
+    "title": "Leçon",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "book",
+    "title": "Livre",
+    "purpose": "content"
+   },
+   {
+    "name": "millionnairev2",
+    "title": "Millionnaire",
+    "purpose": "assessment"
+   },
+   {
+    "name": "page",
+    "title": "Page",
+    "purpose": "content"
+   },
+   {
+    "name": "imscp",
+    "title": "Paquetage IMS Content",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "scorm",
+    "title": "Paquetage SCORM",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "publication",
+    "title": "Partage de fichiers",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "simplequiz",
+    "title": "QCM",
+    "purpose": "assessment"
+   },
+   {
+    "name": "questionnaire",
+    "title": "Questionnaire",
+    "purpose": "communication"
+   },
+   {
+    "name": "choice",
+    "title": "Sondage",
+    "purpose": "communication"
+   },
+   {
+    "name": "stickynotes",
+    "title": "Sticky Notes",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "board",
+    "title": "Tableau",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "quiz",
+    "title": "Test",
+    "purpose": "assessment"
+   },
+   {
+    "name": "studentquiz",
+    "title": "Test étudiant",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "url",
+    "title": "URL",
+    "purpose": "content"
+   },
+   {
+    "name": "wiki",
+    "title": "Wiki",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "label",
+    "title": "Zone texte et média",
+    "purpose": "content"
+   }
+  ],
+  "magistere": [
+   {
+    "name": "workshop",
+    "title": "Atelier",
+    "purpose": "assessment"
+   },
+   {
+    "name": "data",
+    "title": "Base de données",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "bigbluebuttonbn",
+    "title": "BigBlueButton",
+    "purpose": "communication"
+   },
+   {
+    "name": "lti_type_1",
+    "title": "Capytale",
+    "purpose": "other"
+   },
+   {
+    "name": "choicegroup",
+    "title": "Choix de Groupe",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "assign",
+    "title": "Devoir",
+    "purpose": "assessment"
+   },
+   {
+    "name": "collabora",
+    "title": "Document collaboratif",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "folder",
+    "title": "Dossier",
+    "purpose": "content"
+   },
+   {
+    "name": "etherpadlite",
+    "title": "Etherpad Lite",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "resource",
+    "title": "Fichier",
+    "purpose": "content"
+   },
+   {
+    "name": "forum",
+    "title": "Forum",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "glossary",
+    "title": "Glossaire",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "h5pactivity",
+    "title": "H5P",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "lesson",
+    "title": "Leçon",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "book",
+    "title": "Livre",
+    "purpose": "content"
+   },
+   {
+    "name": "programcourse",
+    "title": "Module",
+    "purpose": "other"
+   },
+   {
+    "name": "collabwordcloud",
+    "title": "Nuage de mots",
+    "purpose": "other"
+   },
+   {
+    "name": "page",
+    "title": "Page",
+    "purpose": "content"
+   },
+   {
+    "name": "imscp",
+    "title": "Paquetage IMS Content",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "scorm",
+    "title": "Paquetage SCORM",
+    "purpose": "interactivecontent"
+   },
+   {
+    "name": "publication",
+    "title": "Partage de fichiers",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "questionnaire",
+    "title": "Questionnaire",
+    "purpose": "communication"
+   },
+   {
+    "name": "choice",
+    "title": "Sondage",
+    "purpose": "communication"
+   },
+   {
+    "name": "stickynotes",
+    "title": "Sticky Notes",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "board",
+    "title": "Tableau",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "quiz",
+    "title": "Test",
+    "purpose": "assessment"
+   },
+   {
+    "name": "url",
+    "title": "URL",
+    "purpose": "content"
+   },
+   {
+    "name": "wiki",
+    "title": "Wiki",
+    "purpose": "collaboration"
+   },
+   {
+    "name": "label",
+    "title": "Zone texte et média",
+    "purpose": "content"
+   }
+  ]
+ }
+}

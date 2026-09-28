@@ -9,7 +9,7 @@
   appelé par `handler.call(self, …)` sur une instance qui hérite d'EventDispatcher.
   Instancier avec `new` donnerait « self.on is not a function ».
 
-  Elle DOIT être servie en http:// (python3 -m http.server 8010) : dans un document
+  Elle DOIT être servie en http:// (python3 tests/serveur-statique.py 8010) : dans un document
   sans origine, l'embed YouTube échoue en Erreur 153.
 
   `?temoin` charge la copie désarmée écrite par le scénario (contre-épreuve).

@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Beginner",
     "level_formation_intermediaire": "Gevorderd",
-    "level_formation_expert": "Expert"
+    "level_formation_expert": "Expert",
+    "sucrerie_bridge_welcome_title_course": "Leertraject delen op Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "Het volledige leertraject met activiteiten en instructies wordt voor alle docenten toegankelijk in de Sucrerie-catalogus.",
+    "sucrerie_bridge_course_close": "Terug",
+    "sucrerie_bridge_success_title_approved_course": "Leertraject gepubliceerd!",
+    "sucrerie_bridge_success_title_pending_course": "Leertraject opgeslagen",
+    "sucrerie_bridge_success_message_approved_course": "Je leertraject is beschikbaar in de Sucrerie-catalogus.",
+    "sucrerie_bridge_success_message_pending_course": "Je leertraject verschijnt na controle door een moderator in de catalogus.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Uw inzending moet worden gevalideerd. Er is zojuist een bevestigingslink naar {email} gestuurd: klik er binnen 2 uur op om uw activiteit te publiceren. Zonder bevestiging blijft het 7 dagen een concept in “Mijn activiteiten”.",
+    "sucrerie_bridge_success_email_sent_course": "Een e-mail met je beheerlink is verzonden naar {email}. Bewaar deze zorgvuldig: hij stelt je in staat je leertraject op elk moment te bewerken of te verwijderen."
 }

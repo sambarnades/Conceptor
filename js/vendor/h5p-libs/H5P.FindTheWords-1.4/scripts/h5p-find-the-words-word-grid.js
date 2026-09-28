@@ -386,7 +386,8 @@
   const mouseMoveEventHandler = function (e, canvas, srcPos, eSize) {
     const offsetTop = ($(canvas).offset().top > eSize * 0.75) ? Math.floor(eSize * 0.75) : $(canvas).offset().top;
     const desX = e.pageX - $(canvas).offset().left;
-    const desY = e.pageY - Math.abs(offsetTop);
+    // Caramel 2026-09-12: use the same canvas origin as pointer-down.
+    const desY = e.pageY - $(canvas).offset().top;
     const context = canvas.getContext('2d');
 
     // Draw the current marking
@@ -417,9 +418,8 @@
    */
   const mouseUpEventHandler = function (e, canvas, elementSize, clickStart) {
     let wordObject = {};
-    const offsetTop = ($(canvas).offset().top > elementSize * 0.75) ? Math.floor(elementSize * 0.75) * (-1) : $(canvas).offset().top;
     const x = e.pageX - $(canvas).offset().left;
-    const y = e.pageY - Math.abs(offsetTop);
+    const y = e.pageY - $(canvas).offset().top;
     const clickEnd = calculateCordinates(x, y, elementSize);
     const context = canvas.getContext('2d');
 

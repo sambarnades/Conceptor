@@ -1,0 +1,85 @@
+{
+  "taskDescription": "<p>Bonjour à toutes et à tous ! Dans cet exercice, vous allez explorer la <strong>rupture politique</strong> majeure de l'année 1789.</p><p>Remettez ces paragraphes dans l'ordre pour reconstituer l'enchaînement des faits qui ont mené de la contestation royale à la naissance d'une France nouvelle. Fiez-vous à la <strong>logique des événements</strong> : de l'impasse politique à la création d'un nouveau cadre juridique.</p>",
+  "paragraphs": [
+    "<p>Le royaume traverse une crise financière profonde, poussant le roi à réunir les représentants des trois ordres pour trouver des solutions fiscales. Très vite, les députés du <strong>Tiers-État</strong> contestent le système de vote et revendiquent une meilleure représentation du peuple.</p>",
+    "<p>Devant le refus du monarque de réformer l'assemblée, ces députés décident de se séparer de l'autorité royale pour se proclamer <strong>Assemblée nationale</strong>. Ils s'engagent solennellement à ne pas se quitter avant d'avoir rédigé une règle commune pour le pays.</p>",
+    "<p>Face à cette démonstration de force politique et à l'agitation populaire qui gagne la capitale, les privilèges de la noblesse et du clergé sont abolis. Cette dynamique aboutit à la rédaction d'un texte fondateur proclamant la <strong>liberté</strong> et l'<strong>égalité</strong> de tous les citoyens.</p>",
+    "<p>Ce nouveau cadre juridique transforme radicalement l'organisation de la société en instaurant une <strong>monarchie constitutionnelle</strong>. Le pouvoir est désormais partagé, marquant la fin définitive de l'absolutisme et le début de la souveraineté de la Nation.</p>"
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Il semble que la chronologie de la Révolution soit encore confuse. Relis bien le passage du statut de sujet à celui de citoyen dans ton manuel."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "C&#039;est un début, mais la logique entre la crise politique et les répercussions juridiques n&#039;est pas encore claire. Reprends les définitions de &#039;Souveraineté nationale&#039;."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Tu as identifié quelques étapes clés. Pense bien au fait que l&#039;action politique (l&#039;Assemblée) précède toujours la création de la loi (la Constitution)."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu as saisi l&#039;essentiel du fil conducteur de l&#039;année 1789 et la montée en puissance de la Nation face au Roi."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bien ! Ta compréhension de la chaîne de causalité historique est solide. La structure du récit est presque parfaite."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu maîtrises parfaitement la logique révolutionnaire. Tu as su lier la crise initiale à la transformation finale de l&#039;État avec brio."
+    }
+  ],
+  "behaviour": {
+    "scoringMode": "transitions",
+    "applyPenalties": true,
+    "duplicatesInterchangeable": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "addButtonsForMovement": true
+  },
+  "l10n": {
+    "checkAnswer": "Vérifier",
+    "submitAnswer": "Valider",
+    "tryAgain": "Recommencer",
+    "showSolution": "Afficher la solution",
+    "up": "Monter",
+    "down": "Descendre",
+    "disabled": "Désactivé"
+  },
+  "a11y": {
+    "check": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+    "showSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+    "retry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+    "yourResult": "Vous avez obtenu @score sur @total points",
+    "paragraph": "Paragraphe",
+    "correct": "Correct !",
+    "wrong": "Incorrect !",
+    "point": "@score point",
+    "sevenOfNine": "@current sur @total",
+    "currentPosition": "Position actuelle dans la liste",
+    "instructionsSelected": "Appuyez sur la barre d&#039;espace pour réorganiser",
+    "instructionsGrabbed": "Appuyez sur les flèches haut et bas pour changer de position, sur la barre d&#039;espace pour déposer, sur échap pour annuler",
+    "grabbed": "Saisi",
+    "moved": "Déplacé",
+    "dropped": "Déposé",
+    "reorderCancelled": "Réorganisation annulée",
+    "finalPosition": "Position finale",
+    "nextParagraph": "Paragraphe suivant",
+    "correctParagraph": "Paragraphe correct à la position",
+    "listDescription": "Liste de paragraphes triables.",
+    "listDescriptionCheckAnswer": "Liste de paragraphes avec résultats.",
+    "listDescriptionShowSolution": "Liste de paragraphes avec solutions."
+  },
+  "media": {
+    "disableImageZooming": false
+  }
+}

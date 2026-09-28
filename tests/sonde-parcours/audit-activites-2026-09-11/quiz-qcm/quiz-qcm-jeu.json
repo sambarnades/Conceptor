@@ -1,0 +1,23 @@
+[
+  {
+    "kind": "standard",
+    "erreur": {
+      "score": "2/3",
+      "texte": "Vos résultats :\n2 bonnes réponses sur 3\nQuestion\nScore\nDomaine RELU\n0/1\nImage d'un nombre par la fonction racine carrée\n1/1\nEnsemble de définition d'une fonction racine carrée\n1/1\nAfficher la solution\nRecommencer\nVos résultats :Bon résultat. Vous maîtrisez plusieurs notions essentielles..Vous avez obtenu 2 sur 3 points.."
+    },
+    "reprise": {
+      "score": "3/3",
+      "texte": "Vos résultats :\n3 bonnes réponses sur 3\nQuestion\nScore\nDomaine RELU\n1/1\nImage d'un nombre par la fonction racine carrée\n1/1\nEnsemble de définition d'une fonction racine carrée\n1/1\nAfficher la solution\nRecommencer\nQuestion 3 sur 3"
+    },
+    "solution": true
+  },
+  {
+    "kind": "sans-reprise",
+    "erreur": {
+      "score": "2/3",
+      "texte": "Vos résultats :\n2 bonnes réponses sur 3\nQuestion\nScore\nDomaine RELU\n0/1\nImage d'un nombre par la fonction racine carrée\n1/1\nEnsemble de définition d'une fonction racine carrée\n1/1\nAfficher la solution\nQuestion 3 sur 3"
+    },
+    "reprise": null,
+    "solution": true
+  }
+]

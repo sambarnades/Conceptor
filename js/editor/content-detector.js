@@ -1,3 +1,4 @@
+import {getNativePresentationSchema, getNativeBookSchema, getNativeVideoSchema} from './native-presentation-schema.js';
 /**
  * Content Detector - Detection automatique du type de contenu
  *
@@ -115,7 +116,8 @@ const contentSignatures = {
             data[0].hasOwnProperty('text')) ||
         (Array.isArray(data.accordion) &&
             data.accordion.length > 0 &&
-            data.accordion[0].hasOwnProperty('title')),
+            data.accordion[0].hasOwnProperty('title')) ||
+        (Array.isArray(data.panels) && data.panels.length > 0 && data.panels[0].hasOwnProperty('title')),
 
     'SortParagraphs': (data) =>
         Array.isArray(data.paragraphs) &&
@@ -186,7 +188,7 @@ const contentSignatures = {
         Array.isArray(data.criteria[0].levels),
 
     'CoursePresentation': (data) =>
-        Array.isArray(data.slides) &&
+        Array.isArray(data.presentation?.slides) || Array.isArray(data.slides) &&
         data.slides.length > 0 &&
         data.slides[0].hasOwnProperty('type') &&
         typeof data.slides[0].type === 'string',
@@ -196,10 +198,11 @@ const contentSignatures = {
         Array.isArray(data.chapters) &&
         data.chapters.length > 0 &&
         !data.chapters[0].hasOwnProperty('blocks') &&
-        (Array.isArray(data.chapters[0].content) || data.chapters[0].hasOwnProperty('title')),
+        (Array.isArray(data.chapters[0].content) || data.chapters[0].hasOwnProperty('title') || data.chapters[0].library==='H5P.Column 1.22'),
 
     // InteractiveVideo : interactions[] horodatées (+ videoSource éventuel)
     'InteractiveVideo': (data) =>
+        Array.isArray(data.interactiveVideo?.assets?.interactions) ||
         Array.isArray(data.interactions) &&
         ((data.videoSource && typeof data.videoSource === 'object') ||
             (data.interactions.length > 0 && data.interactions[0] && data.interactions[0].hasOwnProperty('timestamp'))),
@@ -261,6 +264,10 @@ const titleKeyToModuleKey = {
     // === H5P (anciens formats courts pour retrocompatibilite) ===
     'h5p_flashcards': 'Flashcards',
     'h5p_multiplechoice': 'MultipleChoice',
+    'h5p_multichoice': 'MultipleChoice',
+    'h5p_blanks': 'FillInTheBlanks',
+    'h5p_dragtext': 'DragTheWords',
+    'h5p_dragquestion': 'DragAndDrop',
     'h5p_truefalse': 'TrueFalse',
     'h5p_fillintheblanks': 'FillInTheBlanks',
     'h5p_dialogcards': 'DialogCards',
@@ -320,6 +327,103 @@ const titleKeyToModuleKey = {
  * Sous-schemas exercice partages entre CoursePresentation et ses dynamicObject.
  * Identiques aux schemas des activites standalone — aucune restructuration.
  */
+const ESSAY_KEYWORD_SCHEMA = {
+    keyword: { type: 'text', label: 'editor_keyword', required: true, row: 'main' },
+    'options.points': { type: 'number', label: 'editor_weight', min: 0, default: 1, row: 'main' },
+    alternatives: { type: 'stringArray', label: 'editor_cloze_alternatives', collapsible: true, collapsibleLabel: 'editor_cloze_alternatives' },
+    'options.caseSensitive': { type: 'checkbox', label: 'editor_case_sensitive', default:true, row: 'main' },
+    'options.forgiveMistakes': {type:'checkbox',label:'editor_forgive_mistakes',default:false},
+    'options.feedbackIncludedWord': {type:'select',label:'editor_essay_included_word',default:'keyword',options:[{value:'keyword',label:'editor_keyword'},{value:'alternative',label:'editor_essay_found_alternative'},{value:'answer',label:'editor_essay_given_answer'},{value:'none',label:'editor_livre_numbering_none'}]},
+    'options.feedbackMissedWord': {type:'select',label:'editor_essay_missed_word',default:'none',options:[{value:'keyword',label:'editor_keyword'},{value:'none',label:'editor_livre_numbering_none'}]},
+    'options.occurrences': { type: 'number', label: 'editor_essay_occurrences', min: 1, default: 1, collapsible: true, collapsibleLabel: 'editor_essay_occurrences' },
+    'options.feedbackIncluded': { type: 'textarea', maxLength:1000, label: 'editor_essay_feedback_present', collapsible: true, collapsibleLabel: 'editor_essay_feedback_present' },
+    'options.feedbackMissed': { type: 'textarea', maxLength:1000, label: 'editor_essay_feedback_absent', collapsible: true, collapsibleLabel: 'editor_essay_feedback_absent' },
+};
+
+const ESSAY_BEHAVIOUR_SCHEMA = {
+    minimumLength: {type:'number',label:'editor_minimum_words',min:0,hint:'editor_minimum_words_hint'},
+    maximumLength: {type:'number',label:'editor_maximum_words',min:0,hint:'editor_maximum_words_hint'},
+    inputFieldSize: {type:'select',label:'editor_essay_input_rows',default:'10',options:['1','3','10'].map(value=>({value,label:value}))},
+    enableRetry: {type:'checkbox',label:'editor_enable_retry',default:true},
+    ignoreScoring: {type:'checkbox',label:'editor_ignore_scoring',default:false},
+    pointsHost: {type:'number',label:'editor_essay_points_host',min:0,default:1,showWhen:{field:'ignoreScoring',value:true}},
+    percentagePassing: {type:'number',label:'editor_essay_passing',min:0,max:100},
+    percentageMastering: {type:'number',label:'editor_essay_mastering',min:0,max:100},
+    overrideCaseSensitive: {type:'select',label:'editor_case_sensitive_scoring',default:'',options:[{value:'',label:'editor_essay_per_keyword'},{value:'off',label:'editor_false'},{value:'on',label:'editor_true'}]},
+    overrideForgiveMistakes: {type:'select',label:'editor_forgive_mistakes',default:'',options:[{value:'',label:'editor_essay_per_keyword'},{value:'off',label:'editor_false'},{value:'on',label:'editor_true'}]},
+    linebreakReplacement: {type:'select',label:'editor_essay_linebreak',default:' ',options:[{value:' ',label:'editor_essay_space'},{value:'\n',label:'editor_essay_newline'}]}
+};
+
+// Même champ facultatif dans l'activité seule et dans les conteneurs.
+const DRAG_TEXT_DISTRACTORS = {
+    type: 'textarea', label: 'editor_drag_words_distractors',
+    hint: 'editor_drag_words_distractors_hint', collapsible: true,
+    collapsibleLabel: 'editor_drag_words_distractors'
+};
+
+// Média natif de consigne, conservé tel quel dans les archives des deux hôtes.
+const QUESTION_MEDIA = {
+    type:'object', label:'editor_question_media', collapsible:true,
+    schema:{
+        type:{type:'object',noHeader:true,schema:{
+            library:{type:'select',label:'editor_ih_block_type',default:'',options:[
+                {value:'',label:'editor_livre_numbering_none'},
+                {value:'H5P.Image 1.1',label:'editor_ih_block_image'},
+                {value:'H5P.Audio 1.5',label:'editor_ih_block_audio'},
+                {value:'H5P.Video 1.6',label:'editor_ih_block_video'}
+            ]},
+            params:{type:'dynamicObject',selector:'library',resetOnSelectorChange:true,schemas:{
+                'H5P.Image 1.1':{file:{type:'image',label:'editor_image',required:true},alt:{type:'text',label:'editor_image_alt'}},
+                'H5P.Audio 1.5':{
+                    files:{type:'audio',required:true,nativeSources:true,label:'editor_ih_audio_file'},
+                    playerMode:{type:'select',label:'editor_media_player_mode',default:'minimalistic',options:[
+                        {value:'minimalistic',label:'editor_media_player_minimal'},
+                        {value:'full',label:'editor_media_player_full'},
+                        {value:'transparent',label:'editor_media_player_transparent'}]},
+                    fitToWrapper:{type:'checkbox',label:'editor_media_fit',default:false},
+                    controls:{type:'checkbox',label:'editor_media_controls',default:true,showWhen:{field:'playerMode',value:'full'}},
+                    autoplay:{type:'checkbox',label:'editor_media_autoplay',default:false}
+                },
+                'H5P.Video 1.6':{
+                    sources:{type:'video',required:true,nativeSources:true,label:'editor_ih_video_file'},
+                    visuals:{type:'object',noHeader:true,schema:{
+                        controls:{type:'checkbox',label:'editor_ib_video_controls',default:true},
+                        fit:{type:'checkbox',label:'editor_media_fit',default:true},
+                        poster:{type:'image',label:'editor_ib_video_poster'}}},
+                    playback:{type:'object',noHeader:true,schema:{
+                        autoplay:{type:'checkbox',label:'editor_ib_video_autoplay',default:false},
+                        loop:{type:'checkbox',label:'editor_ib_video_loop',default:false}}}
+                }
+            }}
+        }},
+        disableImageZooming:{type:'checkbox',label:'editor_disable_image_zoom',default:false}
+    }
+};
+
+const CROSSWORD_EXTRA_CLUE = {
+    type:'object',label:'editor_extra_clue',collapsible:true,
+    schema:{
+        library:{...QUESTION_MEDIA.schema.type.schema.library,options:[
+            {value:'',label:'editor_livre_numbering_none'},
+            {value:'H5P.AdvancedText 1.1',label:'editor_ih_block_text'},
+            ...QUESTION_MEDIA.schema.type.schema.library.options.slice(1)
+        ]},
+        params:{...QUESTION_MEDIA.schema.type.schema.params,schemas:{
+            ...QUESTION_MEDIA.schema.type.schema.params.schemas,
+            'H5P.AdvancedText 1.1':{text:{type:'textarea',label:'editor_extra_clue'}}
+        }}
+    }
+};
+
+const MC_RESPONSE_TYPE = {
+    type: 'select', label: 'editor_mc_response_mode', default: 'auto',
+    options: [
+        { value: 'auto', label: 'editor_mc_response_auto' },
+        { value: 'single', label: 'editor_test_single_answer' },
+        { value: 'multi', label: 'editor_test_multiple_answers' }
+    ]
+};
+
 const CP_EXERCISE_SCHEMAS = {
     'H5P.MultiChoice 1.16': {
         question: { type: 'textarea', label: 'editor_question_text', large: true, required: true },
@@ -341,7 +445,7 @@ const CP_EXERCISE_SCHEMAS = {
         },
         behaviour: {
             type: 'object', label: 'editor_options', collapsible: true,
-            schema: { singleAnswer: { type: 'checkbox', label: 'editor_single_answer', hint: 'editor_single_answer_hint' } }
+            schema: { type: MC_RESPONSE_TYPE }
         },
         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
     },
@@ -364,11 +468,14 @@ const CP_EXERCISE_SCHEMAS = {
         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
     },
     'H5P.DragText 1.10': {
+        media: QUESTION_MEDIA,
         taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
-        textField: { type: 'textarea', label: 'editor_text_with_blanks', required: true, large: true, hint: 'editor_drag_words_hint' },
+        textField: { type: 'dragText', label: 'editor_text_with_blanks', required: true, large: true, hint: 'editor_drag_words_hint' },
+        distractors: DRAG_TEXT_DISTRACTORS,
         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
     },
     'H5P.MarkTheWords 1.11': {
+        media: QUESTION_MEDIA,
         taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
         textField: { type: 'textarea', label: 'editor_text_with_marks', required: true, large: true, hint: 'editor_mark_words_hint' },
         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
@@ -425,7 +532,7 @@ const CP_EXERCISE_SCHEMAS = {
             minItems: 1, itemsExpanded: false,
             itemSchema: {
                 question: { type: 'textarea', label: 'editor_question_text', required: true },
-                answers: { type: 'stringArray', label: 'editor_answers', hint: 'editor_answers_first_correct_hint' }
+                answers: { type: 'stringArray', label: 'editor_answers', minItems: 2, maxItems: 4, hint: 'editor_answers_first_correct_hint' }
             }
         },
         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
@@ -434,10 +541,11 @@ const CP_EXERCISE_SCHEMAS = {
         intro: { type: 'textarea', label: 'editor_intro' },
         summaries: {
             type: 'array', itemLabel: 'editor_summary_item', addLabel: 'editor_add_summary_item',
-            minItems: 1,
+            minItems: 1, maxItems: 100,
             itemSchema: {
                 summary: {
                     type: 'array', itemLabel: 'editor_statement', addLabel: 'editor_add_statement',
+                                minItems: 2, hint: 'editor_answers_first_correct_hint',
                     nested: true, itemsExpanded: true,
                     itemSchema: { _value: { type: 'text', label: 'editor_statement_text', required: true, isArrayValue: true } }
                 },
@@ -477,7 +585,7 @@ const fieldSchemas = {
                 label: 'editor_section_general',
                 icon: 'fa-info-circle',
                 fields: {
-                    title: { type: 'text', label: 'editor_title', required: true },
+                    title: { type: 'text', label: 'editor_title' },
                     description: { type: 'textarea', label: 'editor_description', hint: 'editor_description_hint' }
                 }
             },
@@ -494,8 +602,8 @@ const fieldSchemas = {
                         minItems: 1,
                         itemsExpanded: false,
                         itemSchema: {
-                            text: { type: 'text', label: 'editor_card_front', required: true, placeholder: 'editor_card_front_placeholder' },
-                            answer: { type: 'text', label: 'editor_card_back', required: true, placeholder: 'editor_card_back_placeholder' },
+                            text: { type: 'text', label: 'editor_card_front', placeholder: 'editor_card_front_placeholder' },
+                            answer: { type: 'text', label: 'editor_card_back', placeholder: 'editor_card_back_placeholder' },
                             image: {
                                 type: 'image',
                                 label: 'editor_image',
@@ -523,7 +631,7 @@ const fieldSchemas = {
                     behaviour: {
                         type: 'object',
                         schema: {
-                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            showSolutionsRequiresInput: { type: 'checkbox', label: 'editor_solution_requires_input', default: true },
                             randomCards: { type: 'checkbox', label: 'editor_random_cards', default: false, hint: 'editor_random_cards_hint' },
                             caseSensitive: { type: 'checkbox', label: 'editor_case_sensitive', default: false }
                         }
@@ -542,7 +650,7 @@ const fieldSchemas = {
                 icon: 'fa-question-circle',
                 fields: {
                     question: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
-                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -555,7 +663,7 @@ const fieldSchemas = {
                         type: 'array',
                         itemLabel: 'editor_answer',
                         addLabel: 'editor_add_answer',
-                        minItems: 2,
+                        minItems: 1,
                         itemsExpanded: true,
                         itemSchema: {
                             text: { type: 'text', label: 'editor_answer_text', required: true },
@@ -597,7 +705,7 @@ const fieldSchemas = {
                             singlePoint: { type: 'checkbox', label: 'editor_single_point', default: false, hint: 'editor_single_point_hint' },
                             showScorePoints: { type: 'checkbox', label: 'editor_show_score_points', default: true },
                             autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: false, hint: 'editor_auto_check_hint' },
-                            passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 50, min: 0, max: 100, hint: 'editor_pass_percentage_hint' },
+                            passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 100, min: 0, max: 100, hint: 'editor_pass_percentage_hint' },
                             confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
                             confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
                         }
@@ -616,7 +724,7 @@ const fieldSchemas = {
                 icon: 'fa-question-circle',
                 fields: {
                     question: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
-                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -674,7 +782,7 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
-                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -720,9 +828,9 @@ const fieldSchemas = {
                         schema: {
                             enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
                             enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
-                            caseSensitive: { type: 'checkbox', label: 'editor_case_sensitive', default: false },
+                            caseSensitive: { type: 'checkbox', label: 'editor_case_sensitive', default: true },
                             acceptSpellingErrors: { type: 'checkbox', label: 'editor_accept_spelling_errors', default: false, hint: 'editor_accept_spelling_errors_hint' },
-                            autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: true, hint: 'editor_auto_check_hint' },
+                            autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: false, hint: 'editor_auto_check_hint' },
                             separateLines: { type: 'checkbox', label: 'editor_separate_lines', default: false, hint: 'editor_separate_lines_hint' },
                             confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
                             confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
@@ -748,9 +856,7 @@ const fieldSchemas = {
                 fields: {
                     title: { type: 'text', label: 'editor_title' },
                     taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
-                    // Bloc « Média » H5P (illustration au-dessus de la consigne) — patron
-                    // media context, mêmes clés i18n que Choix multiples.
-                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -768,8 +874,8 @@ const fieldSchemas = {
                         itemSchema: {
                             text: { type: 'textarea', label: 'editor_dictation_text', required: true, hint: 'editor_dictation_text_hint' },
                             description: { type: 'text', label: 'editor_dictation_description', hint: 'editor_dictation_description_hint' },
-                            sample: { type: 'audio', label: 'editor_dictation_sample', hint: 'editor_dictation_sample_hint' },
-                            sampleAlternative: { type: 'audio', label: 'editor_dictation_sample_slow', hint: 'editor_dictation_sample_slow_hint' }
+                            sample: { type: 'audio', nativeSources: true, label: 'editor_dictation_sample', hint: 'editor_dictation_sample_hint' },
+                            sampleAlternative: { type: 'audio', nativeSources: true, label: 'editor_dictation_sample_slow', hint: 'editor_dictation_sample_slow_hint' }
                         }
                     }
                 }
@@ -795,7 +901,7 @@ const fieldSchemas = {
                             typoFactor: {
                                 type: 'select',
                                 label: 'editor_dictation_typo_factor',
-                                default: '50',
+                                default: '100',
                                 hint: 'editor_dictation_typo_factor_hint',
                                 options: [
                                     { value: '100', label: 'editor_dictation_typo_100' },
@@ -819,6 +925,10 @@ const fieldSchemas = {
                                     { value: 'onRetry', label: 'editor_dictation_shuffle_on_retry' }
                                 ]
                             },
+                            wordSeparator: {type:'text',label:'editor_dictation_word_separator',default:' '},
+                            overrideRTL: {type:'select',label:'editor_dictation_rtl',default:'auto',options:[{value:'auto',label:'editor_dictation_rtl_auto'},{value:'on',label:'editor_dictation_rtl_on'},{value:'off',label:'editor_dictation_rtl_off'}]},
+                            autosplit: {type:'checkbox',label:'editor_dictation_autosplit',default:true},
+                            alternateSolution: {type:'select',label:'editor_dictation_alternates',default:'first',options:[{value:'first',label:'editor_dictation_alternates_first'},{value:'all',label:'editor_dictation_alternates_all'}]},
                             enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
                             enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
                             enableSolutionOnCheck: { type: 'checkbox', label: 'editor_dictation_solution_on_check', default: false, hint: 'editor_dictation_solution_on_check_hint' }
@@ -854,7 +964,7 @@ const fieldSchemas = {
                         minItems: 1,
                         itemsExpanded: false,
                         itemSchema: {
-                            text: { type: 'textarea', label: 'editor_card_front', required: true },
+                            text: { type: 'textarea', label: 'editor_card_front' },
                             answer: { type: 'textarea', label: 'editor_card_back', required: true },
                             image: {
                                 type: 'image',
@@ -864,6 +974,7 @@ const fieldSchemas = {
                                 collapsibleLabel: 'editor_image',
                                 altTextField: 'imageAltText'
                             },
+                            audio: { type: 'audio', nativeSources: true, label: 'editor_ih_audio_file', collapsible: true, collapsibleLabel: 'editor_ih_audio_file' },
                             tips: {
                                 type: 'object',
                                 collapsible: true,
@@ -897,6 +1008,10 @@ const fieldSchemas = {
                         type: 'object',
                         schema: {
                             enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            disableBackwardsNavigation: { type: 'checkbox', label: 'editor_dialog_forward_only', default: false },
+                            scaleTextNotCard: { type: 'checkbox', label: 'editor_dialog_scale_text', default: true },
+                            maxProficiency: { type: 'number', label: 'editor_dialog_proficiency', default: 5, min: 3, max: 7 },
+                            quickProgression: { type: 'checkbox', label: 'editor_dialog_quick_progression', default: false },
                             randomCards: { type: 'checkbox', label: 'editor_random_cards', default: false, hint: 'editor_random_cards_hint' }
                         }
                     }
@@ -951,6 +1066,7 @@ const fieldSchemas = {
                                 fields: {
                                     // H5P Timeline n'accepte que des URLs externes (YouTube, Vimeo, Flickr, Wikipedia, etc.)
                                     'asset.media': { type: 'text', label: 'editor_media_url' },
+                                    'asset.thumbnail': { type: 'image', label: 'editor_timeline_thumbnail' },
                                     'asset.caption': { type: 'text', label: 'editor_caption' },
                                     'asset.credit': { type: 'text', label: 'editor_credit' }
                                 }
@@ -987,7 +1103,10 @@ const fieldSchemas = {
                 icon: 'fa-cog',
                 startCollapsed: true,
                 fields: {
-                    height: { type: 'number', label: 'editor_timeline_height', default: 600, min: 300, max: 1200, hint: 'editor_timeline_height_hint' }
+                    'timeline.backgroundImage': { type: 'image', label: 'editor_image_background' },
+                    'timeline.defaultZoomLevel': { type: 'number', label: 'editor_timeline_zoom', default: 0, hint: 'editor_timeline_zoom_hint' },
+                    'timeline.language': { type: 'select', label: 'editor_timeline_language', options: [{"value": "af", "label": "Afrikaans"}, {"value": "ar", "label": "Arabic"}, {"value": "hy", "label": "Armenian"}, {"value": "eu", "label": "Basque"}, {"value": "bg", "label": "Bulgarian"}, {"value": "ca", "label": "Catalan"}, {"value": "zh-cn", "label": "Chinese"}, {"value": "hr", "label": "Croatian / Hrvatski"}, {"value": "cz", "label": "Czech"}, {"value": "da", "label": "Danish"}, {"value": "nl", "label": "Dutch"}, {"value": "en", "label": "English"}, {"value": "en-24hr", "label": "English (24-hour time)"}, {"value": "eo", "label": "Esperanto"}, {"value": "et", "label": "Estonian"}, {"value": "fo", "label": "Faroese"}, {"value": "fa", "label": "Farsi"}, {"value": "fi", "label": "Finnish"}, {"value": "fr", "label": "French"}, {"value": "gl", "label": "Galician"}, {"value": "ka", "label": "Georgian"}, {"value": "de", "label": "German / Deutsch"}, {"value": "el", "label": "Greek"}, {"value": "he", "label": "Hebrew"}, {"value": "hu", "label": "Hungarian"}, {"value": "is", "label": "Icelandic"}, {"value": "id", "label": "Indonesian"}, {"value": "it", "label": "Italian"}, {"value": "ja", "label": "Japanese"}, {"value": "ko", "label": "Korean"}, {"value": "lv", "label": "Latvian"}, {"value": "lt", "label": "Lithuanian"}, {"value": "lb", "label": "Luxembourgish"}, {"value": "ms", "label": "Malay"}, {"value": "ne", "label": "Nepali"}, {"value": "no", "label": "Norwegian"}, {"value": "pl", "label": "Polish"}, {"value": "pt", "label": "Portuguese"}, {"value": "pt-br", "label": "Portuguese (Brazilian)"}, {"value": "rm", "label": "Romansh"}, {"value": "ru", "label": "Russian"}, {"value": "sr-cy", "label": "Serbian - Cyrillic"}, {"value": "sr", "label": "Serbian - Latin"}, {"value": "si", "label": "Sinhalese"}, {"value": "sk", "label": "Slovak"}, {"value": "sl", "label": "Slovenian"}, {"value": "es", "label": "Spanish"}, {"value": "sv", "label": "Swedish"}, {"value": "tl", "label": "Tagalog"}, {"value": "ta", "label": "Tamil"}, {"value": "zh-tw", "label": "Taiwanese"}, {"value": "te", "label": "Telugu"}, {"value": "tr", "label": "Turkish"}, {"value": "uk", "label": "Ukrainian"}] },
+                    'timeline.height': { type: 'number', label: 'editor_timeline_height', default: 600, min: 300, max: 1200, hint: 'editor_timeline_height_hint' }
                 }
             }
         ]
@@ -1002,7 +1121,8 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     title: { type: 'text', label: 'editor_title', required: true },
-                    taskDescription: { type: 'textarea', label: 'editor_task_description' }
+                    taskDescription: { type: 'textarea', label: 'editor_task_description' },
+                    solutionWord: {type:'text',label:'editor_crossword_solution_word'}
                 }
             },
             {
@@ -1029,7 +1149,11 @@ const fieldSchemas = {
                         itemSchema: {
                             answer: { type: 'text', label: 'editor_answer', required: true, hint: 'editor_crossword_answer_hint' },
                             clue: { type: 'text', label: 'editor_clue', required: true },
-                            'extraClue.params.text': { type: 'text', label: 'editor_extra_clue', collapsible: true, collapsibleLabel: 'editor_extra_clue_optional' }
+                            extraClue: CROSSWORD_EXTRA_CLUE,
+                            fixWord:{type:'checkbox',label:'editor_crossword_fixed',default:false},
+                            row:{type:'number',label:'editor_row',min:1,max:64,default:1,required:true,showWhen:{field:'fixWord',value:true}},
+                            column:{type:'number',label:'editor_crossword_column',min:1,max:64,default:1,required:true,showWhen:{field:'fixWord',value:true}},
+                            orientation:{type:'select',label:'editor_orientation',default:'across',options:[{value:'across',label:'h5p_crossword_across'},{value:'down',label:'h5p_crossword_down'}],showWhen:{field:'fixWord',value:true}}
                         }
                     }
                 }
@@ -1148,7 +1272,7 @@ const fieldSchemas = {
                             scoreWords: { type: 'checkbox', label: 'editor_score_words', default: true, hint: 'editor_score_words_hint' },
                             applyPenalties: { type: 'checkbox', label: 'editor_apply_penalties', default: false, hint: 'editor_apply_penalties_hint' },
                             keepCorrectAnswers: { type: 'checkbox', label: 'editor_keep_correct_answers', default: false, hint: 'editor_keep_correct_answers_hint' },
-                            poolSize: { type: 'number', label: 'editor_pool_size', min: 0, hint: 'editor_pool_size_hint' }
+                            poolSize: { type: 'number', label: 'editor_pool_size', min: 2, hint: 'editor_pool_size_hint' }
                         }
                     }
                 }
@@ -1166,7 +1290,12 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     taskDescription: { type: 'textarea', label: 'editor_task_description', required: true, large: true },
-                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                    solution: { type: 'object', collapsible: true, collapsibleLabel: 'editor_essay_sample_answer', schema: {
+                        introduction: { type: 'textarea', label: 'editor_intro' },
+                        sample: { type: 'textarea', label: 'editor_essay_sample_answer' }
+                    } },
+                    placeholderText: {type:'text',label:'editor_essay_placeholder'},
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -1183,11 +1312,7 @@ const fieldSchemas = {
                         addLabel: 'editor_add_keyword',
                         minItems: 1,
                         itemsExpanded: true,
-                        itemSchema: {
-                            keyword: { type: 'text', label: 'editor_keyword', required: true, row: 'main' },
-                            'options.points': { type: 'number', label: 'editor_weight', row: 'main' },
-                            'options.caseSensitive': { type: 'checkbox', label: 'editor_case_sensitive', row: 'main' }
-                        }
+                        itemSchema: ESSAY_KEYWORD_SCHEMA
                     }
                 }
             },
@@ -1207,27 +1332,7 @@ const fieldSchemas = {
                 fields: {
                     behaviour: {
                         type: 'object',
-                        schema: {
-                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
-                            minimumLength: { type: 'number', label: 'editor_minimum_words', default: 10, min: 0, hint: 'editor_minimum_words_hint' },
-                            maximumLength: { type: 'number', label: 'editor_maximum_words', default: 10000, min: 0, hint: 'editor_maximum_words_hint' },
-                            overrideCaseSensitive: {
-                                type: 'select', label: 'editor_case_sensitive_scoring', default: 'off',
-                                hint: 'editor_case_sensitive_scoring_hint',
-                                options: [
-                                    { value: 'off', label: 'editor_false' },
-                                    { value: 'on', label: 'editor_true' }
-                                ]
-                            },
-                            overrideForgiveMistakes: {
-                                type: 'select', label: 'editor_forgive_mistakes', default: 'on',
-                                hint: 'editor_forgive_mistakes_hint',
-                                options: [
-                                    { value: 'on', label: 'editor_true' },
-                                    { value: 'off', label: 'editor_false' }
-                                ]
-                            }
-                        }
+                        schema: ESSAY_BEHAVIOUR_SCHEMA
                     }
                 }
             }
@@ -1268,7 +1373,7 @@ const fieldSchemas = {
                         itemsExpanded: false,
                         itemSchema: {
                             text: { type: 'text', label: 'editor_chart_label', required: true, row: 'main' },
-                            value: { type: 'number', label: 'editor_chart_value', required: true, row: 'main' },
+                            value: { type: 'number', label: 'editor_chart_value', hint: 'validation_chart_value', required: true, min: 0.0001, step: 0.0001, row: 'main' },
                             color: { type: 'color', label: 'editor_chart_color', row: 'colors' },
                             fontColor: { type: 'color', label: 'editor_chart_font_color', row: 'colors' }
                         }
@@ -1287,7 +1392,7 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
-                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -1296,12 +1401,13 @@ const fieldSchemas = {
                 icon: 'fa-paragraph',
                 fields: {
                     textField: {
-                        type: 'textarea',
+                        type: 'dragText',
                         label: 'editor_text_with_blanks',
                         required: true,
                         large: true,
                         hint: 'editor_drag_words_hint'
-                    }
+                    },
+                    distractors: DRAG_TEXT_DISTRACTORS
                 }
             },
             {
@@ -1379,14 +1485,25 @@ const fieldSchemas = {
                         // `optionsValueType: 'index'`) : supprimer, insérer, dupliquer ou déplacer une zone
                         // renumérote les suivantes, et ces renvois doivent suivre — sinon les étiquettes
                         // changent de zone en silence. Cf. remapIndexReferences() dans json-utils.js.
-                        indexReferencedBy: [{ array: 'elements', field: 'zoneIndices' }],
+                        indexReferencedBy: [{ array: 'elements', field: 'zoneIndices' }, { array: 'elements', field: 'allowedZones' }],
                         itemLabel: 'editor_zone',
                         addLabel: 'editor_add_zone',
-                        minItems: 2,
+                        minItems: 1,
                         maxItems: 10,
                         itemsExpanded: false,
                         itemSchema: {
-                            label: { type: 'text', label: 'editor_zone_label', required: true }
+                            label: { type: 'text', label: 'editor_zone_label', required: true },
+                            _native: { type: 'object', schema: {
+                                showLabel: { type: 'checkbox', label: 'editor_dnd_showLabel', default: true },
+                                single: { type: 'checkbox', label: 'editor_dnd_single', default: false },
+                                autoAlign: { type: 'checkbox', label: 'editor_dnd_autoAlign', default: true },
+                                backgroundOpacity: { type: 'number', label: 'editor_dnd_backgroundOpacity', min: 0, max: 100, default: 100 },
+                                tipsAndFeedback: { type: 'object', schema: {
+                                    tip: { type: 'textarea', label: 'editor_tip' },
+                                    feedbackOnCorrect: { type: 'textarea', label: 'editor_feedback_correct' },
+                                    feedbackOnIncorrect: { type: 'textarea', label: 'editor_feedback_wrong' }
+                                } }
+                            } }
                         }
                     }
                 }
@@ -1401,10 +1518,14 @@ const fieldSchemas = {
                         type: 'array',
                         itemLabel: 'editor_element',
                         addLabel: 'editor_add_element',
-                        minItems: 2,
+                        minItems: 1,
                         itemsExpanded: false,
                         itemSchema: {
                             text: { type: 'text', label: 'editor_element_text', required: true },
+                            _native: { type: 'object', schema: {
+                                multiple: { type: 'checkbox', label: 'editor_dnd_multiple', default: false },
+                                backgroundOpacity: { type: 'number', label: 'editor_dnd_backgroundOpacity', min: 0, max: 100, default: 100 }
+                            } },
                             image: {
                                 type: 'image',
                                 label: 'editor_image',
@@ -1413,10 +1534,10 @@ const fieldSchemas = {
                                 collapsibleLabel: 'editor_image',
                                 altTextField: 'imageAltText'
                             },
+                            allowedZones: { type: 'multiCheckbox', label: 'editor_dnd_allowed_zones', optionsFrom: 'dropZones', optionsLabelField: 'label', optionsValueType: 'index' },
                             zoneIndices: {
                                 type: 'multiCheckbox',
                                 label: 'editor_target_zones',
-                                required: true,
                                 optionsFrom: 'dropZones',
                                 optionsLabelField: 'label',
                                 optionsValueType: 'index',
@@ -1444,9 +1565,20 @@ const fieldSchemas = {
                         type: 'object',
                         schema: {
                             enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
-                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
                             applyPenalties: { type: 'checkbox', label: 'editor_apply_penalties', default: true, hint: 'editor_apply_penalties_hint' },
-                            showScorePoints: { type: 'checkbox', label: 'editor_show_score_points', default: true }
+                            showScorePoints: { type: 'checkbox', label: 'editor_show_score_points', default: true },
+                            enableCheckButton: { type: 'checkbox', label: 'editor_enable_check_button', default: true },
+                            singlePoint: { type: 'checkbox', label: 'editor_single_point', default: false },
+                            enableScoreExplanation: { type: 'checkbox', label: 'editor_dnd_enableScoreExplanation', default: true },
+                            enableFullScreen: { type: 'checkbox', label: 'editor_dnd_enableFullScreen', default: true },
+                            showTitle: { type: 'checkbox', label: 'editor_dnd_showTitle', default: true },
+                            dragHandleVisibility: { type: 'checkbox', label: 'editor_dnd_dragHandleVisibility', default: true },
+                            autoAlignSpacing: { type: 'number', label: 'editor_dnd_autoAlignSpacing', min: 0, default: 2 },
+                            dropZoneHighlighting: { type: 'select', label: 'editor_dnd_dropZoneHighlighting', options: [
+                                { value: 'dragging', label: 'editor_dnd_dragging' },
+                                { value: 'always', label: 'editor_dnd_always' },
+                                { value: 'never', label: 'editor_dnd_never' }
+                            ] }
                         }
                     }
                 }
@@ -1468,7 +1600,7 @@ const fieldSchemas = {
                         type: 'array',
                         itemLabel: 'editor_entry',
                         addLabel: 'editor_add_entry',
-                        minItems: 1,
+                        minItems: 1, maxItems: 100,
                         itemsExpanded: false,
                         itemSchema: {
                             title: { type: 'text', label: 'editor_term', required: true },
@@ -1590,7 +1722,7 @@ const fieldSchemas = {
                                         behaviour: {
                                             type: 'object', label: 'editor_options', collapsible: true,
                                             schema: {
-                                                singleAnswer: { type: 'checkbox', label: 'editor_single_answer', hint: 'editor_single_answer_hint' }
+                                                type: MC_RESPONSE_TYPE
                                             }
                                         },
                                         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
@@ -1623,19 +1755,24 @@ const fieldSchemas = {
                                         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
                                     },
                                     'H5P.DragText 1.10': {
+                                        media: QUESTION_MEDIA,
                                         taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
-                                        textField: { type: 'textarea', label: 'editor_text_with_blanks', required: true, large: true, hint: 'editor_drag_words_hint' },
+                                        textField: { type: 'dragText', label: 'editor_text_with_blanks', required: true, large: true, hint: 'editor_drag_words_hint' },
+                                        distractors: DRAG_TEXT_DISTRACTORS,
                                         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
                                     },
                                     'H5P.MarkTheWords 1.11': {
+                                        media: QUESTION_MEDIA,
                                         taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
                                         textField: { type: 'textarea', label: 'editor_text_with_marks', required: true, large: true, hint: 'editor_mark_words_hint' },
                                         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
                                     },
                                     'H5P.Essay 1.5': {
                                         taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+                                        media: QUESTION_MEDIA,
+                                        placeholderText: {type:'text',label:'editor_essay_placeholder'},
                                         solution: {
-                                            type: 'object', collapsible: true, collapsibleLabel: 'editor_essay_solution_keywords', schema: {
+                                            type: 'object', collapsible: true, collapsibleLabel: 'editor_essay_sample_answer', schema: {
                                                 introduction: { type: 'textarea', label: 'editor_intro' },
                                                 sample: { type: 'textarea', label: 'editor_essay_sample_answer' }
                                             }
@@ -1647,21 +1784,11 @@ const fieldSchemas = {
                                             nested: true,
                                             itemsExpanded: true,
                                             itemContentType: 'essay-keyword',
-                                            itemSchema: {
-                                                keyword: { type: 'text', label: 'editor_keyword_expected', required: true },
-                                                points: { type: 'number', label: 'editor_points', default: 1, min: 0 },
-                                                explanation: { type: 'textarea', label: 'editor_explanation_feedback' },
-                                                caseSensitive: { type: 'checkbox', label: 'editor_case_sensitive' }
-                                            }
+                                            itemSchema: ESSAY_KEYWORD_SCHEMA
                                         },
                                         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' },
                                         behaviour: {
-                                            type: 'object', collapsible: true, collapsibleLabel: 'editor_behaviour_settings', schema: {
-                                                minimumLength: { type: 'number', label: 'editor_minimum_length' },
-                                                maximumLength: { type: 'number', label: 'editor_maximum_length' },
-                                                enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
-                                                ignoreScoring: { type: 'checkbox', label: 'editor_ignore_scoring', default: false }
-                                            }
+                                            type: 'object', collapsible: true, collapsibleLabel: 'editor_behaviour_settings', schema: ESSAY_BEHAVIOUR_SCHEMA
                                         }
                                     },
                                     'H5P.DragQuestion 1.15': {
@@ -1745,7 +1872,7 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
-                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -1781,10 +1908,7 @@ const fieldSchemas = {
                         schema: {
                             enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
                             enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
-                            autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: false, hint: 'editor_auto_check_hint' },
                             showScorePoints: { type: 'checkbox', label: 'editor_show_score_points', default: true },
-                            confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
-                            confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
                         }
                     }
                 }
@@ -1800,7 +1924,8 @@ const fieldSchemas = {
                 label: 'editor_section_general',
                 icon: 'fa-info-circle',
                 fields: {
-                    taskDescription: { type: 'textarea', label: 'editor_task_description' }
+                    taskDescription: { type: 'textarea', label: 'editor_task_description' },
+                    media: QUESTION_MEDIA
                 }
             },
             {
@@ -1813,7 +1938,7 @@ const fieldSchemas = {
                         type: 'array',
                         itemLabel: 'editor_paragraph',
                         addLabel: 'editor_add_paragraph',
-                        minItems: 2,
+                        minItems: 3,
                         itemsExpanded: false,
                         hint: 'editor_sort_order_hint',
                         itemSchema: {
@@ -1855,7 +1980,9 @@ const fieldSchemas = {
                                     { value: 'positions', label: 'editor_scoring_mode_positions' }
                                 ]
                             },
-                            applyPenalties: { type: 'checkbox', label: 'editor_apply_penalties', default: true, hint: 'editor_apply_penalties_hint' }
+                            applyPenalties: { type: 'checkbox', label: 'editor_apply_penalties', default: true, hint: 'editor_apply_penalties_hint' },
+                            duplicatesInterchangeable: { type: 'checkbox', label: 'editor_sort_duplicates', default: true, hint: 'editor_sort_duplicates_hint' },
+                            addButtonsForMovement: { type: 'checkbox', label: 'editor_sort_move_buttons', default: true, hint: 'editor_sort_move_buttons_hint' }
                         }
                     }
                 }
@@ -1887,6 +2014,8 @@ const fieldSchemas = {
                             enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
                             enableShowSolution: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
                             showVocabulary: { type: 'checkbox', label: 'editor_show_vocabulary', default: true, hint: 'editor_show_vocabulary_hint' },
+                            fillPool: { type: 'text', label: 'editor_find_fill_pool', hint: 'editor_find_fill_pool_hint', default: 'abcdefghijklmnopqrstuvwxyz', required: true },
+                            preferOverlap: { type: 'checkbox', label: 'editor_find_prefer_overlap', hint: 'editor_find_prefer_overlap_hint', default: true },
                             orientations: {
                                 type: 'object',
                                 label: 'editor_section_orientations',
@@ -1930,12 +2059,13 @@ const fieldSchemas = {
                         type: 'array',
                         itemLabel: 'editor_summary_item',
                         addLabel: 'editor_add_summary_item',
-                        minItems: 1,
+                        minItems: 1, maxItems: 100,
                         itemSchema: {
                             summary: {
                                 type: 'array',
                                 itemLabel: 'editor_statement',
                                 addLabel: 'editor_add_statement',
+                                minItems: 2, hint: 'editor_answers_first_correct_hint',
                                 nested: true,
                                 itemsExpanded: false,
                                 itemSchema: {
@@ -1968,22 +2098,6 @@ const fieldSchemas = {
                     }
                 }
             },
-            {
-                id: 'settings',
-                label: 'editor_section_settings',
-                icon: 'fa-cog',
-                startCollapsed: true,
-                fields: {
-                    behaviour: {
-                        type: 'object',
-                        schema: {
-                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
-                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
-                            passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 50, min: 0, max: 100, hint: 'editor_pass_percentage_hint' }
-                        }
-                    }
-                }
-            }
         ]
     },
 
@@ -2005,7 +2119,7 @@ const fieldSchemas = {
                         itemSchema: {
                             question: { type: 'textarea', label: 'editor_question_text', required: true },
                             answers: {
-                                type: 'stringArray',
+                                type: 'stringArray', minItems: 2, maxItems: 4,
                                 label: 'editor_answers',
                                 hint: 'editor_answers_first_correct_hint'
                             }
@@ -2034,6 +2148,8 @@ const fieldSchemas = {
                             enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
                             soundEffectsEnabled: { type: 'checkbox', label: 'editor_sound_effects', default: true, hint: 'editor_sound_effects_hint' },
                             autoContinue: { type: 'checkbox', label: 'editor_auto_continue', default: true, hint: 'editor_auto_continue_hint' },
+                            timeoutCorrect: { type: 'number', label: 'editor_timeout_correct', default: 2000, min: 0, step: 100 },
+                            timeoutWrong: { type: 'number', label: 'editor_timeout_wrong', default: 3000, min: 0, step: 100 },
                             passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 100, min: 0, max: 100, hint: 'editor_pass_percentage_hint' }
                         }
                     }
@@ -2260,6 +2376,7 @@ const fieldSchemas = {
                                 selector: 'type',
                                 schemas: {
                                     multichoice: {
+                                        defaultgrade: { type: 'number', label: 'editor_points', min: 0.01, default: 1, collapsible: true, collapsibleLabel: 'editor_points' },
                                         name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
                                         single: {
@@ -2311,6 +2428,7 @@ const fieldSchemas = {
                                         }
                                     },
                                     matching: {
+                                        defaultgrade: { type: 'number', label: 'editor_points', min: 0.01, default: 1, collapsible: true, collapsibleLabel: 'editor_points' },
                                         name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
                                         subquestions: {
@@ -2330,6 +2448,7 @@ const fieldSchemas = {
                                         }
                                     },
                                     truefalse: {
+                                        defaultgrade: { type: 'number', label: 'editor_points', min: 0.01, default: 1, collapsible: true, collapsibleLabel: 'editor_points' },
                                         name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
                                         answer: {
@@ -2351,13 +2470,24 @@ const fieldSchemas = {
                                         }
                                     },
                                     numerical: {
+                                        defaultgrade: { type: 'number', label: 'editor_points', min: 0.01, default: 1, collapsible: true, collapsibleLabel: 'editor_points' },
                                         name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
                                         answer: {
                                             type: 'object', collapsible: false, noHeader: true,
                                             schema: {
-                                                number: { type: 'number', label: 'editor_numerical_value', required: true, row: 'answer' },
+                                                number: { type: 'text', label: 'editor_numerical_value', required: true, pattern: /^(?:\*|[+-]?(?:\d+(?:[.,]\d*)?|[.,]\d+)(?:e[+-]?\d+)?)$/i, row: 'answer' },
                                                 tolerance: { type: 'number', label: 'editor_numerical_tolerance', row: 'answer' },
+                                                fraction: { type: 'number', label: 'editor_answer_fraction', min: 0, max: 100, default: 100, collapsible: true, collapsibleLabel: 'editor_answer_fraction' },
+                                                feedback: { type: 'textarea', label: 'editor_feedback' }
+                                            }
+                                        },
+                                        alternatives: {
+                                            type: 'array', itemLabel: 'editor_test_accepted_answer', addLabel: 'editor_add_answer', nested: true, itemsExpanded: false,
+                                            itemSchema: {
+                                                number: { type: 'text', label: 'editor_numerical_value', required: true, pattern: /^(?:\*|[+-]?(?:\d+(?:[.,]\d*)?|[.,]\d+)(?:e[+-]?\d+)?)$/i, row: 'answer' },
+                                                tolerance: { type: 'number', label: 'editor_numerical_tolerance', default: 0, row: 'answer' },
+                                                fraction: { type: 'number', label: 'editor_answer_fraction', min: 0, max: 100, default: 100, row: 'answer' },
                                                 feedback: { type: 'textarea', label: 'editor_feedback' }
                                             }
                                         },
@@ -2368,6 +2498,8 @@ const fieldSchemas = {
                                         }
                                     },
                                     shortanswer: {
+                                        usecase: { type: 'checkbox', label: 'editor_case_sensitive', valueType: 'number', default: 0 },
+                                        defaultgrade: { type: 'number', label: 'editor_points', min: 0.01, default: 1, collapsible: true, collapsibleLabel: 'editor_points' },
                                         name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
                                         answers: {
@@ -2766,6 +2898,12 @@ const fieldSchemas = {
                 fields: {
                     globalBackgroundColor: { type: 'color', label: 'editor_cp_global_bg' },
                     keywordListEnabled: { type: 'checkbox', label: 'editor_cp_keywords', default: true, inline: true },
+                    keywordListAlwaysShow: {type:'checkbox',label:'editor_cp_keyword_always'},
+                    keywordListAutoHide: {type:'checkbox',label:'editor_cp_keyword_autohide'},
+                    keywordListOpacity: {type:'number',label:'editor_cp_keyword_opacity',min:0,max:100,default:90},
+                    summarySlideSolutionButton: {type:'checkbox',label:'editor_cp_summary_solution',default:true},
+                    summarySlideRetryButton: {type:'checkbox',label:'editor_cp_summary_retry',default:true},
+                    globalBackgroundImage: {type:'image',label:'editor_ih_background'},
                     hideSummarySlide: { type: 'checkbox', label: 'editor_cp_hide_summary', inline: true },
                     enablePrintButton: { type: 'checkbox', label: 'editor_cp_print', inline: true },
                     enableRetry: { type: 'checkbox', label: 'editor_cp_retry', default: true, inline: true },
@@ -2794,7 +2932,20 @@ const fieldSchemas = {
                         type: 'object', label: 'editor_ib_cover',
                         collapsible: true, collapsibleLabel: 'editor_ib_cover',
                         schema: {
-                            description: { type: 'textarea', label: 'editor_ib_cover_desc', hint: 'editor_ib_cover_hint' }
+                            enabled: { type: 'checkbox', label: 'editor_ib_cover_enabled', default: false },
+                            description: { type: 'textarea', label: 'editor_ib_cover_desc', hint: 'editor_ib_cover_hint' },
+                            _contentType: { type: 'select', label: 'editor_media_optional', default: 'none', options: [
+                                { value: 'none', label: 'editor_livre_numbering_none' },
+                                { value: 'image', label: 'editor_ih_block_image' },
+                                { value: 'video', label: 'editor_ih_block_video' }
+                            ] },
+                            image: { type: 'image', label: 'editor_image', altTextField: 'imageAlt', showWhen: { field: '_contentType', value: 'image' } },
+                            videoFile: { type: 'video', label: 'editor_ih_video_file', showWhen: { field: '_contentType', value: 'video' } },
+                            videoUrl: { type: 'text', label: 'editor_ih_video_url', hint: 'editor_ih_video_url_hint', showWhen: { field: '_contentType', value: 'video' } },
+                            videoPoster: { type: 'image', label: 'editor_ib_video_poster', showWhen: { field: '_contentType', value: 'video' } },
+                            videoControls: { type: 'checkbox', label: 'editor_ib_video_controls', default: true, showWhen: { field: '_contentType', value: 'video' } },
+                            videoAutoplay: { type: 'checkbox', label: 'editor_ib_video_autoplay', default: false, showWhen: { field: '_contentType', value: 'video' } },
+                            videoLoop: { type: 'checkbox', label: 'editor_ib_video_loop', default: false, showWhen: { field: '_contentType', value: 'video' } }
                         }
                     }
                 }
@@ -2815,7 +2966,8 @@ const fieldSchemas = {
                         // « Chapitre N » — mais en français figé, et seulement à l'enregistrement :
                         // le sommaire de l'éditeur restait sans intitulé. cf. addItem().
                         autoTitleField: 'title',
-                        minItems: 2,
+                        minItems: 1,
+                        maxItems: 50,
                         itemSchema: {
                             title: { type: 'text', label: 'editor_ib_chapter_title', required: true, hint: 'editor_ib_chapter_title_hint' },
                             content: {
@@ -2918,7 +3070,10 @@ const fieldSchemas = {
                 fields: {
                     baseColor: { type: 'color', label: 'editor_ib_base_color' },
                     showTableOfContents: { type: 'checkbox', label: 'editor_ib_toc', default: true, inline: true },
-                    displaySummary: { type: 'checkbox', label: 'editor_ib_summary', default: true, inline: true }
+                    displaySummary: { type: 'checkbox', label: 'editor_ib_summary', default: true, inline: true },
+                    progressIndicators: { type: 'checkbox', label: 'editor_ib_progress_indicators', default: true, inline: true },
+                    progressAuto: { type: 'checkbox', label: 'editor_ib_progress_auto', default: true, hint: 'editor_ib_progress_auto_hint', showWhen: { field: 'progressIndicators', value: true } },
+                    enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true, inline: true }
                 }
             }
         ]
@@ -3192,9 +3347,11 @@ const fieldSchemas = {
                             // pas au coin haut-gauche (0,0) — audit N14.
                             x: { type: 'number', label: 'editor_ih_x', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
                             y: { type: 'number', label: 'editor_ih_y', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
-                            // Pas de couleur par point : en mode « numéros » (défaut), H5P n'utilise que la
-                            // couleur GLOBALE (section Apparence). La couleur par point n'agirait que sur une
-                            // icône personnalisée, non générée → champ retiré pour éviter la confusion.
+                            alwaysFullscreen: {type:'checkbox',label:'editor_ih_always_fullscreen',default:false},
+                            hotspotIconType: {type:'select',label:'editor_ih_icon_type',options:[{value:'default',label:'editor_ih_icon_inherit'},{value:'icon',label:'editor_ih_icon_predefined'},{value:'image',label:'editor_ih_icon_image'}]},
+                            hotspotIcon: {type:'select',label:'editor_ih_icon',showWhen:{field:'hotspotIconType',value:'icon'},options:[{value:'plus',label:'editor_ih_icon_plus'},{value:'minus',label:'editor_ih_icon_minus'},{value:'times',label:'editor_ih_icon_times'},{value:'check',label:'editor_ih_icon_check'},{value:'question',label:'editor_ih_icon_question'},{value:'info',label:'editor_ih_icon_info'},{value:'exclamation',label:'editor_ih_icon_exclamation'}]},
+                            hotspotIconImage: {type:'image',label:'editor_ih_icon_image',showWhen:{field:'hotspotIconType',value:'image'}},
+                            hotspotColor: {type:'color',label:'editor_ih_global_color',showWhen:{field:'hotspotIconType',value:'icon'}},
                             content: {
                                 type: 'array', nested: true,
                                 label: 'editor_ih_content',
@@ -3236,7 +3393,20 @@ const fieldSchemas = {
                                     videoUrl: {
                                         type: 'text', label: 'editor_ih_video_url', hint: 'editor_ih_video_url_hint',
                                         showWhen: { field: '_contentType', value: 'video' }
-                                    }
+                                    },
+                                    _audioSettings: {type:'fieldGroup',showWhen:{field:'_contentType',value:'audio'},fields:{
+                                        '_origParams.playerMode':{type:'select',label:'editor_media_player_mode',options:[{value:'minimalistic',label:'editor_media_player_minimal'},{value:'full',label:'editor_media_player_full'},{value:'transparent',label:'editor_media_player_transparent'}]},
+                                        '_origParams.controls':{type:'checkbox',label:'editor_media_controls',default:true},
+                                        '_origParams.autoplay':{type:'checkbox',label:'editor_media_autoplay',default:false},
+                                        '_origParams.fitToWrapper':{type:'checkbox',label:'editor_media_fit',default:false}
+                                    }},
+                                    _videoSettings: {type:'fieldGroup',showWhen:{field:'_contentType',value:'video'},fields:{
+                                        '_origParams.visuals.controls':{type:'checkbox',label:'editor_media_controls',default:true},
+                                        '_origParams.visuals.fit':{type:'checkbox',label:'editor_media_fit',default:true},
+                                        '_origParams.playback.autoplay':{type:'checkbox',label:'editor_media_autoplay',default:false},
+                                        '_origParams.playback.loop':{type:'checkbox',label:'editor_ib_video_loop',default:false},
+                                        '_origParams.visuals.poster':{type:'image',label:'editor_image'}
+                                    }}
                                 }
                             }
                         }
@@ -3269,7 +3439,11 @@ const fieldSchemas = {
                     },
                     taskDescription: { type: 'textarea', label: 'editor_hq_task', hint: 'editor_hq_task_hint' },
                     noneSelectedFeedback: { type: 'text', label: 'editor_hq_none_selected' },
-                    showFeedbackAsPopup: { type: 'checkbox', label: 'editor_hq_popup', default: true }
+                    showFeedbackAsPopup: { type: 'checkbox', label: 'editor_hq_popup', default: true },
+                    '_l10n.retryText': {type:'text',label:'h5p_try_again'},
+                    '_l10n.closeText': {type:'text',label:'h5p_close'},
+                    _scoreBarLabel: {type:'text',label:'h5p_quiz_score_bar_label'},
+                    _a11yRetry: {type:'text',label:'h5p_a11y_retry'}
                 }
             },
             {
@@ -3326,6 +3500,7 @@ const fieldSchemas = {
                         collapsibleLabel: 'editor_ih_background'
                     },
                     taskDescription: { type: 'textarea', label: 'editor_hq_task', hint: 'editor_hq_task_hint' },
+                    questionTitle: { type: 'text', label: 'editor_question_title' },
                     hotspotName: { type: 'text', label: 'editor_hq_hotspot_name', hint: 'editor_hq_hotspot_name_hint' },
                     numberHotspots: { type: 'number', label: 'editor_hq_number_hotspots', hint: 'editor_hq_number_hotspots_hint', min: 1, step: 1 },
                     noneSelectedFeedback: { type: 'text', label: 'editor_hq_none_selected' },
@@ -3365,6 +3540,158 @@ const fieldSchemas = {
                 }
             }
         ]
+    }
+};
+
+// Réglages propres au conteneur QuestionSet (communs aux trois variantes).
+const quizSections = fieldSchemas.QuizSet.sections;
+quizSections[0].fields.introPage = {type:'object',label:'editor_intro',collapsible:true,schema:{
+    showIntroPage:{type:'checkbox',label:'editor_quiz_show_intro',default:false},
+    title:{type:'text',label:'editor_title'},
+    introduction:{type:'textarea',label:'editor_intro'},
+    startButtonText:{type:'text',label:'editor_quiz_start_label'},
+    backgroundImage:{type:'image',label:'doc_fmt_background_image',altTextField:'backgroundImageAltText'}
+}};
+quizSections.push({id:'settings',label:'editor_section_settings',icon:'fa-cog',startCollapsed:true,fields:{
+    disableBackwardsNavigation:{type:'checkbox',label:'editor_dialog_forward_only',default:false},
+    poolSize:{type:'number',label:'editor_quiz_pool',min:1},
+    override:{type:'object',label:'editor_quiz_override',collapsible:true,schema:{
+        checkButton:{type:'checkbox',label:'editor_enable_check_button',default:true},
+        showSolutionButton:{type:'select',label:'editor_enable_solutions',default:'',options:[
+            {value:'',label:'editor_quiz_inherit'},{value:'on',label:'editor_true'},{value:'off',label:'editor_false'}]},
+        retryButton:{type:'select',label:'editor_enable_retry',default:'',options:[
+            {value:'',label:'editor_quiz_inherit'},{value:'on',label:'editor_true'},{value:'off',label:'editor_false'}]},
+        backgroundImage:{type:'image',label:'doc_fmt_background_image'}
+    }}
+}});
+quizSections.find(s=>s.id==='feedback').fields={endGame:{type:'object',noHeader:true,schema:{
+    showResultPage:{type:'checkbox',label:'h5p_show_results',default:true},
+    showSolutionButton:{type:'checkbox',label:'editor_enable_solutions',default:true},
+    showRetryButton:{type:'checkbox',label:'editor_enable_retry',default:true},
+    overallFeedback:{type:'feedbackRanges',label:'editor_overall_feedback'},
+    showAnimations:{type:'checkbox',label:'editor_quiz_videos',default:false},
+    skippable:{type:'checkbox',label:'editor_quiz_skip_video',default:false},
+    successVideo:{type:'video',nativeSources:true,label:'editor_quiz_success_video'},
+    failVideo:{type:'video',nativeSources:true,label:'editor_quiz_fail_video'},
+    noResultMessage:{type:'textarea',label:'h5p_quiz_no_result_message'},
+    message:{type:'text',label:'h5p_quiz_result_message'},
+    scoreHeader:{type:'text',label:'h5p_score_header'},
+    scoreBarLabel:{type:'text',label:'h5p_quiz_score_bar_label'},
+    amountCorrect:{type:'text',label:'h5p_amount_correct'},
+    solutionButtonText:{type:'text',label:'h5p_show_solution'},
+    retryButtonText:{type:'text',label:'h5p_try_again'},
+    finishButtonText:{type:'text',label:'h5p_finish_label'},
+    submitButtonText:{type:'text',label:'h5p_submit_answer'},
+    skipButtonText:{type:'text',label:'h5p_skip_video'}
+}}};
+quizSections.push({id:'texts',label:'editor_quiz_labels',icon:'fa-language',startCollapsed:true,fields:{texts:{type:'object',noHeader:true,schema:
+    Object.fromEntries(Object.entries({prevButton:'h5p_previous',previous:'h5p_previous',nextButton:'h5p_next',next:'h5p_next',
+        finishButton:'h5p_finish_label',submitButton:'h5p_submit_answer',textualProgress:'h5p_quiz_textual_progress',
+        jumpToQuestion:'h5p_quiz_jump_to_question',questionLabel:'h5p_quiz_question_label',readSpeakerProgress:'h5p_quiz_read_speaker_progress',
+        unansweredText:'h5p_quiz_unanswered',answeredText:'h5p_quiz_answered',currentQuestionText:'h5p_quiz_current_question',
+        navigationLabel:'h5p_quiz_navigation_label',questionSetInstruction:'h5p_quiz_instruction'
+    }).map(([key,label])=>[key,{type:'text',label}]))
+}}});
+
+// Les mêmes options natives sont éditables seules et dans les trois conteneurs.
+// Le QCM conserve son choix simple/multiple, présenté ailleurs en activité seule.
+const quizSchemas = fieldSchemas.QuizSet.sections.find(s => s.id === 'questions')
+    .fields.questions.itemSchema.params.schemas;
+for (const [key, library] of Object.entries({
+    MultipleChoice: 'H5P.MultiChoice 1.16', TrueFalse: 'H5P.TrueFalse 1.8',
+    FillInTheBlanks: 'H5P.Blanks 1.14', MarkTheWords: 'H5P.MarkTheWords 1.11'
+})) {
+    const settings = fieldSchemas[key].sections.find(s => s.id === 'settings').fields.behaviour;
+    settings.schema.enableCheckButton = {
+        type: 'checkbox', label: 'editor_enable_check_button', default: true,
+        hint: 'editor_enable_check_button_hint'
+    };
+    if (key === 'MultipleChoice' || key === 'FillInTheBlanks') {
+        settings.schema.showSolutionsRequiresInput = {
+            type: 'checkbox', default: true,
+            label: key === 'FillInTheBlanks' ? 'editor_solutions_require_all_blanks' : 'editor_solution_requires_input'
+        };
+    }
+    if (key === 'FillInTheBlanks') {
+        settings.schema.allowRetryIfCorrect = {
+            type: 'checkbox', label: 'editor_retry_if_correct', default: false
+        };
+    }
+    const embedded = {
+        ...settings, label: 'editor_options', collapsible: true,
+        schema: { ...(key === 'MultipleChoice' ? { type: MC_RESPONSE_TYPE } : {}), ...settings.schema }
+    };
+    CP_EXERCISE_SCHEMAS[library].behaviour = embedded;
+    quizSchemas[library].behaviour = embedded;
+}
+
+// Dialogues natifs des textes à trous : mêmes champs autonomes et imbriqués.
+const blanksSettings = fieldSchemas.FillInTheBlanks.sections.find(s=>s.id==='settings').fields;
+for (const [key,label] of [['confirmCheck','editor_confirm_check_dialog'],['confirmRetry','editor_confirm_retry_dialog']]) {
+    const field={type:'object',label,collapsible:true,schema:{
+        header:{type:'text',label:'editor_title'},body:{type:'textarea',label:'editor_description'},
+        cancelLabel:{type:'text',label:'editor_blanks_cancel_label'},confirmLabel:{type:'text',label:'editor_blanks_confirm_label'}
+    }};
+    blanksSettings[key]=field;
+    CP_EXERCISE_SCHEMAS['H5P.Blanks 1.14'][key]=field;
+    quizSchemas['H5P.Blanks 1.14'][key]=field;
+}
+CP_EXERCISE_SCHEMAS['H5P.Blanks 1.14'].media=QUESTION_MEDIA;
+quizSchemas['H5P.Blanks 1.14'].media=QUESTION_MEDIA;
+
+for (const key of ['confirmCheck','confirmRetry']) {
+    const field=blanksSettings[key];
+    fieldSchemas.TrueFalse.sections.find(s=>s.id==='settings').fields[key]=field;
+    CP_EXERCISE_SCHEMAS['H5P.TrueFalse 1.8'][key]=field;
+    quizSchemas['H5P.TrueFalse 1.8'][key]=field;
+}
+CP_EXERCISE_SCHEMAS['H5P.TrueFalse 1.8'].media=QUESTION_MEDIA;
+quizSchemas['H5P.TrueFalse 1.8'].media=QUESTION_MEDIA;
+
+for (const key of ['confirmCheck','confirmRetry']) {
+    const field=blanksSettings[key];
+    fieldSchemas.MultipleChoice.sections.find(s=>s.id==='settings').fields[key]=field;
+    CP_EXERCISE_SCHEMAS['H5P.MultiChoice 1.16'][key]=field;
+    quizSchemas['H5P.MultiChoice 1.16'][key]=field;
+}
+CP_EXERCISE_SCHEMAS['H5P.MultiChoice 1.16'].media=QUESTION_MEDIA;
+quizSchemas['H5P.MultiChoice 1.16'].media=QUESTION_MEDIA;
+CP_EXERCISE_SCHEMAS['H5P.MultiChoice 1.16'].answers.minItems=1;
+quizSchemas['H5P.MultiChoice 1.16'].answers.minItems=1;
+
+// Les réglages de série ont exactement le même contrat dans un livre ou une
+// présentation ; une seule définition évite les pertes dans les sous-exercices.
+fieldSchemas.DialogCards.sections.find(s=>s.id==='settings').fields.confirmStartingOver = blanksSettings.confirmRetry;
+CP_EXERCISE_SCHEMAS['H5P.SingleChoiceSet 1.11'].behaviour =
+    fieldSchemas.SingleChoiceSet.sections.find(section => section.id === 'settings').fields.behaviour;
+CP_EXERCISE_SCHEMAS['H5P.Dialogcards 1.9'].dialogs =
+    fieldSchemas.DialogCards.sections.find(section => section.id === 'dialogs').fields.dialogs;
+Object.assign(CP_EXERCISE_SCHEMAS['H5P.Dialogcards 1.9'],
+    fieldSchemas.DialogCards.sections.find(section => section.id === 'settings').fields);
+
+// Row contient jusqu'à quatre RowColumn ; celles-ci proposent les mêmes blocs
+// élémentaires que le chapitre, mais jamais une autre Row (contrat Éléa 1.3).
+const ibBlocs = fieldSchemas.InteractiveBook.sections.find(s => s.id === 'chapters').fields.chapters.itemSchema.content;
+const ibBlocsColonne = { ...ibBlocs, itemSchema: { ...ibBlocs.itemSchema } };
+ibBlocs.itemSchema._blockType = {
+    ...ibBlocs.itemSchema._blockType,
+    options: [...ibBlocs.itemSchema._blockType.options, { value: 'row', label: 'editor_ib_row' }]
+};
+ibBlocs.itemSchema.columns = {
+    type: 'array', nested: true, label: 'editor_ib_columns',
+    itemLabel: 'editor_ib_column', addLabel: 'editor_ib_add_column',
+    minItems: 1, maxItems: 4, showWhen: { field: '_blockType', value: 'row' },
+    validate: columns => {
+        if (!Array.isArray(columns)) return true; // Cardinalité contrôlée séparément.
+        const fixed = columns.filter(c => c.width !== '' && c.width != null);
+        const total = fixed.reduce((sum, c) => sum + Number(c.width), 0);
+        const automatic = columns.length - fixed.length;
+        return (automatic ? total + 10 * automatic <= 100 : Math.abs(total - 100) < 0.001)
+            || t('editor_ib_width_error');
+    },
+    itemSchema: {
+        width: { type: 'number', label: 'editor_ib_column_width', hint: 'editor_ib_width_hint', min: 10, max: 100, default: '' },
+        content: ibBlocsColonne
     }
 };
 
@@ -3454,8 +3781,13 @@ export function detectContentType(jsonData, titleKey) {
     // PRIORITE 1: titleKey (fiable car defini a la creation)
     // Indispensable pour distinguer les types a signatures identiques
     // (ex: MarkTheWords vs DragTheWords, QuizSetQCM vs QuizSet)
-    if (titleKey && titleKeyToModuleKey[titleKey]) {
-        const moduleKey = titleKeyToModuleKey[titleKey];
+    // Les archives fournissent le nom machine (MarkTheWords), tandis que les
+    // notifications emploient le libellé séparé (mark_the_words). Une signature
+    // identique à DragText ne doit jamais l'emporter sur cette indication native.
+    const moduleFromTitle = titleKey && (titleKeyToModuleKey[titleKey]
+        || titleKeyToModuleKey[titleKey.replace(/_name$/, '')]);
+    if (moduleFromTitle) {
+        const moduleKey = moduleFromTitle;
         // Verifier que le schema existe pour ce moduleKey
         if (fieldSchemas[moduleKey]) {
             return {
@@ -3493,6 +3825,7 @@ function translateLabels(obj) {
     if (!obj || typeof obj !== 'object') {
         return obj;
     }
+    if (obj instanceof RegExp) return new RegExp(obj.source, obj.flags);
 
     if (Array.isArray(obj)) {
         return obj.map(item => translateLabels(item));
@@ -3515,11 +3848,20 @@ function translateLabels(obj) {
  * @param {string} moduleKey - La cle du module
  * @returns {Object|null} Le schema ou null
  */
-export function getSchemaForType(moduleKey) {
+export function getSchemaForType(moduleKey, data) {
+    if(moduleKey==='InteractiveVideo' && data?.interactiveVideo)return getNativeVideoSchema();
+    if(moduleKey==='InteractiveBook' && data?.chapters?.[0]?.params)return getNativeBookSchema();
+    if(moduleKey==='CoursePresentation' && Array.isArray(data?.presentation?.slides))return getNativePresentationSchema();
     const schema = fieldSchemas[moduleKey] || null;
     if (schema) {
         // Cloner et traduire le schema
         const translatedSchema = translateLabels(schema);
+        if (moduleKey === 'FindTheWords') {
+            const pool = t('h5p_find_words_fill_pool');
+            if (pool && pool !== 'h5p_find_words_fill_pool') {
+                translatedSchema.sections.find(s => s.id === 'settings').fields.behaviour.schema.fillPool.default = pool;
+            }
+        }
         translatedSchema._moduleKey = moduleKey;
         return translatedSchema;
     }
@@ -3689,7 +4031,7 @@ function denormalizeIHContentNode(b) {
         const mime = (b.audioFile && b.audioFile.mime) || 'audio/mpeg';
         node = {
             library: 'H5P.Audio 1.5',
-            params: { playerMode: 'minimalistic', fitToWrapper: false, controls: true, autoplay: false, ...orig, files: [{ path, mime }] }
+            params: { playerMode: 'minimalistic', fitToWrapper: false, controls: true, autoplay: false, ...orig, files: [{ ...orig.files?.[0], path, mime }, ...(orig.files?.slice(1) || [])] }
         };
     } else if (type === 'video') {
         const path = (b.videoFile && b.videoFile.path) || (b.videoUrl && String(b.videoUrl).trim());
@@ -3698,7 +4040,7 @@ function denormalizeIHContentNode(b) {
         const mime = (b.videoFile && b.videoFile.mime) || (isYouTube ? 'video/YouTube' : 'video/mp4');
         node = {
             library: 'H5P.Video 1.6',
-            params: { visuals: { fit: true, controls: true }, playback: { autoplay: false, loop: false }, ...orig, sources: [{ path, mime }] }
+            params: { visuals: { fit: true, controls: true }, playback: { autoplay: false, loop: false }, ...orig, sources: [{ ...orig.sources?.[0], path, mime }, ...(orig.sources?.slice(1) || [])] }
         };
     }
     if (!node) return null;
@@ -3792,6 +4134,7 @@ function normalizeHotspotQuestionData(data, rootKey) {
             noneSelectedFeedback: hs.noneSelectedFeedback || ''
         };
         if (isMultiple) {
+            flat.questionTitle = bis.questionTitle || '';
             flat.hotspotName = hs.hotspotName || '';
             // Reprendre la valeur du content.json AVANT de la synchroniser : sans elle, un
             // plafond volontaire (« trouver 3 zones sur 5 ») serait remonté à 5 à l'ouverture.
@@ -3988,20 +4331,128 @@ function normalizeDragQuestionForEditor(dropZones, elements) {
  * @param {string} moduleKey - La clé du module
  * @returns {Object} Les données normalisées
  */
+/** Adapter les réglages des questions autonomes et imbriquées sans perdre le natif. */
+function optionsQuestionsPourEditeur(data, moduleKey, saving = false) {
+    function apply(params, library) {
+        if (!params || typeof params !== 'object') return;
+        if (['DragTheWords', 'Essay', 'FillInTheBlanks', 'MarkTheWords', 'TrueFalse', 'MultipleChoice', 'Dictation', 'SortParagraphs'].includes(library) || /^H5P\.(DragText|Essay|Blanks|MarkTheWords|TrueFalse|MultiChoice|Dictation|SortParagraphs)(?: |$)/.test(library)) {
+            if (!params.media?.type && params.mediaImage?.path) {
+                params.media = {disableImageZooming:false,type:{library:'H5P.Image 1.1',params:{file:params.mediaImage,alt:params.mediaImageAlt || ''}}};
+            }
+            delete params.mediaImage;delete params.mediaImageAlt;
+            if (saving && params.media?.type) {
+                if (!params.media.type.library) params.media.type = null;
+                else {
+                    params.media.type.subContentId ||= crypto.randomUUID();
+                    params.media.type.params ||= {};
+                    params.media.type.metadata ||= {title:'',license:'U',contentType:params.media.type.library.split(' ')[0].replace('H5P.','')};
+                }
+            }
+        }
+
+        if (/^(H5P\.)?MultiChoice(?: |$)/i.test(library) || library === 'MultipleChoice') {
+            const b = params.behaviour;
+            if (b?.singleAnswer !== undefined) {
+                b.type = [true, 'true', 1, '1'].includes(b.singleAnswer) ? 'single' : 'multi';
+                delete b.singleAnswer;
+            }
+        }
+        if (library === 'FillInTheBlanks' || /^H5P\.Blanks(?: |$)/.test(library)) {
+            if (saving) {
+                params.text = params.taskDescription ?? params.text ?? '';
+                delete params.taskDescription;
+            } else {
+                params.taskDescription = params.taskDescription ?? params.text ?? '';
+                params.questions ||= params.textBlocks || [];
+                delete params.text; // Une seule source éditable ; reconstruite à la sauvegarde.
+            }
+        }
+        if (saving && /^(H5P\.)?Essay(?: |$)/.test(library) && params.behaviour) {
+            for (const key of ['overrideCaseSensitive','overrideForgiveMistakes','minimumLength','maximumLength','percentagePassing','percentageMastering']) {
+                if (params.behaviour[key] === '') delete params.behaviour[key];
+            }
+        }
+        if (/^(H5P\.)?Essay(?: |$)/.test(library) && Array.isArray(params.keywords)) {
+            params.keywords = params.keywords.map(kw => {
+                const item = kw && typeof kw === 'object' ? {...kw, options: {...kw.options}} : {keyword: String(kw ?? ''), options: {}};
+                item.keyword ||= item.word || '';
+                if (item.points !== undefined) item.options.points = item.points;
+                if (item.caseSensitive !== undefined) item.options.caseSensitive = item.caseSensitive;
+                if (item.explanation !== undefined) item.options.feedbackMissed = item.explanation;
+                for (const key of ['word', 'points', 'caseSensitive', 'explanation']) delete item[key];
+                return item;
+            });
+        }
+        if (/^(H5P\.)?TrueFalse(?: |$)/.test(library)) {
+            for (const [key, score] of [['feedbackOnCorrect', 100], ['feedbackOnWrong', 0]]) {
+                if (saving) {
+                    if (params[key] !== undefined) {
+                        params.behaviour ||= {};
+                        params.behaviour[key] = params[key];
+                        delete params[key];
+                    }
+                } else {
+                    params[key] ??= params.behaviour?.[key] ?? params.overallFeedback?.find(f => Number(f.from) <= score && Number(f.to) >= score)?.feedback ?? '';
+                    // Une seule source éditable : ne pas conserver une ancienne
+                    // copie native qui reviendrait après sauvegarde/réouverture.
+                    if (params.behaviour) delete params.behaviour[key];
+                }
+            }
+            if (!saving && params.behaviour && !Object.keys(params.behaviour).length) delete params.behaviour;
+        }
+    }
+    apply(data, moduleKey);
+    function visit(node) {
+        if (!node || typeof node !== 'object') return;
+        const library = node.library || node._exerciseLibrary;
+        if (typeof library === 'string') apply(node.params || node.exercise || node, library);
+        Object.values(node).forEach(visit);
+    }
+    visit(data);
+}
+
+// Les trois formulaires issus des semantics éditent directement les paramètres
+// natifs. Le convertisseur des modèles simplifiés déplacerait leurs champs.
+function usesNativeContainerSchema(data, moduleKey) {
+    return (moduleKey === 'CoursePresentation' && !!data.presentation?.slides)
+        || (moduleKey === 'InteractiveBook' && !!data.chapters?.[0]?.params)
+        || (moduleKey === 'InteractiveVideo' && !!data.interactiveVideo);
+}
+
 export function normalizeDataForEditor(data, moduleKey) {
     if (!data || !moduleKey) return data;
+    if (usesNativeContainerSchema(data, moduleKey)) return data;
+    optionsQuestionsPourEditeur(data, moduleKey);
 
     switch (moduleKey) {
+        case 'Flashcards':
+            for (const card of data.cards || []) if (typeof card.tip === 'object') card.tip = card.tip?.tip || '';
+            data.behaviour ||= {};
+            for (const key of ['enableRetry', 'showSolutionsRequiresInput', 'caseSensitive', 'randomCards']) {
+                if (data[key] !== undefined) {
+                    data.behaviour[key] = data[key];
+                    delete data[key];
+                }
+            }
+            return data;
         case 'Glossary':
             // Si c'est un tableau direct [{title, text}], l'encapsuler dans {items: [...]}
             if (Array.isArray(data)) {
                 debugLog('content-detector', '[Content Detector] Normalizing Glossary array to {items: [...]}');
-                return { items: data };
+                return { items: data, ...(data.hTag ? { hTag: data.hTag } : {}) };
             }
             // Si déjà un objet avec accordion, le renommer en items
             if (data.accordion && Array.isArray(data.accordion)) {
-                return { items: data.accordion };
+                return { ...data, items: data.accordion };
             }
+            if (Array.isArray(data.panels)) {
+                return { ...data, items: data.panels.map(panel => ({ ...panel, text: panel.text ?? panel.content?.params?.text ?? '' })) };
+            }
+            return data;
+
+        case 'Crossword':
+            if(data.theme?.backgroundImage?.path && !data.backgroundImage?.path)data.backgroundImage=structuredClone(data.theme.backgroundImage);
+            if(Array.isArray(data.words))for(const word of data.words)if(word.extraClue?.params?.text && !word.extraClue.library)word.extraClue.library='H5P.AdvancedText 1.1';
             return data;
 
         case 'FindTheWords':
@@ -4012,34 +4463,17 @@ export function normalizeDataForEditor(data, moduleKey) {
             return data;
 
         case 'QuizSet':
-            // Normaliser les keywords Essay pour l'éditeur :
-            // - "word" → "keyword" (harmonisation avec Essay autonome)
-            // - "options.points" → "points" (aplatir pour le schéma éditeur)
-            // - "options.caseSensitive" → "caseSensitive" (idem)
+            data.introPage ||= {};
+            data.introPage.startButtonText ??= t('simulator_start');
+            data.texts ||= {};
+            for(const [key,field] of Object.entries(quizSections.find(s=>s.id==='texts').fields.texts.schema))data.texts[key] ??= t(field.label);
+            data.endGame ||= {};
+            for(const [key,field] of Object.entries(quizSections.find(s=>s.id==='feedback').fields.endGame.schema))if(['text','textarea'].includes(field.type))data.endGame[key] ??= t(field.label);
+            data.endGame.overallFeedback ??= data.overallFeedback;
+            delete data.overallFeedback;
+            // Les options des questions ont été normalisées avant ce switch.
             if (data.questions && Array.isArray(data.questions)) {
                 data.questions.forEach(q => {
-                    if (q.library && q.library.startsWith('H5P.Essay') && q.params && Array.isArray(q.params.keywords)) {
-                        q.params.keywords = q.params.keywords.map(kw => {
-                            if (typeof kw !== 'object' || kw === null) return kw;
-                            const result = { ...kw };
-                            // Convertir "word" → "keyword"
-                            if (result.word && !result.keyword) {
-                                result.keyword = result.word;
-                                delete result.word;
-                            }
-                            // Aplatir "options" vers les champs plats attendus par l'éditeur
-                            if (result.options && typeof result.options === 'object') {
-                                if (result.points === undefined && result.options.points !== undefined) {
-                                    result.points = result.options.points;
-                                }
-                                if (result.caseSensitive === undefined && result.options.caseSensitive !== undefined) {
-                                    result.caseSensitive = result.options.caseSensitive;
-                                }
-                                delete result.options;
-                            }
-                            return result;
-                        });
-                    }
                     // Normaliser les DragQuestion pour l'éditeur : correctElements → zoneIndices + layoutSettings
                     if (q.library && q.library.startsWith('H5P.DragQuestion') && q.params) {
                         const dropZones = q.params.dropZones || [];
@@ -4050,9 +4484,32 @@ export function normalizeDataForEditor(data, moduleKey) {
             }
             return data;
 
+        case 'Timeline': {
+            data.timeline ||= {};
+            data.timeline.height ??= data.height ?? 600;
+            delete data.height;
+            return data;
+        }
+
         case 'DragAndDrop': {
+            if (data.question?.task && !data.elements) {
+                const task = data.question.task, settings = data.question.settings || {};
+                const width = settings.size?.width || 800, height = settings.size?.height || 500;
+                const position = e => ({ x: e.x, y: e.y, width: e.width * 1600 / width, height: e.height * 1600 / height });
+                data._nativeRoot = structuredClone(data);
+                data.canvasWidth = width; data.canvasHeight = height; data.layoutMode = 'custom';
+                data.backgroundImage = settings.background;
+                data.elements = (task.elements || []).map(e => ({
+                    text: e.type?.params?.text || e.type?.params?.alt || '',
+                    ...(e.type?.library?.startsWith('H5P.Image') ? { image: e.type.params.file, imageAltText: e.type.params.alt } : {}),
+                    ...position(e), _native: structuredClone(e)
+                }));
+                data.dropZones = (task.dropZones || []).map(z => ({label: z.label, correctElements: z.correctElements, ...position(z), _native: structuredClone(z)}));
+                delete data.question;
+            }
             const dropZones = data.dropZones || [];
             const elements = data.elements || [];
+            elements.forEach(el => { el.allowedZones ??= el._native?.dropZones?.map(Number) || dropZones.map((_,i) => i); });
             normalizeDragQuestionForEditor(dropZones, elements);
             return data;
         }
@@ -4085,38 +4542,55 @@ export function normalizeDataForEditor(data, moduleKey) {
         }
 
         case 'InteractiveBook': {
-            if (data.chapters && Array.isArray(data.chapters)) {
-                data.chapters.forEach(ch => {
-                    if (!Array.isArray(ch.content)) return;
-                    ch.content = ch.content.map(b => {
-                        if (!b || typeof b !== 'object') return b;
-
-                        // Bloc exercice : extraire library → _exerciseLibrary et
-                        // envelopper les params dans `exercise` (pour le dynamicObject)
-                        if (b.type === 'exercise' || b.library) {
-                            const { type, library, ...params } = b;
-                            // DragQuestion : correctElements → zoneIndices
-                            if (library && library.startsWith('H5P.DragQuestion')) {
-                                const dropZones = params.dropZones || [];
-                                const elements = params.elements || [];
-                                normalizeDragQuestionForEditor(dropZones, elements);
-                            }
-                            return { _blockType: 'exercise', _exerciseLibrary: library || '', exercise: params };
-                        }
-
-                        // Blocs de contenu : inférer _blockType depuis type ou les données
-                        if (b.type === 'table' || b.table) {
-                            b._blockType = 'table';
-                            if (!b.tableStyle) b.tableStyle = 'default';
-                        } else if (b.type === 'image' || b.image) {
-                            b._blockType = 'image';
-                        } else {
-                            b._blockType = 'text';
-                        }
-                        delete b.type;
-                        return b;
+            if(data.chapters?.[0]?.params)return data;
+            const cover = data.cover || {};
+            if (!cover._contentType) {
+                const media = normalizeIHContentNode(cover.media);
+                data.cover = { ...cover, enabled: cover.enabled ?? !!(String(cover.description || '').trim() || cover.media), ...(media || { _contentType: 'none' }) };
+                if (media?._contentType === 'video') {
+                    const params = cover.media.params || {};
+                    Object.assign(data.cover, {
+                        videoPoster: params.visuals?.poster,
+                        videoControls: params.visuals?.controls ?? true,
+                        videoAutoplay: params.playback?.autoplay ?? false,
+                        videoLoop: params.playback?.loop ?? false
                     });
-                });
+                }
+            }
+            const normaliserBloc = b => {
+                if (!b || typeof b !== 'object') return b;
+
+                if (b.type === 'row' || b._blockType === 'row') {
+                    return { ...b, _blockType: 'row', columns: (b.columns || []).map(c => ({ ...c, content: (c.content || []).map(normaliserBloc) })) };
+                }
+
+                // Bloc exercice : extraire library → _exerciseLibrary et
+                // envelopper les params dans `exercise` (pour le dynamicObject)
+                if (b.type === 'exercise' || b.library) {
+                    const { type, library, ...params } = b;
+                    // DragQuestion : correctElements → zoneIndices
+                    if (library && library.startsWith('H5P.DragQuestion')) {
+                        const dropZones = params.dropZones || [];
+                        const elements = params.elements || [];
+                        normalizeDragQuestionForEditor(dropZones, elements);
+                    }
+                    return { _blockType: 'exercise', _exerciseLibrary: library || '', exercise: params };
+                }
+
+                // Blocs de contenu : inférer _blockType depuis type ou les données
+                if (b.type === 'table' || b.table) {
+                    b._blockType = 'table';
+                    if (!b.tableStyle) b.tableStyle = 'default';
+                } else if (b.type === 'image' || b.image) {
+                    b._blockType = 'image';
+                } else {
+                    b._blockType = 'text';
+                }
+                delete b.type;
+                return b;
+            };
+            for (const ch of data.chapters || []) {
+                if (Array.isArray(ch.content)) ch.content = ch.content.map(normaliserBloc);
             }
             return data;
         }
@@ -4183,9 +4657,8 @@ export function normalizeDataForEditor(data, moduleKey) {
                     const st = (typeof s === 'string') ? { text: s } : { ...(s || {}) };
                     // Champ audio H5P (tableau [{path,mime,…}]) → valeur éditeur {path,mime,kind,dataURL?}
                     const toEditorAudio = (v) => {
-                        const f = Array.isArray(v) ? v[0] : v;
-                        if (!f || typeof f.path !== 'string' || !f.path) return null;
-                        return { path: f.path, mime: f.mime || 'audio/mpeg', kind: 'audio', ...(f.dataURL ? { dataURL: f.dataURL } : {}) };
+                        const files=(Array.isArray(v)?v:[v]).filter(f=>f?.path).map(f=>({...f,mime:f.mime || 'audio/mpeg',kind:'audio'}));
+                        return files.length ? files : null;
                     };
                     const sample = toEditorAudio(st.sample);
                     const alt = toEditorAudio(st.sampleAlternative);
@@ -4205,24 +4678,6 @@ export function normalizeDataForEditor(data, moduleKey) {
                     }
                 }
                 data.behaviour = b;
-            }
-            // Bloc « Média » du content.json (media.type = H5P.Image) → champ éditeur
-            // mediaImage {path,mime,…} + mediaImageAlt (round-trip d'un .h5p rechargé,
-            // y compris ré-enregistré par Éléa/Lumi).
-            {
-                const file = data.media?.type?.params?.file;
-                if (!data.mediaImage && file && typeof file.path === 'string' && file.path) {
-                    data.mediaImage = {
-                        path: file.path,
-                        mime: file.mime || 'image/jpeg',
-                        ...(file.width ? { width: file.width } : {}),
-                        ...(file.height ? { height: file.height } : {}),
-                        // dataURL posé par la ré-hydratation du ZIP (preview de l'image
-                        // dans le widget éditeur à la réouverture).
-                        ...(file.dataURL ? { dataURL: file.dataURL } : {})
-                    };
-                    data.mediaImageAlt = data.media.type.params.alt || '';
-                }
             }
             return data;
         }
@@ -4262,17 +4717,33 @@ export function normalizeDataForEditor(data, moduleKey) {
  */
 export function denormalizeDataForSave(data, moduleKey) {
     if (!data || !moduleKey) return data;
+    if (usesNativeContainerSchema(data, moduleKey)) return data;
+    optionsQuestionsPourEditeur(data, moduleKey, true);
 
     switch (moduleKey) {
         case 'Glossary':
             if (data.items && Array.isArray(data.items)) {
                 debugLog('content-detector', '[Content Detector] Denormalizing Glossary to array');
-                // Conserver hTag s'il est défini (pour le processeur)
-                const glossaryResult = data.items;
-                if (data.hTag) {
-                    glossaryResult.hTag = data.hTag;
-                }
-                return glossaryResult;
+                const panels = data.items.map(item => {
+                    if (!item.content?.params) return item;
+                    const { text, ...panel } = item;
+                    return { ...panel, content: { ...panel.content, params: { ...panel.content.params, text: text ?? panel.content.params.text } } };
+                });
+                // Les tableaux historiques sans option gardent leur format ; un objet
+                // porte les options sérialisables et le contenu natif d’un H5P importé.
+                return data.hTag || data.panels ? { ...data, items: undefined, panels, hTag: data.hTag || 'h2' } : panels;
+            }
+            return data;
+
+        case 'Crossword':
+            data.theme ||= {};
+            if(data.backgroundImage?.path)data.theme.backgroundImage=structuredClone(data.backgroundImage);
+            else data.theme.backgroundImage=null;
+            delete data.backgroundImage;
+            if(data.behaviour?.poolSize==='' || data.behaviour?.poolSize==null)delete data.behaviour?.poolSize;
+            if(Array.isArray(data.words))for(const word of data.words){
+                if(word.extraClue && !word.extraClue.library)word.extraClue=null;
+                else if(word.extraClue){word.extraClue.subContentId ||= crypto.randomUUID();word.extraClue.metadata ||= {title:'',license:'U',contentType:word.extraClue.library.split(' ')[0].replace('H5P.','')};}
             }
             return data;
 
@@ -4290,9 +4761,8 @@ export function denormalizeDataForSave(data, moduleKey) {
                 data.sentences = data.sentences.map(s => {
                     const st = { ...(s || {}) };
                     const toH5PAudio = (v) => {
-                        const f = Array.isArray(v) ? v[0] : v;
-                        if (!f || typeof f.path !== 'string' || !f.path) return null;
-                        return [{ path: f.path, mime: f.mime || 'audio/mpeg', copyright: { license: 'U' } }];
+                        const files=(Array.isArray(v)?v:[v]).filter(f=>f?.path).map(({dataURL,kind,...f})=>({...f,mime:f.mime || 'audio/mpeg',copyright:f.copyright || {license:'U'}}));
+                        return files.length ? files : null;
                     };
                     const sample = toH5PAudio(st.sample);
                     const alt = toH5PAudio(st.sampleAlternative);
@@ -4305,6 +4775,7 @@ export function denormalizeDataForSave(data, moduleKey) {
             // (behaviour.scoring.*, .textual.*, .feedbackPresentation.*)
             if (data.behaviour && typeof data.behaviour === 'object') {
                 const b = { ...data.behaviour };
+                for (const key of ['tries','triesAlternative','playButtonDelay']) if (b[key] === '' || b[key] == null) delete b[key];
                 const lift = (keys) => {
                     const grp = {};
                     keys.forEach(k => {
@@ -4318,10 +4789,10 @@ export function denormalizeDataForSave(data, moduleKey) {
                 b.scoring = {
                     ignorePunctuation: scoring.ignorePunctuation !== false,
                     zeroMistakeMode: scoring.zeroMistakeMode === true,
-                    typoFactor: ['100', '50', '0'].includes(String(scoring.typoFactor)) ? String(scoring.typoFactor) : '50'
+                    typoFactor: ['100', '50', '0'].includes(String(scoring.typoFactor)) ? String(scoring.typoFactor) : '100'
                 };
                 b.textual = {
-                    wordSeparator: textual.wordSeparator || ' ',
+                    wordSeparator: textual.wordSeparator ?? ' ',
                     overrideRTL: ['auto', 'on', 'off'].includes(textual.overrideRTL) ? textual.overrideRTL : 'auto',
                     autosplit: textual.autosplit !== false
                 };
@@ -4330,38 +4801,6 @@ export function denormalizeDataForSave(data, moduleKey) {
                     alternateSolution: (feedbackPresentation.alternateSolution === 'all') ? 'all' : 'first'
                 };
                 data.behaviour = b;
-            }
-            // Champ éditeur mediaImage → bloc « Média » H5P JOUABLE (indispensable côté
-            // hôtes sans processeur). Image retirée dans l'éditeur → retour au bloc vide.
-            // Un media NON-image (vidéo/audio posé par Éléa) est conservé tel quel : le
-            // champ éditeur ne gère que l'image et ne doit pas l'écraser.
-            {
-                const img = data.mediaImage;
-                const isNonImageMedia = data.media?.type && !data.media.type.params?.file;
-                if (img && typeof img.path === 'string' && img.path) {
-                    data.media = {
-                        type: {
-                            library: 'H5P.Image 1.1',
-                            params: {
-                                file: {
-                                    path: img.path,
-                                    mime: img.mime || 'image/jpeg',
-                                    width: img.width || 0,
-                                    height: img.height || 0
-                                },
-                                alt: data.mediaImageAlt || '',
-                                decorative: false
-                            },
-                            subContentId: ihUUID(),
-                            metadata: { contentType: 'Image', license: 'U', title: 'Untitled Image' }
-                        },
-                        disableImageZooming: false
-                    };
-                } else if (!isNonImageMedia) {
-                    data.media = { disableImageZooming: false };
-                }
-                delete data.mediaImage;
-                delete data.mediaImageAlt;
             }
             return data;
         }
@@ -4389,6 +4828,15 @@ export function denormalizeDataForSave(data, moduleKey) {
         case 'QuizSet':
         case 'QuizSetQCM':
         case 'QuizSetVF': {
+            data.endGame ||= {};
+            data.endGame.overallFeedback ??= data.overallFeedback;
+            delete data.overallFeedback;
+            if(data.poolSize==='' || data.poolSize===undefined)data.poolSize=null;
+            if(data.override) {
+                for(const key of ['showSolutionButton','retryButton'])if(!data.override[key])data.override[key]=null;
+                if(!data.override.backgroundImage?.path)data.override.backgroundImage=null;
+            }
+            if(data.introPage && !data.introPage.backgroundImage?.path)data.introPage.backgroundImage=null;
             if (data.questions && Array.isArray(data.questions)) {
                 data.questions.forEach(q => {
                     // DragQuestion : zoneIndices → correctElements + layoutSettings → plat
@@ -4407,18 +4855,7 @@ export function denormalizeDataForSave(data, moduleKey) {
                         });
                         elements.forEach(el => { delete el.zoneIndices; });
                     }
-                    // Essay : reconvertir les champs aplatis → options imbriquées
-                    if (q.library && q.library.startsWith('H5P.Essay') && q.params && Array.isArray(q.params.keywords)) {
-                        q.params.keywords = q.params.keywords.map(kw => {
-                            if (typeof kw !== 'object' || kw === null) return kw;
-                            const result = { keyword: kw.keyword };
-                            result.options = {
-                                points: kw.points !== undefined ? kw.points : 1,
-                                caseSensitive: kw.caseSensitive !== undefined ? kw.caseSensitive : false
-                            };
-                            return result;
-                        });
-                    }
+
                 });
             }
             // Retourner directement — le nettoyage récursif du default est incompatible avec
@@ -4427,8 +4864,26 @@ export function denormalizeDataForSave(data, moduleKey) {
             return data;
         }
 
+        case 'Flashcards':
+            for (const card of data.cards || []) if (!card.image?.path && !card.image?.dataURL) delete card.image;
+            for (const key of ['enableRetry', 'showSolutionsRequiresInput', 'caseSensitive', 'randomCards']) {
+                if (data.behaviour?.[key] !== undefined) data[key] = data.behaviour[key];
+            }
+            delete data.behaviour;
+            return data;
+
+        case 'DialogCards':
+            for (const card of data.dialogs || []) if (!card.image?.path && !card.image?.dataURL) delete card.image;
+            return data;
+
         case 'SingleChoiceSet':
         case 'Summary':
+        case 'DragTheWords':
+        case 'Essay':
+        case 'FillInTheBlanks':
+        case 'MarkTheWords':
+        case 'TrueFalse':
+        case 'MultipleChoice':
             // Ces types ont des champs techniques (behaviour, l10n, a11y, etc.)
             // qui ne sont pas dans le schéma éditeur — retourner tel quel
             // pour éviter que cleanDataBasedOnSchema ne les supprime.
@@ -4487,57 +4942,79 @@ export function denormalizeDataForSave(data, moduleKey) {
         }
 
         case 'InteractiveBook': {
-            if (data.chapters && Array.isArray(data.chapters)) {
-                data.chapters.forEach(ch => {
-                    if (!Array.isArray(ch.content)) return;
-                    ch.content = ch.content.map(b => {
-                        if (!b || typeof b !== 'object') return b;
-                        const blockType = b._blockType || (b.library || b.exercise ? 'exercise' : (b.table ? 'table' : (b.image ? 'image' : 'text')));
+            if(data.chapters?.[0]?.params)return data;
+            const denormaliserBloc = b => {
+                if (!b || typeof b !== 'object') return b;
+                const blockType = b._blockType || (b.library || b.exercise ? 'exercise' : (b.table ? 'table' : (b.image ? 'image' : 'text')));
 
-                        // Bloc exercice : réinjecter _exerciseLibrary → library et aplatir exercise
-                        if (blockType === 'exercise') {
-                            const params = { ...(b.exercise || {}) };
-                            const library = b._exerciseLibrary || params.library || b.library || '';
-                            delete params.library;
-                            // DragQuestion : zoneIndices → correctElements
-                            if (library.startsWith('H5P.DragQuestion')) {
-                                const dropZones = params.dropZones || [];
-                                const elements = params.elements || [];
-                                dropZones.forEach(zone => { zone.correctElements = []; });
-                                elements.forEach((el, elemIdx) => {
-                                    const zIndices = Array.isArray(el.zoneIndices) ? el.zoneIndices : [];
-                                    zIndices.forEach(zIdx => {
-                                        const idx = typeof zIdx === 'string' ? parseInt(zIdx, 10) : zIdx;
-                                        if (idx >= 0 && idx < dropZones.length && !dropZones[idx].correctElements.includes(elemIdx)) {
-                                            dropZones[idx].correctElements.push(elemIdx);
-                                        }
-                                    });
-                                });
-                                elements.forEach(el => { delete el.zoneIndices; });
-                            }
-                            return { type: 'exercise', library, ...params };
-                        }
+                if (blockType === 'row') {
+                    const { _blockType, ...row } = b;
+                    return { ...row, type: 'row', columns: (b.columns || []).map(c => ({ ...c, content: (c.content || []).map(denormaliserBloc) })) };
+                }
+                const extras = Object.fromEntries(Object.entries(b).filter(([k]) => ['_nativeItem', '_nativeAction', '_metadata'].includes(k)));
 
-                        // Blocs de contenu : ne conserver que les champs du type
-                        if (blockType === 'table') {
-                            return {
-                                type: 'table',
-                                tableStyle: b.tableStyle || 'default',
-                                table: b.table || { headers: [], rows: [] }
-                            };
-                        }
-                        if (blockType === 'image') {
-                            const imageBlock = { type: 'image', alt: b.alt || '' };
-                            if (b.image) imageBlock.image = b.image;
-                            return imageBlock;
-                        }
-                        return { type: 'text', text: b.text || '' };
-                    });
-                });
+                // Bloc exercice : réinjecter _exerciseLibrary → library et aplatir exercise
+                if (blockType === 'exercise') {
+                    const params = { ...(b.exercise || {}) };
+                    const library = b._exerciseLibrary || params.library || b.library || '';
+                    delete params.library;
+                    // DragQuestion : zoneIndices → correctElements
+                    if (library.startsWith('H5P.DragQuestion')) {
+                        const dropZones = params.dropZones || [];
+                        const elements = params.elements || [];
+                        dropZones.forEach(zone => { zone.correctElements = []; });
+                        elements.forEach((el, elemIdx) => {
+                            const zIndices = Array.isArray(el.zoneIndices) ? el.zoneIndices : [];
+                            zIndices.forEach(zIdx => {
+                                const idx = typeof zIdx === 'string' ? parseInt(zIdx, 10) : zIdx;
+                                if (idx >= 0 && idx < dropZones.length && !dropZones[idx].correctElements.includes(elemIdx)) {
+                                    dropZones[idx].correctElements.push(elemIdx);
+                                }
+                            });
+                        });
+                        elements.forEach(el => { delete el.zoneIndices; });
+                    }
+                    return { type: 'exercise', library, ...params };
+                }
+
+                // Blocs de contenu : ne conserver que les champs du type
+                if (blockType === 'table') {
+                    return {
+                        ...extras, type: 'table',
+                        tableStyle: b.tableStyle || 'default',
+                        table: b.table || { headers: [], rows: [] }
+                    };
+                }
+                if (blockType === 'image') {
+                    const imageBlock = { ...extras, type: 'image', alt: b.alt || '' };
+                    if (b.image) imageBlock.image = b.image;
+                    return imageBlock;
+                }
+                return { ...extras, type: 'text', text: b.text || '' };
+            };
+            for (const ch of data.chapters || []) {
+                if (Array.isArray(ch.content)) ch.content = ch.content.map(denormaliserBloc);
             }
-            // Couverture vide → la retirer (sinon le processeur afficherait une page blanche)
-            if (data.cover && !(data.cover.description || '').trim()) {
-                delete data.cover;
+            if (data.cover?._contentType) {
+                const cover = data.cover;
+                const sameType = !cover.media || normalizeIHContentNode(cover.media)?._contentType === cover._contentType;
+                const source = { ...cover };
+                if (!sameType) {
+                    delete source._origParams; delete source._metadata; delete source._subContentId;
+                }
+                const media = denormalizeIHContentNode(source);
+                if (media && cover._contentType === 'video') {
+                    const poster = cover.videoPoster ? { ...cover.videoPoster } : undefined;
+                    if (poster) delete poster.dataURL;
+                    media.params.visuals = { ...media.params.visuals, poster, controls: cover.videoControls ?? true };
+                    const originals = cover.media?.params?.sources;
+                    if (sameType && originals?.[0]?.path === media.params.sources[0].path) {
+                        media.params.sources = [{ ...originals[0], ...media.params.sources[0] }, ...originals.slice(1)];
+                        media.params.sources.forEach(file => { delete file.dataURL; });
+                    }
+                    media.params.playback = { ...media.params.playback, autoplay: cover.videoAutoplay ?? false, loop: cover.videoLoop ?? false };
+                }
+                data.cover = { enabled: cover.enabled === true, description: cover.description || '', ...(media ? { media } : {}) };
             }
             return data;
         }
@@ -4613,6 +5090,7 @@ export function denormalizeDataForSave(data, moduleKey) {
             return denormalizeHotspotQuestionData(data, 'imageMultipleHotspotQuestion');
 
         case 'InteractiveVideo': {
+            if(data.interactiveVideo)return data;
             // Nettoyage par schéma, MAIS on préserve les champs « passthrough » non éditables
             // que le processeur consomme (transcript = piste de sous-titres, duration). Sans cela,
             // éditer la vidéo supprimerait les sous-titres (transcript est hors schéma) : c'est la
@@ -4620,7 +5098,7 @@ export function denormalizeDataForSave(data, moduleKey) {
             // décider de leur maintien — pas le nettoyage par schéma.
             const ivSchema = getSchemaForType('InteractiveVideo');
             const cleanedIV = ivSchema ? cleanDataBasedOnSchema(data, ivSchema) : data;
-            for (const k of ['transcript', 'duration', 'poster']) {
+            for (const k of ['transcript', 'duration', 'poster', 'override', 'bookmarks', 'endscreens', 'startScreenOptions']) {
                 if (data[k] !== undefined) cleanedIV[k] = data[k];
             }
             return cleanedIV;
@@ -4657,28 +5135,20 @@ function deepMerge(target, source) {
 }
 
 /**
- * Nettoie les données en ne gardant que ce qui est défini dans le schéma
- * Utile pour les dynamicObject où des propriétés d'autres types peuvent être restées
+ * Nettoie les champs d’un ancien type dynamique sans effacer les options
+ * natives d’un fichier importé que le formulaire ne présente pas encore.
  */
 function cleanDataBasedOnSchema(data, schemaDef) {
     if (!data || typeof data !== 'object') return data;
-    if (Array.isArray(data)) return data; // On ne traite pas les tableaux racine ici, gérés par leurs items
-
-    const cleaned = {};
-    const schemaFields = schemaDef.fields || schemaDef; // Support sections root or flat schema
-
-    // Si on a des sections, on doit aplatir ou itérer sur les sections
+    if (Array.isArray(data)) return data;
     if (schemaDef.sections) {
-        for (const section of schemaDef.sections) {
-            if (section.fields) {
-                const sectionData = cleanDataBasedOnSchema(data, section.fields);
-                // Deep merge pour ne pas écraser les objets imbriqués partagés entre sections
-                // (ex: Timeline où timeline.headline, timeline.date, timeline.era sont dans 3 sections différentes)
-                deepMerge(cleaned, sectionData);
-            }
-        }
-        return cleaned;
+        const fields = {};
+        for (const section of schemaDef.sections) deepMerge(fields, section.fields || {});
+        return cleanDataBasedOnSchema(data, fields);
     }
+    schemaDef = schemaDef.fields || schemaDef;
+    const cleaned = Object.fromEntries(Object.entries(data)
+        .filter(([key]) => !['__proto__', 'constructor', 'prototype'].includes(key)));
 
     // Itération sur les champs du schéma
     for (const [key, config] of Object.entries(schemaDef)) {
@@ -4713,6 +5183,16 @@ function cleanDataBasedOnSchema(data, schemaDef) {
 
                 if (subSchema) {
                     const cleanedValue = cleanDataBasedOnSchema(value, subSchema);
+                    // Retirer uniquement les propriétés connues d’un autre type
+                    // (ex. subquestions après passage Appariement → Numérique).
+                    for (const otherSchema of Object.values(config.schemas)) {
+                        for (const oldKey of Object.keys(otherSchema)) {
+                            if (Object.hasOwn(subSchema, oldKey)) continue;
+                            const segments = oldKey.split('.');
+                            const parent = segments.slice(0, -1).reduce((o, part) => o?.[part], cleanedValue);
+                            if (parent && typeof parent === 'object') delete parent[segments.at(-1)];
+                        }
+                    }
                     if (key.includes('.')) {
                         setNestedValue(cleaned, key, cleanedValue);
                     } else {
@@ -4782,9 +5262,6 @@ function cleanDataBasedOnSchema(data, schemaDef) {
         }
     }
 
-    // Cas spécial: conserver les propriétés qui ne sont pas dans le schéma mais qui sont essentielles ?
-    // Pour l'instant le schema couvre tout.
-    // Attention: les champs cachés par dynamicObject ne seront pas copiés, ce qui est le but !
 
     return cleaned;
 }

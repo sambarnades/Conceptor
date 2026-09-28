@@ -8,6 +8,7 @@
  * @module processors/SortParagraphs
  * @exports {Object} default.process - Transformation principale
  */
+import { prepareQuestionMedia } from '../question-media.js';
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml, markdownToHtml } from '../../core/utils.js';
 
@@ -36,7 +37,10 @@ function formatParagraphText(text) {
 
 export default {
     process: (jsonObj) => {
+        if (!Array.isArray(jsonObj.paragraphs) || jsonObj.paragraphs.length < 3) throw new Error(translations.validation_sort_min || 'Ajoutez au moins trois paragraphes.');
         return {
+            ...jsonObj,
+            media: prepareQuestionMedia(jsonObj),
             taskDescription: formatTextToHtml(jsonObj.taskDescription),
             // Utiliser formatParagraphText pour éviter les <p> multiples dans chaque paragraphe
             paragraphs: (Array.isArray(jsonObj.paragraphs) ? jsonObj.paragraphs : []).map(p => formatParagraphText(p)),
@@ -59,7 +63,8 @@ export default {
                 down: translations.h5p_sort_paragraphs_down || "Descendre",
                 disabled: translations.h5p_sort_paragraphs_disabled || "Désactivé",
                 resume: translations.h5p_resume || "Reprendre",
-                audioDirection: translations.h5p_audio_direction || "Direction de l'audio"
+                audioDirection: translations.h5p_audio_direction || "Direction de l'audio",
+                ...jsonObj.l10n
             },
             a11y: {
                 check: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
@@ -83,7 +88,8 @@ export default {
                 correctParagraph: translations.h5p_sort_paragraphs_correct_paragraph || "Paragraphe correct à la position",
                 listDescription: translations.h5p_sort_paragraphs_list_description || "Liste de paragraphes triables.",
                 listDescriptionCheckAnswer: translations.h5p_sort_paragraphs_list_description_check || "Liste de paragraphes avec résultats.",
-                listDescriptionShowSolution: translations.h5p_sort_paragraphs_list_description_solution || "Liste de paragraphes avec solutions."
+                listDescriptionShowSolution: translations.h5p_sort_paragraphs_list_description_solution || "Liste de paragraphes avec solutions.",
+                ...jsonObj.a11y
             }
         };
     }

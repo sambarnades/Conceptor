@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="6974" moduleid="23612" modulename="page" contextid="57770">
+  <page id="6974">
+    <name>Le cycle de l’eau en quatre étapes</name>
+    <intro>&lt;p&gt;Lis cette page avant de passer aux activités.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <content>&lt;h3&gt;Évaporation&lt;/h3&gt;&lt;p&gt;Sous l’effet du Soleil, l’eau des océans s’évapore.&lt;/p&gt;</content>
+    <contentformat>1</contentformat>
+    <legacyfiles>0</legacyfiles>
+    <legacyfileslast>$@NULL@$</legacyfileslast>
+    <display>5</display>
+    <displayoptions>a:2:{s:10:"printintro";s:1:"0";s:17:"printlastmodified";s:1:"1";}</displayoptions>
+    <revision>1</revision>
+    <timemodified>1790541616</timemodified>
+  </page>
+</activity>

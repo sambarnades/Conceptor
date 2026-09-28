@@ -1,0 +1,146 @@
+{
+  "cas": {
+    "id": "courte-auto-1",
+    "lang": "fr",
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "auto",
+    "qui": "Professeur d’histoire-géographie",
+    "quoi": "Les Trente Glorieuses en 3e : croissance, transformations sociales et limites. Une séance de révision."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Les Trente Glorieuses en 3e : croissance, transformations sociales et limites. Une séance de révision.\nL'enseignant : Professeur d’histoire-géographie\nPlateforme : Éléa\nModalité : distanciel\nTravail autonome à distance : consignes explicites, ressources suffisantes, retour permettant de comprendre ses erreurs. Aucun échange simultané ni correction immédiate par un enseignant requis.\nAmpleur : Une séance\n\nAucune trame imposée : choisis le déroulé le mieux adapté, entre 3 et 4 activités AU TOTAL (pas par étape), réparties en 2 à 4 étapes non vides.\n\nBUDGET : 4 activités prévues, dans la limite de 3 à 4 pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.\nSauf durée explicite dans la demande ou la trame, viser une séance de 30 à 55 minutes de travail. Alléger les tâches plutôt que multiplier les exercices.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline) — Frise à CONSULTER : événements déjà placés. Pour remettre des événements en ordre, choisir SortParagraphs.\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion) — Lexique de définitions à consulter ; les apprenants ne complètent pas les entrées.\n- Crossword : Mots croisés (Crosswords) — Retrouver des MOTS à partir de définitions ; pas de résultats chiffrés dans la grille.\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary) — Choisir l’affirmation correcte parmi plusieurs propositions pour construire une synthèse ; pas de texte à trous.\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop) — Déplacer des étiquettes textuelles dans des zones ; ne pas exiger un schéma ou des images absents.\n- FillInTheBlanks : Texte à trous (Fill in the Blanks) — Saisir les mots ou nombres manquants AU CLAVIER dans un texte ; aucun menu déroulant ni liste de choix interactive.\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question) — UNE affirmation, avec choix vrai/faux et correction automatique. Pour plusieurs affirmations, choisir QuizSetVF.\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards) — Cartes recto-verso à retourner pour comparer et réviser ; aucun appariement par glisser-déposer.\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart) — Graphique à LIRE, construit depuis les données fournies ; aucune saisie de données par l’apprenant.\n- CoursePresentation : Présentation de cours (CoursePresentation) — Diaporama de textes et questions intégrées ; pas de vidéo à regarder ni de média fourni automatiquement.\n- InteractiveBook : Livre interactif (InteractiveBook) — Livre de textes et exercices intégrés ; pas de vidéo ou de média fourni automatiquement.\n- test_elea : Test (test_elea)\n- Millionnaire : Millionnaire (Millionnaire)\n- Appariement : Appariement (Appariement)\n- QCM : QCM (QCM)\n- Page : Page (Page) — Page de lecture, sans champ de réponse. Pour faire écrire ou remettre en ordre à l’écran, choisir le module adapté ; un travail sur papier doit être explicitement annoncé.\n- Livre : Livre (Livre) — Chapitres à lire, sans champ de réponse ; les exercices à réaliser à l’écran doivent utiliser une activité distincte.\n- Devoir : Devoir (Devoir) — Consigne et critères d’un travail à remettre ou réaliser ; pas de correction automatique immédiate.\n- parcours_etiquette : Texte de liaison (label) — Texte ou consigne affichés dans le cours ; aucun champ de réponse.\n- parcours_forum : Forum (forum) — Consigne d’un échange asynchrone ; les participants écriront ensuite, pas de discussion préremplie.\n- parcours_sondage : Sondage (choice)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 3 à 6 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.\n- La consigne doit correspondre au geste réellement permis par le module décrit dans le catalogue. Pour faire ORDONNER des événements, utiliser SortParagraphs ; Timeline sert à les CONSULTER.\n- Aucun média externe n’est ajouté automatiquement : ne demande pas de regarder une vidéo, une photo ou un schéma absent. Prévoir des ressources textuelles autonomes. Si une manipulation en présence nécessite du matériel, l’annoncer explicitement comme matériel à préparer.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 3 à 4 activités pour TOUT le parcours. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788950",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Les Trente Glorieuses : réviser la croissance et les transformations\",\n  \"objectifGeneral\": \"Mobiliser les connaissances sur les Trente Glorieuses en sélectionnant les informations pertinentes et en les organisant\",\n  \"notionsPivots\": [\n    \"la période des Trente Glorieuses\",\n    \"la croissance économique\",\n    \"les transformations sociales\",\n    \"la société de consommation\",\n    \"l'État-providence\",\n    \"les limites de la croissance\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Identifier les grandes étapes chronologiques\",\n      \"objectif\": \"Mettre en ordre les événements marquants des Trente Glorieuses\",\n      \"cartes\": [\n        {\n          \"titre\": \"Remettre dans l'ordre la chronologie des Trente Glorieuses\",\n          \"objectif\": \"Ordonner des événements historiques clés par dates\",\n          \"module\": \"SortParagraphs\",\n          \"palier\": \"decouverte\",\n          \"duree\": 12,\n          \"consigne\": \"Relisez les dates et les événements proposés puis placez-les dans l'ordre chronologique croissant en utilisant les numéros.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Tester ses connaissances sur le vocabulaire et les concepts\",\n      \"objectif\": \"Reconnaître et définir les notions essentielles des Trente Glorieuses\",\n      \"cartes\": [\n        {\n          \"titre\": \"Quiz sur les Trente Glorieuses : vocabulaire et concepts\",\n          \"objectif\": \"Associer des définitions à des termes clés\",\n          \"module\": \"QuizSetVF\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"Répondez par vrai ou faux aux affirmations proposées en vous rappelant les notions vues en classe. La correction s’affichera automatiquement après validation.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Analyser une source historique\",\n      \"objectif\": \"Interpréter un document pour en extraire des informations pertinentes\",\n      \"cartes\": [\n        {\n          \"titre\": \"Étudier un graphique de croissance économique\",\n          \"objectif\": \"Lire un graphique et en décrire l'évolution\",\n          \"module\": \"Chart\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"Observez le graphique fourni présentant l'évolution du PIB en France entre 1945 et 1975. Identifiez les périodes de forte croissance et décrivez-les en quelques phrases.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Synthétiser les acquis\",\n      \"objectif\": \"Construire un résumé structuré des Trente Glorieuses\",\n      \"cartes\": [\n        {\n          \"titre\": \"Rédiger un résumé des Trente Glorieuses\",\n          \"objectif\": \"Sélectionner les informations essentielles et les organiser en une synthèse\",\n          \"module\": \"Summary\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"Choisissez, parmi plusieurs propositions, les affirmations qui résument correctement les aspects économiques, sociaux et les limites des Trente Glorieuses. Justifiez votre sélection en une phrase.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 760,
+      "prompt_tokens": 2360,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "fr",
+    "exporteLe": "2026-09-10T22:19:54.658Z",
+    "cadrage": {
+      "platform": "elea",
+      "format": "distanciel",
+      "ampleur": "courte",
+      "trame": "auto"
+    },
+    "plan": {
+      "titre": "Les Trente Glorieuses : réviser la croissance et les transformations",
+      "objectifGeneral": "Mobiliser les connaissances sur les Trente Glorieuses en sélectionnant les informations pertinentes et en les organisant",
+      "notionsPivots": [
+        "la période des Trente Glorieuses",
+        "la croissance économique",
+        "les transformations sociales",
+        "la société de consommation",
+        "l'État-providence",
+        "les limites de la croissance"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Identifier les grandes étapes chronologiques",
+          "objectif": "Mettre en ordre les événements marquants des Trente Glorieuses",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Remettre dans l'ordre la chronologie des Trente Glorieuses",
+              "objectif": "Ordonner des événements historiques clés par dates",
+              "consigne": "Relisez les dates et les événements proposés puis placez-les dans l'ordre chronologique croissant en utilisant les numéros.",
+              "module": "SortParagraphs",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 12,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e3",
+          "titre": "Tester ses connaissances sur le vocabulaire et les concepts",
+          "objectif": "Reconnaître et définir les notions essentielles des Trente Glorieuses",
+          "cartes": [
+            {
+              "id": "c4",
+              "titre": "Quiz sur les Trente Glorieuses : vocabulaire et concepts",
+              "objectif": "Associer des définitions à des termes clés",
+              "consigne": "Répondez par vrai ou faux aux affirmations proposées en vous rappelant les notions vues en classe. La correction s’affichera automatiquement après validation.",
+              "module": "QuizSetVF",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 10,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "titre": "Analyser une source historique",
+          "objectif": "Interpréter un document pour en extraire des informations pertinentes",
+          "cartes": [
+            {
+              "id": "c6",
+              "titre": "Étudier un graphique de croissance économique",
+              "objectif": "Lire un graphique et en décrire l'évolution",
+              "consigne": "Observez le graphique fourni présentant l'évolution du PIB en France entre 1945 et 1975. Identifiez les périodes de forte croissance et décrivez-les en quelques phrases.",
+              "module": "Chart",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 10,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e7",
+          "titre": "Synthétiser les acquis",
+          "objectif": "Construire un résumé structuré des Trente Glorieuses",
+          "cartes": [
+            {
+              "id": "c8",
+              "titre": "Rédiger un résumé des Trente Glorieuses",
+              "objectif": "Sélectionner les informations essentielles et les organiser en une synthèse",
+              "consigne": "Choisissez, parmi plusieurs propositions, les affirmations qui résument correctement les aspects économiques, sociaux et les limites des Trente Glorieuses. Justifiez votre sélection en une phrase.",
+              "module": "Summary",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 20,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "La fabrication démarre dès ce clic : chaque activité est générée une par une, dans l'ordre, sous vos yeux."
+}

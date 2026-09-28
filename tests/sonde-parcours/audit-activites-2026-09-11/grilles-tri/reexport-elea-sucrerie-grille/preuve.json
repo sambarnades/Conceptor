@@ -1,0 +1,56 @@
+{
+  "activiteElea": 13849,
+  "h5pId": 403,
+  "titreReexport": "Grille Sucrerie — relue dans Éléa",
+  "source": "tests/sonde-parcours/audit-activites-2026-09-11/grilles-tri/sucrerie/sucrerie-grille-options.h5p",
+  "reexport": "find-the-words-403-403.h5p",
+  "sha256Source": "a6f93b42bab256de3a70034d27a8d55bf7aa630394808f5f6bf6cf60eeb5a9bc",
+  "sha256Reexport": "256c5f7c90aabc5b39ca8bf2f4b7285827d6a200a7a5da4aaab336e3818e08cc",
+  "behaviourIdentique": true,
+  "behaviourSource": {
+    "preferOverlap": false,
+    "showVocabulary": true,
+    "enableShowSolution": true,
+    "enableRetry": true,
+    "orientations": {
+      "horizontal": false,
+      "horizontalBack": false,
+      "vertical": true,
+      "verticalUp": false,
+      "diagonal": false,
+      "diagonalBack": false,
+      "diagonalUp": false,
+      "diagonalUpBack": false
+    },
+    "fillPool": "Q"
+  },
+  "behaviourReexport": {
+    "preferOverlap": false,
+    "showVocabulary": true,
+    "enableShowSolution": true,
+    "enableRetry": true,
+    "orientations": {
+      "horizontal": false,
+      "horizontalBack": false,
+      "vertical": true,
+      "verticalUp": false,
+      "diagonal": false,
+      "diagonalBack": false,
+      "diagonalUp": false,
+      "diagonalUpBack": false
+    },
+    "fillPool": "Q"
+  },
+  "bibliotheques": {
+    "FontAwesome-4.5": "4.5.6",
+    "H5P.FindTheWords-1.4": "1.4.4",
+    "H5P.FontIcons-1.0": "1.0.11",
+    "H5P.JoubelUI-1.3": "1.3.45",
+    "H5P.Timer-0.4": "0.4.2",
+    "H5P.Transition-1.0": "1.0.4"
+  },
+  "contenusConserves": {
+    "wordList": true,
+    "taskDescription": true
+  }
+}

@@ -28,6 +28,7 @@
 ---
 
 # STRUCTURE DU JSON ATTENDUE
+- `behaviour.enableCheckButton` (true): Afficher le bouton Vérifier. Décochez seulement si la vérification est automatique ou déclenchée par le conteneur.
 - Génère UNIQUEMENT un JSON complet et valide dans un bloc de code. Ta réponse DOIT commencer par \`{\` et finir par \`}\`. Aucun autre texte ou commentaire.
 L'objet doit contenir :
 - \`taskDescription\` : Une consigne claire et engageante. Tu peux utiliser \`**mot**\` pour le gras et \`*mot*\` pour l'italique uniquement ici.
@@ -68,3 +69,7 @@ L'objet doit contenir :
   ]
 }
 ```
+
+
+Respecte les quatre options demandées. Désactive Vérifier uniquement si le conteneur déclenche la vérification : ce type ne propose pas de correction automatique. Pour le média facultatif, utilise uniquement un fichier ou une URL fourni.
+behaviour: enableRetry, enableSolutionsButton, enableCheckButton, showScorePoints (true | false). media.type.library: H5P.Image 1.1 | H5P.Audio 1.5 | H5P.Video 1.6.

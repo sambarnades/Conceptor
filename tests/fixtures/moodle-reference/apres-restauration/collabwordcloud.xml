@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="91" moduleid="22760" modulename="collabwordcloud" contextid="55630">
+  <collabwordcloud id="91">
+    <name>Sonde — Nuage de mots</name>
+    <intro>Ce nuage sert à voir ce que la classe a déjà en tête avant de commencer.</intro>
+    <introformat>1</introformat>
+    <instructions>En un mot chacun : à quoi te fait penser le mot « révolution » ?</instructions>
+    <wordsallowed>5</wordsallowed>
+    <wordsrequired>1</wordsrequired>
+    <timestart>0</timestart>
+    <timeend>0</timeend>
+    <completionwords>1</completionwords>
+    <timecreated>0</timecreated>
+    <timemodified>1788526723</timemodified>
+  </collabwordcloud>
+</activity>

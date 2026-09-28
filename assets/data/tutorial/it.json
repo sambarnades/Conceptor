@@ -149,6 +149,10 @@
           "alt": "La griglia delle caselle di attività disponibili in Caramel."
         },
         {
+          "type": "tip",
+          "text": "Sotto il modulo, **Un'attività** mostra queste schede; **Un percorso** apre il laboratorio che riunisce più attività in un corso completo (vedi «Creare e riprendere un corso completo»)."
+        },
+        {
           "type": "h",
           "text": "Due grandi famiglie"
         },
@@ -623,6 +627,106 @@
       ]
     },
     {
+      "id": "parcours",
+      "icon": "grid",
+      "title": "Creare e riprendere un corso completo",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "In Caramel, **Un percorso** crea un corso per Éléa, Magistère o Moodle: più attività organizzate in sezioni in un unico file **.mbz**. Il punto di partenza resta il modulo abituale: argomento, destinatari e documenti allegati."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-cadrage.webp",
+          "alt": "Il modulo, il selettore «Un percorso» e l’impostazione: piattaforma, modalità e ampiezza."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-trames.webp",
+          "alt": "La scelta del modello: ogni scheda mostra fasi, livelli e attività."
+        },
+        {
+          "type": "tip",
+          "text": "Nel menu di Caramelia, **Crea un percorso** apre direttamente il laboratorio senza chiamare l’IA. Se esiste una bozza, **Riprendi il mio percorso** la riapre. I campi e le fonti presenti vengono conservati. Rileggi le impostazioni e il piano nel laboratorio prima di avviare la generazione."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza e modello. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.",
+            "In **Piano**, modifica titolo, obiettivo generale, concetti chiave, fasi e attività. Sposta le attività con le frecce o trascinando la miniatura. **Consegna e fase** permette di regolare le istruzioni di generazione. I suggerimenti pedagogici aiutano a rileggere senza imporre un modello. Il massimo è di **12 attività**.",
+            "Nella scheda di un **Video interattivo**, incollate il link del video. La trascrizione viene recuperata durante la generazione; potete anche incollarla manualmente. Per **Immagine interattiva**, **Trova la zona** o **Trova le zone**, allegate un’immagine alla scheda: sarà analizzata prima della generazione. Potete aggiungere questi supporti anche durante la fase di generazione. Un’attività senza supporto attende mentre le altre proseguono. Lo scenario conserva le immagini e i link delle attività; i documenti del modulo iniziale restano separati. Per un **Link web**, incollate l’indirizzo della risorsa nella scheda: l’IA scrive la consegna di lettura senza aprire la pagina.",
+            "Approva il piano per avviare la generazione. Puoi fermarla, riprendere le attività mancanti o rigenerarne una. Il lucchetto **Non generare questa attività** riserva il contenuto all’inserimento manuale: l’IA non lo compila. Una rigenerazione fallita conserva il contenuto precedente. Le attività assenti sono indicate prima dell’esportazione.",
+            "Quando il contenuto è pronto, **Modificare il contenuto** apre l’editor abituale e **Anteprima** il lettore. **Rivedere il corso** permette di rivedere le attività in ordine con **Precedente** e **Successiva**. Salva le modifiche per includerle nel piano e nelle esportazioni. Cambiare una consegna nel piano non riscrive i contenuti esistenti.",
+            "In **Consegna**, scarica il **.mbz** e usa l’importazione o il ripristino del corso della piattaforma. Questo file di corso non va caricato in un’attività H5P. Il percorso compare anche nell’area delle notifiche: **Visualizza** apre la **Panoramica del percorso**, con l’accoglienza, ogni tappa e le sue attività, da rivedere e modificare prima di scaricarlo di nuovo. Conserva anche il **.json** per tornare in Caramel. La scheda della sequenza e i dettagli delle attività si esportano in **DOCX, ODT o PDF**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-plan.webp",
+          "alt": "Il piano, riletto prima di ogni generazione: obiettivo, fasi, attività, durate e revisione del piano."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-fabrication.webp",
+          "alt": "La produzione: le attività vengono generate una dopo l’altra; ognuna si può visualizzare, modificare o rigenerare."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-livraison.webp",
+          "alt": "La consegna: il corso .mbz con i passaggi di importazione, i documenti stampabili e lo scenario .json."
+        },
+        {
+          "type": "tip",
+          "text": "**Esportare lo scenario (.json)** salva il piano e i contenuti pronti in un file **.json**. Il pulsante **Personalizza il piano**, accanto a **Comporre il piano**, apre la stessa finestra di un’attività: copia il prompt nell’IA che preferisci, poi incollane la risposta. **Riprendere uno scenario** si trova in questa finestra; il file **.json** si scarica alla consegna, accanto al **.mbz**. La bozza resta solo in questa scheda: esporta lo scenario prima di chiuderla. Lo scenario non include argomento, destinatari o allegati; reinseriscili prima di generare nuovi contenuti."
+        },
+        {
+          "type": "tip",
+          "text": "Su Éléa, apri **Impostazioni del corso**, attiva la mappa di avanzamento e usa il riquadro **+ Aggiungi la mia immagine** per scegliere il tuo sfondo. Puoi cambiare o rimuovere l’immagine e tornare ai temi proposti. Lo sfondo viene salvato nello scenario **.json** e incluso nel corso **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG o TIFF · Max. 12 MB. Conversione automatica, senza ritaglio."
+        },
+        {
+          "type": "warn",
+          "text": "La mappa di avanzamento è specifica di Éléa. La mappa e l’accesso progressivo sono facoltativi e richiedono ancora verifiche nell’uso reale sulla piattaforma. Il modello di differenziazione non crea ramificazioni automatiche in base al voto. La collaborazione avviene sulla piattaforma."
+        },
+        {
+          "type": "h",
+          "text": "I moduli della piattaforma"
+        },
+        {
+          "type": "p",
+          "text": "Il piano propone anche i moduli del vostro Éléa, Magistère o Moodle, raccolti nel menu di ogni attività sotto **Moduli della piattaforma**. L’IA ne scrive ciò che la piattaforma conserva all’importazione:"
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-mosaique.webp",
+          "alt": "Il mosaico dei tipi: le attività generate da Caramel, poi i moduli della piattaforma."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Forum**, **Sondaggio**, **Questionario**, **Indagine (Feedback)**: far discutere, raccogliere opinioni, una diagnosi o un bilancio.",
+            "**Lezione**: pagine da leggere, alcune delle quali terminano con una domanda che lascia proseguire solo con la risposta giusta. Il **pacchetto di contenuti IMS** — pagine da leggere con il loro indice, scritte interamente da Caramel — si sceglie nel mosaico; il piano non lo propone.",
+            "**Workshop**: produrre un lavoro, poi valutare quello dei compagni con una griglia di criteri.",
+            "**Bacheca**, **Wiki**, **Documento collaborativo**, **Glossario** e **Database da costruire**: scrivere e costruire insieme; arrivano vuoti, con la loro consegna.",
+            "**Aula virtuale**, **Scelta del gruppo**, **Condivisione di file**, **Link web**: incontrarsi in diretta, formare squadre, consegnare file, consultare una risorsa online.",
+            "**A seconda della piattaforma**: Etherpad e Nuvola di parole su Magistère, Feedback su Éléa e Moodle. Capytale, GeoGebra, un pacchetto SCORM o un file si aggiungono ancora a mano dopo l’importazione in Éléa, Magistère o Moodle."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Quando un modulo richiede un’impostazione sulla piattaforma (fasi del workshop, orario dell’aula virtuale, gruppi), Caramel la scrive in una nota **Da fare prima di aprire il corso**, nascosta agli allievi, in cima al corso importato. Eliminatela una volta fatte queste impostazioni."
+        },
+        {
+          "type": "p",
+          "text": "Per approfondire: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) aiuta a riflettere sulle attività di apprendimento. Le sette famiglie di Caramel, tra cui **Discutere** e **Collaborare**, sono indicazioni semplificate basate sugli strumenti, non i sei tipi ABC né una valutazione della sua didattica."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-miroir.webp",
+          "alt": "Cosa fa lavorare questo percorso: le sette famiglie e quelle assenti."
+        }
+      ]
+    },
+    {
       "id": "integrate",
       "icon": "upload",
       "title": "Integrare in Éléa / Magistère / Moodle",
@@ -820,6 +924,10 @@
         {
           "type": "plain",
           "text": "Per rispondere in modo corretto, Caramélia si basa su una **base documentaria** (un « RAG »): invece di improvvisare, **pesca estratti affidabili** dalla documentazione di Caramel e riprende le diciture esatte dei pulsanti che vedete sullo schermo. (Il **RAG** è anche ciò che permette di ancorare la generazione ai programmi ufficiali — vedi il passaggio « Descrivere ciò che vi serve ».)"
+        },
+        {
+          "type": "tip",
+          "text": "Nel menu di Caramelia, **Crea un percorso** apre direttamente il laboratorio senza chiamare l’IA. Se esiste una bozza, **Riprendi il mio percorso** la riapre. I campi e le fonti presenti vengono conservati. Rileggi le impostazioni e il piano nel laboratorio prima di avviare la generazione."
         }
       ]
     },

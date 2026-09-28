@@ -1,0 +1,240 @@
+{
+  "cas": {
+    "id": "longue-auto",
+    "lang": "fr",
+    "platform": "elea",
+    "format": "hybride",
+    "ampleur": "longue",
+    "trame": "auto",
+    "qui": "Professeur de SVT en 5e",
+    "quoi": "Expliquer les besoins des plantes vertes et concevoir une expérience. Une séquence complète."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Expliquer les besoins des plantes vertes et concevoir une expérience. Une séquence complète.\nL'enseignant : Professeur de SVT en 5e\nPlateforme : Éléa\nModalité : hybride\nArticuler explicitement des moments à distance et en présence : préciser où et quand se déroule chaque activité, et comment elle prépare la suivante.\nAmpleur : Une séquence entière\n\nAucune trame imposée : choisis le déroulé le mieux adapté, entre 9 et 12 activités AU TOTAL (pas par étape), réparties en 3 à 6 étapes non vides.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline)\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion)\n- Crossword : Mots croisés (Crosswords)\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary)\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop)\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards)\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart)\n- CoursePresentation : Présentation de cours (CoursePresentation)\n- InteractiveBook : Livre interactif (InteractiveBook)\n- test_elea : Test (test_elea)\n- Millionnaire : Millionnaire (Millionnaire)\n- Appariement : Appariement (Appariement)\n- QCM : QCM (QCM)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir)\n- parcours_etiquette : Texte de liaison (label)\n- parcours_forum : Forum (forum)\n- parcours_sondage : Sondage (choice)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 8 à 12 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 9 à 12 activités pour TOUT le parcours. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788835",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Les besoins des plantes vertes et expérience\",\n  \"objectifGeneral\": \"Concevoir une expérience pour identifier les besoins des plantes vertes\",\n  \"notionsPivots\": [\n    \"les besoins des plantes vertes\",\n    \"la photosynthèse\",\n    \"l'eau\",\n    \"la lumière\",\n    \"le dioxyde de carbone\",\n    \"les sels minéraux\",\n    \"l'oxygène\",\n    \"la croissance des plantes\",\n    \"l'hypothèse scientifique\",\n    \"le protocole expérimental\",\n    \"les résultats expérimentaux\",\n    \"la conclusion scientifique\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Découverte des besoins des plantes\",\n      \"objectif\": \"Identifier les besoins des plantes vertes à partir d'observations\",\n      \"cartes\": [\n        {\n          \"titre\": \"Observation initiale en classe\",\n          \"objectif\": \"Observer et lister les besoins apparents des plantes\",\n          \"module\": \"parcours_mur_notes\",\n          \"palier\": \"decouverte\",\n          \"duree\": 15,\n          \"consigne\": \"Sur le mur de post-it, écrivez 3 besoins que vous pensez essentiels pour une plante verte. Justifiez brièvement chaque proposition.\"\n        },\n        {\n          \"titre\": \"Quiz diagnostique\",\n          \"objectif\": \"Évaluer ses connaissances initiales sur les besoins des plantes\",\n          \"module\": \"QuizSetQCM\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"Répondez à un quiz de 5 questions pour évaluer vos connaissances sur les besoins des plantes vertes.\"\n        },\n        {\n          \"titre\": \"Recherche documentaire\",\n          \"objectif\": \"Rechercher des informations sur les besoins des plantes vertes\",\n          \"module\": \"parcours_forum\",\n          \"palier\": \"decouverte\",\n          \"duree\": 20,\n          \"consigne\": \"Consultez les ressources mises à disposition et partagez sur le forum une information nouvelle que vous avez découverte sur les besoins des plantes vertes.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Approfondissement des connaissances\",\n      \"objectif\": \"Comprendre les mécanismes de la photosynthèse et des besoins\",\n      \"cartes\": [\n        {\n          \"titre\": \"Étude d'une vidéo explicative\",\n          \"objectif\": \"Comprendre le processus de photosynthèse\",\n          \"module\": \"CoursePresentation\",\n          \"palier\": \"entrainement\",\n          \"duree\": 15,\n          \"consigne\": \"Visionnez une vidéo sur la photosynthèse et répondez à un quiz de 3 questions pour vérifier votre compréhension.\"\n        },\n        {\n          \"titre\": \"Glossaire des termes clés\",\n          \"objectif\": \"S'approprier le vocabulaire scientifique\",\n          \"module\": \"Glossary\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"Consultez le glossaire et ajoutez 2 termes nouveaux que vous avez appris avec leur définition.\"\n        },\n        {\n          \"titre\": \"Quiz d'entraînement\",\n          \"objectif\": \"Valider la compréhension des besoins des plantes\",\n          \"module\": \"QuizSet\",\n          \"palier\": \"entrainement\",\n          \"duree\": 15,\n          \"consigne\": \"Répondez à un quiz de 8 questions pour vérifier votre maîtrise des besoins des plantes vertes.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Conception de l'expérience\",\n      \"objectif\": \"Formuler une hypothèse et concevoir un protocole expérimental\",\n      \"cartes\": [\n        {\n          \"titre\": \"Formulation d'hypothèses\",\n          \"objectif\": \"Proposer des hypothèses testables sur les besoins des plantes\",\n          \"module\": \"parcours_mur_notes\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"Sur le mur de post-it, formulez 2 hypothèses testables sur les besoins des plantes vertes en utilisant les termes du glossaire.\"\n        },\n        {\n          \"titre\": \"Création du protocole\",\n          \"objectif\": \"Rédiger un protocole expérimental clair\",\n          \"module\": \"Essay\",\n          \"palier\": \"transfert\",\n          \"duree\": 25,\n          \"consigne\": \"Rédigez un protocole expérimental pour tester une de vos hypothèses en précisant le matériel, les étapes et les résultats attendus.\"\n        },\n        {\n          \"titre\": \"Validation du protocole\",\n          \"objectif\": \"Améliorer son protocole à partir des retours\",\n          \"module\": \"parcours_forum\",\n          \"palier\": \"transfert\",\n          \"duree\": 15,\n          \"consigne\": \"Partagez votre protocole sur le forum et apportez des modifications après avoir lu les suggestions de vos pairs.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Mise en œuvre et analyse\",\n      \"objectif\": \"Réaliser l'expérience et analyser les résultats\",\n      \"cartes\": [\n        {\n          \"titre\": \"Expérience en présentiel\",\n          \"objectif\": \"Mettre en œuvre le protocole expérimental\",\n          \"module\": \"Devoir\",\n          \"palier\": \"transfert\",\n          \"duree\": 40,\n          \"consigne\": \"Réalisez l'expérience en classe en suivant votre protocole. Notez vos observations et résultats dans un tableau.\"\n        },\n        {\n          \"titre\": \"Analyse des résultats\",\n          \"objectif\": \"Interpréter les résultats obtenus\",\n          \"module\": \"DragAndDrop\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"Associez chaque résultat obtenu à une conclusion scientifique en utilisant les termes du glossaire.\"\n        },\n        {\n          \"titre\": \"Quiz final\",\n          \"objectif\": \"Valider la compréhension globale du sujet\",\n          \"module\": \"QuizSetQCM\",\n          \"palier\": \"transfert\",\n          \"duree\": 15,\n          \"consigne\": \"Répondez à un quiz final de 10 questions pour valider votre compréhension des besoins des plantes vertes et de l'expérience réalisée.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 1437,
+      "prompt_tokens": 2059,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "fr",
+    "exporteLe": "2026-09-10T22:11:44.505Z",
+    "cadrage": {
+      "platform": "elea",
+      "format": "hybride",
+      "ampleur": "longue",
+      "trame": "auto"
+    },
+    "plan": {
+      "titre": "Les besoins des plantes vertes et expérience",
+      "objectifGeneral": "Concevoir une expérience pour identifier les besoins des plantes vertes",
+      "notionsPivots": [
+        "les besoins des plantes vertes",
+        "la photosynthèse",
+        "l'eau",
+        "la lumière",
+        "le dioxyde de carbone",
+        "les sels minéraux",
+        "l'oxygène",
+        "la croissance des plantes",
+        "l'hypothèse scientifique",
+        "le protocole expérimental",
+        "les résultats expérimentaux",
+        "la conclusion scientifique"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Découverte des besoins des plantes",
+          "objectif": "Identifier les besoins des plantes vertes à partir d'observations",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Observation initiale en classe",
+              "objectif": "Observer et lister les besoins apparents des plantes",
+              "consigne": "Sur le mur de post-it, écrivez 3 besoins que vous pensez essentiels pour une plante verte. Justifiez brièvement chaque proposition.",
+              "module": "parcours_mur_notes",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 15,
+              "verrouillee": false
+            },
+            {
+              "id": "c3",
+              "titre": "Quiz diagnostique",
+              "objectif": "Évaluer ses connaissances initiales sur les besoins des plantes",
+              "consigne": "Répondez à un quiz de 5 questions pour évaluer vos connaissances sur les besoins des plantes vertes.",
+              "module": "QuizSetQCM",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 10,
+              "verrouillee": false
+            },
+            {
+              "id": "c4",
+              "titre": "Recherche documentaire",
+              "objectif": "Rechercher des informations sur les besoins des plantes vertes",
+              "consigne": "Consultez les ressources mises à disposition et partagez sur le forum une information nouvelle que vous avez découverte sur les besoins des plantes vertes.",
+              "module": "parcours_forum",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 20,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "titre": "Approfondissement des connaissances",
+          "objectif": "Comprendre les mécanismes de la photosynthèse et des besoins",
+          "cartes": [
+            {
+              "id": "c6",
+              "titre": "Étude d'une vidéo explicative",
+              "objectif": "Comprendre le processus de photosynthèse",
+              "consigne": "Visionnez une vidéo sur la photosynthèse et répondez à un quiz de 3 questions pour vérifier votre compréhension.",
+              "module": "CoursePresentation",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 15,
+              "verrouillee": false
+            },
+            {
+              "id": "c7",
+              "titre": "Glossaire des termes clés",
+              "objectif": "S'approprier le vocabulaire scientifique",
+              "consigne": "Consultez le glossaire et ajoutez 2 termes nouveaux que vous avez appris avec leur définition.",
+              "module": "Glossary",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 10,
+              "verrouillee": false
+            },
+            {
+              "id": "c8",
+              "titre": "Quiz d'entraînement",
+              "objectif": "Valider la compréhension des besoins des plantes",
+              "consigne": "Répondez à un quiz de 8 questions pour vérifier votre maîtrise des besoins des plantes vertes.",
+              "module": "QuizSet",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e9",
+          "titre": "Conception de l'expérience",
+          "objectif": "Formuler une hypothèse et concevoir un protocole expérimental",
+          "cartes": [
+            {
+              "id": "c10",
+              "titre": "Formulation d'hypothèses",
+              "objectif": "Proposer des hypothèses testables sur les besoins des plantes",
+              "consigne": "Sur le mur de post-it, formulez 2 hypothèses testables sur les besoins des plantes vertes en utilisant les termes du glossaire.",
+              "module": "parcours_mur_notes",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c11",
+              "titre": "Création du protocole",
+              "objectif": "Rédiger un protocole expérimental clair",
+              "consigne": "Rédigez un protocole expérimental pour tester une de vos hypothèses en précisant le matériel, les étapes et les résultats attendus.",
+              "module": "Essay",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 25,
+              "verrouillee": false
+            },
+            {
+              "id": "c12",
+              "titre": "Validation du protocole",
+              "objectif": "Améliorer son protocole à partir des retours",
+              "consigne": "Partagez votre protocole sur le forum et apportez des modifications après avoir lu les suggestions de vos pairs.",
+              "module": "parcours_forum",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e13",
+          "titre": "Mise en œuvre et analyse",
+          "objectif": "Réaliser l'expérience et analyser les résultats",
+          "cartes": [
+            {
+              "id": "c14",
+              "titre": "Expérience en présentiel",
+              "objectif": "Mettre en œuvre le protocole expérimental",
+              "consigne": "Réalisez l'expérience en classe en suivant votre protocole. Notez vos observations et résultats dans un tableau.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 40,
+              "verrouillee": false
+            },
+            {
+              "id": "c15",
+              "titre": "Analyse des résultats",
+              "objectif": "Interpréter les résultats obtenus",
+              "consigne": "Associez chaque résultat obtenu à une conclusion scientifique en utilisant les termes du glossaire.",
+              "module": "DragAndDrop",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c16",
+              "titre": "Quiz final",
+              "objectif": "Valider la compréhension globale du sujet",
+              "consigne": "Répondez à un quiz final de 10 questions pour valider votre compréhension des besoins des plantes vertes et de l'expérience réalisée.",
+              "module": "QuizSetQCM",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 15,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "La fabrication démarre dès ce clic : chaque activité est générée une par une, dans l'ordre, sous vos yeux."
+}

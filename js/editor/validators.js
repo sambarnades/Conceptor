@@ -212,7 +212,7 @@ export function validateField(value, config) {
     // déjà non vides — `answers` à 1 élément était signalé, `answers` à 0 passait en
     // silence. Le trou était exactement à zéro, et il laissait enregistrer (puis partir
     // dans le .h5p) un QCM sans aucune réponse : une question injouable.
-    const exigeDesElements = config.type === 'array' && config.minItems >= 1;
+    const exigeDesElements = ['array', 'stringArray'].includes(config.type) && config.minItems >= 1;
     if (!validators.required(value) && !config.required && !exigeDesElements) {
         return { valid: true, errors: [] };
     }
@@ -250,7 +250,7 @@ export function validateField(value, config) {
     // vide, sinon `minItems` reste muet précisément quand il n'y a rien. `minItems`
     // renvoie false sur un non-tableau (donc signale), `maxItems` renvoie true (donc
     // se tait) — les deux se comportent déjà correctement sur `undefined`.
-    if (config.type === 'array') {
+    if (['array', 'stringArray'].includes(config.type)) {
         if (config.minItems && !validators.minItems(config.minItems)(value)) {
             errors.push((t(errorMessages.minItems) || 'Minimum {0} elements').replace('{0}', config.minItems));
         }
@@ -566,12 +566,26 @@ function validateFindTheHotspot(data, errors) {
 /** FindTheWords. */
 function validateFindTheWords(data, errors) {
     const wl = data.wordList;
-    if (!wl || (typeof wl === 'string' && wl.trim() === '')) {
+    const listeVide = !wl || (typeof wl === 'string' && wl.trim() === '');
+    if (listeVide) {
         errors.push({
             path: 'wordList',
             field: t('editor_word_list') || 'Liste de mots',
             message: t('validation_wordlist_empty') || 'La liste de mots est vide'
         });
+    }
+    const words = Array.isArray(wl) ? wl : String(wl || '').split(',');
+    // Une liste vide est déjà signalée : ne pas ajouter « lettres seulement » au même champ.
+    if (!listeVide && (!words.some(word => String(word).trim()) || words.some(word => !/^[\p{L}\p{M}]+$/u.test(String(word).trim().normalize('NFC'))))) {
+        errors.push({path:'wordList', field:t('editor_word_list'), message:t('validation_find_letters')});
+    }
+    const behaviour = data.behaviour || {};
+    if (behaviour.fillPool !== undefined && !String(behaviour.fillPool).trim()) {
+        errors.push({ path: 'behaviour.fillPool', field: t('editor_find_fill_pool'), message: t('validation_find_fill_pool') });
+    }
+    const orientations = ['horizontal', 'horizontalBack', 'vertical', 'verticalUp', 'diagonal', 'diagonalBack', 'diagonalUp', 'diagonalUpBack'];
+    if (orientations.every(key => behaviour.orientations?.[key] === false)) {
+        errors.push({ path: 'behaviour.orientations.horizontal', field: t('editor_section_orientations'), message: t('validation_find_orientation') });
     }
 }
 
@@ -610,31 +624,25 @@ function validateDragTheWords(data, errors) {
 
 /** DragAndDrop. */
 function validateDragAndDrop(data, errors) {
-    if (!Array.isArray(data.dropZones) || data.dropZones.length < 2) {
+    if (!Array.isArray(data.dropZones) || data.dropZones.length < 1) {
         errors.push({
             path: 'dropZones',
             field: t('editor_section_zones') || 'Zones',
-            message: t('validation_min_zones') || 'Au moins 2 zones de dépôt sont requises'
+            message: t('editor_dnd_min_zone') || 'Au moins 2 zones de dépôt sont requises'
         });
     }
-    if (!Array.isArray(data.elements) || data.elements.length < 2) {
+    if (!Array.isArray(data.elements) || data.elements.length < 1) {
         errors.push({
             path: 'elements',
             field: t('editor_section_elements') || 'Étiquettes',
-            message: t('validation_min_elements') || 'Au moins 2 étiquettes sont requises'
+            message: t('editor_dnd_min_element') || 'Au moins 2 étiquettes sont requises'
         });
     }
     // Vérifier que chaque élément a au moins une zone cible valide
     if (Array.isArray(data.elements) && Array.isArray(data.dropZones)) {
         data.elements.forEach((el, i) => {
             const zoneIndices = Array.isArray(el?.zoneIndices) ? el.zoneIndices : [];
-            if (zoneIndices.length === 0) {
-                errors.push({
-                    path: `elements.${i}.zoneIndices`,
-                    field: `${t('editor_element') || 'Étiquette'} ${i + 1}`,
-                    message: t('validation_no_zone_selected') || 'Au moins une zone cible doit être sélectionnée'
-                });
-            } else {
+            {
                 const hasInvalid = zoneIndices.some(zi => {
                     const idx = typeof zi === 'string' ? parseInt(zi, 10) : zi;
                     return idx < 0 || idx >= data.dropZones.length;
@@ -792,17 +800,20 @@ function validateSingleChoiceSet(data, errors) {
 
 /** SortParagraphs. */
 function validateSortParagraphs(data, errors) {
-    if (!Array.isArray(data.paragraphs) || data.paragraphs.length === 0) {
+    if (!Array.isArray(data.paragraphs) || data.paragraphs.length < 3) {
         errors.push({
             path: 'paragraphs',
             field: t('editor_section_paragraphs') || 'Paragraphes',
-            message: t('validation_no_paragraphs') || 'Au moins un paragraphe est requis'
+            message: t('validation_sort_min') || 'Ajoutez au moins trois paragraphes.'
         });
     }
 }
 
 /** Chart. */
 function validateChart(data, errors) {
+    if (!['pieChart', 'barChart'].includes(data.graphMode)) {
+        errors.push({ path: 'graphMode', field: t('editor_chart_type'), message: t('editor_error_pattern') });
+    }
     if (!Array.isArray(data.listOfTypes) || data.listOfTypes.length === 0) {
         errors.push({
             path: 'listOfTypes',
@@ -810,6 +821,14 @@ function validateChart(data, errors) {
             message: t('validation_no_chart_data') || 'Au moins une donnee est requise'
         });
     }
+    (Array.isArray(data.listOfTypes) ? data.listOfTypes : []).forEach((item, i) => {
+        const value = Number(item?.value);
+        const [mantissa, exponent = '0'] = String(value).toLowerCase().split('e');
+        const decimals = Math.max(0, (mantissa.split('.')[1] || '').length - Number(exponent));
+        if (!Number.isFinite(value) || value < 0.0001 || decimals > 4) {
+            errors.push({ path: `listOfTypes.${i}.value`, field: t('editor_chart_value'), message: t('validation_chart_value') });
+        }
+    });
 }
 
 /** Millionnaire. */
@@ -851,6 +870,8 @@ function validateAppariement(data, errors) {
         });
     } else {
         data.pairs.forEach((pair, i) => {
+            // Une entrée vide est une paire incomplète, pas une exception.
+            pair = (pair && typeof pair === 'object') ? pair : {};
             if ((!pair.question || pair.question.trim() === '') || (!pair.answer || pair.answer.trim() === '')) {
                 errors.push({
                     path: `pairs.${i}`,
@@ -1002,6 +1023,8 @@ function validateCoursePresentation(data, errors) {
         });
     } else {
         data.slides.forEach((slide, i) => {
+            // Une diapositive vide est signalée comme sans type ni titre, sans exception.
+            slide = (slide && typeof slide === 'object') ? slide : {};
             if (!slide.type || slide.type.trim() === '') {
                 errors.push({
                     path: `slides.${i}.type`,
@@ -1034,7 +1057,7 @@ function validateCoursePresentation(data, errors) {
 
 /** InteractiveBook. */
 function validateInteractiveBook(data, errors) {
-    if (!Array.isArray(data.chapters) || data.chapters.length < 2) {
+    if (!Array.isArray(data.chapters) || data.chapters.length < 1) {
         errors.push({
             path: 'chapters',
             field: t('editor_ib_section_chapters') || 'Chapitres',
@@ -1042,14 +1065,14 @@ function validateInteractiveBook(data, errors) {
         });
     } else {
         data.chapters.forEach((ch, i) => {
-            if (!ch.title || !ch.title.trim()) {
+            if (!ch?.title || !ch.title.trim()) {
                 errors.push({
                     path: `chapters.${i}.title`,
                     field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
                     message: t('validation_ib_no_chapter_title') || ''
                 });
             }
-            if (!Array.isArray(ch.content) || ch.content.length === 0) {
+            if (!Array.isArray(ch?.content) || ch.content.length === 0) {
                 errors.push({
                     path: `chapters.${i}.content`,
                     field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
@@ -1058,12 +1081,17 @@ function validateInteractiveBook(data, errors) {
             }
             // Bloc exercice sans type d'exercice choisi
             // Note: après normalisation, library est déplacé vers _exerciseLibrary
-            (Array.isArray(ch.content) ? ch.content : []).forEach((b, j) => {
+            const verifierBlocs = (blocks, prefix) => (Array.isArray(blocks) ? blocks : []).forEach((b, j) => {
                 if (!b || typeof b !== 'object') return;
                 const blockType = b._blockType || b.type;
+                if (blockType === 'row') {
+                    for (const [columnIndex, column] of (Array.isArray(b.columns) ? b.columns : []).entries()) {
+                        verifierBlocs(column?.content, `${prefix}.${j}.columns.${columnIndex}.content`);
+                    }
+                }
                 if (blockType === 'exercise' && !(b._exerciseLibrary || b.library)) {
                     errors.push({
-                        path: `chapters.${i}.content.${j}`,
+                        path: `${prefix}.${j}`,
                         field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
                         message: t('validation_ib_no_exercise_lib') || ''
                     });
@@ -1072,12 +1100,13 @@ function validateInteractiveBook(data, errors) {
                 // (buildImageBlock exige image.path) → on le signale ici à l'utilisateur.
                 if (blockType === 'image' && !(b.image && b.image.path)) {
                     errors.push({
-                        path: `chapters.${i}.content.${j}`,
+                        path: `${prefix}.${j}`,
                         field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
                         message: t('validation_ib_image_no_file') || ''
                     });
                 }
             });
+            verifierBlocs(ch?.content, `chapters.${i}.content`);
         });
     }
 }

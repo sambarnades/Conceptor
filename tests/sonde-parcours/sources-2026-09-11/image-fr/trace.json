@@ -1,0 +1,97 @@
+{
+  "cas": {
+    "id": "image-fr",
+    "module": "ImageHotspots",
+    "lang": "fr"
+  },
+  "demandes": [
+    {
+      "url": "/webhook/caramel-vision-detect-bas",
+      "image": "[image du fixture Van Gogh]",
+      "context": {
+        "qui": "Professeur d’arts plastiques au collège",
+        "quoi": "Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village. — Observer La Nuit étoilée — Expliquer les éléments visibles du tableau et leur place dans la composition.",
+        "niveau": "",
+        "corpus": "",
+        "corpusLength": 0,
+        "sources": []
+      },
+      "lang": "fr",
+      "model": "qwen-3.6-35b-instruct",
+      "prompt": "Tu es un expert en analyse d'images. Rédige TOUS les textes de ta réponse (imageDescription, chaque label, chaque description) EXCLUSIVEMENT en français.\n\nAnalyse l'image fournie dans ce contexte pédagogique : Professeur d’arts plastiques au collège · Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village. — Observer La Nuit étoilée — Expliquer les éléments visibles du tableau et leur place dans la composition.\n\n1) Donne une brève description GLOBALE de l'image (1 à 2 phrases) : champ \"imageDescription\".\n2) Identifie de 3 à 5 ZONES/POINTS clés réellement présents dans l'image et pertinents pour ce contexte.\nPour CHAQUE zone, donne EXACTEMENT :\n- x : coordonnée horizontale du CENTRE de la zone sur une échelle de 0 à 1000 (0 = bord gauche, 1000 = bord droit) ;\n- y : coordonnée verticale du CENTRE de la zone sur une échelle de 0 à 1000 (0 = haut, 1000 = bas) ;\n- label : un nom très court (1 à 3 mots) ;\n- description : ce que montre la zone ET ce qui l'entoure (1 à 2 phrases).\nEstime x et y au plus JUSTE d'après la VRAIE position de chaque zone (entiers entre 0 et 1000, distincts d'une zone à l'autre).\nN'invente AUCUNE zone absente de l'image.\nRéponds STRICTEMENT en JSON valide, sans aucun texte autour, au format :\n{\"imageDescription\":\"...\",\"zones\":[{\"x\":number,\"y\":number,\"label\":string,\"description\":string}]}"
+    },
+    {
+      "url": "/webhook/caramel/llm/submit-bas",
+      "prompt": "# CONTEXTE PÉDAGOGIQUE\n- Ton rôle : Professeur d’arts plastiques au collège. Expert en didactique et ingénierie pédagogique\n- Ton objectif pédagogique : Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village.. Observer La Nuit étoilée — L'élève doit : Expliquer les éléments visibles du tableau et leur place dans la composition. — Titre attendu de l'activité : « Observer La Nuit étoilée » — Durée visée : 10 minutes.\n\n# RÈGLES SPÉCIFIQUES\n- PRIORITÉ aux consignes de l'utilisateur : s'il impose des thèmes, un angle ou un nombre de points, respecte-les.\n- Un point par zone détectée : pour CHAQUE zone fournie en SOURCES, crée EXACTEMENT un point (hotspot) en RECOPIANT sa position `x`/`y` (en %). N'ajoute aucun point sans zone et ne supprime aucune zone.\n- Contenu = TEXTE uniquement : pour chaque point, rédige un `header` (titre court de 1 à 4 mots) et un `text` (explication pédagogique claire de 1 à 3 phrases) adaptés à la discipline et au niveau. N'insère NI image, NI audio, NI vidéo (l'utilisateur les ajoutera à la main dans l'éditeur si besoin).\n- Appuie-toi sur la description de la zone ET de son entourage pour situer et expliquer ; n'invente jamais un élément absent de l'image.\n- Nombre de points : 5 points clés.\n- Couleur : propose une `globalColor` (hexadécimal) lisible et contrastée avec une image typique du sujet (par défaut `#981d99`).\n- Qualité : explications exactes, vocabulaire adapté au niveau, pas de redite d'un point à l'autre.\n\n# RÈGLES PÉDAGOGIQUES\n- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.\n- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).\n- Langue : rédige dans la langue cible (français sauf indication contraire).\n- Rétroactions (feedback formatif) — quand l’activité en comporte :\n  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.\n  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.\n  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.\n  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.\n  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.\n  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.\n- Formules mathématiques : chaque délimiteur ouvrant a son fermant — une formule en ligne s'écrit \\\\( … \\\\) (jamais un \\\\( ou un \\\\) isolé), une formule mise en évidence \\\\[ … \\\\] ; équilibre aussi les accolades { } de chaque commande (\\\\frac{a}{b}, \\\\sqrt{x}, x^{2}).\n\n# SOURCES\nVoici les ZONES CLÉS détectées dans l'image de fond (numéro, position `x`/`y` en POURCENTAGES de l'image, et description de la zone et de ce qui l'entoure). Tu t'appuieras UNIQUEMENT sur ces zones et le contexte pédagogique pour rédiger le contenu de chaque point. RECOPIE EXACTEMENT les positions `x`/`y` fournies — ne les recalcule jamais et n'invente aucune zone supplémentaire.\n---\nDESCRIPTION GLOBALE DE L'IMAGE : La Nuit étoilée de Van Gogh montre un ciel nocturne tourbillonnant avec des étoiles lumineuses et une lune éclatante, surplombant un village paisible et un cyprès sombre en premier plan.\n\n(Image de fond : 330×261px. Les positions x,y sont des POURCENTAGES 0–100 à RECOPIER tels quels.)\n\nZone 1 — x=50.0% y=20.0% : Ciel tourbillonnant — Le ciel occupe la majeure partie supérieure du tableau, avec des spirales bleues et jaunes créant un mouvement dynamique. Il entoure les étoiles et la lune, dominant visuellement la composition.\nZone 2 — x=15.0% y=60.0% : Cyprès sombre — Un cyprès noir et élancé se dresse à gauche, contrastant fortement avec le ciel lumineux. Il sert de point d’ancrage vertical et symbolise la mort ou la spiritualité dans la scène.\nZone 3 — x=50.0% y=80.0% : Village endormi — Au centre-bas, un petit village aux toits sombres et aux fenêtres éclairées repose sous le ciel. Il est entouré de collines et de champs, offrant un contraste paisible avec l’agitation céleste.\nZone 4 — x=80.0% y=15.0% : Lune éclatante — Dans le coin supérieur droit, une lune jaune vif rayonne intensément, entourée de halos lumineux. Elle attire l’œil et complète l’équilibre cosmique avec les étoiles.\nZone 5 — x=30.0% y=10.0% : Étoiles scintillantes — Réparties dans le ciel, les étoiles sont représentées par des cercles jaunes entourés de halos, créant un effet de scintillement. Elles sont disposées en arc de cercle, renforçant le mouvement rotatif du ciel.\n---\n\n# STRUCTURE DU JSON ATTENDUE\n- Génère UNIQUEMENT un JSON complet et valide. Ta réponse DOIT commencer par `{` et finir par `}`. Aucun autre texte.\n- N'inclus PAS de champ `image` ni d'image de fond : Caramel l'ajoute automatiquement à partir du fichier joint par l'utilisateur.\n- L'objet racine contient :\n  - `title` (string) : un titre court pour l'activité.\n  - `globalColor` (string, optionnel) : couleur des points au format hexadécimal (ex. `\"#1768c4\"`).\n  - `hotspots` (array) : un objet par zone détectée.\n\n**Structure d'un point (tableau `hotspots`) :**\n- `x` (number) : position horizontale en POURCENTAGE (0 = bord gauche, 100 = bord droit), RECOPIÉE de la zone.\n- `y` (number) : position verticale en POURCENTAGE (0 = haut, 100 = bas), RECOPIÉE de la zone.\n- `header` (string) : le titre court du point.\n- `text` (string) : l'explication. HTML simple autorisé : `<p>`, `<strong>`, `<em>`, `<ul><li>`.\n\n- **Mise en forme :** Markdown autorisé pour le gras (`**texte**`) et l'italique (`*texte*`).\n- **LaTeX :** pour les formules, utilise EXCLUSIVEMENT `\\\\( ... \\\\)`. Jamais `$`. Exemples : `\\\\( \\\\frac{1}{2} \\\\)`, `\\\\( x^{2} \\\\)`.\n\n# EXEMPLE DE RENDU\n**Exemple complet.** Suppose que les SOURCES contiennent ces zones détectées sur l'image d'une fleur :\n\n```\nZone 1 — x=31.5% y=22.0% : pétale coloré en haut de la fleur, entouré d'autres pétales.\nZone 2 — x=52.0% y=48.5% : fine tige surmontée d'une petite poche (étamine).\nZone 3 — x=50.0% y=63.0% : organe central renflé, entouré par les étamines.\nZone 4 — x=47.0% y=86.0% : tige verticale verte reliant la fleur à la plante.\n```\n\nRègle illustrée : chaque `x`/`y` est RECOPIÉ de la zone correspondante, et le `header`+`text` expliquent ce que la zone montre, au niveau visé :\n\n```json\n{\n  \"title\": \"Anatomie de la fleur\",\n  \"globalColor\": \"#1768c4\",\n  \"hotspots\": [\n    { \"x\": 31.5, \"y\": 22.0, \"header\": \"Le pétale\", \"text\": \"<p>Les <strong>pétales</strong> colorés attirent les insectes pollinisateurs.</p>\" },\n    { \"x\": 52.0, \"y\": 48.5, \"header\": \"L'étamine\", \"text\": \"<p>L'<strong>étamine</strong> est l'organe mâle de la fleur : elle produit le pollen.</p>\" },\n    { \"x\": 50.0, \"y\": 63.0, \"header\": \"Le pistil\", \"text\": \"<p>Le <strong>pistil</strong> est l'organe femelle, situé au centre de la fleur.</p>\" },\n    { \"x\": 47.0, \"y\": 86.0, \"header\": \"La tige\", \"text\": \"<p>La <strong>tige</strong> soutient la fleur et conduit la sève.</p>\" }\n  ]\n}\n```\n\nObserve le lien : chaque point reprend EXACTEMENT la position `x`/`y` de sa zone. Aucune position n'est inventée.\n\n# CADRE DU PARCOURS\nCette activité fait partie d'un parcours intitulé « Observer La Nuit étoilée ».\nObjectif du parcours : Observer La Nuit étoilée\n\nNOTIONS PIVOTS du parcours — emploie ces formulations MOT POUR MOT quand tu parles de ces notions, sans les reformuler ni les traduire :\n- ciel\n- étoiles\n- cyprès\n\nC'est la PREMIÈRE activité du parcours : elle pose les bases, sans supposer aucun acquis préalable sur le sujet.\n\nPalier de cette activité : Découverte.\nRespecte ce palier : une activité de découverte ne piège pas, une activité de transfert ne récite pas.",
+      "model": "mistral-small-4-119b",
+      "activity": {
+        "moduleKey": "ImageHotspots",
+        "category": "parcours"
+      },
+      "rag": {
+        "sujet": "Observer La Nuit étoilée de Van Gogh : ciel, étoiles, cyprès et village.",
+        "discipline": "Professeur d’arts plastiques au collège",
+        "niveau": "",
+        "cycle": ""
+      }
+    }
+  ],
+  "reponses": [
+    {
+      "url": "/webhook/caramel-vision-detect-bas",
+      "data": {
+        "imageDescription": "La Nuit étoilée de Van Gogh montre un ciel nocturne tourbillonnant avec des étoiles lumineuses et une lune éclatante, surplombant un village paisible et un cyprès sombre en premier plan.",
+        "zones": [
+          {
+            "x": 50,
+            "y": 20,
+            "label": "Ciel tourbillonnant",
+            "description": "Le ciel occupe la majeure partie supérieure du tableau, avec des spirales bleues et jaunes créant un mouvement dynamique. Il entoure les étoiles et la lune, dominant visuellement la composition."
+          },
+          {
+            "x": 15,
+            "y": 60,
+            "label": "Cyprès sombre",
+            "description": "Un cyprès noir et élancé se dresse à gauche, contrastant fortement avec le ciel lumineux. Il sert de point d’ancrage vertical et symbolise la mort ou la spiritualité dans la scène."
+          },
+          {
+            "x": 50,
+            "y": 80,
+            "label": "Village endormi",
+            "description": "Au centre-bas, un petit village aux toits sombres et aux fenêtres éclairées repose sous le ciel. Il est entouré de collines et de champs, offrant un contraste paisible avec l’agitation céleste."
+          },
+          {
+            "x": 80,
+            "y": 15,
+            "label": "Lune éclatante",
+            "description": "Dans le coin supérieur droit, une lune jaune vif rayonne intensément, entourée de halos lumineux. Elle attire l’œil et complète l’équilibre cosmique avec les étoiles."
+          },
+          {
+            "x": 30,
+            "y": 10,
+            "label": "Étoiles scintillantes",
+            "description": "Réparties dans le ciel, les étoiles sont représentées par des cercles jaunes entourés de halos, créant un effet de scintillement. Elles sont disposées en arc de cercle, renforçant le mouvement rotatif du ciel."
+          }
+        ],
+        "model": "qwen-3.6-35b-instruct",
+        "attempt": 1,
+        "ok": true
+      }
+    },
+    {
+      "url": "/webhook/caramel/llm/result-bas",
+      "data": {
+        "taskId": "1789124",
+        "status": "done",
+        "content": "{\n  \"title\": \"Observer La Nuit étoilée\",\n  \"globalColor\": \"#981d99\",\n  \"hotspots\": [\n    { \"x\": 50.0, \"y\": 20.0, \"header\": \"Le ciel\", \"text\": \"<p>Le **ciel** domine l’image avec ses spirales Tourbillonnantes de bleu et de jaune.</p><p>Observe comment les couleurs chaudes (jaune) se mélangent aux froides (bleu) pour donner un effet dynamique.</p>\" },\n    { \"x\": 15.0, \"y\": 60.0, \"header\": \"Le cyprès\", \"text\": \"<p>Le **cyprès** noir et élancé vertical sert d’axe dans la composition.</p><p>Il contraste fortement avec le ciel lumineux et évoque une présence mystérieuse.</p>\" },\n    { \"x\": 50.0, \"y\": 80.0, \"header\": \"Le village\", \"text\": \"<p>En bas au centre, le **village** endormi est représenté par des toits sombres et des fenêtres éclairées.</p><p>Il apporte une calme stabilité face à l’agitation du ciel.</p>\" },\n    { \"x\": 80.0, \"y\": 15.0, \"header\": \"La lune\", \"text\": \"<p>La **lune** jaune vif avec ses halos rayonnants attire immédiatement le regard.</p><p>Elle participe à l’équilibre de la scène en dialoguant avec les étoiles.</p>\" },\n    { \"x\": 30.0, \"y\": 10.0, \"header\": \"Les étoiles\", \"text\": \"<p>Les **étoiles** scintillantes en arc de cercle animent le ciel de points lumineux.</p><p>Elles renforcent l’impression de mouvement rotatif grâce à leur disposition.</p>\" }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "completion_tokens": 439,
+        "prompt_tokens": 2545,
+        "fallback_level": 0
+      }
+    }
+  ],
+  "erreurs": [],
+  "message": "",
+  "echecExport": null
+}

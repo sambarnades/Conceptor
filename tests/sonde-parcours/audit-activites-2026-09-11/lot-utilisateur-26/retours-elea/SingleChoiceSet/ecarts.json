@@ -1,0 +1,26 @@
+[
+  {
+    "chemin": "behaviour.timeoutCorrect",
+    "type": "modification",
+    "avant": 0,
+    "apres": 2000
+  },
+  {
+    "chemin": "choices[0].question",
+    "type": "modification",
+    "avant": "Capitale de la France ?",
+    "apres": "<p>Capitale de la France ? RELU</p>"
+  },
+  {
+    "chemin": "l10n.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "l10n.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  }
+]

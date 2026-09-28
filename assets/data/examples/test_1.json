@@ -167,7 +167,7 @@
             "type": "cloze",
             "content": {
                 "name": "Q09 - Politique étrangère fasciste",
-                "questiontext": "L'Italie fasciste s'engage dans une politique impérialiste en envahissant l' {1:SHORTANSWER:=Éthiopie/Abyssinie} en 1935, puis renforce ses liens avec Hitler par le {1:MULTICHOICE:=Pacte d'Acier~Pacte de Varsovie~Pacte Atlantique~Pacte de Locarno} en 1939.",
+                "questiontext": "L'Italie fasciste s'engage dans une politique impérialiste en envahissant l' {1:SHORTANSWER:=Éthiopie~=Abyssinie} en 1935, puis renforce ses liens avec Hitler par le {1:MULTICHOICE:=Pacte d'Acier~Pacte de Varsovie~Pacte Atlantique~Pacte de Locarno} en 1939.",
                 "feedback": "L'invasion de l'Éthiopie a conduit à l'isolement diplomatique de l'Italie et à son rapprochement avec l'Allemagne."
             }
         },

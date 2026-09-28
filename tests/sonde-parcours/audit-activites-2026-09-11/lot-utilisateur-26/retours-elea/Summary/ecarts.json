@@ -1,0 +1,29 @@
+[
+  {
+    "chemin": "behaviour",
+    "type": "retrait_natif",
+    "avant": {
+      "enableRetry": true,
+      "enableSolutionsButton": true,
+      "passPercentage": 50
+    }
+  },
+  {
+    "chemin": "summaries[0].summary[0]",
+    "type": "normalisation_html",
+    "avant": "Paris est la capitale de la France.",
+    "apres": "<p>Paris est la capitale de la France.</p>"
+  },
+  {
+    "chemin": "summaries[0].summary[1]",
+    "type": "normalisation_html",
+    "avant": "Paris est la capitale de l’Italie.",
+    "apres": "<p>Paris est la capitale de l’Italie.</p>"
+  },
+  {
+    "chemin": "summaries[0].tip",
+    "type": "modification",
+    "avant": "La Seine traverse la capitale française.",
+    "apres": "<p>La Seine traverse la capitale française. RELU</p>"
+  }
+]

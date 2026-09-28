@@ -1,0 +1,26 @@
+[
+  {
+    "kind": "standard",
+    "erreur": {
+      "score": "2/3",
+      "texte": "Vos résultats :\n2 bonnes réponses sur 3\nQuestion\nScore\nDomaine RELU\n0/1\nImage d'un nombre par la racine carrée\n1/1\nDomaine de définition\n1/1\nAfficher la solution\nRecommencer\nVos résultats :Bon résultat. Vous maîtrisez plusieurs notions importantes de la fonction racine carrée..Vous avez obtenu 2 sur 3 points.."
+    },
+    "reprise": {
+      "score": "3/3",
+      "texte": "Vos résultats :\n3 bonnes réponses sur 3\nQuestion\nScore\nDomaine RELU\n1/1\nImage d'un nombre par la racine carrée\n1/1\nDomaine de définition\n1/1\nAfficher la solution\nRecommencer\nVos résultats :Excellent résultat. Félicitations ! Vous maîtrisez parfaitement les fonctions racines carrées..Vous avez obtenu 3 sur 3 points.."
+    },
+    "solution": true
+  },
+  {
+    "kind": "sans-solution",
+    "erreur": {
+      "score": "2/3",
+      "texte": "Vos résultats :\n2 bonnes réponses sur 3\nQuestion\nScore\nDomaine RELU\n0/1\nImage d'un nombre par la racine carrée\n1/1\nDomaine de définition\n1/1\nRecommencer\nVos résultats :Bon résultat. Vous maîtrisez plusieurs notions importantes de la fonction racine carrée..Vous avez obtenu 2 sur 3 points.."
+    },
+    "reprise": {
+      "score": "3/3",
+      "texte": "Vos résultats :\n3 bonnes réponses sur 3\nQuestion\nScore\nDomaine RELU\n1/1\nImage d'un nombre par la racine carrée\n1/1\nDomaine de définition\n1/1\nRecommencer\nVos résultats :Excellent résultat. Félicitations ! Vous maîtrisez parfaitement les fonctions racines carrées..Vous avez obtenu 3 sur 3 points.."
+    },
+    "solution": false
+  }
+]

@@ -1,0 +1,1083 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-10T21:39:59.572Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "auto"
+  },
+  "plan": {
+    "titre": "Les Trente Glorieuses : révision et analyse",
+    "objectifGeneral": "Consolider les connaissances sur les Trente Glorieuses en identifiant leurs caractéristiques, leurs transformations et leurs limites",
+    "notionsPivots": [
+      "la croissance économique",
+      "la société de consommation",
+      "la tertiarisation de l'économie",
+      "la société salariale",
+      "la hausse du niveau de vie",
+      "les Trente Glorieuses",
+      "la reconstruction d'après-guerre",
+      "l'État-providence",
+      "la planification économique",
+      "les Trente Piteuses",
+      "la crise pétrolière",
+      "la désindustrialisation",
+      "les inégalités sociales",
+      "la mondialisation",
+      "l'urbanisation"
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    },
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Découverte des repères chronologiques",
+        "objectif": "Situer les Trente Glorieuses dans le temps et identifier leurs principales caractéristiques",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Frise chronologique des Trente Glorieuses",
+            "objectif": "Repérer les dates clés et les événements majeurs",
+            "consigne": "Consultez la frise chronologique pour identifier les dates de début et de fin des Trente Glorieuses, ainsi que les événements marquants de cette période.",
+            "module": "Timeline",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "timeline": {
+                "headline": "Frise chronologique des Trente Glorieuses",
+                "text": "Découvre les **5 événements clés** qui marquent la période des **Trente Glorieuses** (1945-1975). *Cette frise te permet de situer les dates et les transformations majeures de cette époque de forte croissance économique et sociale.*",
+                "asset": {
+                  "media": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trente_Glorieuses.svg/800px-Trente_Glorieuses.svg.png",
+                  "caption": "Affiche illustrant les Trente Glorieuses en France.",
+                  "credit": "Wikimedia Commons / Domaine public"
+                },
+                "date": [
+                  {
+                    "startDate": "1945",
+                    "headline": "Début des Trente Glorieuses",
+                    "text": "La fin de la **Seconde Guerre mondiale** marque le début d'une période de **croissance économique** exceptionnelle en France et en Europe. *Cette croissance s'explique par la reconstruction, l'aide américaine (plan Marshall) et l'essor industriel.*",
+                    "tag": "Reconstruction"
+                  },
+                  {
+                    "startDate": "1946",
+                    "headline": "Création de la Sécurité sociale",
+                    "text": "La **Sécurité sociale** est mise en place en France. *Elle garantit une protection contre les risques sociaux (maladie, vieillesse, famille) et marque le début de l'**État-providence**.*",
+                    "tag": "Social"
+                  },
+                  {
+                    "startDate": "1958",
+                    "headline": "Naissance de la Ve République",
+                    "text": "Le général de Gaulle devient président et lance la **planification économique** avec les **plans quinquennaux**. *Ces plans organisent la modernisation de l'industrie et des infrastructures.*",
+                    "tag": "Politique"
+                  },
+                  {
+                    "startDate": "1968",
+                    "headline": "Mai 68 et ses conséquences",
+                    "text": "Les **mouvements sociaux** de mai 68 remettent en cause la société de consommation et les inégalités. *Ils accélèrent les réformes sociales (accords de Grenelle) et marquent un tournant dans les mentalités.*",
+                    "tag": "Société"
+                  },
+                  {
+                    "startDate": "1973",
+                    "headline": "Premier choc pétrolier",
+                    "text": "L'**augmentation brutale du prix du pétrole** (octobre 1973) met fin à la croissance des **Trente Glorieuses**. *Cette crise révèle la dépendance énergétique et annonce les **Trente Piteuses**.*",
+                    "tag": "Crise"
+                  }
+                ],
+                "era": [
+                  {
+                    "startDate": "1945",
+                    "endDate": "1975",
+                    "headline": "Les Trente Glorieuses : croissance et transformations",
+                    "text": "Période de **croissance économique** forte, de **hausse du niveau de vie** et de **société salariale**. *L'État joue un rôle central dans l'économie et la protection sociale.*",
+                    "tag": "Contexte"
+                  },
+                  {
+                    "startDate": "1973",
+                    "endDate": "1975",
+                    "headline": "Fin des Trente Glorieuses",
+                    "text": "La **crise pétrolière** de 1973 marque le début d'une période de ralentissement économique. *Les **Trente Piteuses** succèdent aux Trente Glorieuses.*",
+                    "tag": "Transition"
+                  }
+                ],
+                "type": "default"
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Frise chronologique des Trente Glorieuses"
+            }
+          },
+          {
+            "id": "c3",
+            "titre": "Définition des notions essentielles",
+            "objectif": "Comprendre les termes fondamentaux",
+            "consigne": "Explorez le glossaire pour découvrir les définitions des termes clés comme 'la croissance économique', 'la société de consommation' ou 'l'État-providence'.",
+            "module": "Glossary",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": [
+              {
+                "title": "Croissance économique",
+                "text": "Augmentation durable de la production de richesses dans un pays, mesurée par l'accroissement du produit intérieur brut (PIB).\nElle s'accompagne souvent d'une hausse des revenus et de l'emploi.\nPense à relier cette notion aux Trente Glorieuses et à leur impact sur le niveau de vie."
+              },
+              {
+                "title": "Société de consommation",
+                "text": "Mode de société où l'achat de biens et services devient central pour les individus.\nCette société repose sur la production de masse et la publicité pour stimuler la demande.\nElle émerge avec l'essor des Trente Glorieuses et transforme les modes de vie."
+              },
+              {
+                "title": "État-providence",
+                "text": "Ensemble des politiques publiques visant à protéger les citoyens contre les risques sociaux (chômage, maladie, vieillesse).\nCes politiques s'appuient sur des prestations sociales financées par les impôts ou les cotisations sociales.\nCette notion est au cœur des Trente Glorieuses en France."
+              },
+              {
+                "title": "Tertiarisation de l'économie",
+                "text": "Processus de transformation de l'économie où le secteur tertiaire (services) prend une importance croissante par rapport aux secteurs primaire (agriculture) et secondaire (industrie).\nEn France, ce mouvement s'accélère après 1945 avec la hausse des emplois dans le commerce, l'administration ou les loisirs."
+              },
+              {
+                "title": "Société salariale",
+                "text": "Modèle de société où le salariat domine comme forme principale d'emploi et de revenu.\nLes salariés bénéficient d'un contrat de travail, de droits sociaux et d'une protection contre le chômage.\nCe modèle se renforce pendant les Trente Glorieuses, avant d'être remis en cause à partir des années 1980."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "e4",
+        "titre": "Analyse des transformations économiques",
+        "objectif": "Comprendre les mécanismes de la croissance et ses acteurs",
+        "cartes": [
+          {
+            "id": "c5",
+            "titre": "Quiz sur les indicateurs économiques",
+            "objectif": "Identifier les indicateurs de la croissance",
+            "consigne": "Répondez au quiz pour tester vos connaissances sur les indicateurs économiques des Trente Glorieuses comme le PIB, le taux de chômage ou la productivité.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz sur les indicateurs économiques",
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Croissance économique"
+                  },
+                  "params": {
+                    "question": "Quel indicateur mesure principalement la croissance économique d’un pays ?",
+                    "answers": [
+                      {
+                        "text": "Le taux de chômage",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pense à l’indicateur qui montre l’augmentation de la production dans un pays.",
+                          "chosenFeedback": "Attention : le taux de chômage mesure le nombre de personnes sans emploi, mais pas la croissance économique."
+                        }
+                      },
+                      {
+                        "text": "Le Produit Intérieur Brut (PIB)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le PIB indique la valeur totale des biens et services produits dans un pays en une année, ce qui reflète la croissance économique."
+                        }
+                      },
+                      {
+                        "text": "Le niveau de vie moyen",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Le niveau de vie moyen dépend d’autres facteurs comme le revenu par habitant, mais ce n’est pas l’indicateur principal de croissance."
+                        }
+                      },
+                      {
+                        "text": "Le taux d’inflation",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Relis le cours sur la croissance économique : l’indicateur clé te permet de mesurer la production totale d’un pays."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as déjà une idée sur le bon indicateur, mais vérifie sa définition exacte."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le PIB est l’indicateur qui correspond le mieux à la mesure de la croissance économique."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : le PIB est bien l’indicateur principal de la croissance économique."
+                      }
+                    ]
+                  },
+                  "subContentId": "dfc6d2e7-f18a-41fd-984e-f98dae66c510"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Taux de chômage"
+                  },
+                  "params": {
+                    "question": "Qu’est-ce qu’un taux de chômage élevé indique généralement sur une économie ?",
+                    "answers": [
+                      {
+                        "text": "Une augmentation de la productivité des entreprises",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Un taux de chômage élevé est souvent lié à un manque d’activité économique ou à des difficultés des entreprises.",
+                          "chosenFeedback": "Erreur courante : une forte productivité se traduit généralement par une baisse du chômage, car les entreprises embauchent plus."
+                        }
+                      },
+                      {
+                        "text": "Des difficultés pour les entreprises à créer des emplois",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un taux de chômage élevé montre que les entreprises peinent à embaucher, souvent à cause d’un manque de croissance ou d’investissements."
+                        }
+                      },
+                      {
+                        "text": "Une hausse du niveau de vie de la population",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un chômage élevé ne favorise pas une amélioration du niveau de vie, car moins de personnes travaillent et gagnent un revenu."
+                        }
+                      },
+                      {
+                        "text": "Une augmentation des exportations",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revois la notion de chômage : un taux élevé signale souvent un ralentissement ou des problèmes dans le marché du travail."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as compris qu’il y a un lien avec l’emploi, mais précise ce que reflète concrètement un taux de chômage élevé."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Tu es proche : un taux de chômage élevé indique que les entreprises ont du mal à recruter ou à maintenir des emplois."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bonne réponse : un taux de chômage élevé reflète les difficultés des entreprises à créer des emplois."
+                      }
+                    ]
+                  },
+                  "subContentId": "687a0870-2f1f-4a9f-aef3-564c3c0e5def"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Productivité"
+                  },
+                  "params": {
+                    "question": "Comment se mesure principalement la productivité dans une économie ?",
+                    "answers": [
+                      {
+                        "text": "Par le nombre d’heures travaillées par semaine",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La productivité ne dépend pas seulement du temps passé au travail, mais de l’efficacité avec laquelle ce travail est utilisé.",
+                          "chosenFeedback": "Faux : le nombre d’heures ne montre pas si le travail est efficace, seulement son volume."
+                        }
+                      },
+                      {
+                        "text": "Par le rapport entre la production et les ressources utilisées",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la productivité se calcule en divisant la production par les ressources (main-d’œuvre, machines, etc.) pour mesurer l’efficacité."
+                        }
+                      },
+                      {
+                        "text": "Par le montant total des salaires versés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Le montant des salaires ne reflète pas l’efficacité de la production, mais le coût du travail pour l’entreprise."
+                        }
+                      },
+                      {
+                        "text": "Par le nombre d’usines en fonctionnement",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Cherche un indicateur qui compare ce qui est produit avec les moyens employés : c’est la clé de la productivité."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu penses à un élément lié au travail, mais la productivité mesure l’efficacité, pas juste le temps ou le coût."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Tu as saisi l’idée d’efficacité : la productivité se mesure par le rapport entre production et ressources."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C’est correct : la productivité compare la production avec les ressources pour montrer l’efficacité économique."
+                      }
+                    ]
+                  },
+                  "subContentId": "bd1584b5-d186-43e9-8adb-22b91ede2fc0"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Société de consommation"
+                  },
+                  "params": {
+                    "question": "Quel indicateur économique montre une hausse des revenus et une augmentation des dépenses des ménages ?",
+                    "answers": [
+                      {
+                        "text": "La baisse du taux d’épargne des ménages",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pense à ce qui augmente quand les ménages dépensent plus et épargnent moins.",
+                          "chosenFeedback": "Erreur : une baisse de l’épargne signifie que les ménages gardent moins d’argent, mais l’indicateur visé montre l’inverse."
+                        }
+                      },
+                      {
+                        "text": "La hausse du pouvoir d’achat des ménages",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le pouvoir d’achat augmente quand les revenus progressent et que les ménages peuvent plus consommer."
+                        }
+                      },
+                      {
+                        "text": "L’augmentation des impôts sur le revenu",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Une hausse des impôts réduit le revenu disponible, donc le pouvoir d’achat des ménages diminue, pas augmente."
+                        }
+                      },
+                      {
+                        "text": "La réduction des exportations",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Cherche un indicateur qui combine revenus et capacité à consommer : c’est le signe d’une société de consommation en développement."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as identifié un concept lié aux revenus, mais le pouvoir d’achat mesure bien plus que juste le revenu : il inclut la capacité à acheter."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Tu approches : le pouvoir d’achat montre que les ménages ont plus d’argent à dépenser, signe d’une société de consommation."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bonne réponse : le pouvoir d’achat des ménages reflète leur capacité à consommer, caractéristique de la société de consommation."
+                      }
+                    ]
+                  },
+                  "subContentId": "9cf071ee-662f-401b-9aef-c0cdb4557c1c"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Taux d’investissement"
+                  },
+                  "params": {
+                    "question": "À quoi correspond principalement le taux d’investissement dans une économie ?",
+                    "answers": [
+                      {
+                        "text": "Au pourcentage des bénéfices distribués aux actionnaires",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "L’investissement concerne les dépenses pour développer l’activité, pas la distribution des profits.",
+                          "chosenFeedback": "Non : distribuer des bénéfices ne crée pas de nouveaux outils ou infrastructures, c’est le contraire de l’investissement."
+                        }
+                      },
+                      {
+                        "text": "Au pourcentage des richesses produites réinvesties dans l’économie",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le taux d’investissement mesure la part du PIB ou des revenus qui est réinvestie pour développer l’appareil productif."
+                        }
+                      },
+                      {
+                        "text": "Au montant total des salaires versés aux employés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Les salaires représentent le coût du travail, pas un investissement en capital ou en machines."
+                        }
+                      },
+                      {
+                        "text": "Au nombre d’entreprises créées chaque année",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "L’investissement sert à développer l’économie, cherche un indicateur qui montre combien de richesses sont réinvesties."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as une idée sur l’argent utilisé, mais l’investissement ne concerne pas seulement la création d’entreprise : il inclut aussi les machines et les infrastructures."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le taux d’investissement mesure bien la part des richesses réinvesties dans l’économie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : le taux d’investissement correspond à la part des richesses réinvesties pour développer l’économie."
+                      }
+                    ]
+                  },
+                  "subContentId": "cd5625c8-6384-4912-bd47-05be74585a80"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Tertiarisation"
+                  },
+                  "params": {
+                    "question": "Quel indicateur montre que l’économie se tertiarise ?",
+                    "answers": [
+                      {
+                        "text": "L’augmentation de la part des services dans le PIB",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la tertiarisation signifie que le secteur des services (commerce, banques, éducation, etc.) prend une place croissante dans l’économie."
+                        }
+                      },
+                      {
+                        "text": "La hausse de la production industrielle",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La tertiarisation correspond à un déclin relatif de l’industrie au profit des services.",
+                          "chosenFeedback": "Non : une hausse de la production industrielle reflète plutôt un renforcement du secteur secondaire, pas une tertiarisation."
+                        }
+                      },
+                      {
+                        "text": "La baisse du nombre de chômeurs",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La baisse du chômage est un indicateur social ou économique général, mais pas directement lié à la tertiarisation."
+                        }
+                      },
+                      {
+                        "text": "L’augmentation de la population rurale",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revois la définition de tertiarisation : cherche un indicateur qui montre le rôle croissant du secteur tertiaire (services) dans l’économie."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu penses à la production industrielle, qui est typique du secteur secondaire, mais la tertiarisation concerne surtout les services."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Tu as identifié le bon secteur : la tertiarisation se voit à l’augmentation de la part des services dans l’économie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bonne réponse : la tertiarisation se mesure par la part croissante des services dans le PIB."
+                      }
+                    ]
+                  },
+                  "subContentId": "e7ba6f37-f951-496a-9456-27afa11766ec"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Taux de salaire"
+                  },
+                  "params": {
+                    "question": "Que montre une hausse du taux de salaire réel ?",
+                    "answers": [
+                      {
+                        "text": "Une augmentation des impôts sur le revenu",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Le salaire réel correspond au pouvoir d’achat après inflation, contre les salaires nominaux qui ne tiennent pas compte de la hausse des prix.",
+                          "chosenFeedback": "Les impôts ne sont pas directement liés au salaire réel, qui mesure la capacité d’achat."
+                        }
+                      },
+                      {
+                        "text": "Une amélioration du pouvoir d’achat des salariés",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le salaire réel correspond au salaire nominal ajusté de l’inflation, donc une hausse montre un pouvoir d’achat accru."
+                        }
+                      },
+                      {
+                        "text": "Une diminution des profits des entreprises",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Même si les salaires augmentent, cela ne signifie pas automatiquement une baisse des profits, car d’autres facteurs entrent en jeu."
+                        }
+                      },
+                      {
+                        "text": "Une baisse du nombre d’heures travaillées",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Le salaire réel est un indicateur qui ajuste le salaire nominal selon l’inflation : retiens bien ce concept."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as compris que le salaire est lié au pouvoir d’achat, mais souviens-toi que le salaire réel tient compte de l’inflation."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le salaire réel mesure bien la capacité d’achat en tenant compte de la hausse des prix."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C’est exact : une hausse du salaire réel signifie que les salariés peuvent acheter plus avec leur revenu."
+                      }
+                    ]
+                  },
+                  "subContentId": "c51fed78-6bfd-4844-a36b-2757153b1807"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Inégalités sociales"
+                  },
+                  "params": {
+                    "question": "Quel indicateur économique peut révéler des inégalités sociales accrues ?",
+                    "answers": [
+                      {
+                        "text": "La hausse de l’indice de Gini",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "L’indice de Gini mesure les écarts de revenus entre les plus riches et les plus pauvres dans un pays.",
+                          "chosenFeedback": "Exact : plus l’indice de Gini est élevé, plus les inégalités de revenus sont fortes entre les ménages."
+                        }
+                      },
+                      {
+                        "text": "L’augmentation du PIB par habitant",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Le PIB par habitant montre la richesse moyenne d’un pays, mais ne mesure pas la répartition de cette richesse."
+                        }
+                      },
+                      {
+                        "text": "La baisse du taux de chômage",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un chômage faible est un indicateur économique global, mais il ne révèle pas directement les inégalités sociales."
+                        }
+                      },
+                      {
+                        "text": "L’augmentation des dépenses publiques",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Cherche un indicateur qui mesure les écarts de revenus : c’est le signe d’inégalités sociales."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Le PIB par habitant mesure la richesse moyenne, mais pas les écarts entre individus : cherche un autre indicateur."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Tu as une idée : l’indice de Gini est bien l’indicateur qui mesure les inégalités de revenus."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : l’indice de Gini révèle les écarts de revenus, donc les inégalités sociales."
+                      }
+                    ]
+                  },
+                  "subContentId": "b9e3fe86-a45a-42b2-b003-081666d03739"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Relis attentivement le cours sur la croissance économique et ses indicateurs. Recommence le quiz pour repérer où tu bloques."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Plusieurs réponses sont proches de la bonne solution. Identifie les notions qui te résistent encore et travaille-les point par point."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "La plupart des indicateurs sont maîtrisés, mais certains résistent encore. Note ceux qui te posent problème et révise-les."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Tu as bien compris les indicateurs économiques des Trente Glorieuses. Continue à t’entraîner pour renforcer ces acquis."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            }
+          },
+          {
+            "id": "c6",
+            "titre": "Appariement des secteurs économiques",
+            "objectif": "Classer les secteurs économiques selon leur évolution",
+            "consigne": "Associez chaque secteur économique (primaire, secondaire, tertiaire) à son évolution durant les Trente Glorieuses en utilisant les termes du glossaire.",
+            "module": "Appariement",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Appariement des secteurs économiques",
+              "intro": "Associez chaque secteur économique à son évolution durant les Trente Glorieuses en utilisant les termes du glossaire. Relis-toi pour vérifier que chaque association est logique.",
+              "pairs": [
+                {
+                  "question": "Secteur primaire (agriculture, pêche)",
+                  "answer": "Mécanisation et modernisation des exploitations"
+                },
+                {
+                  "question": "Secteur secondaire (industrie)",
+                  "answer": "Croissance forte et plein emploi industriel"
+                },
+                {
+                  "question": "Secteur tertiaire (services)",
+                  "answer": "Développement massif des emplois de bureau et commerciaux"
+                },
+                {
+                  "question": "Production agricole",
+                  "answer": "Augmentation grâce aux progrès techniques et aux subventions"
+                },
+                {
+                  "question": "Industrie lourde (sidérurgie, automobile)",
+                  "answer": "Concentration des entreprises et développement des grands groupes"
+                },
+                {
+                  "question": "Commerce et distribution",
+                  "answer": "Essor des grandes surfaces et consommation de masse"
+                },
+                {
+                  "question": "Banques et assurances",
+                  "answer": "Développement lié à l'épargne et aux crédits à la consommation"
+                },
+                {
+                  "question": "Construction (logements, infrastructures)",
+                  "answer": "Boom avec la reconstruction et l'urbanisation"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "e7",
+        "titre": "Étude des transformations sociales",
+        "objectif": "Analyser les changements dans la société et leurs conséquences",
+        "cartes": [
+          {
+            "id": "c8",
+            "titre": "Ordonner les paragraphes sur la société salariale",
+            "objectif": "Comprendre l'organisation du travail",
+            "consigne": "Remettez dans l'ordre les paragraphes décrivant les caractéristiques de la société salariale et son impact sur les modes de vie.",
+            "module": "SortParagraphs",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Voici 8 paragraphes à remettre dans l’ordre pour expliquer comment s’est organisée la **société salariale** pendant les **Trente Glorieuses**. Rassemble-les de façon logique, sans aide artificielle. Réorganise-les trois fois si besoin : la bonne suite finira par s’imposer à toi.",
+              "paragraphs": [
+                "**L’État-providence** renforce les droits des travailleurs par des lois (sécurité sociale, conventions collectives, droit du travail) qui encadrent les rapports entre employeurs et salariés.",
+                "Les entreprises adoptent le **fordisme** : production de masse standardisée, salaires plus élevés et pouvoir d’achat en hausse, ce qui alimente la **société de consommation**.",
+                "La **planification économique** de l’État favorise les grands secteurs industriels (automobile, sidérurgie, énergie) et garantit une croissance régulière grâce à des investissements publics.",
+                "Les salariés obtiennent des contrats à durée indéterminée (**CDI**), une protection contre le licenciement et des avantages sociaux (repos hebdomadaire, congés payés, retraites).",
+                "Le travail en usine se généralise, mais il exige une main-d’œuvre stable et qualifiée, souvent recrutée via des formations professionnelles promues par l’État.",
+                "Cette organisation du travail transforme la société : les ouvriers deviennent une classe majoritaire, détentrice de droits nouveaux et d’un niveau de vie en progression.",
+                "Les gains de productivité permettent d’augmenter les salaires, mais aussi de réduire le temps de travail (semaine de 40 heures, RTT plus tard) au bénéfice du loisir et de la vie familiale.",
+                "Enfin, la **croissance économique** stimulée par ces dynamiques crée un cercle vertueux où augmentation des salaires et expansion du marché se renforcent mutuellement."
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Relis attentivement les paragraphes en cherchant comment poser les bases avant d’aborder les effets. La société salariale repose d’abord sur des règles et des structures : par quoi commencer ?"
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as identifié l’importance de l’État et du travail. Maintenant, cherche comment les entreprises et les ouvriers s’articulent dans cette logique. Un élément manque pour faire le lien."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Bonne mise en ordre sur l’essentiel : droits, production, croissance. Vérifie si tu as bien saisi comment les transformations économiques transforment la société en profondeur."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Parfait : tu as reconstitué la logique complète entre organisation du travail, droits sociaux, consommation et croissance. La société salariale des Trente Glorieuses est maintenant claire."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Ordonner les paragraphes sur la société salariale"
+            }
+          },
+          {
+            "id": "c9",
+            "titre": "Quiz sur les inégalités sociales",
+            "objectif": "Évaluer les connaissances sur les disparités",
+            "consigne": "Répondez au quiz pour vérifier votre compréhension des inégalités sociales durant les Trente Glorieuses.",
+            "module": "QuizSetVF",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz sur les inégalités sociales",
+              "questions": [
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Taux de croissance annuelle"
+                  },
+                  "params": {
+                    "question": "La croissance économique annuelle moyenne en France pendant les Trente Glorieuses (1945-1975) était supérieure à 5 %.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Exact : les Trente Glorieuses sont marquées par une croissance économique forte, souvent supérieure à 5 % par an en moyenne.",
+                    "feedbackOnWrong": "En fait, la croissance annuelle moyenne en France pendant cette période dépassait souvent 5 %, ce qui explique l'augmentation du niveau de vie."
+                  },
+                  "subContentId": "00a3ddbd-6883-4382-ad45-8b4d843003d6"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Inégalités entre femmes et hommes"
+                  },
+                  "params": {
+                    "question": "Les inégalités sociales entre femmes et hommes se sont réduites de manière significative pendant les Trente Glorieuses.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Oui : l'égalité professionnelle entre femmes et hommes progressait peu, même si des droits sociaux (comme le mariage) évoluaient.",
+                    "feedbackOnWrong": "En réalité, les inégalités entre femmes et hommes restaient fortes : les femmes gagnaient moins, avaient moins accès aux postes qualifiés et assumaient le travail domestique."
+                  },
+                  "subContentId": "3418de19-a6a1-45f6-8313-6f85da54f756"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Accès à la propriété"
+                  },
+                  "params": {
+                    "question": "L'achat d'une maison était accessible à la majorité des ménages français pendant les Trente Glorieuses grâce aux prêts réglementés.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Bonne réponse : l'État encourageait la propriété avec des prêts aidés (comme le Crédit Foncier), ce qui a permis une accession à la propriété massive.",
+                    "feedbackOnWrong": "Non : la propriété a effectivement progressé grâce aux politiques publiques (prêts à taux régulés), mais tous les ménages n'en profitaient pas de manière équitable."
+                  },
+                  "subContentId": "6a2a26de-6acc-493c-87cf-c70a47560d7e"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Désindustrialisation"
+                  },
+                  "params": {
+                    "question": "La désindustrialisation a commencé dès les Trente Glorieuses pour les régions minières ou sidérurgiques.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Correct : la désindustrialisation s'est surtout accentuée après 1975 (choc pétrolier), pas pendant les Trente Glorieuses.",
+                    "feedbackOnWrong": "Mauvaise idée : pendant les Trente Glorieuses, l'industrie pesait encore lourd (métallurgie, textile). La désindustrialisation est un processus plus récent lié à la crise des années 1970."
+                  },
+                  "subContentId": "31f18c40-cf1c-4d76-a50b-1a0c9e225e44"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Rôle de l'État-providence"
+                  },
+                  "params": {
+                    "question": "L'État-providence a réduit les inégalités sociales en assurant la protection sociale pour tous les Français.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Exact : l'État-providence a amélioré la couverture sociale, mais les bénéficiaires restaient souvent les salarisés, excluant les travailleurs précaires ou agricoles.",
+                    "feedbackOnWrong": "En réalité, les dispositifs de protection sociale (sécurité sociale, retraites) profitaient surtout aux salariés du privé. Les inégalités entre urbains et ruraux persistaient aussi."
+                  },
+                  "subContentId": "60a112f6-2081-4266-b51a-6277cfd3c93f"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Reprends le cours sur les inégalités sociales pendant les Trente Glorieuses. Identifie les groupes exclus (femmes, ruraux, précaires) et les mécanismes de la croissance."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu comprends les grandes tendances mais certains points résistent : relis les paragraphes sur la société salariale et les limites de l'État-providence."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Bonne base : pour les questions restantes, repère les affirmations qui t'ont fait douter pour comprendre précisemment les inégalités."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Tu maîtrises l'essentiel des inégalités sociales des Trente Glorieuses. Pour aller plus loin, compare avec les Trente Piteuses pour voir comment ces inégalités se creusent."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            }
+          }
+        ]
+      },
+      {
+        "id": "e10",
+        "titre": "Limites et héritages des Trente Glorieuses",
+        "objectif": "Identifier les crises et les transformations ultérieures",
+        "cartes": [
+          {
+            "id": "c11",
+            "titre": "Texte à trous sur les Trente Piteuses",
+            "objectif": "Compléter les informations manquantes",
+            "consigne": "Complétez le texte à trous sur les Trente Piteuses en utilisant les termes du glossaire pour décrire les crises et leurs causes.",
+            "module": "FillInTheBlanks",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Complétez le texte ci-dessous en utilisant les **mots-clés** du glossaire pour décrire les crises des Trente Piteuses.\n\nUtilisez les termes suivants : *crise pétrolière*, *désindustrialisation*, *inégalités sociales*, *mondialisation*, *urbanisation*, *hausse du niveau de vie*.",
+              "questions": [
+                "Après les Trente Glorieuses, la France entre dans une période appelée les *Trente Piteuses* marquée par une *hausse du niveau de vie* qui ralentit fortement.",
+                "Les deux *crise pétrolière* de 1973 et 1979 frappent durement l’économie française, causant une inflation élevée et un ralentissement de la *croissance économique*.",
+                "Face à la concurrence internationale, de nombreuses usines ferment, ce qui accélère la *désindustrialisation* des régions industrielles comme le Nord ou la Lorraine.",
+                "L’augmentation du chômage et la précarité des emplois creusent les *inégalités sociales* entre les plus riches et les plus pauvres.",
+                "Les villes s’étendent avec l’arrivée massive de ruraux, ce qui intensifie l’*urbanisation* et pose des défis pour les transports et les logements.",
+                "La *mondialisation* s’accélère, exposant les entreprises françaises à une concurrence accrue sur les marchés internationaux."
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Reprends les notions clés des Trente Piteuses : les crises économiques, les transformations sociales et leurs conséquences. Relis les définitions de crise pétrolière, désindustrialisation et inégalités sociales."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as trouvé quelques mots, mais certains concepts restent flous. Concentre-toi sur les liens entre les crises économiques et leurs impacts sociaux : hausse du niveau de vie, urbanisation et mondialisation."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque complet ! Vérifie si tu as bien associé chaque crise à ses causes et ses effets : crise pétrolière → inflation, désindustrialisation → chômage, inégalités sociales → précarité."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail : tu as bien identifié les mots-clés et leurs liens avec les Trente Piteuses. Pour aller plus loin, cherche des exemples concrets de ces phénomènes dans des documents d’actualité ou des archives."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Texte à trous sur les Trente Piteuses"
+            }
+          },
+          {
+            "id": "c12",
+            "titre": "Synthèse des limites",
+            "objectif": "Résumer les principales limites des Trente Glorieuses",
+            "consigne": "Rédigez un résumé de 5 à 10 lignes sur les limites des Trente Glorieuses en utilisant au moins 5 termes du glossaire.",
+            "module": "Summary",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "intro": "Voici une synthèse des limites des Trente Glorieuses. Choisissez la phrase qui résume correctement cette période en utilisant les termes du glossaire.",
+              "summaries": [
+                {
+                  "summary": [
+                    "Les Trente Glorieuses ont connu une forte croissance économique, mais cette période a aussi révélé des limites comme la crise pétrolière de 1973, la désindustrialisation, une hausse des inégalités sociales et la remise en cause de l'État-providence.",
+                    "Les Trente Glorieuses ont été marquées par une société de consommation en déclin et une baisse continue de l'urbanisation, sans aucun impact sur la société salariale.",
+                    "La croissance économique des Trente Glorieuses a permis de supprimer entièrement la mondialisation et de stabiliser les prix du pétrole pour plusieurs décennies."
+                  ],
+                  "tip": "Pense à l'évolution des secteurs économiques et aux conséquences sociales de cette période.",
+                  "subContentId": "c1a1eb45-af84-45d9-86d9-c4fe0257c27c"
+                },
+                {
+                  "summary": [
+                    "La crise pétrolière de 1973 a révélé les faiblesses de la croissance économique, tandis que la désindustrialisation a transformé les emplois industriels en emplois tertiaires.",
+                    "La tertiarisation de l'économie a résolu tous les problèmes de la société salariale en augmentant mécaniquement les salaires des ouvriers.",
+                    "La désindustrialisation a entraîné une augmentation massive des inégalités sociales sans aucun lien avec la mondialisation ou la tertiarisation."
+                  ],
+                  "tip": "Réfléchis à la manière dont les secteurs économiques se transforment et impactent les travailleurs.",
+                  "subContentId": "30d6100c-73d5-4d1e-9159-a003bd4675a3"
+                },
+                {
+                  "summary": [
+                    "Les inégalités sociales se sont creusées pendant les Trente Glorieuses, notamment à cause de la hausse du niveau de vie qui a favorisé une partie de la population mais pas tous les groupes sociaux.",
+                    "La société salariale a rendu les inégalités sociales invisibles en garantissant un emploi stable à l'ensemble de la population active.",
+                    "La hausse du niveau de vie a supprimé toute forme de compétition entre les groupes sociaux, rendant les inégalités sociales inexistantes."
+                  ],
+                  "tip": "Considère les disparités dans l'accès aux ressources et aux opportunités durant cette période.",
+                  "subContentId": "18486bfe-5e2c-4529-8ccc-77d04ce87914"
+                },
+                {
+                  "summary": [
+                    "La remise en cause de l'État-providence après la crise pétrolière montre que la planification économique ne pouvait plus assurer une protection sociale suffisante pour tous.",
+                    "La planification économique a permis à l'État-providence de résoudre définitivement les problèmes de la société de consommation.",
+                    "L'État-providence a disparu durant les Trente Glorieuses en raison de la désindustrialisation et de la disparition de la société salariale."
+                  ],
+                  "tip": "Analyse le rôle de l'État dans la protection sociale et sa capacité à maintenir un équilibre économique.",
+                  "subContentId": "fd59e7a8-8d29-4ec7-b082-3f530059b13d"
+                },
+                {
+                  "summary": [
+                    "La mondialisation et la société de consommation ont accentué les limites des Trente Glorieuses, rendant cette période insoutenable à long terme.",
+                    "La mondialisation a permis une croissance économique illimitée sans aucun impact négatif sur les Trente Glorieuses.",
+                    "La société de consommation a résolu les problèmes de désindustrialisation en supprimant la tertiarisation de l'économie."
+                  ],
+                  "tip": "Évalue les effets de la globalisation et de la transformation des modes de vie sur la période étudiée.",
+                  "subContentId": "e4dec4c0-eedf-4892-a88c-3835b6874ce9"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les Trente Glorieuses sont une période de croissance économique, mais elles comportent aussi des limites importantes à identifier. Relis les notions comme la crise pétrolière, la désindustrialisation et les inégalités sociales pour mieux les comprendre."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu commences à cerner les problèmes de cette période. Accorde une attention particulière au rôle de l'État-providence, à la mondialisation et à la société de consommation pour affiner ta synthèse."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Tu as bien repéré plusieurs limites, mais certaines idées comme la société salariale ou la planification économique restent à préciser. Consulte les repères clés sur ces notions pour aller plus loin."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail : tu as identifié les principales limites des Trente Glorieuses en utilisant les termes du glossaire. Pour aller plus loin, cherche les causes profondes de la crise pétrolière et de la désindustrialisation."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Synthèse des limites"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

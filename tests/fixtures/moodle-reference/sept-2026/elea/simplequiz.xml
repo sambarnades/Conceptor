@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="189" moduleid="14032" modulename="simplequiz" contextid="17760">
+  <simplequiz id="189">
+    <course>801</course>
+    <name>QCM : le cycle de l’eau</name>
+    <intro>&lt;p&gt;Choisis la bonne réponse.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <questions>[{"text":"&lt;p&gt;Quelle \u00e9tape suit l\u2019\u00e9vaporation ?&lt;\/p&gt;","answers":[{"text":"&lt;p&gt;La condensation&lt;\/p&gt;","iscorrect":1},{"text":"&lt;p&gt;L\u2019infiltration&lt;\/p&gt;","iscorrect":0},{"text":"&lt;p&gt;Le ruissellement&lt;\/p&gt;","iscorrect":0}]},{"text":"&lt;p&gt;Qu\u2019est-ce qu\u2019une nappe ?&lt;\/p&gt;","answers":[{"text":"&lt;p&gt;Une r\u00e9serve d\u2019eau souterraine&lt;\/p&gt;","iscorrect":1},{"text":"&lt;p&gt;Un nuage bas&lt;\/p&gt;","iscorrect":0}]}]</questions>
+    <grade>100</grade>
+    <timecreated>1790541176</timecreated>
+    <timemodified>0</timemodified>
+    <completionminattempts>1</completionminattempts>
+  </simplequiz>
+</activity>

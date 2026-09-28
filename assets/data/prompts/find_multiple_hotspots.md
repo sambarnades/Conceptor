@@ -2,7 +2,7 @@
 
 > ⚠️ Ce fichier est une **documentation de conception**. Il n'est **pas lu au runtime**.
 > Le prompt réellement envoyé au LLM est assemblé par `js/services/prompt-generator.js` à partir
-> des clés i18n `prompt_find_multiple_hotspots_*` des 11 locales (`js/locales/*.json`).
+> des clés i18n `prompt_find_multiple_hotspots_*` des 12 locales (`js/locales/*.json`).
 
 ## Particularité : mêmes « deux IA, une source injectée » qu'Image interactive
 
@@ -55,6 +55,9 @@ Upload image  →  vision  →  zones [{x,y,label,description}]
   "alreadySelectedFeedback": "Vous avez déjà trouvé cette zone !"
 }
 ```
+
+`questionTitle` conserve un titre interne distinct du titre de l’activité.
+`figure` vaut `rectangle` ou `circle`. Un plafond volontaire `numberHotspots` inférieur au nombre de zones correctes est conservé.
 
 Champs optionnels par hotspot : `width`, `height` (taille de la zone cliquable en %, défaut 20).
 Le processeur `processors/FindMultipleHotspots.js` traduit ce format plat en `content.json` 1.0

@@ -1,0 +1,538 @@
+{
+  "date": "2026-09-11",
+  "bilan": {
+    "paquets": 1,
+    "paquetsSansBibliotheques": 0,
+    "bibliotheques": 25,
+    "absentes": 2,
+    "versionsDifferentes": 1,
+    "semanticsDifferentes": 0,
+    "conflitsEntrePaquets": 0,
+    "dependancesAbsentes": [],
+    "optionsAbsentes": [
+      "H5P.Row-1.3",
+      "H5P.RowColumn-1.3"
+    ]
+  },
+  "paquets": [
+    {
+      "fichier": "livre-row.h5p",
+      "sha256": "d729e46943ddf402acfb23eba93f886d3e6dea09eafd5193cf29e876a5bcaa91",
+      "mainLibrary": "H5P.InteractiveBook",
+      "bibliotheques": 25,
+      "valide": true
+    }
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome-4.5",
+      "elea": "4.5.6",
+      "local": "4.5.4",
+      "comparaisonVersion": 1,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [
+        {
+          "chemin": "$.patchVersion",
+          "local": 4,
+          "elea": 6
+        }
+      ],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.AdvancedText-1.1",
+      "elea": "1.1.14",
+      "local": "1.1.14",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "5081e8b8c55d8f0c86503cea38f38ea01353a7e1648d10f672aa2b161d9af2a2",
+      "hashSemanticsLocal": "5081e8b8c55d8f0c86503cea38f38ea01353a7e1648d10f672aa2b161d9af2a2",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Blanks-1.14",
+      "elea": "1.14.37",
+      "local": "1.14.37",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "f8a554382476122b6ffed13392a54925ef6378a0834b1e056a362b6fe0ee141d",
+      "hashSemanticsLocal": "f8a554382476122b6ffed13392a54925ef6378a0834b1e056a362b6fe0ee141d",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Column-1.22",
+      "elea": "1.22.0",
+      "local": "1.22.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "a17c54790428385a14c17f175eaf0fbb24a06be605f540a8218754d1a81728e3",
+      "hashSemanticsLocal": "a17c54790428385a14c17f175eaf0fbb24a06be605f540a8218754d1a81728e3",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [
+        "H5P.Row-1.3"
+      ],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Components-1.0",
+      "elea": "1.0.97",
+      "local": "1.0.97",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.FontIcons-1.0",
+      "elea": "1.0.11",
+      "local": "1.0.11",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.InteractiveBook-1.15",
+      "elea": "1.15.0",
+      "local": "1.15.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "0e7c0817e04ce006b7e77ca0ade6fc988b8c458f76c68700161f02eaaac63f02",
+      "hashSemanticsLocal": "0e7c0817e04ce006b7e77ca0ade6fc988b8c458f76c68700161f02eaaac63f02",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.JoubelUI-1.3",
+      "elea": "1.3.45",
+      "local": "1.3.45",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.MultiChoice-1.16",
+      "elea": "1.16.27",
+      "local": "1.16.27",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "57435fbb96627f7de33e3289d266aa78cccb95148ff44141818a06c2d1ea4f55",
+      "hashSemanticsLocal": "57435fbb96627f7de33e3289d266aa78cccb95148ff44141818a06c2d1ea4f55",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Question-1.5",
+      "elea": "1.5.53",
+      "local": "1.5.53",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": true
+    },
+    {
+      "nom": "H5P.Row-1.3",
+      "elea": "1.3.0",
+      "local": null,
+      "comparaisonVersion": null,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": false,
+      "hashSemanticsElea": "0f3585b82703e7ceeed167b3170d5441e08215f3c359249c6c38cd7d820b1246",
+      "hashSemanticsLocal": null,
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [
+        "H5P.RowColumn-1.3"
+      ],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.RowColumn-1.3",
+      "elea": "1.3.0",
+      "local": null,
+      "comparaisonVersion": null,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": false,
+      "semanticsIdentiques": false,
+      "hashSemanticsElea": "5d42b8a2d35a5619cc803c60b75947d81bb01365be878ee0aadd90ed647998a4",
+      "hashSemanticsLocal": null,
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Summary-1.10",
+      "elea": "1.10.32",
+      "local": "1.10.32",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "eaea19c7827281e6344bca76df1c2ab64e8c4be2f748bc88edf5ed3077250367",
+      "hashSemanticsLocal": "eaea19c7827281e6344bca76df1c2ab64e8c4be2f748bc88edf5ed3077250367",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Table-1.2",
+      "elea": "1.2.8",
+      "local": "1.2.8",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "898c15835bc10cc8116774943915bf2c7f628dba9a0a0e03afd694fa7e3140e1",
+      "hashSemanticsLocal": "898c15835bc10cc8116774943915bf2c7f628dba9a0a0e03afd694fa7e3140e1",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.TextUtilities-1.3",
+      "elea": "1.3.0",
+      "local": "1.3.0",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.Transition-1.0",
+      "elea": "1.0.4",
+      "local": "1.0.4",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5P.TrueFalse-1.8",
+      "elea": "1.8.21",
+      "local": "1.8.21",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "0f4da26f5cd452e84b1c042608f999e588e4e9e0033030d18fc50500b873a22f",
+      "hashSemanticsLocal": "0f4da26f5cd452e84b1c042608f999e588e4e9e0033030d18fc50500b873a22f",
+      "sansSemantics": false,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.ColorSelector-1.3",
+      "elea": "1.3.1",
+      "local": "1.3.1",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.RadioGroup-1.1",
+      "elea": "1.1.4",
+      "local": "1.1.4",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.RangeList-1.0",
+      "elea": "1.0.13",
+      "local": "1.0.13",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.ShowWhen-1.0",
+      "elea": "1.0.9",
+      "local": "1.0.9",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.SummaryTextualEditor-1.1",
+      "elea": "1.1.12",
+      "local": "1.1.12",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.TableList-1.0",
+      "elea": "1.0.4",
+      "local": "1.0.4",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "H5PEditor.VerticalTabs-1.3",
+      "elea": "1.3.14",
+      "local": "1.3.14",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    },
+    {
+      "nom": "jQuery.ui-1.10",
+      "elea": "1.10.22",
+      "local": "1.10.22",
+      "comparaisonVersion": 0,
+      "paquets": [
+        "livre-row.h5p"
+      ],
+      "conflitEntrePaquets": false,
+      "manifesteIdentique": true,
+      "semanticsIdentiques": true,
+      "hashSemanticsElea": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "hashSemanticsLocal": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "sansSemantics": true,
+      "ecartsSemantics": [],
+      "ecartsManifeste": [],
+      "dependancesAbsentes": [],
+      "optionsAbsentes": [],
+      "themeElea": false
+    }
+  ]
+}

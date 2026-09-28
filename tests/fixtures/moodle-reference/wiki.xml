@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="36" moduleid="22727" modulename="wiki" contextid="55589">
+  <wiki id="36">
+    <name>Wiki</name>
+    <intro>&lt;p&gt;sqd&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <timecreated>0</timecreated>
+    <timemodified>1788524668</timemodified>
+    <firstpagetitle>Nom de la première page</firstpagetitle>
+    <wikimode>collaborative</wikimode>
+    <defaultformat>html</defaultformat>
+    <forceformat>0</forceformat>
+    <editbegin>0</editbegin>
+    <editend>0</editend>
+    <subwikis>
+    </subwikis>
+  </wiki>
+</activity>

@@ -1,0 +1,2370 @@
+[
+  {
+    "numero": 2,
+    "module": "Summary",
+    "recu": true,
+    "fichier_telechargement": "02-Summary.h5p",
+    "sha256_source": "624eec5d8a333e0aa116c0f2eed5ba69b9920d224fddd920e04244f2bb3c98ed",
+    "sha256_retour": "c5e471b05f112538a93ffe7f6ab0d8568953f47fe947d4ebd8180089c8c23f34",
+    "source_comparee": "a-importer/02-Summary.h5p",
+    "titre": "RECETTE 02 — Résumé",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "summaries[0].tip"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.SummaryTextualEditor",
+        "version": "1.1.12"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Summary",
+        "version": "1.10.32"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 2,
+      "ajout_natif": 0,
+      "retrait_natif": 1,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 3,
+    "module": "DragTheWords",
+    "recu": true,
+    "fichier_telechargement": "03-DragTheWords.h5p",
+    "sha256_source": "88b2d552a0086d5fffae27b2bcfe0e10551eab9f8cb68b214a9103312370c9f5",
+    "sha256_retour": "671eb71ac35a594dd3164929cdb16ad54305aed60fc4e26e8fc4683851cb19cf",
+    "source_comparee": "a-importer/03-DragTheWords.h5p",
+    "titre": "RECETTE 03 — Glisser les mots",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "taskDescription"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.DragText",
+        "version": "1.10.50"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 8,
+      "ajout_natif": 0,
+      "retrait_natif": 0,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 4,
+    "module": "Essay",
+    "recu": true,
+    "fichier_telechargement": "04-Essay.h5p",
+    "sha256_source": "06e95383940d67593fa5fdecfdeb5a6fcbeb6955db9c9acff3447de3d7180ad7",
+    "sha256_retour": "9d5fbf619ee6453b01424c9193cb46fa05385a6c12ad64f3e485ade00b304077",
+    "source_comparee": "a-importer/04-Essay.h5p",
+    "titre": "RECETTE 04 — Rédaction",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "keywords[0].keyword"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.Essay",
+        "version": "1.5.13"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.TextUtilities",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 4,
+      "ajout_natif": 7,
+      "retrait_natif": 2,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 5,
+    "module": "FillInTheBlanks",
+    "recu": true,
+    "fichier_telechargement": "05-FillInTheBlanks.h5p",
+    "sha256_source": "afac629d958de86806a08762a6d3d16f09877e2a591317e32bb14313b11a8418",
+    "sha256_retour": "04e41c6d3c1d1f75e210fcf7becaab587452a7120c229052166bdd5c0c2f3448",
+    "source_comparee": "a-importer/05-FillInTheBlanks.h5p",
+    "titre": "RECETTE 05 — Texte à trous",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "text"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Blanks",
+        "version": "1.14.37"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.TextUtilities",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 2,
+      "ajout_natif": 5,
+      "retrait_natif": 2,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 6,
+    "module": "MarkTheWords",
+    "recu": true,
+    "fichier_telechargement": "06-MarkTheWords.h5p",
+    "sha256_source": "238e31845882c22e86c8826579f05bf13e2195b414012415a6be0d4940f69f96",
+    "sha256_retour": "e9a5ebec3dc3fd9ac6151fde64800ca8372e99f1c0f3bd0f396c9f60bc20fcc9",
+    "source_comparee": "a-importer/06-MarkTheWords.h5p",
+    "titre": "RECETTE 06 — Marquer les mots",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "taskDescription"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.MarkTheWords",
+        "version": "1.11.24"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 2,
+      "ajout_natif": 5,
+      "retrait_natif": 1,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 7,
+    "module": "TrueFalse",
+    "recu": true,
+    "fichier_telechargement": "07-TrueFalse.h5p",
+    "sha256_source": "34a03277350edbd27f21d3f69229ab0982bdc1428129c1ebc8567be5453e8a80",
+    "sha256_retour": "e33970c97bb0b7daf53d3a3c42a4998e5adfd53d8c6d27a07adbed255016e0c3",
+    "source_comparee": "a-importer/07-TrueFalse.h5p",
+    "titre": "RECETTE 07 — Vrai-Faux",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "behaviour.feedbackOnCorrect"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RadioGroup",
+        "version": "1.1.4"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.TrueFalse",
+        "version": "1.8.21"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 2,
+      "ajout_natif": 5,
+      "retrait_natif": 3,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 8,
+    "module": "MultipleChoice",
+    "recu": true,
+    "fichier_telechargement": "08-MultipleChoice.h5p",
+    "sha256_source": "987abbd4385fd7711871f78aa3a990d8b807b5452b24b7eb3a130ede86453c90",
+    "sha256_retour": "4457e7b9c3e638ae15d288c78493489751c4ef071b551f81db4d6aabd71d1109",
+    "source_comparee": "a-importer/08-MultipleChoice.h5p",
+    "titre": "RECETTE 08 — Choix multiple",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "answers[0].tipsAndFeedback"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.MultiChoice",
+        "version": "1.16.27"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 0,
+      "normalisation_html": 3,
+      "ajout_natif": 7,
+      "retrait_natif": 2,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 9,
+    "module": "SingleChoiceSet",
+    "recu": true,
+    "fichier_telechargement": "09-SingleChoiceSet.h5p",
+    "sha256_source": "01a30b52f57ddb450442b81d751e01b92ec4b8a556a24051c3a6a131b4eede5f",
+    "sha256_retour": "0a7ab600ac9d1179d36472b91d0c6993a2112795fe7dd1f066c39ab552b60027",
+    "source_comparee": "a-importer/09-SingleChoiceSet.h5p",
+    "titre": "RECETTE 09 — Choix unique en série",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "choices[0].question"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.SingleChoiceSetTextualEditor",
+        "version": "1.0.10"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.SingleChoiceSet",
+        "version": "1.11.88"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 2,
+      "normalisation_html": 2,
+      "ajout_natif": 0,
+      "retrait_natif": 0,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 10,
+    "module": "Flashcards",
+    "recu": true,
+    "fichier_telechargement": "10-Flashcards.h5p",
+    "sha256_source": "8194a9cd874c8e7cdb76dd3408091f98d9ac5e470c0e8f94e8e3069db1d5e5f8",
+    "sha256_retour": "3827ee61c2cd5d36abd484710d3268181000bff4fc2c51a0606876835467bf30",
+    "source_comparee": "a-importer/10-Flashcards.h5p",
+    "titre": "RECETTE 10 — Cartes mémoire",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "cards[0].tip"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.Flashcards",
+        "version": "1.7.10"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/drapeau.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 0,
+      "ajout_natif": 0,
+      "retrait_natif": 7,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 11,
+    "module": "DialogCards",
+    "recu": true,
+    "fichier_telechargement": "11-DialogCards.h5p",
+    "sha256_source": "df74e1612cf83deee2b4a7c7bd17496e1d82f7fd84119089080a71133185a642",
+    "sha256_retour": "c0cfe7cdb69f7da930caa9695a804fbbb9cb93bf601438ff577dd245ef2d8341",
+    "source_comparee": "a-importer/11-DialogCards.h5p",
+    "titre": "RECETTE 11 — Cartes de dialogue",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "dialogs[0].tips.front"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Audio",
+        "version": "1.5.29"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.Dialogcards",
+        "version": "1.9.40"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/audios/audio-8f13c941.wav",
+        "identique_dans_retour": true
+      },
+      {
+        "chemin": "content/images/drapeau.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 2,
+      "normalisation_html": 1,
+      "ajout_natif": 1,
+      "retrait_natif": 1,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 12,
+    "module": "Dictation",
+    "recu": true,
+    "fichier_telechargement": "12-Dictation.h5p",
+    "sha256_source": "a9f9da40c4cdc2fa2f0f954ffe792e44902aca044179775154bc122f7ddc5d6f",
+    "sha256_retour": "1d5b5425ea2923c8ef0990b5e29b18740bd53b3d949cf2f334a57ad3ec373be0",
+    "source_comparee": "a-importer/12-Dictation.h5p",
+    "titre": "RECETTE 12 — Dictée",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "sentences[0].description"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Audio",
+        "version": "1.5.29"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.Dictation",
+        "version": "1.3.3"
+      },
+      {
+        "nom": "H5PEditor.AudioRecorder",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.TextUtilities",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/audios/dictee-paris.wav",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 3,
+      "ajout_natif": 2,
+      "retrait_natif": 5,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 13,
+    "module": "FindTheWords",
+    "recu": true,
+    "fichier_telechargement": "13-FindTheWords.h5p",
+    "sha256_source": "542402cae7120f52c97357f0eabab94becb07d4587182ab48fbf8543607a7eb9",
+    "sha256_retour": "e6465e8c00f3ab6ede1bc127d699a4fa24cf6fbe38d438d44a0e125d147c7939",
+    "source_comparee": "a-importer/13-FindTheWords.h5p",
+    "titre": "RECETTE 13 — Mots mêlés",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "taskDescription"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.FindTheWords",
+        "version": "1.4.4"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Timer",
+        "version": "0.4.2"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 2,
+      "normalisation_html": 0,
+      "ajout_natif": 0,
+      "retrait_natif": 0,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 14,
+    "module": "SortParagraphs",
+    "recu": true,
+    "fichier_telechargement": "14-SortParagraphs (1).h5p",
+    "sha256_source": "087e8fd58975b45f858634a38b2405664510bf60f381427afc930f14fd9560df",
+    "sha256_retour": "81016057a0e13bcd13787ffb036dc1dd6167210e799ec7e083442514609ece4e",
+    "source_comparee": "a-importer/14-SortParagraphs.h5p",
+    "titre": "RECETTE 14 — Classer les paragraphes",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "taskDescription"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.SortParagraphs",
+        "version": "0.11.9"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 4,
+      "ajout_natif": 5,
+      "retrait_natif": 3,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 15,
+    "module": "Crossword",
+    "recu": true,
+    "fichier_telechargement": "15-Crossword.h5p",
+    "sha256_source": "57a3fd6fa531f22ed59756c0a9542aa6ca350ac21d8e9d7081b74154c373f7d3",
+    "sha256_retour": "9136158211305bd9ba4f47cf4c6f6a7f86165099fc619fd03198f21fc53927c0",
+    "source_comparee": "a-importer/15-Crossword.h5p",
+    "titre": "RECETTE 15 — Mots croisés",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "words[0].extraClue"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.AdvancedText",
+        "version": "1.1.14"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.Crossword",
+        "version": "0.5.13"
+      },
+      {
+        "nom": "H5PEditor.ColorSelector",
+        "version": "1.3.1"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.MaterialDesignIcons",
+        "version": "1.0.0"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 0,
+      "normalisation_html": 5,
+      "ajout_natif": 1,
+      "retrait_natif": 1,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 16,
+    "module": "Glossary",
+    "recu": true,
+    "fichier_telechargement": "16-Glossary.h5p",
+    "sha256_source": "2cbb55a75b503ba08b8806df625547da3ef933b2c5d478a3caa34206e5ac1150",
+    "sha256_retour": "d9f34294ba3e8b60e5dbf89421a27eaee72db7b45a1e9b88a9849b4f1211d381",
+    "source_comparee": "a-importer/16-Glossary.h5p",
+    "titre": "RECETTE 16 — Glossaire",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "panels[0].title"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Accordion",
+        "version": "1.0.33"
+      },
+      {
+        "nom": "H5P.AdvancedText",
+        "version": "1.1.14"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 5,
+      "ajout_natif": 0,
+      "retrait_natif": 0,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 17,
+    "module": "QuizSet",
+    "recu": true,
+    "fichier_telechargement": "17-QuizSet.h5p",
+    "sha256_source": "5bf92c4f00f034099ccd1f076bf7b363780c20c6aef9829db5f550090ee6ba14",
+    "sha256_retour": "5759496cf17cf7985ae6496f9cfdd0e63267ad8b960ae6213b5a05222661fb3a",
+    "source_comparee": "a-importer/17-QuizSet.h5p",
+    "titre": "RECETTE 17 — Questionnaire mixte",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "introPage.introduction",
+      "questions[0].params.question"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Blanks",
+        "version": "1.14.37"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.QuestionSetTextualEditor",
+        "version": "1.3.18"
+      },
+      {
+        "nom": "H5PEditor.RadioGroup",
+        "version": "1.1.4"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.MultiChoice",
+        "version": "1.16.27"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.QuestionSet",
+        "version": "1.21.13"
+      },
+      {
+        "nom": "H5P.TextUtilities",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.TrueFalse",
+        "version": "1.8.21"
+      },
+      {
+        "nom": "H5P.Video",
+        "version": "1.6.79"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 2,
+      "normalisation_html": 7,
+      "ajout_natif": 27,
+      "retrait_natif": 6,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 18,
+    "module": "QuizSetQCM",
+    "recu": true,
+    "fichier_telechargement": "18-QuizSetQCM.h5p",
+    "sha256_source": "1855720b222a5783280164dd64f3c5ab9a8a9c629c374ee162167de056bc4554",
+    "sha256_retour": "29d58b32ac47efe1a72aad294b3094e2eaa121499e03f6f5040a66f9437b6236",
+    "source_comparee": "a-importer/18-QuizSetQCM.h5p",
+    "titre": "RECETTE 18 — Questionnaire QCM",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "introPage.introduction"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.QuestionSetTextualEditor",
+        "version": "1.3.18"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.MathDisplay",
+        "version": "1.0.7"
+      },
+      {
+        "nom": "H5P.MultiChoice",
+        "version": "1.16.27"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.QuestionSet",
+        "version": "1.21.13"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.Video",
+        "version": "1.6.79"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 21,
+      "ajout_natif": 42,
+      "retrait_natif": 4,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 19,
+    "module": "QuizSetVF",
+    "recu": true,
+    "fichier_telechargement": "19-QuizSetVF.h5p",
+    "sha256_source": "8a20be473414946e2a72b187e8abf93feb5ad0cd224ad8edddcaec9366002777",
+    "sha256_retour": "f71ed2290c2f8666d566794843d83d0df4e372f07ce1b4a0c2a518a59f9562c6",
+    "source_comparee": "a-importer/19-QuizSetVF.h5p",
+    "titre": "RECETTE 19 — Questionnaire Vrai-Faux",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "introPage.introduction"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5PEditor.QuestionSetTextualEditor",
+        "version": "1.3.18"
+      },
+      {
+        "nom": "H5PEditor.RadioGroup",
+        "version": "1.1.4"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.MathDisplay",
+        "version": "1.0.7"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.QuestionSet",
+        "version": "1.21.13"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.TrueFalse",
+        "version": "1.8.21"
+      },
+      {
+        "nom": "H5P.Video",
+        "version": "1.6.79"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 12,
+      "ajout_natif": 18,
+      "retrait_natif": 4,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 20,
+    "module": "DragAndDrop",
+    "recu": true,
+    "fichier_telechargement": "20-DragAndDrop.h5p",
+    "sha256_source": "80800d9a58ad7be4d9354cebf36466de59ff1a686dc5211d588f99a3c5226071",
+    "sha256_retour": "72c69f65abfed7a830fa1d739c506c144225c2c81947e1c8b30c0a295ac75eb3",
+    "source_comparee": "a-importer/20-DragAndDrop.h5p",
+    "titre": "RECETTE 20 — Glisser-déposer",
+    "titre_modifie": false,
+    "champs_retouches_relu": [],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.AdvancedText",
+        "version": "1.1.14"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.DragNBar",
+        "version": "1.5.26"
+      },
+      {
+        "nom": "H5P.DragNDrop",
+        "version": "1.1.5"
+      },
+      {
+        "nom": "H5P.DragNResize",
+        "version": "1.2.6"
+      },
+      {
+        "nom": "H5P.DragQuestion",
+        "version": "1.15.37"
+      },
+      {
+        "nom": "H5PEditor.DragQuestion",
+        "version": "1.10.27"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.Wizard",
+        "version": "1.2.17"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 0,
+      "normalisation_html": 4,
+      "ajout_natif": 1,
+      "retrait_natif": 2,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 21,
+    "module": "Timeline",
+    "recu": true,
+    "fichier_telechargement": "21-Timeline.h5p",
+    "sha256_source": "e4215995c87b07012f18fa7d8528ce20c65a913899f7c980545cd6562a8cc8e5",
+    "sha256_retour": "ff326aa2b911b72a1fecf7cbb1f5b85c5694371c59791435b2f790bf6c4f57a5",
+    "source_comparee": "a-importer/21-Timeline.h5p",
+    "titre": "RECETTE 21 — Frise chronologique",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "timeline.date[0].headline"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "H5P.Timeline",
+        "version": "1.1.25"
+      },
+      {
+        "nom": "TimelineJS",
+        "version": "1.1.1"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-frise.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 1,
+      "ajout_natif": 1,
+      "retrait_natif": 2,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 22,
+    "module": "ImageHotspots",
+    "recu": true,
+    "fichier_telechargement": "22-ImageHotspots.h5p",
+    "sha256_source": "011787b9a532388d3c01ea927f67856867ff9ab0fbaec040dc579536a11c36df",
+    "sha256_retour": "dac31a97fc67f4221e9c8011da9c14d53861ebf8acc3fbb0830c049658d1cbdd",
+    "source_comparee": "a-importer/22-ImageHotspots.h5p",
+    "titre": "RECETTE 22 — Image interactive",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "hotspots[0].header"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5PEditor.ColorSelector",
+        "version": "1.3.1"
+      },
+      {
+        "nom": "H5PEditor.ImageCoordinateSelector",
+        "version": "1.2.7"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.ImageHotspots",
+        "version": "1.11.6"
+      },
+      {
+        "nom": "H5P.Text",
+        "version": "1.1.24"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 1,
+      "normalisation_html": 1,
+      "ajout_natif": 9,
+      "retrait_natif": 3,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 23,
+    "module": "FindTheHotspot",
+    "recu": true,
+    "fichier_telechargement": "23-FindTheHotspot-corrige.h5p",
+    "sha256_source": "60a00b4468c9ac2a5d24368b7003ba446e8051624f1f7c6048116d48c3656858",
+    "sha256_retour": "66b331c026adf968e0a9875bfaf778021db7330b2aa7ac4486a7501058b96ed4",
+    "source_comparee": "correctifs/23-FindTheHotspot-corrige.h5p",
+    "titre": "RECETTE 23 — Trouver la zone — image corrigée RELU",
+    "titre_modifie": true,
+    "champs_retouches_relu": [],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.DragNBar",
+        "version": "1.5.26"
+      },
+      {
+        "nom": "H5P.DragNDrop",
+        "version": "1.1.5"
+      },
+      {
+        "nom": "H5P.DragNResize",
+        "version": "1.2.6"
+      },
+      {
+        "nom": "H5PEditor.ImageHotspotQuestion",
+        "version": "1.8.12"
+      },
+      {
+        "nom": "H5PEditor.Wizard",
+        "version": "1.2.17"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.ImageHotspotQuestion",
+        "version": "1.8.22"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 0,
+      "normalisation_html": 1,
+      "ajout_natif": 0,
+      "retrait_natif": 0,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 24,
+    "module": "FindMultipleHotspots",
+    "recu": true,
+    "fichier_telechargement": "24-FindMultipleHotspots.h5p",
+    "sha256_source": "02f3d238e998ca0d990328c70d8a27ab39db343586c8c505b349dc090391e7a6",
+    "sha256_retour": "51569c7c3c75a1ca524de9440a41f429b0e31cb1fe6b98aa830c6ad9e4614674",
+    "source_comparee": "a-importer/24-FindMultipleHotspots.h5p",
+    "titre": "RECETTE 24 — Trouver les zones",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "imageMultipleHotspotQuestion.hotspotSettings.hotspot[0].userSettings.feedbackText"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.DragNBar",
+        "version": "1.4.8"
+      },
+      {
+        "nom": "H5P.DragNDrop",
+        "version": "1.1.5"
+      },
+      {
+        "nom": "H5P.DragNResize",
+        "version": "1.2.6"
+      },
+      {
+        "nom": "H5PEditor.ImageMultipleHotspotQuestion",
+        "version": "1.0.0"
+      },
+      {
+        "nom": "H5PEditor.Wizard",
+        "version": "1.2.17"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.ImageMultipleHotspotQuestion",
+        "version": "1.0.1"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.4.10"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 3,
+      "normalisation_html": 0,
+      "ajout_natif": 0,
+      "retrait_natif": 0,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 25,
+    "module": "CoursePresentation",
+    "recu": true,
+    "fichier_telechargement": "25-CoursePresentation.h5p",
+    "sha256_source": "68c1755f230046cd9cd2d13018ddde1ceffecd28440afe39687efcc99b2ea972",
+    "sha256_retour": "d404e4cae60e62bc9f01eca4aadeceb5a4f90dfe282da65550a6292ea54f9eb0",
+    "source_comparee": "a-importer/25-CoursePresentation.h5p",
+    "titre": "RECETTE 25 — Présentation",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "presentation.slides[0].elements[0].action.params.question"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.AdvancedText",
+        "version": "1.1.14"
+      },
+      {
+        "nom": "H5P.Audio",
+        "version": "1.5.29"
+      },
+      {
+        "nom": "H5P.AudioRecorder",
+        "version": "1.0.54"
+      },
+      {
+        "nom": "H5P.Blanks",
+        "version": "1.14.37"
+      },
+      {
+        "nom": "H5P.CKEditor",
+        "version": "1.0.24"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.ContinuousText",
+        "version": "1.2.16"
+      },
+      {
+        "nom": "H5P.CoursePresentation",
+        "version": "1.27.15"
+      },
+      {
+        "nom": "H5P.Dialogcards",
+        "version": "1.9.40"
+      },
+      {
+        "nom": "H5P.DragNBar",
+        "version": "1.5.26"
+      },
+      {
+        "nom": "H5P.DragNDrop",
+        "version": "1.1.5"
+      },
+      {
+        "nom": "H5P.DragNResize",
+        "version": "1.2.6"
+      },
+      {
+        "nom": "H5P.DragQuestion",
+        "version": "1.15.37"
+      },
+      {
+        "nom": "H5P.DragText",
+        "version": "1.10.50"
+      },
+      {
+        "nom": "H5PEditor.ColorSelector",
+        "version": "1.3.1"
+      },
+      {
+        "nom": "H5PEditor.CoursePresentation",
+        "version": "1.26.6"
+      },
+      {
+        "nom": "H5PEditor.DragQuestion",
+        "version": "1.10.27"
+      },
+      {
+        "nom": "H5PEditor.Duration",
+        "version": "1.1.14"
+      },
+      {
+        "nom": "H5PEditor.InteractiveVideo",
+        "version": "1.26.3"
+      },
+      {
+        "nom": "H5PEditor.RadioGroup",
+        "version": "1.1.4"
+      },
+      {
+        "nom": "H5PEditor.RadioSelector",
+        "version": "1.2.2"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.SelectToggleFields",
+        "version": "1.1.1"
+      },
+      {
+        "nom": "H5PEditor.Shape",
+        "version": "1.0.0"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.SingleChoiceSetTextualEditor",
+        "version": "1.0.10"
+      },
+      {
+        "nom": "H5PEditor.SummaryTextualEditor",
+        "version": "1.1.12"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.Timecode",
+        "version": "1.2.14"
+      },
+      {
+        "nom": "H5PEditor.UrlField",
+        "version": "1.2.2"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5PEditor.Wizard",
+        "version": "1.2.17"
+      },
+      {
+        "nom": "H5P.ExportableTextArea",
+        "version": "1.3.22"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.FreeTextQuestion",
+        "version": "1.0.22"
+      },
+      {
+        "nom": "H5P.GoToQuestion",
+        "version": "1.3.23"
+      },
+      {
+        "nom": "H5P.GuidedTour",
+        "version": "1.0.6"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.InteractiveVideo",
+        "version": "1.28.35"
+      },
+      {
+        "nom": "H5P.IVHotspot",
+        "version": "1.2.26"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Link",
+        "version": "1.3.25"
+      },
+      {
+        "nom": "H5P.MarkTheWords",
+        "version": "1.11.24"
+      },
+      {
+        "nom": "H5P.MaterialDesignIcons",
+        "version": "1.0.0"
+      },
+      {
+        "nom": "H5P.MultiChoice",
+        "version": "1.16.27"
+      },
+      {
+        "nom": "H5P.MultiMediaChoice",
+        "version": "0.3.77"
+      },
+      {
+        "nom": "H5P.Nil",
+        "version": "1.0.14"
+      },
+      {
+        "nom": "H5P.OpenEndedQuestion",
+        "version": "1.0.28"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Questionnaire",
+        "version": "1.3.11"
+      },
+      {
+        "nom": "H5P.Shape",
+        "version": "1.0.5"
+      },
+      {
+        "nom": "H5P.SimpleMultiChoice",
+        "version": "1.1.22"
+      },
+      {
+        "nom": "H5P.SingleChoiceSet",
+        "version": "1.11.88"
+      },
+      {
+        "nom": "H5P.Summary",
+        "version": "1.10.32"
+      },
+      {
+        "nom": "H5P.Table",
+        "version": "1.2.8"
+      },
+      {
+        "nom": "H5P.Text",
+        "version": "1.1.24"
+      },
+      {
+        "nom": "H5P.TextUtilities",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.TrueFalse",
+        "version": "1.8.21"
+      },
+      {
+        "nom": "H5P.TwitterUserFeed",
+        "version": "1.0.21"
+      },
+      {
+        "nom": "H5P.Video",
+        "version": "1.6.79"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      },
+      {
+        "nom": "Shepherd",
+        "version": "1.0.7"
+      }
+    ],
+    "medias_sources": [],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 7,
+      "normalisation_html": 10,
+      "ajout_natif": 44,
+      "retrait_natif": 3,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 26,
+    "module": "InteractiveBook",
+    "recu": true,
+    "fichier_telechargement": "26-InteractiveBook.h5p",
+    "sha256_source": "6ded165c72f158b7f13301f26246a996e2ac4d9adcb43951e21117e3cf14cce7",
+    "sha256_retour": "97e411129f2fc4d79294377813e42ee5c78d7495265a3279f2c61a33e8e17815",
+    "source_comparee": "a-importer/26-InteractiveBook.h5p",
+    "titre": "RECETTE 26 — Livre interactif",
+    "titre_modifie": false,
+    "champs_retouches_relu": [
+      "chapters[0].metadata.title"
+    ],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.AdvancedText",
+        "version": "1.1.14"
+      },
+      {
+        "nom": "H5P.Audio",
+        "version": "1.5.29"
+      },
+      {
+        "nom": "H5P.Column",
+        "version": "1.22.0"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.Dialogcards",
+        "version": "1.9.40"
+      },
+      {
+        "nom": "H5PEditor.ColorSelector",
+        "version": "1.3.1"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.SummaryTextualEditor",
+        "version": "1.1.12"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.InteractiveBook",
+        "version": "1.15.0"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Row",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.RowColumn",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.Summary",
+        "version": "1.10.32"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/audios/audio-4695cd14.wav",
+        "identique_dans_retour": true
+      },
+      {
+        "chemin": "content/images/image-64f40959.jpg",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 6,
+      "normalisation_html": 4,
+      "ajout_natif": 7,
+      "retrait_natif": 2,
+      "taille_liste": 0
+    }
+  },
+  {
+    "numero": 27,
+    "module": "InteractiveVideo",
+    "recu": true,
+    "fichier_telechargement": "27-InteractiveVideo.h5p",
+    "sha256_source": "64a11ca6394a2863dd4b3d7650b91490394663bb3629b67bb66983084b65e8c2",
+    "sha256_retour": "a2dbac96c93a036d8c5adc3b40b05ca060382f0449839d951dc2f1ade101d76d",
+    "source_comparee": "a-importer/27-InteractiveVideo.h5p",
+    "titre": "RECETTE 27 — Vidéo interactive RELU",
+    "titre_modifie": true,
+    "champs_retouches_relu": [],
+    "bibliotheques": [
+      {
+        "nom": "FontAwesome",
+        "version": "4.5.6"
+      },
+      {
+        "nom": "H5P.AdvancedText",
+        "version": "1.1.14"
+      },
+      {
+        "nom": "H5P.Audio",
+        "version": "1.5.29"
+      },
+      {
+        "nom": "H5P.Blanks",
+        "version": "1.14.37"
+      },
+      {
+        "nom": "H5P.CKEditor",
+        "version": "1.0.24"
+      },
+      {
+        "nom": "H5P.Components",
+        "version": "1.0.97"
+      },
+      {
+        "nom": "H5P.DragNBar",
+        "version": "1.5.26"
+      },
+      {
+        "nom": "H5P.DragNDrop",
+        "version": "1.1.5"
+      },
+      {
+        "nom": "H5P.DragNResize",
+        "version": "1.2.6"
+      },
+      {
+        "nom": "H5P.DragQuestion",
+        "version": "1.15.37"
+      },
+      {
+        "nom": "H5P.DragText",
+        "version": "1.10.50"
+      },
+      {
+        "nom": "H5PEditor.ColorSelector",
+        "version": "1.3.1"
+      },
+      {
+        "nom": "H5PEditor.DragQuestion",
+        "version": "1.10.27"
+      },
+      {
+        "nom": "H5PEditor.Duration",
+        "version": "1.1.14"
+      },
+      {
+        "nom": "H5PEditor.InteractiveVideo",
+        "version": "1.26.3"
+      },
+      {
+        "nom": "H5PEditor.RadioGroup",
+        "version": "1.1.4"
+      },
+      {
+        "nom": "H5PEditor.RangeList",
+        "version": "1.0.13"
+      },
+      {
+        "nom": "H5PEditor.SelectToggleFields",
+        "version": "1.1.1"
+      },
+      {
+        "nom": "H5PEditor.ShowWhen",
+        "version": "1.0.9"
+      },
+      {
+        "nom": "H5PEditor.SingleChoiceSetTextualEditor",
+        "version": "1.0.10"
+      },
+      {
+        "nom": "H5PEditor.SummaryTextualEditor",
+        "version": "1.1.12"
+      },
+      {
+        "nom": "H5PEditor.TableList",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5PEditor.Timecode",
+        "version": "1.2.14"
+      },
+      {
+        "nom": "H5PEditor.UrlField",
+        "version": "1.2.2"
+      },
+      {
+        "nom": "H5PEditor.VerticalTabs",
+        "version": "1.3.14"
+      },
+      {
+        "nom": "H5PEditor.Wizard",
+        "version": "1.2.17"
+      },
+      {
+        "nom": "H5P.FontIcons",
+        "version": "1.0.11"
+      },
+      {
+        "nom": "H5P.FreeTextQuestion",
+        "version": "1.0.22"
+      },
+      {
+        "nom": "H5P.GoToQuestion",
+        "version": "1.3.23"
+      },
+      {
+        "nom": "H5P.GuidedTour",
+        "version": "1.0.6"
+      },
+      {
+        "nom": "H5P.Image",
+        "version": "1.1.33"
+      },
+      {
+        "nom": "H5P.InteractiveVideo",
+        "version": "1.28.35"
+      },
+      {
+        "nom": "H5P.IVHotspot",
+        "version": "1.2.26"
+      },
+      {
+        "nom": "H5P.JoubelUI",
+        "version": "1.3.45"
+      },
+      {
+        "nom": "H5P.Link",
+        "version": "1.3.25"
+      },
+      {
+        "nom": "H5P.MarkTheWords",
+        "version": "1.11.24"
+      },
+      {
+        "nom": "H5P.MaterialDesignIcons",
+        "version": "1.0.0"
+      },
+      {
+        "nom": "H5P.MultiChoice",
+        "version": "1.16.27"
+      },
+      {
+        "nom": "H5P.MultiMediaChoice",
+        "version": "0.3.77"
+      },
+      {
+        "nom": "H5P.Nil",
+        "version": "1.0.14"
+      },
+      {
+        "nom": "H5P.OpenEndedQuestion",
+        "version": "1.0.28"
+      },
+      {
+        "nom": "H5P.Question",
+        "version": "1.5.53"
+      },
+      {
+        "nom": "H5P.Questionnaire",
+        "version": "1.3.11"
+      },
+      {
+        "nom": "H5P.SimpleMultiChoice",
+        "version": "1.1.22"
+      },
+      {
+        "nom": "H5P.SingleChoiceSet",
+        "version": "1.11.88"
+      },
+      {
+        "nom": "H5P.Summary",
+        "version": "1.10.32"
+      },
+      {
+        "nom": "H5P.Table",
+        "version": "1.2.8"
+      },
+      {
+        "nom": "H5P.Text",
+        "version": "1.1.24"
+      },
+      {
+        "nom": "H5P.TextUtilities",
+        "version": "1.3.0"
+      },
+      {
+        "nom": "H5P.Transition",
+        "version": "1.0.4"
+      },
+      {
+        "nom": "H5P.TrueFalse",
+        "version": "1.8.21"
+      },
+      {
+        "nom": "H5P.Video",
+        "version": "1.6.79"
+      },
+      {
+        "nom": "jQuery.ui",
+        "version": "1.10.22"
+      },
+      {
+        "nom": "Shepherd",
+        "version": "1.0.7"
+      }
+    ],
+    "medias_sources": [
+      {
+        "chemin": "content/images/recette-zones.png",
+        "identique_dans_retour": true
+      },
+      {
+        "chemin": "content/videos/recette.webm",
+        "identique_dans_retour": true
+      }
+    ],
+    "medias_references_absents_du_retour": [],
+    "ecarts": {
+      "modification": 3,
+      "normalisation_html": 3,
+      "ajout_natif": 20,
+      "retrait_natif": 3,
+      "taille_liste": 1
+    }
+  }
+]

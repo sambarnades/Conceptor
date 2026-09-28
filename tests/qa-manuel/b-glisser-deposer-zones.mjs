@@ -47,10 +47,13 @@ verdict(JSON.stringify(cA.map(c => c.zone)) === JSON.stringify(['1er groupe', '3
 const sA = await enregistrer(p);
 console.log('  enregistrement :', sA.ok ? 'PASSE' : 'BLOQUÉ →\n' + sA.resume.split('\n').map(l => '      ' + l).join('\n'));
 const orphelines = avA.etiquettes.filter(e => e.vise.includes('2e groupe')).map(e => e.texte);
-verdict(!sA.ok && /Élément 4/.test(sA.resume) && /Élément 5/.test(sA.resume)
-        && !/Élément [1236780]\b/.test(sA.resume.replace(/Élément 4|Élément 5/g, '')),
-    `seules les étiquettes orphelines (${orphelines.join(', ')} = Éléments 4 et 5) sont signalées`,
-    'le signalement ne cible pas exactement les étiquettes orphelines');
+// Depuis c594a732 (recette Glisser-déposer du 11-09-2026), une étiquette sans zone correcte est un
+// DISTRACTEUR valide, comme dans H5P.DragQuestion : le Glisser-déposer autonome s'enregistre donc.
+// Ce qui reste exigé : les orphelines ne visent PLUS RIEN (et surtout pas une autre zone).
+const apOrphelines = apA.etiquettes.filter(e => orphelines.includes(e.texte));
+verdict(sA.ok && apOrphelines.length === orphelines.length && apOrphelines.every(e => e.vise.length === 0),
+    `les orphelines (${orphelines.join(', ')}) deviennent des distracteurs sans zone ; l’enregistrement passe`,
+    'les étiquettes orphelines bloquent l’enregistrement ou visent encore une zone');
 
 // -- déplacement --
 titre('DÉPLACER la zone 1 en 3e position');

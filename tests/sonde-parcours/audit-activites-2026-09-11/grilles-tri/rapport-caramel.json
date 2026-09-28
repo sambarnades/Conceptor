@@ -1,0 +1,62 @@
+[
+  {
+    "activity": "SortParagraphs",
+    "case": "tri-options",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/tri-options.docx",
+    "verifiedTokens": [
+      "Observer"
+    ]
+  },
+  {
+    "activity": "SortParagraphs",
+    "case": "tri-options",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/tri-options.odt",
+    "verifiedTokens": [
+      "Observer"
+    ]
+  },
+  {
+    "activity": "SortParagraphs",
+    "case": "tri-options",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/tri-options.pdf",
+    "verifiedTokens": [
+      "Observer"
+    ]
+  },
+  {
+    "activity": "FindTheWords",
+    "case": "grille-options",
+    "format": "docx",
+    "file": "/tmp/caramel-capacites-documents/grille-options.docx",
+    "verifiedTokens": [
+      "PARIS",
+      "ROME",
+      "MADRID"
+    ]
+  },
+  {
+    "activity": "FindTheWords",
+    "case": "grille-options",
+    "format": "odt",
+    "file": "/tmp/caramel-capacites-documents/grille-options.odt",
+    "verifiedTokens": [
+      "PARIS",
+      "ROME",
+      "MADRID"
+    ]
+  },
+  {
+    "activity": "FindTheWords",
+    "case": "grille-options",
+    "format": "pdf",
+    "file": "/tmp/caramel-capacites-documents/grille-options.pdf",
+    "verifiedTokens": [
+      "PARIS",
+      "ROME",
+      "MADRID"
+    ]
+  }
+]

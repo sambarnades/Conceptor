@@ -567,6 +567,13 @@ function runStep9_StarMath() {
     assert(getStarMath('aleph') === 'aleph', 'aleph → aleph');
     assert(getStarMath('ldots') === 'dotslow', 'ldots → dotslow');
 
+    // Intervalles français : les crochets non appariés restent littéraux en StarMath.
+    for(const interval of ['[3,+\\infty[', ']3,+\\infty[', ']-\\infty,3]', ']-\\infty,3[']) {
+        const xml=_latexToStarMath(interval);
+        const sm=new DOMParser().parseFromString('<x>'+xml+'</x>','application/xml').documentElement.textContent;
+        assert(sm.startsWith('"'+interval[0]+'"') && sm.endsWith('"'+interval.at(-1)+'"') && sm.includes('infinity'), 'Intervalle StarMath éditable : '+interval);
+    }
+
     // Inconnue
     assert(getStarMath('XYZNOTACOMMAND') === null, 'Commande inconnue → null');
 

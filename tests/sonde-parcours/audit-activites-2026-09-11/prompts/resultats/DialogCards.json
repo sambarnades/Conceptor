@@ -1,0 +1,37 @@
+{
+  "title": "Associe pays et capitales",
+  "description": "Associe chaque pays à sa capitale.",
+  "dialogs": [
+    {
+      "text": "Pays traversé par la **Seine**",
+      "answer": "**Paris**",
+      "tips": {
+        "front": "La Seine est un fleuve français.",
+        "back": "Capitale de la France."
+      }
+    },
+    {
+      "text": "Pays traversé par le **Tibre**",
+      "answer": "**Rome**",
+      "tips": {
+        "front": "Le Tibre est un fleuve italien.",
+        "back": "Capitale de l'Italie."
+      }
+    },
+    {
+      "text": "Pays dont la capitale est au **centre géographique**",
+      "answer": "**Madrid**",
+      "tips": {
+        "front": "L'Espagne a Madrid comme capitale.",
+        "back": "Pas de fleuve à proximité directe."
+      }
+    }
+  ],
+  "mode": "repetition",
+  "behaviour": {
+    "disableBackwardsNavigation": true,
+    "scaleTextNotCard": true,
+    "maxProficiency": 3,
+    "quickProgression": true
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "chemin": "behaviour.showVocabulary",
+    "type": "modification",
+    "avant": false,
+    "apres": true
+  },
+  {
+    "chemin": "taskDescription",
+    "type": "modification",
+    "avant": "Retrouve PARIS, ROME et ΑΘΗΝΑ (Athènes en grec).",
+    "apres": "RELU Retrouve PARIS, ROME et ΑΘΗΝΑ (Athènes en grec)."
+  }
+]

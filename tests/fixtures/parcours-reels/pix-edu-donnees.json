@@ -1,0 +1,1235 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-28T12:43:15.378Z",
+  "cadrage": {
+    "platform": "magistere",
+    "format": "hybride",
+    "ampleur": "longue",
+    "trame": "formation"
+  },
+  "plan": {
+    "titre": "Protéger les données des élèves : RGPD et pratiques numériques",
+    "objectifGeneral": "Vous mettez en place des pratiques responsables pour protéger les données personnelles de vos élèves dans vos usages numériques.",
+    "introduction": "Ce parcours vous guide pas à pas pour intégrer les bonnes pratiques liées au RGPD et à la protection des données dans votre enseignement. En trois temps – avant, pendant et après – vous allez d’abord vous situer, puis tester des solutions concrètes avec vos pairs, avant d’expérimenter en classe et d’en partager les retours. Votre engagement au long de ces étapes conditionnera la réussite de cette formation.",
+    "notionsPivots": [
+      "le RGPD",
+      "la donnée à caractère personnel",
+      "le consentement",
+      "le droit à l'oubli",
+      "l'authentification forte",
+      "le mot de passe robuste",
+      "la charte d'usage des outils numériques",
+      "la minimisation des données",
+      "le partage de productions numériques",
+      "les outils éducatifs conformes",
+      "les traces numériques",
+      "les bonnes pratiques de sécurité"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Se positionner et s’informer",
+        "objectif": "Identifier vos connaissances et vos besoins sur la protection des données des élèves",
+        "introduction": "Avant de plonger dans le vif du sujet, vous allez d’abord faire le point sur vos représentations et vos acquis. Des quiz courts et des ressources ciblées vous aideront à cerner les enjeux du RGPD et des pratiques numériques à proscrire ou à adopter. Cette réflexion préparera votre travail en présentiel.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Test initial : ce que vous savez déjà",
+            "objectif": "Estimer honnêtement vos connaissances sur le RGPD et la protection des données",
+            "consigne": "Répondez aux questions pour évaluer vos acquis sur le RGPD, les données des élèves et les bonnes pratiques. Cette évaluation servira de référence pour mesurer votre progression à la fin du parcours.",
+            "module": "test_elea",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "bank_name": "Test initial - Protection des données personnelles (RGPD)",
+              "bank_description": "Évaluation diagnostique sur les connaissances initiales des enseignants concernant le RGPD, la protection des données personnelles des élèves et les bonnes pratiques numériques en classe.",
+              "questions": [
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q01 - RGPD",
+                    "questiontext": "Parmi les propositions suivantes, lesquelles désignent des données à caractère personnel selon le RGPD ?",
+                    "feedback": "Le RGPD définit une donnée à caractère personnel comme toute information relative à une personne physique identifiée ou identifiable.",
+                    "single": "false",
+                    "correctfeedback": "Toutes les propositions correctes ont été sélectionnées. Le RGPD protège largement les données des élèves.",
+                    "partiallycorrectfeedback": "Certaines réponses sont correctes, mais il en manque. Revoyez la définition des données personnelles.",
+                    "incorrectfeedback": "Aucune bonne réponse n'a été sélectionnée. Le RGPD s'applique à toute information permettant d'identifier directement ou indirectement une personne.",
+                    "hints": [
+                      "Pensez aux informations qui permettent d'identifier une personne, même indirectement.",
+                      "Un nom, une adresse email ou une photo sont des exemples typiques."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Le nom et prénom d'un élève",
+                        "fraction": 25,
+                        "feedback": "Oui, ces informations identifient directement une personne."
+                      },
+                      {
+                        "text": "L'adresse IP d'un ordinateur utilisé en classe",
+                        "fraction": 25,
+                        "feedback": "Oui, une adresse IP peut permettre d'identifier un utilisateur."
+                      },
+                      {
+                        "text": "La date de naissance d'un élève",
+                        "fraction": 25,
+                        "feedback": "Oui, cette information permet d'identifier une personne."
+                      },
+                      {
+                        "text": "Le nombre d'élèves dans une classe",
+                        "fraction": 0,
+                        "feedback": "Non, cette information ne permet pas d'identifier une personne."
+                      },
+                      {
+                        "text": "Le résultat d'un élève à un devoir anonyme",
+                        "fraction": 0,
+                        "feedback": "Non, car le devoir est anonyme : aucune identification n'est possible."
+                      },
+                      {
+                        "text": "L'adresse postale d'un établissement scolaire",
+                        "fraction": 0,
+                        "feedback": "Non, car il s'agit d'une adresse collective, non attribuée à une personne en particulier."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q02 - Consentement",
+                    "questiontext": "Dans quel(s) cas le consentement des élèves ou de leurs responsables légaux est-il obligatoire pour utiliser leurs données personnelles dans un outil numérique pédagogique ?",
+                    "feedback": "Le consentement est requis lorsque l'outil utilise des données personnelles des élèves pour des finalités autres que pédagogiques strictes.",
+                    "single": "false",
+                    "correctfeedback": "Toutes les situations où le consentement est obligatoire ont été identifiées.",
+                    "partiallycorrectfeedback": "Certaines réponses sont correctes, mais il en manque. Revoyez les cas où le consentement est nécessaire.",
+                    "incorrectfeedback": "Aucune bonne réponse n'a été sélectionnée. Le consentement est obligatoire pour des usages non strictement pédagogiques.",
+                    "hints": [
+                      "Le consentement est requis pour des finalités autres que l'enseignement.",
+                      "Par exemple, si l'outil utilise les données pour du marketing ou du partage avec des tiers."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Pour publier une photo d'un élève sur le site de l'établissement",
+                        "fraction": 20,
+                        "feedback": "Oui, car cela implique une diffusion publique de données personnelles."
+                      },
+                      {
+                        "text": "Pour utiliser un outil de classe qui stocke les résultats des élèves",
+                        "fraction": 0,
+                        "feedback": "Non, car l'usage est strictement pédagogique et nécessaire à l'enseignement."
+                      },
+                      {
+                        "text": "Pour partager les productions d'élèves avec une entreprise partenaire à des fins commerciales",
+                        "fraction": 20,
+                        "feedback": "Oui, car cela dépasse le cadre pédagogique et implique un usage commercial."
+                      },
+                      {
+                        "text": "Pour utiliser un réseau social éducatif où les élèves échangent entre eux",
+                        "fraction": 20,
+                        "feedback": "Oui, car cela implique une diffusion de données personnelles à des tiers."
+                      },
+                      {
+                        "text": "Pour utiliser un ENT (Espace Numérique de Travail) conforme au RGPD",
+                        "fraction": 0,
+                        "feedback": "Non, car l'ENT est conçu pour un usage pédagogique et conforme au RGPD."
+                      },
+                      {
+                        "text": "Pour utiliser un outil de quiz en ligne qui ne stocke que les scores anonymisés",
+                        "fraction": 0,
+                        "feedback": "Non, car les données sont anonymisées : aucune identification n'est possible."
+                      },
+                      {
+                        "text": "Pour utiliser un outil de visioconférence pour un cours en ligne",
+                        "fraction": 0,
+                        "feedback": "Non, car l'usage est strictement pédagogique et nécessaire à l'enseignement."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "truefalse",
+                  "content": {
+                    "name": "Q03 - Droit à l'oubli",
+                    "questiontext": "Le droit à l'oubli permet à un élève de demander la suppression de ses données personnelles dans un outil numérique utilisé en classe, même si ces données sont nécessaires à son parcours scolaire.",
+                    "feedback": "Le droit à l'oubli est encadré par le RGPD, mais il existe des exceptions, notamment pour les données nécessaires à l'accomplissement d'une mission d'intérêt public ou à des fins pédagogiques.",
+                    "answer": {
+                      "value": false,
+                      "feedback_true": "Non, ce n'est pas tout à fait exact. Le droit à l'oubli peut être limité par des obligations légales ou pédagogiques.",
+                      "feedback_false": "Exactement. Le droit à l'oubli peut être limité si les données sont nécessaires pour des finalités pédagogiques ou légales."
+                    }
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q04 - Authentification forte",
+                    "questiontext": "Parmi les propositions suivantes, lesquelles constituent une authentification forte pour accéder à un outil numérique éducatif ?",
+                    "feedback": "L'authentification forte combine au moins deux facteurs parmi : quelque chose que vous connaissez (mot de passe), quelque chose que vous possédez (jeton, smartphone), quelque chose que vous êtes (empreinte biométrique).",
+                    "single": "false",
+                    "correctfeedback": "Toutes les bonnes pratiques d'authentification forte ont été identifiées.",
+                    "partiallycorrectfeedback": "Certaines réponses sont correctes, mais il en manque. Revoyez les critères d'authentification forte.",
+                    "incorrectfeedback": "Aucune bonne réponse n'a été sélectionnée. Une authentification forte combine au moins deux facteurs de sécurité.",
+                    "hints": [
+                      "L'authentification forte repose sur la combinaison de plusieurs facteurs.",
+                      "Par exemple, un mot de passe seul n'est pas suffisant."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Un mot de passe seul",
+                        "fraction": 0,
+                        "feedback": "Non, un mot de passe seul ne constitue pas une authentification forte."
+                      },
+                      {
+                        "text": "Un mot de passe + un code reçu par SMS",
+                        "fraction": 33.33333,
+                        "feedback": "Oui, car cela combine deux facteurs : quelque chose que vous connaissez (mot de passe) et quelque chose que vous possédez (téléphone)."
+                      },
+                      {
+                        "text": "Un mot de passe + une question secrète",
+                        "fraction": 0,
+                        "feedback": "Non, car les deux facteurs reposent sur quelque chose que vous connaissez (mot de passe et question secrète)."
+                      },
+                      {
+                        "text": "Une empreinte digitale + un mot de passe",
+                        "fraction": 33.33333,
+                        "feedback": "Oui, car cela combine deux facteurs : quelque chose que vous êtes (empreinte) et quelque chose que vous connaissez (mot de passe)."
+                      },
+                      {
+                        "text": "Un code PIN seul",
+                        "fraction": 0,
+                        "feedback": "Non, un code PIN seul ne constitue pas une authentification forte."
+                      },
+                      {
+                        "text": "Un mot de passe + un jeton physique",
+                        "fraction": 33.33334,
+                        "feedback": "Oui, car cela combine deux facteurs : quelque chose que vous connaissez (mot de passe) et quelque chose que vous possédez (jeton)."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "cloze",
+                  "content": {
+                    "name": "Q05 - Bonnes pratiques",
+                    "questiontext": "Pour protéger les données des élèves, il est recommandé d'utiliser des mots de passe {1:SHORTANSWER:=robustes~forts~complexes}. Un mot de passe robuste doit comporter au moins {1:NUMERICAL:=12:0} caractères et inclure des majuscules, des minuscules, des chiffres et des {1:SHORTANSWER:=symboles~caractères spéciaux}. Il est également conseillé de {1:SHORTANSWER:=ne pas réutiliser~éviter de réutiliser} le même mot de passe sur plusieurs outils.",
+                    "feedback": "Ces bonnes pratiques permettent de renforcer la sécurité des comptes et de limiter les risques de piratage."
+                  }
+                },
+                {
+                  "type": "matching",
+                  "content": {
+                    "name": "Q06 - Outils et conformité",
+                    "questiontext": "Associez chaque situation à la notion de protection des données qui s'y applique.",
+                    "feedback": "Ces notions sont essentielles pour garantir la conformité des outils numériques utilisés en classe.",
+                    "correctfeedback": "Toutes les associations sont correctes. Vous maîtrisez les bases de la protection des données.",
+                    "partiallycorrectfeedback": "Certaines associations sont correctes, mais d'autres nécessitent d'être revues.",
+                    "incorrectfeedback": "Aucune association correcte n'a été trouvée. Revoyez les notions clés de protection des données.",
+                    "hints": [
+                      "Pensez aux principes fondamentaux du RGPD : minimisation, consentement, sécurité.",
+                      "Par exemple, la minimisation des données implique de ne collecter que ce qui est strictement nécessaire."
+                    ],
+                    "subquestions": [
+                      {
+                        "text": "Collecter uniquement les données strictement nécessaires pour l'activité pédagogique",
+                        "answer": "Minimisation des données"
+                      },
+                      {
+                        "text": "Demander l'accord des responsables légaux avant d'utiliser un outil tiers",
+                        "answer": "Consentement"
+                      },
+                      {
+                        "text": "Supprimer les données des élèves après la fin de l'année scolaire",
+                        "answer": "Droit à l'oubli"
+                      },
+                      {
+                        "text": "Utiliser un outil qui crypte les données des élèves",
+                        "answer": "Authentification forte"
+                      },
+                      {
+                        "text": "Limiter l'accès aux données aux seuls enseignants concernés",
+                        "answer": "Minimisation des données"
+                      },
+                      {
+                        "text": "Informer les élèves et leurs responsables des finalités d'utilisation des données",
+                        "answer": "Consentement"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "title": "Test initial : ce que vous savez déjà"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c3",
+            "titre": "Les bases du RGPD à travers une frise chronologique",
+            "objectif": "Repérer les étapes clés de la réglementation et leurs implications pour l’École",
+            "consigne": "Consultez la frise chronologique pour situer les dates importantes du RGPD et leur impact sur vos pratiques numériques. Notez les notions qui vous semblent nouvelles pour en discuter ultérieurement.",
+            "module": "Timeline",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "timeline": {
+                "headline": "Les bases du RGPD à travers une frise chronologique",
+                "text": "Découvrez en **10 minutes** les dates et événements clés qui ont façonné le **RGPD** (*Règlement Général sur la Protection des Données*).\n\n*Objectif* : identifier les étapes essentielles pour adapter vos pratiques numériques en classe (outils, consentement, sécurité des données).",
+                "asset": {
+                  "media": "https://upload.wikimedia.org/wikipedia/commons/d/dc/European_Union_flag_and_GDPR_illustration.jpg",
+                  "caption": "Le RGPD, un cadre juridique européen pour la protection des données.",
+                  "credit": "Wikimedia Commons / Illustration libre"
+                },
+                "date": [
+                  {
+                    "startDate": "2012,01,25",
+                    "headline": "Proposition initiale de la Commission européenne",
+                    "text": "La **Commission européenne** présente son **projet de règlement sur la protection des données**. Cette initiative vise à moderniser les règles existantes (directive 95/46/CE) pour les adapter à l’ère numérique.\n\n*À retenir* : première étape vers une harmonisation des lois européennes.",
+                    "tag": "Cadrage"
+                  },
+                  {
+                    "startDate": "2016,04,14",
+                    "headline": "Adoption par le Parlement européen",
+                    "text": "Le **Règlement (UE) 2016/679** est adopté par le **Parlement européen** et le **Conseil de l’Union européenne** après plusieurs années de négociations. Il entrera en vigueur deux ans plus tard.\n\n*Conséquence* : tous les États membres devront l’appliquer sans transposition nationale.",
+                    "tag": "Validation"
+                  },
+                  {
+                    "startDate": "2018,05,25",
+                    "headline": "Entrée en vigueur du RGPD",
+                    "text": "Le **RGPD** devient **opérationnel** dans tous les pays de l’UE. Il s’impose comme la référence pour la protection des données personnelles, avec des obligations renforcées pour les organismes publics et privés.\n\n*Exemple concret* : les écoles doivent désormais être en conformité permanente.",
+                    "tag": "Application"
+                  },
+                  {
+                    "startDate": "2019,07,26",
+                    "headline": "Première sanction majeure : CNIL vs Google",
+                    "text": "La **CNIL** (Commission nationale de l'informatique et des libertés) inflige une **amende de 50 millions d'euros** à **Google LLC** pour manque de transparence sur le *consentement* des utilisateurs.\n\n*À méditer* : une erreur d’inattention peut coûter cher en éducation…",
+                    "tag": "Sanction"
+                  },
+                  {
+                    "startDate": "2023,05,25",
+                    "headline": "Renforcement des contrôles après 5 ans",
+                    "text": "Le **RGPD** fête ses 5 ans avec un **bilan contrasté** : succès en termes de sensibilisation, mais des **lacunes persistantes** sur les droits des individus (exemple : *droit à l’oubli* souvent méconnu).\n\n*Pour vous* : vérifiez que vos pratiques intègrent ces droits fondamentaux.",
+                    "tag": "Révision"
+                  }
+                ],
+                "era": [
+                  {
+                    "startDate": "2012",
+                    "endDate": "2016",
+                    "headline": "Naissance du RGPD",
+                    "text": "Période de négociations et de calibrage du texte entre les institutions européennes.",
+                    "tag": "Construction"
+                  },
+                  {
+                    "startDate": "2016",
+                    "endDate": "2018",
+                    "headline": "Phase de préparation active",
+                    "text": "Les organisations (dont l’Éducation nationale) doivent anticiper les changements pour respecter les obligations futures.",
+                    "tag": "Adaptation"
+                  },
+                  {
+                    "startDate": "2018",
+                    "endDate": "2023",
+                    "headline": "Mise en œuvre et ajustements",
+                    "text": "Le RGPD s’ancre dans les usages quotidiens, avec des avancées juridiques et des sanctions qui rappellent son caractère contraignant.",
+                    "tag": "Consolidation"
+                  }
+                ],
+                "height": 600,
+                "defaultZoomLevel": "0",
+                "language": "fr",
+                "type": "default"
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Les bases du RGPD à travers une frise chronologique"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c4",
+            "titre": "Livret des exigences : que disent les textes pour les écoles ?",
+            "objectif": "Repérer dans un livret synthétique les obligations légales et les recommandations officielles",
+            "consigne": "Parcourez les pages du livret pour repérer les passages relatifs aux traitements de données dans le cadre scolaire. Mettez en surbrillance ou notez les points qui vous interrogent ou vous semblent prioritaires pour une mise en œuvre immédiate.",
+            "module": "Livre",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Livret des exigences : que disent les textes pour les écoles ?",
+              "intro": "Ce livret synthétise les obligations légales et les recommandations officielles pour protéger les données personnelles dans vos pratiques numériques. Parcourez les pages pour identifier les points prioritaires pour votre mise en œuvre immédiate.",
+              "chapters": [
+                {
+                  "title": "Le cadre légal : RGPD et Éducation nationale",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Le cadre légal",
+                        "subtitle": "RGPD et Éducation nationale"
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Une double obligation",
+                        "paragraphs": [
+                          "En tant qu'acteurs de l'Éducation, vous devez respecter à la fois le Règlement Général sur la Protection des Données (RGPD) et les circulaires spécifiques du ministère de l'Éducation nationale.",
+                          "Le RGPD s'applique à tous les traitements de données à caractère personnel, tandis que le ministère précise les conditions d'usage des outils numériques dans un contexte scolaire."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Points de vigilance",
+                        "callouts": [
+                          {
+                            "type": "alerte",
+                            "text": "Le RGPD impose que le traitement des données soit licite, loyale et transparent. Vous devez savoir quelles données sont collectées, par qui et pourquoi."
+                          },
+                          {
+                            "type": "objectif",
+                            "text": "Identifier les bases légales qui vous permettent de traiter les données des élèves (exécution d'une mission de service public)."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#10_table_comparison",
+                      "data": {
+                        "title": "RGPD vs Circulaires",
+                        "caption": "Comparaison des champs d'application",
+                        "headers": [
+                          "Texte",
+                          "Champ d'application",
+                          "Impact pour l'enseignant"
+                        ],
+                        "rows": [
+                          [
+                            "RGPD",
+                            "Toutes les données personnelles",
+                            "Respect des principes fondamentaux (minimisation, sécurité)"
+                          ],
+                          [
+                            "Circulaires MEN",
+                            "Outils numériques éducatifs",
+                            "Validation des outils sur la liste officielle, chartes d'usage"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Minimisation et finalité",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Minimisation et finalité",
+                        "subtitle": "Collecter le strict nécessaire"
+                      }
+                    },
+                    {
+                      "type": "#11_definition_box",
+                      "data": {
+                        "title": "Principe de minimisation",
+                        "text": "La minimisation des données implique de ne collecter et de ne conserver que les données strictement nécessaires à la réalisation de la finalité pédagogique."
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Application en classe",
+                        "paragraphs": [
+                          "Avant de demander à vos élèves de remplir un formulaire en ligne, vérifiez chaque champ demandé.",
+                          "L'adresse postale, le numéro de sécurité sociale ou les opinions politiques ne sont généralement pas nécessaires pour un exercice numérique simple."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#05_stats_cards",
+                      "data": {
+                        "title": "Les données sensibles",
+                        "stats": [
+                          {
+                            "value": "Interdit",
+                            "label": "Collecte de données sensibles sans base légale forte"
+                          },
+                          {
+                            "value": "Strict",
+                            "label": "Nécessité de limiter l'accès aux données"
+                          },
+                          {
+                            "value": "Court",
+                            "label": "Durée de conservation des traces numériques"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#15_myths_realities",
+                      "data": {
+                        "title": "Vérités et faiblesses",
+                        "items": [
+                          {
+                            "myth": "Je peux garder les données de mes élèves indéfiniment pour les réutiliser l'année prochaine.",
+                            "reality": "La conservation doit être limitée dans le temps. Une fois la finalité pédagogique atteinte, les données doivent être supprimées ou anonymisées."
+                          },
+                          {
+                            "myth": "Toutes les données sont égales face à la loi.",
+                            "reality": "Certaines données (santé, origine ethnique, opinions religieuses) sont considérées comme sensibles et leur traitement est strictement réglementé."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Sécurité et authentification",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Sécurité et authentification",
+                        "subtitle": "Protéger l'accès aux données"
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "L'authentification forte",
+                        "paragraphs": [
+                          "L'authentification forte est une méthode de vérification de l'identité qui combine au moins deux éléments distincts (quelque chose que vous connaissez, quelque chose que vous possédez, quelque chose que vous êtes).",
+                          "Dans le contexte scolaire, cela signifie souvent utiliser un identifiant unique (ENT) et un mot de passe robuste, voire une validation par SMS ou application."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Bonnes pratiques de sécurité",
+                        "callouts": [
+                          {
+                            "type": "savoir",
+                            "text": "Le mot de passe robuste doit être long, complexe et unique. Il ne doit jamais être partagé avec les élèves ou le personnel non autorisé."
+                          },
+                          {
+                            "type": "objectif",
+                            "text": "Vérifier que les comptes utilisés sont bien ceux de l'Éducation nationale et non des comptes personnels non sécurisés."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#10_table_comparison",
+                      "data": {
+                        "title": "Niveaux de sécurité",
+                        "caption": "Comparaison des méthodes d'authentification",
+                        "headers": [
+                          "Méthode",
+                          "Sécurité",
+                          "Conformité RGPD"
+                        ],
+                        "rows": [
+                          [
+                            "Identifiant seul",
+                            "Faible",
+                            "Non conforme si données sensibles"
+                          ],
+                          [
+                            "Mot de passe simple",
+                            "Moyenne",
+                            "Risqué en cas de partage"
+                          ],
+                          [
+                            "Authentification forte",
+                            "Élevée",
+                            "Recommandée pour les données personnelles"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Consentement et partage",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Consentement et partage",
+                        "subtitle": "Gérer les productions et les droits"
+                      }
+                    },
+                    {
+                      "type": "#11_definition_box",
+                      "data": {
+                        "title": "Le consentement",
+                        "text": "Le consentement doit être libre, spécifique, éclairé et univoque. Dans le cadre scolaire, il est souvent complexe car le lien hiérarchique peut influencer la liberté de choix."
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Le partage de productions numériques",
+                        "paragraphs": [
+                          "Lorsque vous partagez des travaux d'élèves (photos, vidéos, textes) en ligne, vous devez obtenir l'accord des titulaires de l'autorité parentale.",
+                          "Le droit à l'oubli permet à toute personne de demander la suppression de ses données personnelles. Cela s'applique aussi aux productions numériques publiées."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Points de vigilance",
+                        "callouts": [
+                          {
+                            "type": "alerte",
+                            "text": "Ne publiez jamais d'images d'élèves identifiables sans autorisation écrite explicite des parents."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "Le partage de productions numériques doit se faire via des espaces sécurisés (ENT, classes privées) et non sur des réseaux sociaux personnels."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#14_faq_block",
+                      "data": {
+                        "title": "Questions fréquentes",
+                        "questions": [
+                          {
+                            "q": "Puis-je utiliser les photos de mes élèves pour mon portfolio professionnel ?",
+                            "a": "Non, sauf accord explicite des parents et anonymisation si possible. L'usage professionnel doit être distinct de l'usage pédagogique."
+                          },
+                          {
+                            "q": "Que faire si un élève ou ses parents refusent le partage ?",
+                            "a": "Le refus doit être respecté. Proposez des alternatives ne nécessitant pas de diffusion publique (travail en classe, espace privé)."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Outils conformes et charte",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Outils conformes et charte",
+                        "subtitle": "Choisir et réguler"
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Les outils éducatifs conformes",
+                        "paragraphs": [
+                          "Le ministère publie une liste d'outils numériques conformes au RGPD. Ces outils ont fait l'objet d'une analyse juridique et technique.",
+                          "Utiliser un outil hors liste expose l'établissement et l'enseignant à des risques juridiques. La charte d'usage des outils numériques formalise les règles d'utilisation au sein de l'établissement."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "À faire",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Vérifier systématiquement la conformité d'un outil avant de le présenter aux élèves."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "La charte d'usage des outils numériques doit être connue et signée par tous les membres de la communauté éducative."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#10_table_comparison",
+                      "data": {
+                        "title": "Choix d'outils",
+                        "caption": "Critères de sélection",
+                        "headers": [
+                          "Critère",
+                          "Outil conforme",
+                          "Ouit non conforme"
+                        ],
+                        "rows": [
+                          [
+                            "Hébergement des données",
+                            "En Europe / Serveurs sécurisés",
+                            "Hors Europe / Serveurs non sécurisés"
+                          ],
+                          [
+                            "Finalité",
+                            "Pédagogique uniquement",
+                            "Publicitaire ou commerciale"
+                          ],
+                          [
+                            "Transparence",
+                            "Politique de confidentialité claire",
+                            "Conditions d'utilisation floues"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Synthèse et mise en œuvre",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Synthèse et mise en œuvre",
+                        "subtitle": "Passer à l'action"
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Vos actions prioritaires",
+                        "paragraphs": [
+                          "Revoir vos pratiques actuelles : quels outils utilisez-vous ? Collectez-vous des données inutiles ?",
+                          "Vérifier l'état des autorisations de partage de productions numériques dans vos classes.",
+                          "S'assurer que vos mots de passe sont robustes et que l'authentification forte est activée."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Pour aller plus loin",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Documenter vos traitements de données dans le registre d'activité de traitement de l'établissement."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "Former les élèves aux bonnes pratiques de sécurité et au respect de la vie privée d'autrui."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#18_sito_graphy",
+                      "data": {
+                        "title": "Pour aller plus loin",
+                        "links": [
+                          {
+                            "href": "https://eduscol.education.fr",
+                            "text": "Eduscol — Numérique éducatif et protection des données"
+                          },
+                          {
+                            "href": "https://www.cnil.fr",
+                            "text": "CNIL — Guides pratiques pour les enseignants"
+                          },
+                          {
+                            "href": "https://www.education.gouv.fr",
+                            "text": "Ministère de l'Éducation nationale — Liste des outils numériques"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "numbering": 1,
+              "theme": "elea"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e5",
+        "titre": "Concevoir et expérimenter une pratique sécurisée",
+        "objectif": "Créer et tester une solution concrète pour protéger les données des élèves parmi vos prochains projets",
+        "introduction": "Maintenant que vos connaissances sont actualisées, vous allez découvrir un exemple exemplaire commenté, puis en concevoir un vous-même adapté à votre contexte. Cette étape en présence vous permettra d’échanger, d’ajuster et de finaliser un plan d’action adapté à votre classe. Validez ensuite un premier projet à mettre en œuvre très prochainement.",
+        "cartes": [
+          {
+            "id": "c6",
+            "titre": "Etude d’un cas commenté : la création d’un espace numérique sécurisé",
+            "objectif": "Analyser et comprendre les choix techniques et pédagogiques d’un pair sur un exemple récent",
+            "consigne": "Lisez le retour d’expérience de l’enseignante ou de l’enseignant sur son classeur numérique sécurisé. Identifiez les outils utilisés, leur conformité RGPD, et les difficultés rencontrées. Préparez deux questions pour l’échange en présentiel.",
+            "module": "parcours_ims",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Etude d’un cas commenté : la création d’un espace numérique sécurisé",
+              "intro": "Vous allez analyser un retour d’expérience détaillé sur la création d’un espace numérique sécurisé par une enseignante. Découvrez ses choix techniques et pédagogiques, puis préparez des questions pour un échange collaboratif.",
+              "pages": [
+                {
+                  "titre": "Contexte et objectifs du projet",
+                  "texte": "Ce projet visait à concevoir un espace dédié aux productions d’élèves, intégrant des contraintes **RGPD** et des **bonnes pratiques de sécurité**. L’objectif était double : garantir la **protection des données personnelles** tout en offrant un outil fonctionnel et accessible.\n\nCe qui en fait un cas d’étude pertinent pour vous :\n- Le recours à des **outils éducatifs conformes** pour héberger et partager des productions.\n- Une réflexion poussée sur la **minimisation des données** collectées.\n- L’implémentation d’une **authentification forte** pour limiter les risques d’usurpation."
+                },
+                {
+                  "titre": "Architecture technique retenue",
+                  "texte": "Le classeur s’appuie sur un système modulaire et libre de droits, hébergé dans un espace personnel sécurisé. Voici les composants clés :\n- **Un CMS (Content Management System)** : utilisé pour structurer les contenus sans tracer les utilisateurs au-delà des logs nécessaires.\n- **Un système d’authentification** : combinant **mot de passe robuste** et **double vérification** pour accéder au contenu.\n- **Une gestion fine des droits** : permettant de restreindre l’accès aux productions selon les besoins.\n\nLe choix de ces technologies répond à une exigence de transparence et de maîtrise des **traces numériques**. Les logs, par exemple, sont purgés après 30 jours et ne contiennent que des métadonnées non identifiantes."
+                },
+                {
+                  "titre": "Conformité RGPD : points de vigilance",
+                  "texte": "L’enseignante a vérifié plusieurs aspects pour se conformer au **RGPD** :\n- **Le consentement** des élèves et des familles a été recueilli via une **charte d’usage des outils numériques**, précisant les finalités et les droits.\n\n## Respect de la minimisation des données\n- Les données collectées se limitent au strict nécessaire : aucune information superflue n’est demandée.\n- Les productions numériques sont anonymisées si possible, ou pseudonymisées via un identifiant unique non correlable avec les données administratives.\n\n## Gestion des droits des personnes concernées\n- Un formulaire de **droit à l’oubli** a été mis en place pour permettre aux élèves de demander la suppression de leurs productions, sous réserve de validation pédagogique."
+                },
+                {
+                  "titre": "Défis rencontrés et solutions adoptées",
+                  "texte": "Certaines difficultés ont émergé lors de la mise en œuvre :\n- **L’intégration d’outils tiers non conformes** : l’évaluation de la conformité de certains plugins a nécessité un temps important. La solution a été de les remplacer par des alternatives open source préalablement auditées.\n- **La sensibilisation des utilisateurs** : expliquer les enjeux de la **protection des données** aux élèves et aux collègues a révélé des incompréhensions récurrentes sur les **traces numériques**.\n\nPour y remédier, des ateliers de formation ont été organisés, combinant démonstrations et mises en situation. Ces sessions ont aussi servi à co-construire une **charte d’usage** adaptée au contexte de la classe, réaffirmant les obligations de chacun."
+                },
+                {
+                  "titre": "Retours des utilisateurs et améliorations",
+                  "texte": "Les premiers retours des élèves et des parents ont été recueillis via un questionnaire anonyme, intégré directement dans l’espace numérique. Les résultats ont mis en évidence :\n- Une satisfaction globale sur l’ergonomie et la simplicité d’utilisation.\n- Des craintes résiduelles sur la sécurité, malgré les garanties apportées.\n\nPour répondre à ces inquiétudes, l’enseignante a ajouté une FAQ dans l’espace, détaillant les mesures techniques de protection et les procédures en cas de problème. Elle a aussi choisi d’éditer un guide visuel des **bonnes pratiques de mots de passe**, distribué aux élèves pour renforcer la culture de sécurité au quotidien."
+                },
+                {
+                  "titre": "Analyse critique : points forts et limites",
+                  "texte": "Cette initiative présente plusieurs atouts :\n- Elle démontre qu’il est possible de concilier **partage de productions numériques** et **respect de la vie privée**, grâce à une approche rigoureuse et documentée.\n- Elle s’inscrit dans une logique de mutualisation, son archive étant réutilisable sur d’autres plateformes.\n\nCependant, certains aspects mériteraient d’être approfondis :\n- La **transparence** sur l’usage des **données à caractère personnel** pourrait être renforcée par des audits indépendants.\n- La **durabilité** de l’outil dans le temps dépend de sa maintenance et des évolutions technologiques, notamment en matière de sécurité."
+                },
+                {
+                  "titre": "Pour aller plus loin : ressources et poursuites",
+                  "texte": "Vous souhaitez approfondir certains aspects avant l’échange en présentiel ? Voici des pistes pour préparer vos questions :\n- Consultez le livret des exigences que vous avez déjà étudié pour évaluer la conformité des choix techniques.\n- Explorez les outils recommandés par la plateforme du ministère, en comparant leurs politiques de **cybersécurité** et de **respect des données**.\n- Réfléchissez aux obstacles récurrents que vous rencontrez pour protéger les données de vos élèves, afin de les partager lors de la discussion."
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c7",
+            "titre": "Création collaborative d’une charte d’outils numériques conformes",
+            "objectif": "Co-construire avec vos collègues une grille de sélection des outils sécurisés pour votre usage",
+            "consigne": "Sur le document partagé, proposez chacun deux outils que vous utilisez ou envisagez. Remplissez ensemble les critères de conformité (RGPD, hébergement en France, politique de conservation, etc.) pour chaque outil. Identifiez les trois outils les plus adaptés pour votre contexte.",
+            "module": "parcours_document",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 40,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Création collaborative d’une charte d’outils numériques conformes",
+              "intro": "Vous allez co-construire cette charte en équipe. Chacun propose d’abord deux outils numériques qu’il utilise ou envisage pour ses pratiques de classe. Ensuite, remplissez ensemble les critères de conformité pour chaque outil (RGPD, hébergement en France, politique de conservation, etc.). Enfin, identifiez les trois outils les plus adaptés à votre contexte. Répartissez-vous les outils à analyser pour gagner du temps.",
+              "texteInitial": "## Liste des outils à évaluer\n*À compléter : pour chaque outil, indiquer son nom et son usage pédagogique principal.*\n\n## Critères de conformité\n*À compléter pour chaque outil :*\n- Conformité au RGPD : oui/non/partiellement\n- Hébergement des données en France : oui/non\n- Politique de conservation des données : durée et modalités\n- Gestion du consentement des élèves et des familles : modalités proposées\n- Droit à l'oubli : possibilité pour les élèves ou les familles\n- Authentification forte : disponible ou non\n- Minimisation des données : respectée ou non\n- Traces numériques générées : description\n\n## Outils retenus\n*À compléter : les trois outils les plus adaptés à votre contexte, avec une brève justification pour chacun.*"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c8",
+            "titre": "Planification immédiate d’une séance à tester",
+            "objectif": "Rédiger un plan détaillé pour une séance utilisant un outil numérique au service des apprentissages",
+            "consigne": "Décrivez la séance que vous allez animer avec une classe, en précisant l’outil sélectionné selon la charte élaborée, les données collectées (minimisées), les consignes aux élèves, et la procédure de stockage sécurisé. Prévoyez aussi une phase de communication claire avec les familles.",
+            "module": "Devoir",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 30,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Planification immédiate d’une séance à tester",
+              "description": "Vous allez concevoir une séance de 30 minutes utilisant un outil numérique pour protéger les données personnelles des élèves. Vous devez justifier vos choix techniques au regard des exigences légales et pédagogiques, et anticiper les modalités de communication avec les familles.",
+              "rubricName": "Grille d'évaluation : Protection des données en pratique",
+              "criteria": [
+                {
+                  "description": "Choix de l'outil numérique conforme",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucun critère de conformité n'est identifié ou les outils proposés ne respectent pas les exigences de la charte (données non minimisées, hébergement non sécurisé)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "L'outil retenu est partiellement conforme : il respecte une partie des critères de la charte, mais des failles subsistent (stockage des données à caractère personnel outside de l'UE, absence de clause de droit à l'oubli)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "L'outil est conforme aux exigences de la charte : hébergement dans l'UE, chiffrement des données, et minimisation des données collectées (ex : utilisation d'un pseudonyme pour les élèves)."
+                    }
+                  ]
+                },
+                {
+                  "description": "Justification des données collectées",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Les données collectées sont excessives ou non justifiées (ex : collecte du prénom complet + dates de naissance + adresse mail des parents)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Les données collectées sont partiellement justifiées, avec des ambiguïtés dans les finalités (ex : utilisation d'un pseudo pour les travaux, mais conservation des noms de famille pour le suivi administratif)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Les données nécessaires sont clairement identifiées et limitées aux finalités pédagogiques (ex : pseudonyme pour l'activité, données anonymisées pour l'évaluation)."
+                    }
+                  ]
+                },
+                {
+                  "description": "Sécurisation des accès et authentification",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucune mesure d'authentification forte n'est prévue : utilisation de mots de passe faibles ou non chiffrés (ex : mot de passe identique pour tous les élèves)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Une authentification de base est mise en place, mais des risques subsistent (ex : mot de passe partagé ou non renouvelé régulièrement)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Une authentification forte est établie : mots de passe robustes changeables, double leurre pour les comptes élèves, et gestion centralisée des droits d'accès."
+                    }
+                  ]
+                },
+                {
+                  "description": "Procédure de stockage sécurisé",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucune procédure de stockage sécurisé n'est décrite ou le stockage est effectué sur des serveurs non protégés (ex : sauvegarde locale sur disque dur non chiffré)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Une procédure de stockage est évoquée, mais incomplète : chiffrement partiel ou absence de sauvegarde différée (ex : annotations manuscrites du tableau de bord RGPD)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Le stockage est sécurisé : chiffrement des données en transit et au repos, sauvegardes automatiques sur des serveurs certifiés, et durée de conservation alignée sur les objectifs pédagogiques."
+                    }
+                  ]
+                },
+                {
+                  "description": "Communication des bonnes pratiques aux familles",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucune communication n'est prévue pour les familles ou les informations transmises sont floues (ex : absence de demande de consentement explicite, message incomplet dans le carnet de correspondance)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Une communication partielle est mise en place : message global au détriment des précisions (ex : envoi d'un mail collectif sans mention des outils spécifiques utilisés)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Les familles sont informées de manière claire et ciblée : envoi d'un document synthétique explicitant les outils utilisés, leurs finalités, et les droits des parents (RGPD), avec un canal dédié pour leurs questions."
+                    }
+                  ]
+                },
+                {
+                  "description": "Partage des productions numériques",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Le partage des productions élèves n'est pas encadré ou les supports exposés publiquement contiennent des données à caractère personnel (ex : partage de photos avec visages non floutés)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Certaines productions sont protégées, mais des risques persistent (ex : partage de vidéos avec des prénoms affichés en incrustation)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "L'ensemble des productions partagées respecte les principes de minimisation des données : contenus anonymisés ou pseudonymisés, et consentement éclairé des familles obtenu en amont."
+                    }
+                  ]
+                },
+                {
+                  "description": "Gestion des consentements",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucun processus de consentement n'est mis en place ou les consentements sont collectés de manière non traçable (ex : accord oral sans trace écrite)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Un processus de consentement formalisé existe, mais son recueil est incomplet ou non individualisé (ex : demande générique dans un document annexe)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Les consentements sont collectés de manière explicite, individualisée, et traçable : formulaire spécifique avec mention des droits (RGPD), délai de réflexion, et possibilité de retrait ultérieur."
+                    }
+                  ]
+                },
+                {
+                  "description": "Anticipation des incidents et droit à l'oubli",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucune procédure n'est prévue en cas d'incident ou de demande de droit à l'oubli, ou les processus sont irréalistes (ex : impossibilité pour un élève de supprimer ses données après l'année scolaire)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Une procédure existe partiellement : délai de réponse théorique sans modalités pratiques (ex : mention dans un document non diffusé)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Tous les scénarios sont anticipés : délai de traitement des demandes formalisé (30 jours avant la fin de l'année scolaire), procédures de suppression sécurisée, et désignation d'une personne référente RGPD pour le suivi."
+                    }
+                  ]
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e9",
+        "titre": "Mettre en œuvre et évaluer en classe",
+        "objectif": "Appliquer votre plan, en mesurer l’efficacité et le partager avec la communauté des pairs",
+        "introduction": "Vous avez maintenant toutes les clés pour concrétiser vos bonnes intentions en classe. Il est temps de passer à l’action : mettez en œuvre votre plan, observez les effets sur vos élèves et votre pratique, puis revenez échanger avec les autres participants. Cette dernière étape validera votre maîtrise des enjeux et vous donnera l’envie de poursuivre.",
+        "cartes": [
+          {
+            "id": "c10",
+            "titre": "Test final : validation de vos connaissances sur l’ensemble du parcours",
+            "objectif": "Vérifier l’intégration des notions essentielles relatives au RGPD et aux pratiques numériques",
+            "consigne": "Effectuez ce test qui reprend des questions mélangées des étapes précédentes. Votre score sera indicatif de votre progression globale et des points à retravailler.",
+            "module": "test_elea",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "bank_name": "Test final - Protection des données personnelles (RGPD)",
+              "bank_description": "Test de validation des connaissances sur la protection des données personnelles dans les pratiques numériques éducatives, conforme au RGPD et aux bonnes pratiques de sécurité.",
+              "questions": [
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q01 - RGPD et données personnelles",
+                    "questiontext": "Parmi les éléments suivants, lesquels constituent une donnée à caractère personnel au sens du RGPD ?",
+                    "feedback": "Le RGPD protège toute information relative à une personne physique identifiée ou identifiable.",
+                    "single": "false",
+                    "correctfeedback": "Toutes les propositions correctes sont identifiées : ces données sont bien des données personnelles selon le RGPD.",
+                    "partiallycorrectfeedback": "Certaines réponses sont correctes, mais il en manque ou il y a des erreurs.",
+                    "incorrectfeedback": "Aucune bonne réponse n'a été sélectionnée. Revoyez la définition des données personnelles selon le RGPD.",
+                    "hints": [
+                      "Le RGPD considère comme données personnelles toute information permettant d'identifier directement ou indirectement une personne.",
+                      "Un numéro de téléphone ou une adresse IP sont des exemples de données personnelles."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Le nom et prénom d'un élève",
+                        "fraction": 20,
+                        "feedback": "Oui, ces informations identifient directement une personne."
+                      },
+                      {
+                        "text": "L'adresse IP d'un ordinateur utilisé en classe",
+                        "fraction": 20,
+                        "feedback": "Oui, une adresse IP peut permettre d'identifier un utilisateur."
+                      },
+                      {
+                        "text": "Le numéro de téléphone d'un parent d'élève",
+                        "fraction": 20,
+                        "feedback": "Oui, ces informations sont personnelles."
+                      },
+                      {
+                        "text": "La date de naissance d'un établissement scolaire",
+                        "fraction": 0,
+                        "feedback": "Non, il s'agit d'une donnée relative à un établissement, pas à une personne physique."
+                      },
+                      {
+                        "text": "Le résultat d'un élève à un exercice en ligne",
+                        "fraction": 20,
+                        "feedback": "Oui, ce résultat est lié à une personne identifiable."
+                      },
+                      {
+                        "text": "Le nombre d'élèves dans une classe",
+                        "fraction": 0,
+                        "feedback": "Non, il s'agit d'une donnée agrégée et non d'une information personnelle."
+                      },
+                      {
+                        "text": "L'adresse email professionnelle d'un enseignant",
+                        "fraction": 20,
+                        "feedback": "Oui, cette adresse permet d'identifier une personne."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q02 - Consentement et outils numériques",
+                    "questiontext": "Dans le cadre d'un projet pédagogique utilisant un outil numérique externe, quelles actions sont conformes au RGPD concernant le consentement des élèves ?",
+                    "feedback": "Le consentement doit être libre, spécifique, éclairé et univoque.",
+                    "single": "false",
+                    "correctfeedback": "Toutes les actions conformes au RGPD sont identifiées : le consentement doit être explicite et documenté.",
+                    "partiallycorrectfeedback": "Certaines réponses sont correctes, mais il en manque ou il y a des erreurs.",
+                    "incorrectfeedback": "Aucune bonne réponse n'a été sélectionnée. Revoyez les conditions de validité du consentement selon le RGPD.",
+                    "hints": [
+                      "Le consentement doit être donné pour une finalité précise et ne peut être implicite.",
+                      "Les élèves mineurs nécessitent le consentement des responsables légaux pour certaines utilisations."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Demander le consentement écrit des responsables légaux pour les élèves mineurs",
+                        "fraction": 25,
+                        "feedback": "Oui, c'est une obligation pour les mineurs."
+                      },
+                      {
+                        "text": "Informer les élèves et leurs responsables légaux des finalités du traitement des données",
+                        "fraction": 25,
+                        "feedback": "Oui, l'information est une condition préalable au consentement."
+                      },
+                      {
+                        "text": "Utiliser un outil numérique sans vérifier sa politique de confidentialité",
+                        "fraction": 0,
+                        "feedback": "Non, cela ne garantit pas le respect du RGPD."
+                      },
+                      {
+                        "text": "Conserver une trace écrite des consentements obtenus",
+                        "fraction": 25,
+                        "feedback": "Oui, cela permet de prouver la conformité en cas de contrôle."
+                      },
+                      {
+                        "text": "Demander le consentement oral des élèves pour un usage limité dans le temps",
+                        "fraction": 25,
+                        "feedback": "Oui, si le consentement est libre et documenté."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "truefalse",
+                  "content": {
+                    "name": "Q03 - Droit à l'oubli",
+                    "questiontext": "Un élève ou ses responsables légaux peuvent demander à ce que ses données personnelles soient effacées dans un outil numérique utilisé en classe, même si cet outil est conforme au RGPD.",
+                    "feedback": "Le droit à l'oubli est un droit fondamental reconnu par le RGPD.",
+                    "answer": {
+                      "value": true,
+                      "feedback_true": "Exactement : le droit à l'oubli permet de demander l'effacement des données personnelles dans certaines conditions.",
+                      "feedback_false": "C'est faux : le RGPD prévoit bien ce droit, sous réserve de certaines exceptions."
+                    }
+                  }
+                },
+                {
+                  "type": "shortanswer",
+                  "content": {
+                    "name": "Q04 - Authentification forte",
+                    "questiontext": "Citez une méthode d'authentification forte recommandée pour sécuriser l'accès à un espace numérique de travail.",
+                    "feedback": "L'authentification forte combine au moins deux facteurs parmi : quelque chose que vous connaissez (mot de passe), quelque chose que vous possédez (jeton, carte), quelque chose que vous êtes (empreinte biométrique).",
+                    "answers": [
+                      {
+                        "text": "double authentification",
+                        "fraction": 100,
+                        "feedback": "Correct : la double authentification est une méthode d'authentification forte."
+                      },
+                      {
+                        "text": "authentification à deux facteurs",
+                        "fraction": 100,
+                        "feedback": "Correct : c'est une forme d'authentification forte."
+                      },
+                      {
+                        "text": "2FA",
+                        "fraction": 100,
+                        "feedback": "Correct : 2FA signifie Two-Factor Authentication."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "numerical",
+                  "content": {
+                    "name": "Q05 - Mot de passe robuste",
+                    "questiontext": "Combien de caractères un mot de passe doit-il comporter au minimum pour être considéré comme robuste selon les recommandations de l'ANSSI ?",
+                    "feedback": "L'ANSSI recommande une longueur minimale de 12 caractères pour un mot de passe robuste.",
+                    "hints": [
+                      "Les recommandations de l'Agence nationale de la sécurité des systèmes d'information (ANSSI) sont une référence en matière de sécurité."
+                    ],
+                    "answer": {
+                      "number": 12,
+                      "tolerance": 0,
+                      "feedback": "Exactement : 12 caractères est la longueur minimale recommandée pour un mot de passe robuste."
+                    }
+                  }
+                },
+                {
+                  "type": "cloze",
+                  "content": {
+                    "name": "Q06 - Bonnes pratiques de sécurité",
+                    "questiontext": "Pour sécuriser vos pratiques numériques, il est recommandé de {1:SHORTANSWER:=changer régulièrement vos mots de passe~mettre à jour vos mots de passe} et d'utiliser des {1:SHORTANSWER:=mots de passe uniques} pour chaque service. Évitez également de stocker vos identifiants sur un {1:SHORTANSWER:=ordinateur partagé} ou un appareil non sécurisé.",
+                    "feedback": "Ces pratiques réduisent les risques de compromission de vos comptes et données."
+                  }
+                }
+              ],
+              "title": "Test final : validation de vos connaissances sur l’ensemble du parcours"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c11",
+            "titre": "Partage d’expérience : ajustements et retours sur le projet mené",
+            "objectif": "Exposer votre mise en œuvre, en pointer les réussites et les points d’amélioration",
+            "consigne": "Rédigez un message dans le forum pour présenter votre séance : l’outil utilisé, la réaction des élèves, les problèmes rencontrés (techniques, éthiques ou pédagogiques), et les évolutions que vous envisagez. Répondez aux questions de vos collègues et complétez leurs retours par vos observations.",
+            "module": "parcours_forum",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 30,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Partage d’expérience : ajustements et retours sur le projet mené",
+              "intro": "Vous avez testé un outil ou une activité en classe pour protéger les données des élèves. Partagez en détail : comment avez-vous sélectionné un outil conforme parmi vos options ? Quels ajustements techniques ou pédagogiques avez-vous dû opérer ? Discutez des réactions des participants, des problèmes rencontrés (besoin d’un mot de passe robuste, partage de productions numériques, etc.), et des pistes pour aller plus loin. Apportez des retours précis pour nourrir la réflexion collective."
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c12",
+            "titre": "Synthèse collective : bonnes pratiques et perspectives professionnelles",
+            "objectif": "Identifier collectivement les actions prioritaires pour intégrer durablement ces pratiques",
+            "consigne": "Sur le tableau partagé, chacune et chacun inscrit une bonne pratique testée, une difficulté surmontée et un objectif futur à 3 mois. Classez ensuite en quatre colonnes par thématique (outils, procédures, communication, formation) pour dégager une feuille de route collective.",
+            "module": "parcours_tableau",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 25,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Synthèse collective : bonnes pratiques et perspectives professionnelles",
+              "intro": "Sur ce tableau partagé, déposez trois éléments pour enrichir la réflexion collective : une bonne pratique que vous avez testée en classe, une difficulté que vous avez surmontée, et un objectif que vous visez dans les trois prochains mois. Ces contributions serviront à construire une synthèse organisée par thématiques pour identifier des actions prioritaires.",
+              "titresColonnes": [
+                "Outils conformes",
+                "Procédures sécurisées",
+                "Communication avec les familles",
+                "Formation continue"
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "Enseignants du second degré en formation continue",
+    "adultes": true
+  }
+}

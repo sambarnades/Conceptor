@@ -1,0 +1,1250 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-28T12:45:45.932Z",
+  "cadrage": {
+    "platform": "magistere",
+    "format": "hybride",
+    "ampleur": "longue",
+    "trame": "cooperation"
+  },
+  "plan": {
+    "titre": "Concevoir et animer une activité collaborative avec les outils numériques",
+    "objectifGeneral": "Réaliser un projet commun en équipe pour mettre en œuvre les compétences de collaboration et d'évaluation par les pairs à l'aide d'outils numériques",
+    "introduction": "Vous allez concevoir et animer une activité collaborative pour vos élèves. Ce parcours vous guide pas à pas pour organiser des équipes, rédiger un document ensemble, puis évaluer les productions de vos pairs. Une alternance entre temps à distance et temps en présentiel vous permet de progresser efficacement. Prévoyez environ 3 heures pour achever cette séquence.",
+    "notionsPivots": [
+      "l'organisation d'une équipe",
+      "l'outil de document partagé",
+      "la synchronisation asynchrone",
+      "les grilles d'évaluation",
+      "l'évaluation par les pairs",
+      "l'amélioration d'un document",
+      "les consignes pour les élèves",
+      "la grille de critères"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Former les équipes et clarifier la tâche",
+        "objectif": "Identifier les rôles dans une équipe et choisir ses partenaires",
+        "introduction": "Vous allez commencer par former vos groupes de travail et comprendre les attentes pour la tâche commune. Un rôle précis est assigné à chaque membre pour favoriser l'implication de chacun. Ce travail en présentiel vous permet de poser les bases avant de vous lancer à distance.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Présentation de la tâche et des rôles",
+            "objectif": "Comprendre les enjeux et son rôle dans l'équipe",
+            "consigne": "Lisez attentivement la présentation de l'activité et identifiez votre rôle dans l'équipe : coordinateur, rédacteur ou relecteur.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Présentation de la tâche et des rôles",
+              "intro": "Cette activité vous invite à concevoir une séquence collaborative pour vos élèves en identifiant clairement les rôles au sein des équipes. Vous allez découvrir comment organiser une activité de collaboration avec des outils numériques en définissant les responsabilités de chacun : coordinateur, rédacteur ou relecteur. Cette première étape pose les bases pour une mise en œuvre efficace.",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "Collaborer avec les outils numériques",
+                    "subtitle": "Organiser les équipes et définir les rôles"
+                  }
+                },
+                {
+                  "type": "#02_nav_summary",
+                  "data": {
+                    "links": [
+                      {
+                        "href": "#objectifs",
+                        "text": "Les objectifs de l'activité"
+                      },
+                      {
+                        "href": "#roles",
+                        "text": "Les trois rôles à identifier"
+                      },
+                      {
+                        "href": "#outils",
+                        "text": "Les outils pour collaborer"
+                      },
+                      {
+                        "href": "#evaluation",
+                        "text": "L'évaluation par les pairs"
+                      },
+                      {
+                        "href": "#lexique",
+                        "text": "Lexique des termes clés"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Objectifs de cette activité",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Comprendre l'importance de l'organisation d'une équipe dans une activité collaborative."
+                      },
+                      {
+                        "type": "objectif",
+                        "text": "Identifier les trois rôles clés : coordinateur, rédacteur, relecteur."
+                      },
+                      {
+                        "type": "objectif",
+                        "text": "Préparer les consignes pour vos élèves en précisant les attentes liées à chaque rôle."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Pourquoi organiser les équipes et définir les rôles ?",
+                    "paragraphs": [
+                      "Dans une activité collaborative, chaque membre de l'équipe a un rôle précis à jouer. Cela permet d'éviter les malentendus, de clarifier les responsabilités et de favoriser une répartition équitable du travail. En définissant ces rôles dès le départ, vous facilitez la coordination et la synchronisation asynchrone entre les membres de l'équipe.",
+                      "Les outils numériques comme l'outil de document partagé permettent de travailler ensemble même à distance. Cependant, sans une organisation claire, les élèves peuvent se sentir perdus ou désengagés. C'est pourquoi il est essentiel de leur présenter les rôles et les attentes associées dès le début de l'activité.",
+                      "Cette étape est cruciale pour préparer vos élèves à l'évaluation par les pairs. En comprenant leur rôle, ils pourront mieux évaluer le travail des autres et améliorer leur propre contribution. Cela renforce également leur autonomie et leur responsabilité dans le projet."
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Points d'attention",
+                    "callouts": [
+                      {
+                        "type": "alerte",
+                        "text": "Assurez-vous que chaque élève comprenne bien son rôle. Une mauvaise compréhension peut entraîner une répartition inégale du travail ou une confusion dans les attentes."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Les rôles doivent être attribués en fonction des compétences et des affinités des élèves pour maximiser leur engagement."
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "Prévoyez un temps de présentation des rôles avant de lancer l'activité. Cela évite les incompréhensions et les conflits en cours de projet."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Les trois rôles à identifier",
+                    "paragraphs": [
+                      "Le coordinateur a pour mission d'organiser le travail de l'équipe. Il veille à ce que les consignes soient respectées, planifie les étapes et s'assure que chaque membre contribue activement. Ce rôle est idéal pour les élèves qui aiment prendre des initiatives et guider les autres.",
+                      "Le rédacteur est responsable de la rédaction du document partagé. Il synthétise les idées de l'équipe et les met en forme. Ce rôle convient aux élèves qui ont une bonne maîtrise de l'expression écrite et qui aiment structurer les informations.",
+                      "Le relecteur relit et améliore le document final. Il vérifie la cohérence, corrige les erreurs et propose des améliorations. Ce rôle est parfait pour les élèves attentifs aux détails et soucieux de la qualité du travail rendu."
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Comment présenter ces rôles à vos élèves ?",
+                    "paragraphs": [
+                      "Commencez par expliquer clairement les attentes liées à chaque rôle. Utilisez des exemples concrets pour illustrer les responsabilités de chacun. Par exemple, montrez-leur un document partagé et demandez-leur d'identifier qui pourrait être coordinateur, rédacteur ou relecteur.",
+                      "Proposez une activité de mise en situation où les élèves doivent attribuer les rôles en fonction de profils donnés. Cela les aidera à mieux comprendre les compétences associées à chaque rôle et à faire des choix éclairés.",
+                      "N'oubliez pas de préciser les critères d'évaluation pour chaque rôle. Cela permettra aux élèves de savoir comment leur travail sera jugé et les motivera à s'investir pleinement dans leur mission."
+                    ]
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Lexique des termes clés",
+                    "caption": "Ces termes seront utiles pour concevoir votre activité collaborative.",
+                    "headers": [
+                      "Terme",
+                      "Définition"
+                    ],
+                    "rows": [
+                      [
+                        "Organisation d'une équipe",
+                        "Répartition des rôles et des responsabilités au sein d'un groupe pour mener à bien un projet commun."
+                      ],
+                      [
+                        "Outil de document partagé",
+                        "Logiciel permettant à plusieurs personnes de travailler simultanément ou à tour de rôle sur un même document en ligne."
+                      ],
+                      [
+                        "Synchronisation asynchrone",
+                        "Mode de travail où les membres d'une équipe contribuent à des moments différents, sans nécessiter une présence simultanée."
+                      ],
+                      [
+                        "Évaluation par les pairs",
+                        "Processus où les élèves évaluent le travail de leurs camarades en utilisant une grille de critères prédéfinie."
+                      ],
+                      [
+                        "Amélioration d'un document",
+                        "Processus de relecture et de correction visant à perfectionner un document avant sa version finale."
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Pour aller plus loin",
+                    "links": [
+                      {
+                        "href": "https://pix.fr/fr/cadre-de-reference",
+                        "text": "Cadre de référence Pix+Édu : Interagir et collaborer"
+                      },
+                      {
+                        "href": "https://eduscol.education.fr/1256/les-competences-numeriques",
+                        "text": "Compétences numériques pour les enseignants (Eduscol)"
+                      },
+                      {
+                        "href": "https://www.education.gouv.fr/bo/20/Hebdo31/MENE2019366N.htm",
+                        "text": "Circulaire sur les compétences numériques dans l'éducation"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c3",
+            "titre": "Formation des groupes",
+            "objectif": "Choisir ses partenaires de travail",
+            "consigne": "Sélectionnez votre équipe parmi les choix proposés ou inscrivez-vous au choix libre pour proposer un groupe personnalisé.",
+            "module": "parcours_choix_groupe",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Formation des groupes",
+              "intro": "Vous avez maintenant clarifié la tâche et les rôles de chacun. Cette étape vous permet de composer une équipe en fonction de vos affinités ou de vos objectifs de travail. Choisissez un groupe parmi les propositions disponibles, ou inscrivez-vous au choix libre pour créer un groupe personnalisé avec des collègues de votre choix sur la plateforme."
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e4",
+        "titre": "Préparer les ressources et recueillir les idées",
+        "objectif": "S'approprier les outils et exprimer ses premières propositions",
+        "introduction": "Cette étape à distance vous permet de vous former aux outils numériques nécessaires et de partager vos premières idées avec votre équipe. Les ressources vous guideront pour utiliser les fonctionnalités essentielles, tandis que le tableau collaboratif recueillera vos propositions.",
+        "cartes": [
+          {
+            "id": "c5",
+            "titre": "Découvrir les ressources sur les outils",
+            "objectif": "Consulter les supports disponibles",
+            "consigne": "Consultez le livre interactif expliquant les fonctionnalités des outils : document partagé, forum et grille d'évaluation.",
+            "module": "Livre",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Découvrir les ressources sur les outils",
+              "intro": "Explorez les fonctionnalités des outils numériques essentiels à la collaboration : découvrez comment bien utiliser les documents partagés et les grilles d'évaluation pour proposer à vos élèves des activités basées sur l'interaction et la co-construction.",
+              "chapters": [
+                {
+                  "title": "Pourquoi explorer ces outils ?",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Les outils au service de la collaboration",
+                        "subtitle": "Votre objectif : Savoir utiliser les documents partagés et les grilles d'évaluation"
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Objectifs de ce livre interactif",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Comprendre les principes du document partagé pour organiser un travail collaboratif."
+                          },
+                          {
+                            "type": "objectif",
+                            "text": "Découvrir la grille d'évaluation par les pairs pour guider les élèves vers une amélioration qualitative."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Repères pour la mise en œuvre",
+                        "paragraphs": [
+                          "Les activités collaboratives s'appuient sur des outils qui permettent à plusieurs utilisateurs d'intervenir simultanément ou de manière différée sur un même document.",
+                          "Les grilles d'évaluation sont des ressources essentielles pour structurer les attentes et rendre transparent le processus d'évaluation entre pairs."
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Le document partagé : principes essentiels",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#11_definition_box",
+                      "data": {
+                        "title": "Définition",
+                        "text": "Un document partagé est un fichier hébergé sur une plateforme en ligne qui permet à plusieurs utilisateurs de le consulter, le modifier ou le commenter en temps réel ou en mode asynchrone."
+                      }
+                    },
+                    {
+                      "type": "#10_table_comparison",
+                      "data": {
+                        "title": "Typologie des documents partagés",
+                        "headers": [
+                          "Type de document",
+                          "Fonctionnalité principale",
+                          "Exemple d'usage pédagogique"
+                        ],
+                        "rows": [
+                          [
+                            "Traitement de texte",
+                            "Rédaction collective d'un texte",
+                            "Créer un compte rendu d'activité en équipe."
+                          ],
+                          [
+                            "Tableur",
+                            "Suivi de données partagées",
+                            "Organiser un relevé de notes ou un budget participatif."
+                          ],
+                          [
+                            "Tableau blanc interactif",
+                            "Brainstorming visuel",
+                            "Structurer les idées d'un projet en carte mentale."
+                          ]
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Synchronisation synchrone vs asynchrone",
+                        "paragraphs": [
+                          "La synchronisation synchrone permet à plusieurs utilisateurs de travailler en même temps sur le document (ex : discussion instantanée pendant la modification).",
+                          "La synchronisation asynchrone permet aux participants d'intervenir à des moments différents (ex : annotation d'un document par plusieurs élèves dans la journée)."
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Optimiser les fonctionnalités des documents partagés",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Bonnes pratiques",
+                        "callouts": [
+                          {
+                            "type": "savoir",
+                            "text": "Assignez des rôles clairs à chaque membre de l'équipe (ex : rédacteur, relecteur, gestionnaire de sources)."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "Utilisez les commentaires ou les suggestions pour garder une trace des modifications et faciliter la relecture."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#07_glossary_chips",
+                      "data": {
+                        "title": "Vocabulaire clé",
+                        "chips": [
+                          "Historique des versions",
+                          "Partage par lien généré",
+                          "Gestion des autorisations",
+                          "Export en PDF"
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Exemple concret",
+                        "paragraphs": [
+                          "Lors de l'activité 'Former les équipes et clarifier la tâche', vous avez déjà découvert comment impliquer les élèves dans la production d'un document commun.",
+                          "Le passage à l'outil partagé permet maintenant d'aller plus loin en mettant en œuvre des ajustements en direct, sans perte de temps."
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "La grille d'évaluation par les pairs : construction et usage",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#11_definition_box",
+                      "data": {
+                        "title": "Définition",
+                        "text": "Une grille d'évaluation par les pairs est un outil structurant qui définit les critères et les indicateurs de réussite pour évaluer le travail d'un groupe ou d'un individu, en s'appuyant sur des retours constructifs et anonymisés."
+                      }
+                    },
+                    {
+                      "type": "#13_monument_sheet_long",
+                      "data": {
+                        "title": "Les composantes d'une grille efficace",
+                        "img_src": "https://pix.fr/sites/default/files/2023-10/grille-evaluation.png",
+                        "img_alt": "Exemple de grille d'évaluation avec critères et niveaux de maîtrise",
+                        "sections": [
+                          {
+                            "subtitle": "Les critères",
+                            "text": "Ils définissent ce qui sera évalué (ex : respect des consignes, originalité, clarté). Chaque critère est associé à un indicateur mesurable."
+                          },
+                          {
+                            "subtitle": "Les indicateurs",
+                            "text": "Ce sont des phrases décrivant le niveau attendu pour chaque critère. Ils permettent d'éviter les interprétations subjectives."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#10_table_comparison",
+                      "data": {
+                        "title": "Grille critériée vs checklist",
+                        "headers": [
+                          "Grille critériée",
+                          "Checklist simple"
+                        ],
+                        "rows": [
+                          [
+                            "Précision des critères et indicateurs",
+                            "Liste d'actions à cocher sans nuance"
+                          ],
+                          [
+                            "Focus sur les processus et la progression",
+                            "Focus sur la réalisation finale"
+                          ],
+                          [
+                            "Adaptée à l'évaluation par les pairs",
+                            "Risque de subjectivité accrue"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Mettre en œuvre la grille pour améliorer un document",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Étapes clés",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Choisissez des critères adaptés au document produit et à la compétence visée."
+                          },
+                          {
+                            "type": "objectif",
+                            "text": "Communiquez clairement la grille aux élèves avant la production pour guider leur travail."
+                          },
+                          {
+                            "type": "objectif",
+                            "text": "Réservez un temps de synthèse pour analyser les retours et planifier des améliorations."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Exemple de grille commentée",
+                        "paragraphs": [
+                          "Pour l'évaluation d'un document partagé (ex : compte rendu d'expérience), un critère comme 'Clarté de la présentation' peut inclure des indicateurs comme : 'Le document est organisé en parties logiques' ou 'Les titres sont explicites et hiérarchisés'.",
+                          "Les élèves évaluateurs attribuent des points ou des commentaires qualitatifs pour chaque critère, ce qui permet au groupe producteur d'identifier les forces et les axes d'amélioration."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#14_faq_block",
+                      "data": {
+                        "title": "Questions fréquentes",
+                        "questions": [
+                          {
+                            "q": "Comment gérer des évaluations partiales ou injustes ?",
+                            "a": "Prévoyez des évaluations anonymisées et plusieurs relecteurs pour croiser les points de vue. Relisez les retours avec les critères pour objectiver les commentaires."
+                          },
+                          {
+                            "q": "Peut-on adapter la grille à différente niveaux scolaires ?",
+                            "a": "Oui. Adaptez les critères et les indicateurs en fonction de l'âge des élèves et du niveau de complexité attendu."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Synthèse et ressources complémentaires",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#18_sito_graphy",
+                      "data": {
+                        "title": "Pour approfondir",
+                        "links": [
+                          {
+                            "href": "https://pix.fr/ressources/tutoriel-outils-collaboratifs",
+                            "text": "Tutoriel Pix pour maîtriser les outils de document partagé"
+                          },
+                          {
+                            "href": "https://www.education.gouv.fr/bo/20/Hebdo31/MENE2019366C.htm",
+                            "text": "Référentiel de compétences numériques (détail des items pour l'évaluation)"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#14_faq_block",
+                      "data": {
+                        "title": "Checklist rapide",
+                        "questions": [
+                          {
+                            "q": "Mes consignes pour l'activité collaborative sont-elles claires pour les élèves ?",
+                            "a": ""
+                          },
+                          {
+                            "q": "Ai-je testé le document partagé en conditions réelles avec un petit groupe ?",
+                            "a": ""
+                          },
+                          {
+                            "q": "La grille d'évaluation couvre-t-elle tous les aspects de la production attendue ?",
+                            "a": ""
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "numbering": 1,
+              "theme": "elea"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c6",
+            "titre": "Valider vos connaissances sur les outils",
+            "objectif": "Répondre aux questions sur les fonctionnalités des outils",
+            "consigne": "Répondez au quiz pour vérifier que vous maîtrisez les bases des outils collaboratifs présentés.",
+            "module": "QuizSet",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Valider vos connaissances sur les outils",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "Quiz sur les outils collaboratifs",
+                "introduction": "Vous allez répondre à un quiz qui vérifie la maîtrise des outils collaboratifs essentiels pour organiser des activités entre élèves. Ce quiz reprend les éléments clés abordés lors des étapes précédentes du parcours.",
+                "startButtonText": "Commencer le quiz"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "QCM - Documents partagés"
+                  },
+                  "params": {
+                    "question": "Parmi les outils ci-dessous, lequel est spécifiquement conçu pour permettre une synchronisation asynchrone de plusieurs personnes sur un même document ?",
+                    "answers": [
+                      {
+                        "text": "Un forum en ligne",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pensez à la modification simultanée ou différée d'un document.",
+                          "chosenFeedback": "Un forum est utile pour les échanges textuels mais ne permet pas de modifier un document directement."
+                        }
+                      },
+                      {
+                        "text": "Un traitement de texte collaboratif en ligne",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : ces outils comme Framapad ou Google Docs permettent à plusieurs utilisateurs de travailler en même temps ou à tour de rôle sur un document."
+                        }
+                      },
+                      {
+                        "text": "Un réseau social pédagogique",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un réseau social facilite les échanges mais pas la co-édition d'un document unique en temps différé."
+                        }
+                      },
+                      {
+                        "text": "Un tableau blanc numérique",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un tableau blanc permet l'écriture collective mais est souvent limité à un espace de travail visuel plutôt qu'à un document structuré."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Rappel : les outils collaboratifs visent à faciliter le travail simultané ou étalé dans le temps sur une même production. Revenez sur les ressources concernant l'outil de document partagé."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "La bonne réponse implique la possibilité de modification directe et collective d'un document. Consultez les supports sur les outils comme Framapad ou Google Docs."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : l'outil recherché permet une interaction directe sur un document partagé. Relisez la présentation de l'outil de document partagé."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : ces outils sont conçus pour la co-édition, que ce soit en temps réel ou asynchrone."
+                      }
+                    ]
+                  },
+                  "subContentId": "033c60fb-182d-4f1f-87b4-08bccb173aef"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Vrai/Faux - Évaluation par les pairs"
+                  },
+                  "params": {
+                    "question": "L'évaluation par les pairs peut être intégrée dans une grille de critères pour améliorer un document.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "L'évaluation par les pairs s'appuie souvent sur une grille de critères partagés ce qui permet une amélioration ciblée du travail.",
+                    "feedbackOnWrong": "En réalité, l'évaluation par les pairs s'utilise fréquemment avec une grille de critères pour objectiver les retours et orienter les améliorations."
+                  },
+                  "subContentId": "a61a501e-9036-45eb-9138-12934c797e7f"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "QCM - Grilles d'évaluation"
+                  },
+                  "params": {
+                    "question": "Quelle fonctionnalité d'une grille d'évaluation favorise le plus l'amélioration d'un document par les pairs ?",
+                    "answers": [
+                      {
+                        "text": "La présence de commentaires anonymes",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Réfléchissez à la structure et au contenu des critères pour comprendre l'intérêt.",
+                          "chosenFeedback": "Les commentaires anonymes favorisent la franchise mais n'indiquent pas nécessairement comment améliorer le travail."
+                        }
+                      },
+                      {
+                        "text": "Des critères précis et hiérarchisés",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Des critères ciblés sur les attendus du document aident les pairs à proposer des modifications constructives."
+                        }
+                      },
+                      {
+                        "text": "L'attribution d'une note globale",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La note est un résultat mais ne guide pas directement l'amélioration du document."
+                        }
+                      },
+                      {
+                        "text": "L'obligation d'utiliser un seul mot pour décrire le travail",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un seul mot ne permet pas d'expliciter les forces et faiblesses du document."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Les grilles d'évaluation efficaces s'appuient sur des critères précis décrivant les attendus. Relisez les supports sur la grille de critères."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : ce qui guide l'amélioration doit être décrit de manière à montrer le chemin à suivre. Consultez les exemples de grilles."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la bonne réponse est proche. Un travail amélioré repose sur des critères explicites et actionnables."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : les critères hiérarchisés et précis guident les retours et orientent les modifications à apporter."
+                      }
+                    ]
+                  },
+                  "subContentId": "f7e9ab9a-bd1b-45f2-acac-db777ebcf00b"
+                },
+                {
+                  "library": "H5P.Blanks 1.14",
+                  "metadata": {
+                    "title": "Mots à trous - Organisation d'équipe"
+                  },
+                  "params": {
+                    "taskDescription": "Complétez la phrase avec les mots appropriés.",
+                    "questions": [
+                      "Pour réussir l'*organisation* d'une équipe, il est essentiel de définir clairement les *rôles* de chacun et d'établir une *méthode* de travail commune.",
+                      "Les consignes aux élèves doivent inclure les délais de rendu, les attentes en termes de *qualité* et les modalités d'*évaluation*."
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "allowRetryIfCorrect": false,
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Chaque mot vide renvoie à une notion essentielle pour structurer le travail d'équipe. Relisez les consignes liées à l'organisation d'équipe."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Plusieurs notions sont identifiées mais certains termes peuvent encore manquer. Consultez les ressources sur le rôle des consignes."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : certaines attentes ou modalités manquent encore. Revoyez les points clés des consignes pour les élèves."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : les mots sélectionnés correspondent exactement aux notions attendues pour organiser le travail d'équipe."
+                      }
+                    ]
+                  },
+                  "subContentId": "1762f825-ee77-4dd4-bd11-1516f1d612d1"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "QCM - Synchronisation asynchrone"
+                  },
+                  "params": {
+                    "question": "Quels avantages offre une synchronisation asynchrone pour les élèves dans un travail de groupe ?",
+                    "answers": [
+                      {
+                        "text": "Rendre le travail plus rapide car tout le monde peut contribuer en même temps",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pensez à la flexibilité temporelle pour les élèves.",
+                          "chosenFeedback": "La simultanéité permet une rapidité, mais la synchronisation asynchrone offre une autre forme de flexibilité."
+                        }
+                      },
+                      {
+                        "text": "Permettre à chacun de contribuer selon son propre rythme et ses disponibilités",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La synchronisation asynchrone permet aux élèves de travailler à des moments différents tout en restant connectés."
+                        }
+                      },
+                      {
+                        "text": "Supprimer tout besoin de coordination entre les membres du groupe",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La coordination reste nécessaire mais peut être étalée dans le temps."
+                        }
+                      },
+                      {
+                        "text": "Autoriser les modifications uniquement par l'enseignant pour garantir la qualité",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La synchronisation asynchrone permet la co-édition, pas la centralisation par l'enseignant uniquement."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La synchronisation asynchrone offre une liberté horaire pour les contributions. Relisez les supports sur la coordination asynchrone."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Certains avantages sont identifiés mais l'un d'eux est hors contexte. Consultez la définition de la synchronisation asynchrone."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : une réponse reste à ajuster. Pensez au rapport entre le travail en groupe et la gestion du temps."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : la synchronisation asynchrone permet une collaboration flexible dans le temps."
+                      }
+                    ]
+                  },
+                  "subContentId": "8063c98c-9006-45ec-b353-efe771f58571"
+                },
+                {
+                  "library": "H5P.DragText 1.10",
+                  "metadata": {
+                    "title": "Glisser les mots - Grille de critères"
+                  },
+                  "params": {
+                    "taskDescription": "Reconstituez la phrase en plaçant les mots dans l'ordre approprié.",
+                    "textField": "Une grille de *critères* claire facilite l'évaluation par les *pairs* et guide l'*amélioration* du document produit.",
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Les mots manquants relèvent du vocabulaire de base des grilles d'évaluation. Relisez la définition de la grille de critères."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Plusieurs mots sont à leur place : revoyez l'articulation entre évaluation, pairs et aménagement du travail produit."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : un ou deux mots restent à déplacer. Pensez au rôle de chaque terme dans la phrase."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Brillant : la phrase est exactement reconstruite avec les bons termes."
+                      }
+                    ]
+                  },
+                  "subContentId": "70d95116-099f-4b14-925d-fa4c19f82954"
+                },
+                {
+                  "library": "H5P.DragQuestion 1.15",
+                  "metadata": {
+                    "title": "Glisser-déposer - Outils collaboratifs"
+                  },
+                  "params": {
+                    "title": "Associez chaque outil à la fonction principale qu'il permet.",
+                    "dropZones": [
+                      {
+                        "label": "Communication",
+                        "correctElements": [
+                          0,
+                          2
+                        ]
+                      },
+                      {
+                        "label": "Production commune",
+                        "correctElements": [
+                          1,
+                          3
+                        ]
+                      }
+                    ],
+                    "elements": [
+                      {
+                        "text": "Forum"
+                      },
+                      {
+                        "text": "Document partagé"
+                      },
+                      {
+                        "text": "Chat"
+                      },
+                      {
+                        "text": "Tableau blanc numérique"
+                      }
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "off",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Piste : les outils de communication permettent les échanges tandis que ceux de production servent à créer une ressource commune."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Certains outils sont bien classés : revoyez la distinction entre communication et production commune."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : un ou deux outils restent à relocaliser. Pensez à la finalité de chaque outil."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent : chaque outil est correctement associé à sa fonction principale."
+                      }
+                    ]
+                  },
+                  "subContentId": "2c5548e3-4a68-471a-ace0-4968a0a04177"
+                },
+                {
+                  "library": "H5P.Essay 1.5",
+                  "metadata": {
+                    "title": "Rédaction - Consignes pour les élèves"
+                  },
+                  "params": {
+                    "taskDescription": "Décrivez brièvement les éléments essentiels qu'une consigne pour les élèves doit contenir pour organiser efficacement un travail collaboratif.",
+                    "keywords": [
+                      {
+                        "keyword": "objectif",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "modalités",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "rôle",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "critères",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      }
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Les consignes efficaces incluent une organisation claire de la tâche et des attentes. Écrivez un plan simple avec 3 ou 4 points clés."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Plusieurs éléments essentiels sont identifiés : relisez les ressources sur la structure des consignes pour les élèves."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "L'essentiel est là : objectif, modalités, rôles et critères doivent être décrits pour guider les élèves."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Très complet : la consigne pour les élèves est bien décrite dans sa structure et son contenu."
+                      }
+                    ]
+                  },
+                  "subContentId": "a137132d-9b89-44de-8542-6e3a876d1317"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les bases des outils collaboratifs sont à revoir. Relisez les supports sur l'outil de document partagé, les grilles d'évaluation et l'évaluation par les pairs pour progresser."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Plusieurs notions s'installent. Repérez les questions qui ont fait hésiter pour cibler celles où l'entraînement est nécessaire."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Une grande partie des acquis est solide. Consolidez les notions qui demandent encore à être fixées, notamment en relisant les consignes et grilles d'évaluation."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Ces acquis sont bien maîtrisés. Continuez à vous entraîner pour ancrer ces compétences et envisagez d'appliquer ces outils dans vos propres projets pédagogiques."
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": "on",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Les bases des outils collaboratifs sont à revoir. Revoyez attentivement les fonctionnalités des outils et leurs usages pédagogiques."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "Les concepts clés sont maintenant plus clairs. Identifiez les types d'outils et leurs rôles respectifs pour mieux les mobiliser."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Vous approchez de la maîtrise complète. Consacrez du temps à l'approfondissement des grilles d'évaluation et de l'évaluation par les pairs."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Excellente performance. Vous avez validé une compréhension solide des outils collaboratifs et de leur mise en œuvre pédagogique. Pensez à les intégrer dans vos pratiques."
+                  }
+                ]
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c7",
+            "titre": "Partager vos idées initiales",
+            "objectif": "Déposer vos propositions dans un tableau collaboratif",
+            "consigne": "Dans le tableau, notez vos idées sur le sujet à traiter et consultez celles de vos coéquipiers pour préparer la rédaction collective.",
+            "module": "parcours_tableau",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Partager vos idées initiales",
+              "intro": "Partagez vos réflexions initiales sur la structure et la mise en œuvre de l’activité avec vos collègues. Consultez les propositions des autres pour affiner vos pistes avant la rédaction collective.",
+              "titresColonnes": [
+                "Idée ou outil à tester",
+                "Objectif pédagogique visé",
+                "Modalités d’évaluation prévues",
+                "Échauffement : ressource utile"
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e8",
+        "titre": "Rédiger et coordonner la production",
+        "objectif": "Produire un document commun en équipe",
+        "introduction": "Cette étape à distance est consacrée à la rédaction du document collaboratif. Chaque membre garde une trace identifiable de sa contribution, et un espace dédié permet de coordonner le travail en équipe. Pensez à relire régulièrement les échanges pour éviter les doublons.",
+        "cartes": [
+          {
+            "id": "c9",
+            "titre": "Rédiger le document commun",
+            "objectif": "Créer un document partagé en respectant votre plan initial",
+            "consigne": "En vous basant sur les idées partagées, rédigez une première version du document dans l'outil partagé en attribuant des sections précises à chaque membre.",
+            "module": "parcours_document",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 30,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Rédiger le document commun",
+              "intro": "Vous allez maintenant rédiger ensemble la première version de votre document partagé en vous appuyant sur le plan validé et les idées collectées. Répartissez-vous les sections en fonction des rôles attribués lors de la formation des équipes. Chaque membre rédige sa partie en respectant les consignes de départ et les critères de qualité définis. Utilisez les fonctionnalités de l'outil de document partagé pour synchroniser vos contributions de manière asynchrone.",
+              "texteInitial": "## Introduction : Présentation de l'activité collaborative\n*Rédigée par [Nom du membre] : [Préciser ici les éléments à inclure : objectifs pédagogiques, contexte, enjeux pour les élèves, durée estimée, outils utilisés].*\n\n## Organisation de l'équipe\n*Rédigée par [Nom du membre] : [Préciser ici les rôles de chacun, les modalités de communication, les outils de suivi (ex : tableau de bord, calendrier partagé)].*\n\n## Consignes pour les élèves\n*Rédigée par [Nom du membre] : [Préciser ici les attentes, les étapes à suivre, les livrables attendus, les critères de réussite].*\n\n## Ressources et outils numériques\n*Rédigée par [Nom du membre] : [Lister les outils sélectionnés, leurs fonctionnalités clés, les tutoriels à partager, les bonnes pratiques d'utilisation].*\n\n## Grille de critères pour l'évaluation par les pairs\n*Rédigée par [Nom du membre] : [Préciser les indicateurs de qualité, les points à vérifier, les modalités de feedback (ex : commentaires dans l'outil, grille d'évaluation partagée)].*\n\n## Amélioration du document\n*Rédigée par [Nom du membre] : [Décrire les étapes de relecture, les outils de correction (ex : historique des versions, suggestions), les modalités de validation finale].*\n\n## Annexes : Exemples et supports\n*Rédigée par [Nom du membre] : [Ajouter des exemples concrets, des captures d'écran, des liens vers des ressources complémentaires].*"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c10",
+            "titre": "Se coordonner pour finaliser la production",
+            "objectif": "Échanger via un forum pour achever le document",
+            "consigne": "Dans le forum de votre équipe, précisez ce qui reste à faire pour finaliser le travail et fixez-vous un objectif clair pour la prochaine étape.",
+            "module": "parcours_forum",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Se coordonner pour finaliser la production",
+              "intro": "Dans votre équipe, identifiez les éléments restants à finaliser pour achever le document produit collectivement. Listez les points en suspens, désignez les responsables et fixez une date butoir claire pour la prochaine étape. Utilisez les outils de suivi intégrés et les retours des rôles définis lors de la formation des équipes pour harmoniser votre travail."
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e11",
+        "titre": "Évaluer et améliorer les productions par les pairs",
+        "objectif": "Analyser d'autres productions et apporter des améliorations à la sienne",
+        "introduction": "Les derniers temps à distance et en présentiel vous permettent de recevoir les retours de vos pairs et d'améliorer votre propre document. Utilisez la grille d'évaluation pour structurer vos commentaires et identifier les axes d'amélioration collectifs.",
+        "cartes": [
+          {
+            "id": "c12",
+            "titre": "Évaluer les travaux de vos pairs",
+            "objectif": "Remplir une grille d'évaluation pour un document partagé",
+            "consigne": "À partir de la grille fournie, évaluez une production d'équipe et formulez des commentaires constructifs à destination des auteurs.",
+            "module": "parcours_atelier",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 45,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Évaluer les travaux de vos pairs",
+              "intro": "Vous allez d’abord déposer votre production collective dans l’outil de document partagé, puis évaluer deux travaux de vos collègues en utilisant la grille de critères fournie. Cette activité s’inscrit dans la continuité des phases précédentes où vous avez formé vos équipes, coordonné vos idées et finalisé votre document. L’évaluation par les pairs vous permet de renforcer votre compréhension des attendus et d’améliorer vos propres productions.",
+              "consigneAuteurs": "Rédigez un document partagé de 2 à 3 pages maximum, structuré selon le plan validé en équipe. Il doit inclure : une introduction contextualisant la tâche, une présentation des étapes de collaboration, une analyse des choix opérés (outils, organisation, synchronisation asynchrone), et une conclusion avec des pistes d’amélioration. Respectez les consignes pour les élèves que vous concevrez plus tard.",
+              "consigneEvaluateurs": "Consultez les deux documents qui vous sont attribués dans l’outil de document partagé. Évaluez chaque travail en vous appuyant strictement sur les critères proposés, en formulant des commentaires précis et constructifs pour aider les auteurs à progresser. Votre évaluation doit être bienveillante et constructive, en mettant en avant les points forts avant de suggérer des améliorations.",
+              "criteres": [
+                "La production reflète une organisation d'équipe claire et cohérente, avec une répartition des rôles documentée.",
+                "Le document partagé est structuré logiquement, avec des titres et sous-titres facilitant la lecture.",
+                "Les choix d'outils numériques et de synchronisation asynchrone sont justifiés et adaptés à la tâche.",
+                "Les consignes pour les élèves sont précises et exploitables pour une activité future.",
+                "Le document propose des pistes concrètes pour l'amélioration d'un document, utiles pour les auteurs."
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c13",
+            "titre": "Faire le bilan de l'activité",
+            "objectif": "Réfléchir à votre contribution et à ce que vous en retenez",
+            "consigne": "Répondez au questionnaire pour indiquer ce que vous avez apporté à votre équipe, ainsi que les points forts et les difficultés rencontrés.",
+            "module": "parcours_questionnaire",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Faire le bilan de l'activité",
+              "intro": "Répondez à ce questionnaire pour faire le point sur votre participation, les réussites et les défis de votre équipe pendant cette activité. Vos réponses serviront à orienter les prochaines étapes.",
+              "questions": [
+                {
+                  "texte": "Quel rôle avez-vous principalement tenu dans l'organisation de votre équipe ?",
+                  "type": "unique",
+                  "choix": [
+                    "Coordination des tâches",
+                    "Synthèse des idées",
+                    "Animation des échanges",
+                    "Vérification des consignes",
+                    "Autre (précisez)"
+                  ]
+                },
+                {
+                  "texte": "Quels outils numériques avez-vous le plus utilisés pour collaborer ?",
+                  "type": "multiple",
+                  "choix": [
+                    "L'outil de document partagé",
+                    "Le forum pour la synchronisation asynchrone",
+                    "Les grilles d'évaluation partagées",
+                    "Un tableau collaboratif",
+                    "Autre (précisez)"
+                  ]
+                },
+                {
+                  "texte": "Les consignes pour les élèves étaient-elles claires pour mener à bien votre collaboration ?",
+                  "type": "ouinon",
+                  "choix": []
+                },
+                {
+                  "texte": "Quels éléments de la grille de critères avez-vous trouvés les plus utiles pour évaluer une production ?",
+                  "type": "unique",
+                  "choix": [
+                    "La clarté des attentes",
+                    "La progression de l'amélioration du document",
+                    "La pertinence des feedbacks entre pairs",
+                    "La précision des consignes pour les élèves",
+                    "Autre (précisez)"
+                  ]
+                },
+                {
+                  "texte": "Quelle difficulté avez-vous rencontrée lors de la synchronisation asynchrone avec vos collègues ?",
+                  "type": "libre",
+                  "choix": []
+                },
+                {
+                  "texte": "Comment avez-vous contribué à l'amélioration d'un document partagé dans votre équipe ?",
+                  "type": "libre",
+                  "choix": []
+                },
+                {
+                  "texte": "Quelles suggestions feriez-vous pour optimiser l'évaluation par les pairs lors de prochaines activités ?",
+                  "type": "libre",
+                  "choix": []
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "Enseignants du premier et du second degré en formation continue",
+    "adultes": true
+  }
+}

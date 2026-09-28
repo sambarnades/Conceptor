@@ -1,0 +1,18 @@
+[
+  {
+    "kind": "audio",
+    "duration": 1.964943,
+    "lecture": true,
+    "erreur": true,
+    "verificationImmediate": true,
+    "repriseSolutionDesactivees": false
+  },
+  {
+    "kind": "video",
+    "duration": 1.362712,
+    "lecture": true,
+    "erreur": true,
+    "verificationImmediate": false,
+    "repriseSolutionDesactivees": true
+  }
+]

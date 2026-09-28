@@ -632,8 +632,8 @@ export async function runAllTests() {
     if (changedExSlide) {
         assertEqual(changedExSlide.exercise.library, 'H5P.Blanks 1.14',
             'Changement type exercice: library reinjectee');
-        assertDefined(changedExSlide.exercise.taskDescription,
-            'Changement type exercice: taskDescription present');
+        assertEqual(changedExSlide.exercise.text, 'Nouvelle description',
+            'Changement type exercice: consigne native text conservée');
     }
 
     // -------------------------------------------------------------------

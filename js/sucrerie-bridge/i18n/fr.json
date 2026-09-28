@@ -239,5 +239,14 @@
 
     "level_formation_debutant": "Débutant",
     "level_formation_intermediaire": "Intermédiaire",
-    "level_formation_expert": "Expert"
+    "level_formation_expert": "Expert",
+    "sucrerie_bridge_welcome_title_course": "Déposer le parcours dans Sucrerie",
+    "sucrerie_bridge_welcome_subtitle_course": "Le parcours complet, ses activités et ses consignes seront accessibles à tous les enseignants dans le catalogue Sucrerie.",
+    "sucrerie_bridge_course_close": "Retour",
+    "sucrerie_bridge_success_title_approved_course": "Parcours publié !",
+    "sucrerie_bridge_success_title_pending_course": "Parcours enregistré",
+    "sucrerie_bridge_success_message_approved_course": "Votre parcours est disponible dans le catalogue Sucrerie.",
+    "sucrerie_bridge_success_message_pending_course": "Votre parcours sera visible dans le catalogue après vérification par un modérateur.",
+    "sucrerie_bridge_success_message_pending_confirmation_course": "Votre dépôt doit être validé. Un lien de confirmation vient d'être envoyé à {email} : cliquez-le dans les 2 heures pour publier votre parcours. Sans confirmation, le parcours reste en brouillon dans « Mes activités » pendant 7 jours.",
+    "sucrerie_bridge_success_email_sent_course": "Un email avec votre lien de gestion vient d'être envoyé à {email}. Conservez-le précieusement : il vous permettra de modifier ou retirer votre parcours à tout moment."
 }

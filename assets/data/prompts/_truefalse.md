@@ -28,6 +28,7 @@
 ---
 
 # STRUCTURE DU JSON ATTENDUE
+- `behaviour.enableCheckButton` (true): Afficher le bouton Vérifier. Décochez seulement si la vérification est automatique ou déclenchée par le conteneur.
 - Génère UNIQUEMENT un JSON complet et valide dans un bloc de code. Ta réponse DOIT commencer par \`{\` et finir par \`}\`. Aucun autre texte ou commentaire.
 - L'objet principal doit contenir les clés suivantes :
   - \`question\`: (string) L'affirmation à évaluer. Peut contenir du HTML.
@@ -48,3 +49,6 @@
   "feedbackOnWrong": "En fait, la capitale de la Norvège est bien Oslo, sa plus grande ville."
 }
 ```
+
+
+Respecter les comportements natifs demandés : autoCheck, enableCheckButton, enableRetry, enableSolutionsButton, confirmCheckDialog, confirmRetryDialog. Retours natifs : behaviour.feedbackOnCorrect et behaviour.feedbackOnWrong. Dialogues confirmCheck/confirmRetry : header, body, cancelLabel, confirmLabel. Média facultatif image/audio/vidéo uniquement à partir d’un fichier ou URL fourni.

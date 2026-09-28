@@ -56,3 +56,6 @@ Champs optionnels par hotspot : `width`, `height` (taille de la zone cliquable e
 Le processeur `processors/FindTheHotspot.js` traduit ce format plat en `content.json` 1.8
 (`imageHotspotQuestion.hotspotSettings.hotspot[].{userSettings,computedSettings}`, `figure: "circle"`,
 `backgroundImageSettings` APLATI — cf. paquet Éléa de référence).
+
+
+`showFeedbackAsPopup`: true | false. `noneSelectedFeedback`: feedback for a click outside all zones. `hotspots[].figure`: "circle" | "rectangle"; `width`, `height`: 1–100 (%); `x`, `y`: centre, 0–100 (%).

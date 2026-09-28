@@ -1,0 +1,232 @@
+[
+  {
+    "chemin": "interactiveVideo.assets.endscreens",
+    "type": "retrait_natif",
+    "avant": []
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.metadata.contentType",
+    "type": "modification",
+    "avant": "Question",
+    "apres": "Multiple Choice"
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.UI.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.UI.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.UI.noInput",
+    "type": "normalisation_html",
+    "avant": "Répondez s'il vous plait avant de visionner la solution.",
+    "apres": "Répondez s&#039;il vous plait avant de visionner la solution."
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.answers[0].tipsAndFeedback",
+    "type": "ajout_natif",
+    "apres": {
+      "tip": "",
+      "chosenFeedback": "",
+      "notChosenFeedback": ""
+    }
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.answers[1].tipsAndFeedback",
+    "type": "ajout_natif",
+    "apres": {
+      "tip": "",
+      "chosenFeedback": "",
+      "notChosenFeedback": ""
+    }
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.autoCheck",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.confirmCheckDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.confirmRetryDialog",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.enableCheckButton",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.passPercentage",
+    "type": "ajout_natif",
+    "apres": 100
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.showScorePoints",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.showSolutionsRequiresInput",
+    "type": "ajout_natif",
+    "apres": true
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.behaviour.singlePoint",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous certain de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous certain de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].action.params.overallFeedback",
+    "type": "ajout_natif",
+    "apres": [
+      {
+        "from": 0,
+        "to": 100
+      }
+    ]
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].adaptivity",
+    "type": "ajout_natif",
+    "apres": {
+      "correct": {
+        "allowOptOut": false,
+        "message": ""
+      },
+      "wrong": {
+        "allowOptOut": false,
+        "message": ""
+      },
+      "requireCompletion": false
+    }
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].duration.from",
+    "type": "modification",
+    "avant": 0.2,
+    "apres": 0.09999999999999987
+  },
+  {
+    "chemin": "interactiveVideo.assets.interactions[0].duration.to",
+    "type": "modification",
+    "avant": 1.1,
+    "apres": 1
+  },
+  {
+    "chemin": "interactiveVideo.summary",
+    "type": "ajout_natif",
+    "apres": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "Choisissez l'affirmation exacte.",
+          "summaries": [
+            {
+              "subContentId": "45d1de1a-ab15-4928-a86f-cb2630acf761",
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progression :",
+          "scoreLabel": "Erreurs :",
+          "resultLabel": "Votre résultat :",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Réponses correctes.",
+          "tipButtonLabel": "Montrer l&#039;indice",
+          "scoreBarLabel": "Vous avez :num points sur un total de :total",
+          "progressText": "Progression de :num sur :total"
+        },
+        "subContentId": "209b57c5-deb6-4935-8b2c-dc9d4937d6b6",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Sans titre"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  {
+    "chemin": "interactiveVideo.video.files[0].copyright",
+    "type": "ajout_natif",
+    "apres": {
+      "license": "U"
+    }
+  },
+  {
+    "chemin": "interactiveVideo.video.textTracks.videoTrack",
+    "type": "taille_liste",
+    "avant": 0,
+    "apres": 1
+  },
+  {
+    "chemin": "l10n.endcardTableRowAnswered",
+    "type": "retrait_natif",
+    "avant": "Questions répondues"
+  },
+  {
+    "chemin": "override.deactivateSound",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "override.hasNoAutoPause",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "override.showRewind10",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "La photosynthèse"
+  }
+]

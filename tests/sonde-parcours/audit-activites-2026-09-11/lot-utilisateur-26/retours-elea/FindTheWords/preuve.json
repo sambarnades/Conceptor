@@ -1,0 +1,49 @@
+{
+  "numero": 13,
+  "module": "FindTheWords",
+  "recu": true,
+  "fichier_telechargement": "13-FindTheWords.h5p",
+  "sha256_source": "542402cae7120f52c97357f0eabab94becb07d4587182ab48fbf8543607a7eb9",
+  "sha256_retour": "e6465e8c00f3ab6ede1bc127d699a4fa24cf6fbe38d438d44a0e125d147c7939",
+  "source_comparee": "a-importer/13-FindTheWords.h5p",
+  "titre": "RECETTE 13 — Mots mêlés",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "taskDescription"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5P.FindTheWords",
+      "version": "1.4.4"
+    },
+    {
+      "nom": "H5P.FontIcons",
+      "version": "1.0.11"
+    },
+    {
+      "nom": "H5P.JoubelUI",
+      "version": "1.3.45"
+    },
+    {
+      "nom": "H5P.Timer",
+      "version": "0.4.2"
+    },
+    {
+      "nom": "H5P.Transition",
+      "version": "1.0.4"
+    }
+  ],
+  "medias_sources": [],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 2,
+    "normalisation_html": 0,
+    "ajout_natif": 0,
+    "retrait_natif": 0,
+    "taille_liste": 0
+  }
+}

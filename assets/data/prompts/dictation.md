@@ -68,3 +68,5 @@
   ]
 }
 ```
+
+- Réglages linguistiques : `behaviour.wordSeparator`, `overrideRTL` (`auto`/`on`/`off`), `autosplit` et `alternateSolution` (`first`/`all`). Respecte la langue et les réglages demandés.

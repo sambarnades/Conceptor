@@ -1,0 +1,196 @@
+{
+  "words": [
+    {
+      "answer": "Parallélogramme",
+      "clue": "Quadrilatère ayant ses côtés opposés parallèles.",
+      "extraClue": {
+        "params": {
+          "text": "Il a deux paires de côtés <strong>parallèles</strong>."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "4bf3f690-ae02-4122-9ec1-5f20386207f9",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Extra clue"
+        }
+      },
+      "fixWord": false,
+      "orientation": "across"
+    },
+    {
+      "answer": "Rectangle",
+      "clue": "Parallélogramme ayant quatre angles droits.",
+      "extraClue": {
+        "params": {
+          "text": "Chaque angle mesure <strong>90 degrés</strong>."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "31475a6e-c049-408f-80a0-314e3a97dac7",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Extra clue"
+        }
+      },
+      "fixWord": false,
+      "orientation": "across"
+    },
+    {
+      "answer": "Losange",
+      "clue": "Parallélogramme ayant quatre côtés de même longueur.",
+      "extraClue": {
+        "params": {
+          "text": "Ses diagonales sont <strong>perpendiculaires</strong>."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "85a2dd5a-6f83-45ac-9eaf-409e5d275108",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Extra clue"
+        }
+      },
+      "fixWord": false,
+      "orientation": "across"
+    },
+    {
+      "answer": "Carré",
+      "clue": "Rectangle qui est aussi un losange.",
+      "extraClue": {
+        "params": {
+          "text": "Il combine les propriétés du <strong>rectangle</strong> et du <strong>losange</strong>."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "498132cd-775c-4cc6-8acf-d82582ccd1fa",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Extra clue"
+        }
+      },
+      "fixWord": false,
+      "orientation": "across"
+    },
+    {
+      "answer": "Trapèze",
+      "clue": "Quadrilatère ayant une seule paire de côtés parallèles.",
+      "extraClue": {
+        "params": {
+          "text": "Les côtés <strong>parallèles</strong> sont appelés bases."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "90ad0559-f69e-4c34-b19e-12a544044d7c",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Extra clue"
+        }
+      },
+      "fixWord": false,
+      "orientation": "across"
+    },
+    {
+      "answer": "Droite",
+      "clue": "Ligne qui ne s&#039;incline ni vers la gauche ni vers la droite.",
+      "extraClue": {
+        "params": {
+          "text": "Elle est <strong>infinie</strong> dans les deux sens."
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "subContentId": "705a56d0-cf6c-4538-bf5c-dfd606cf4bcd",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Extra clue"
+        }
+      },
+      "fixWord": false,
+      "orientation": "across"
+    }
+  ],
+  "taskDescription": "<p><strong>Identifie</strong> les quadrilatères à partir de leurs propriétés.</p><p>Pour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés').</p>",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Des efforts sont nécessaires pour bien comprendre les propriétés des quadrilatères."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu y es presque, continue à travailler les définitions et les caractéristiques."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C&#039;est un bon début, mais certains quadrilatères restent mal maîtrisés."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu as bien compris les principales propriétés des quadrilatères."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu maîtrises bien les distinctions entre les quadrilatères."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu as une parfaite maîtrise des quadrilatères et de leurs propriétés."
+    }
+  ],
+  "behaviour": {
+    "enableInstantFeedback": false,
+    "scoreWords": true,
+    "applyPenalties": false,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "keepCorrectAnswers": false
+  },
+  "l10n": {
+    "across": "Horizontal",
+    "down": "Vertical",
+    "checkAnswer": "Vérifier",
+    "tryAgain": "Recommencer",
+    "showSolution": "Afficher la solution",
+    "extraClue": "Indice supplémentaire",
+    "closeWindow": "Fermer",
+    "submitAnswer": "Valider",
+    "couldNotGenerateCrossword": "Impossible de générer les mots-croisés avec les mots saisis. Veuillez réessayer avec moins de mots ou utiliser des mots qui ont plus de caractères en commun.",
+    "couldNotGenerateCrosswordTooFewWords": "Impossible de générer les mots-croisés. Vous devez saisir au moins deux mots.",
+    "probematicWords": "Certains mots n&#039;ont pas pu être placés. Mot(s) problématique(s): @words"
+  },
+  "a11y": {
+    "crosswordGrid": "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d&#039;entrée au lieu de la grille.",
+    "column": "Colonne",
+    "row": "Ligne",
+    "across": "Horizontal",
+    "down": "Vertical",
+    "empty": "Vide",
+    "resultFor": "Résultat pour : @clue",
+    "correct": "Réponse correcte",
+    "wrong": "Faux",
+    "point": "point",
+    "solutionFor": "Pour @clue, la solution est : @solution",
+    "extraClueFor": "Afficher l&#039;indice supplémentaire pour @clue",
+    "letterSevenOfNine": "Lettre @position de @length",
+    "lettersWord": "Mot de @length lettres",
+    "check": "Vérifier les caractères. Les réponses seront marquées correctes, incorrectes ou sans réponse.",
+    "showSolution": "Afficher la solution. Le mot-croisé sera ensuite rempli avec la solution correcte.",
+    "retry": "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l&#039;activité.",
+    "yourResult": "Vous avez obtenu @score sur @total points."
+  },
+  "theme": {
+    "backgroundColor": "#173354",
+    "gridColor": "#000000",
+    "cellBackgroundColor": "#ffffff",
+    "cellColor": "#000000",
+    "clueIdColor": "#606060",
+    "cellBackgroundColorHighlight": "#3e8de8",
+    "cellColorHighlight": "#ffffff",
+    "clueIdColorHighlight": "#e0e0e0"
+  }
+}

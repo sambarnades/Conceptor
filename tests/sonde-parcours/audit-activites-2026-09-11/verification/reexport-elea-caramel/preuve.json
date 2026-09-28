@@ -1,0 +1,96 @@
+{
+  "date": "2026-09-11",
+  "cours": 794,
+  "activite": 13844,
+  "h5pId": 398,
+  "url": "https://test03.elea.apps.education.fr/mod/h5pactivity/view.php?id=13844",
+  "paquetImporte": "verification-livre.h5p",
+  "sha256PaquetImporte": "9b1a896bbf9dc1cd65cff6b78fb7b11ccd7e60beaaf99d6e0b99b7cacaf8dd2b",
+  "reexport": "interactive-book-398-398.h5p",
+  "sha256Reexport": "e33a4acbde0efb3c0c17226bdc41bca908bcfcbc65c7e410cef80e141011ad70",
+  "titreNatifEnregistre": "Vérifications Caramel — relues dans Éléa",
+  "etapes": [
+    "Import du paquet exact",
+    "Interactions dans le lecteur Éléa",
+    "Modification du titre dans l’éditeur natif",
+    "Enregistrement",
+    "Réexport H5P et comparaison"
+  ],
+  "identifiantsConserves": [
+    "a06bca90-6450-4256-84a8-840c5f06b548",
+    "74583b97-ada4-400e-920c-56a4ac480ebd",
+    "4243ae4a-bb0b-47e5-8254-bc3125743263",
+    "0e8b62b7-221f-4f25-a399-98fed6ef0a89",
+    "656d1e14-998d-4eb3-b035-a586b0a60007"
+  ],
+  "bibliotheques": 20,
+  "optionsConservees": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "behaviour": {
+        "type": "single",
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "randomAnswers": false,
+        "autoCheck": false,
+        "singlePoint": false,
+        "showScorePoints": true,
+        "passPercentage": 50,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": false
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+        "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+      }
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "caseSensitive": false,
+        "autoCheck": false,
+        "acceptSpellingErrors": false,
+        "separateLines": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": false,
+        "allowRetryIfCorrect": true
+      }
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "showScorePoints": true,
+        "enableCheckButton": true
+      }
+    }
+  ],
+  "observationsUI": {
+    "qcmSansSaisie": "Solution visible après Vérifier puis Afficher la solution.",
+    "texteATrousSansSaisie": "Solution visible : Paris et Rome.",
+    "texteATrousReussite": "Paris/Rome : 2/2 ; Recommencer visible.",
+    "vraiFauxAutomatique": "Faux : 0/1 et retour correctif visible, sans bouton Vérifier.",
+    "mots": "Lyon sélectionné : Incorrect, 0/2 ; après nouvelle tentative Paris et Rome : Correct, 2/2.",
+    "detailPoints": "Valeur native conservée ; absence de détail +1/-1 contrôlée visuellement côté Sucrerie, sans comparaison visuelle exhaustive de cet effet."
+  },
+  "limites": [
+    "Essais en prévisualisation enseignant, sans validation des rapports élève.",
+    "Les captures Éléa ont été lues pendant la séance ; elles ne sont pas conservées dans ce dossier."
+  ]
+}

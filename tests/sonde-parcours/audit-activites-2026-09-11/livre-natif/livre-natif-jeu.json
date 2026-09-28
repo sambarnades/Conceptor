@@ -1,0 +1,30 @@
+[
+  {
+    "kind": "manuel",
+    "initial": "1/2",
+    "reprise": true,
+    "final": "2/2",
+    "progression": "100%",
+    "image": true,
+    "video": true,
+    "captions": {
+      "label": "Français RELU",
+      "mode": "showing",
+      "cue": "Drapeau RELU"
+    }
+  },
+  {
+    "kind": "automatique",
+    "initial": "1/2",
+    "reprise": false,
+    "final": "1/2",
+    "progression": "100%",
+    "image": true,
+    "video": true,
+    "captions": {
+      "label": "Français RELU",
+      "mode": "showing",
+      "cue": "Drapeau RELU"
+    }
+  }
+]

@@ -1,0 +1,106 @@
+{
+  "showCoverPage": true,
+  "bookCover": {
+    "coverDescription": "Observe la couverture relue dans Sucrerie.",
+    "coverMedium": {
+      "library": "H5P.Image 1.1",
+      "params": {
+        "file": {
+          "path": "images/image-766c732e.jpg",
+          "mime": "image/jpeg",
+          "width": 300,
+          "height": 200,
+          "copyright": {
+            "license": "U"
+          }
+        },
+        "alt": "Trois couleurs relues",
+        "decorative": false,
+        "contentName": "Image",
+        "expandImage": "Agrandir l&#039;image",
+        "minimizeImage": "Réduire l&#039;image"
+      },
+      "metadata": {
+        "contentType": "Image",
+        "license": "U",
+        "title": "Sans titre Image"
+      },
+      "subContentId": "7e8b4b16-06be-431c-8f0e-524fd88336d4"
+    }
+  },
+  "chapters": [
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "f4e9ed27-68a9-46e4-a2a3-0c246691e694",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Une seule page"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "74429efb-053d-4ae5-8d10-b52ad96ef2c5",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Texte"
+              },
+              "params": {
+                "text": "Le drapeau français est bleu, blanc et rouge."
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    }
+  ],
+  "behaviour": {
+    "baseColor": "#ffffff",
+    "defaultTableOfContents": false,
+    "progressIndicators": true,
+    "progressAuto": false,
+    "displaySummary": true,
+    "enableRetry": false
+  },
+  "read": "Lire",
+  "displayTOC": "Afficher la table des matières",
+  "hideTOC": "Masquer la table des matières",
+  "nextPage": "Page suivante",
+  "previousPage": "Page précédente",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "page": "Page",
+  "chapterCompleted": "Page terminée !",
+  "partCompleted": "@pages sur @total terminées",
+  "incompleteChapter": "Page incomplète",
+  "navigateToTop": "Aller en haut",
+  "markAsFinished": "J&#039;ai terminé cette page",
+  "fullscreen": "Plein écran",
+  "exitFullscreen": "Quitter le plein écran",
+  "bookProgressSubtext": "@count sur @total pages",
+  "interactionsProgressSubtext": "@count sur @total interactions",
+  "submitReport": "Soumettre le rapport",
+  "restartLabel": "Recommencer",
+  "summaryHeader": "Résumé",
+  "allInteractions": "Toutes les interactions",
+  "unansweredInteractions": "Interactions sans réponse",
+  "scoreText": "@score / @maxscore",
+  "leftOutOfTotalCompleted": "@left sur @max interactions terminées",
+  "noInteractions": "Aucune interaction",
+  "score": "Score",
+  "summaryAndSubmit": "Résumé &amp; envoi",
+  "noChapterInteractionBoldText": "Vous n&#039;avez interagi avec aucune page.",
+  "noChapterInteractionText": "Vous devez interagir avec au moins une page avant de voir le résumé.",
+  "yourAnswersAreSubmittedForReview": "Vos réponses ont été soumises pour évaluation !",
+  "bookProgress": "Progression du livre",
+  "interactionsProgress": "Progression des interactions",
+  "totalScoreLabel": "Score total",
+  "a11y": {
+    "progress": "Page @page sur @total.",
+    "menu": "Afficher/masquer le menu de navigation"
+  }
+}

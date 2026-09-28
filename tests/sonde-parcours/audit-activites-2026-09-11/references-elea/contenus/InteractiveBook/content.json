@@ -1,0 +1,460 @@
+{
+  "showCoverPage": true,
+  "bookCover": {
+    "coverDescription": "<p style=\"text-align:center;\">Un voyage interactif à travers les huit planètes de notre système solaire.</p>"
+  },
+  "chapters": [
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "bba50ee6-02b1-46be-a7ca-4cc9f439986a",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Introduction"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "8e6fc675-c5c8-4ab0-a35b-417cf9a2395c",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Texte"
+              },
+              "params": {
+                "text": "Le <strong>système solaire</strong> s'est formé il y a environ <em>4,6 milliards d'années</em>. Il comprend le Soleil et huit planètes."
+              }
+            },
+            "useSeparator": "auto"
+          },
+          {
+            "content": {
+              "library": "H5P.Table 1.2",
+              "subContentId": "04a7f7e7-5fa2-4fb5-8f14-b654351a2648",
+              "metadata": {
+                "contentType": "Table",
+                "license": "U",
+                "title": "Tableau"
+              },
+              "params": {
+                "text": "<table style=\"width:100%;border-collapse:collapse;\"><thead><tr><th style=\"padding:8px;text-align:left;\">Planète</th><th style=\"padding:8px;text-align:left;\">Type</th><th style=\"padding:8px;text-align:left;\">Lunes</th></tr></thead><tbody><tr><td style=\"padding:8px;\">Mercure</td><td style=\"padding:8px;\">Tellurique</td><td style=\"padding:8px;\">0</td></tr><tr><td style=\"padding:8px;\">Terre</td><td style=\"padding:8px;\">Tellurique</td><td style=\"padding:8px;\">1</td></tr><tr><td style=\"padding:8px;\">Jupiter</td><td style=\"padding:8px;\">Gazeuse</td><td style=\"padding:8px;\">95</td></tr></tbody></table><div class=\"table-overflow-protection\"></div>"
+              }
+            },
+            "useSeparator": "auto"
+          },
+          {
+            "content": {
+              "subContentId": "039b4234-d4d5-4e8b-a899-b6a1fd11811f",
+              "library": "H5P.MultiChoice 1.16",
+              "metadata": {
+                "title": "Combien de planètes compte le système solaire ?",
+                "contentType": "Multiple Choice",
+                "license": "U"
+              },
+              "params": {
+                "question": "Combien de planètes compte le système solaire ?",
+                "answers": [
+                  {
+                    "text": "Huit",
+                    "correct": true,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "Exact !",
+                      "notChosenFeedback": ""
+                    }
+                  },
+                  {
+                    "text": "Neuf",
+                    "correct": false,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "Pluton est une planète naine depuis 2006.",
+                      "notChosenFeedback": ""
+                    }
+                  },
+                  {
+                    "text": "Sept",
+                    "correct": false,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "",
+                      "notChosenFeedback": ""
+                    }
+                  }
+                ],
+                "behaviour": {
+                  "type": "single",
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "randomAnswers": true,
+                  "enableCheckButton": true,
+                  "singlePoint": false,
+                  "showSolutionsRequiresInput": true,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "autoCheck": false,
+                  "passPercentage": 100,
+                  "showScorePoints": true
+                },
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Revoyez le chapitre d&#039;introduction."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "C&#039;est un début, continuez !"
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Bon travail !"
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Excellent !"
+                  }
+                ],
+                "UI": {
+                  "checkAnswerButton": "Vérifier",
+                  "showSolutionButton": "Afficher la solution",
+                  "tryAgainButton": "Recommencer",
+                  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                  "submitAnswerButton": "Valider",
+                  "tipsLabel": "Indice",
+                  "tipAvailable": "Indice disponible",
+                  "feedbackAvailable": "Feedback disponible",
+                  "readFeedback": "Lire le commentaire",
+                  "wrongAnswer": "Mauvaise réponse",
+                  "correctAnswer": "Bonne réponse",
+                  "shouldCheck": "Il fallait cocher ici",
+                  "shouldNotCheck": "Il ne fallait pas cocher ici !",
+                  "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+                  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                  "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                },
+                "media": {
+                  "disableImageZooming": false
+                },
+                "confirmCheck": {
+                  "header": "Terminer ?",
+                  "body": "Êtes-vous certain de vouloir terminer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Terminer"
+                },
+                "confirmRetry": {
+                  "header": "Recommencer ?",
+                  "body": "Êtes-vous certain de vouloir recommencer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                }
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "9980260a-4301-4225-8987-99ab516da5c4",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Les planètes telluriques"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "7b62fafe-5162-45b1-a829-8909bcf1e2f8",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Texte"
+              },
+              "params": {
+                "text": "Les planètes <strong>telluriques</strong> (Mercure, Vénus, Terre, Mars) sont rocheuses et proches du Soleil."
+              }
+            },
+            "useSeparator": "auto"
+          },
+          {
+            "content": {
+              "subContentId": "2e9d089b-e908-4e5d-afb2-c482efbba7fb",
+              "library": "H5P.Blanks 1.14",
+              "metadata": {
+                "title": "Exercice",
+                "contentType": "Fill in the Blanks",
+                "license": "U"
+              },
+              "params": {
+                "questions": [
+                  "La planète la plus proche du Soleil est *Mercure*."
+                ],
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Relisez le paragraphe ci-dessus."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "C&#039;est un début."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Bon travail !"
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Excellent !"
+                  }
+                ],
+                "text": "Complétez la phrase.",
+                "checkAnswer": "Vérifier",
+                "tryAgain": "Recommencer",
+                "showSolutions": "Afficher les solutions",
+                "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                "notFilledOut": "Veuillez remplir tous les champs.",
+                "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer.",
+                "a11yCheckingModeHeader": "Mode de vérification",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "caseSensitive": false,
+                  "autoCheck": false,
+                  "allowRetryIfCorrect": false,
+                  "enableCheckButton": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "media": {
+                  "disableImageZooming": false
+                },
+                "submitAnswer": "Vérifier",
+                "answerIsCorrect": "&#039;:ans&#039; est une réponse exacte",
+                "answerIsWrong": "&#039;:ans&#039; est une réponse inexacte",
+                "answeredCorrectly": "Réponse exacte",
+                "answeredIncorrectly": "Mauvaise réponse",
+                "solutionLabel": "Réponse correcte :",
+                "inputLabel": "Blanc @num sur @total",
+                "inputHasTipLabel": "Indice disponible",
+                "tipLabel": "Indice",
+                "confirmCheck": {
+                  "header": "Terminer ?",
+                  "body": "Êtes-vous sûr de vouloir terminer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Terminer"
+                },
+                "confirmRetry": {
+                  "header": "Recommencer ?",
+                  "body": "Êtes-vous sûr de vouloir recommencer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                }
+              }
+            },
+            "useSeparator": "auto"
+          },
+          {
+            "content": {
+              "subContentId": "add0c269-7c7a-4c8d-9418-2429e959e597",
+              "library": "H5P.TrueFalse 1.8",
+              "metadata": {
+                "title": "Mars est surnommée la planète rouge.",
+                "contentType": "True/False Question",
+                "license": "U"
+              },
+              "params": {
+                "question": "Mars est surnommée la planète rouge.",
+                "correct": "true",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "autoCheck": false,
+                  "feedbackOnCorrect": "Bravo !",
+                  "feedbackOnWrong": "Si, à cause de l&#039;oxyde de fer à sa surface."
+                },
+                "l10n": {
+                  "trueText": "Vrai",
+                  "falseText": "Faux",
+                  "score": "Vous avez obtenu @score sur @total points",
+                  "checkAnswer": "Vérifier",
+                  "showSolutionButton": "Afficher la solution",
+                  "tryAgain": "Recommencer",
+                  "wrongAnswerMessage": "Mauvaise réponse",
+                  "correctAnswerMessage": "Bonne réponse",
+                  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                  "submitAnswer": "Valider",
+                  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                  "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                },
+                "media": {
+                  "disableImageZooming": false
+                },
+                "confirmCheck": {
+                  "header": "Terminer ?",
+                  "body": "Voulez-vous vraiment terminer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                },
+                "confirmRetry": {
+                  "header": "Recommencer ?",
+                  "body": "Voulez-vous vraiment recommencer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                }
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Column 1.22",
+      "subContentId": "dce0af33-8da2-4cdb-a108-1fecc171b5db",
+      "metadata": {
+        "contentType": "Page",
+        "license": "U",
+        "title": "Synthèse"
+      },
+      "params": {
+        "content": [
+          {
+            "content": {
+              "subContentId": "f12106f3-c5f1-4820-8c2d-4245839adb38",
+              "library": "H5P.Summary 1.10",
+              "metadata": {
+                "title": "Exercice",
+                "contentType": "Summary",
+                "license": "U"
+              },
+              "params": {
+                "intro": "Choisissez les affirmations correctes.",
+                "summaries": [
+                  {
+                    "summary": [
+                      "La Terre possède une lune",
+                      "La Terre possède deux lunes",
+                      "La Terre ne possède aucune lune"
+                    ],
+                    "subContentId": "8f774701-36f3-457d-ba5d-ca935e9e5226",
+                    "tip": ""
+                  },
+                  {
+                    "summary": [
+                      "Jupiter est une planète gazeuse",
+                      "Jupiter est une planète tellurique",
+                      "Jupiter est une planète naine"
+                    ],
+                    "subContentId": "73979293-333c-4364-b561-0dc1b5125d2a",
+                    "tip": ""
+                  }
+                ],
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Revoyez les points clés du livre."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "C&#039;est un bon début."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Bonne maîtrise du sujet."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Parfait !"
+                  }
+                ],
+                "solvedLabel": "Progression :",
+                "scoreLabel": "Mauvaises réponses :",
+                "resultLabel": "Votre résultat",
+                "labelCorrect": "Correct.",
+                "labelIncorrect": "Incorrect ! Veuillez réessayer.",
+                "labelCorrectAnswers": "Réponses correctes.",
+                "tipButtonLabel": "Indice",
+                "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                "progressText": "Progression :num sur :total",
+                "alternativeIncorrectLabel": "Incorrect"
+              }
+            },
+            "useSeparator": "auto"
+          }
+        ]
+      }
+    }
+  ],
+  "behaviour": {
+    "baseColor": "#1768c4",
+    "defaultTableOfContents": true,
+    "progressIndicators": true,
+    "progressAuto": true,
+    "displaySummary": true,
+    "enableRetry": true
+  },
+  "read": "Lire",
+  "displayTOC": "Afficher la table des matières",
+  "hideTOC": "Masquer la table des matières",
+  "nextPage": "Page suivante",
+  "previousPage": "Page précédente",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "page": "Page",
+  "chapterCompleted": "Page terminée !",
+  "partCompleted": "@pages sur @total terminées",
+  "incompleteChapter": "Page incomplète",
+  "navigateToTop": "Aller en haut",
+  "markAsFinished": "J&#039;ai terminé cette page",
+  "fullscreen": "Plein écran",
+  "exitFullscreen": "Quitter le plein écran",
+  "bookProgressSubtext": "@count sur @total pages",
+  "interactionsProgressSubtext": "@count sur @total interactions",
+  "submitReport": "Soumettre le rapport",
+  "restartLabel": "Recommencer",
+  "summaryHeader": "Résumé",
+  "allInteractions": "Toutes les interactions",
+  "unansweredInteractions": "Interactions sans réponse",
+  "scoreText": "@score / @maxscore",
+  "leftOutOfTotalCompleted": "@left sur @max interactions terminées",
+  "noInteractions": "Aucune interaction",
+  "score": "Score",
+  "summaryAndSubmit": "Résumé &amp; envoi",
+  "noChapterInteractionBoldText": "Vous n&#039;avez interagi avec aucune page.",
+  "noChapterInteractionText": "Vous devez interagir avec au moins une page avant de voir le résumé.",
+  "yourAnswersAreSubmittedForReview": "Vos réponses ont été soumises pour évaluation !",
+  "bookProgress": "Progression du livre",
+  "interactionsProgress": "Progression des interactions",
+  "totalScoreLabel": "Score total",
+  "a11y": {
+    "progress": "Page @page sur @total.",
+    "menu": "Afficher/masquer le menu de navigation"
+  }
+}

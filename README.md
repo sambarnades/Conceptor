@@ -1,11 +1,13 @@
 # Caramel 🍬
 
+> **Chantier sur `emmanuel`** : [état des lieux et tâches H5P, éditeur, parcours et Sucrerie](docs/SUIVI_H5P_PARCOURS.md). Ce suivi distingue les fonctions réalisées des compléments et recettes encore ouverts.
+
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-6.3.4-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-7.0.0-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
-[![Langues](https://img.shields.io/badge/langues-11-purple.svg)](#-fonctionnalités)
+[![Langues](https://img.shields.io/badge/langues-12-purple.svg)](#-fonctionnalités)
 
 Caramel est une application web **libre, gratuite et sans compte** qui génère des activités pédagogiques interactives par intelligence artificielle. Conçue par et pour les enseignants, elle produit en quelques minutes des fichiers **H5P** (`.h5p`) et **Moodle/Éléa/Magistère** (`.mbz`, `.xml`) prêts à importer.
 
@@ -16,7 +18,7 @@ Caramel est une application web **libre, gratuite et sans compte** qui génère 
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
-- [Nouveautés 6.3.0](#-nouveautés-630)
+- [Nouveautés 7.0.0](#-nouveautés-700)
 - [Fonctionnalités](#-fonctionnalités)
 - [Types d'activités](#-types-dactivités)
 - [Démarrage rapide](#-démarrage-rapide)
@@ -42,6 +44,8 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 4. **Affiner** dans l'éditeur visuel intégré (questions, formules, images, texte enrichi)
 5. **Télécharger** le fichier prêt à importer dans Moodle, Éléa ou Magistère
 
+Le commutateur placé sous le formulaire propose **« Une activité »**, le fonctionnement habituel, ou **« Un parcours »**, qui reprend ce même contexte pour concevoir un cours complet : cadrage, plan modifiable, fabrication des activités et livraison du fichier `.mbz`.
+
 ### Principes
 
 - ✅ **100 % client-side** : tout le traitement se fait dans le navigateur — seuls partent vers les services IA les prompts, et le cas échéant les images, la voix et le texte des dictées
@@ -52,7 +56,25 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 
 ---
 
-## 🆕 Nouveautés 6.3.0
+## 🆕 Nouveautés 7.0.0
+
+> **28 septembre 2026** — De l’activité unique au parcours complet, dans les 12 langues de Caramel.
+
+![Le plan d’un parcours, relu avant toute génération : objectif, étapes, activités, durées et relecture du plan](assets/images/wiki/parcours-plan.webp)
+
+- **Un atelier de parcours pour Éléa, Magistère et Moodle** : utilisez votre saisie habituelle, choisissez la modalité et l’ampleur, puis partez d’un plan proposé par l’IA ou d’une trame à compléter.
+- **Un plan que vous maîtrisez** : éditez les étapes, objectifs, activités, consignes et durées ; réorganisez l’ensemble avant de lancer la fabrication.
+- **Des activités à relire et à retoucher** : génération en série, arrêt et reprise, aperçus et éditeur intégrés. Les contenus déjà préparés sont conservés.
+- **Les supports au bon endroit** : renseignez la vidéo ou joignez l’image directement dans sa carte. La génération, l’éditeur et les aperçus réutilisent les outils des activités individuelles ; les images suivent le scénario et l’export du parcours.
+- **Une carte de progression personnalisable sur Éléa** : choisissez un thème ou ajoutez votre propre fond avec la tuile « + ». Les photos d’iPhone et les formats d’image courants sont convertis localement ; le fond accompagne le scénario et le `.mbz`. Cette carte reste facultative.
+- **Un cours et ses documents** : téléchargez le parcours `.mbz`, la fiche de séquence et les contenus en DOCX, ODT ou PDF. Exportez aussi le scénario `.json` pour poursuivre votre travail après fermeture de l’onglet.
+- **Les modules de votre plateforme** : forum, sondage, questionnaire, leçon, atelier d’évaluation par les pairs, wiki, document collaboratif, tableau, base de données… L’IA en rédige les consignes, les questions ou les critères ; un paquetage IMS s’écrit entièrement dans Caramel.
+- **Vingt trames relues à la lumière de la recherche**, dont « Apprendre à apprendre » : ABC Learning Design, didactiques et sciences cognitives de l’apprentissage ([état de l’art](docs/ETAT_DE_L_ART_DIDACTIQUE_PARCOURS_2026-09-28.md)).
+- **Des quiz générés plus vite, sans plantage** : même en mode Rapide, le quiz est préparé par petits lots rédigés deux par deux, et un lot qui échoue est repris en plus petit au lieu de faire échouer toute la génération. Cinq questions en une quinzaine de secondes, dix en une demi-minute environ ; le quiz mixte garde des exercices de types variés.
+- **De nouveaux modèles d’IA** : Gemma 4, Qwen 3.8 et Mistral Small 4 (par défaut), à la suite du renouvellement de l’offre ILaaS.
+- **Un accès depuis Caramelia et une aide multilingue** : création ou reprise du parcours, tutoriel dédié et vocabulaire adapté aux élèves, stagiaires ou étudiants, **y compris en breton**.
+
+### Parmi les nouveautés 6.3.0
 
 > **20 août 2026** — La dictée audio de bout en bout, un glisser-déposer que l'on met en page, et des images que l'IA sait lire.
 
@@ -80,7 +102,7 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 ### Génération assistée par IA
 - Prompts pré-optimisés par type d'activité, dans les 12 langues
 - Modèles IA souverains via ILaaS, avec **cascade de repli automatique** sur 3 modèles
-- Découpage automatique des grosses générations (« par lots »)
+- Découpage automatique des générations en petits lots (« par lots »), menés deux à deux et repris en plus petit si l’un échoue — y compris pour les quiz en mode Rapide
 - Ancrage sur les **programmes scolaires français** (RAG) déclenché automatiquement quand le contexte saisi s'y prête
 
 ### Enrichissement du contexte (RAG)
@@ -156,16 +178,16 @@ Caramel utilise l'infrastructure souveraine **[ILaaS](https://www.ilaas.fr/)** v
 
 | Modèle | Paramètres | Mis en avant | Organisation |
 |--------|------------|--------------|--------------|
-| **Qwen 3.6** | 35B | ⭐ | Qwen |
+| **Gemma 4** | 31B | ⭐ | Google |
+| **Qwen 3.8** | 27B | ⭐ | Qwen |
 | **Mistral Small 4** | 119B | ⭐ **(défaut)** | Mistral AI |
-| **GPT-OSS** | 120B | ⭐ | OpenAI |
-| Mistral Small 3.2 | 24B | (mode debug) | Mistral AI |
-| Llama 3.3 | 70B | (mode debug) | RedHat AI |
+| Qwen 3.6 | 35B | (mode debug) | Qwen |
 | Llama 3.1 | 8B | (mode debug) | Neural Magic |
-| Gemma 4 | 31B | (mode debug) | Google |
 | Mistral Medium | — | (mode debug) | Mistral AI |
 
-Un modèle de **vision** (Qwen 3.6) est mobilisé à part pour l'analyse des images jointes au corpus et la détection des zones cliquables d'une « Image interactive ».
+Qwen 3.8 remplace progressivement Qwen 3.6 chez ILaaS : tant qu'il n'est pas servi, c'est Qwen 3.6 qui répond à sa place, automatiquement.
+
+Un modèle de **vision** (Qwen 3.8, Qwen 3.6 en relais) est mobilisé à part pour l'analyse des images jointes au corpus et la détection des zones cliquables d'une « Image interactive ».
 
 - **Hébergement** : data centers de l'Enseignement supérieur et de la recherche (ESR) français
 - **Confidentialité** : requêtes traitées uniquement pour l'exécution, pas de réentraînement
@@ -179,11 +201,11 @@ Un modèle de **vision** (Qwen 3.6) est mobilisé à part pour l'analyse des ima
 
 | Domaine | Bibliothèques |
 |---------|---------------|
-| Compression / packaging | JSZip 3.10.1, client-zip 2.5.0, fflate 0.8.3, tar-js 0.3.0 |
-| Documents | PDF.js 6.2.108, Tesseract.js 7.0.0, Mammoth.js 1.12.1, docx 9.7.1 |
+| Compression / packaging | JSZip 3.10.2, client-zip 2.5.1, fflate 0.8.3, tar-js 0.3.0 |
+| Documents | PDF.js 6.3.289, Tesseract.js 7.0.0, Mammoth.js 1.13.0, docx 9.8.1 |
 | Export PDF / math | jsPDF 4.2.1, jsPDF-AutoTable 5.0.8, MathJax 4.1.3 |
-| Images & médias | heic2any 0.0.4, UTIF 3.1.0, pako 3.0.1, qrcode-generator 2.0.4 |
-| H5P & sécurité | h5p-standalone 3.8.2, DOMPurify 3.4.14 |
+| Images & médias | heic2any 0.0.4, UTIF 3.1.0, pako 3.0.2, qrcode-generator 2.0.4 |
+| H5P & sécurité | h5p-standalone 3.8.2, DOMPurify 3.4.16 |
 | Interface | Font Awesome, flag-icons, CSS personnalisé (glassmorphism) |
 
 ### Génération IA — architecture asynchrone (polling)
@@ -204,7 +226,7 @@ Les appels à l'IA passent par un proxy **n8n** qui découple la soumission de l
 - Le slot n8n est libéré en **~100 ms** : aucune saturation par des exécutions zombie
 - La fermeture d'onglet côté client est **sans impact** sur le serveur
 - Clés API gérées **côté serveur uniquement** (jamais exposées au frontend)
-- **Cascade de repli** sur 3 modèles (timeout ~59 s par tentative)
+- **Cascade de repli** sur 3 modèles (timeout ~59 s par tentative), température fixée à 0,7 pour des réponses JSON régulières
 - **RAG programmes officiels** : extraits des programmes scolaires français injectés selon le cycle détecté, **et seulement quand le contexte saisi s'y prête** (décision automatique côté client, sans réglage)
 
 ### Services associés
@@ -285,7 +307,7 @@ caramel/
 │   └── main.js                 # point d'entrée
 ├── docs/                       # PRD, guides, audits, plans
 ├── scripts/                    # outils Node (.mjs) : vérification locales, traductions, QA
-├── tests/                      # 40 suites navigateur (test-all.html) + bancs Node (round-trip, QA Playwright)
+├── tests/                      # 42 suites navigateur (test-all.html) + bancs Node (round-trip, QA Playwright)
 ├── CHANGELOG · LICENSE · CLAUDE.md · wiki.md
 ```
 

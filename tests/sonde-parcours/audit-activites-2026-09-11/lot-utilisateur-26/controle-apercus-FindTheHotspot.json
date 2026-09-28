@@ -1,0 +1,11 @@
+[
+  {
+    "module": "FindTheHotspot",
+    "ouvert": true,
+    "texte": "Clique sur la zone 2.\nRights of use",
+    "noeuds": 22,
+    "imagesCassees": [],
+    "apresClic": "Clique sur la zone 2.\nZone 2 sélectionnée.\nVous avez obtenu 1 sur 1 points\n1/1\nRights of use",
+    "erreurs": []
+  }
+]

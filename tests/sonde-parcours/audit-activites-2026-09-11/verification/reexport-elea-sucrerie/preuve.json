@@ -1,0 +1,96 @@
+{
+  "date": "2026-09-11",
+  "cours": 794,
+  "activite": 13845,
+  "h5pId": 399,
+  "url": "https://test03.elea.apps.education.fr/mod/h5pactivity/view.php?id=13845",
+  "paquetImporte": "sucrerie/sucrerie-verification-livre.h5p",
+  "sha256PaquetImporte": "0da6e22943d8cd7290d90a180e3edf47205b670809f6c55921081e69c17f74e7",
+  "reexport": "interactive-book-399-399.h5p",
+  "sha256Reexport": "afecb3738f090ab2c786a346c8829f4564280b64e1de591ccc4264ea44a542a3",
+  "titreNatifEnregistre": "Vérifications Sucrerie — relues dans Éléa",
+  "etapes": [
+    "Import du paquet exact",
+    "Interactions dans le lecteur Éléa",
+    "Modification du titre dans l’éditeur natif",
+    "Enregistrement",
+    "Réexport H5P et comparaison"
+  ],
+  "identifiantsConserves": [
+    "a06bca90-6450-4256-84a8-840c5f06b548",
+    "74583b97-ada4-400e-920c-56a4ac480ebd",
+    "4243ae4a-bb0b-47e5-8254-bc3125743263",
+    "0e8b62b7-221f-4f25-a399-98fed6ef0a89",
+    "656d1e14-998d-4eb3-b035-a586b0a60007"
+  ],
+  "bibliotheques": 20,
+  "optionsConservees": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "behaviour": {
+        "type": "single",
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "randomAnswers": false,
+        "autoCheck": false,
+        "singlePoint": false,
+        "showScorePoints": true,
+        "passPercentage": 50,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": true,
+        "feedbackOnCorrect": "Madrid est la capitale espagnole.",
+        "feedbackOnWrong": "Madrid est bien la capitale espagnole."
+      }
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "caseSensitive": false,
+        "autoCheck": false,
+        "acceptSpellingErrors": false,
+        "separateLines": false,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "enableCheckButton": true,
+        "showSolutionsRequiresInput": true,
+        "allowRetryIfCorrect": false
+      }
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "showScorePoints": false,
+        "enableCheckButton": true
+      }
+    }
+  ],
+  "observationsUI": {
+    "qcmSansSaisie": "Solution refusée : Répondez s’il vous plait avant de visionner la solution.",
+    "texteATrousSansSaisie": "Solution refusée : Veuillez remplir tous les champs.",
+    "texteATrousReussite": "Paris/Rome : 2/2 ; aucun bouton Recommencer.",
+    "vraiFauxAutomatique": "Vrai : 1/1 et retour positif visible, sans bouton Vérifier.",
+    "mots": "Lyon sélectionné : Incorrect, 0/2 ; après nouvelle tentative Paris et Rome : Correct, 2/2.",
+    "detailPoints": "Valeur native conservée ; absence de détail +1/-1 contrôlée visuellement côté Sucrerie, sans comparaison visuelle exhaustive de cet effet."
+  },
+  "limites": [
+    "Essais en prévisualisation enseignant, sans validation des rapports élève.",
+    "Les captures Éléa ont été lues pendant la séance ; elles ne sont pas conservées dans ce dossier."
+  ]
+}

@@ -1,0 +1,263 @@
+[
+  {
+    "chemin": "behaviour",
+    "type": "retrait_natif",
+    "avant": {
+      "enableRetry": true,
+      "enableSolutionsButton": true,
+      "enableCheckButton": true
+    }
+  },
+  {
+    "chemin": "endGame.showAnimations",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "endGame.skippable",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "introPage.introduction",
+    "type": "modification",
+    "avant": "<p>Réponds aux questions puis consulte le résultat.</p>",
+    "apres": "<p>Réponds aux questions puis consulte le résultat. RELU</p>"
+  },
+  {
+    "chemin": "override",
+    "type": "ajout_natif",
+    "apres": {
+      "checkButton": true
+    }
+  },
+  {
+    "chemin": "questions[0].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Multiple Choice"
+  },
+  {
+    "chemin": "questions[0].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[0].params.UI.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[0].params.UI.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[0].params.UI.noInput",
+    "type": "normalisation_html",
+    "avant": "Répondez s'il vous plait avant de visionner la solution.",
+    "apres": "Répondez s&#039;il vous plait avant de visionner la solution."
+  },
+  {
+    "chemin": "questions[0].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous certain de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "questions[0].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous certain de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[0].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[0].params.question",
+    "type": "modification",
+    "avant": "Quelle ville est la capitale de la France ?",
+    "apres": "<p>Quelle ville est la capitale de la France ? RELU</p>"
+  },
+  {
+    "chemin": "questions[1].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "True/False Question"
+  },
+  {
+    "chemin": "questions[1].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[1].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Voulez-vous vraiment terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[1].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Voulez-vous vraiment recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[1].params.l10n.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[1].params.l10n.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[1].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[2].metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Fill in the Blanks"
+  },
+  {
+    "chemin": "questions[2].metadata.license",
+    "type": "ajout_natif",
+    "apres": "U"
+  },
+  {
+    "chemin": "questions[2].params.a11yHeader",
+    "type": "retrait_natif",
+    "avant": "Mode de vérification"
+  },
+  {
+    "chemin": "questions[2].params.a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "questions[2].params.a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "questions[2].params.answerIsCorrect",
+    "type": "ajout_natif",
+    "apres": "&#039;:ans&#039; est une réponse exacte"
+  },
+  {
+    "chemin": "questions[2].params.answerIsWrong",
+    "type": "ajout_natif",
+    "apres": "&#039;:ans&#039; est une réponse inexacte"
+  },
+  {
+    "chemin": "questions[2].params.answeredCorrectly",
+    "type": "ajout_natif",
+    "apres": "Réponse exacte"
+  },
+  {
+    "chemin": "questions[2].params.answeredIncorrectly",
+    "type": "ajout_natif",
+    "apres": "Mauvaise réponse"
+  },
+  {
+    "chemin": "questions[2].params.confirmCheck",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Terminer ?",
+      "body": "Êtes-vous sûr de vouloir terminer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Terminer"
+    }
+  },
+  {
+    "chemin": "questions[2].params.confirmRetry",
+    "type": "ajout_natif",
+    "apres": {
+      "header": "Recommencer ?",
+      "body": "Êtes-vous sûr de vouloir recommencer ?",
+      "cancelLabel": "Annuler",
+      "confirmLabel": "Confirmer"
+    }
+  },
+  {
+    "chemin": "questions[2].params.inputHasTipLabel",
+    "type": "ajout_natif",
+    "apres": "Indice disponible"
+  },
+  {
+    "chemin": "questions[2].params.inputLabel",
+    "type": "ajout_natif",
+    "apres": "Blanc @num sur @total"
+  },
+  {
+    "chemin": "questions[2].params.media",
+    "type": "ajout_natif",
+    "apres": {
+      "disableImageZooming": false
+    }
+  },
+  {
+    "chemin": "questions[2].params.solutionLabel",
+    "type": "ajout_natif",
+    "apres": "Réponse correcte :"
+  },
+  {
+    "chemin": "questions[2].params.submitAnswer",
+    "type": "ajout_natif",
+    "apres": "Vérifier"
+  },
+  {
+    "chemin": "questions[2].params.taskDescription",
+    "type": "retrait_natif",
+    "avant": "Complète les deux capitales."
+  },
+  {
+    "chemin": "questions[2].params.tipLabel",
+    "type": "ajout_natif",
+    "apres": "Indice"
+  },
+  {
+    "chemin": "texts.nextbutton",
+    "type": "retrait_natif",
+    "avant": "Suivant"
+  },
+  {
+    "chemin": "texts.previousbutton",
+    "type": "retrait_natif",
+    "avant": "Précédent"
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Quatre vérifications"
+  }
+]

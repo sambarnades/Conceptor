@@ -1,0 +1,96 @@
+[
+  {
+    "id": "mots-meles-visible",
+    "contenu": {
+      "taskDescription": "Retrouve les villes et ÉTÉ. RELU Sucrerie",
+      "wordList": "PARIS,ROME,ΑΘΗΝΑ,ÉTÉ",
+      "behaviour": {
+        "preferOverlap": true,
+        "showVocabulary": true,
+        "enableShowSolution": true,
+        "enableRetry": true,
+        "orientations": {
+          "horizontal": true,
+          "horizontalBack": false,
+          "vertical": false,
+          "verticalUp": false,
+          "diagonal": false,
+          "diagonalBack": false,
+          "diagonalUp": false,
+          "diagonalUpBack": false
+        },
+        "fillPool": "XYZ"
+      },
+      "l10n": {
+        "check": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "found": "@found sur @totalWords mots trouvés",
+        "timeSpent": "Temps écoulé",
+        "score": "Vous avez obtenu @score sur @total points",
+        "wordListHeader": "Villes RELU"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "title": "Mots mêlés — visible"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  },
+  {
+    "id": "mots-meles-cache",
+    "contenu": {
+      "taskDescription": "Retrouve les villes et ÉTÉ. RELU Sucrerie",
+      "wordList": "PARIS,ROME,ΑΘΗΝΑ,ÉTÉ",
+      "behaviour": {
+        "preferOverlap": false,
+        "showVocabulary": false,
+        "enableShowSolution": true,
+        "enableRetry": true,
+        "orientations": {
+          "horizontal": false,
+          "horizontalBack": false,
+          "vertical": false,
+          "verticalUp": true,
+          "diagonal": false,
+          "diagonalBack": false,
+          "diagonalUp": false,
+          "diagonalUpBack": false
+        },
+        "fillPool": "XYZ"
+      },
+      "l10n": {
+        "check": "Vérifier",
+        "tryAgain": "Recommencer",
+        "showSolution": "Afficher la solution",
+        "found": "@found sur @totalWords mots trouvés",
+        "timeSpent": "Temps écoulé",
+        "score": "Vous avez obtenu @score sur @total points",
+        "wordListHeader": "Villes RELU"
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100,
+          "feedback": ""
+        }
+      ],
+      "title": "Mots mêlés — cache"
+    },
+    "annulation": true,
+    "documents": [
+      "docx",
+      "odt",
+      "pdf"
+    ]
+  }
+]

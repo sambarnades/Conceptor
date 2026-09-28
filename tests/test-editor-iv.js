@@ -13,6 +13,7 @@
 import { detectContentType, getSchemaForType } from '../js/editor/content-detector.js';
 import { healStructureForActivity } from '../js/h5p/json-healer.js';
 import InteractiveVideoProcessor from '../js/h5p/processors/InteractiveVideo.js';
+import { getMedia, unregisterMedia } from '../js/h5p/image-manager.js';
 import { isYouTubeSource, ytVideoId, createVideoPlayer } from '../js/ui/sync-video-player.js';
 import { detectPlatform, isPeerTube, collectRenditions, pickPlayableRendition, albertCandidates, detectVideo } from '../js/services/video-transcript.js';
 import { matchesShowWhen } from '../js/editor/json-utils.js';
@@ -372,6 +373,38 @@ export async function runAllTests() {
     }
 
     // -------------------------------------------------------------------
+    // Le flux progressif doit être embarqué pour rester navigable dans Chromium.
+    group('Vidéo progressive embarquée');
+    {
+        const originalFetch = window.fetch;
+        const url = 'https://media.exemple.fr/download/web-videos/test-480.mp4';
+        const input = { videoSource: { url, mime: 'video/mp4', embed: true }, interactions: [] };
+        const bytes = new Uint8Array([0, 0, 0, 12, 102, 116, 121, 112, 109, 112, 52, 50]);
+        try {
+            window.fetch = async () => new Response(bytes);
+            const output = await InteractiveVideoProcessor.process(input, procHelpers);
+            const media = getMedia(`interactive-video:${url}`);
+            assert(output.content.interactiveVideo.video.files[0].path === media.h5pPath,
+                'Le H5P référence le média embarqué, pas le flux sans Range');
+            assert(media.blob.size === bytes.length && media.mime === 'video/mp4',
+                'Octets MP4 conservés dans le registre exportable');
+            assert(input.videoSource.url === url, 'La source éditable reste intacte');
+            for (const [response, message] of [
+                [new Response('<html>Erreur</html>'), 'Page HTML HTTP 200 rejetée'],
+                [new Response('', {status: 404}), 'Erreur réseau rejetée'],
+                [new Response('', {headers: {'content-length': String(81 * 1024 * 1024)}}), 'Vidéo au-delà de 80 Mio rejetée']
+            ]) {
+                window.fetch = async () => response;
+                let rejected = false;
+                try { await InteractiveVideoProcessor.process(input, procHelpers); } catch { rejected = true; }
+                assert(rejected, message);
+            }
+        } finally {
+            window.fetch = originalFetch;
+            unregisterMedia(`interactive-video:${url}`);
+        }
+    }
+
     // Sources vidéo : la reconnaissance PeerTube ne dépend PAS de l'hôte (Tubes des Apps
     // Education, Tube de Réseau Canopé, toute instance fédérée). Ajouté en 2026-08 avec la
     // prise en charge de `tube.reseau-canope.fr`. Aucun réseau ici : on teste le parsing d'URL
@@ -437,6 +470,22 @@ export async function runAllTests() {
         const candP = albertCandidates(rP).map(r => r.kind);
         assert(candP[0] === 'audio' && candP.indexOf('hls') < candP.indexOf('progressive'),
             'Transcription : ordre audio → hls → progressif');
+
+        const downloadUrl = 'https://media.exemple.fr/download/web-videos/identifiant-480.mp4';
+        const withDownload = collectRenditions({
+            files: [
+                { resolution: { id: 0 }, fileUrl: 'audio.mp4', fileDownloadUrl: 'audio-download.mp4' },
+                { resolution: { id: 480 }, fileUrl: 'statique-perime.mp4', fileDownloadUrl: downloadUrl },
+                { resolution: { id: 1080 }, fileUrl: 'grand.mp4', fileDownloadUrl: 'grand-download.mp4' }
+            ],
+            streamingPlaylists: apiProg.streamingPlaylists
+        });
+        assert(pickPlayableRendition(withDownload).url === downloadUrl,
+            'Firefox : utiliser le téléchargement progressif fourni par PeerTube, sans reconstruire son URL');
+        assert(pickPlayableRendition(withDownload).resolution === 480,
+            'Lecture progressive : plafond 720p et exclusion de la piste audio');
+        assert(albertCandidates(withDownload).find(r => r.kind === 'progressive').url === 'statique-perime.mp4',
+            'Le choix de lecture ne modifie pas les sources de transcription');
 
         // Vidéo sans aucune rendition (privée, en cours d'encodage) → non lisible.
         assert(pickPlayableRendition(collectRenditions({ files: [], streamingPlaylists: [] })) === null,

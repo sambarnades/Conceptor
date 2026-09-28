@@ -25,12 +25,10 @@ export default {
                 console.warn(`[Glossary] Élément ${i} invalide (null ou non-objet), ignoré.`);
                 return { title: "", content: { params: { text: "" }, library: "H5P.AdvancedText 1.1", subContentId: generateUUID(), metadata: { contentType: "Text", license: "U", title: "" } } };
             }
-            // Si l'item a déjà la structure complète, on ne fait que générer l'UUID
+            // Préserver les références et ne pas muter le contenu de l’éditeur.
             if (item.content && item.content.params) {
-                // Important: on ne réécrit pas subContentId si déjà présent pour éviter de casser des liens? 
-                // Dans le doute, le code d'origine le faisait donc on le fait.
-                item.content.subContentId = generateUUID();
-                return item;
+                return { ...item, content: { ...item.content, params: { ...item.content.params },
+                    subContentId: item.content.subContentId || generateUUID() } };
             }
             // Sinon, on transforme la structure simple en structure complète
             return {
@@ -56,6 +54,7 @@ export default {
             || "h2";
 
         return {
+            ...(!Array.isArray(jsonObj) ? jsonObj : {}),
             panels: transformedPanels,
             hTag
         };

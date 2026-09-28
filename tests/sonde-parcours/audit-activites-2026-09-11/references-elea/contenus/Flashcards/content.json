@@ -1,0 +1,49 @@
+{
+  "description": "Associe chaque expression à sa valeur simplifiée.",
+  "cards": [
+    {
+      "text": "racine carrée de 16",
+      "answer": "4",
+      "tip": "C'est le nombre qui, multiplié par lui-même, donne 16."
+    },
+    {
+      "text": "racine carrée de 25",
+      "answer": "5",
+      "tip": "Pense au <strong>carré parfait</strong> de 5 : <em>5 × 5</em>."
+    },
+    {
+      "text": "racine carrée de 9",
+      "answer": "3",
+      "tip": "Quel nombre au <em>carré</em> donne 9 ? <em>3 × 3</em>."
+    },
+    {
+      "text": "racine carrée de 49",
+      "answer": "7",
+      "tip": "C'est le résultat de <em>7 × 7</em>."
+    },
+    {
+      "text": "racine carrée de 64",
+      "answer": "8",
+      "tip": "Le carré de 8 est <em>64</em>, donc c'est la réponse."
+    }
+  ],
+  "progressText": "Carte @card sur @total",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "checkAnswerText": "Vérifier",
+  "showSolutionsRequiresInput": true,
+  "defaultAnswerText": "Votre réponse",
+  "correctAnswerText": "Correct !",
+  "incorrectAnswerText": "Incorrect !",
+  "showSolutionText": "Réponse correcte",
+  "results": "Résultats",
+  "ofCorrect": "@score réponses correctes sur un total de @total",
+  "showResults": "Montrer les résultats",
+  "answerShortText": "R :",
+  "retry": "Recommencer",
+  "caseSensitive": false,
+  "cardAnnouncement": "Réponse incorrecte. La réponse correcte était @answer",
+  "correctAnswerAnnouncement": "@answer est correct.",
+  "pageAnnouncement": "Page @current sur @total",
+  "randomCards": false
+}

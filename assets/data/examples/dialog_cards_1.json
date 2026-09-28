@@ -1,46 +1,54 @@
 {
-"title": "La Rome antique et ses fondements",
-"description": "Associe chaque **concept clé** à sa **définition précise**.",
-"dialogs": [
-{
-"text": "Le régime politique fondé en **-509** où le pouvoir appartient aux citoyens et à leurs représentants.",
-"answer": "La **République**",
-"tips": {
-"front": "C'est la **chose publique** en latin.",
-"back": "Res publica."
-}
-},
-{
-"text": "L'empereur qui a instauré le **Principat** en -27, marquant la fin de la République.",
-"answer": "**Auguste**",
-"tips": {
-"front": "Il s'appelait auparavant *Octave*.",
-"back": "Le premier empereur **romain**."
-}
-},
-{
-"text": "La période de stabilité et de prospérité relative au sein de l'Empire aux Ier et IIe siècles.",
-"answer": "La **Pax Romana**",
-"tips": {
-"front": "On l'appelle aussi la 'Paix romaine'.",
-"back": "Expression latine."
-}
-},
-{
-"text": "Le processus de diffusion de la culture, de la langue et du mode de vie de Rome dans les provinces.",
-"answer": "La **romanisation**",
-"tips": {
-"front": "Pense à l'influence culturelle de Rome.",
-"back": "Un terme lié à l'intégration des peuples conquis."
-}
-},
-{
-"text": "Le texte promulgué en **313** qui autorise la liberté de culte aux Chrétiens.",
-"answer": "L'**Édit de Milan**",
-"tips": {
-"front": "Signé par l'empereur Constantin.",
-"back": "Un tournant pour le christianisme."
-}
-}
-]
+  "title": "La Rome antique et ses fondements",
+  "description": "Associe chaque **concept clé** à sa **définition précise**.",
+  "dialogs": [
+    {
+      "text": "Le régime politique fondé en **-509** où le pouvoir appartient aux citoyens et à leurs représentants.",
+      "answer": "La **République**",
+      "tips": {
+        "front": "C'est la **chose publique** en latin.",
+        "back": "Res publica."
+      }
+    },
+    {
+      "text": "L'empereur qui a instauré le **Principat** en -27, marquant la fin de la République.",
+      "answer": "**Auguste**",
+      "tips": {
+        "front": "Il s'appelait auparavant *Octave*.",
+        "back": "Le premier empereur **romain**."
+      }
+    },
+    {
+      "text": "La période de stabilité et de prospérité relative au sein de l'Empire aux Ier et IIe siècles.",
+      "answer": "La **Pax Romana**",
+      "tips": {
+        "front": "On l'appelle aussi la 'Paix romaine'.",
+        "back": "Expression latine."
+      }
+    },
+    {
+      "text": "Le processus de diffusion de la culture, de la langue et du mode de vie de Rome dans les provinces.",
+      "answer": "La **romanisation**",
+      "tips": {
+        "front": "Pense à l'influence culturelle de Rome.",
+        "back": "Un terme lié à l'intégration des peuples conquis."
+      }
+    },
+    {
+      "text": "Le texte promulgué en **313** qui autorise la liberté de culte aux Chrétiens.",
+      "answer": "L'**Édit de Milan**",
+      "tips": {
+        "front": "Signé par l'empereur Constantin.",
+        "back": "Un tournant pour le christianisme."
+      }
+    }
+  ],
+  "behaviour": {
+    "enableRetry": true,
+    "disableBackwardsNavigation": false,
+    "scaleTextNotCard": true,
+    "randomCards": false,
+    "maxProficiency": 5,
+    "quickProgression": false
+  }
 }

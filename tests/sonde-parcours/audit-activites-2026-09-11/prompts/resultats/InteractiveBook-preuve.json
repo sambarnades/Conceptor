@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-11T14:01:08.660Z",
+  "service": "bas",
+  "modelRequested": "mistral-small-4-119b",
+  "modelReturned": "mistral-small-4-119b",
+  "seconds": 4,
+  "tests": {
+    "unePage": true,
+    "colonnes": true,
+    "cartes": true,
+    "couverture": true,
+    "progressionManuelle": true,
+    "repriseDesactivee": true,
+    "sommaireFerme": true
+  },
+  "rag": false,
+  "stats": "skip",
+  "relecturePedagogique": {
+    "conforme": false,
+    "ecarts": [
+      "Indice Italie associé à tort à la péninsule ibérique",
+      "Consigne de couverture imposée reformulée",
+      "Question Vrai/Faux ajoutée sans demande"
+    ],
+    "correctionsEditeur": [
+      "Indices non fournis retirés",
+      "Consigne exacte rétablie",
+      "Question supplémentaire supprimée"
+    ],
+    "nouvelleGeneration": false
+  }
+}

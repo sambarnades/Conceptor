@@ -480,13 +480,15 @@ Caramel utilise l'infrastructure **ILaaS** (Intelligence artificielle souveraine
 
 | Modèle | Paramètres | Mis en avant | Usage recommandé |
 |--------|------------|--------------|------------------|
-| **Qwen 3.6** | 35B | ⭐ | Contenus complexes et générations longues (Timeline, Livre, Présentation de cours) |
+| **Gemma 4** | 31B | ⭐ | Réponse directe, sans raisonnement préalable : une alternative quand une génération échoue |
+| **Qwen 3.8** | 27B | ⭐ | Contenus complexes et générations longues (Timeline, Livre, Présentation de cours) |
 | **Mistral Small 4** ✨ | 119B | ⭐ **(par défaut)** | Choix équilibré pour la plupart des situations |
-| **GPT-OSS** | 120B | ⭐ | Le plus précis sur les schémas exigeants, mais consomme davantage d'énergie |
 
-> 💡 **Conseil** : Le modèle par défaut **Mistral Small 4** convient à la grande majorité des activités. Pour un contenu particulièrement complexe ou une génération qui échoue, essayez **GPT-OSS** (le plus robuste) ou **Qwen 3.6** (rapide sur les longues générations). D'autres modèles plus légers restent accessibles en mode debug (`?debug`).
+> 💡 **Conseil** : Le modèle par défaut **Mistral Small 4** convient à la grande majorité des activités. Pour un contenu particulièrement complexe ou une génération qui échoue, essayez **Qwen 3.8** (à l'aise sur les longues générations) ou **Gemma 4**. Qwen 3.8 remplace progressivement Qwen 3.6 chez ILaaS : tant qu'il n'est pas servi, Qwen 3.6 répond à sa place, automatiquement. D'autres modèles restent accessibles en mode debug (`?debug`).
+>
+> ℹ️ GPT-OSS et Mistral Small 3.2 ne sont plus proposés : ILaaS les arrête le 30 septembre 2026.
 
-> ♻️ **Génération « par lots »** : pour les activités à nombreux éléments (quiz, banques de questions…), chaque appel à l'IA est limité à ~59 secondes côté serveur. Au-delà d'un certain nombre d'éléments, Caramel **découpe automatiquement et de façon transparente** la génération en plusieurs appels — vous ne cliquez qu'une fois, une jauge « Cuisson lot k/N » accompagne l'attente, et le résultat est strictement identique à une génération en un seul bloc.
+> ♻️ **Génération « par lots »** : chaque appel à l'IA est limité à ~59 secondes côté serveur, et la vitesse de l'IA varie d'un appel à l'autre. Pour les activités à nombreux éléments (quiz, banques de questions…), Caramel **prépare d'abord un plan**, puis fait rédiger les éléments **par petits lots, deux à la fois** — y compris pour un quiz en mode Rapide. Vous ne cliquez qu'une fois, une jauge « Cuisson k/N » accompagne l'attente, et un lot qui échoue est aussitôt **repris en plus petit** au lieu de faire échouer toute la génération. Le résultat a la même forme qu'une génération d'un seul bloc ; dans un quiz mixte, c'est le plan qui répartit les types d'exercices.
 
 **Infrastructure souveraine :**
 - 🇫🇷 Serveurs hébergés dans des data centers ESR français
@@ -1026,11 +1028,11 @@ Caramel intègre une **fenêtre d'aide complète** accessible à tout moment.
 **Comment y accéder ?** Cliquez sur le bouton **📖 Tutoriel** en haut à droite de l'écran.
 
 **Ce que vous y trouverez :**
-- 📖 Guides pas-à-pas illustrés pour chaque type d'activité
-- 💡 Exemples concrets et cas d'usage
-- 🎯 Astuces pour optimiser vos prompts
-- 🔧 Solutions aux erreurs courantes
-- 📚 Instructions d'importation détaillées
+- 🔎 Un sommaire de treize chapitres et une recherche
+- 📖 Les six étapes de création d'une activité, illustrées
+- 🧭 La création d'un parcours complet, du cadrage à la livraison
+- 📚 L'intégration dans Éléa, Magistère ou Moodle
+- 💬 Caramélia, la communauté et les questions fréquentes
 
 ![Capture modale tutoriel](assets/images/wiki/modale_tutoriels.PNG)
 
@@ -1189,6 +1191,7 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
+- **v7.0.0** : 🧭 **Créer un parcours complet** pour Éléa, Magistère ou Moodle depuis le formulaire habituel : cadrer le projet, relire et modifier son plan, fabriquer les activités puis télécharger le cours `.mbz` et ses documents. Aperçus et édition accessibles pendant la préparation, scénario `.json` exportable pour reprendre plus tard, accès depuis Caramelia et tutoriel dans les **12 langues, dont le breton**. La création d’une activité unique conserve ses repères ; les quatre étapes du parcours partagent une présentation harmonisée. Carte de progression et ouverture successive des étapes restent facultatives. ⚡ **Quiz générés plus vite, sans plantage** : même en mode Rapide, le quiz est préparé par petits lots rédigés deux par deux, et un lot qui échoue est repris en plus petit. 🧠 Nouveaux modèles **Gemma 4**, **Qwen 3.8** et **Mistral Small 4** (par défaut).
 - **v6.3.4** : 📝 **Vos commentaires de réponse ne disparaissent plus.** Dans un QCM, l'explication que vous écrivez sous une mauvaise réponse (« 5² = 25, pas 13 ») pouvait **s'évaporer à l'import dans Éléa**, sans message ni avertissement. L'élève se trompait et ne voyait aucune explication ; rien, côté enseignant, ne laissait deviner que le texte saisi n'avait pas été retenu, puisque l'activité s'importait sans erreur. En cause : H5P attend ces commentaires à un emplacement bien précis et **supprime en silence** ce qu'il trouve ailleurs. Ils y sont désormais remis avant l'export. À savoir : une activité **déjà déposée** ne récupère pas d'elle-même les commentaires perdus — il faut la régénérer avec cette version et la redéposer.
 - **v6.3.3** : 💬 **Vidéo interactive : plus de sous-titres YouTube imposés.** Sur une vidéo YouTube, les sous-titres s'affichaient **dès le lancement de la lecture** alors que la case « Intégrer les sous-titres » était **décochée** — et rien ne permettait de les couper, pas même un bouton « CC » dans le lecteur. En cause, le lecteur H5P, qui demandait à YouTube de charger son module de sous-titres et en allumait la piste par défaut : les très nombreuses vidéos à sous-titres **automatiques** en ont toujours une. Désormais **rien ne s'affiche si vous ne l'avez pas demandé**. À savoir : sur une vidéo **YouTube**, la case reste sans effet — Caramel ne sait pas encore lui transmettre une piste de sous-titres (c'était déjà vrai avant, à ceci près qu'ils s'invitaient quand même) ; sur **PeerTube**, elle fonctionne comme avant. Et le texte **incrusté dans l'image** par l'auteur de la vidéo en fait partie : personne ne peut l'enlever. ⏹️ **Un bouton pour arrêter une génération en cours** : jusqu'ici, une fois « Générer » cliqué, il n'y avait plus qu'à attendre — jusqu'à cinq minutes si l'IA ne répondait pas —, ou à recharger la page en perdant sa saisie. Un petit bouton **« Arrêter »** apparaît désormais sous la marmite : un clic et Caramel rend la main **immédiatement**, sans message d'erreur ni champ à nettoyer avant de relancer. 🍬 **Caramelia ne se tait plus.** Sur une demande pourtant limpide, l'assistante répondait « Désolé, je n'ai pas pu obtenir de réponse » — pas une question, pas une piste : **rien**, et pas à tous les coups. Elle avait en réalité parfaitement compris : c'est sa réponse qui n'arrivait jamais, une consigne technique la coupant **avant même qu'elle commence**. Corrigé, avec un second modèle en secours si l'IA revient muette. **Hors Éducation nationale**, la conversation tournait en rond : un formateur en organisme, en CFA, en entreprise ou en association n'a ni classe ni niveau scolaire, or un « niveau » était réclamé sans fin — **« des opérateurs agroalimentaires », « des apprentis CAP », « des salariés » sont désormais des publics valides**. « **Quels sont les LLM de Caramel ?** » recevait une fin de non-recevoir alors que le sélecteur de modèle est un bouton visible : l'assistante sait maintenant ce qu'elle a le droit de dire. Enfin, « je voudrais… », « il me faudrait… » ne sont plus pris pour de l'hésitation, une IA en panne ne fait plus attendre une minute, et Caramelia **suit mieux le fil** d'une conversation (« pour des 5e », « et en arabe ? »).
 - **v6.3.2** : 📎 **Glisser-déposer de documents réparé et élargi** (Mode Avancé). Le **texte brut (`.txt`) est désormais accepté** — ajouté instantanément, sans aucune bibliothèque, et avec les accents préservés même sur un fichier hérité de Windows. Acceptés **discrètement** en plus (sans allonger la liste affichée) : les **tableurs `.xlsx` et `.ods`**, et les **archives `.zip`**, dépliées document par document. S'y ajoutent, toujours en silence : **Markdown, CSV/TSV, pages HTML, sous-titres SRT/VTT, RTF, livres EPUB**, et surtout les **photos d'iPhone (HEIC) et les TIFF**. Un vieux `.doc`/`.xls`/`.ppt` ou un fichier **Pages/Numbers/Keynote** indique désormais quoi faire au lieu d'un simple refus. Un PDF déposé pouvait être refusé **d'emblée** — « format non supporté » — alors que le même fichier passait par le bouton « choisissez un fichier » : Caramel jugeait le format sur le **nom**, il lit désormais les **premiers octets** quand le nom ne suffit pas. Le dépôt fonctionne aussi **sur Safari et Firefox** (la zone n'était pas déclarée comme cible de dépôt selon les règles du web), un dépôt **sans fichier** (lien glissé depuis un onglet) ou un **dossier** reçoit enfin un message clair, et surtout : le glisser-déposer **comme** le sélecteur acceptent maintenant **plusieurs documents d'un coup**, traités **à la file** l'un après l'autre avec l'avancement affiché (« Fichier 2/3 — … »).
@@ -1219,3 +1222,58 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 **Merci d'utiliser Caramel ! 🍬**
 
 *Créé avec ❤️ par des enseignants, pour des enseignants.*
+
+## Créer un parcours complet
+
+Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ.
+
+![Le formulaire, le commutateur « Un parcours » et le cadrage : plateforme, modalité et ampleur](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/parcours-cadrage.webp)
+
+Depuis le menu de Caramelia, **Créer un parcours** ouvre directement l’atelier, sans appel à l’IA. Si un brouillon existe, **Reprendre mon parcours** le retrouve. Les champs et les sources déjà présents sont conservés. Le cadrage et le plan se relisent dans l’atelier avant de lancer la génération.
+
+Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur et une trame. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.
+
+![Le choix de la trame : chaque carte montre ses étapes, ses paliers et ses activités](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/parcours-trames.webp)
+
+Dans **Plan**, modifiez le titre, l’objectif général, les notions du parcours, les étapes et les activités. Déplacez les activités avec les flèches ou leur vignette. **Consigne et palier** permet d’ajuster les indications de génération. Les repères pédagogiques vous aident à relire sans imposer un modèle. Le maximum est de **12 activités**.
+
+![Le plan, relu avant toute génération : objectif, étapes, activités, durées et relecture du plan](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/parcours-plan.webp)
+
+Le type de chaque activité se change dans une mosaïque : les activités générées par Caramel, puis les **modules de la plateforme** (forum, sondage, questionnaire, leçon, atelier d’évaluation par les pairs, wiki, document collaboratif, tableau, base de données…). Pour ceux-ci, l’IA rédige la consigne, les questions, les pages ou les critères ; ce qui reste à régler sur la plateforme (groupes, phases de l’atelier, heure d’une classe virtuelle) est listé dans une note **À faire avant d’ouvrir le cours**, cachée aux élèves.
+
+![La mosaïque des types : les activités générées par Caramel, puis les modules de la plateforme](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/parcours-mosaique.webp)
+
+Dans la carte d’une **Vidéo interactive**, collez le lien de la vidéo. La transcription est récupérée pendant la fabrication ; vous pouvez aussi la coller manuellement. Pour **Image interactive**, **Trouver la zone** ou **Trouver les zones**, joignez une image dans la carte : elle sera analysée avant la génération. Ces supports peuvent aussi être complétés dans **Fabrication**. Sans support, l’activité attend et les autres avancent. Le scénario conserve les images et les liens propres aux activités ; les documents du formulaire d’accueil restent à part.
+
+Quand un contenu est prêt, **Modifier le contenu** ouvre l’éditeur habituel et **Aperçu** ouvre son lecteur. **Relire le parcours** permet de les parcourir dans l’ordre avec **Précédente** et **Suivante**. Enregistrez vos retouches pour les retrouver dans le plan et dans les exports. Modifier une consigne du plan ne réécrit pas un contenu déjà généré.
+
+Validez le plan pour lancer la fabrication. Vous pouvez arrêter, reprendre les activités manquantes ou refaire une activité. Le cadenas **Ne pas générer cette activité** réserve son contenu à une saisie manuelle : l’IA ne la remplit pas. Une tentative de régénération ratée conserve le contenu précédent. Les activités absentes sont nommées avant l’export.
+
+![La fabrication : les activités se génèrent l’une après l’autre ; chacune peut être prévisualisée, modifiée ou générée à nouveau](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/parcours-fabrication.webp)
+
+**Exporter le scénario (.json)** garde le plan et les contenus déjà prêts dans un fichier **.json**. **Reprendre un scénario** est disponible dès le premier écran. Le brouillon n’est gardé que dans l’onglet : exportez le scénario avant de le fermer. Le scénario ne contient pas le sujet, le public ni les documents joints ; renseignez-les à nouveau avant de générer de nouveaux contenus.
+
+Dans **Livraison**, téléchargez le **.mbz**, puis utilisez l’import de parcours ou la restauration de cours de votre plateforme. Ce fichier de cours ne se dépose pas dans une activité H5P. Gardez aussi le **.json** pour revenir dans Caramel. La fiche de séquence et le détail des activités s’exportent en **DOCX, ODT ou PDF**.
+
+![La livraison : le cours .mbz et ses étapes d’import, les documents à imprimer et le scénario .json](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/parcours-livraison.webp)
+
+Sur Éléa, dans **Réglages du cours**, activez la carte de progression puis utilisez la tuile **+ Ajouter mon image** pour choisir votre propre fond. Vous pouvez changer ou retirer l’image et revenir aux thèmes proposés. Le fond est conservé dans le scénario **.json** et intégré au parcours **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG ou TIFF · 12 Mo max. Conversion automatique, sans recadrage.
+
+La carte de progression est propre à Éléa. La carte et l’ouverture progressive sont facultatives et demandent encore une vérification en situation sur la plateforme. La trame de différenciation ne crée pas de branches automatiques selon une note. Les échanges collaboratifs ont lieu sur la plateforme. Le dépôt d’un parcours complet dans Sucrerie n’est pas encore disponible.
+
+### Choisir une ampleur et relire la proposition
+
+Une séance propose **3 à 4 activités**, deux à trois séances **5 à 8**, une séquence entière **9 à 12**. Les trames affichent la variante correspondant à ce choix ; leur aperçu, le modèle sans IA et la consigne de génération utilisent la même structure. Le rituel court démarre avec une estimation de dix minutes. Les autres durées restent des estimations à adapter à votre public.
+
+Caramel contrôle la composition avant de vous montrer le plan. Si l’IA dépasse le cadrage, une seconde composition lui est demandée. En cas de nouvel écart, votre brouillon est conservé et vous pouvez réessayer ou partir d’un modèle. Ce contrôle ne limite pas vos retouches ultérieures : vous gardez la main sur le plan, dans la limite de douze activités.
+
+<details>
+<summary>Pour aller plus loin : scénarisation et ABC Learning Design</summary>
+
+Partez de ce que les apprenants doivent réussir, puis choisissez les activités et les moyens de vérifier leurs acquis. [ABC Learning Design, développé à UCL](https://www.ucl.ac.uk/teaching-learning/case-studies/2018/jun/designing-programmes-and-modules-abc-curriculum-design), propose de composer visuellement un parcours autour de six types d’apprentissage : acquisition, investigation, discussion, collaboration, pratique et production. Le choix des outils vient au service des activités.
+
+Dans Caramel, les trames restent nommées par leur usage : réviser, découvrir, préparer une prise de parole… Le panneau « Ce que ce parcours fait travailler » présente sept familles simplifiées, classées d’après les outils : découvrir, mémoriser, s’exercer, organiser, discuter, coopérer et produire. Il ne reproduit pas les six types ABC et ne juge pas la qualité pédagogique du parcours. La consigne et le contenu d’une activité comptent davantage que son seul type : un forum peut accueillir un débat ou une entraide, et un quiz peut vérifier des faits ou faire raisonner. Aucune répartition idéale n’est imposée.
+
+![Ce que ce parcours fait travailler : les sept familles, et celles qui sont absentes](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/parcours-miroir.webp)
+
+</details>

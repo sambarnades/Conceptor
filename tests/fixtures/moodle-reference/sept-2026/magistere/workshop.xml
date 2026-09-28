@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="25" moduleid="23630" modulename="workshop" contextid="57788">
+  <workshop id="25">
+    <name>Atelier : évaluation par les pairs</name>
+    <intro>&lt;p&gt;Rédige un paragraphe, puis évalue ceux de deux camarades.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <instructauthors>&lt;p&gt;Rédige un paragraphe de dix lignes sur le cycle de l’eau.&lt;/p&gt;</instructauthors>
+    <instructauthorsformat>1</instructauthorsformat>
+    <instructreviewers>&lt;p&gt;Vérifie que les quatre étapes sont citées et bien expliquées.&lt;/p&gt;</instructreviewers>
+    <instructreviewersformat>1</instructreviewersformat>
+    <timemodified>1790541630</timemodified>
+    <phase>10</phase>
+    <useexamples>0</useexamples>
+    <usepeerassessment>1</usepeerassessment>
+    <useselfassessment>0</useselfassessment>
+    <grade>80.00000</grade>
+    <gradinggrade>20.00000</gradinggrade>
+    <strategy>accumulative</strategy>
+    <evaluation>best</evaluation>
+    <gradedecimals>0</gradedecimals>
+    <submissiontypetext>1</submissiontypetext>
+    <submissiontypefile>1</submissiontypefile>
+    <nattachments>1</nattachments>
+    <submissionfiletypes></submissionfiletypes>
+    <latesubmissions>0</latesubmissions>
+    <maxbytes>0</maxbytes>
+    <examplesmode>0</examplesmode>
+    <submissionstart>0</submissionstart>
+    <submissionend>0</submissionend>
+    <assessmentstart>0</assessmentstart>
+    <assessmentend>0</assessmentend>
+    <conclusion>&lt;p&gt;Merci pour vos évaluations.&lt;/p&gt;</conclusion>
+    <conclusionformat>1</conclusionformat>
+    <overallfeedbackmode>1</overallfeedbackmode>
+    <overallfeedbackfiles>0</overallfeedbackfiles>
+    <overallfeedbackfiletypes></overallfeedbackfiletypes>
+    <overallfeedbackmaxbytes>0</overallfeedbackmaxbytes>
+    <subplugin_workshopform_accumulative_workshop>
+      <workshopform_accumulative_dimension id="1">
+        <sort>1</sort>
+        <description>&lt;p&gt;Les quatre étapes du cycle sont citées.&lt;/p&gt;</description>
+        <descriptionformat>1</descriptionformat>
+        <grade>10</grade>
+        <weight>1</weight>
+      </workshopform_accumulative_dimension>
+      <workshopform_accumulative_dimension id="2">
+        <sort>2</sort>
+        <description>&lt;p&gt;Chaque étape est expliquée correctement.&lt;/p&gt;</description>
+        <descriptionformat>1</descriptionformat>
+        <grade>10</grade>
+        <weight>2</weight>
+      </workshopform_accumulative_dimension>
+    </subplugin_workshopform_accumulative_workshop>
+    <subplugin_workshopform_comments_workshop>
+    </subplugin_workshopform_comments_workshop>
+    <subplugin_workshopform_numerrors_workshop>
+    </subplugin_workshopform_numerrors_workshop>
+    <subplugin_workshopform_rubric_workshop>
+    </subplugin_workshopform_rubric_workshop>
+    <subplugin_workshopeval_best_workshop>
+    </subplugin_workshopeval_best_workshop>
+    <examplesubmissions>
+    </examplesubmissions>
+    <submissions>
+    </submissions>
+    <aggregations>
+    </aggregations>
+  </workshop>
+</activity>

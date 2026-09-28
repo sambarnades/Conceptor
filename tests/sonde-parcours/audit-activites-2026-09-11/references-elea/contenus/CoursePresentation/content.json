@@ -1,0 +1,461 @@
+{
+  "presentation": {
+    "slides": [
+      {
+        "elements": [
+          {
+            "x": 5,
+            "y": 15,
+            "width": 90,
+            "height": 70,
+            "backgroundOpacity": 80,
+            "displayAsButton": false,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "2acdf3ed-19a5-4948-9e20-de503e63a73c",
+              "metadata": {
+                "title": "La Révolution française",
+                "contentType": "Text",
+                "license": "U"
+              },
+              "params": {
+                "text": "<h2>La Révolution française</h2><p>De 1789 à 1799 : bouleversements politiques et sociaux</p>"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ],
+        "keywords": [
+          {
+            "main": "La Révolution française"
+          }
+        ],
+        "slideBackgroundSelector": {}
+      },
+      {
+        "elements": [
+          {
+            "x": 2,
+            "y": 2,
+            "width": 96,
+            "height": 96,
+            "backgroundOpacity": 80,
+            "displayAsButton": false,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "f934328e-1670-4510-8cef-4f25e4fcebea",
+              "metadata": {
+                "title": "Text Sans titre",
+                "contentType": "Text",
+                "license": "U"
+              },
+              "params": {
+                "text": "<p>La France de la fin du XVIIIe siècle traverse une <strong>crise profonde</strong> :</p><p>- Crise financière : l'État est endetté après les guerres</p><p>- Crise sociale : inégalités entre les trois ordres (clergé, noblesse, tiers état)</p><p>- Crise politique : la monarchie absolue est de plus en plus contestée</p><p>Le <em>tiers état</em>, qui représente 98 % de la population, supporte l'essentiel des impôts.</p>"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ],
+        "keywords": [
+          {
+            "main": "Les causes de la Révolution"
+          }
+        ],
+        "slideBackgroundSelector": {}
+      },
+      {
+        "elements": [
+          {
+            "x": 2,
+            "y": 2,
+            "width": 96,
+            "height": 35,
+            "backgroundOpacity": 80,
+            "displayAsButton": false,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "subContentId": "43f27abc-4fca-4302-8e92-e83e82729cf1",
+              "metadata": {
+                "title": "Text Sans titre",
+                "contentType": "Text",
+                "license": "U"
+              },
+              "params": {
+                "text": "Les grandes dates de la Révolution française :"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 2,
+            "y": 39,
+            "width": 96,
+            "height": 59,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "action": {
+              "library": "H5P.Table 1.2",
+              "subContentId": "19b0383b-0fde-456b-bf64-85e4726b1b68",
+              "metadata": {
+                "title": "Table Sans titre",
+                "contentType": "Table",
+                "license": "U"
+              },
+              "params": {
+                "text": "<table style=\"width:100%;border-collapse:collapse;\"><thead><tr><th style=\"padding:8px;text-align:left;\">Date</th><th style=\"padding:8px;text-align:left;\">Événement</th><th style=\"padding:8px;text-align:left;\">Conséquence</th></tr></thead><tbody><tr><td style=\"padding:8px;\">5 mai 1789</td><td style=\"padding:8px;\">Ouverture des États généraux</td><td style=\"padding:8px;\">Début du processus révolutionnaire</td></tr><tr><td style=\"padding:8px;\">14 juillet 1789</td><td style=\"padding:8px;\">Prise de la Bastille</td><td style=\"padding:8px;\">Symbole de la chute de l'absolutisme</td></tr><tr><td style=\"padding:8px;\">26 août 1789</td><td style=\"padding:8px;\">Déclaration des droits de l'homme</td><td style=\"padding:8px;\">Fondement des droits civiques</td></tr><tr><td style=\"padding:8px;\">21 septembre 1792</td><td style=\"padding:8px;\">Proclamation de la République</td><td style=\"padding:8px;\">Fin de la monarchie</td></tr></tbody></table><div class=\"table-overflow-protection\"></div>"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ],
+        "keywords": [
+          {
+            "main": "Chronologie des événements"
+          }
+        ],
+        "slideBackgroundSelector": {}
+      },
+      {
+        "elements": [
+          {
+            "x": 2,
+            "y": 2,
+            "width": 96,
+            "height": 96,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "action": {
+              "subContentId": "0cd86085-9783-428c-bf15-20359db3541a",
+              "library": "H5P.MultiChoice 1.16",
+              "metadata": {
+                "title": "Quelle date marque la prise de la Bastille ?",
+                "contentType": "Multiple Choice",
+                "license": "U"
+              },
+              "params": {
+                "question": "Quelle date marque la prise de la Bastille ?",
+                "answers": [
+                  {
+                    "text": "14 juillet 1789",
+                    "correct": true,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "Exact ! C'est devenu la fête nationale française.",
+                      "notChosenFeedback": ""
+                    }
+                  },
+                  {
+                    "text": "26 août 1789",
+                    "correct": false,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "Non, c'est la date de la Déclaration des droits de l'homme.",
+                      "notChosenFeedback": ""
+                    }
+                  },
+                  {
+                    "text": "5 mai 1789",
+                    "correct": false,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "",
+                      "notChosenFeedback": ""
+                    }
+                  },
+                  {
+                    "text": "21 septembre 1792",
+                    "correct": false,
+                    "tipsAndFeedback": {
+                      "tip": "",
+                      "chosenFeedback": "",
+                      "notChosenFeedback": ""
+                    }
+                  }
+                ],
+                "behaviour": {
+                  "type": "single",
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "randomAnswers": true,
+                  "enableCheckButton": true,
+                  "singlePoint": false,
+                  "showSolutionsRequiresInput": true,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "autoCheck": false,
+                  "passPercentage": 100,
+                  "showScorePoints": true
+                },
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Revoyez les grandes dates de la Révolution."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "C&#039;est un début, continuez !"
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Bon travail !"
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Excellent !"
+                  }
+                ],
+                "UI": {
+                  "checkAnswerButton": "Vérifier",
+                  "showSolutionButton": "Afficher la solution",
+                  "tryAgainButton": "Recommencer",
+                  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                  "submitAnswerButton": "Valider",
+                  "tipsLabel": "Indice",
+                  "tipAvailable": "Indice disponible",
+                  "feedbackAvailable": "Feedback disponible",
+                  "readFeedback": "Lire le commentaire",
+                  "wrongAnswer": "Mauvaise réponse",
+                  "correctAnswer": "Bonne réponse",
+                  "shouldCheck": "Il fallait cocher ici",
+                  "shouldNotCheck": "Il ne fallait pas cocher ici !",
+                  "noInput": "Répondez s&#039;il vous plait avant de visionner la solution.",
+                  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+                  "a11yShowSolution": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte.",
+                  "a11yRetry": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+                },
+                "media": {
+                  "disableImageZooming": false
+                },
+                "confirmCheck": {
+                  "header": "Terminer ?",
+                  "body": "Êtes-vous certain de vouloir terminer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Terminer"
+                },
+                "confirmRetry": {
+                  "header": "Recommencer ?",
+                  "body": "Êtes-vous certain de vouloir recommencer ?",
+                  "cancelLabel": "Annuler",
+                  "confirmLabel": "Confirmer"
+                }
+              }
+            },
+            "alwaysDisplayComments": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ],
+        "keywords": [
+          {
+            "main": "Vérification des connaissances"
+          }
+        ],
+        "slideBackgroundSelector": {}
+      },
+      {
+        "elements": [
+          {
+            "x": 2,
+            "y": 2,
+            "width": 96,
+            "height": 96,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "action": {
+              "subContentId": "1d567f5c-789f-412f-aa07-c1c652ff129f",
+              "library": "H5P.Summary 1.10",
+              "metadata": {
+                "title": "Exercice",
+                "contentType": "Summary",
+                "license": "U"
+              },
+              "params": {
+                "intro": "Choisissez les affirmations correctes pour chaque groupe.",
+                "summaries": [
+                  {
+                    "summary": [
+                      "La Bastille a été prise le 14 juillet 1789",
+                      "La Bastille a été prise le 26 août 1789",
+                      "La Bastille a été prise le 5 mai 1789"
+                    ],
+                    "subContentId": "a783fd6d-8522-4a56-a902-766517e5ec4b",
+                    "tip": ""
+                  },
+                  {
+                    "summary": [
+                      "La Déclaration des droits de l'homme date de 1789",
+                      "La Déclaration des droits de l'homme date de 1791",
+                      "La Déclaration des droits de l'homme date de 1792"
+                    ],
+                    "subContentId": "27e3b054-5c1d-4877-8c58-2348b71d9966",
+                    "tip": ""
+                  },
+                  {
+                    "summary": [
+                      "La République est proclamée le 21 septembre 1792",
+                      "La République est proclamée le 14 juillet 1789",
+                      "La République est proclamée le 5 mai 1789"
+                    ],
+                    "subContentId": "5356e380-3dba-4b74-8c81-ac27d31f7a93",
+                    "tip": ""
+                  }
+                ],
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Revoyez les points clés du cours."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "C&#039;est un bon début."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Bonne maîtrise du sujet."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Parfait ! Vous maîtrisez la Révolution française."
+                  }
+                ],
+                "solvedLabel": "Progression :",
+                "scoreLabel": "Mauvaises réponses :",
+                "resultLabel": "Votre résultat",
+                "labelCorrect": "Correct.",
+                "labelIncorrect": "Incorrect ! Veuillez réessayer.",
+                "labelCorrectAnswers": "Réponses correctes.",
+                "tipButtonLabel": "Indice",
+                "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+                "progressText": "Progression :num sur :total",
+                "alternativeIncorrectLabel": "Incorrect"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ],
+        "keywords": [
+          {
+            "main": "Synthèse"
+          }
+        ],
+        "slideBackgroundSelector": {}
+      }
+    ],
+    "keywordListEnabled": false,
+    "keywordListAlwaysShow": false,
+    "keywordListAutoHide": false,
+    "keywordListOpacity": 90,
+    "globalBackgroundSelector": {
+      "fillGlobalBackground": "#ffffff"
+    }
+  },
+  "override": {
+    "activeSurface": false,
+    "hideSummarySlide": false,
+    "showSolutionButton": "on",
+    "retryButton": "on",
+    "summarySlideSolutionButton": true,
+    "summarySlideRetryButton": true,
+    "enablePrintButton": false,
+    "social": {
+      "showFacebookShare": false,
+      "facebookShare": {
+        "url": "@currentpageurl",
+        "quote": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl."
+      },
+      "showTwitterShare": false,
+      "twitterShare": {
+        "statement": "J&#039;ai un score de @score sur un total de @maxScore pour @currentpageurl.",
+        "url": "@currentpageurl",
+        "hashtags": "h5p, cours"
+      },
+      "showGoogleShare": false,
+      "googleShareUrl": "@currentpageurl"
+    }
+  },
+  "l10n": {
+    "slide": "Diapositive",
+    "slides": "Diapositives",
+    "currentSlide": "Diapositive actuelle",
+    "nextSlide": "Diapositive suivante",
+    "prevSlide": "Diapositive précédente",
+    "lastSlide": "Dernière diapositive",
+    "score": "Score",
+    "yourScore": "Votre score",
+    "maxScore": "Score maximum",
+    "total": "Total",
+    "totalScore": "Score total",
+    "scoreMessage": "Vous avez obtenu :",
+    "showSolutions": "Afficher les solutions",
+    "solutionsButtonTitle": "Afficher les commentaires",
+    "retry": "Réessayer",
+    "exportAnswers": "Exporter les réponses",
+    "summary": "Résumé",
+    "summaryMultipleTaskText": "Plusieurs exercices",
+    "hideKeywords": "Masquer le menu de navigation",
+    "showKeywords": "Afficher le menu de navigation",
+    "fullscreen": "Plein écran",
+    "exitFullscreen": "Quitter le plein écran",
+    "noTitle": "Sans titre",
+    "printTitle": "Imprimer",
+    "printIngress": "Comment souhaitez-vous imprimer cette présentation ?",
+    "printAllSlides": "Imprimer toutes les diapositives",
+    "printCurrentSlide": "Imprimer la diapositive actuelle",
+    "solutionModeTitle": "Quitter le mode solution",
+    "solutionModeText": "Mode solution",
+    "accessibilitySlideNavigationExplanation": "Utilisez les flèches gauche et droite pour naviguer entre les diapositives.",
+    "accessibilityCanvasLabel": "Présentation. Utilisez les flèches pour naviguer.",
+    "accessibilityProgressBarLabel": "Choisir la diapositive à afficher",
+    "accessibilityTotalScore": "Vous avez obtenu @score sur @maxScore points au total",
+    "accessibilityEnteredFullscreen": "Mode plein écran activé",
+    "accessibilityExitedFullscreen": "Mode plein écran désactivé",
+    "containsNotCompleted": "@slideName contient une interaction non terminée",
+    "containsCompleted": "@slideName contient une interaction terminée",
+    "containsOnlyCorrect": "@slideName n&#039;a que des réponses correctes",
+    "containsIncorrectAnswers": "@slideName a des réponses incorrectes",
+    "slideCount": "Diapositive @index sur @total",
+    "confirmDialogHeader": "Soumettre vos réponses",
+    "confirmDialogText": "Cela soumettra vos résultats. Voulez-vous continuer ?",
+    "confirmDialogConfirmText": "Soumettre et voir les résultats",
+    "confirmDialogConfirmLabel": "Confirmer",
+    "confirmDialogCancelLabel": "Annuler",
+    "resultHeader": "Résultats",
+    "amountCorrect": "@value / @max correctes",
+    "amountCorrectAria": "@value sur @max correctes",
+    "shareResult": "Partager le résultat",
+    "shareFacebook": "Partager sur Facebook",
+    "shareTwitter": "Partager sur Twitter",
+    "shareGoogle": "Partager sur Google+",
+    "slideshowNavigationLabel": "Navigation dans le diaporama"
+  }
+}

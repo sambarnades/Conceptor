@@ -1,0 +1,1203 @@
+{
+  "zh": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "nl": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "de": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "pt": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "en": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "it": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "fr": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "br": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "el": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "jp": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "es": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  },
+  "ar": {
+    "prompt_timeline": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_crossword": [
+      "structure_json"
+    ],
+    "prompt_flashcards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_essay": [
+      "structure_json"
+    ],
+    "prompt_accordion": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_summary": [
+      "regles_specifiques"
+    ],
+    "prompt_drag_the_words": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_drag_and_drop": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_fill_in_the_blanks": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_mark_the_words": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_true_false": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_multiple_choice": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_find_the_words": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_sort_the_paragraphs": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_single_choice_set": [
+      "structure_json"
+    ],
+    "prompt_dialog_cards": [
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_dictation": [
+      "structure_json"
+    ],
+    "prompt_chart": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_quizset": [
+      "structure_json"
+    ],
+    "prompt_quizset_qcm": [
+      "structure_json"
+    ],
+    "prompt_quizset_vf": [
+      "structure_json"
+    ],
+    "prompt_course_presentation": [
+      "structure_json"
+    ],
+    "prompt_interactive_book": [
+      "regles_specifiques",
+      "structure_json",
+      "exemple_rendu"
+    ],
+    "prompt_interactive_video": [
+      "regles_specifiques",
+      "structure_json"
+    ],
+    "prompt_image_hotspots": [
+      "structure_json"
+    ],
+    "prompt_find_the_hotspot": [
+      "structure_json"
+    ],
+    "prompt_find_multiple_hotspots": [
+      "structure_json"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "title": "Comparer les capitales",
+  "cover": {
+    "description": "Observation et appariement des capitales européennes avec leurs pays.",
+    "enabled": true
+  },
+  "chapters": [
+    {
+      "title": "Associer capitales et pays",
+      "content": [
+        {
+          "type": "row",
+          "columns": [
+            {
+              "width": 35,
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Associez chaque pays à sa capitale.\n\n- **France** → *Paris*\n- **Italie** → *Rome*\n- **Espagne** → *Madrid*"
+                }
+              ]
+            },
+            {
+              "width": 65,
+              "content": [
+                {
+                  "type": "exercise",
+                  "library": "H5P.Dialogcards 1.9",
+                  "title": "Capitales à retrouver",
+                  "description": "Appairez pays et capitales",
+                  "dialogs": [
+                    {
+                      "text": "France",
+                      "answer": "Paris",
+                      "tips": {
+                        "front": "Pays d'Europe de l'Ouest",
+                        "back": "Ville des lumières"
+                      }
+                    },
+                    {
+                      "text": "Italie",
+                      "answer": "Rome",
+                      "tips": {
+                        "front": "Pays de la péninsule ibérique",
+                        "back": "Ville aux sept collines"
+                      }
+                    },
+                    {
+                      "text": "Espagne",
+                      "answer": "Madrid",
+                      "tips": {
+                        "front": "Pays de la Méditerranée",
+                        "back": "Capitale centrale du pays"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "Madrid est la capitale de l'Italie.",
+          "correct": "false",
+          "feedbackOnCorrect": "Exact !",
+          "feedbackOnWrong": "Non, Madrid est la capitale de l'Espagne."
+        }
+      ]
+    }
+  ],
+  "progressIndicators": true,
+  "progressAuto": false,
+  "enableRetry": false,
+  "showTableOfContents": false
+}

@@ -1,7 +1,7 @@
 {
  "_doc": "Oracle DOCX/ODT — NE PAS éditer à la main. Régénérer : node tests/run_document_export_oracle.mjs --update",
  "exports": 134,
- "entrees": 2098,
+ "entrees": 2076,
  "resultats": {
   "Appariement/appariement_1.json#docx": {
    "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -15,7 +15,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -23,14 +22,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -48,13 +47,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -72,13 +67,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 12496,
-     "sha": "745c391cf8f636dd40ca1239"
+     "taille": 12473,
+     "sha": "2ce477261e307679e0f7db07"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -97,16 +88,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -124,8 +119,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 6441,
-     "sha": "8a358e267b99ac82ba5e9e03"
+     "taille": 6588,
+     "sha": "b9462ee6a2e361bcec790558"
     },
     "mimetype": {
      "taille": 39,
@@ -149,7 +144,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -157,14 +151,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -182,13 +176,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -206,13 +196,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 11811,
-     "sha": "574be6a601e95042661ca168"
+     "taille": 11788,
+     "sha": "1a4330c140611f2eb4adaebe"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -231,16 +217,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -318,8 +308,8 @@
      "sha": "f594c7695e6006f1c313fdba"
     },
     "content.xml": {
-     "taille": 7964,
-     "sha": "ac62f11069db7d1867276d17"
+     "taille": 8090,
+     "sha": "54c89c5b045576d394177d02"
     },
     "mimetype": {
      "taille": 39,
@@ -343,7 +333,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -351,15 +340,15 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media0.png"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -377,13 +366,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1317,
-     "sha": "109dfdfb7dba79d5992e22ff"
+     "taille": 1318,
+     "sha": "bb49c8a9d9bc17761768e157"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -401,13 +386,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
      "taille": 6276,
-     "sha": "92d7432dae29bbe354adf9b9"
+     "sha": "e53c6da19dafaa0ee09d7edb"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -426,20 +407,24 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/media/media0.png": {
-     "taille": 32759,
-     "sha": "ff839e763038dc3c560dbd11"
+     "image": "png dessinée",
+     "valide": true
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -458,8 +443,8 @@
      "sha": "d026c6a2b27e9291666e9789"
     },
     "Pictures/media0.png": {
-     "taille": 32759,
-     "sha": "ff839e763038dc3c560dbd11"
+     "image": "png dessinée",
+     "valide": true
     },
     "content.xml": {
      "taille": 2642,
@@ -487,7 +472,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -495,15 +479,15 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media0.png"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -521,13 +505,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1317,
-     "sha": "109dfdfb7dba79d5992e22ff"
+     "taille": 1318,
+     "sha": "bb49c8a9d9bc17761768e157"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -545,13 +525,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
      "taille": 5963,
-     "sha": "9c0d7a45e50d3c5f6de9e2e7"
+     "sha": "4b05513c5e8851cee5a71f47"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -570,20 +546,24 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/media/media0.png": {
-     "taille": 49128,
-     "sha": "b12486d80d301ad23967758d"
+     "image": "png dessinée",
+     "valide": true
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -602,8 +582,8 @@
      "sha": "d026c6a2b27e9291666e9789"
     },
     "Pictures/media0.png": {
-     "taille": 49128,
-     "sha": "b12486d80d301ad23967758d"
+     "image": "png dessinée",
+     "valide": true
     },
     "content.xml": {
      "taille": 2445,
@@ -631,7 +611,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -639,14 +618,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -664,13 +643,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -688,13 +663,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 22452,
-     "sha": "cdb713057fe8492153224d5d"
+     "taille": 22885,
+     "sha": "7f18605a0474119d4a1e457c"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -713,16 +684,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -740,8 +715,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 15796,
-     "sha": "fd538694820a9739b26d5b9e"
+     "taille": 16003,
+     "sha": "37a9dd5bd1c3a20e0eab51d5"
     },
     "mimetype": {
      "taille": 39,
@@ -765,7 +740,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -773,14 +747,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -798,13 +772,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -822,13 +792,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 30549,
-     "sha": "4f9bd551c6af260c37d9db0d"
+     "taille": 31290,
+     "sha": "7796b276877461c7cd2e3d89"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -847,16 +813,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -934,8 +904,8 @@
      "sha": "fbeba9c250e91ade3921a282"
     },
     "content.xml": {
-     "taille": 20753,
-     "sha": "82bac6ce7935917cc2359476"
+     "taille": 21096,
+     "sha": "945672248243680567eabdae"
     },
     "mimetype": {
      "taille": 39,
@@ -959,7 +929,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -967,14 +936,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -992,13 +961,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1016,13 +981,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 10647,
-     "sha": "4d1e38afccda3c142cc2c3e7"
+     "taille": 10624,
+     "sha": "ffcd303fd9ed3a183c6cc43d"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -1041,16 +1002,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -1093,7 +1058,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -1101,14 +1065,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -1126,13 +1090,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1150,13 +1110,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 15131,
-     "sha": "85f6745b2f31af7af1dfe5e9"
+     "taille": 15108,
+     "sha": "85ff8def113145d3e93191f1"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -1175,16 +1131,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -1227,7 +1187,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -1235,14 +1194,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -1260,13 +1219,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1284,13 +1239,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 15719,
-     "sha": "f65442fb0ee5c1546984ba53"
+     "taille": 15723,
+     "sha": "230c47d222256c16d8297e61"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -1309,16 +1260,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -1361,7 +1316,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -1369,14 +1323,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -1394,13 +1348,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1418,13 +1368,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 28212,
-     "sha": "0b0c12608ba9b99be3c627ac"
+     "taille": 28217,
+     "sha": "14c24e01d8c0e1f58b610b99"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -1443,16 +1389,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -1495,9 +1445,10 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/_rels/footer2.xml.rels",
+     "word/_rels/footer3.xml.rels",
      "word/footer1.xml",
      "word/footer2.xml",
-     "[Content_Types].xml",
+     "word/footer3.xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -1505,14 +1456,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2360,
-     "sha": "70b5413aede9c9356107988b"
+     "taille": 2472,
+     "sha": "e0830395e06f70c5573e6542"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -1530,13 +1481,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1313,
-     "sha": "8e6401aa31ceadb1dea1bf10"
+     "taille": 1443,
+     "sha": "395cfa916a14ef7d55ecf095"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1554,17 +1501,17 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
+    "word/_rels/footer3.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
     "word/_rels/footnotes.xml.rels": {
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 18442,
-     "sha": "7edab241282eb2c5926bf9f5"
+     "taille": 19780,
+     "sha": "98c5e0f26fe127a1b17e8d75"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -1582,21 +1529,29 @@
      "taille": 1573,
      "sha": "4ae0fcc889c8d4bb8d7b4109"
     },
+    "word/footer3.xml": {
+     "taille": 1573,
+     "sha": "4ae0fcc889c8d4bb8d7b4109"
+    },
     "word/footnotes.xml": {
      "taille": 1709,
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 4420,
-     "sha": "78c594d447365540efedf4da"
+     "taille": 4527,
+     "sha": "926110736db56dfc4da4057c"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -1614,8 +1569,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 10852,
-     "sha": "828c048888f4610722a68953"
+     "taille": 11653,
+     "sha": "3d457ba65d1b267871135c7a"
     },
     "mimetype": {
      "taille": 39,
@@ -1639,9 +1594,10 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/_rels/footer2.xml.rels",
+     "word/_rels/footer3.xml.rels",
      "word/footer1.xml",
      "word/footer2.xml",
-     "[Content_Types].xml",
+     "word/footer3.xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -1649,14 +1605,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2360,
-     "sha": "70b5413aede9c9356107988b"
+     "taille": 2472,
+     "sha": "e0830395e06f70c5573e6542"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -1674,13 +1630,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1313,
-     "sha": "8e6401aa31ceadb1dea1bf10"
+     "taille": 1443,
+     "sha": "395cfa916a14ef7d55ecf095"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1698,17 +1650,17 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
+    "word/_rels/footer3.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
     "word/_rels/footnotes.xml.rels": {
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 14626,
-     "sha": "d47171313c060c9fe6e0b6d3"
+     "taille": 15489,
+     "sha": "b7aac376d47fdbafc7254d57"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -1726,21 +1678,29 @@
      "taille": 1573,
      "sha": "4ae0fcc889c8d4bb8d7b4109"
     },
+    "word/footer3.xml": {
+     "taille": 1573,
+     "sha": "4ae0fcc889c8d4bb8d7b4109"
+    },
     "word/footnotes.xml": {
      "taille": 1709,
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 4420,
-     "sha": "78c594d447365540efedf4da"
+     "taille": 4527,
+     "sha": "926110736db56dfc4da4057c"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -1778,8 +1738,8 @@
      "sha": "b85126c2cd965fa50dcc5c9c"
     },
     "content.xml": {
-     "taille": 10868,
-     "sha": "af6a0ad127250141135bb3a6"
+     "taille": 11628,
+     "sha": "09c359e9f76bbb35fd1db1e1"
     },
     "mimetype": {
      "taille": 39,
@@ -1803,7 +1763,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -1811,14 +1770,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -1836,13 +1795,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1860,13 +1815,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 9125,
-     "sha": "ceae77bcd9f425956a437b8e"
+     "taille": 9102,
+     "sha": "896e612145439c1a7aeca79c"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -1885,16 +1836,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -1912,8 +1867,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 4321,
-     "sha": "c700f99fd3ea380dcb2cc496"
+     "taille": 4531,
+     "sha": "6d305393bb0ad4a52d12c80f"
     },
     "mimetype": {
      "taille": 39,
@@ -1937,7 +1892,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -1945,14 +1899,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -1970,13 +1924,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -1994,13 +1944,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 26670,
-     "sha": "621c2c2f622eb34f6cf48fab"
+     "taille": 26649,
+     "sha": "0754ae15bfc127188a2bda7e"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -2019,16 +1965,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -2071,7 +2021,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -2079,14 +2028,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -2104,13 +2053,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -2128,13 +2073,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 33294,
-     "sha": "45da916e55aea9279b3c38ef"
+     "taille": 33273,
+     "sha": "ff493b5d7b0f46e2c1ec3ee8"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -2153,16 +2094,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -2295,7 +2240,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -2303,14 +2247,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -2328,13 +2272,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -2352,13 +2292,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
      "taille": 6359,
-     "sha": "91a0e5509cea6331d8d3be1c"
+     "sha": "2ce9efe152e99e3c374d95a0"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -2377,16 +2313,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -2404,8 +2344,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 3460,
-     "sha": "d6b5cd9ef2dd42b21d9aeffc"
+     "taille": 3483,
+     "sha": "72db63fa88588e2cca538d7f"
     },
     "mimetype": {
      "taille": 39,
@@ -2429,7 +2369,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -2437,14 +2376,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -2462,13 +2401,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -2486,13 +2421,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 8338,
-     "sha": "e4e56c223b82e3371d638250"
+     "taille": 8315,
+     "sha": "01ce536fd39d0ebd7e20ca6b"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -2511,16 +2442,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -2593,7 +2528,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -2601,14 +2535,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -2626,13 +2560,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -2650,13 +2580,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 6882,
-     "sha": "109cf119b3e3fbfbb0fed2aa"
+     "taille": 9413,
+     "sha": "29f00e0cd510c17f4ed2b8bf"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -2675,16 +2601,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -2702,8 +2632,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 3353,
-     "sha": "eb28495630517f03170f9796"
+     "taille": 4333,
+     "sha": "e36e3107062ca3231c38602b"
     },
     "mimetype": {
      "taille": 39,
@@ -2727,7 +2657,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -2735,14 +2664,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -2760,13 +2689,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -2784,13 +2709,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 8539,
-     "sha": "296e502cd730e48d67f7dba0"
+     "taille": 11070,
+     "sha": "f81d6a0fecece1a9809c590d"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -2809,16 +2730,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -2846,8 +2771,8 @@
      "sha": "9f56c97026231f6b7dad8bff"
     },
     "content.xml": {
-     "taille": 4044,
-     "sha": "9e749b8698f68b240f2671b2"
+     "taille": 5024,
+     "sha": "2a3c771667aeb848343ccf00"
     },
     "mimetype": {
      "taille": 39,
@@ -2871,7 +2796,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -2879,14 +2803,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -2904,13 +2828,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -2928,13 +2848,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 8392,
-     "sha": "d4ecdd55c88f85ab187c565c"
+     "taille": 11763,
+     "sha": "bd4622f83a004bbbaad42cfd"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -2953,16 +2869,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -2980,8 +2900,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 3715,
-     "sha": "790d4bcc15c8a8d5dbb70032"
+     "taille": 5308,
+     "sha": "28c33de66327a8447072512f"
     },
     "mimetype": {
      "taille": 39,
@@ -3005,7 +2925,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -3013,14 +2932,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -3038,13 +2957,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -3062,13 +2977,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 11111,
-     "sha": "e4a15b3d8b71b6a8fdf4c98e"
+     "taille": 14304,
+     "sha": "c51d589b1d405933b82ff224"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -3087,16 +2998,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -3174,8 +3089,8 @@
      "sha": "3ca9c6d7633762bf2659da72"
     },
     "content.xml": {
-     "taille": 6459,
-     "sha": "b2641470981824a261117969"
+     "taille": 7972,
+     "sha": "20cee6ec2b79da4c226478e9"
     },
     "mimetype": {
      "taille": 39,
@@ -3199,7 +3114,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -3207,14 +3121,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -3232,13 +3146,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -3256,13 +3166,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 5735,
-     "sha": "012427ec4a8ec23647cc3c4d"
+     "taille": 5712,
+     "sha": "4ee09e7991b9401c6e25711a"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -3281,16 +3187,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -3333,7 +3243,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -3341,14 +3250,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -3366,13 +3275,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -3390,13 +3295,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 5528,
-     "sha": "edeb77187ce01d2264dc330f"
+     "taille": 5505,
+     "sha": "92ad46891cf6457e8c9eba84"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -3415,16 +3316,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -3467,7 +3372,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -3475,14 +3379,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -3500,13 +3404,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -3524,13 +3424,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 6497,
-     "sha": "799859ab191e04f4819c2902"
+     "taille": 6474,
+     "sha": "cdc1a62661d1cc85fd8e9b3f"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -3549,16 +3445,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -3601,7 +3501,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -3609,14 +3508,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -3634,13 +3533,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -3658,13 +3553,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 6278,
-     "sha": "1036052eb9227e3ea92a6710"
+     "taille": 6255,
+     "sha": "1a850a46f3158b23fc7b79c8"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -3683,16 +3574,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -3735,9 +3630,10 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/_rels/footer2.xml.rels",
+     "word/_rels/footer3.xml.rels",
      "word/footer1.xml",
      "word/footer2.xml",
-     "[Content_Types].xml",
+     "word/footer3.xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -3745,14 +3641,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2360,
-     "sha": "70b5413aede9c9356107988b"
+     "taille": 2472,
+     "sha": "e0830395e06f70c5573e6542"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -3770,13 +3666,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1313,
-     "sha": "8e6401aa31ceadb1dea1bf10"
+     "taille": 1443,
+     "sha": "395cfa916a14ef7d55ecf095"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -3794,17 +3686,17 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
+    "word/_rels/footer3.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
     "word/_rels/footnotes.xml.rels": {
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 15872,
-     "sha": "b6f6c192c2bd4b57aa4ab681"
+     "taille": 16632,
+     "sha": "f620fce1193b78b7cf0ec4df"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -3822,21 +3714,29 @@
      "taille": 1573,
      "sha": "4ae0fcc889c8d4bb8d7b4109"
     },
+    "word/footer3.xml": {
+     "taille": 1573,
+     "sha": "4ae0fcc889c8d4bb8d7b4109"
+    },
     "word/footnotes.xml": {
      "taille": 1709,
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 4420,
-     "sha": "78c594d447365540efedf4da"
+     "taille": 4527,
+     "sha": "926110736db56dfc4da4057c"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -3854,8 +3754,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 9776,
-     "sha": "b6491470dabb0c8cc91ff55f"
+     "taille": 10475,
+     "sha": "ed94be0617970c19104ebbef"
     },
     "mimetype": {
      "taille": 39,
@@ -3881,11 +3781,12 @@
      "word/_rels/footer2.xml.rels",
      "word/_rels/footer3.xml.rels",
      "word/_rels/footer4.xml.rels",
+     "word/_rels/footer5.xml.rels",
      "word/footer1.xml",
      "word/footer2.xml",
      "word/footer3.xml",
      "word/footer4.xml",
-     "[Content_Types].xml",
+     "word/footer5.xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -3893,14 +3794,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2616,
-     "sha": "0d525aa8420eb58a660d6ea8"
+     "taille": 2728,
+     "sha": "f20282f66eeff70f60d298df"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -3918,13 +3819,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1571,
-     "sha": "72ff024801ac3f17a4804d9f"
+     "taille": 1701,
+     "sha": "0f4eb2bebdc5a60868e5c165"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -3950,17 +3847,17 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
+    "word/_rels/footer5.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
     "word/_rels/footnotes.xml.rels": {
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 29714,
-     "sha": "8f461158031117daa8e175b7"
+     "taille": 30925,
+     "sha": "15915e98e54e41667c983cd1"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -3986,21 +3883,29 @@
      "taille": 1573,
      "sha": "4ae0fcc889c8d4bb8d7b4109"
     },
+    "word/footer5.xml": {
+     "taille": 1573,
+     "sha": "4ae0fcc889c8d4bb8d7b4109"
+    },
     "word/footnotes.xml": {
      "taille": 1709,
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 4420,
-     "sha": "78c594d447365540efedf4da"
+     "taille": 4527,
+     "sha": "926110736db56dfc4da4057c"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -4040,8 +3945,8 @@
      "sha": "7d8cc72c3945f297029e6bfb"
     },
     "Object 10/content.xml": {
-     "taille": 343,
-     "sha": "7a81440565ec0f5b76a25fa3"
+     "taille": 367,
+     "sha": "2ec2d3a9ecf933e45081f94f"
     },
     "Object 11/content.xml": {
      "taille": 208,
@@ -4108,8 +4013,8 @@
      "sha": "7d8cc72c3945f297029e6bfb"
     },
     "content.xml": {
-     "taille": 19001,
-     "sha": "1bf15564452e591d9816bcb6"
+     "taille": 19811,
+     "sha": "419b5f206e41dedae98af575"
     },
     "mimetype": {
      "taille": 39,
@@ -4133,7 +4038,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -4141,14 +4045,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -4166,13 +4070,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -4190,13 +4090,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 9991,
-     "sha": "82f8769d99ec648e70f686c8"
+     "taille": 9924,
+     "sha": "7eb834132126772eaeea76cd"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -4215,16 +4111,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -4242,8 +4142,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 4397,
-     "sha": "d4f1505d70a464d396974ec9"
+     "taille": 4353,
+     "sha": "c0b8c104bf0cf1d8433c551f"
     },
     "mimetype": {
      "taille": 39,
@@ -4267,7 +4167,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -4275,14 +4174,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -4300,13 +4199,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -4324,13 +4219,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 12355,
-     "sha": "720c0ddc4835e9111a6963c5"
+     "taille": 12288,
+     "sha": "930ba862a2384111d2a1afad"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -4349,16 +4240,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -4394,8 +4289,8 @@
      "sha": "ea342b27c8130214fe71de53"
     },
     "Object 1/content.xml": {
-     "taille": 343,
-     "sha": "7a81440565ec0f5b76a25fa3"
+     "taille": 367,
+     "sha": "2ec2d3a9ecf933e45081f94f"
     },
     "Object 10/content.xml": {
      "taille": 208,
@@ -4458,16 +4353,16 @@
      "sha": "3b26af54dd4c1df8d0720f73"
     },
     "Object 8/content.xml": {
-     "taille": 343,
-     "sha": "7a81440565ec0f5b76a25fa3"
+     "taille": 367,
+     "sha": "2ec2d3a9ecf933e45081f94f"
     },
     "Object 9/content.xml": {
      "taille": 239,
      "sha": "2d214ea9a5e1e25d31264e1b"
     },
     "content.xml": {
-     "taille": 8662,
-     "sha": "7c0a8de25d431127cfe3814d"
+     "taille": 8618,
+     "sha": "ce11588e7a229aaf4f0da288"
     },
     "mimetype": {
      "taille": 39,
@@ -4491,7 +4386,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -4499,14 +4393,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -4524,13 +4418,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -4548,13 +4438,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 8345,
-     "sha": "c08a06ba45ccb839453aae76"
+     "taille": 7943,
+     "sha": "aec4c0715a733eca5d22c241"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -4573,16 +4459,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -4600,8 +4490,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 3982,
-     "sha": "cab2e92934829d841728e1a9"
+     "taille": 3718,
+     "sha": "375a6e3ea53e38603d2d6262"
     },
     "mimetype": {
      "taille": 39,
@@ -4625,7 +4515,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -4633,14 +4522,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -4658,13 +4547,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -4682,13 +4567,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 10795,
-     "sha": "8e022536182d8bed5913a6a4"
+     "taille": 10460,
+     "sha": "f2862d7cb33a6d5a046d17cc"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -4707,16 +4588,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -4753,8 +4638,8 @@
      "sha": "fd81a75fc3f57b348ad977bf"
     },
     "Object 11/content.xml": {
-     "taille": 343,
-     "sha": "7a81440565ec0f5b76a25fa3"
+     "taille": 367,
+     "sha": "2ec2d3a9ecf933e45081f94f"
     },
     "Object 2/content.xml": {
      "taille": 285,
@@ -4769,12 +4654,12 @@
      "sha": "7d8cc72c3945f297029e6bfb"
     },
     "Object 5/content.xml": {
-     "taille": 343,
-     "sha": "7a81440565ec0f5b76a25fa3"
+     "taille": 367,
+     "sha": "2ec2d3a9ecf933e45081f94f"
     },
     "Object 6/content.xml": {
-     "taille": 343,
-     "sha": "7a81440565ec0f5b76a25fa3"
+     "taille": 367,
+     "sha": "2ec2d3a9ecf933e45081f94f"
     },
     "Object 7/content.xml": {
      "taille": 230,
@@ -4785,12 +4670,12 @@
      "sha": "1621387a6a237c1446de74ec"
     },
     "Object 9/content.xml": {
-     "taille": 343,
-     "sha": "7a81440565ec0f5b76a25fa3"
+     "taille": 367,
+     "sha": "2ec2d3a9ecf933e45081f94f"
     },
     "content.xml": {
-     "taille": 6287,
-     "sha": "4322a8f47135a20939acaa64"
+     "taille": 6067,
+     "sha": "a423f4215f7a023a09dec2ca"
     },
     "mimetype": {
      "taille": 39,
@@ -4814,7 +4699,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -4822,14 +4706,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -4847,13 +4731,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -4871,13 +4751,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
      "taille": 5952,
-     "sha": "16429c994ead61b690d038f6"
+     "sha": "e95e10a1c4f778c7fa5460b8"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -4896,16 +4772,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -4948,7 +4828,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -4956,14 +4835,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -4981,13 +4860,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -5005,13 +4880,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 21250,
-     "sha": "3790c822c901547afde7925d"
+     "taille": 21916,
+     "sha": "a3f8a0b4258ac844618b412f"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -5030,16 +4901,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -5057,8 +4932,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 15028,
-     "sha": "1847658f366abdd0309902b6"
+     "taille": 15300,
+     "sha": "a878818b1189a28753a158ea"
     },
     "mimetype": {
      "taille": 39,
@@ -5082,7 +4957,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -5090,14 +4964,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -5115,13 +4989,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -5139,13 +5009,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 45867,
-     "sha": "75d6509829c1ac79b435a92b"
+     "taille": 47081,
+     "sha": "49a09bc5f8b2d36220139102"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -5164,16 +5030,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -5191,8 +5061,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 18193,
-     "sha": "55b995e25d882221ad359768"
+     "taille": 18787,
+     "sha": "8dfd067ba2ade5dc48dfd6cf"
     },
     "mimetype": {
      "taille": 39,
@@ -5216,7 +5086,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -5224,14 +5093,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -5249,13 +5118,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -5273,13 +5138,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 11612,
-     "sha": "863f668f9c2f6f700ff28f03"
+     "taille": 11365,
+     "sha": "00d8a71a095bf06453075564"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -5298,16 +5159,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -5325,8 +5190,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 4713,
-     "sha": "3a03559fe3992ca4c95d0563"
+     "taille": 4581,
+     "sha": "3904c8dbc9d3b2729890b831"
     },
     "mimetype": {
      "taille": 39,
@@ -5350,7 +5215,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -5358,15 +5222,15 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media0.png"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -5384,13 +5248,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1317,
-     "sha": "109dfdfb7dba79d5992e22ff"
+     "taille": 1318,
+     "sha": "bb49c8a9d9bc17761768e157"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -5408,13 +5268,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 30425,
-     "sha": "9e1f64728088cf79c2806eb9"
+     "taille": 30178,
+     "sha": "d55b10558e0e4e74d2e7ac34"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -5437,16 +5293,20 @@
      "sha": "9decbd19d7c89e9ab349915d"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -5469,8 +5329,8 @@
      "sha": "9decbd19d7c89e9ab349915d"
     },
     "content.xml": {
-     "taille": 14087,
-     "sha": "d6fdf3eb4d72e81942f246c2"
+     "taille": 13955,
+     "sha": "eef9261994bb878cee213799"
     },
     "mimetype": {
      "taille": 39,
@@ -5494,7 +5354,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -5502,14 +5361,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -5527,13 +5386,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -5551,13 +5406,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 13842,
-     "sha": "83f718d98ed3d8777bb456fe"
+     "taille": 13505,
+     "sha": "c39f316be9af5c4261dc85c2"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -5576,16 +5427,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -5603,8 +5458,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 7873,
-     "sha": "9aa921198756029b929d4819"
+     "taille": 7697,
+     "sha": "5afedc0f9624b2cf6a39bec4"
     },
     "mimetype": {
      "taille": 39,
@@ -5628,7 +5483,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -5636,14 +5490,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -5661,13 +5515,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -5685,13 +5535,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 22985,
-     "sha": "cc3a0c9b32d793110fa82d0e"
+     "taille": 22648,
+     "sha": "3d54eda7d94a73ccbd9bab9e"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -5710,16 +5556,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -5947,8 +5797,8 @@
      "sha": "fbeba9c250e91ade3921a282"
     },
     "content.xml": {
-     "taille": 19729,
-     "sha": "39944bba263c3d9174b00b7c"
+     "taille": 19553,
+     "sha": "cd1474dfa93ceeb9bdd269e7"
     },
     "mimetype": {
      "taille": 39,
@@ -5972,7 +5822,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -5980,14 +5829,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6005,13 +5854,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6029,13 +5874,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 8043,
-     "sha": "2f7af6c7615079cb28b0b8b4"
+     "taille": 8020,
+     "sha": "a5732e67d896715168f86836"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -6054,16 +5895,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -6106,7 +5951,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -6114,14 +5958,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6139,13 +5983,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6163,13 +6003,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 7723,
-     "sha": "3ef6a137c9db15570d41adf1"
+     "taille": 7700,
+     "sha": "9b0765d581edcd68ef59bb8c"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -6188,16 +6024,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -6240,7 +6080,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -6248,14 +6087,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6273,13 +6112,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6297,13 +6132,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 18224,
-     "sha": "3d6f6ed5290ed61150d08e4a"
+     "taille": 18067,
+     "sha": "fbd603e6be713c423f2c81de"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -6322,16 +6153,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -6349,8 +6184,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 7155,
-     "sha": "6b789af18f22f786fd68bd47"
+     "taille": 7067,
+     "sha": "c9b2bc7d830946c5b03c2fdd"
     },
     "mimetype": {
      "taille": 39,
@@ -6374,7 +6209,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -6382,14 +6216,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6407,13 +6241,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6431,13 +6261,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 17414,
-     "sha": "90b379497ac8277c9dde5782"
+     "taille": 17257,
+     "sha": "bc821aca507f2208149ff7aa"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -6456,16 +6282,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -6483,8 +6313,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 6345,
-     "sha": "ce8389457439be86747c4c36"
+     "taille": 6257,
+     "sha": "67f4391607e4bb03afa8b276"
     },
     "mimetype": {
      "taille": 39,
@@ -6508,7 +6338,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -6516,14 +6345,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6541,13 +6370,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6565,13 +6390,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 5879,
-     "sha": "db0fdc4d99aca55848f04a54"
+     "taille": 9709,
+     "sha": "6ceb59a1dabc7e667ddee774"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -6590,16 +6411,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -6617,8 +6442,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 2333,
-     "sha": "f2d38eb4f13d788092ce8493"
+     "taille": 4377,
+     "sha": "97ce747890197192609cfb01"
     },
     "mimetype": {
      "taille": 39,
@@ -6642,7 +6467,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -6650,14 +6474,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6675,13 +6499,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6699,13 +6519,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 5457,
-     "sha": "6ed7e20570e2249aae00be2c"
+     "taille": 9229,
+     "sha": "71991371b99a404a6950d138"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -6724,16 +6540,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -6743,21 +6563,51 @@
     "_ordre": [
      "mimetype",
      "Object 1/content.xml",
+     "Object 2/content.xml",
+     "Object 3/content.xml",
+     "Object 4/content.xml",
+     "Object 5/content.xml",
+     "Object 6/content.xml",
+     "Object 7/content.xml",
      "META-INF/manifest.xml",
      "content.xml",
      "styles.xml"
     ],
     "META-INF/manifest.xml": {
-     "taille": 722,
-     "sha": "81d1bde838ef25209132f216"
+     "taille": 2174,
+     "sha": "bd58763b90c686802caa4fd6"
     },
     "Object 1/content.xml": {
      "taille": 250,
      "sha": "9dd53e4f1c94cbdcde5dac1f"
     },
+    "Object 2/content.xml": {
+     "taille": 244,
+     "sha": "605075b04651a372a8caef94"
+    },
+    "Object 3/content.xml": {
+     "taille": 234,
+     "sha": "951faf5684976d4edba6fee5"
+    },
+    "Object 4/content.xml": {
+     "taille": 232,
+     "sha": "d1a12d1fe30ec694931c956c"
+    },
+    "Object 5/content.xml": {
+     "taille": 302,
+     "sha": "8fff56415985ac33070f4f1e"
+    },
+    "Object 6/content.xml": {
+     "taille": 299,
+     "sha": "4f3655593f7b59a19d65cf4b"
+    },
+    "Object 7/content.xml": {
+     "taille": 277,
+     "sha": "cb01e61cd8d9c172b71cadef"
+    },
     "content.xml": {
-     "taille": 2232,
-     "sha": "7be4a25532038b4cba450449"
+     "taille": 4671,
+     "sha": "8342d2a5df5ea26adb8d80e7"
     },
     "mimetype": {
      "taille": 39,
@@ -6781,7 +6631,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -6789,16 +6638,16 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media0.png",
      "word/media/media1.png"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6816,13 +6665,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1450,
-     "sha": "756662b1b1c7c25a072847f8"
+     "taille": 1451,
+     "sha": "c9a05f4c22908a011f9ff456"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6840,13 +6685,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 23183,
-     "sha": "c06ae1d3594c1fc55416e5b0"
+     "taille": 23116,
+     "sha": "1ffc7b069acd0a665a77daa6"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -6873,16 +6714,20 @@
      "sha": "1eb3a647096a31f9edc2ec97"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -6910,8 +6755,8 @@
      "sha": "49229bdbb3979cd14bfbd9e6"
     },
     "content.xml": {
-     "taille": 12618,
-     "sha": "b21b4b9155ca2655bcedd32f"
+     "taille": 12574,
+     "sha": "ee5571f68c180b7f09992b44"
     },
     "mimetype": {
      "taille": 39,
@@ -6935,7 +6780,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -6943,17 +6787,17 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media2.png",
      "word/media/media0.png",
      "word/media/media1.png"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -6971,13 +6815,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1583,
-     "sha": "819663b985603912038d87da"
+     "taille": 1584,
+     "sha": "309d63f657c34b20f67baafc"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -6995,13 +6835,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 19243,
-     "sha": "53216f244d7b537b177a5cf6"
+     "taille": 19176,
+     "sha": "44bb5dc2fbe5a7e2f599e994"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -7032,16 +6868,20 @@
      "sha": "de12081221112232d5854809"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -7074,8 +6914,8 @@
      "sha": "a6a0975009358e9b338febae"
     },
     "content.xml": {
-     "taille": 9562,
-     "sha": "07c7bcc5da042fc4e52c0a26"
+     "taille": 9518,
+     "sha": "450343a94f43672a095c9448"
     },
     "mimetype": {
      "taille": 39,
@@ -7099,7 +6939,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -7107,14 +6946,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -7132,13 +6971,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -7156,13 +6991,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 17277,
-     "sha": "86cce0203c994283c7f53240"
+     "taille": 17120,
+     "sha": "ea2462e324cff86d51a0c9b3"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -7181,16 +7012,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -7208,8 +7043,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 7647,
-     "sha": "48367a0aad994e190b202089"
+     "taille": 7559,
+     "sha": "119a62d6d1930d465ba7dd81"
     },
     "mimetype": {
      "taille": 39,
@@ -7233,7 +7068,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -7241,14 +7075,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -7266,13 +7100,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -7290,13 +7120,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 20306,
-     "sha": "b172371a4170a8306f3b9d3a"
+     "taille": 20149,
+     "sha": "bf5e2fbf24778b7e47ca2c43"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -7315,16 +7141,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -7417,8 +7247,8 @@
      "sha": "e980eb1767609b6f9750347c"
     },
     "Object 2/content.xml": {
-     "taille": 343,
-     "sha": "e7ccf794a39fabd17d0fb4ad"
+     "taille": 367,
+     "sha": "486cbb937217bce9105d24b8"
     },
     "Object 20/content.xml": {
      "taille": 344,
@@ -7449,8 +7279,8 @@
      "sha": "b33e1107d4348bb088e03f23"
     },
     "Object 27/content.xml": {
-     "taille": 343,
-     "sha": "c3d1f0933729fd229171ccc9"
+     "taille": 367,
+     "sha": "94cfd150e8b67c9914d611ab"
     },
     "Object 28/content.xml": {
      "taille": 232,
@@ -7461,8 +7291,8 @@
      "sha": "1f9e979dda9808d8865f283a"
     },
     "Object 3/content.xml": {
-     "taille": 343,
-     "sha": "c3d1f0933729fd229171ccc9"
+     "taille": 367,
+     "sha": "94cfd150e8b67c9914d611ab"
     },
     "Object 30/content.xml": {
      "taille": 315,
@@ -7473,8 +7303,8 @@
      "sha": "2f52429ba33138adfad3f6c3"
     },
     "Object 4/content.xml": {
-     "taille": 343,
-     "sha": "7c72167d3ab1f774eaed2da4"
+     "taille": 367,
+     "sha": "d862a406c58afc36ccef17e4"
     },
     "Object 5/content.xml": {
      "taille": 208,
@@ -7497,8 +7327,8 @@
      "sha": "d1a12d1fe30ec694931c956c"
     },
     "content.xml": {
-     "taille": 13403,
-     "sha": "791cb11b5f119223c0a6d6a5"
+     "taille": 13315,
+     "sha": "7472b1bfb221d758456403cf"
     },
     "mimetype": {
      "taille": 39,
@@ -7522,7 +7352,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -7530,14 +7359,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -7555,13 +7384,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -7579,13 +7404,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 20866,
-     "sha": "2f9f4f0e8c237cc5d3e58d89"
+     "taille": 21164,
+     "sha": "36571ddba27d3712ef71411b"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -7604,16 +7425,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -7655,32 +7480,32 @@
      "sha": "fd81a75fc3f57b348ad977bf"
     },
     "Object 10/content.xml": {
-     "taille": 316,
-     "sha": "b324f001c6e5f0cb638ec4f0"
+     "taille": 340,
+     "sha": "32e5e27a6ce63cef55e90606"
     },
     "Object 11/content.xml": {
-     "taille": 343,
-     "sha": "648bd7de1b07c02035483093"
+     "taille": 367,
+     "sha": "81d0375d21bbe2cbaf94d01c"
     },
     "Object 12/content.xml": {
-     "taille": 343,
-     "sha": "a984528dc081691456a686c2"
+     "taille": 367,
+     "sha": "5192a8e5f4c82df938cb16ff"
     },
     "Object 13/content.xml": {
      "taille": 341,
      "sha": "7d8cc72c3945f297029e6bfb"
     },
     "Object 14/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
     },
     "Object 15/content.xml": {
      "taille": 250,
      "sha": "0be680408772a4ccbd20c212"
     },
     "Object 16/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
     },
     "Object 17/content.xml": {
      "taille": 325,
@@ -7691,16 +7516,16 @@
      "sha": "9f56c97026231f6b7dad8bff"
     },
     "Object 19/content.xml": {
-     "taille": 316,
-     "sha": "b324f001c6e5f0cb638ec4f0"
+     "taille": 340,
+     "sha": "32e5e27a6ce63cef55e90606"
     },
     "Object 2/content.xml": {
      "taille": 208,
      "sha": "3b26af54dd4c1df8d0720f73"
     },
     "Object 20/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
     },
     "Object 3/content.xml": {
      "taille": 253,
@@ -7727,12 +7552,12 @@
      "sha": "38404a7fb25980afc81bed31"
     },
     "Object 9/content.xml": {
-     "taille": 316,
-     "sha": "994712532866706d4f327010"
+     "taille": 340,
+     "sha": "f62864bf33d2e023723efed4"
     },
     "content.xml": {
-     "taille": 11423,
-     "sha": "7a410ba6f27d922bcf434eaf"
+     "taille": 12386,
+     "sha": "40eb5e9636c8b3bb385f852c"
     },
     "mimetype": {
      "taille": 39,
@@ -7756,7 +7581,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -7764,14 +7588,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -7789,13 +7613,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -7813,13 +7633,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 23067,
-     "sha": "32dabc9b33bcb5a025f69df7"
+     "taille": 23313,
+     "sha": "df65155e5ff27d171431a6ef"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -7838,16 +7654,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -8000,8 +7820,8 @@
      "sha": "f60164aa857510325634bf46"
     },
     "content.xml": {
-     "taille": 12986,
-     "sha": "93efcd6822bf01ba25eee849"
+     "taille": 13929,
+     "sha": "02b2b1e677f9c2366da98629"
     },
     "mimetype": {
      "taille": 39,
@@ -8025,7 +7845,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -8033,14 +7852,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -8058,13 +7877,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -8082,13 +7897,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 29214,
-     "sha": "e097784ba5c35a9c7d9402a5"
+     "taille": 31883,
+     "sha": "204bc1f0e95e92ef96cf0b93"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -8107,16 +7918,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -8219,8 +8034,8 @@
      "sha": "6de95fc1ffe25ea7f21263aa"
     },
     "content.xml": {
-     "taille": 14962,
-     "sha": "979df390ffb8024dd9b51f54"
+     "taille": 17330,
+     "sha": "0c06495247e5a693802ec7c1"
     },
     "mimetype": {
      "taille": 39,
@@ -8244,7 +8059,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -8252,14 +8066,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -8277,13 +8091,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -8301,13 +8111,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 20056,
-     "sha": "007dd787e678f4076330a6e7"
+     "taille": 23108,
+     "sha": "14337debb5649dd918e57aaf"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -8326,16 +8132,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -8353,8 +8163,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 9064,
-     "sha": "428f3c3a888f99c758981e08"
+     "taille": 11587,
+     "sha": "68d557d9476b0f930e111f0e"
     },
     "mimetype": {
      "taille": 39,
@@ -8378,7 +8188,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -8386,14 +8195,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -8411,13 +8220,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -8435,13 +8240,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 18082,
-     "sha": "b99b6e55b087565a920f1a1e"
+     "taille": 26283,
+     "sha": "9c3445941ffdd8e622c5c995"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -8460,16 +8261,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -8488,13 +8293,29 @@
      "Object 8/content.xml",
      "Object 9/content.xml",
      "Object 10/content.xml",
+     "Object 11/content.xml",
+     "Object 12/content.xml",
+     "Object 13/content.xml",
+     "Object 14/content.xml",
+     "Object 15/content.xml",
+     "Object 16/content.xml",
+     "Object 17/content.xml",
+     "Object 18/content.xml",
+     "Object 19/content.xml",
+     "Object 20/content.xml",
+     "Object 21/content.xml",
+     "Object 22/content.xml",
+     "Object 23/content.xml",
+     "Object 24/content.xml",
+     "Object 25/content.xml",
+     "Object 26/content.xml",
      "META-INF/manifest.xml",
      "content.xml",
      "styles.xml"
     ],
     "META-INF/manifest.xml": {
-     "taille": 2902,
-     "sha": "c9f8241bbdb99a44032d8854"
+     "taille": 6806,
+     "sha": "dfaf1338db71b5e5b8cd7d67"
     },
     "Object 1/content.xml": {
      "taille": 341,
@@ -8504,9 +8325,73 @@
      "taille": 282,
      "sha": "5b5cbdbfdee1e08bf68ee5f4"
     },
+    "Object 11/content.xml": {
+     "taille": 208,
+     "sha": "3b26af54dd4c1df8d0720f73"
+    },
+    "Object 12/content.xml": {
+     "taille": 306,
+     "sha": "274b84f413b48fd5a57fe110"
+    },
+    "Object 13/content.xml": {
+     "taille": 253,
+     "sha": "38dbf95a4e4ffb34215179d0"
+    },
+    "Object 14/content.xml": {
+     "taille": 306,
+     "sha": "274b84f413b48fd5a57fe110"
+    },
+    "Object 15/content.xml": {
+     "taille": 253,
+     "sha": "38dbf95a4e4ffb34215179d0"
+    },
+    "Object 16/content.xml": {
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
+    },
+    "Object 17/content.xml": {
+     "taille": 208,
+     "sha": "3b26af54dd4c1df8d0720f73"
+    },
+    "Object 18/content.xml": {
+     "taille": 230,
+     "sha": "fd81a75fc3f57b348ad977bf"
+    },
+    "Object 19/content.xml": {
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
+    },
     "Object 2/content.xml": {
      "taille": 208,
      "sha": "3b26af54dd4c1df8d0720f73"
+    },
+    "Object 20/content.xml": {
+     "taille": 273,
+     "sha": "c8ac2a07e92896e540173194"
+    },
+    "Object 21/content.xml": {
+     "taille": 237,
+     "sha": "982a29198cac42a63734f4b9"
+    },
+    "Object 22/content.xml": {
+     "taille": 226,
+     "sha": "79f001e95ebfa3cb9f98b388"
+    },
+    "Object 23/content.xml": {
+     "taille": 306,
+     "sha": "90ace32dc0f741a36eb5251b"
+    },
+    "Object 24/content.xml": {
+     "taille": 282,
+     "sha": "5b5cbdbfdee1e08bf68ee5f4"
+    },
+    "Object 25/content.xml": {
+     "taille": 306,
+     "sha": "90ace32dc0f741a36eb5251b"
+    },
+    "Object 26/content.xml": {
+     "taille": 282,
+     "sha": "5b5cbdbfdee1e08bf68ee5f4"
     },
     "Object 3/content.xml": {
      "taille": 253,
@@ -8521,8 +8406,8 @@
      "sha": "d61fdac48e572c525ed21123"
     },
     "Object 6/content.xml": {
-     "taille": 316,
-     "sha": "9b974060492c84bcc88479ca"
+     "taille": 340,
+     "sha": "79e154cf6fefce920f989ff8"
     },
     "Object 7/content.xml": {
      "taille": 341,
@@ -8537,8 +8422,8 @@
      "sha": "806ba36de704c0be5225005f"
     },
     "content.xml": {
-     "taille": 8478,
-     "sha": "48485c0461fce761898b69eb"
+     "taille": 15801,
+     "sha": "f3876a163fa36fcae87ea59e"
     },
     "mimetype": {
      "taille": 39,
@@ -8562,7 +8447,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -8570,14 +8454,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -8595,13 +8479,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -8619,13 +8499,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 17787,
-     "sha": "308d7bda26f80eeeccf657e6"
+     "taille": 23348,
+     "sha": "c76cdf91a32491eb2c17bb87"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -8644,16 +8520,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -8672,13 +8552,20 @@
      "Object 8/content.xml",
      "Object 9/content.xml",
      "Object 10/content.xml",
+     "Object 11/content.xml",
+     "Object 12/content.xml",
+     "Object 13/content.xml",
+     "Object 14/content.xml",
+     "Object 15/content.xml",
+     "Object 16/content.xml",
+     "Object 17/content.xml",
      "META-INF/manifest.xml",
      "content.xml",
      "styles.xml"
     ],
     "META-INF/manifest.xml": {
-     "taille": 2902,
-     "sha": "c9f8241bbdb99a44032d8854"
+     "taille": 4610,
+     "sha": "aad3809966a4f27eada829f1"
     },
     "Object 1/content.xml": {
      "taille": 230,
@@ -8687,6 +8574,34 @@
     "Object 10/content.xml": {
      "taille": 377,
      "sha": "0b9d00c9c75d699b7629a933"
+    },
+    "Object 11/content.xml": {
+     "taille": 253,
+     "sha": "9f56c97026231f6b7dad8bff"
+    },
+    "Object 12/content.xml": {
+     "taille": 271,
+     "sha": "e5273c2b312e882338c1a6b5"
+    },
+    "Object 13/content.xml": {
+     "taille": 373,
+     "sha": "7a5c55001036b9bf4b06d194"
+    },
+    "Object 14/content.xml": {
+     "taille": 261,
+     "sha": "bcf6f51bf76f679043c55aa7"
+    },
+    "Object 15/content.xml": {
+     "taille": 318,
+     "sha": "888e1a1a7841647a10e816d7"
+    },
+    "Object 16/content.xml": {
+     "taille": 251,
+     "sha": "aa49952407079335933f299b"
+    },
+    "Object 17/content.xml": {
+     "taille": 251,
+     "sha": "aa49952407079335933f299b"
     },
     "Object 2/content.xml": {
      "taille": 208,
@@ -8721,8 +8636,8 @@
      "sha": "32c7d7b5e102ea4cbe924617"
     },
     "content.xml": {
-     "taille": 8367,
-     "sha": "6c27b8fccf79a03043ebc368"
+     "taille": 12727,
+     "sha": "b3b295068d9a78167a796fa1"
     },
     "mimetype": {
      "taille": 39,
@@ -8746,7 +8661,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -8754,14 +8668,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -8779,13 +8693,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -8803,13 +8713,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 13418,
-     "sha": "d0e9a19bde5327a88889b640"
+     "taille": 13261,
+     "sha": "fcebc9426270d5c1a87cb27b"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -8828,16 +8734,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -8855,8 +8765,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 5269,
-     "sha": "f23b85488f719e9d75ffe0ac"
+     "taille": 5181,
+     "sha": "6bd742b05bc3ae2bcc9f2d58"
     },
     "mimetype": {
      "taille": 39,
@@ -8880,7 +8790,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -8888,14 +8797,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -8913,13 +8822,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -8937,13 +8842,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 10867,
-     "sha": "f325dbf7b2ed902e70acf2a6"
+     "taille": 10710,
+     "sha": "aef9b27fe5ff013fbd5fcc2f"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -8962,16 +8863,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -8989,8 +8894,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 4178,
-     "sha": "e339830b4940947d9ea8ae37"
+     "taille": 4090,
+     "sha": "d2479d08ae55dbb9d7892380"
     },
     "mimetype": {
      "taille": 39,
@@ -9014,7 +8919,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -9022,14 +8926,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -9047,13 +8951,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -9071,13 +8971,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 11391,
-     "sha": "155f39bccb48e9bcec06d18e"
+     "taille": 11368,
+     "sha": "9e9b6f9ca5fcb7f27cbd444c"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -9096,16 +8992,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -9123,8 +9023,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 5777,
-     "sha": "735341f4039ab835fbd95bd3"
+     "taille": 5861,
+     "sha": "e8962bb5b8c575f3357716b0"
     },
     "mimetype": {
      "taille": 39,
@@ -9148,7 +9048,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -9156,14 +9055,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -9181,13 +9080,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -9205,13 +9100,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 9620,
-     "sha": "da5b138ef4a64d9e207d46ae"
+     "taille": 9597,
+     "sha": "920d9aa31ffeb2896c2d2066"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -9230,16 +9121,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -9263,16 +9158,16 @@
      "sha": "0eef895363a9853bcd2cc8df"
     },
     "Object 1/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
-    },
-    "Object 2/content.xml": {
      "taille": 230,
      "sha": "fd81a75fc3f57b348ad977bf"
     },
-    "Object 3/content.xml": {
+    "Object 2/content.xml": {
      "taille": 208,
      "sha": "3b26af54dd4c1df8d0720f73"
+    },
+    "Object 3/content.xml": {
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
     },
     "Object 4/content.xml": {
      "taille": 230,
@@ -9283,12 +9178,12 @@
      "sha": "3b26af54dd4c1df8d0720f73"
     },
     "Object 6/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
     },
     "content.xml": {
-     "taille": 6138,
-     "sha": "3dfb17db6ceff5aad11e1656"
+     "taille": 6222,
+     "sha": "1c4af7587bffb151e2a4be29"
     },
     "mimetype": {
      "taille": 39,
@@ -9312,7 +9207,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -9320,14 +9214,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -9345,13 +9239,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -9369,13 +9259,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 14339,
-     "sha": "c3fb159af1af67a0987ec28e"
+     "taille": 15583,
+     "sha": "008a71c16a0822114f5c88e8"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -9394,16 +9280,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -9421,8 +9311,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 6929,
-     "sha": "1cd734cb6eeeb29331d4bb9e"
+     "taille": 7512,
+     "sha": "3f734850edebb5341424d166"
     },
     "mimetype": {
      "taille": 39,
@@ -9446,7 +9336,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -9454,14 +9343,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -9479,13 +9368,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -9503,13 +9388,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 21156,
-     "sha": "0c055be00c8beaff2cfe0557"
+     "taille": 23812,
+     "sha": "b66381c30f18d23be4755b76"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -9528,16 +9409,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -9576,41 +9461,47 @@
      "Object 28/content.xml",
      "Object 29/content.xml",
      "Object 30/content.xml",
+     "Object 31/content.xml",
+     "Object 32/content.xml",
+     "Object 33/content.xml",
+     "Object 34/content.xml",
+     "Object 35/content.xml",
+     "Object 36/content.xml",
      "META-INF/manifest.xml",
      "content.xml",
      "styles.xml"
     ],
     "META-INF/manifest.xml": {
-     "taille": 7782,
-     "sha": "15eff29d8bad864e8a8c662a"
+     "taille": 9246,
+     "sha": "e9c35d079856666ff4b383da"
     },
     "Object 1/content.xml": {
-     "taille": 341,
-     "sha": "7d8cc72c3945f297029e6bfb"
+     "taille": 208,
+     "sha": "042fa5dc0187dd5c38f6a9fa"
     },
     "Object 10/content.xml": {
-     "taille": 208,
-     "sha": "ac0145fb75dfa01fd5b81c49"
+     "taille": 416,
+     "sha": "ffc5f4287728f9518188b1ef"
     },
     "Object 11/content.xml": {
      "taille": 208,
-     "sha": "2dace65c1b88f3a4192e9211"
+     "sha": "ac0145fb75dfa01fd5b81c49"
     },
     "Object 12/content.xml": {
-     "taille": 407,
-     "sha": "d61fdac48e572c525ed21123"
+     "taille": 208,
+     "sha": "2dace65c1b88f3a4192e9211"
     },
     "Object 13/content.xml": {
-     "taille": 316,
-     "sha": "9b974060492c84bcc88479ca"
+     "taille": 253,
+     "sha": "9f56c97026231f6b7dad8bff"
     },
     "Object 14/content.xml": {
-     "taille": 407,
-     "sha": "d61fdac48e572c525ed21123"
+     "taille": 395,
+     "sha": "1f2111cd9904ec5d06a01bb9"
     },
     "Object 15/content.xml": {
-     "taille": 343,
-     "sha": "3dcbfcded7e581dd67259656"
+     "taille": 306,
+     "sha": "274b84f413b48fd5a57fe110"
     },
     "Object 16/content.xml": {
      "taille": 407,
@@ -9621,92 +9512,116 @@
      "sha": "9f56c97026231f6b7dad8bff"
     },
     "Object 18/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
-    },
-    "Object 19/content.xml": {
-     "taille": 230,
-     "sha": "fd81a75fc3f57b348ad977bf"
-    },
-    "Object 2/content.xml": {
-     "taille": 253,
-     "sha": "9f56c97026231f6b7dad8bff"
-    },
-    "Object 20/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
-    },
-    "Object 21/content.xml": {
-     "taille": 230,
-     "sha": "fd81a75fc3f57b348ad977bf"
-    },
-    "Object 22/content.xml": {
-     "taille": 253,
-     "sha": "950167befdc01b261611cbc1"
-    },
-    "Object 23/content.xml": {
-     "taille": 341,
-     "sha": "7d8cc72c3945f297029e6bfb"
-    },
-    "Object 24/content.xml": {
-     "taille": 253,
-     "sha": "9f56c97026231f6b7dad8bff"
-    },
-    "Object 25/content.xml": {
-     "taille": 341,
-     "sha": "7d8cc72c3945f297029e6bfb"
-    },
-    "Object 26/content.xml": {
-     "taille": 253,
-     "sha": "9f56c97026231f6b7dad8bff"
-    },
-    "Object 27/content.xml": {
-     "taille": 395,
-     "sha": "1f2111cd9904ec5d06a01bb9"
-    },
-    "Object 28/content.xml": {
      "taille": 407,
      "sha": "d61fdac48e572c525ed21123"
     },
-    "Object 29/content.xml": {
-     "taille": 316,
-     "sha": "9b974060492c84bcc88479ca"
+    "Object 19/content.xml": {
+     "taille": 340,
+     "sha": "79e154cf6fefce920f989ff8"
     },
-    "Object 3/content.xml": {
+    "Object 2/content.xml": {
      "taille": 341,
      "sha": "7d8cc72c3945f297029e6bfb"
     },
-    "Object 30/content.xml": {
-     "taille": 316,
-     "sha": "17fce9cc42c180dcfdb93595"
+    "Object 20/content.xml": {
+     "taille": 407,
+     "sha": "d61fdac48e572c525ed21123"
     },
-    "Object 4/content.xml": {
+    "Object 21/content.xml": {
+     "taille": 367,
+     "sha": "9cb08291ca04f9abf273f992"
+    },
+    "Object 22/content.xml": {
+     "taille": 230,
+     "sha": "25282e18b4a38b4962c6fe6d"
+    },
+    "Object 23/content.xml": {
+     "taille": 230,
+     "sha": "94363c5562f6003303e7f11c"
+    },
+    "Object 24/content.xml": {
      "taille": 230,
      "sha": "fd81a75fc3f57b348ad977bf"
     },
-    "Object 5/content.xml": {
+    "Object 25/content.xml": {
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
+    },
+    "Object 26/content.xml": {
+     "taille": 230,
+     "sha": "fd81a75fc3f57b348ad977bf"
+    },
+    "Object 27/content.xml": {
+     "taille": 253,
+     "sha": "950167befdc01b261611cbc1"
+    },
+    "Object 28/content.xml": {
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
+    },
+    "Object 29/content.xml": {
+     "taille": 341,
+     "sha": "7d8cc72c3945f297029e6bfb"
+    },
+    "Object 3/content.xml": {
      "taille": 253,
      "sha": "9f56c97026231f6b7dad8bff"
     },
-    "Object 6/content.xml": {
+    "Object 30/content.xml": {
+     "taille": 253,
+     "sha": "9f56c97026231f6b7dad8bff"
+    },
+    "Object 31/content.xml": {
+     "taille": 341,
+     "sha": "7d8cc72c3945f297029e6bfb"
+    },
+    "Object 32/content.xml": {
+     "taille": 253,
+     "sha": "9f56c97026231f6b7dad8bff"
+    },
+    "Object 33/content.xml": {
      "taille": 395,
      "sha": "1f2111cd9904ec5d06a01bb9"
     },
+    "Object 34/content.xml": {
+     "taille": 407,
+     "sha": "d61fdac48e572c525ed21123"
+    },
+    "Object 35/content.xml": {
+     "taille": 340,
+     "sha": "79e154cf6fefce920f989ff8"
+    },
+    "Object 36/content.xml": {
+     "taille": 340,
+     "sha": "061fdcf86a2a451d45caa476"
+    },
+    "Object 4/content.xml": {
+     "taille": 341,
+     "sha": "7d8cc72c3945f297029e6bfb"
+    },
+    "Object 5/content.xml": {
+     "taille": 230,
+     "sha": "fd81a75fc3f57b348ad977bf"
+    },
+    "Object 6/content.xml": {
+     "taille": 253,
+     "sha": "2af4619d5829356ab03e9e32"
+    },
     "Object 7/content.xml": {
+     "taille": 253,
+     "sha": "e1d73801580aed063ea519ed"
+    },
+    "Object 8/content.xml": {
      "taille": 239,
      "sha": "ff3546f7cd2f7e924634cefd"
     },
-    "Object 8/content.xml": {
+    "Object 9/content.xml": {
      "taille": 208,
      "sha": "3b26af54dd4c1df8d0720f73"
     },
-    "Object 9/content.xml": {
-     "taille": 416,
-     "sha": "ffc5f4287728f9518188b1ef"
-    },
     "content.xml": {
-     "taille": 13263,
-     "sha": "a93ffb7f0f88edadddd4e584"
+     "taille": 15393,
+     "sha": "dcfbe224a57a20dc4697692f"
     },
     "mimetype": {
      "taille": 39,
@@ -9730,7 +9645,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -9738,14 +9652,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -9763,13 +9677,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -9787,13 +9697,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 36457,
-     "sha": "cfcc8b240f4bb05c0a2a7e77"
+     "taille": 36290,
+     "sha": "3d0861783eea065b8b053520"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -9812,16 +9718,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -9839,8 +9749,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 16829,
-     "sha": "750be0d66b5c122c2f4c021f"
+     "taille": 16731,
+     "sha": "c287da0aa6f92e788a08a02c"
     },
     "mimetype": {
      "taille": 39,
@@ -9864,7 +9774,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -9872,14 +9781,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -9897,13 +9806,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -9921,13 +9826,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 33562,
-     "sha": "2a51c811fcab9df35895d9b5"
+     "taille": 33405,
+     "sha": "ebd2f1dd589d20b0e0e3854b"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -9946,16 +9847,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -9973,8 +9878,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 14927,
-     "sha": "d7fc65c9e1a9a31e14b4014e"
+     "taille": 14839,
+     "sha": "40de9e6af825161732598d07"
     },
     "mimetype": {
      "taille": 39,
@@ -9998,7 +9903,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -10006,10 +9910,10 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media0.png",
      "word/media/media4.png",
      "word/media/media2.png",
@@ -10017,8 +9921,8 @@
      "word/media/media1.png"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -10036,13 +9940,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1849,
-     "sha": "c29877973ecab23c7a8ecbff"
+     "taille": 1850,
+     "sha": "ebd1e17a4bba8aceff5ea075"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -10060,13 +9960,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 19391,
-     "sha": "cefc589f987eede69c474e1b"
+     "taille": 20923,
+     "sha": "ab32ebbbfb0a6473e91ecd03"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -10105,16 +10001,20 @@
      "sha": "ba16c8739e4a7eaa05e7500c"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -10157,8 +10057,8 @@
      "sha": "6e00e606bdad9c71016fe74e"
     },
     "content.xml": {
-     "taille": 7843,
-     "sha": "f647ac11960b9fdf82cd11f2"
+     "taille": 8426,
+     "sha": "1c38412396fb49e96d2652ac"
     },
     "mimetype": {
      "taille": 39,
@@ -10182,7 +10082,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -10190,17 +10089,17 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media0.png",
      "word/media/media1.png",
      "word/media/media2.png"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -10218,13 +10117,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1583,
-     "sha": "0ec5dbe915ae660a398eeccf"
+     "taille": 1584,
+     "sha": "83ab465f1a88c061fc06af42"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -10242,13 +10137,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 25100,
-     "sha": "2fcb60e357585ffe4b80555f"
+     "taille": 26630,
+     "sha": "2d321cab587d8dcd8d3286c2"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -10279,16 +10170,20 @@
      "sha": "aecceaf29f071de8aafbf42c"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -10326,8 +10221,8 @@
      "sha": "aecceaf29f071de8aafbf42c"
     },
     "content.xml": {
-     "taille": 11532,
-     "sha": "362fcc2930347f6d8c28f690"
+     "taille": 12113,
+     "sha": "b473b74f2f11cdb55a3f3950"
     },
     "mimetype": {
      "taille": 39,
@@ -10351,7 +10246,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -10359,14 +10253,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -10384,13 +10278,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -10408,13 +10298,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 5474,
-     "sha": "b25f06e4616e8d7dbd4cdd51"
+     "taille": 6259,
+     "sha": "c9380f534a6dd9e2f8481a75"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -10433,16 +10319,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -10460,8 +10350,8 @@
      "sha": "cad5ec333e9837b2ea33ef52"
     },
     "content.xml": {
-     "taille": 1949,
-     "sha": "93f00caacf2fb98cffbc1b3d"
+     "taille": 2465,
+     "sha": "202e3286aa65b340fc7f77e1"
     },
     "mimetype": {
      "taille": 39,
@@ -10485,7 +10375,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -10493,14 +10382,14 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
-     "word/_rels/fontTable.xml.rels"
+     "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -10518,13 +10407,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1185,
-     "sha": "3748d33a5567b95675f384b4"
+     "taille": 1186,
+     "sha": "529cbe71311132359385147d"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -10542,13 +10427,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 4991,
-     "sha": "66c9e8b12ae413e79503e616"
+     "taille": 6197,
+     "sha": "ec951f69a29c27cd209f00c8"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -10567,16 +10448,20 @@
      "sha": "774ce254f01cde1079d43e81"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -10586,21 +10471,31 @@
     "_ordre": [
      "mimetype",
      "Object 1/content.xml",
+     "Object 2/content.xml",
+     "Object 3/content.xml",
      "META-INF/manifest.xml",
      "content.xml",
      "styles.xml"
     ],
     "META-INF/manifest.xml": {
-     "taille": 722,
-     "sha": "81d1bde838ef25209132f216"
+     "taille": 1206,
+     "sha": "e4fc79c7354506ccee65d824"
     },
     "Object 1/content.xml": {
      "taille": 244,
      "sha": "876b5e30dfccba905a5f2c1e"
     },
+    "Object 2/content.xml": {
+     "taille": 244,
+     "sha": "876b5e30dfccba905a5f2c1e"
+    },
+    "Object 3/content.xml": {
+     "taille": 244,
+     "sha": "876b5e30dfccba905a5f2c1e"
+    },
     "content.xml": {
-     "taille": 2052,
-     "sha": "3663e582e63eb25a9172fdd4"
+     "taille": 3019,
+     "sha": "905587379c3d11f5589d0f03"
     },
     "mimetype": {
      "taille": 39,
@@ -10624,7 +10519,6 @@
      "_rels/.rels",
      "word/_rels/footer1.xml.rels",
      "word/footer1.xml",
-     "[Content_Types].xml",
      "docProps/custom.xml",
      "docProps/app.xml",
      "word/footnotes.xml",
@@ -10632,15 +10526,15 @@
      "word/endnotes.xml",
      "word/_rels/endnotes.xml.rels",
      "word/settings.xml",
-     "word/comments.xml",
-     "word/_rels/comments.xml.rels",
      "word/fontTable.xml",
      "word/_rels/fontTable.xml.rels",
+     "word/theme/theme1.xml",
+     "[Content_Types].xml",
      "word/media/media0.jpg"
     ],
     "[Content_Types].xml": {
-     "taille": 2232,
-     "sha": "9dade5058cf89e28a9bca4ca"
+     "taille": 2216,
+     "sha": "441ca5a936418c64142008e6"
     },
     "_rels/.rels": {
      "taille": 718,
@@ -10658,13 +10552,9 @@
      "taille": 228,
      "sha": "8ec73cc7ce297e42cc652a1d"
     },
-    "word/_rels/comments.xml.rels": {
-     "taille": 123,
-     "sha": "bf64631f0bc7bd46712fef82"
-    },
     "word/_rels/document.xml.rels": {
-     "taille": 1317,
-     "sha": "64a2aba9c7828989c42770c8"
+     "taille": 1318,
+     "sha": "7dcd5b7ae2f0231880bba09f"
     },
     "word/_rels/endnotes.xml.rels": {
      "taille": 123,
@@ -10682,13 +10572,9 @@
      "taille": 123,
      "sha": "bf64631f0bc7bd46712fef82"
     },
-    "word/comments.xml": {
-     "taille": 2246,
-     "sha": "dd2d62f68c6fd01fc4d7d440"
-    },
     "word/document.xml": {
-     "taille": 12121,
-     "sha": "16ae247fd90c8c7cb5add758"
+     "taille": 12337,
+     "sha": "019f8d7fcbde7827b2687dda"
     },
     "word/endnotes.xml": {
      "taille": 1682,
@@ -10711,16 +10597,20 @@
      "sha": "1e60de284158428bf6ebd348"
     },
     "word/numbering.xml": {
-     "taille": 3154,
-     "sha": "aae067c32dd80d876358a0cc"
+     "taille": 3136,
+     "sha": "805a1aa1e744da8e1f3c9ec8"
     },
     "word/settings.xml": {
      "taille": 1395,
      "sha": "36b68f012adfd6d2f8faaebc"
     },
     "word/styles.xml": {
-     "taille": 5704,
-     "sha": "30cf638994fffe75a27cf9cf"
+     "taille": 5074,
+     "sha": "d541037ec031f82ca86aa8b2"
+    },
+    "word/theme/theme1.xml": {
+     "taille": 8082,
+     "sha": "14d6fc4b249d866d8ab97f1e"
     }
    }
   },
@@ -10748,8 +10638,8 @@
      "sha": "1e60de284158428bf6ebd348"
     },
     "content.xml": {
-     "taille": 4507,
-     "sha": "7572a2df9f675cffc44565a2"
+     "taille": 5454,
+     "sha": "37f1890dd19b2b5e9076a9f8"
     },
     "mimetype": {
      "taille": 39,

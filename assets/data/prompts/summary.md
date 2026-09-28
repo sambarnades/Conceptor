@@ -5,8 +5,8 @@
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.Summary]
 
-- Nombre d'étapes : Génère un tableau de 5 étapes minimum || [NOMBRE_ELEMENTS] étapes pour couvrir l'ensemble du sujet.
-- Distracteurs : Propose au minimum 2 distracteurs par étape. Ils doivent être cohérents avec le sujet mais comporter des erreurs factuelles ou logiques plausibles.
+- Nombre d'étapes : Propose 5 groupes si les sources le permettent, entre 1 et 100 ; ne complète pas avec des faits inventés. || respecte exactement [NOMBRE_ELEMENTS] si précisé, entre 1 et 100 groupes ; sinon propose 5 groupes si les sources le permettent. Ne complète pas avec des faits inventés.
+- Chaque `summary` contient au moins 2 affirmations : la première correcte, les suivantes fausses mais plausibles. Respecte le nombre de propositions demandé ; par défaut, propose 2 distracteurs.
 - Rétroaction : renseigne le `tip` de chaque étape pour aider à reconnaître l'affirmation exacte parmi les distracteurs, sans la désigner. Le `overallFeedback` gradue par niveau de maîtrise (cf. RÈGLES PÉDAGOGIQUES).
 
 # RÈGLES PÉDAGOGIQUES

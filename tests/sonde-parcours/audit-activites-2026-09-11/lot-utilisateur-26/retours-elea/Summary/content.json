@@ -1,0 +1,30 @@
+{
+  "intro": "Choisis la bonne affirmation.",
+  "summaries": [
+    {
+      "summary": [
+        "<p>Paris est la capitale de la France.</p>",
+        "<p>Paris est la capitale de l’Italie.</p>"
+      ],
+      "tip": "<p>La Seine traverse la capitale française. RELU</p>",
+      "subContentId": "c3039049-003c-464a-b1d8-7adf14def69e"
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 100,
+      "feedback": ""
+    }
+  ],
+  "solvedLabel": "Progression :",
+  "scoreLabel": "Mauvaises réponses :",
+  "resultLabel": "Votre résultat",
+  "labelCorrect": "Correct.",
+  "labelIncorrect": "Incorrect ! Veuillez réessayer.",
+  "labelCorrectAnswers": "Réponses correctes.",
+  "tipButtonLabel": "Indice",
+  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+  "progressText": "Progression :num sur :total",
+  "alternativeIncorrectLabel": "Incorrect"
+}

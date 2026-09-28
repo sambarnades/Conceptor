@@ -1,0 +1,117 @@
+[
+  {
+    "chemin": "bookCover",
+    "type": "ajout_natif",
+    "apres": {
+      "coverDescription": "<p style=\"text-align: center;\"></p>"
+    }
+  },
+  {
+    "chemin": "chapters[0].metadata.contentType",
+    "type": "modification",
+    "avant": "Column",
+    "apres": "Page"
+  },
+  {
+    "chemin": "chapters[0].metadata.title",
+    "type": "modification",
+    "avant": "Observer puis répondre",
+    "apres": "Observer puis répondre RELU"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.metadata.title",
+    "type": "modification",
+    "avant": "",
+    "apres": "Row Sans titre"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[0].content.params.content[1].params.contentName",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[0].content.params.content[1].params.expandImage",
+    "type": "ajout_natif",
+    "apres": "Agrandir l&#039;image"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[0].content.params.content[1].params.file.copyright",
+    "type": "ajout_natif",
+    "apres": {
+      "license": "U"
+    }
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[0].content.params.content[1].params.minimizeImage",
+    "type": "ajout_natif",
+    "apres": "Réduire l&#039;image"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[1].content.params.content[0].metadata.contentType",
+    "type": "modification",
+    "avant": "Exercise",
+    "apres": "Dialog Cards"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[1].content.params.content[0].params.correctAnswer",
+    "type": "normalisation_html",
+    "avant": "J'ai eu bon !",
+    "apres": "J&#039;ai eu bon !"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[1].content.params.content[0].params.dialogs[0].audio[0].copyright",
+    "type": "ajout_natif",
+    "apres": {
+      "license": "U"
+    }
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[1].content.params.content[0].params.title",
+    "type": "ajout_natif",
+    "apres": ""
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[1].content.params.content[1].metadata.contentType",
+    "type": "modification",
+    "avant": "Exercise",
+    "apres": "Summary"
+  },
+  {
+    "chemin": "chapters[0].params.content[0].content.params.columns[1].content.params.content[1].params.behaviour",
+    "type": "retrait_natif",
+    "avant": {
+      "enableRetry": true,
+      "enableSolutionsButton": true,
+      "passPercentage": 50
+    }
+  },
+  {
+    "chemin": "chapters[1].metadata.contentType",
+    "type": "modification",
+    "avant": "Column",
+    "apres": "Page"
+  },
+  {
+    "chemin": "markAsFinished",
+    "type": "normalisation_html",
+    "avant": "J'ai terminé cette page",
+    "apres": "J&#039;ai terminé cette page"
+  },
+  {
+    "chemin": "noChapterInteractionBoldText",
+    "type": "normalisation_html",
+    "avant": "Vous n'avez interagi avec aucune page.",
+    "apres": "Vous n&#039;avez interagi avec aucune page."
+  },
+  {
+    "chemin": "summaryAndSubmit",
+    "type": "normalisation_html",
+    "avant": "Résumé & envoi",
+    "apres": "Résumé &amp; envoi"
+  },
+  {
+    "chemin": "title",
+    "type": "retrait_natif",
+    "avant": "Comparer deux représentations"
+  }
+]

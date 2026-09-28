@@ -157,6 +157,15 @@ export function classifyError(error) {
     let category = ErrorCategory.PACKAGING_ERROR; // Défaut
     let userMessageKey = 'error_packaging';
 
+    const testErrors = {
+        test_unsupported_question_type: 'test_unsupported_question',
+        test_gift_unsupported_question_type: 'test_gift_incompatible',
+        test_import_question_files_unsupported: 'test_question_files_unsupported',
+        test_cloze_injouable: 'test_cloze_injouable'
+    };
+    const testKey = testErrors[errorMsg.split(':')[0]];
+    if (testKey) return { category: ErrorCategory.VALIDATION_ERROR, userMessageKey: testKey, technicalMessage: errorMsg };
+
     // Parse error : JSON invalide
     if (errorName === 'SyntaxError' || errorMsg.includes('JSON') || errorMsg.includes('parse') || errorMsg.includes('Unexpected token')) {
         category = ErrorCategory.PARSE_ERROR;
@@ -335,6 +344,11 @@ export function showNotification(message, type = 'success') {
  * @returns {string} - Chaîne HTML sécurisée
  */
 export const formatTextToHtml = (text) => {
+    // Un texte rendu en LISTE par le modèle (une phrase par entrée) : des
+    // paragraphes, plutôt qu'un `text.trim is not a function` qui faisait écarter
+    // l'activité entière (constaté sur 24 modules, 15 sept. 2026).
+    if (Array.isArray(text)) text = text.filter(x => x != null && x !== '').map(String).join('\n\n');
+    else if (typeof text === 'number' || typeof text === 'boolean') text = String(text);
     if (!text) return '';
 
     const trimmed = text.trim();
@@ -394,6 +408,9 @@ export const formatTextToHtml = (text) => {
  * @returns {string} - Texte avec markdown converti en HTML, LaTeX intact
  */
 export function markdownToHtml(text, { newlineToBr = false } = {}) {
+    // Même tolérance que `formatTextToHtml` : un texte rendu en liste par le modèle.
+    if (Array.isArray(text)) text = text.filter(x => x != null && x !== '').map(String).join('\n\n');
+    else if (typeof text === 'number' || typeof text === 'boolean') text = String(text);
     if (!text) return '';
     const latexPlaceholders = [];
     let result = text.replace(/\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/g, (m) => {

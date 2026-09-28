@@ -1,0 +1,1513 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-28T12:49:20.820Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "hybride",
+    "ampleur": "longue",
+    "trame": "projet"
+  },
+  "plan": {
+    "titre": "Podcast biodiversité : enquête et protection",
+    "objectifGeneral": "Réaliser en équipe un podcast de cinq minutes sur la biodiversité d’un milieu proche du collège",
+    "introduction": "Tu vas mener un projet en équipe pour créer un podcast de cinq minutes sur la biodiversité d’un milieu proche de ton collège. Ce parcours t’accompagne pas à pas : comprendre la commande, te documenter, organiser le travail, produire et améliorer ta création. Prends le temps de lire chaque consigne et de bien préparer tes interventions.",
+    "notionsPivots": [
+      "la biodiversité",
+      "un écosystème",
+      "une espèce",
+      "une relation entre êtres vivants",
+      "un réseau trophique",
+      "une menace sur la biodiversité",
+      "une action de protection",
+      "un rôle dans un écosystème",
+      "un milieu proche",
+      "un podcast scientifique",
+      "un script de podcast",
+      "une relecture par les pairs"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Découvrir la commande et les critères",
+        "objectif": "Comprendre les attentes et les critères du projet",
+        "introduction": "Tu découvres ici la commande de ton projet : réaliser un podcast de cinq minutes sur la biodiversité d’un milieu proche du collège. Cette étape te permet de bien saisir les attentes et les critères de réussite. Prends le temps de tout lire pour bien démarrer.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "La commande du projet",
+            "objectif": "Identifier les éléments attendus dans le podcast",
+            "consigne": "Lis attentivement la consigne du projet et les critères de réussite. Note dans ton cahier les éléments que ton podcast doit obligatoirement contenir.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "La commande du projet",
+              "intro": "Prépare ton podcast en équipe en t'appuyant sur ce que tu connais déjà. Découvre les attentes, les étapes et les outils pour réussir ton enquête sur la biodiversité locale. On va ensemble définir ce qu'il faut chercher et comment le présenter.",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "Le projet podcast biodiversité",
+                    "subtitle": "Premier pas : comprendre les attentes et organiser le travail"
+                  }
+                },
+                {
+                  "type": "#02_nav_summary",
+                  "data": {
+                    "links": [
+                      {
+                        "href": "#objectifs-du-projet",
+                        "text": "Objectifs du projet"
+                      },
+                      {
+                        "href": "#contenu-attendu",
+                        "text": "Ce que doit contenir ton podcast"
+                      },
+                      {
+                        "href": "#etapes-cles",
+                        "text": "Les étapes pour réussir"
+                      },
+                      {
+                        "href": "#checklist",
+                        "text": "Checklist pour démarrer"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Ce que tu dois retenir",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Comprendre pourquoi ce projet est important pour ta formation en SVT."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Identifier les 5 éléments que ton podcast doit absolument contenir."
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "Évite de confondre les rôles dans un écosystème avec des actions de protection : ce sont deux choses différentes."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Pourquoi réaliser ce podcast ?",
+                    "paragraphs": [
+                      "Ce projet te permet de découvrir comment observer et comprendre un milieu proche de ton collège. C’est l’occasion de travailler en équipe pour partager des connaissances et sensibiliser à la protection de la nature.",
+                      "Tu vas enquêter sur les espèces présentes autour de ton établissement, leurs relations, les menaces qui pèsent sur elles et les actions possibles pour les protéger. Cela te donnera une vision concrète de la biodiversité locale.",
+                      "À la fin, tu auras produit un podcast scientifique de 5 minutes qui synthétise ces informations, avec un ton adapté au public du collège."
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Ce que doit contenir ton podcast",
+                    "paragraphs": [
+                      "Ton podcast doit expliquer clairement ce qu’est la biodiversité dans un milieu proche de ton collège. Tu peux donner des exemples simples comme un jardin, une forêt, un étang ou même les bords de la route près de ton établissement.",
+                      "Tu devras présenter au moins trois espèces différentes qui vivent là, en décrivant leur rôle dans l’écosystème. Par exemple, tu peux parler d’un arbre qui donne de l’ombre, d’un oiseau qui mange des insectes ou d’une plante qui pousse sur le sol.",
+                      "Enfin, ton podcast doit expliquer une menace réelle qui pèse sur ce milieu (comme la pollution, la coupe d’arbres ou l’introduction d’une espèce étrangère) et une action de protection simple que chacun peut faire, comme planter des arbres ou éviter de dégrader le lieu."
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Les 5 éléments OBLIGATOIRES de ton podcast",
+                    "callouts": [
+                      {
+                        "type": "savoir",
+                        "text": "Un accueil clair avec le nom de l’équipe et le thème."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "L’explication de la biodiversité du milieu choisi, avec des exemples d’espèces et de relations entre elles."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "La description d’une menace réelle et concrète pour ce milieu."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Une proposition d’action de protection, simple et réaliste."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Une conclusion qui invite à protéger le milieu ou à en parler autour de soi."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#11_definition_box",
+                  "data": {
+                    "title": "Définition importante",
+                    "text": "Un écosystème, c’est un ensemble formé par des êtres vivants (plantes, animaux, micro-organismes) et leur milieu de vie. Par exemple, une haie avec des insectes, des oiseaux et des champignons, le tout lié à un sol et à un climat."
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Comment organiser ton travail en équipe ?",
+                    "paragraphs": [
+                      "Commence par choisir un lieu proche de ton collège : un parc, un bois, un cours d’eau ou même un espace vert en ville. Observe-le attentivement pour repérer les espèces présentes.",
+                      "Répartissez les rôles : un·e narrateur·rice, un·e expert·e pour les espèces, un·e expert·e pour les menaces, un·e expert·e pour les solutions. Chacun·e tient un rôle pour mener l’enquête.",
+                      "Faites des recherches pour vérifier les informations et notez tout sur un script partagé. Il servira de base pour enregistrer le podcast."
+                    ]
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Lexique pour t’aider",
+                    "caption": "Ces mots te seront utiles pour préparer ton podcast.",
+                    "headers": [
+                      "Mot",
+                      "Définition"
+                    ],
+                    "rows": [
+                      [
+                        "Espèce",
+                        "Un ensemble d’êtres vivants qui se ressemblent et peuvent se reproduire entre eux."
+                      ],
+                      [
+                        "Relation entre êtres vivants",
+                        "Un lien entre deux espèces, comme un prédateur et une proie, ou une plante et un pollinisateur."
+                      ],
+                      [
+                        "Réseau trophique",
+                        "Une chaîne alimentaire dans laquelle plusieurs espèces sont liées par ce qu’elles mangent."
+                      ],
+                      [
+                        "Menace sur la biodiversité",
+                        "Un danger qui fait disparaître des espèces ou réduit leur nombre, comme la pollution ou la destruction d’un habitat."
+                      ],
+                      [
+                        "Action de protection",
+                        "Une mesure pour limiter une menace, comme planter des arbres ou créer une réserve naturelle."
+                      ],
+                      [
+                        "Script de podcast",
+                        "Le texte écrit qui sert de guide pour enregistrer le podcast : dialogue, description, informations."
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Ressources utiles",
+                    "links": [
+                      {
+                        "href": "https://www.ofb.gouv.fr/la-biodiversite",
+                        "text": "Office français de la biodiversité – Biodiversité expliquée"
+                      },
+                      {
+                        "href": "https://www.lpo.fr/decouvrir-la-nature/la-biodiversite",
+                        "text": "La Ligue pour la Protection des Oiseaux – Espèces et menaces"
+                      },
+                      {
+                        "href": "https://www.education.gouv.fr/bo/20/Hebdo31/MENE2019366A.pdf",
+                        "text": "Programme officiel de SVT – Biodiversité et écosystèmes (page 18)"
+                      },
+                      {
+                        "href": "https://www.youtube.com/watch?v=ZkcM3nI2kqo",
+                        "text": "Vidéo : Comment créer un podcast scientifique ?"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e3",
+        "titre": "Se documenter sur la biodiversité locale",
+        "objectif": "Collecter des informations fiables sur le milieu et ses espèces",
+        "introduction": "Maintenant que tu connais les attentes, il est temps de te documenter sur la biodiversité d’un milieu proche de ton collège. Cette étape te guide pour trouver des sources fiables et organiser tes recherches.",
+        "cartes": [
+          {
+            "id": "c4",
+            "titre": "Les sources d’information",
+            "objectif": "Repérer des ressources fiables sur la biodiversité locale",
+            "consigne": "Consulte les ressources proposées dans ce livre pour te documenter sur la biodiversité d’un milieu proche du collège. Note les espèces, les relations entre elles et les menaces identifiées.",
+            "module": "Livre",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Les sources d’information",
+              "intro": "Comment collecter des informations fiables sur la biodiversité près de chez toi ? Ce livre t’aide à repérer les bonnes ressources et à organiser tes recherches pour ton podcast.",
+              "chapters": [
+                {
+                  "title": "Pourquoi s’appuyer sur des ressources locales ?",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#01_hero_header",
+                      "data": {
+                        "title": "Recueillir des données fiables localement",
+                        "subtitle": "Quel est l’intérêt d’étudier un écosystème proche ?"
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Tous les écosystèmes se ressemblent-ils ?",
+                        "paragraphs": [
+                          "Un milieu proche du collège regorge d’espèces adaptées à ton environnement : climat, sol, activités humaines. Ces données sont précieuses pour comprendre les enjeux locaux de la biodiversité.",
+                          "Les espèces décrites dans ce livre sont souvent celles que tu croises dans ton quotidien : une haie d’arbustes, un étang, ou même une cour végétalisée."
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "À retenir",
+                        "callouts": [
+                          {
+                            "type": "objectif",
+                            "text": "Te familiariser avec les espèces, les relations entre elles et les menaces qui pèsent sur ton environnement proche."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "Les informations locales te permettront de construire un script de podcast réaliste et ancré dans la réalité."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Où trouver des informations sur la biodiversité locale ?",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#18_sito_graphy",
+                      "data": {
+                        "title": "Sitographie de référence",
+                        "links": [
+                          {
+                            "href": "https://www.inpn.fr/",
+                            "text": "Inventaire National du Patrimoine Naturel (INPN)"
+                          },
+                          {
+                            "href": "https://www.loire-estuaire.fr/",
+                            "text": "Site de la LPO (Ligue pour la Protection des Oiseaux) pour la région Pays de la Loire"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#06_lexique_table",
+                      "data": {
+                        "title": "Ressources par type d’information",
+                        "caption": "Clé d’accès aux données selon tes besoins",
+                        "headers": [
+                          "Besoin",
+                          "Exemple de source",
+                          "Contenu typique"
+                        ],
+                        "rows": [
+                          [
+                            "Inventaire des espèces",
+                            "INPN",
+                            "Liste des espèces observées dans ton département, avec des fiches détaillées."
+                          ],
+                          [
+                            "Suivi des populations",
+                            "SINP",
+                            "Données sur les menaces pesant sur Certaines espèces ; mises à jour régionales."
+                          ],
+                          [
+                            "Projets locaux",
+                            "Parc naturel régional",
+                            "Actions de protection en cours dans ta zone : semis de haies, mares éphémères..."
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Comment croiser les sources pour plus de fiabilité ?",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#05_stats_cards",
+                      "data": {
+                        "title": "Critères de fiabilité",
+                        "stats": [
+                          {
+                            "value": "3 sources minimum",
+                            "label": "Vérifier l’information plusieurs fois"
+                          },
+                          {
+                            "value": "Données récentes",
+                            "label": "Vérifier la date des observations (moins de 5 ans)"
+                          },
+                          {
+                            "value": "Cartes et graphiques",
+                            "label": "Préférer les données avec visualisations pour repérer les tendances locales."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#10_table_comparison",
+                      "data": {
+                        "title": "Comparer des sites : exemple",
+                        "headers": [
+                          "Critère",
+                          "INPN",
+                          "Site archéobotanique"
+                        ],
+                        "rows": [
+                          [
+                            "Observations animales",
+                            "Oui (+ cartes géolocalisées)",
+                            "Non"
+                          ],
+                          [
+                            "Données historiques",
+                            "Limitées",
+                            "Présentes, mais incomplètes"
+                          ],
+                          [
+                            "Carte interactive",
+                            "Oui (léger décalage possible)",
+                            "Oui"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Étudier un écosystème local : la haie de ton collège",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#08_monuments_grid",
+                      "data": {
+                        "title": "Espèces à repérer dans une haie",
+                        "cards": [
+                          {
+                            "img_src": "https://www.la-haie.com/images/photos/aubepine.jpg",
+                            "img_alt": "Aubépine en fleurs",
+                            "caption": "Arbuste commun",
+                            "title": "Aubépine (Crataegus monogyna)",
+                            "text": "Fleurs blanches au printemps, baies rouges en automne. Fournit une fructification pour les oiseaux sédentaires."
+                          },
+                          {
+                            "img_src": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Turdus_merula_-_Milan_Vidossich.jpg/800px-Turdus_merula_-_Milan_Vidossich.jpg",
+                            "img_alt": "Merle noir",
+                            "caption": "Oiseau fréquentant les haies",
+                            "title": "Merle noir (Turdus merula)",
+                            "text": "Se nourrit des baies d’aubépine et dépose des graines par ses déjections, favorisant la régénération des plantes."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#12_context_paragraphs",
+                      "data": {
+                        "title": "Relations entre les espèces de la haie",
+                        "paragraphs": [
+                          "Les haies abritent des chaînes alimentaires : les baies nourrissent les oiseaux, qui dispersent des graines et pollinisent les fleurs. En automne, la chenille de la paon-du-jour se nourrit de feuilles d’arbustes, pour ponter en été.",
+                          "Attention : l’usage de pesticides benachève les insectes pollinisateurs comme les abeilles, avec un impact sur toute la chaîne."
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Repérer les menaces sur la biodiversité locale",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#15_myths_realities",
+                      "data": {
+                        "title": "Mythe ou réalité ?",
+                        "items": [
+                          {
+                            "myth": "Les haies sont inutiles en ville ou en zone agricole intensive.",
+                            "reality": "Elles créent des corridors écologiques entre les milieux naturels, indispensables aux déplacements des animaux."
+                          },
+                          {
+                            "myth": "Les espèces locales ne sont pas menacées.",
+                            "reality": "Dans les zones agricoles, 70 % des espèces de haie ont vu leur population chuter depuis 50 ans (source : UICN)."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "#04_callout_set",
+                      "data": {
+                        "title": "Points de vigilance",
+                        "callouts": [
+                          {
+                            "type": "alerte",
+                            "text": "Les espèces invasives, comme la renouée du Japon, concurrencent les plantes locales pour les ressources en eau et en lumière."
+                          },
+                          {
+                            "type": "savoir",
+                            "text": "Tous les milieux proches ne se valent pas : une cour bétonnée ne peut pas remplacer une prairie sauvage pour la biodiversité."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Aller plus loin : actions de protection près de chez toi",
+                  "subchapter": false,
+                  "blocks": [
+                    {
+                      "type": "#09_figures_comparison",
+                      "data": {
+                        "title": "Deux actions de protection à ton échelle",
+                        "left": {
+                          "img_src": "https://www.mairie-lyon.fr/sites/default/files/2022-03/mare-éducative.jpg",
+                          "img_alt": "Élèves creusant une mare éphémère",
+                          "caption": "Création d’une mare éducative"
+                        },
+                        "right": {
+                          "img_src": "https://www.loire-estuaire.fr/wp-content/uploads/2020/10/Pixabay-haie-fleurs-printemps-1.jpg",
+                          "img_alt": "Plantation de haies diversifiées",
+                          "caption": "Plantation d’une haie bocagère"
+                        },
+                        "text": "Dans ton collège ou ta commune, recherche des projets comme l’installation de mares pour les amphibiens ou la plantation de haies diversifiées pour les pollinisateurs."
+                      }
+                    },
+                    {
+                      "type": "#13_monument_sheet_long",
+                      "data": {
+                        "title": "Comment participer à un projet local ?",
+                        "img_src": "https://www.ecoledelaterre.fr/wp-content/uploads/2021/09/agriculture-urbaine.jpg",
+                        "img_alt": "Adulte et enfant plantant un arbre",
+                        "sections": [
+                          {
+                            "subtitle": "S’informer",
+                            "text": "Contacte la mairie, les parcs naturels régionaux ou les associations locales (LPO, Conservatoires d’espaces naturels). Ils publient leurs actions sur leurs sites."
+                          },
+                          {
+                            "subtitle": "Participer",
+                            "text": "Certaines communes proposent des chantiers d’aménagement : pose de nichoirs, semis de fleurs indigènes en bordure de parking."
+                          },
+                          {
+                            "subtitle": "Persévérer",
+                            "text": "Un projet local repose sur la régularité : repasser plusieurs fois sur une zone permet de vérifier l’efficacité des actions."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "numbering": 1,
+              "theme": "elea"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c5",
+            "titre": "Le lexique de la biodiversité",
+            "objectif": "Comprendre les termes clés du projet",
+            "consigne": "Consulte le glossaire pour t’approprier les termes clés liés à la biodiversité et aux écosystèmes. Ces mots t’aideront à rédiger ton script.",
+            "module": "Glossary",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "hTag": "h3",
+              "panels": [
+                {
+                  "title": "Espèce indicatrice",
+                  "text": "Espèce dont la présence ou l'absence te permet de déduire l'état d'un écosystème.\nPar exemple, chez nous, le triton crêté signale souvent une mare en bonne santé car il a besoin d'eau propre et de plantes aquatiques."
+                },
+                {
+                  "title": "Adaptation",
+                  "text": "Caractéristique d'un être vivant qui lui permet de vivre dans son milieu.\nChez le lapin qui creuse, ce sont ses pattes solides ; chez un oiseau, c'est son bec adapté à sa nourriture."
+                },
+                {
+                  "title": "Interdépendance",
+                  "text": "Idée que chaque être vivant a besoin des autres pour vivre.\nPar exemple, les abeilles butinent les fleurs et déposent du pollen, ce qui aide les plantes à se reproduire ; en retour, les abeilles mangent le nectar."
+                },
+                {
+                  "title": "Résilience d'un écosystème",
+                  "text": "Capacité d'un écosystème à retrouver son équilibre après une perturbation.\nUn pré après un incendie peut regagner sa végétation si les graines et les racines ont survécu."
+                },
+                {
+                  "title": "Invasive",
+                  "text": "Cette fois, plante ou animal qui arrive dans un milieu où il n'était pas avant et qui prend trop de place.\nComme le raton laveur en Europe, ils peuvent menacer les espèces locales en compétitionnant avec elles."
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Le lexique de la biodiversité"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e6",
+        "titre": "Organiser le travail d’équipe",
+        "objectif": "Planifier les rôles et le calendrier du projet",
+        "introduction": "Ton équipe doit maintenant s’organiser pour mener à bien ce projet. Cette étape te permet de définir les rôles de chacun et de planifier les étapes de travail. Prépare-toi à coopérer efficacement.",
+        "cartes": [
+          {
+            "id": "c7",
+            "titre": "Le wiki de l’équipe",
+            "objectif": "Rédiger collectivement le plan de travail",
+            "consigne": "Dans ce wiki, rédige avec ton équipe les rôles de chacun, le calendrier des étapes et les ressources utilisées. Chaque membre doit contribuer à cette organisation commune.",
+            "module": "parcours_wiki",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Le wiki de l’équipe",
+              "intro": "Dans ce wiki, vous allez écrire ensemble comment votre équipe va préparer le podcast scientifique sur la biodiversité d’un milieu proche du collège. Répartissez-vous les rôles (recherche, script, enregistrement, etc.), fixez un calendrier avec les étapes clés (collecte des données, relecture par les pairs, etc.) et listez les ressources utilisées. Respectez les contributions de chacun : si vous modifiez le texte d’un camarade, ajoutez vos idées en commentaire ou reformulez avec son accord.",
+              "premierePage": "Plan de travail de l’équipe"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c8",
+            "titre": "Vérifier tes connaissances",
+            "objectif": "Tester ta compréhension des notions clés",
+            "consigne": "Réponds à ce quiz pour vérifier que tu maîtrises les notions essentielles à ton projet : biodiversité, écosystème, relations entre êtres vivants, menaces et actions de protection.",
+            "module": "QuizSet",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Vérifier tes connaissances",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "Prêt pour ton podcast sur la biodiversité ?",
+                "introduction": "Avant de commencer ton projet, vérifie que tu maîtrises les notions essentielles. Ce quiz te permet de faire le point sur ce que tu sais déjà et ce qu'il faut revoir. Prends ton temps : chaque question t'aide à progresser.",
+                "startButtonText": "Commencer le quiz"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Biodiversité - QCM"
+                  },
+                  "params": {
+                    "question": "Parmi ces propositions, lesquelles désignent des éléments de la *biodiversité* ?",
+                    "answers": [
+                      {
+                        "text": "Un écosystème forestier",
+                        "correct": true
+                      },
+                      {
+                        "text": "Une espèce de papillon",
+                        "correct": true
+                      },
+                      {
+                        "text": "Un réseau trophique",
+                        "correct": true
+                      },
+                      {
+                        "text": "Une action de protection",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La biodiversité désigne ce qui est vivant et ses interactions. Une action de protection est une mesure prise pour préserver cette biodiversité.",
+                          "chosenFeedback": "Attention : une action de protection est une mesure pour préserver la biodiversité, mais elle n'est pas un élément de la biodiversité elle-même."
+                        }
+                      },
+                      {
+                        "text": "Un milieu proche",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Un milieu proche est un lieu où tu peux étudier la biodiversité, mais ce n'est pas un élément de la biodiversité.",
+                          "chosenFeedback": "Un milieu proche est un lieu d'étude, pas un élément de la biodiversité."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La biodiversité inclut tous les êtres vivants et leurs interactions dans un milieu. Relis les définitions de ces termes pour progresser."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : il manque une ou deux réponses. La biodiversité est à la fois les espèces, les écosystèmes et les relations entre eux."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié plusieurs éléments. Vérifie les propositions qui parlent de mesures ou de lieux, pas de vivants ou d'interactions."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : tu as bien compris ce qu'est la biodiversité. Ces notions sont essentielles pour ton podcast."
+                      }
+                    ]
+                  },
+                  "subContentId": "4e65bb38-0a94-411e-b9da-1c4a5c937b7a"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Écosystème - Vrai/Faux"
+                  },
+                  "params": {
+                    "question": "Un écosystème est un ensemble formé par les êtres vivants et leur milieu de vie, avec toutes leurs interactions.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Exact : un écosystème inclut les êtres vivants, leur milieu et les relations entre eux.",
+                    "feedbackOnWrong": "En fait, un écosystème est bien défini comme l'ensemble des êtres vivants, de leur milieu et des interactions entre eux."
+                  },
+                  "subContentId": "d196454c-e1e8-418c-b9ef-c64b2ce13a45"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Relations entre êtres vivants - QCM"
+                  },
+                  "params": {
+                    "question": "Parmi ces exemples, lesquels illustrent une *relation entre êtres vivants* ?",
+                    "answers": [
+                      {
+                        "text": "Un lion qui chasse une gazelle",
+                        "correct": true
+                      },
+                      {
+                        "text": "Un arbre qui produit de l'oxygène",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Une relation entre êtres vivants implique au moins deux organismes qui interagissent. Un arbre seul ne crée pas une relation.",
+                          "chosenFeedback": "Un arbre qui produit de l'oxygène agit seul : ce n'est pas une relation entre êtres vivants."
+                        }
+                      },
+                      {
+                        "text": "Un champignon qui se développe sur les racines d'un arbre",
+                        "correct": true
+                      },
+                      {
+                        "text": "Un oiseau qui niche dans un buisson",
+                        "correct": true
+                      },
+                      {
+                        "text": "La pluie qui tombe sur le sol",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La pluie est un phénomène physique, pas une interaction entre deux êtres vivants.",
+                          "chosenFeedback": "La pluie est un élément du milieu, pas une relation entre êtres vivants."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Une relation entre êtres vivants implique au moins deux organismes qui interagissent. Cherche des exemples où deux vivants agissent l'un sur l'autre."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : il manque une ou deux réponses. Une relation implique toujours une interaction entre deux êtres vivants."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié plusieurs relations. Vérifie les exemples où un seul organisme agit seul."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : tu as bien compris ce qu'est une relation entre êtres vivants. Ces notions sont clés pour ton podcast."
+                      }
+                    ]
+                  },
+                  "subContentId": "3708ae05-5b90-4c93-9d0d-801f964e85c8"
+                },
+                {
+                  "library": "H5P.MarkTheWords 1.11",
+                  "metadata": {
+                    "title": "Réseau trophique - Surligner"
+                  },
+                  "params": {
+                    "taskDescription": "Surligne les mots qui désignent des éléments d'un *réseau trophique* dans le texte suivant.",
+                    "textField": "Dans une forêt, le *renard* mange le *lapin*, qui se nourrit de *pissenlits*. Le *renard* peut aussi être mangé par un *aigle*. Ces liens forment un *réseau* *trophique*.",
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un réseau trophique montre qui mange qui. Repère les noms d'êtres vivants et le terme qui désigne l'ensemble de ces liens."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Quelques mots sont trouvés : vérifie que chaque être vivant et le terme 'réseau trophique' sont surlignés."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : il manque un ou deux mots. Un réseau trophique inclut les êtres vivants et le terme qui les relie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : tous les éléments d'un réseau trophique sont identifiés."
+                      }
+                    ]
+                  },
+                  "subContentId": "6645f3de-c330-4b47-8c47-456dec64fecc"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Menaces sur la biodiversité - QCM"
+                  },
+                  "params": {
+                    "question": "Parmi ces propositions, lesquelles sont des *menaces sur la biodiversité* ?",
+                    "answers": [
+                      {
+                        "text": "La pollution des sols",
+                        "correct": true
+                      },
+                      {
+                        "text": "La création d'une réserve naturelle",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Une menace réduit la biodiversité. Une réserve naturelle la protège.",
+                          "chosenFeedback": "Une réserve naturelle est une action de protection, pas une menace."
+                        }
+                      },
+                      {
+                        "text": "La déforestation",
+                        "correct": true
+                      },
+                      {
+                        "text": "L'introduction d'une espèce invasive",
+                        "correct": true
+                      },
+                      {
+                        "text": "Le recyclage des déchets",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Le recyclage est une action positive pour l'environnement.",
+                          "chosenFeedback": "Le recyclage réduit les déchets et protège la biodiversité : ce n'est pas une menace."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "showSolutionsRequiresInput": true,
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Une menace réduit ou détruit la biodiversité. Cherche des actions qui nuisent aux êtres vivants ou à leurs milieux."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : il manque une ou deux réponses. Une menace est une action qui réduit la biodiversité."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié plusieurs menaces. Vérifie les propositions qui protègent la biodiversité ou qui sont neutres."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : tu as bien compris ce qu'est une menace sur la biodiversité. Ces notions sont importantes pour ton podcast."
+                      }
+                    ]
+                  },
+                  "subContentId": "b99d6dff-2c15-4f61-b760-e958620f5d04"
+                },
+                {
+                  "library": "H5P.DragText 1.10",
+                  "metadata": {
+                    "title": "Actions de protection - Glisser les mots"
+                  },
+                  "params": {
+                    "taskDescription": "Complète les phrases avec les mots qui désignent des *actions de protection* de la biodiversité.",
+                    "textField": "Pour protéger la biodiversité, on peut créer une *réserve naturelle*. Une autre action est de *réduire* les déchets. On peut aussi *planter* des arbres pour restaurer un milieu.",
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Une action de protection vise à préserver ou restaurer la biodiversité. Cherche des verbes ou noms qui indiquent une action positive."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon début : une ou deux actions sont à revoir. Une action de protection est une mesure pour préserver la biodiversité."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : il manque une action. Une action de protection peut être une mesure, une loi ou une action concrète."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : toutes les actions de protection sont bien placées."
+                      }
+                    ]
+                  },
+                  "subContentId": "5295f8c5-19fb-4b5e-b26b-2275ec4deffb"
+                },
+                {
+                  "library": "H5P.Blanks 1.14",
+                  "metadata": {
+                    "title": "Rôle dans un écosystème - Mots à trous"
+                  },
+                  "params": {
+                    "taskDescription": "Complète les phrases avec les mots qui désignent un *rôle dans un écosystème*.",
+                    "questions": [
+                      "Un *prédateur* régule les populations de proies dans un écosystème.",
+                      "Un *décomposeur* recycle la matière organique et enrichit le sol."
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "allowRetryIfCorrect": false,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un rôle dans un écosystème décrit la fonction d'un être vivant. Cherche des termes qui désignent une action ou une place dans un réseau."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon départ : le vocabulaire des rôles (prédateur, décomposeur…) est à maîtriser."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : il manque un terme. Un rôle décrit ce qu'un être vivant apporte à son écosystème."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : les rôles dans un écosystème sont bien identifiés."
+                      }
+                    ]
+                  },
+                  "subContentId": "b4add800-45f9-47df-b43d-d6569890e383"
+                },
+                {
+                  "library": "H5P.DragQuestion 1.15",
+                  "metadata": {
+                    "title": "Milieu proche - Glisser-déposer"
+                  },
+                  "params": {
+                    "title": "Associe chaque élément à son *milieu proche* possible.",
+                    "dropZones": [
+                      {
+                        "label": "Forêt",
+                        "correctElements": [
+                          0,
+                          3
+                        ]
+                      },
+                      {
+                        "label": "Prairie",
+                        "correctElements": [
+                          1,
+                          4
+                        ]
+                      },
+                      {
+                        "label": "Étang",
+                        "correctElements": [
+                          2
+                        ]
+                      }
+                    ],
+                    "elements": [
+                      {
+                        "text": "Chêne"
+                      },
+                      {
+                        "text": "Coquelicot"
+                      },
+                      {
+                        "text": "Triton"
+                      },
+                      {
+                        "text": "Renard"
+                      },
+                      {
+                        "text": "Papillon"
+                      }
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un milieu proche est un lieu où vivent ces espèces. Cherche des indices dans les noms des espèces ou leur mode de vie."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon début : une ou deux associations sont à revoir. Un chêne et un renard vivent plutôt en forêt."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : il manque une ou deux associations. Un triton vit dans un milieu aquatique comme un étang."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : chaque élément est bien associé à son milieu proche."
+                      }
+                    ]
+                  },
+                  "subContentId": "b8389fd4-59da-4a32-b3ff-46078e01e0bb"
+                },
+                {
+                  "library": "H5P.Essay 1.5",
+                  "metadata": {
+                    "title": "Podcast scientifique - Rédaction"
+                  },
+                  "params": {
+                    "taskDescription": "Explique pourquoi il est important de parler de la biodiversité dans un *podcast scientifique* destiné à des collégiens.",
+                    "keywords": [
+                      {
+                        "keyword": "sensibilisation",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "connaissance",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "protection",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      }
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pense à l'objectif d'un podcast scientifique : informer, sensibiliser ou donner envie d'agir. Relie ces idées à la biodiversité."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon départ : tu as identifié un ou deux aspects. Ajoute une idée sur l'importance de connaître la biodiversité pour mieux la protéger."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : il manque une idée pour être complet. Un podcast scientifique peut informer, sensibiliser ou proposer des actions."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Très complet : tu as bien expliqué l'importance de parler de biodiversité dans un podcast scientifique."
+                      }
+                    ]
+                  },
+                  "subContentId": "e0435d8a-e6c6-4713-805d-eec8e62c0e61"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les notions de base sont à reprendre : relis le cours, puis refais le quiz, pour progresser. Concentre-toi sur les définitions de biodiversité, écosystème et relations entre êtres vivants."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Ces notions s'installent. Cibler ce qui résiste et s'entraîner encore un peu. Revérifie les exemples de relations entre êtres vivants et les rôles dans un écosystème."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Plusieurs notions sont acquises. Repérer les questions qui ont fait hésiter permettra de consolider. Concentre-toi sur les menaces et les actions de protection pour ton podcast."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "L'ensemble est bien maîtrisé. S'entraîner encore ancrera ces acquis. Tu es prêt pour ton projet de podcast sur la biodiversité !"
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": "on",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Repasse en revue les définitions de base. La biodiversité, les écosystèmes et les relations entre êtres vivants sont les piliers de ton projet."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "Tu as fait des progrès. Identifie les questions qui ont posé problème pour les retravailler avant de commencer ton podcast."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Presque ! Les menaces et les actions de protection sont bien comprises. Ajoute des exemples concrets pour ton podcast."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Excellent travail ! Tu maîtrises les notions essentielles pour ton podcast. Passe à l'étape suivante : rédiger ton script et préparer ton enregistrement."
+                  }
+                ]
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e9",
+        "titre": "Rédiger et préparer la présentation",
+        "objectif": "Produire un premier jet du script et le présenter",
+        "introduction": "Ton équipe a maintenant toutes les informations nécessaires pour rédiger le script de ton podcast. Cette étape te guide pour produire un premier jet et le présenter à la classe pour recueillir des retours.",
+        "cartes": [
+          {
+            "id": "c10",
+            "titre": "Rédiger le script",
+            "objectif": "Produire un texte structuré pour le podcast",
+            "consigne": "Rédige avec ton équipe le script de ton podcast en respectant la structure demandée : introduction, présentation des espèces, relations entre êtres vivants, menaces et actions de protection. Respecte la limite de cinq minutes.",
+            "module": "Essay",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 25,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Vous allez rédiger ensemble le **script** de votre **podcast scientifique** de cinq minutes sur la **biodiversité** d’un **milieu proche** de votre collège. \n\nVotre texte doit présenter :\n- une **introduction** qui donne envie d’écouter et annonce le sujet ;\n- les **espèces** que vous avez repérées dans ce milieu ;\n- les **relations entre êtres vivants** (qui mange qui, qui vit avec qui) ;\n- les **menaces** qui pèsent sur ces espèces ;\n- les **actions de protection** possibles ou déjà mises en place.\n\nRespectez la durée de cinq minutes : votre texte doit être clair, concis et adapté à l’oral. Pensez à varier les voix si vous enregistrez à plusieurs.\n\n*Exemple de milieu proche : un parc, une forêt, un étang, un jardin du collège, un bord de rivière…*",
+              "keywords": [
+                {
+                  "keyword": "biodiversité",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Le mot biodiversité est bien présent dans votre texte.",
+                    "feedbackMissed": "Le mot biodiversité n’apparaît pas dans votre texte. Pensez à l’utiliser pour introduire votre sujet."
+                  }
+                },
+                {
+                  "keyword": "espèce",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "alternatives": [
+                      "espèces",
+                      "plante",
+                      "animal",
+                      "organisme"
+                    ],
+                    "feedbackIncluded": "Vous avez cité au moins une espèce présente dans le milieu étudié.",
+                    "feedbackMissed": "Aucune espèce n’est mentionnée dans votre texte. Cherchez des exemples concrets dans votre milieu proche."
+                  }
+                },
+                {
+                  "keyword": "relation entre êtres vivants",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "alternatives": [
+                      "relation entre espèces",
+                      "chaîne alimentaire",
+                      "réseau trophique",
+                      "qui mange qui"
+                    ],
+                    "feedbackIncluded": "Vous avez décrit au moins une relation entre êtres vivants (par exemple, une chaîne alimentaire ou une symbiose).",
+                    "feedbackMissed": "Aucune relation entre êtres vivants n’est expliquée. Pensez à décrire comment les espèces interagissent entre elles."
+                  }
+                },
+                {
+                  "keyword": "menace",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "alternatives": [
+                      "danger",
+                      "risque",
+                      "pression",
+                      "dégradation"
+                    ],
+                    "feedbackIncluded": "Vous avez identifié au moins une menace qui pèse sur la biodiversité du milieu.",
+                    "feedbackMissed": "Aucune menace n’est évoquée dans votre texte. Réfléchissez aux activités humaines ou aux changements climatiques qui pourraient nuire aux espèces."
+                  }
+                },
+                {
+                  "keyword": "action de protection",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "alternatives": [
+                      "protection",
+                      "préservation",
+                      "conservation",
+                      "mesure de protection"
+                    ],
+                    "feedbackIncluded": "Vous avez proposé au moins une action de protection pour préserver la biodiversité.",
+                    "feedbackMissed": "Aucune action de protection n’est suggérée. Pensez à des solutions comme la création de réserves, la réduction des pollutions ou la sensibilisation."
+                  }
+                },
+                {
+                  "keyword": "milieu proche",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "alternatives": [
+                      "environnement local",
+                      "lieu étudié",
+                      "zone proche",
+                      "écosystème local"
+                    ],
+                    "feedbackIncluded": "Vous avez précisé le milieu proche que vous étudiez (par exemple, un parc, une forêt…).",
+                    "feedbackMissed": "Le milieu proche n’est pas clairement identifié dans votre texte. Décrivez où se situe votre étude."
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Votre texte est encore incomplet : relisez les consignes pour vérifier que vous avez bien abordé tous les points demandés (espèces, relations, menaces, actions). Pensez à préciser le milieu étudié dès l’introduction."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Vous avez commencé à structurer votre texte, mais certaines parties manquent de détails. Vérifiez que chaque section (espèces, relations, menaces, actions) est bien développée. Relisez-vous à voix haute pour ajuster la durée."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Votre script est bien organisé et couvre la plupart des attentes. Pour aller plus loin, ajoutez des exemples concrets d’espèces ou de menaces, et proposez des actions réalistes pour votre milieu. Pensez à la fluidité pour un podcast oral."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Félicitations ! Votre texte est complet, bien structuré et adapté à un podcast de cinq minutes. Les idées sont claires, les exemples pertinents et les transitions fluides. Vous pouvez maintenant passer à l’enregistrement en veillant à varier les voix et le rythme."
+                }
+              ],
+              "solution": {
+                "introduction": "Ce script est un exemple de réponse complète et structurée pour un podcast sur la biodiversité d’un parc urbain.",
+                "sample": "Bonjour à toutes et à tous ! Aujourd’hui, nous vous emmenons découvrir la biodiversité d’un parc près de notre collège. Ce lieu, souvent méconnu, abrite une grande variété d’espèces végétales et animales. \n\nDans ce parc, on trouve des chênes centenaires, des fougères et des mousses qui couvrent le sol. Côté animaux, des écureuils grignotent des noisettes, des mésanges chantent dans les branches et des hérissons fouillent la nuit à la recherche de vers. \n\nCes espèces sont liées entre elles : les écureuils se nourrissent des graines des chênes, les mésanges mangent les insectes qui vivent sur les arbres, et les hérissons aident à réguler les populations de limaces. Sans ces relations, l’équilibre du parc serait menacé. \n\nMalheureusement, ce milieu est fragilisé par plusieurs menaces : la pollution des sols due aux déchets abandonnés, la disparition des haies qui servent d’abri aux animaux, et l’utilisation de pesticides dans les jardins voisins. \n\nPour protéger ce parc, des actions sont possibles : organiser des journées de nettoyage, planter des haies pour les hérissons, et sensibiliser les habitants à l’importance de ne pas utiliser de produits chimiques. Ensemble, agissons pour préserver ce petit écosystème !"
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Rédiger le script"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c11",
+            "titre": "Présenter ton projet à la classe",
+            "objectif": "Recueillir des retours sur ton premier jet",
+            "consigne": "Présente ton script à la classe en suivant la grille de critères fournie. Tes camarades te donneront des retours pour t’aider à améliorer ta production.",
+            "module": "parcours_atelier",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Présenter ton projet à la classe",
+              "intro": "Maintenant que ton script du podcast est prêt, présente-le à la classe en suivant les critères détaillés. Ensuite, tu recevras les retours constructifs de deux de tes camarades pour t’aider à affiner ton travail avant la version finale.",
+              "consigneAuteurs": "Partage ton script de podcast (5 minutes maximum) avec la classe en y incluant : le titre provisoire, une introduction qui présente le milieu proche et l’enjeu de biodiversité, le développement avec au moins deux espèces, une relation entre êtres vivants, un réseau trophique, une menace sur la biodiversité et une action de protection. Ton texte doit être clair, organisé en parties et prêt à être oralisé.",
+              "consigneEvaluateurs": "En t’appuyant sur les critères fournis, commente le script de deux camarades dans un esprit bienveillant. Pour chaque point : identifie ce qui fonctionne (exemple précis), signale ce qui pourrait être amélioré (exemple précis) et propose une piste concrète pour progresser. Vise des corrections qui renforcent le fond comme la forme.",
+              "criteres": [
+                "Le texte présente clairement le milieu proche choisi et son intérêt pour la biodiversité locale",
+                "Il intègre au minimum deux espèces pertinentes pour le lieu, avec des informations précises sur leur rôle dans l’écosystème",
+                "Une relation entre êtres vivants (exemple : prédation, symbiose, compétition) est correctement décrite et illustrée",
+                "Le script inclut une menace avérée sur la biodiversité locale et une action de protection concrète, adaptées au milieu"
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e12",
+        "titre": "Finaliser et partager ton podcast",
+        "objectif": "Améliorer ta production à partir des retours et la partager",
+        "introduction": "Ton équipe a reçu des retours sur son script. Cette dernière étape te permet d’améliorer ta production et de la partager avec la classe. Prends en compte les suggestions pour finaliser ton podcast.",
+        "cartes": [
+          {
+            "id": "c13",
+            "titre": "Remettre la version améliorée",
+            "objectif": "Finaliser le script en intégrant les retours",
+            "consigne": "Remets ici la version finale de ton script en intégrant les retours de tes camarades. Respecte toujours la limite de cinq minutes et les critères de réussite.",
+            "module": "Devoir",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Remettre la version améliorée",
+              "description": "Tu as collecté des retours sur ton script de podcast. Relis-les soigneusement et améliore ta version en intégrant les suggestions des tes camarades. Ton script final doit rester dans la limite de cinq minutes tout en respectant tous les critères demandés pour la réussite du projet.",
+              "rubricName": "Qualité du script amélioré",
+              "criteria": [
+                {
+                  "description": "Respect de la structure du podcast",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "La structure du script ne correspond pas aux parties attendues d'un podcast scientifique sur la biodiversité locale (présentation du milieu, espèces rencontrées, relations entre êtres vivants, menaces, actions de protection)."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "La structure est partiellement présente : une ou deux parties manquent ou sont mal détaillées."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "La structure est complète et respecte l'ordre logique pour un podcast de cinq minutes."
+                    },
+                    {
+                      "score": 3,
+                      "definition": "La structure est complète, fluide et montre une progression claire entre chaque partie."
+                    }
+                  ]
+                },
+                {
+                  "description": "Précision et exactitude scientifique",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Les informations scientifiques sur les espèces, leur rôle ou les menaces sont incorrectes ou absentes."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Les informations scientifiques sont présentes mais certaines sont imprécises ou incomplètes."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Les informations scientifiques sont globalement exactes et adaptées au niveau des élèves de 4e."
+                    },
+                    {
+                      "score": 3,
+                      "definition": "Les informations scientifiques sont exactes, bien détaillées et montrent une recherche approfondie sur le milieu étudié."
+                    }
+                  ]
+                },
+                {
+                  "description": "Intégration des retours des pairs",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucun retour des pairs n'est visible dans la version améliorée."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Quelques retours sont partiellement intégrés sans montrer de réflexion sur leur pertinence."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Tous les retours pertinents sont intégrés avec des modifications visibles et justifiées."
+                    },
+                    {
+                      "score": 3,
+                      "definition": "Tous les retours sont intégrés de manière réfléchie et améliorent significativement la qualité du script."
+                    }
+                  ]
+                },
+                {
+                  "description": "Clarté et accessibilité du langage",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Le langage utilisé est incompréhensible ou trop technique sans explication, rendant le script difficile à suivre."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Le langage est partiellement clair : certains termes techniques ne sont pas expliqués ou le vocabulaire reste trop complexe."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Le langage est clair et adapté à un public de 4e, avec des explications adaptées pour les termes techniques."
+                    },
+                    {
+                      "score": 3,
+                      "definition": "Le langage est simple, précis et engageant pour le public cible."
+                    }
+                  ]
+                },
+                {
+                  "description": "Respect de la limite de durée (5 minutes)",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Le script est beaucoup trop long ou beaucoup trop court pour être un podcast de cinq minutes."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Le script dépasse légèrement la durée ou manque de contenu pour atteindre cinq minutes."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "Le script respecte approximativement la durée de cinq minutes."
+                    },
+                    {
+                      "score": 3,
+                      "definition": "Le script est ajusté pour correspondre exactement à une durée de cinq minutes, avec un rythme fluide."
+                    }
+                  ]
+                },
+                {
+                  "description": "Qualité de la relecture et des corrections",
+                  "levels": [
+                    {
+                      "score": 0,
+                      "definition": "Aucune correction n'a été apportée entre les versions, ou les corrections sont effectuées de manière aléatoire sans logique."
+                    },
+                    {
+                      "score": 1,
+                      "definition": "Quelques corrections ont été effectuées, mais certaines erreurs majeures persistent (orthographe, syntaxe, cohérence)."
+                    },
+                    {
+                      "score": 2,
+                      "definition": "La relecture a permis de corriger la majorité des erreurs et d'améliorer la cohérence du texte."
+                    },
+                    {
+                      "score": 3,
+                      "definition": "La relecture est systématique et professionnelle, éliminant toute erreur et améliorant la fluidité et la précision du script."
+                    }
+                  ]
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c14",
+            "titre": "Partager tes améliorations",
+            "objectif": "Expliquer les changements apportés",
+            "consigne": "Dans ce forum, explique les modifications que tu as apportées à ton script à partir des retours reçus. Sois précis sur les changements et leurs raisons.",
+            "module": "parcours_forum",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Partager tes améliorations",
+              "intro": "Maintenant que votre script est prêt et que vous avez présenté votre projet à la classe, décrivez précisément les modifications apportées après les retours reçus. Expliquez quels éléments du script ont été changés sur le fond comme sur la forme, en lien avec la biodiversité du milieu étudié, les relations entre êtres vivants, ou encore les menaces et actions de protection identifiées. Vos explications doivent montrer comment ces ajustements améliorent la clarté, la précision scientifique ou l’impact de votre podcast."
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "4e",
+    "adultes": false
+  }
+}

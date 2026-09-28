@@ -14,6 +14,7 @@ const CHART_WIDTH = 800;
 const CHART_HEIGHT = 500;
 const BAR_PADDING = { top: 50, right: 30, bottom: 90, left: 70 };
 const PIE_RADIUS_RATIO = 0.35;
+const PIE_LEGEND_X = 440;
 
 /**
  * Génère une image PNG d'un diagramme à partir des données H5P Chart.
@@ -29,13 +30,25 @@ export function generateChartImage(data) {
     canvas.width = CHART_WIDTH;
     canvas.height = CHART_HEIGHT;
     const ctx = canvas.getContext('2d');
+    let legend;
+    if (data.graphMode === 'pieChart') {
+        const total = data.listOfTypes.reduce((sum, item) => sum + item.value, 0);
+        ctx.font = '12px sans-serif';
+        legend = data.listOfTypes.map(item => splitLines(ctx, `${item.text} : ${item.value} (${(item.value / total * 100).toFixed(1)}%)`, CHART_WIDTH - PIE_LEGEND_X - 45));
+        canvas.height = Math.max(CHART_HEIGHT, 80 + legend.reduce((height, lines) => height + Math.max(24, lines.length * 16 + 10), 0));
+    } else {
+        ctx.font = '12px sans-serif';
+        const labelWidth = (CHART_WIDTH - BAR_PADDING.left - BAR_PADDING.right) / data.listOfTypes.length - 4;
+        const labelLines = Math.max(...data.listOfTypes.map(item => splitLines(ctx, item.text, labelWidth).length));
+        canvas.height = Math.max(CHART_HEIGHT, CHART_HEIGHT - BAR_PADDING.bottom + 8 + labelLines * 15 + 20);
+    }
 
     // Fond blanc
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, CHART_WIDTH, CHART_HEIGHT);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (data.graphMode === 'pieChart') {
-        drawPieChart(ctx, data);
+        drawPieChart(ctx, data, legend);
     } else {
         drawBarChart(ctx, data);
     }
@@ -84,8 +97,8 @@ function drawBarChart(ctx, data) {
 
     const tickCount = 5;
     for (let i = 0; i <= tickCount; i++) {
-        const val = Math.round((maxValue / tickCount) * i);
-        const y = chartY + chartHeight - (val / maxValue) * chartHeight;
+        const val = Number(((maxValue / tickCount) * i).toPrecision(6));
+        const y = chartY + chartHeight - (i / tickCount) * chartHeight;
 
         // Ligne de grille
         ctx.beginPath();
@@ -125,12 +138,14 @@ function drawBarChart(ctx, data) {
         ctx.lineWidth = 1;
         ctx.strokeRect(x, y, barWidth, barHeight);
 
-        // Valeur au-dessus de la barre
-        ctx.fillStyle = '#333333';
+        // La couleur de texte choisie s'applique sur la barre ; une barre trop
+        // petite garde sa valeur au-dessus, en sombre pour rester lisible.
+        const inside = barHeight >= 24;
+        ctx.fillStyle = inside ? (item.fontColor || '#000000') : '#333333';
         ctx.font = 'bold 13px sans-serif';
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(String(item.value), x + barWidth / 2, y - 4);
+        ctx.textBaseline = inside ? 'top' : 'bottom';
+        ctx.fillText(String(item.value), x + barWidth / 2, inside ? y + 5 : y - 4);
 
         // Label sous l'axe X
         ctx.fillStyle = '#333333';
@@ -145,12 +160,12 @@ function drawBarChart(ctx, data) {
 // PIE CHART
 // =======================================================================
 
-function drawPieChart(ctx, data) {
+function drawPieChart(ctx, data, legend) {
     const items = data.listOfTypes;
     const total = items.reduce((sum, d) => sum + d.value, 0);
     if (total === 0) return;
 
-    const centerX = CHART_WIDTH / 2;
+    const centerX = 235;
     const centerY = CHART_HEIGHT / 2 + 15;
     const radius = Math.min(CHART_WIDTH, CHART_HEIGHT) * PIE_RADIUS_RATIO;
 
@@ -177,7 +192,7 @@ function drawPieChart(ctx, data) {
         const midAngle = startAngle + sliceAngle / 2;
         const pct = (item.value / total * 100);
 
-        // Labels internes pour les grosses tranches, externes pour les petites
+        // Valeurs dans les grosses tranches ; la légende détaille toutes les données.
         if (pct >= 8) {
             const labelRadius = radius * 0.6;
             const labelX = centerX + Math.cos(midAngle) * labelRadius;
@@ -194,12 +209,12 @@ function drawPieChart(ctx, data) {
     });
 
     // Légende à droite
-    const legendX = centerX + radius + 30;
+    const legendX = PIE_LEGEND_X;
     const legendY = BAR_PADDING.top + 10;
-    const legendItemHeight = 24;
+    let nextLegendY = legendY;
 
     items.forEach((item, i) => {
-        const y = legendY + i * legendItemHeight;
+        const y = nextLegendY;
         const color = item.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
 
         // Carré de couleur
@@ -214,8 +229,9 @@ function drawPieChart(ctx, data) {
         ctx.font = '12px sans-serif';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
-        const pct = (item.value / total * 100).toFixed(1);
-        ctx.fillText(`${item.text} : ${item.value} (${pct}%)`, legendX + 20, y + 7);
+        const lines = legend[i];
+        lines.forEach((line, lineIndex) => ctx.fillText(line, legendX + 20, y + 7 + lineIndex * 16));
+        nextLegendY += Math.max(24, lines.length * 16 + 10);
     });
 }
 
@@ -227,24 +243,36 @@ function drawPieChart(ctx, data) {
  * Découpe un texte en plusieurs lignes si trop long.
  */
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-    const words = text.split(' ');
+    splitLines(ctx, text, maxWidth).forEach((line, i) => ctx.fillText(line, x, y + i * lineHeight));
+}
+
+/** Retourne aussi les lignes avant dessin pour réserver la hauteur de légende. */
+function splitLines(ctx, text, maxWidth) {
+    const words = String(text || '').split(/\s+/);
+    const lines = [];
     let line = '';
-    let currentY = y;
 
     for (const word of words) {
         const testLine = line + (line ? ' ' : '') + word;
         const metrics = ctx.measureText(testLine);
         if (metrics.width > maxWidth && line) {
-            ctx.fillText(line, x, currentY);
+            lines.push(line);
             line = word;
-            currentY += lineHeight;
         } else {
             line = testLine;
         }
+        while (ctx.measureText(line).width > maxWidth && [...line].length > 1) {
+            const letters = [...line];
+            let end = letters.length - 1;
+            while (end > 1 && ctx.measureText(letters.slice(0, end).join('')).width > maxWidth) end--;
+            lines.push(letters.slice(0, end).join(''));
+            line = letters.slice(end).join('');
+        }
     }
     if (line) {
-        ctx.fillText(line, x, currentY);
+        lines.push(line);
     }
+    return lines;
 }
 
 /**
@@ -254,7 +282,8 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
  * @returns {string} Couleur hex assombrie
  */
 function darkenColor(hex, amount) {
-    const num = parseInt(hex.replace('#', ''), 16);
+    const fullHex = hex.replace(/^#([0-9a-f]{3})$/i, (_, digits) => '#' + [...digits].map(d => d + d).join(''));
+    const num = parseInt(fullHex.replace('#', ''), 16);
     const r = Math.max(0, Math.floor((num >> 16) * (1 - amount)));
     const g = Math.max(0, Math.floor(((num >> 8) & 0xFF) * (1 - amount)));
     const b = Math.max(0, Math.floor((num & 0xFF) * (1 - amount)));

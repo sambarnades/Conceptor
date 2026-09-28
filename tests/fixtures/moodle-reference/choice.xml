@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="78" moduleid="22723" modulename="choice" contextid="55585">
+  <choice id="78">
+    <name>Sondage</name>
+    <intro>&lt;p&gt;Blabla&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <publish>0</publish>
+    <showresults>0</showresults>
+    <display>0</display>
+    <allowupdate>0</allowupdate>
+    <allowmultiple>0</allowmultiple>
+    <showunanswered>0</showunanswered>
+    <limitanswers>0</limitanswers>
+    <timeopen>0</timeopen>
+    <timeclose>0</timeclose>
+    <timemodified>1788524609</timemodified>
+    <completionsubmit>1</completionsubmit>
+    <showpreview>0</showpreview>
+    <includeinactive>0</includeinactive>
+    <showavailable>0</showavailable>
+    <options>
+      <option id="311">
+        <text>Option 1  à saisir</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+      <option id="312">
+        <text>Option 2  à saisir</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+      <option id="313">
+        <text>Option 3  à saisir</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+      <option id="314">
+        <text>Option 4  à saisir</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+      <option id="315">
+        <text>Option 5  à saisir</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+      <option id="316">
+        <text>...</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+      <option id="317">
+        <text>...</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+      <option id="318">
+        <text>...</text>
+        <maxanswers>0</maxanswers>
+        <timemodified>1788524609</timemodified>
+      </option>
+    </options>
+    <answers>
+    </answers>
+  </choice>
+</activity>

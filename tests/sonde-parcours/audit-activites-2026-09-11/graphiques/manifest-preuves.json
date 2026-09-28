@@ -1,0 +1,152 @@
+[
+  {
+    "fichier": "a-importer/graphique-barres.h5p",
+    "octets": 1240,
+    "sha256": "bf3ed37f5c8028fd97e6280e80dc6ca73be0cde1004512767db157625468804b"
+  },
+  {
+    "fichier": "a-importer/graphique-secteurs.h5p",
+    "octets": 1272,
+    "sha256": "2fa2e267e81dfec29c546474e4216e765ac954c53962f842b11f2e92860bc1b8"
+  },
+  {
+    "fichier": "documents-caramel/graphique-barres.docx",
+    "octets": 32956,
+    "sha256": "6d8210efae0631ad4c1c615750958512830d113577f6d25dd8eeb8f8e26c8a25"
+  },
+  {
+    "fichier": "documents-caramel/graphique-barres.odt",
+    "octets": 46412,
+    "sha256": "844b0aa70e2ffb981ea303d4d666ca8987888620033aae6b4a0dd544ff127b47"
+  },
+  {
+    "fichier": "documents-caramel/graphique-barres.pdf",
+    "octets": 93675,
+    "sha256": "c55f8be7cc898f49afcf2527c3132f066625ebd62df6e1a41b4f4bf7c808f73f"
+  },
+  {
+    "fichier": "documents-caramel/graphique-secteurs.docx",
+    "octets": 45246,
+    "sha256": "fcd2cafdfed85cc6a4b16a0639cd389424706b598389ad83e77f8102658b91e3"
+  },
+  {
+    "fichier": "documents-caramel/graphique-secteurs.odt",
+    "octets": 56103,
+    "sha256": "7d69e3d9cead6d02b8edcc564fdbfef198f818083dcca550df218dfa3c63d0ae"
+  },
+  {
+    "fichier": "documents-caramel/graphique-secteurs.pdf",
+    "octets": 103266,
+    "sha256": "65d097e8b78223d3ce69bca306d8e62a27c221a1240e9349685892bf31914de6"
+  },
+  {
+    "fichier": "documents-sucrerie/graphique-barres.docx",
+    "octets": 34959,
+    "sha256": "838bff85d8cd33cfd18c953c1e2bd57bbc6037ce01f7c495a49b2438637d744c"
+  },
+  {
+    "fichier": "documents-sucrerie/graphique-barres.odt",
+    "octets": 48131,
+    "sha256": "18e2337e4bba7f9cc06548d251cfe3e53559510d6e02779503649bbf24b62a11"
+  },
+  {
+    "fichier": "documents-sucrerie/graphique-barres.pdf",
+    "octets": 95080,
+    "sha256": "529eb09f60d608e9a2ad4767d4630644139d014bb75c343d4c95552dc96aae11"
+  },
+  {
+    "fichier": "documents-sucrerie/graphique-secteurs.docx",
+    "octets": 46741,
+    "sha256": "b5bc0d7b9f2cd7ff3cb98a0e24f2cff8c1cbc29556f5d4f90ef2a68e06d0131b"
+  },
+  {
+    "fichier": "documents-sucrerie/graphique-secteurs.odt",
+    "octets": 57572,
+    "sha256": "f57e482789d92f7bd124da8ba4660d7fa00a67224d8746176a763f0e97bd17b2"
+  },
+  {
+    "fichier": "documents-sucrerie/graphique-secteurs.pdf",
+    "octets": 104157,
+    "sha256": "5d89d6bc30a227616a57a91cff7b3ccb2b1001ba7a5e0db34c40be22b64ec253"
+  },
+  {
+    "fichier": "paquets-sucrerie/graphique-barres.h5p",
+    "octets": 731,
+    "sha256": "8809da7168be011de3cc561e2dd253bd456c891003cc2dd4b4dccb4933d8b26a"
+  },
+  {
+    "fichier": "paquets-sucrerie/graphique-secteurs.h5p",
+    "octets": 761,
+    "sha256": "dd63795a9004c2fe640589a9315f363a5d2be4004fe714ed99742e4c0a970824"
+  },
+  {
+    "fichier": "rendus/bas-barres-docx.png",
+    "octets": 56798,
+    "sha256": "bb5eef487925618b4b835c08bf33801480d9c15ef18b1f04e0936d8561123756"
+  },
+  {
+    "fichier": "rendus/bas-barres-odt.png",
+    "octets": 56876,
+    "sha256": "2a973be087f2841a81a85fec10d2b0678693df1d439dbe220b4513a621655a7c"
+  },
+  {
+    "fichier": "rendus/bas-secteurs-docx.png",
+    "octets": 95968,
+    "sha256": "0b448ab0d76f7916f9f1f1e140da5b9830f542d1981984b26d80f3eb6f732076"
+  },
+  {
+    "fichier": "rendus/bas-secteurs-odt.png",
+    "octets": 96679,
+    "sha256": "9bce9670baf1162a1a132db327799ebb64b0efc89ea4f71a9e0f0a35bad3510e"
+  },
+  {
+    "fichier": "rendus/graphique-barres.png",
+    "octets": 58161,
+    "sha256": "e27cf87947f7f059a32b7f2a1dd70902108bdfa2a40e4d3f58216479c15d9216"
+  },
+  {
+    "fichier": "rendus/graphique-secteurs.png",
+    "octets": 67771,
+    "sha256": "b8786037421de6df24cb6507ae97ac0702dab4348ed3677c1fef25ab26b1aba9"
+  },
+  {
+    "fichier": "rendus/sucrerie-barres-docx.png",
+    "octets": 62528,
+    "sha256": "e999a1b869b2e113badc7071814d26827772f8823c9c42d59fb3f7b74dda9878"
+  },
+  {
+    "fichier": "rendus/sucrerie-barres-editeur.png",
+    "octets": 32074,
+    "sha256": "ce4b43cab62073c99b9597238e458db2e9ef4c1f3825cf490b9b440eb89f0634"
+  },
+  {
+    "fichier": "rendus/sucrerie-barres-odt.png",
+    "octets": 63037,
+    "sha256": "4164f30c7a958ee79a5dcd94955da65ba03e2db7f7ce1b756c533ee6a7d0712b"
+  },
+  {
+    "fichier": "rendus/sucrerie-barres-pdf.png",
+    "octets": 64097,
+    "sha256": "cee86a3ebad16751dbe55f03a17f3c8eba2187e496a1d6795f67561e5b6f8094"
+  },
+  {
+    "fichier": "rendus/sucrerie-secteurs-docx.png",
+    "octets": 103447,
+    "sha256": "72306e91a5344f0cee51e5277a7968b709f82e95461acdaa73a76f018128da68"
+  },
+  {
+    "fichier": "rendus/sucrerie-secteurs-editeur.png",
+    "octets": 42437,
+    "sha256": "5173747076ea0da731a6f818a1473d5239952397c573fb4931241a731fe2ae46"
+  },
+  {
+    "fichier": "rendus/sucrerie-secteurs-odt.png",
+    "octets": 103690,
+    "sha256": "a161fe4a0e95c67dbbcf619b982286796627e34fcce296fa4eda35b8a315479e"
+  },
+  {
+    "fichier": "rendus/sucrerie-secteurs-pdf.png",
+    "octets": 73607,
+    "sha256": "853db7c4db830fac6ba385b30e75bb6f9ab7ebf09bc11c03d158b9cd5cdbd682"
+  }
+]

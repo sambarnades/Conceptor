@@ -774,7 +774,13 @@ async function runStep5_MoodleXML() {
                 }
 
                 // Test GIFT
-                const giftContent = generateMoodleGift(jsonObj);
+                const giftCompatible = { ...jsonObj, questions: (jsonObj.questions || []).filter(q => q.type !== 'cloze') };
+                        if ((jsonObj.questions || []).some(q => q.type === 'cloze')) {
+                            let refused = false;
+                            try { generateMoodleGift(jsonObj); } catch (e) { refused = e.message === 'test_gift_unsupported_question_type:cloze'; }
+                            assert(refused, `[GIFT] ${tc.file} : refus explicite, aucune question omise en silence`);
+                        }
+                        const giftContent = generateMoodleGift(giftCompatible);
                 assert(
                     giftContent && giftContent.length > 10,
                     `[5b.GIFT] ${tc.file} : GIFT genere (${giftContent?.length || 0} caracteres)`

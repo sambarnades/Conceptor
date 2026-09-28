@@ -1,0 +1,14 @@
+[
+  {
+    "kind": "manuel",
+    "indice": true,
+    "score": "2/2",
+    "texte": "Complète les capitales. RELU dans Sucrerie.\n\nMode de vérification\nFrance : \n. Italie : \n.\nVous avez obtenu 2 sur 2 points\n2/2\nRecommencer\nRights of use"
+  },
+  {
+    "kind": "automatique",
+    "indice": true,
+    "score": "2/2",
+    "texte": "Complète les capitales. RELU dans Sucrerie.\n\nFrance :\n. Italie :\n.\nVous avez obtenu 2 sur 2 points\n2/2\nRecommencer\nRights of use\nLa Seine"
+  }
+]

@@ -22,5 +22,8 @@
       "to": 100,
       "feedback": "Parfait ! Ta compréhension des valeurs de 1789 et de leurs impacts est excellente."
     }
-  ]
+  ],
+  "behaviour": {
+    "enableCheckButton": true
+  }
 }

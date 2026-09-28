@@ -785,7 +785,7 @@ function verifyH5PStructure(content, moduleKey) {
 
     // Types avec behaviour
     const typesWithBehaviour = ['MultipleChoice', 'TrueFalse', 'FillInTheBlanks',
-        'DragTheWords', 'MarkTheWords', 'Essay', 'Summary', 'FindTheWords',
+        'DragTheWords', 'MarkTheWords', 'Essay', 'FindTheWords',
         'SingleChoiceSet', 'SortParagraphs', 'QuizSet', 'QuizSetQCM', 'QuizSetVF'];
     if (typesWithBehaviour.includes(moduleKey)) {
         if (!content.behaviour) issues.push('behaviour manquant');
@@ -1448,7 +1448,13 @@ async function runStep3_ContentGeneration() {
                         generatedFiles.set(`v1_generation_initiale/${tc.file.replace('.json', '.xml')}`, new Blob([xmlContent], { type: 'text/xml' }));
                     } else if (tc.expectedModule === 'elea_test') {
                         const xmlContent = generateMoodleXml(state.healedObj);
-                        const giftContent = generateMoodleGift(state.healedObj);
+                        const giftCompatible = { ...state.healedObj, questions: (state.healedObj.questions || []).filter(q => q.type !== 'cloze') };
+                        if ((state.healedObj.questions || []).some(q => q.type === 'cloze')) {
+                            let refused = false;
+                            try { generateMoodleGift(state.healedObj); } catch (e) { refused = e.message === 'test_gift_unsupported_question_type:cloze'; }
+                            assert(refused, `[GIFT] ${tc.file} : refus explicite, aucune question omise en silence`);
+                        }
+                        const giftContent = generateMoodleGift(giftCompatible);
                         assert(xmlContent.length > 0, `[3c.XMLGen] ${tc.file} : XML test genere (${xmlContent.length} car.)`);
                         assert(giftContent.length > 0, `[3d.GIFTGen] ${tc.file} : GIFT genere (${giftContent.length} car.)`);
 
@@ -1940,7 +1946,13 @@ async function runStep7_RegenerateVerify() {
                         generatedFiles.set(`v2_apres_edition/${tc.file.replace('.json', '.xml')}`, new Blob([xmlContent], { type: 'text/xml' }));
                     } else if (tc.expectedModule === 'elea_test') {
                         const xmlContent = generateMoodleXml(reHealed);
-                        const giftContent = generateMoodleGift(reHealed);
+                        const giftCompatible = { ...reHealed, questions: (reHealed.questions || []).filter(q => q.type !== 'cloze') };
+                        if ((reHealed.questions || []).some(q => q.type === 'cloze')) {
+                            let refused = false;
+                            try { generateMoodleGift(reHealed); } catch (e) { refused = e.message === 'test_gift_unsupported_question_type:cloze'; }
+                            assert(refused, `[GIFT] ${tc.file} : refus explicite, aucune question omise en silence`);
+                        }
+                        const giftContent = generateMoodleGift(giftCompatible);
                         generatedFiles.set(`v2_apres_edition/${tc.file.replace('.json', '.xml')}`, new Blob([xmlContent], { type: 'text/xml' }));
                         generatedFiles.set(`v2_apres_edition/${tc.file.replace('.json', '.gift.txt')}`, new Blob([giftContent], { type: 'text/plain' }));
                     }
@@ -2114,10 +2126,10 @@ const MATH_TEST_CASES = [
         rawJson: '{"taskDescription":"Trouver les mots lies a \\\\(\\\\sqrt{x}\\\\)","wordList":"RACINE,\\\\(\\\\sqrt{x}\\\\),CARRE,\\u03C0"}',
         expectedPatterns: ['\\(\\sqrt{x}\\)'],
         // wordList ne doit contenir ni LaTeX ni symboles Unicode math
-        wordListForbidden: ['\\(', '\\sqrt', '\u03C0', '\u221A'],
+        wordListForbidden: ['\\(', '\\sqrt', '\u221A'],
         // Apres healing, la wordList doit rester une liste comma-separated avec les mots valides preserves
-        // 4 mots en entree, 2 invalides (LaTeX + Unicode math) → 2 mots valides attendus
-        wordListMinWords: 2,
+        // LaTeX retiré ; π est une lettre grecque valide et doit rester.
+        wordListMinWords: 3,
         mathMode: 'wordlist',
         source: 'h5p'
     },
@@ -2360,7 +2372,7 @@ function containsMathFormulas(str) {
         if (str.includes('\\' + cmd)) return true;
     }
     // Caracteres Unicode math (apres conversion latexToUnicode)
-    if (/[\u221A\u03B1-\u03C9\u03A0-\u03A9\u2200-\u22FF\u2190-\u21FF]/.test(str)) return true;
+    if (/[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(str)) return true;
     return false;
 }
 
@@ -2647,7 +2659,7 @@ async function runStep4_MathEncoding() {
                     if (tc.answerForbidden.noMath) {
                         if (/\\[a-zA-Z]/.test(ans)) ansIssues.push(`"${ans}" contient commande LaTeX`);
                         if (ans.includes('\\(') || ans.includes('\\)')) ansIssues.push(`"${ans}" contient delimiteurs \\(...\\)`);
-                        if (/[\u221A\u03B1-\u03C9\u03A0-\u03A9\u2200-\u22FF\u2190-\u21FF]/.test(ans)) ansIssues.push(`"${ans}" contient Unicode math`);
+                        if (/[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(ans)) ansIssues.push(`"${ans}" contient Unicode math`);
                     }
                     if (tc.answerForbidden.noSpaces && ans.includes(' ')) {
                         ansIssues.push(`"${ans}" contient des espaces`);
@@ -2741,7 +2753,7 @@ async function runStep4_MathEncoding() {
                     const wlIssues = [];
                     if (/\\[a-zA-Z]/.test(wl)) wlIssues.push('commandes LaTeX dans wordList');
                     if (wl.includes('\\(') || wl.includes('\\)')) wlIssues.push('delimiteurs \\(...\\) dans wordList');
-                    if (/[\u221A\u03B1-\u03C9\u03A0-\u03A9\u2200-\u22FF\u2190-\u21FF]/.test(wl)) wlIssues.push('symboles Unicode math dans wordList');
+                    if (/[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(wl)) wlIssues.push('symboles Unicode math dans wordList');
                     assert(wlIssues.length === 0,
                         `[4h.ExampleWordList] ${tc.file} : wordList sans LaTeX/Unicode math${wlIssues.length > 0 ? ' - ' + wlIssues.join('; ') : ''}`,
                         wlIssues.length > 0 ? { wordList: wl, issues: wlIssues } : null);
@@ -2755,7 +2767,7 @@ async function runStep4_MathEncoding() {
                         const ans = word.answer || '';
                         if (/\\[a-zA-Z]/.test(ans)) ansIssues.push(`"${ans}" : commande LaTeX`);
                         if (ans.includes('\\(') || ans.includes('\\)')) ansIssues.push(`"${ans}" : delimiteurs \\(...\\)`);
-                        if (/[\u221A\u03B1-\u03C9\u03A0-\u03A9\u2200-\u22FF\u2190-\u21FF]/.test(ans)) ansIssues.push(`"${ans}" : Unicode math`);
+                        if (/[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(ans)) ansIssues.push(`"${ans}" : Unicode math`);
                         if (ans.includes(' ')) ansIssues.push(`"${ans}" : contient des espaces`);
                     }
                     assert(ansIssues.length === 0,

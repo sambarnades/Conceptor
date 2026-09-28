@@ -1,0 +1,12 @@
+{
+  "cours": 794,
+  "activite": 13836,
+  "sha256": "ccdbd40a0f81b1a19111edd28fadf0dcf896f4f09686d543d11f2c7379084b76",
+  "audioSha256": "698e2117c9d5815b5784cbdba5cd52d2251f3173a674ccdbbf6d7036ac65ad0e",
+  "audioIdentique": true,
+  "boutonLectureActiveDansElea": true,
+  "indiceRectoAffiche": "La Seine traverse cette ville.",
+  "retournement": "Italie → Rome",
+  "autoEvaluation": true,
+  "enregistrementNatif": true
+}

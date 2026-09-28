@@ -1,0 +1,16 @@
+{
+  "widths": [
+    45,
+    55
+  ],
+  "identifiantsConserves": 11,
+  "mediasConserves": 2,
+  "sauvegarde": true,
+  "reouverture": true,
+  "annulation": true,
+  "exports": [
+    "docx",
+    "odt",
+    "pdf-local"
+  ]
+}

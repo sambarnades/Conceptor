@@ -884,7 +884,10 @@ export class ArrayManager {
                             fieldValue || [],
                             fieldConfig,
                             fieldPath,
-                            (path, value) => this.handleItemChange(index, fieldKey, value)
+                            // Le gestionnaire enfant peut notifier UNE valeur
+                            // profonde aussi bien que le tableau entier. Garder
+                            // son chemin évite de remplacer columns[] par 35.
+                            (path, value) => this.handleFieldChange(path, value)
                         );
 
                         content.appendChild(nestedContainer);

@@ -1,0 +1,161 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-10T21:34:56.314Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "auto"
+  },
+  "plan": {
+    "titre": "Les Trente Glorieuses : révision et analyse",
+    "objectifGeneral": "Consolider les connaissances sur les Trente Glorieuses en identifiant leurs caractéristiques, leurs transformations et leurs limites",
+    "notionsPivots": [
+      "la croissance économique",
+      "la société de consommation",
+      "la tertiarisation de l'économie",
+      "la société salariale",
+      "la hausse du niveau de vie",
+      "les Trente Glorieuses",
+      "la reconstruction d'après-guerre",
+      "l'État-providence",
+      "la planification économique",
+      "les Trente Piteuses",
+      "la crise pétrolière",
+      "la désindustrialisation",
+      "les inégalités sociales",
+      "la mondialisation",
+      "l'urbanisation"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Découverte des repères chronologiques",
+        "objectif": "Situer les Trente Glorieuses dans le temps et identifier leurs principales caractéristiques",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Frise chronologique des Trente Glorieuses",
+            "objectif": "Repérer les dates clés et les événements majeurs",
+            "consigne": "Consultez la frise chronologique pour identifier les dates de début et de fin des Trente Glorieuses, ainsi que les événements marquants de cette période.",
+            "module": "Timeline",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false
+          },
+          {
+            "id": "c3",
+            "titre": "Définition des notions essentielles",
+            "objectif": "Comprendre les termes fondamentaux",
+            "consigne": "Explorez le glossaire pour découvrir les définitions des termes clés comme 'la croissance économique', 'la société de consommation' ou 'l'État-providence'.",
+            "module": "Glossary",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false
+          }
+        ]
+      },
+      {
+        "id": "e4",
+        "titre": "Analyse des transformations économiques",
+        "objectif": "Comprendre les mécanismes de la croissance et ses acteurs",
+        "cartes": [
+          {
+            "id": "c5",
+            "titre": "Quiz sur les indicateurs économiques",
+            "objectif": "Identifier les indicateurs de la croissance",
+            "consigne": "Répondez au quiz pour tester vos connaissances sur les indicateurs économiques des Trente Glorieuses comme le PIB, le taux de chômage ou la productivité.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false
+          },
+          {
+            "id": "c6",
+            "titre": "Appariement des secteurs économiques",
+            "objectif": "Classer les secteurs économiques selon leur évolution",
+            "consigne": "Associez chaque secteur économique (primaire, secondaire, tertiaire) à son évolution durant les Trente Glorieuses en utilisant les termes du glossaire.",
+            "module": "Appariement",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false
+          }
+        ]
+      },
+      {
+        "id": "e7",
+        "titre": "Étude des transformations sociales",
+        "objectif": "Analyser les changements dans la société et leurs conséquences",
+        "cartes": [
+          {
+            "id": "c8",
+            "titre": "Ordonner les paragraphes sur la société salariale",
+            "objectif": "Comprendre l'organisation du travail",
+            "consigne": "Remettez dans l'ordre les paragraphes décrivant les caractéristiques de la société salariale et son impact sur les modes de vie.",
+            "module": "SortParagraphs",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false
+          },
+          {
+            "id": "c9",
+            "titre": "Quiz sur les inégalités sociales",
+            "objectif": "Évaluer les connaissances sur les disparités",
+            "consigne": "Répondez au quiz pour vérifier votre compréhension des inégalités sociales durant les Trente Glorieuses.",
+            "module": "QuizSetVF",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false
+          }
+        ]
+      },
+      {
+        "id": "e10",
+        "titre": "Limites et héritages des Trente Glorieuses",
+        "objectif": "Identifier les crises et les transformations ultérieures",
+        "cartes": [
+          {
+            "id": "c11",
+            "titre": "Texte à trous sur les Trente Piteuses",
+            "objectif": "Compléter les informations manquantes",
+            "consigne": "Complétez le texte à trous sur les Trente Piteuses en utilisant les termes du glossaire pour décrire les crises et leurs causes.",
+            "module": "FillInTheBlanks",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 15,
+            "verrouillee": false
+          },
+          {
+            "id": "c12",
+            "titre": "Synthèse des limites",
+            "objectif": "Résumer les principales limites des Trente Glorieuses",
+            "consigne": "Rédigez un résumé de 5 à 10 lignes sur les limites des Trente Glorieuses en utilisant au moins 5 termes du glossaire.",
+            "module": "Summary",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 10,
+            "verrouillee": false
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  }
+}

@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
 const headed = process.argv.includes('--headed');
 const PORT = 8096;
 
-const server = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'],
+const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'],
     { cwd: ROOT, stdio: 'ignore' });
 const stop = () => { try { server.kill('SIGTERM'); } catch { /* déjà mort */ } };
 process.on('exit', stop);

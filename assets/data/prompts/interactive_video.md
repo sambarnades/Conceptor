@@ -58,10 +58,10 @@ Et en mode Guidé, `clampVideoCount` a déjà ramené le nombre demandé au plaf
 Banc de non-régression : `node tests/run_interactive_video_prompt.mjs` (rejoue la VRAIE transcription de
 la vidéo concernée, `tests/fixtures/interactive-video-transcript.json`).
 
-Piste ouverte (non tranchée) : GPT-OSS est le seul des trois modèles à **recopier** les horodatages
-réels au lieu de les interpoler, ce qui plaiderait pour un `ACTIVITY_MODEL_OVERRIDES` sur cette
-activité — mais pour un motif de QUALITÉ mesuré, jamais pour contourner une panne du jour. À arbitrer
-avec le harnais, backend stable.
+Piste close (28-09-2026) : GPT-OSS était le seul des trois modèles à **recopier** les horodatages
+réels au lieu de les interpoler, ce qui plaidait pour un `ACTIVITY_MODEL_OVERRIDES` sur cette
+activité. ILaaS l'arrête le 30-09-2026 : les garde-fous déterministes ci-dessous restent la seule
+réponse. Un override vers un autre modèle exigerait un motif de QUALITÉ mesuré avec le harnais.
 
 ### Garde-fous déterministes (indépendants du modèle)
 
@@ -123,3 +123,7 @@ Exemple complet : `assets/data/examples/interactive_video_1.json`.
 - **Timestamps** : le prompt insiste « RECOPIE une valeur `[mm:ss]`, ne la calcule pas » + conversion + borne de durée + relecture ; mais le **garde-fou déterministe** (snap sur l'ancre réelle la plus proche + écart des hors-durée + plafond) dans `interactive-video-snap.js` est ce qui garantit 0 timestamp non réel pour les 3 modèles (cf. section « Garde-fous déterministes »).
 - **`correct` TrueFalse** : `toBool` reconnaît explicitement les chaînes négatives (`"false"`, `"faux"`, `"non"`, `"0"`…) — un simple `!!"false"` valait `true` et inversait la réponse.
 - **zh / jp** : le label du bullet « nombre » utilise un deux-points ASCII (et non pleine-chasse `：`) pour que le regex `||` du prompt-generator résolve le conditionnel `[NOMBRE_ELEMENTS]` (sinon il fuyait littéralement dans le prompt).
+
+## Options complétées lors de l’audit H5P
+
+`pause` vaut `true` par défaut ; conserver `false` si demandé. Le résumé final peut être omis sur demande. `displayMode` accepte `poster` ou `button`. Les options `override`, les signets `bookmarks`, les écrans de fin `endscreens`, les réglages `startScreenOptions` et `summary.displayAt` sont décrits dans les clés de langue. Omettre les réglages non demandés ; ne jamais inventer de média ni d’URL.

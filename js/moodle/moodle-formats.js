@@ -2,6 +2,9 @@
  * @file Générateurs de formats d'export Moodle (XML, GIFT).
  */
 
+import { parseClozeGaps, parseGapAnswers } from './mbz-course-builder.js';
+import { valeurNumerique } from './test-evaluation.js';
+
 export function escapeXml(str) {
     return String(str)
         .replace(/&/g, '&amp;')
@@ -171,9 +174,11 @@ function escapeGiftTitle(str) {
  * @returns {string} Le contenu du fichier XML.
  */
 export function generateMoodleXml(data) {
+    data = reparerConsignesTest(data);
+    verifierTrousCloze(data);
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<quiz>\n`;
 
-    if (data.bank_name && data.bank_description) {
+    if (data.bank_name) {
         xml += `
   <!-- question: 0  -->
   <question type="category">
@@ -193,29 +198,36 @@ export function generateMoodleXml(data) {
 
     if (data.questions && Array.isArray(data.questions)) {
         data.questions.forEach(question => {
+            let questionXml;
             switch (question.type) {
                 case 'matching':
-                    xml += generateMatchingQuestionXml(question.content);
+                    questionXml = generateMatchingQuestionXml(question.content);
                     break;
                 case 'multichoice':
-                    xml += generateMultichoiceQuestionXml(question.content, globalOptions);
+                    questionXml = generateMultichoiceQuestionXml(question.content, { ...question.content, ...globalOptions });
                     break;
                 case 'truefalse':
-                    xml += generateTrueFalseQuestionXml(question.content);
+                    questionXml = generateTrueFalseQuestionXml(question.content);
                     break;
                 case 'shortanswer':
-                    xml += generateShortanswerQuestionXml(question.content);
+                    questionXml = generateShortanswerQuestionXml(question.content);
                     break;
                 case 'numerical':
-                    xml += generateNumericalQuestionXml(question.content);
+                    questionXml = generateNumericalQuestionXml(question.content);
                     break;
                 case 'cloze':
-                    xml += generateClozeQuestionXml(question.content);
+                    questionXml = generateClozeQuestionXml(question.content);
                     break;
+                default:
+                    throw new Error(`test_unsupported_question_type:${question.type}`);
             }
+            const c = question.content || {};
+            const fields = `${c.defaultgrade !== undefined ? `\n    <defaultgrade>${escapeXml(c.defaultgrade)}</defaultgrade>` : ''}${c.penalty !== undefined ? `\n    <penalty>${escapeXml(c.penalty)}</penalty>` : ''}`;
+            // Ancrer sur la fermeture finale : un énoncé peut contenir littéralement
+            // « </question> » dans son CDATA sans être une balise du document.
+            xml += questionXml.replace(/<\/question>\s*$/, `${fields}\n  </question>`);
         });
     }
-
     xml += '</quiz>';
     return xml;
 }
@@ -235,7 +247,8 @@ export function generateMoodleXml(data) {
  * @returns {{ bank_name, bank_description, options, questions:Array<{type,content}> }}
  */
 export function canonicalizeTestModel(model) {
-    const src = model || {};
+    const src = reparerConsignesTest(model || {});
+    verifierTrousCloze(src);
     const questions = Array.isArray(src.questions) ? src.questions : [];
     const outQuestions = questions.map(q => {
         const type = q.type;
@@ -252,20 +265,79 @@ export function canonicalizeTestModel(model) {
             a.value = parseTrueFalseValue(a.value);
             c.answer = a;
         } else if (type === 'numerical') {
-            const a = { ...(c.answer || {}) };
-            a.number = normalizeNumericValue(a.number, 0);
-            a.tolerance = normalizeNumericValue(a.tolerance, 0);
-            c.answer = a;
+            const [answer, ...alternatives] = numericalAnswers(c);
+            c.answer = answer;
+            if (alternatives.length || c.alternatives) c.alternatives = alternatives;
         }
         // matching, cloze : inchangés
-        return { type, content: c };
+        return { ...q, type, content: c };
     });
     return {
+        ...src,
         bank_name: src.bank_name || '',
         bank_description: src.bank_description || '',
         options: src.options || {},
         questions: outQuestions,
     };
+}
+
+/**
+ * L’IA peut insérer une réponse Cloze dans une question numérique classique.
+ * Moodle affiche alors le code en clair ET son champ Réponse séparé. Un trou
+ * numérique unique devient une ellipse ; la réponse explicite reste prioritaire.
+ * Plusieurs trous constituent une vraie question Cloze. Aucun contenu n’est perdu.
+ */
+export function reparerConsignesTest(model) {
+    if (!model || !Array.isArray(model.questions)) return model;
+    return { ...model, questions: model.questions.map(q => {
+        if (q?.type !== 'numerical' || !q.content) return q;
+        const c = q.content;
+        const motif = /\{\d+(?:\.\d+)?:\s*(?:NUMERICAL|NM):\s*(?:=|%100%)([-+]?\d+(?:[.,]\d+)?(?:[eE][-+]?\d+)?)(?::([-+]?\d+(?:[.,]\d+)?(?:[eE][-+]?\d+)?))?(?:#[^{}]*)?\}/gi;
+        const texte = String(c.questiontext || '');
+        const trous = [...texte.matchAll(motif)];
+        if (!trous.length) return q;
+        if (trous.length > 1) return { ...q, type: 'cloze', content: { ...c } };
+        const a = c.answer || {};
+        return { ...q, content: { ...c, questiontext: texte.replace(motif, '…'), answer: {
+            ...a,
+            number: a.number ?? Number(trous[0][1].replace(',', '.')),
+            tolerance: a.tolerance ?? Math.abs(Number((trous[0][2] || '0').replace(',', '.'))),
+        } } };
+    }) };
+}
+
+/**
+ * Un trou de question à trous qui ne peut JAMAIS être réussi : aucune réponse
+ * créditée, ou une réponse NUMERICAL qui n'est pas un nombre.
+ *
+ * Constaté sur un parcours réel (28 sept. 2026) : le modèle a écrit
+ * `{1:NUMERICAL:=Réponse attendue:0}` et mis le nombre ailleurs. Moodle restaure
+ * la question telle quelle, et l'élève ne peut que se tromper. Son propre
+ * éditeur refuse d'ailleurs d'enregistrer un tel trou (« une des réponses doit
+ * valoir 100 % »).
+ */
+function trouInjouable(gap) {
+    const { kind, answers } = parseGapAnswers(gap);
+    return !answers.some(a => a.fraction > 0 && (kind === 'numerical'
+        ? a.number === '*' || (Number.isFinite(valeurNumerique(a.number))
+            && (a.tolerance === '' || Number.isFinite(valeurNumerique(a.tolerance))))
+        : String(a.text).trim() !== ''));
+}
+
+/**
+ * Refuse un Test dont une question à trous est injouable (trou sans bonne
+ * réponse, ou sans aucun trou). On REFUSE plutôt que de retirer la question :
+ * rien ne disparaît sans le dire (cf. `run_test_edition_audit`). L'enseignant
+ * la corrige dans l'éditeur, ou génère l'activité à nouveau.
+ *
+ * @throws {Error} `test_cloze_injouable:<n° de question>`
+ */
+export function verifierTrousCloze(model) {
+    (Array.isArray(model?.questions) ? model.questions : []).forEach((q, i) => {
+        if (q?.type !== 'cloze') return;
+        const { gaps } = parseClozeGaps(q.content?.questiontext);
+        if (!gaps.length || gaps.some(trouInjouable)) throw new Error(`test_cloze_injouable:${i + 1}`);
+    });
 }
 
 function generateMatchingQuestionXml(content) {
@@ -292,7 +364,7 @@ function generateMatchingQuestionXml(content) {
     <generalfeedback format="html">
       <text><![CDATA[<p>${escapeCdata(content.feedback || '')}</p>]]></text>
     </generalfeedback>
-    <shuffleanswers>true</shuffleanswers>${combinedFeedbackXml}
+    <shuffleanswers>${content.shuffleanswers === false || content.shuffleanswers === 0 ? 'false' : 'true'}</shuffleanswers>${combinedFeedbackXml}
     ${subquestionsXml}${hintsXml}
   </question>`;
 }
@@ -499,8 +571,8 @@ function findValidCombination(n) {
 
 /**
  * Normalise les fractions d'un QCM à réponse UNIQUE : la meilleure réponse vaut
- * 100, toutes les autres 0. En mode « single », Moodle exige qu'exactement une
- * réponse ait une fraction de 100 (sinon erreur « fractionsnomax » à l'import).
+ * 100 si elle manque. Une banque déjà valide conserve ses crédits partiels et
+ * pénalités : Moodle exige une réponse à 100, pas des distracteurs tous à zéro.
  * Indispensable quand le LLM déclare single="true" mais répartit le crédit sur
  * plusieurs réponses (ex: 50/50) : sans ça, normalizeFractions produit un QCM
  * single sans aucune réponse à 100 → tout l'import est rejeté.
@@ -510,6 +582,7 @@ function findValidCombination(n) {
 function normalizeSingleChoiceFractions(answers) {
     if (!Array.isArray(answers) || answers.length === 0) return answers;
     const nums = answers.map(a => Number(a.fraction) || 0);
+    if (nums.some(n => n === 100)) return answers.map((ans, i) => ({ ...ans, fraction: Math.max(-100, Math.min(100, nums[i])) }));
     let maxIdx = 0;
     for (let i = 1; i < nums.length; i++) {
         if (nums[i] > nums[maxIdx]) maxIdx = i;
@@ -587,7 +660,7 @@ function generateMultichoiceQuestionXml(content, globalOptions = {}) {
       <text><![CDATA[<p>${escapeCdata(content.feedback || '')}</p>]]></text>
     </generalfeedback>
     <single>${isSingle}</single>
-    <shuffleanswers>true</shuffleanswers>
+    <shuffleanswers>${content.shuffleanswers === false || content.shuffleanswers === 0 ? 'false' : 'true'}</shuffleanswers>
     <answernumbering>${numbering}</answernumbering>
     <showstandardinstruction>${showInstruction}</showstandardinstruction>${combinedFeedbackXml}
     ${answersXml}${hintsXml}
@@ -669,7 +742,7 @@ function generateShortanswerQuestionXml(content) {
     <generalfeedback format="html">
       <text><![CDATA[<p>${escapeCdata(content.feedback || '')}</p>]]></text>
     </generalfeedback>
-    <usecase>${content.usecase || 0}</usecase>
+    <usecase>${[true, 1, '1', 'true'].includes(content.usecase) ? 1 : 0}</usecase>
     ${answersXml}${hintsXml}
   </question>`;
 }
@@ -687,15 +760,30 @@ function generateShortanswerQuestionXml(content) {
 function normalizeNumericValue(v, fallback = 0) {
     if (typeof v === 'number' && Number.isFinite(v)) return String(v);
     const s = String(v == null ? '' : v).replace(',', '.');
-    const m = s.match(/-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?/);
+    const m = s.match(/[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?/);
     return m ? m[0] : String(fallback);
 }
 
+/** Réponse principale et variantes numériques : tolérance, crédit et retour propres. */
+export function numericalAnswers(content) {
+    return [content.answer || {}, ...(Array.isArray(content.alternatives) ? content.alternatives : [])].map(a => ({
+        ...a,
+        number: a.number === '*' ? '*' : normalizeNumericValue(a.number, 0),
+        tolerance: String(Math.abs(Number(normalizeNumericValue(a.tolerance, 0)))),
+        fraction: Math.max(0, Math.min(100, Number(a.fraction ?? 100))),
+    }));
+}
+
 function generateNumericalQuestionXml(content) {
-    const answer = content.answer || {};
     const hintsXml = generateHintsXml(content.hints);
-    const number = normalizeNumericValue(answer.number, 0);
-    const tolerance = normalizeNumericValue(answer.tolerance, 0);
+    const answersXml = numericalAnswers(content).map(answer => `
+    <answer fraction="${answer.fraction}" format="moodle_auto_format">
+      <text>${answer.number}</text>
+      <tolerance>${answer.tolerance}</tolerance>
+      <feedback format="html">
+        <text><![CDATA[<p>${escapeCdata(answer.feedback || '')}</p>]]></text>
+      </feedback>
+    </answer>`).join('');
 
     return `
   <question type="numerical">
@@ -708,13 +796,7 @@ function generateNumericalQuestionXml(content) {
     <generalfeedback format="html">
       <text><![CDATA[<p>${escapeCdata(content.feedback || '')}</p>]]></text>
     </generalfeedback>
-    <answer fraction="100" format="moodle_auto_format">
-      <text>${number}</text>
-      <tolerance>${tolerance}</tolerance>
-      <feedback format="html">
-        <text><![CDATA[<p>${escapeCdata(answer.feedback || '')}</p>]]></text>
-      </feedback>
-    </answer>${hintsXml}
+    ${answersXml}${hintsXml}
   </question>`;
 }
 
@@ -741,6 +823,8 @@ function generateClozeQuestionXml(content) {
  * @returns {string} Le contenu du fichier au format GIFT.
  */
 export function generateMoodleGift(data) {
+    data = reparerConsignesTest(data);
+    verifierTrousCloze(data);
     let gift_string = "";
 
     if (data.bank_name) {
@@ -766,6 +850,8 @@ export function generateMoodleGift(data) {
                 case 'numerical':
                     gift_string += generateNumericalGift(question.content);
                     break;
+                default:
+                    throw new Error(`test_gift_unsupported_question_type:${question.type}`);
             }
         });
     }
@@ -870,15 +956,15 @@ function generateShortanswerGift(content) {
 }
 
 function generateNumericalGift(content) {
-    const answer = content.answer || {};
-    const feedback = answer.feedback ? `#<p>${escapeGift(answer.feedback)}</p>` : '';
+    const answers = numericalAnswers(content).map(answer => {
+        const feedback = answer.feedback ? `#<p>${escapeGift(answer.feedback)}</p>` : '';
+        return `=%${answer.fraction}%${answer.number}:${answer.tolerance}${feedback}`;
+    }).join('\n\t');
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
-    const number = normalizeNumericValue(answer.number, 0);
-    const tolerance = normalizeNumericValue(answer.tolerance, 0);
 
     return `// question: 0 name: ${escapeGift(content.name || '')}
 ::${escapeGiftTitle(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{#
-\t=%100%${number}:${tolerance}${feedback}
+\t${answers}
 \t${general_feedback}
 }\n\n`;
 }

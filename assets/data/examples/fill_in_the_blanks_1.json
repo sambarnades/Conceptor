@@ -35,5 +35,10 @@
       "to": 100,
       "feedback": "Excellent ! Tu es un véritable expert des quadrilatères de 6e. Tes instruments de géométrie n'ont plus de secrets pour toi !"
     }
-  ]
+  ],
+  "behaviour": {
+    "enableCheckButton": true,
+    "showSolutionsRequiresInput": true,
+    "allowRetryIfCorrect": false
+  }
 }

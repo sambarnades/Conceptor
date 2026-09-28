@@ -1,0 +1,237 @@
+{
+  "cas": {
+    "id": "longue-auto",
+    "lang": "fr",
+    "platform": "elea",
+    "format": "hybride",
+    "ampleur": "longue",
+    "trame": "auto",
+    "qui": "Professeur de SVT en 5e",
+    "quoi": "Expliquer les besoins des plantes vertes et concevoir une expérience. Une séquence complète."
+  },
+  "appels": [
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Expliquer les besoins des plantes vertes et concevoir une expérience. Une séquence complète.\nL'enseignant : Professeur de SVT en 5e\nPlateforme : Éléa\nModalité : hybride\nArticuler explicitement des moments à distance et en présence : préciser où et quand se déroule chaque activité, et comment elle prépare la suivante.\nAmpleur : Une séquence entière\n\nAucune trame imposée : choisis le déroulé le mieux adapté, entre 9 et 12 activités AU TOTAL (pas par étape), réparties en 3 à 6 étapes non vides.\n\nBUDGET : 10 activités prévues, dans la limite de 9 à 12 pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline)\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion)\n- Crossword : Mots croisés (Crosswords)\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary)\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop)\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards)\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart)\n- CoursePresentation : Présentation de cours (CoursePresentation)\n- InteractiveBook : Livre interactif (InteractiveBook)\n- test_elea : Test (test_elea)\n- Millionnaire : Millionnaire (Millionnaire)\n- Appariement : Appariement (Appariement)\n- QCM : QCM (QCM)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir)\n- parcours_etiquette : Texte de liaison (label)\n- parcours_forum : Forum (forum)\n- parcours_sondage : Sondage (choice)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 8 à 12 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 9 à 12 activités pour TOUT le parcours. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    },
+    {
+      "demande": {
+        "prompt": "Tu es un concepteur pédagogique expérimenté. Tu prépares le PLAN d'un parcours en ligne destiné à une plateforme Moodle (Éléa / Magistère). Tu ne rédiges AUCUN contenu d'activité à ce stade : uniquement le déroulé.\n\n## CONTEXTE\nSujet : Expliquer les besoins des plantes vertes et concevoir une expérience. Une séquence complète.\nL'enseignant : Professeur de SVT en 5e\nPlateforme : Éléa\nModalité : hybride\nArticuler explicitement des moments à distance et en présence : préciser où et quand se déroule chaque activité, et comment elle prépare la suivante.\nAmpleur : Une séquence entière\n\nAucune trame imposée : choisis le déroulé le mieux adapté, entre 9 et 12 activités AU TOTAL (pas par étape), réparties en 3 à 6 étapes non vides.\n\nBUDGET : 10 activités prévues, dans la limite de 9 à 12 pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.\n\n## MODULES AUTORISÉS\nLe champ `module` de chaque activité doit être l'un des identifiants ci-dessous, recopié EXACTEMENT. N'invente aucun identifiant, n'en utilise aucun autre : ceux qui ne figurent pas dans cette liste n'existent pas sur la plateforme visée.\n- Timeline : Frise chronologique (Timeline)\n- Flashcards : Cartes mémoires (Flashcards)\n- QuizSet : Quiz mixte (Quiz (Question Set))\n- QuizSetQCM : Quiz QCM (Quiz (Question Set))\n- QuizSetVF : Quiz Vrai/Faux (Quiz (Question Set))\n- Glossary : Glossaire (Accordion)\n- Crossword : Mots croisés (Crosswords)\n- Essay : Rédaction (Essay)\n- Summary : Résumé (Summary)\n- DragTheWords : Glisser les mots (Drag the Words)\n- DragAndDrop : Glisser-déposer (Drag and Drop)\n- FillInTheBlanks : Texte à trous (Fill in the Blanks)\n- MarkTheWords : Surligner les mots (Mark the Words)\n- TrueFalse : Vrai/Faux (True/False Question)\n- MultipleChoice : Choix multiples (Multiple Choice)\n- FindTheWords : Mots mêlés (Find the Words)\n- SortParagraphs : Ordonner les paragraphes (Sort the Paragraphs)\n- SingleChoiceSet : Série de choix uniques (Single Choice Set)\n- DialogCards : Cartes de dialogue (Dialog Cards)\n- Dictation : Dictée (Dictation)\n- Chart : Diagramme (Chart)\n- CoursePresentation : Présentation de cours (CoursePresentation)\n- InteractiveBook : Livre interactif (InteractiveBook)\n- test_elea : Test (test_elea)\n- Millionnaire : Millionnaire (Millionnaire)\n- Appariement : Appariement (Appariement)\n- QCM : QCM (QCM)\n- Page : Page (Page)\n- Livre : Livre (Livre)\n- Devoir : Devoir (Devoir)\n- parcours_etiquette : Texte de liaison (label)\n- parcours_forum : Forum (forum)\n- parcours_sondage : Sondage (choice)\n- parcours_mur_notes : Mur de post-it (stickynotes)\n\n## CE QUE TU DOIS PRODUIRE\n1. `titre` : un titre de parcours court, sans guillemets.\n2. `objectifGeneral` : une phrase, formulée avec un verbe d'action.\n3. `notionsPivots` : 8 à 12 termes clés utiles au sujet, sous forme de GROUPES\n   NOMINAUX — le vocabulaire que l'élève doit s'approprier, pas ce qu'il doit\n   savoir faire. Écris « le commerce triangulaire », « le Code noir »,\n   « les ports négriers » ; JAMAIS « Définir le commerce triangulaire » ni\n   « Expliquer le Code noir » : ces formulations-là sont des objectifs, elles\n   vont dans `objectif`. Toutes les activités du parcours réutiliseront ces\n   termes MOT POUR MOT — c'est cet ancrage lexical qui fait la cohérence de\n   l'ensemble, et un infinitif n'ancre rien.\n4. `etapes` : chaque étape porte un `titre`, un `objectif` (verbe d'action),\n   et ses `cartes`.\n5. Chaque carte porte : `titre`, `objectif` (verbe d'action, une ligne),\n   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |\n   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases\n   disant ce que l'élève aura à faire).\n\n## RÈGLES\n- Choisis les activités en fonction de l’objectif : lire, enquêter, discuter, s’entraîner, coopérer ou produire selon le besoin. Aucun quota ni obligation de tout représenter.\n- Le parcours comporte au moins une activité qui renvoie un résultat à l'élève.\n- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.\n- Les durées sont réalistes et additionnées cohérentes avec l'ampleur demandée.\n- Rédige TOUS les textes en French.\n- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.\n- Les objectifs décrivent une action observable dans la langue demandée, jamais un simple titre de leçon.\n- Un forum amorce un échange : il ne contient pas de réponses d’apprenants inventées. Une activité de groupe précise la tâche commune, sans prétendre configurer automatiquement les groupes de la plateforme.\n- CONTRÔLE FINAL : 9 à 12 activités pour TOUT le parcours. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.\n\n## FORMAT DE SORTIE\nRéponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :\n{\n  \"titre\": \"…\",\n  \"objectifGeneral\": \"…\",\n  \"notionsPivots\": [\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\",\n    \"…\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"…\",\n      \"objectif\": \"…\",\n      \"cartes\": [\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        },\n        {\n          \"titre\": \"…\",\n          \"objectif\": \"…\",\n          \"module\": \"Timeline\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"…\"\n        }\n      ]\n    }\n  ]\n}\n\n## NOUVELLE COMPOSITION APRÈS CONTRÔLE\nLa proposition précédente n’a pas respecté le contrat :\nTotal reçu : 15 activités ; attendu : 9 à 12, pour TOUT le parcours.\nPrévoir 3 à 6 étapes non vides.\nÉtape 6, activité 1 : choisir un module du catalogue autorisé.\nRecompose le plan COMPLET à partir du sujet et des documents ci-dessus, avec EXACTEMENT 10 activités : 4 étapes de respectivement 2, 3, 3, 2 activité(s). Conserve les objectifs essentiels et la conclusion, regroupe les sous-tâches dans les consignes. Compte les cartes avant de répondre. Retourne uniquement le JSON complet.",
+        "model": "mistral-small-4-119b",
+        "activity": {
+          "moduleKey": "parcours-plan",
+          "category": "parcours"
+        }
+      }
+    }
+  ],
+  "raws": [
+    {
+      "taskId": "1788885",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Les plantes vertes : besoins et expérience\",\n  \"objectifGeneral\": \"Concevoir une expérience pour identifier les besoins des plantes vertes\",\n  \"notionsPivots\": [\n    \"l'eau\",\n    \"la lumière\",\n    \"le dioxyde de carbone\",\n    \"le sol\",\n    \"la photosynthèse\",\n    \"les nutriments minéraux\",\n    \"le développement végétal\",\n    \"l'hypothèse scientifique\",\n    \"le protocole expérimental\",\n    \"les conditions contrôlées\",\n    \"l'observation scientifique\",\n    \"les résultats expérimentaux\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Déclencheur : observation initiale\",\n      \"objectif\": \"Formuler des questions sur les besoins des plantes\",\n      \"cartes\": [\n        {\n          \"titre\": \"Observation d'une plante en classe\",\n          \"objectif\": \"Décrire l'état d'une plante en classe\",\n          \"module\": \"Appariement\",\n          \"palier\": \"decouverte\",\n          \"duree\": 15,\n          \"consigne\": \"Observe attentivement une plante verte en classe. Décris son apparence générale en utilisant des termes précis (hauteur, couleur des feuilles, tiges, etc.).\"\n        },\n        {\n          \"titre\": \"Questions sur les causes\",\n          \"objectif\": \"Proposer des hypothèses sur les besoins de la plante\",\n          \"module\": \"parcours_mur_notes\",\n          \"palier\": \"decouverte\",\n          \"duree\": 20,\n          \"consigne\": \"À partir de ton observation, formule au moins trois questions sur ce dont la plante a besoin pour survivre ou pousser. Note tes propositions sur le mur de post-it partagé.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Appropriation des connaissances de base\",\n      \"objectif\": \"Identifier les besoins fondamentaux des plantes vertes\",\n      \"cartes\": [\n        {\n          \"titre\": \"Les besoins des plantes vertes\",\n          \"objectif\": \"Associer les besoins aux définitions correspondantes\",\n          \"module\": \"DragAndDrop\",\n          \"palier\": \"decouverte\",\n          \"duree\": 25,\n          \"consigne\": \"Associe chaque besoin d'une plante verte (lumière, eau, dioxyde de carbone, sol riche) à sa définition ou à son rôle dans l'image proposée.\"\n        },\n        {\n          \"titre\": \"Bilan des besoins identifiés\",\n          \"objectif\": \"Synthétiser les informations sur les besoins des plantes\",\n          \"module\": \"Summary\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"Rédige un court paragraphe de trois phrases minimal pour résumer les quatre besoins principaux des plantes vertes en utilisant les termes du glossaire présenté.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Lien avec la photosynthèse\",\n      \"objectif\": \"Comprendre le mécanisme de la photosynthèse\",\n      \"cartes\": [\n        {\n          \"titre\": \"Le processus de photosynthèse\",\n          \"objectif\": \"Ordonner les étapes de la photosynthèse\",\n          \"module\": \"SortParagraphs\",\n          \"palier\": \"entrainement\",\n          \"duree\": 20,\n          \"consigne\": \"Replace dans l'ordre les paragraphes décrivant les étapes de la photosynthèse à partir des éléments fournis : absorption de lumière, absorption de CO2, libération d'O2, formation de glucose, rôle de l'eau.\"\n        },\n        {\n          \"titre\": \"Quiz sur la photosynthèse\",\n          \"objectif\": \"Valider la compréhension du processus\",\n          \"module\": \"QuizSet\",\n          \"palier\": \"entrainement\",\n          \"duree\": 15,\n          \"consigne\": \"Réponds au quiz de 5 questions pour vérifier tes connaissances sur la photosynthèse. Les questions portent sur les éléments essentiels du processus.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Préparation de l'investigation\",\n      \"objectif\": \"Définir une problématique et des hypothèses\",\n      \"cartes\": [\n        {\n          \"titre\": \"Choix de la problématique\",\n          \"objectif\": \"Sélectionner une question de recherche\",\n          \"module\": \"MultipleChoice\",\n          \"palier\": \"transfert\",\n          \"duree\": 15,\n          \"consigne\": \"Choisis, parmi trois propositions, la question de recherche sur laquelle ton groupe va travailler pour élaborer une expérience sur les besoins des plantes. Note ton choix et justifie-le en une phrase.\"\n        },\n        {\n          \"titre\": \"Formulation d'hypothèses\",\n          \"objectif\": \"Rédiger des hypothèses testables\",\n          \"module\": \"Essay\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"Rédige au moins deux hypothèses précises qui répondent à ta problématique et qui soient testables dans le cadre de l'expérience à concevoir.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Conception du protocole expérimental\",\n      \"objectif\": \"Élaborer un protocole scientifique rigoureux\",\n      \"cartes\": [\n        {\n          \"titre\": \"Élaboration du protocole\",\n          \"objectif\": \"Créer un plan expérimental détaillé\",\n          \"module\": \"Devoir\",\n          \"palier\": \"transfert\",\n          \"duree\": 25,\n          \"consigne\": \"Rédige un protocole expérimental complet en identifiant : les variables testées, les conditions contrôlées, le matériel nécessaire, les étapes à suivre et une durée prévisionnelle. Envoie ton travail au professeur.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Mise en œuvre de l'expérience\",\n      \"objectif\": \"Conduire l'expérience prévue\",\n      \"cartes\": [\n        {\n          \"titre\": \"Exécution du protocole\",\n          \"objectif\": \"Mettre en pratique l'expérience conçue\",\n          \"module\": \"page\",\n          \"palier\": \"transfert\",\n          \"duree\": 40,\n          \"consigne\": \"En groupe, réalisez l'expérience choisie en classe selon le protocole validé par le professeur. Notez soigneusement les observations initiales et les changements survenus pendant l'expérience.\"\n        },\n        {\n          \"titre\": \"Récolte des résultats\",\n          \"objectif\": \"Noter les observations et mesures\",\n          \"module\": \"Essay\",\n          \"palier\": \"transfert\",\n          \"duree\": 15,\n          \"consigne\": \"Rédige un compte-rendu détaillé des résultats obtenus pendant l'expérience en respectant le format demandé (observations, mesures, schémas si possibles).\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Analyse des résultats\",\n      \"objectif\": \"Interpréter les données recueillies\",\n      \"cartes\": [\n        {\n          \"titre\": \"Traitement des données\",\n          \"objectif\": \"Organiser et représenter les résultats\",\n          \"module\": \"Chart\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"Crée un tableau ou un graphique pour représenter les données recueillies pendant l'expérience. Justifie le choix de cette représentation.\"\n        },\n        {\n          \"titre\": \"Interprétation et conclusion\",\n          \"objectif\": \"Analyser les résultats et conclure\",\n          \"module\": \"Essay\",\n          \"palier\": \"transfert\",\n          \"duree\": 25,\n          \"consigne\": \"Rédige une interprétation des résultats en validant ou invalidant tes hypothèses initiales. Conclus sur ce que t'a appris cette expérience sur les besoins des plantes vertes.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Restitution et mutualisation\",\n      \"objectif\": \"Présenter le travail réalisé à la classe\",\n      \"cartes\": [\n        {\n          \"titre\": \"Préparation de la présentation\",\n          \"objectif\": \"Structurer les éléments à présenter\",\n          \"module\": \"parcours_etiquette\",\n          \"palier\": \"transfert\",\n          \"duree\": 15,\n          \"consigne\": \"Prépare un support de présentation claire présentant : le problème initial, les hypothèses, le protocole, les résultats et les conclusions de ton expérience. Fais valider les grandes lignes par le professeur.\"\n        },\n        {\n          \"titre\": \"Presentation orale en classe\",\n          \"objectif\": \"Communiquer les résultats à la classe\",\n          \"module\": \"parcours_forum\",\n          \"palier\": \"transfert\",\n          \"duree\": 30,\n          \"consigne\": \"Présente oralement à la classe les résultats de ton expérience en 5 minutes. À la suite, réponds aux questions de tes camarades sous le post dédié.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 2005,
+      "prompt_tokens": 2172,
+      "fallback_level": 0
+    },
+    {
+      "taskId": "1788892",
+      "status": "done",
+      "content": "{\n  \"titre\": \"Les besoins des plantes et conception d'expérience\",\n  \"objectifGeneral\": \"Concevoir une expérience pour vérifier les besoins des plantes vertes\",\n  \"notionsPivots\": [\n    \"la photosynthèse\",\n    \"la chlorophylle\",\n    \"la sève brute\",\n    \"la sève élaborée\",\n    \"l'absorption racinaire\",\n    \"l'évapotranspiration\",\n    \"les besoins en eau\",\n    \"les besoins en lumière\",\n    \"les besoins en dioxyde de carbone\",\n    \"le rôle des feuilles\",\n    \"le protocole expérimental\",\n    \"l'hypothèse scientifique\"\n  ],\n  \"etapes\": [\n    {\n      \"titre\": \"Découverte des besoins des plantes vertes\",\n      \"objectif\": \"identifier les besoins essentiels des plantes\",\n      \"cartes\": [\n        {\n          \"titre\": \"Mise en situation\",\n          \"objectif\": \"observer une plante en difficulté\",\n          \"module\": \"Devoir\",\n          \"palier\": \"decouverte\",\n          \"duree\": 15,\n          \"consigne\": \"Regarde la photo d'une plante flétrie et décris ce que tu observes. Note deux différences entre cette plante et une plante saine que tu connais.\"\n        },\n        {\n          \"titre\": \"Quiz initial sur les besoins des plantes\",\n          \"objectif\": \"évaluer ses connaissances préalables\",\n          \"module\": \"QuizSet\",\n          \"palier\": \"decouverte\",\n          \"duree\": 10,\n          \"consigne\": \"Réponds à un quiz de 5 questions sur les besoins des plantes pour faire le point sur ce que tu sais déjà.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Comprendre les besoins essentiels\",\n      \"objectif\": \"comprendre le rôle de l'eau, de la lumière et du CO2\",\n      \"cartes\": [\n        {\n          \"titre\": \"Apprentissage sur la photosynthèse\",\n          \"objectif\": \"découvrir le processus de photosynthèse\",\n          \"module\": \"CoursePresentation\",\n          \"palier\": \"decouverte\",\n          \"duree\": 20,\n          \"consigne\": \"Visionne une courte présentation sur la photosynthèse et note les 4 éléments nécessaires à cette réaction.\"\n        },\n        {\n          \"titre\": \"Étude interactive de la plante\",\n          \"objectif\": \"comprendre la circulation de la sève\",\n          \"module\": \"DialogCards\",\n          \"palier\": \"entrainement\",\n          \"duree\": 15,\n          \"consigne\": \"Associe les termes (chlorophylle, sève brute, sève élaborée) aux bonnes parties de la plante à l'aide de cartes interactives.\"\n        },\n        {\n          \"titre\": \"Synthèse des besoins\",\n          \"objectif\": \"formaliser les besoins des plantes\",\n          \"module\": \"Summary\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"Remplis un texte à trous avec les mots-clés de la séance pour résumer les besoins des plantes vertes.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Concevoir une expérience\",\n      \"objectif\": \"élaborer un protocole expérimental\",\n      \"cartes\": [\n        {\n          \"titre\": \"Problématisation\",\n          \"objectif\": \"formuler une question de recherche\",\n          \"module\": \"parcours_etiquette\",\n          \"palier\": \"decouverte\",\n          \"duree\": 5,\n          \"consigne\": \"Lis la consigne et écris une question du type 'Que se passe-t-il si une plante manque de lumière?' pour introduire ta démarche expérimentale.\"\n        },\n        {\n          \"titre\": \"Documentation des hypothèses\",\n          \"objectif\": \"formuler des hypothèses testables\",\n          \"module\": \"FillInTheBlanks\",\n          \"palier\": \"entrainement\",\n          \"duree\": 10,\n          \"consigne\": \"Complète des phrases pour formuler trois hypothèses sur les besoins des plantes, en utilisant les termes clés appris.\"\n        },\n        {\n          \"titre\": \"Conception du protocole\",\n          \"objectif\": \"planifier une expérience\",\n          \"module\": \"Devoir\",\n          \"palier\": \"transfert\",\n          \"duree\": 25,\n          \"consigne\": \"Rédige le protocole d'une expérience pour tester l'une des hypothèses, en précisant le matériel, les étapes et les variables.\"\n        }\n      ]\n    },\n    {\n      \"titre\": \"Bilan et évaluation\",\n      \"objectif\": \"valider et présenter sa démarche\",\n      \"cartes\": [\n        {\n          \"titre\": \"Évaluation du protocole\",\n          \"objectif\": \"analyser la validité de son expérience\",\n          \"module\": \"QuizSetVF\",\n          \"palier\": \"transfert\",\n          \"duree\": 15,\n          \"consigne\": \"Réponds à un quiz vrai/faux sur les critères de validité de ton expérience (10 questions).\"\n        },\n        {\n          \"titre\": \"Présentation des résultats\",\n          \"objectif\": \"communiquer sa démarche\",\n          \"module\": \"Devoir\",\n          \"palier\": \"transfert\",\n          \"duree\": 20,\n          \"consigne\": \"Prépare une présentation orale ou écrite de 5 minutes pour expliquer ton expérience, ses résultats et tes conclusions.\"\n        }\n      ]\n    }\n  ]\n}",
+      "model": "mistral-small-4-119b",
+      "completion_tokens": 1236,
+      "prompt_tokens": 2335,
+      "fallback_level": 0
+    }
+  ],
+  "erreurs": [],
+  "scenario": {
+    "format": 1,
+    "produit": "caramel-parcours",
+    "version": "0.1.0",
+    "langue": "fr",
+    "exporteLe": "2026-09-10T22:15:18.566Z",
+    "cadrage": {
+      "platform": "elea",
+      "format": "hybride",
+      "ampleur": "longue",
+      "trame": "auto"
+    },
+    "plan": {
+      "titre": "Les besoins des plantes et conception d'expérience",
+      "objectifGeneral": "Concevoir une expérience pour vérifier les besoins des plantes vertes",
+      "notionsPivots": [
+        "la photosynthèse",
+        "la chlorophylle",
+        "la sève brute",
+        "la sève élaborée",
+        "l'absorption racinaire",
+        "l'évapotranspiration",
+        "les besoins en eau",
+        "les besoins en lumière",
+        "les besoins en dioxyde de carbone",
+        "le rôle des feuilles",
+        "le protocole expérimental",
+        "l'hypothèse scientifique"
+      ],
+      "etapes": [
+        {
+          "id": "e1",
+          "titre": "Découverte des besoins des plantes vertes",
+          "objectif": "Identifier les besoins essentiels des plantes",
+          "cartes": [
+            {
+              "id": "c2",
+              "titre": "Mise en situation",
+              "objectif": "Observer une plante en difficulté",
+              "consigne": "Regarde la photo d'une plante flétrie et décris ce que tu observes. Note deux différences entre cette plante et une plante saine que tu connais.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 15,
+              "verrouillee": false
+            },
+            {
+              "id": "c3",
+              "titre": "Quiz initial sur les besoins des plantes",
+              "objectif": "Évaluer ses connaissances préalables",
+              "consigne": "Réponds à un quiz de 5 questions sur les besoins des plantes pour faire le point sur ce que tu sais déjà.",
+              "module": "QuizSet",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 10,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e4",
+          "titre": "Comprendre les besoins essentiels",
+          "objectif": "Comprendre le rôle de l'eau, de la lumière et du CO2",
+          "cartes": [
+            {
+              "id": "c5",
+              "titre": "Apprentissage sur la photosynthèse",
+              "objectif": "Découvrir le processus de photosynthèse",
+              "consigne": "Visionne une courte présentation sur la photosynthèse et note les 4 éléments nécessaires à cette réaction.",
+              "module": "CoursePresentation",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 20,
+              "verrouillee": false
+            },
+            {
+              "id": "c6",
+              "titre": "Étude interactive de la plante",
+              "objectif": "Comprendre la circulation de la sève",
+              "consigne": "Associe les termes (chlorophylle, sève brute, sève élaborée) aux bonnes parties de la plante à l'aide de cartes interactives.",
+              "module": "DialogCards",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 15,
+              "verrouillee": false
+            },
+            {
+              "id": "c7",
+              "titre": "Synthèse des besoins",
+              "objectif": "Formaliser les besoins des plantes",
+              "consigne": "Remplis un texte à trous avec les mots-clés de la séance pour résumer les besoins des plantes vertes.",
+              "module": "Summary",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 10,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e8",
+          "titre": "Concevoir une expérience",
+          "objectif": "Élaborer un protocole expérimental",
+          "cartes": [
+            {
+              "id": "c9",
+              "titre": "Problématisation",
+              "objectif": "Formuler une question de recherche",
+              "consigne": "Lis la consigne et écris une question du type 'Que se passe-t-il si une plante manque de lumière?' pour introduire ta démarche expérimentale.",
+              "module": "parcours_etiquette",
+              "moduleReplie": false,
+              "palier": "decouverte",
+              "duree": 5,
+              "verrouillee": false
+            },
+            {
+              "id": "c10",
+              "titre": "Documentation des hypothèses",
+              "objectif": "Formuler des hypothèses testables",
+              "consigne": "Complète des phrases pour formuler trois hypothèses sur les besoins des plantes, en utilisant les termes clés appris.",
+              "module": "FillInTheBlanks",
+              "moduleReplie": false,
+              "palier": "entrainement",
+              "duree": 10,
+              "verrouillee": false
+            },
+            {
+              "id": "c11",
+              "titre": "Conception du protocole",
+              "objectif": "Planifier une expérience",
+              "consigne": "Rédige le protocole d'une expérience pour tester l'une des hypothèses, en précisant le matériel, les étapes et les variables.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 25,
+              "verrouillee": false
+            }
+          ]
+        },
+        {
+          "id": "e12",
+          "titre": "Bilan et évaluation",
+          "objectif": "Valider et présenter sa démarche",
+          "cartes": [
+            {
+              "id": "c13",
+              "titre": "Évaluation du protocole",
+              "objectif": "Analyser la validité de son expérience",
+              "consigne": "Réponds à un quiz vrai/faux sur les critères de validité de ton expérience (10 questions).",
+              "module": "QuizSetVF",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 15,
+              "verrouillee": false
+            },
+            {
+              "id": "c14",
+              "titre": "Présentation des résultats",
+              "objectif": "Communiquer sa démarche",
+              "consigne": "Prépare une présentation orale ou écrite de 5 minutes pour expliquer ton expérience, ses résultats et tes conclusions.",
+              "module": "Devoir",
+              "moduleReplie": false,
+              "palier": "transfert",
+              "duree": 20,
+              "verrouillee": false
+            }
+          ]
+        }
+      ],
+      "origine": "ia",
+      "personnalise": false,
+      "carte": {
+        "actif": false,
+        "theme": "paysage"
+      },
+      "progression": {
+        "actif": false
+      }
+    }
+  },
+  "ecarts": [],
+  "message": "La fabrication démarre dès ce clic : chaque activité est générée une par une, dans l'ordre, sous vos yeux."
+}

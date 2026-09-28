@@ -1,0 +1,38 @@
+{
+  "numero": 21,
+  "module": "Timeline",
+  "recu": true,
+  "fichier_telechargement": "21-Timeline.h5p",
+  "sha256_source": "e4215995c87b07012f18fa7d8528ce20c65a913899f7c980545cd6562a8cc8e5",
+  "sha256_retour": "ff326aa2b911b72a1fecf7cbb1f5b85c5694371c59791435b2f790bf6c4f57a5",
+  "source_comparee": "a-importer/21-Timeline.h5p",
+  "titre": "RECETTE 21 — Frise chronologique",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "timeline.date[0].headline"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "H5P.Timeline",
+      "version": "1.1.25"
+    },
+    {
+      "nom": "TimelineJS",
+      "version": "1.1.1"
+    }
+  ],
+  "medias_sources": [
+    {
+      "chemin": "content/images/recette-frise.png",
+      "identique_dans_retour": true
+    }
+  ],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 1,
+    "normalisation_html": 1,
+    "ajout_natif": 1,
+    "retrait_natif": 2,
+    "taille_liste": 0
+  }
+}

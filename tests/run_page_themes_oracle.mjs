@@ -32,7 +32,7 @@ const UPDATE = process.argv.includes('--update');
 const PORT = 8097;
 
 // ---------------------------------------------------------------- serveur
-const server = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'],
+const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'],
     { cwd: ROOT, stdio: 'ignore' });
 const stop = () => { try { server.kill('SIGTERM'); } catch { /* déjà mort */ } };
 process.on('exit', stop);

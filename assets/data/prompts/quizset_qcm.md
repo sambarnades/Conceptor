@@ -209,3 +209,11 @@
   ]
 }
 ```
+
+# Réglages natifs du quiz
+
+- Introduction: `introPage: {showIntroPage, title, introduction, startButtonText}`.
+- Nombre de questions tirées (vide : toutes): `poolSize` (≥ 1), `disableBackwardsNavigation`, `randomQuestions`.
+- Réglages communs aux questions: `override: {checkButton, showSolutionButton: "on"|"off", retryButton: "on"|"off"}`.
+- Montrer les résultats: `endGame: {showResultPage, showSolutionButton, showRetryButton, overallFeedback: [{from:0,to:100,feedback:"…"}]}`.
+- Lire une vidéo après le quiz: `endGame.showAnimations`, `endGame.skippable`, `endGame.successVideo`, `endGame.failVideo`.

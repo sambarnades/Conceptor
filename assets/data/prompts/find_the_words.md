@@ -5,7 +5,7 @@
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.FindTheWords]
 - Nombre de mots : Au minimum 6 mots || [NOMBRE_ELEMENTS] mots.
-- Règles typographiques : Les mots ne doivent contenir ni accents, ni chiffres, ni signes de ponctuation, ni espaces.
+- Règles typographiques : Conserve les accents et les alphabets de la langue cible ; aucun chiffre, espace ou signe de ponctuation dans les mots.
 
 # RÈGLES PÉDAGOGIQUES
 - Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
@@ -38,3 +38,5 @@
   "wordList": "CELLULE,ADN,GENE,NOYAU"
 }
 ```
+
+- `behaviour.fillPool`: Lettres utilisées dans les cases restantes, sans espaces. `behaviour.preferOverlap` (true): Les mots se croisent davantage ; décochez pour des placements plus dispersés. Choisissez au moins une orientation.

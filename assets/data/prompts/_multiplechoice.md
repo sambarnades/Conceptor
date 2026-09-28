@@ -30,6 +30,7 @@
 ---
 
 # STRUCTURE DU JSON ATTENDUE
+- `behaviour.enableCheckButton` (true): Afficher le bouton Vérifier. Décochez seulement si la vérification est automatique ou déclenchée par le conteneur. `behaviour.showSolutionsRequiresInput` (true): Exiger une saisie avant la solution.
 - Génère UNIQUEMENT un JSON complet et valide dans un bloc de code. Ta réponse DOIT commencer par \`{\` et finir par \`}\`. Aucun autre texte ou commentaire.
 - L'objet principal doit contenir les clés suivantes :
   - \`question\`: (string) L'énoncé de la question. Peut contenir du HTML.
@@ -95,3 +96,6 @@
   ]
 }
 ```
+
+
+Respecter les options natives demandées : type auto/single/multi, singlePoint, randomAnswers, passPercentage (0–100), showScorePoints, showSolutionsRequiresInput, autoCheck et boutons. Les indices et retours par proposition restent dans tipsAndFeedback. Dialogues confirmCheck/confirmRetry : header, body, cancelLabel, confirmLabel. Média facultatif image/audio/vidéo uniquement fourni.

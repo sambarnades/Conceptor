@@ -37,14 +37,35 @@
 - 6. \`tips\` (optionnel) : Ajoute un indice pour le recto (\`front\`) et/ou le verso (\`back\`) uniquement si c'est pertinent. Texte simple **sans** formatage.
 - **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : \`\\\\( ... \\\\)\`. N'utilise JAMAIS le signe \`$\` seul. Exemples : \`\\\\( \\\\frac{1}{2} \\\\)\`, \`\\\\( \\\\sqrt{2} \\\\)\`, \`\\\\( \\\\alpha \\\\)\`, \`\\\\( x^{2} \\\\)\`, \`\\\\( \\\\mathbb{R} \\\\)\`, \`\\\\( \\\\sin(\\\\theta) \\\\)\`, \`\\\\( \\\\sum_{k=0}^{n} k \\\\)\`, \`\\\\( x \\\\geq 0 \\\\)\`, \`\\\\( \\\\forall x \\\\in \\\\mathbb{R} \\\\)\`.
 
+- Options facultatives : `mode` vaut `normal` ou `repetition`. `behaviour` peut contenir `enableRetry`, `disableBackwardsNavigation`, `scaleTextNotCard`, `randomCards`, `maxProficiency` (3 à 7) et `quickProgression`. Ne crée aucun fichier ni URL audio : l’auteur ajoute le son dans l’éditeur. Les indices restent du texte brut.
+
 # EXEMPLE DE RENDU
 ```json
 {
   "title": "Verbes irréguliers",
   "description": "Retrouvez le verbe à l'infinitif.",
   "dialogs": [
-    {"text": "He **visited** his grandmother.", "answer": "to **visit**", "tips": {"front": "Identifiez le prétérit.", "back": "Forme de base."}},
-    {"text": "She **played** soccer.", "answer": "to **play**"}
-  ]
+    {
+      "text": "He **visited** his grandmother.",
+      "answer": "to **visit**",
+      "tips": {
+        "front": "Identifiez le prétérit.",
+        "back": "Forme de base."
+      }
+    },
+    {
+      "text": "She **played** soccer.",
+      "answer": "to **play**"
+    }
+  ],
+  "mode": "normal",
+  "behaviour": {
+    "disableBackwardsNavigation": false,
+    "scaleTextNotCard": true,
+    "maxProficiency": 5,
+    "quickProgression": false
+  }
 }
 ```
+
+- Conserve ou adapte `confirmStartingOver` : `header`, `body`, `cancelLabel`, `confirmLabel`.

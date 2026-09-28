@@ -10,7 +10,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml, markdownToHtml } from '../../core/utils.js';
-import { buildMediaStructure } from '../image-manager.js';
+import { prepareQuestionMedia } from '../question-media.js';
 
 /**
  * Convertit le Markdown des indices et retours par réponse.
@@ -122,21 +122,29 @@ function libellesUI() {
     };
 }
 
-export default {
+const MultipleChoice = {
     process: (jsonObj) => {
+        if (jsonObj.behaviour?.singleAnswer !== undefined) {
+            const behaviour={...jsonObj.behaviour,type:[true,'true',1,'1'].includes(jsonObj.behaviour.singleAnswer)?'single':'multi'};
+            delete behaviour.singleAnswer;jsonObj={...jsonObj,behaviour};
+        }
+        if (!Array.isArray(jsonObj.answers) || !jsonObj.answers.length) throw Error('MultiChoice : une proposition est requise.');
+        if (jsonObj.behaviour?.passPercentage != null && (jsonObj.behaviour.passPercentage < 0 || jsonObj.behaviour.passPercentage > 100)) throw Error('MultiChoice : seuil hors limites.');
         return {
             ...jsonObj, // Conserve la question, les réponses et le overallFeedback
             question: formatTextToHtml(jsonObj.question),
-            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
+            media: prepareQuestionMedia(jsonObj),
             answers: (Array.isArray(jsonObj.answers) ? jsonObj.answers : []).map(replierRetoursRacine).map(answer => ({
                 ...answer,
                 text: formatTextToHtml(answer.text),
+                correct: [true,'true',1,'1'].includes(answer.correct),
                 ...(answer.tipsAndFeedback ? { tipsAndFeedback: convertirTips(answer.tipsAndFeedback) } : {})
             })),
-            UI: libellesUI(),
+            UI: {...libellesUI(), ...(jsonObj.UI || {})},
             behaviour: {
                 enableRetry: true,
                 enableSolutionsButton: true,
+                enableCheckButton: true,
                 type: 'auto',
                 singlePoint: false,
                 randomAnswers: true,
@@ -144,7 +152,7 @@ export default {
                 confirmCheckDialog: false,
                 confirmRetryDialog: false,
                 autoCheck: false,
-                passPercentage: 50,
+                passPercentage: 100,
                 showScorePoints: true,
                 ...(jsonObj.behaviour || {})
             },
@@ -152,13 +160,15 @@ export default {
                 header: translations.h5p_finish_header || "Terminer ?",
                 body: translations.h5p_finish_body || "Êtes-vous sûr de vouloir terminer ?",
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
-                confirmLabel: translations.h5p_finish_label || "Terminer"
+                confirmLabel: translations.h5p_finish_label || "Terminer",
+                ...(jsonObj.confirmCheck || {})
             },
             confirmRetry: {
                 header: translations.h5p_retry_header || "Recommencer ?",
                 body: translations.h5p_retry_body || "Êtes-vous sûr de vouloir recommencer ?",
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
-                confirmLabel: translations.h5p_retry_confirm_label || "Confirmer"
+                confirmLabel: translations.h5p_retry_confirm_label || "Confirmer",
+                ...(jsonObj.confirmRetry || {})
             },
             overallFeedback: jsonObj.overallFeedback || [
                 { from: 0, to: 100, feedback: "" }
@@ -167,35 +177,12 @@ export default {
     },
 
     transformForQuizSet: (question) => {
-        question.params.UI = {
-            ...libellesUI(),
-            ...question.params.UI
-        };
-
-        // Added: Ensure text formatting is applied
-        question.params.question = formatTextToHtml(question.params.question);
-        if (question.params.answers) {
-            question.params.answers = question.params.answers.map(a => {
-                const reponse = replierRetoursRacine(a);
-                return { ...reponse, text: formatTextToHtml(reponse.text) };
-            });
-        }
-
-        question.params.behaviour = {
-            type: "auto",
-            singleAnswer: true,
-            enableRetry: true,
-            enableSolutionsButton: true,
-            randomAnswers: true,
-            ...question.params.behaviour
-        };
-        if (question.params.answers) {
-            question.params.answers.forEach(a => {
-                a.tipsAndFeedback = convertirTips({
-                    tip: "", chosenFeedback: "", notChosenFeedback: "", ...a.tipsAndFeedback
-                });
-            });
+        question.params = MultipleChoice.process(question.params);
+        if (question.params.behaviour.singleAnswer !== undefined) {
+            question.params.behaviour.type = [true, 'true', 1, '1'].includes(question.params.behaviour.singleAnswer) ? 'single' : 'multi';
+            delete question.params.behaviour.singleAnswer;
         }
         return question;
     }
 };
+export default MultipleChoice;

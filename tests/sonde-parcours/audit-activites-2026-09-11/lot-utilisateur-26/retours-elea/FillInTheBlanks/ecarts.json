@@ -1,0 +1,55 @@
+[
+  {
+    "chemin": "a11yHeader",
+    "type": "retrait_natif",
+    "avant": "Mode de vérification"
+  },
+  {
+    "chemin": "a11yRetry",
+    "type": "normalisation_html",
+    "avant": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "apres": "Recommencer l&#039;exercice. Réinitialiser toutes les réponses et recommencer."
+  },
+  {
+    "chemin": "a11yShowSolution",
+    "type": "normalisation_html",
+    "avant": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "apres": "Afficher la solution. L&#039;exercice sera marqué avec sa solution correcte."
+  },
+  {
+    "chemin": "media.type.metadata.contentType",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.metadata.licenseVersion",
+    "type": "retrait_natif",
+    "avant": "CC0 1.0"
+  },
+  {
+    "chemin": "media.type.params.contentName",
+    "type": "ajout_natif",
+    "apres": "Image"
+  },
+  {
+    "chemin": "media.type.params.decorative",
+    "type": "ajout_natif",
+    "apres": false
+  },
+  {
+    "chemin": "media.type.params.expandImage",
+    "type": "ajout_natif",
+    "apres": "Agrandir l&#039;image"
+  },
+  {
+    "chemin": "media.type.params.minimizeImage",
+    "type": "ajout_natif",
+    "apres": "Réduire l&#039;image"
+  },
+  {
+    "chemin": "text",
+    "type": "modification",
+    "avant": "Complète les deux capitales.",
+    "apres": "<p>Complète les deux capitales. RELU</p>"
+  }
+]

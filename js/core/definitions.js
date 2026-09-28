@@ -75,7 +75,12 @@ export const h5pModules = {
         jsonInputId: "quizSetJsonInput",
         createBtnId: "createQuizSetH5P",
         // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`.
-        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"] },
+        // Dès 4 questions, et 5 en mode Rapide (defaultCount) : le mono-appel « 5 minimum » en
+        // produisait jusqu'à 9 (4 600 jetons), assez pour franchir le mur des 59 s dès que le
+        // débit du modèle baisse. planHint : le plan attribue le type de chaque question, sinon
+        // les lots, qui choisissent chacun à l'aveugle, perdent la variété du quiz mixte.
+        // Mesures : docs/calibration-batch-2026-09.md.
+        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"], threshold: 3, defaultCount: 5, planHint: "batch_outline_hint_quiz_types" },
         categories: ["quiz", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -91,7 +96,10 @@ export const h5pModules = {
         jsonInputId: "quizSetQcmJsonInput",
         createBtnId: "createQuizSetQcmH5P",
         // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`.
-        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"] },
+        // Dès 4 questions, et 5 en mode Rapide (defaultCount) : un QCM pèse 650 à 800 jetons,
+        // le mono-appel « 5 minimum » frôlait le mur des 59 s dès que le débit du modèle baisse.
+        // Mesures : docs/calibration-batch-2026-09.md.
+        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"], threshold: 3, defaultCount: 5 },
         categories: ["quiz", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -107,7 +115,9 @@ export const h5pModules = {
         jsonInputId: "quizSetVfJsonInput",
         createBtnId: "createQuizSetVfH5P",
         // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`.
-        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"] },
+        // Un Vrai/Faux pèse ~230 jetons : 8 tiennent en un appel sans approcher le mur, d'où un
+        // seuil et des lots de 8 (le mode Rapide reste en un seul appel).
+        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"], threshold: 8, batchSize: 8 },
         categories: ["quiz", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],

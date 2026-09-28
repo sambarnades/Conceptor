@@ -1,0 +1,94 @@
+[
+  {
+    "kind": "visible",
+    "pointage": "centre des cases",
+    "score": "4/4",
+    "erreur": "0/4",
+    "solution": true,
+    "reprise": true,
+    "grid": [
+      [
+        "Y",
+        "Y",
+        "Y",
+        "Y",
+        "X"
+      ],
+      [
+        "Α",
+        "Θ",
+        "Η",
+        "Ν",
+        "Α"
+      ],
+      [
+        "Y",
+        "R",
+        "O",
+        "M",
+        "E"
+      ],
+      [
+        "É",
+        "T",
+        "É",
+        "X",
+        "Z"
+      ],
+      [
+        "P",
+        "A",
+        "R",
+        "I",
+        "S"
+      ]
+    ],
+    "texte": "Retrouve les villes et ÉTÉ. RELU Sucrerie\n\t\nVilles RELU\nPARIS\nROME\nΑΘΗΝΑ\nÉTÉ\nTemps écoulé:0:00\n4 sur 4 mots trouvés\nVous avez obtenu 4 sur 4 points\nscoreBarLabel\n4/4\nRecommencer"
+  },
+  {
+    "kind": "cache",
+    "pointage": "centre des cases",
+    "score": "4/4",
+    "erreur": "0/4",
+    "solution": true,
+    "reprise": true,
+    "grid": [
+      [
+        "Y",
+        "X",
+        "Α",
+        "X",
+        "S"
+      ],
+      [
+        "E",
+        "X",
+        "Ν",
+        "Y",
+        "I"
+      ],
+      [
+        "M",
+        "Y",
+        "Η",
+        "É",
+        "R"
+      ],
+      [
+        "O",
+        "X",
+        "Θ",
+        "T",
+        "A"
+      ],
+      [
+        "R",
+        "Y",
+        "Α",
+        "É",
+        "P"
+      ]
+    ],
+    "texte": "Retrouve les villes et ÉTÉ. RELU Sucrerie\nTemps écoulé:0:00\n4 sur 4 mots trouvés\nVous avez obtenu 4 sur 4 points\nscoreBarLabel\n4/4\nRecommencer"
+  }
+]

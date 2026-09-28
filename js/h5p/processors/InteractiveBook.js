@@ -126,7 +126,8 @@ function buildImageBlock(image, alt) {
                 path: image.path,
                 mime: image.mime || 'image/jpeg',
                 width: image.width || 0,
-                height: image.height || 0
+                height: image.height || 0,
+                ...(image.copyright ? { copyright: image.copyright } : {})
             },
             alt: alt || '',
             decorative: !alt
@@ -187,12 +188,13 @@ async function buildExerciseBlock(exercise, helpers) {
  * @param {Set} allLibs - Accumulateur des librairies utilisées
  * @returns {Promise<Object>} L'objet Column complet
  */
-async function processChapter(chapter, helpers, allLibs) {
+async function processChapter(chapter, helpers, allLibs, inRow = false) {
     const items = [];
 
     for (const block of (chapter.content || [])) {
         if (!block || typeof block !== 'object') continue;
-        const type = (block.type || 'text').toLowerCase();
+        // Un type rendu en liste par le modèle (« ["text"] ») garde sa première valeur.
+        const type = String((Array.isArray(block.type) ? block.type[0] : block.type) || 'text').toLowerCase();
 
         if (type === 'text' && block.text) {
             items.push(buildColumnItem(buildTextBlock(block.text)));
@@ -203,6 +205,27 @@ async function processChapter(chapter, helpers, allLibs) {
         } else if (type === 'image' && block.image && block.image.path) {
             items.push(buildColumnItem(buildImageBlock(block.image, block.alt)));
             allLibs.add('H5P.Image');
+        } else if (type === 'row') {
+            if (inRow) throw new Error('InteractiveBook : les colonnes ne peuvent pas contenir une autre rangée.');
+            if (!Array.isArray(block.columns) || !block.columns.length || block.columns.length > 4) {
+                throw new Error('InteractiveBook : une rangée exige entre une et quatre colonnes.');
+            }
+            const columns = [];
+            for (const column of block.columns) {
+                const action = await processChapter(column, helpers, allLibs, true);
+                action.library = 'H5P.RowColumn 1.3';
+                // Le groupe homonyme content est transparent dans RowColumn.
+                action.params.content = action.params.content.map(({ content }) => content);
+                const width = column.width === '' || column.width == null ? undefined : Number(column.width);
+                columns.push({ ...(width === undefined ? {} : { width }), content: action });
+            }
+            items.push(buildColumnItem({
+                library: 'H5P.Row 1.3', subContentId: generateUUID(),
+                metadata: { title: '', contentType: 'Row', license: 'U' },
+                params: { columns }
+            }));
+            allLibs.add('H5P.Row');
+            allLibs.add('H5P.RowColumn');
         } else if (type === 'exercise' && block.library) {
             const { action, libName } = await buildExerciseBlock(block, helpers);
             items.push(buildColumnItem(action));
@@ -308,6 +331,15 @@ export default {
      * @returns {Promise<{content: Object, dependencies: Array}>}
      */
     async process(jsonObj, helpers) {
+        if(jsonObj.chapters?.[0]?.params){
+            const content=JSON.parse(JSON.stringify(jsonObj));
+            const dependencies=[];const seen=new Set();
+            const walk=value=>{if(!value||typeof value!=='object')return;
+                if(typeof value.library==='string'){const m=/^(H5P\.[A-Za-z0-9]+) (\d+)\.(\d+)$/.exec(value.library);if(m&&!seen.has(value.library)){seen.add(value.library);dependencies.push({machineName:m[1],majorVersion:+m[2],minorVersion:+m[3]});}}
+                Object.values(value).forEach(walk);};walk(content);
+            return {content,dependencies};
+        }
+
         debugLog('InteractiveBook', 'Début du traitement', { chaptersCount: jsonObj.chapters?.length });
 
         // Healing LaTeX local : envelopper ^{}, _{}, \circ etc. (réutilisé de CoursePresentation)
@@ -322,26 +354,27 @@ export default {
         }
 
         // Page de couverture : uniquement si l'IA/l'utilisateur a fourni un objet cover
-        const hasCover = !!(jsonObj.cover && (jsonObj.cover.description || jsonObj.title));
+        const hasCover = jsonObj.cover?.enabled ?? !!(jsonObj.cover && (jsonObj.cover.description || jsonObj.cover.media));
 
         // Assembler le content.json final
         const content = {
             // Conservé pour les métadonnées H5P (h5p-creator.js l'utilise pour h5p.json)
             title: jsonObj.title || '',
             showCoverPage: hasCover,
-            ...(hasCover ? {
+            ...(jsonObj.cover ? {
                 bookCover: {
-                    coverDescription: `<p style="text-align:center">${formatTextToHtml(jsonObj.cover.description || jsonObj.title || '')}</p>`
+                    coverDescription: formatTextToHtml(jsonObj.cover.description || ''),
+                    ...(jsonObj.cover.media ? { coverMedium: jsonObj.cover.media } : {})
                 }
             } : {}),
             chapters: processedChapters,
             behaviour: {
                 baseColor: normalizeHexColor(jsonObj.baseColor) || DEFAULTS.baseColor,
                 defaultTableOfContents: jsonObj.showTableOfContents ?? DEFAULTS.defaultTableOfContents,
-                progressIndicators: DEFAULTS.progressIndicators,
-                progressAuto: DEFAULTS.progressAuto,
+                progressIndicators: jsonObj.progressIndicators ?? DEFAULTS.progressIndicators,
+                progressAuto: jsonObj.progressAuto ?? DEFAULTS.progressAuto,
                 displaySummary: jsonObj.displaySummary ?? DEFAULTS.displaySummary,
-                enableRetry: DEFAULTS.enableRetry
+                enableRetry: jsonObj.enableRetry ?? DEFAULTS.enableRetry
             },
             // l10n PLATE fusionnée au premier niveau (spécificité InteractiveBook)
             ...buildL10n()
@@ -350,10 +383,22 @@ export default {
         // Collecter les dépendances dynamiques des librairies réellement utilisées
         const dependencies = [];
         const addedDeps = new Set();
+        const coverLibrary = jsonObj.cover?.media?.library?.match(/^(H5P\.(?:Image|Video)) (\d+)\.(\d+)$/);
+        if (coverLibrary) {
+            dependencies.push({ machineName: coverLibrary[1], majorVersion: Number(coverLibrary[2]), minorVersion: Number(coverLibrary[3]) });
+            addedDeps.add(`${coverLibrary[1]}-${coverLibrary[2]}.${coverLibrary[3]}`);
+        }
 
         // H5P.Column est TOUJOURS requis (chaque chapitre en est un)
         addedDeps.add('H5P.Column-1.22');
         dependencies.push({ machineName: 'H5P.Column', majorVersion: 1, minorVersion: 22 });
+
+        for (const machineName of ['H5P.Row', 'H5P.RowColumn']) {
+            if (allLibs.has(machineName)) {
+                addedDeps.add(`${machineName}-1.3`);
+                dependencies.push({ machineName, majorVersion: 1, minorVersion: 3 });
+            }
+        }
 
         if (helpers && helpers.getKeyFromLibrary && helpers.getLibraryMetadata) {
             for (const libName of allLibs) {

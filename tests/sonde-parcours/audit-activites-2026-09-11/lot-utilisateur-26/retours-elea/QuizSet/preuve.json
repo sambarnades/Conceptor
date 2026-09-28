@@ -1,0 +1,102 @@
+{
+  "numero": 17,
+  "module": "QuizSet",
+  "recu": true,
+  "fichier_telechargement": "17-QuizSet.h5p",
+  "sha256_source": "5bf92c4f00f034099ccd1f076bf7b363780c20c6aef9829db5f550090ee6ba14",
+  "sha256_retour": "5759496cf17cf7985ae6496f9cfdd0e63267ad8b960ae6213b5a05222661fb3a",
+  "source_comparee": "a-importer/17-QuizSet.h5p",
+  "titre": "RECETTE 17 — Questionnaire mixte",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "introPage.introduction",
+    "questions[0].params.question"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5P.Blanks",
+      "version": "1.14.37"
+    },
+    {
+      "nom": "H5P.Components",
+      "version": "1.0.97"
+    },
+    {
+      "nom": "H5PEditor.QuestionSetTextualEditor",
+      "version": "1.3.18"
+    },
+    {
+      "nom": "H5PEditor.RadioGroup",
+      "version": "1.1.4"
+    },
+    {
+      "nom": "H5PEditor.RangeList",
+      "version": "1.0.13"
+    },
+    {
+      "nom": "H5PEditor.ShowWhen",
+      "version": "1.0.9"
+    },
+    {
+      "nom": "H5PEditor.TableList",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "H5PEditor.VerticalTabs",
+      "version": "1.3.14"
+    },
+    {
+      "nom": "H5P.FontIcons",
+      "version": "1.0.11"
+    },
+    {
+      "nom": "H5P.JoubelUI",
+      "version": "1.3.45"
+    },
+    {
+      "nom": "H5P.MultiChoice",
+      "version": "1.16.27"
+    },
+    {
+      "nom": "H5P.Question",
+      "version": "1.5.53"
+    },
+    {
+      "nom": "H5P.QuestionSet",
+      "version": "1.21.13"
+    },
+    {
+      "nom": "H5P.TextUtilities",
+      "version": "1.3.0"
+    },
+    {
+      "nom": "H5P.Transition",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "H5P.TrueFalse",
+      "version": "1.8.21"
+    },
+    {
+      "nom": "H5P.Video",
+      "version": "1.6.79"
+    },
+    {
+      "nom": "jQuery.ui",
+      "version": "1.10.22"
+    }
+  ],
+  "medias_sources": [],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 2,
+    "normalisation_html": 7,
+    "ajout_natif": 27,
+    "retrait_natif": 6,
+    "taille_liste": 0
+  }
+}

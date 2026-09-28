@@ -86,6 +86,8 @@ restreindre l'affichage : **Tout**, **Quiz & Tests**, **Manipulation
 de texte**, **Mémorisation & Découverte**, ainsi que les plateformes
 **H5P**, **Éléa**, **Magistère**, **Moodle**.
 
+Sous le formulaire, **Une activité** affiche ces tuiles ; **Un parcours** ouvre l’atelier qui assemble plusieurs activités en un cours complet (voir « Créer et reprendre un parcours complet »).
+
 ### Activités H5P
 
 Activités au format H5P. Celles marquées d'une étoile (★) intègrent
@@ -256,7 +258,7 @@ Aucune donnée personnelle n'est collectée ni stockée. Aucun cookie de suivi n
 
 #### Modèles d'Intelligence Artificielle
 
-L'application Caramel s'appuie, uniquement lors de la génération en un clic, sur des modèles d'IA opérés par ILaaS, une fédération d'infrastructures d'IA mutualisées. Les requêtes sont acheminées via un workflow n8n hébergé par l'Incubateur, puis transmises à ILaaS pour exécution sur des serveurs de confiance hébergés dans des data centers labellisés de l'Enseignement supérieur et de la recherche (ESR). Caramel n'exécute pas les modèles et ne traite ni ne stocke les données en propre ; les données sont utilisées uniquement pour exécuter la requête et ne sont pas envoyées à des IA grand public. Les modèles actuellement proposés incluent Mistral-Small-3.2 (24 Mrd paramètres), Qwen 3.6 (35 Mrd paramètres) et GPT-OSS (120 Mrd paramètres). Les modalités d'hébergement, de journalisation et de conservation éventuellement effectuées par ILaaS relèvent de leur politique de confidentialité et de leurs conditions de service, auxquelles il convient de se référer.
+L'application Caramel s'appuie, uniquement lors de la génération en un clic, sur des modèles d'IA opérés par ILaaS, une fédération d'infrastructures d'IA mutualisées. Les requêtes sont acheminées via un workflow n8n hébergé par l'Incubateur, puis transmises à ILaaS pour exécution sur des serveurs de confiance hébergés dans des data centers labellisés de l'Enseignement supérieur et de la recherche (ESR). Caramel n'exécute pas les modèles et ne traite ni ne stocke les données en propre ; les données sont utilisées uniquement pour exécuter la requête et ne sont pas envoyées à des IA grand public. Les modèles actuellement proposés incluent Gemma 4 (31 Mrd paramètres), Qwen 3.8 (27 Mrd paramètres) et Mistral Small 4 (119 Mrd paramètres). Les modalités d'hébergement, de journalisation et de conservation éventuellement effectuées par ILaaS relèvent de leur politique de confidentialité et de leurs conditions de service, auxquelles il convient de se référer.
 
 #### Traitement des requêtes utilisateurs via n8n et l'Incubateur du Ministère de l'Éducation nationale
 
@@ -289,3 +291,59 @@ L'application est conçue pour être compatible avec une utilisation sur ordinat
   type le plus adapté mais ne génère JAMAIS le JSON d'une activité.
 - Pour toute question d'intégration, Caramelia donne les étapes
   précises ci-dessus.
+
+<!-- parcours-complet -->
+## Créer et reprendre un parcours complet
+
+Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ.
+
+Depuis le menu de Caramelia, **Créer un parcours** ouvre directement l’atelier, sans appel à l’IA. Si un brouillon existe, **Reprendre mon parcours** le retrouve. Les champs et les sources déjà présents sont conservés. Le cadrage et le plan se relisent dans l’atelier avant de lancer la génération.
+
+Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur et une trame. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.
+
+Dans **Plan**, modifiez le titre, l’objectif général, les notions du parcours, les étapes et les activités. Déplacez les activités avec les flèches ou leur vignette. **Consigne et palier** permet d’ajuster les indications de génération. Les repères pédagogiques vous aident à relire sans imposer un modèle. Le maximum est de **12 activités**.
+
+Dans la carte d’une **Vidéo interactive**, collez le lien de la vidéo. La transcription est récupérée pendant la fabrication ; vous pouvez aussi la coller manuellement. Pour **Image interactive**, **Trouver la zone** ou **Trouver les zones**, joignez une image dans la carte : elle sera analysée avant la génération. Ces supports peuvent aussi être complétés dans **Fabrication**. Sans support, l’activité attend et les autres avancent. Le scénario conserve les images et les liens propres aux activités ; les documents du formulaire d’accueil restent à part. Pour un **Lien web**, collez l’adresse de la ressource dans la carte : l’IA rédige la consigne de lecture sans ouvrir la page.
+
+Quand un contenu est prêt, **Modifier le contenu** ouvre l’éditeur habituel et **Aperçu** ouvre son lecteur. **Relire le parcours** permet de les parcourir dans l’ordre avec **Précédente** et **Suivante**. Enregistrez vos retouches pour les retrouver dans le plan et dans les exports. Modifier une consigne du plan ne réécrit pas un contenu déjà généré.
+
+Validez le plan pour lancer la fabrication. Vous pouvez arrêter, reprendre les activités manquantes ou refaire une activité. Le cadenas **Ne pas générer cette activité** réserve son contenu à une saisie manuelle : l’IA ne la remplit pas. Une tentative de régénération ratée conserve le contenu précédent. Les activités absentes sont nommées avant l’export.
+
+**Exporter le scénario (.json)** garde le plan et les contenus déjà prêts dans un fichier **.json**. Le bouton **Personnaliser le plan**, à côté de **Composer le plan**, ouvre la même fenêtre que pour une activité : on y copie le prompt vers l’IA de son choix, puis on y colle sa réponse. **Reprendre un scénario** se trouve dans cette fenêtre ; le fichier **.json** se télécharge à la livraison, à côté du **.mbz**. Le brouillon n’est gardé que dans l’onglet : exportez le scénario avant de le fermer. Le scénario ne contient pas le sujet, le public ni les documents joints ; renseignez-les à nouveau avant de générer de nouveaux contenus.
+
+Dans **Livraison**, téléchargez le **.mbz**, puis utilisez l’import de parcours ou la restauration de cours de votre plateforme. Ce fichier de cours ne se dépose pas dans une activité H5P. Le parcours rejoint aussi la zone de notifications : **Visualiser** y ouvre la **Vue du parcours**, avec l’accueil, chaque étape et ses activités, que l’on revoit et modifie avant de retélécharger. Gardez aussi le **.json** pour revenir dans Caramel. La fiche de séquence et le détail des activités s’exportent en **DOCX, ODT ou PDF**.
+
+Le plan propose aussi les modules de votre Éléa, Magistère ou Moodle, rangés dans le menu de chaque activité sous **Modules de la plateforme** : forum, sondage, questionnaire, enquête, leçon, atelier d’évaluation par les pairs, tableau, wiki, document collaboratif, glossaire et base de données à construire, classe virtuelle, choix de groupe, partage de fichiers et lien web. L’IA en écrit ce que la plateforme conserve à l’import ; les espaces collectifs arrivent vides, avec leur consigne. Quand un module demande un réglage sur la plateforme (phases de l’atelier, heure de la classe virtuelle, groupes), Caramel l’écrit dans une note **À faire avant d’ouvrir le cours**, cachée aux élèves, en tête du cours importé. Le **Paquetage IMS** — des pages à lire avec leur table des matières, entièrement écrites par Caramel — se choisit dans la mosaïque ; le plan ne le propose pas.
+
+La carte de progression est propre à Éléa. La carte et l’ouverture progressive sont facultatives et demandent encore une vérification en situation sur la plateforme. La trame de différenciation ne crée pas de branches automatiques selon une note. Les échanges collaboratifs ont lieu sur la plateforme. Le dépôt d’un parcours complet dans Sucrerie n’est pas encore disponible.
+
+Pour aller plus loin : [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) aide à réfléchir aux activités d’apprentissage. Les sept familles affichées dans Caramel, dont **Discuter** et **Coopérer**, sont des repères simplifiés liés aux outils, pas les six types ABC ni une évaluation de votre pédagogie.
+Sur Éléa, dans **Réglages du cours**, activez la carte de progression puis utilisez la tuile **+ Ajouter mon image** pour choisir votre propre fond. Vous pouvez changer ou retirer l’image et revenir aux thèmes proposés. Le fond est conservé dans le scénario **.json** et intégré au parcours **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG ou TIFF · 12 Mo max. Conversion automatique, sans recadrage.
+
+<!-- parcours-trames -->
+### Choisir une trame
+
+Après **Un parcours**, la trame donne le déroulé que l’IA adapte au sujet. La liste affichée dépend de la modalité et de l’ampleur choisies ; chaque activité reste modifiable dans le plan.
+
+- **Réviser avant l'évaluation** — On situe ce qui est acquis, on remet l'essentiel sous les yeux, on s'entraîne, on se teste. *(Une séance · Deux à trois séances)*
+- **Préparer et passer une évaluation** — Un entraînement au format de l'épreuve, l'évaluation notée, le corrigé. Trois activités, rien de plus. *(Une séance)*
+- **Remédier après l'évaluation** — On repart des erreurs constatées : on les nomme, on réexplique le point précis, on refait, on revérifie. *(Une séance · Deux à trois séances · À distance · Les deux)*
+- **Rituel court** — Dix minutes, toujours la même forme. C'est la répétition qui installe, pas la variété. *(Une séance)*
+- **Découvrir une notion** — Une situation qui interroge, des documents à explorer, puis la synthèse, et seulement ensuite l'application. *(Deux à trois séances · Une séquence entière)*
+- **Classe inversée** — La capsule et sa vérification à la maison, la tâche qu'on ne peut pas faire seul en classe, le bilan après. *(Une séance · Deux à trois séances · Les deux)*
+- **Étudier une œuvre** — Entrer dans le texte ou l'image, repérer, situer, interpréter, puis produire sa propre lecture. *(Deux à trois séances · Une séquence entière)*
+- **Mener une investigation** — Une question, une hypothèse, des données, une conclusion : la démarche scientifique dans l'ordre. *(Deux à trois séances · Une séquence entière · En classe · Les deux)*
+- **Analyser une source** — D'où vient l'information, qui la produit, ce qu'elle omet. Outiller le regard avant de juger. *(Une séance · Deux à trois séances)*
+- **Débat argumenté** — Un vote pour dire d'où l'on part, des sources pour s'informer, un forum pour débattre, un texte pour conclure. *(Deux à trois séances · Une séquence entière)*
+- **Différenciation à trois vitesses** — Un test de positionnement, puis des activités pour consolider, poursuivre ou approfondir. Les consignes guident les choix, sans branches automatiques selon la note. *(Deux à trois séances · Une séquence entière · À distance · Les deux)*
+- **Séquence de langue vivante** — Le lexique d'abord, la compréhension ensuite, la production en dernier. *(Deux à trois séances)*
+- **Préparer une prise de parole** — Ce qu'on va dire, dans quel ordre on va le dire, et comment on s'entraîne à le dire. *(Une séance · Deux à trois séances · En classe · Les deux)*
+- **Apprendre à apprendre** — Ce qui aide vraiment à retenir, essayé sur le sujet du cours : se tester, espacer, expliquer. Puis chacun planifie ses révisions. *(Une séance · Deux à trois séances)*
+- **Se former en autonomie** — Personne derrière l'écran : le parcours doit se suffire à lui-même, du sommaire à l'évaluation finale. *(Deux à trois séances · Une séquence entière · À distance)*
+- **Formation hybride en trois temps** — L'amont à distance, le regroupement, puis la mise en œuvre et le retour d'expérience. Le format des parcours de formation. *(Une séquence entière · Les deux)*
+- **Démarche de projet** — Une commande et ses critères, de la documentation, un travail d'équipe, une production relue entre pairs, puis améliorée. *(Une séquence entière · En classe · Les deux)*
+- **Travail d'équipe** — Former les équipes, rassembler les idées, écrire ensemble, se relire entre pairs avec une grille. *(Deux à trois séances · Une séquence entière)*
+- **Jeu d'évasion** — Une mission, des indices, des énigmes de difficulté croissante, un code final, et le débriefing. *(Une séance · Deux à trois séances · En classe · Les deux)*
+- **Structure libre** — Aucun déroulé imposé : vous composez les étapes vous-même et Caramel remplit ce que vous y posez. *(Une séance · Deux à trois séances · Une séquence entière)*
+<!-- /parcours-trames -->
+<!-- /parcours-complet -->

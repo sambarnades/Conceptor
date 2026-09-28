@@ -1,0 +1,18 @@
+[
+  {
+    "kind": "popup",
+    "score": "1/1",
+    "horsZone": true,
+    "erreur": true,
+    "reprise": true,
+    "text": "Clique sur la zone violette. RELU Sucrerie\nTu as trouvé le rectangle violet. RELU\nVous avez obtenu 1 sur 1 points\n1/1\nRights of use"
+  },
+  {
+    "kind": "integre",
+    "score": "1/1",
+    "horsZone": true,
+    "erreur": true,
+    "reprise": true,
+    "text": "Clique sur la zone violette. RELU Sucrerie\nTu as trouvé le rectangle violet. RELU\nVous avez obtenu 1 sur 1 points\n1/1\nRights of use"
+  }
+]

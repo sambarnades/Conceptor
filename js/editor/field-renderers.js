@@ -5,6 +5,7 @@
  * supportes par l'editeur JSON.
  */
 
+import { parseDragTextWord, serializeDragTextWord } from '../h5p/drag-text-grammar.js';
 import { t, currentLang } from '../core/translation.js';
 import { validateField } from './validators.js';
 // `core/utils.js` n'est PAS un fichier partagé (chaque dépôt a le sien) : n'importer
@@ -14,6 +15,7 @@ import { h5pDateToLocale, localeDateToH5p, getTimelineDateFormat, debugLog } fro
 import { showConfirm } from './array-manager.js';
 import { renderRichtextField } from './richtext-editor.js';
 import { renderClozeField } from './cloze-editor.js';
+import { getNestedValue, setNestedValue, matchesShowWhen } from './json-utils.js';
 
 // =======================================================================
 // UTILITAIRES
@@ -62,6 +64,7 @@ function translateLabel(label) {
 export const fieldRenderers = {
     'text': renderTextField,
     'textarea': renderTextareaField,
+    'dragText': renderDragTextField,
     'number': renderNumberField,
     'color': renderColorField,
     'checkbox': renderCheckboxField,
@@ -70,6 +73,7 @@ export const fieldRenderers = {
     'image': renderImageField,
     'audio': renderAudioField,
     'video': renderVideoField,
+    'vtt': renderVttField,
     'array': renderArrayField,
     'object': renderObjectField,
     'feedbackRanges': renderFeedbackRangesField,
@@ -289,6 +293,68 @@ function renderTimelineDateField(config, value, onChange, path) {
 /**
  * Rend une zone de texte multi-lignes
  */
+/** Texte natif et fiches par mot : aucune structure intermédiaire à sauvegarder. */
+export function renderDragTextField(config, value, onChange, path) {
+    const wrapper = document.createElement('div');
+    const textHost = document.createElement('div');
+    const detailsHost = document.createElement('div');
+    wrapper.append(textHost, detailsHost);
+    let source = value || '';
+    const canonical = text => { const el=document.createElement('textarea');el.innerHTML=text;return el.value; };
+    const renderText = () => {
+        const fieldElement=renderRichtextField(
+        {...config, renderType:'unicode+markers'}, source.replace(/\*([^*]+)\*/g, marked=>`*${parseDragTextWord(marked).answer}*`),
+        (field, text) => {
+            // Le texte principal ne montre que les mots. Les indices/retours sont
+            // réassociés par mot et occurrence quand l'auteur réécrit une phrase.
+            const previous=new Map();
+            for(const match of source.matchAll(/\*([^*]+)\*/g)) {
+                const word=parseDragTextWord(match[0]), key=canonical(word.answer);
+                if(!previous.has(key))previous.set(key,[]);previous.get(key).push(word);
+            }
+            source=text.replace(/\*([^*]+)\*/g,marked=>{
+                const word=parseDragTextWord(marked), old=previous.get(canonical(word.answer))?.shift();
+                return old && !word.tip && !word.correctFeedback && !word.incorrectFeedback
+                    ? serializeDragTextWord({...old,answer:word.answer}) : marked;
+            });
+            const raw=textHost.querySelector('textarea[data-path]');if(raw)raw.value=source;
+            onChange?.(field,source);renderDetails();
+        }, path);
+        // La collecte de sauvegarde lit aussi le textarea source, même masqué.
+        fieldElement.querySelector('textarea[data-path]').value=source;
+        textHost.replaceChildren(fieldElement);
+    };
+    const renderDetails = () => {
+        detailsHost.replaceChildren();
+        [...source.matchAll(/\*([^*]+)\*/g)].forEach((match, index) => {
+            const word = parseDragTextWord(match[0]);
+            const details = document.createElement('details');
+            const summary = document.createElement('summary');
+            summary.textContent = `${index+1}. ${word.answer} — ${t('editor_tips_feedback')}`;
+            details.append(summary);
+            const hint=document.createElement('p');hint.className='json-editor__hint';hint.textContent=t('editor_drag_word_feedback_hint');details.append(hint);
+            for (const [key,label] of [['tip','editor_tip'],['correctFeedback','editor_feedback_correct'],['incorrectFeedback','editor_feedback_wrong']]) {
+                const row=document.createElement('label'); row.className='json-editor__field'; row.textContent=t(label);
+                const input=document.createElement('input'); input.className='json-editor__input'; input.value=word[key];
+                input.dataset.dragWordIndex=index; input.dataset.dragWordProperty=key;
+                // Ces séparateurs sont des commandes natives, pas du texte littéral.
+                const reserved = key === 'tip' ? /[\\*]/ : /[\\*:]/;
+                input.addEventListener('beforeinput', e => { if (e.data && reserved.test(e.data)) e.preventDefault(); });
+                input.addEventListener('paste', e => { if (reserved.test(e.clipboardData.getData('text'))) e.preventDefault(); });
+                input.addEventListener('input', () => {
+                    const matches=[...source.matchAll(/\*([^*]+)\*/g)]; const current=matches[index]; if (!current) return;
+                    const updated={...parseDragTextWord(current[0]), [key]:input.value};
+                    source=source.slice(0,current.index)+serializeDragTextWord(updated)+source.slice(current.index+current[0].length);
+                    onChange?.(path,source); renderText();
+                });
+                row.append(input); details.append(row);
+            }
+            detailsHost.append(details);
+        });
+    };
+    renderText();renderDetails();return wrapper;
+}
+
 export function renderTextareaField(config, value, onChange, path) {
     const id = generateId();
     const wrapper = document.createElement('div');
@@ -431,7 +497,8 @@ export function renderColorField(config, value, onChange, path) {
 
     // Valeur par défaut : utiliser config.default si défini, sinon #ffffff
     const hasValue = value && value !== '';
-    const colorValue = hasValue ? value : (config.default || '#ffffff');
+    const expandHex = color => String(color).replace(/^#([0-9a-f]{3})$/i, (_, digits) => '#' + [...digits].map(d => d + d).join(''));
+    const colorValue = expandHex(hasValue ? value : (config.default || '#ffffff'));
 
     // Initialiser la valeur dans les données si elle n'existe pas et qu'un default est défini
     if (!hasValue && config.default && onChange) {
@@ -456,7 +523,7 @@ export function renderColorField(config, value, onChange, path) {
                 class="json-editor__color-text"
                 value="${escapeHtml(colorValue)}"
                 placeholder="#000000"
-                pattern="^#[0-9A-Fa-f]{6}$"
+                pattern="^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$"
             >
         </div>
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
@@ -476,7 +543,7 @@ export function renderColorField(config, value, onChange, path) {
     });
 
     textInput.addEventListener('input', (e) => {
-        const newValue = e.target.value;
+        const newValue = expandHex(e.target.value);
         // Valider le format hex
         if (/^#[0-9A-Fa-f]{6}$/.test(newValue)) {
             colorInput.value = newValue;
@@ -1030,6 +1097,8 @@ function renderImageFieldContent(config, value, onChange, path, label, hint, alt
                    value="" />
         `;
         altInput = altWrapper.querySelector('input');
+        altInput.dataset.path = altPath;
+        altInput.value = getNestedValue(window._jsonEditorData, altPath) ?? '';
         altInput.addEventListener('input', () => {
             onChange(altPath, altInput.value);
         });
@@ -1051,7 +1120,7 @@ function renderImageFieldContent(config, value, onChange, path, label, hint, alt
 
         const optionsHtml = sf.options.map(opt => {
             const optLabel = translateLabel(opt.label) || opt.value;
-            const selected = opt.value === (sf.default || '') ? ' selected' : '';
+            const selected = opt.value === (getNestedValue(window._jsonEditorData, selectPath) ?? sf.default ?? '') ? ' selected' : '';
             return `<option value="${escapeHtml(opt.value)}"${selected}>${escapeHtml(optLabel)}</option>`;
         }).join('');
 
@@ -1060,6 +1129,7 @@ function renderImageFieldContent(config, value, onChange, path, label, hint, alt
             <select class="json-editor__select">${optionsHtml}</select>
         `;
         selectInput = selectWrapper.querySelector('select');
+        selectInput.dataset.path = selectPath;
         selectInput.addEventListener('change', () => {
             onChange(selectPath, selectInput.value);
         });
@@ -1124,6 +1194,13 @@ function showImageError(wrapper, message) {
  * Rend un champ d'upload audio (fichier embarqué). value: { path, mime, kind, dataURL }.
  */
 export function renderAudioField(config, value, onChange, path) {
+    // H5P utilise parfois une liste de sources équivalentes pour un même son.
+    // Un remplacement explicite remplace la liste ; une simple réouverture
+    // conserve toutes les sources et leurs métadonnées dans les données.
+    if (config.nativeSources) {
+        return renderMediaUploadField('audio', config, Array.isArray(value) ? value[0] : value,
+            (fieldPath, source) => onChange(fieldPath, source ? [source] : []), path);
+    }
     return renderMediaUploadField('audio', config, value, onChange, path);
 }
 
@@ -1131,6 +1208,7 @@ export function renderAudioField(config, value, onChange, path) {
  * Rend un champ d'upload vidéo (fichier embarqué). value: { path, mime, kind, dataURL }.
  */
 export function renderVideoField(config, value, onChange, path) {
+    if (config.nativeSources) return renderNativeVideoSources(config,value,onChange,path);
     return renderMediaUploadField('video', config, value, onChange, path);
 }
 
@@ -1278,14 +1356,43 @@ export function renderObjectField(config, value, onChange, path) {
     const wrapper = document.createElement('div');
     wrapper.className = 'json-editor__field json-editor__field--object';
 
-    const objValue = value || {};
+    const objValue = { ...(value || {}) };
+    const conditionalFields = [];
+    const dynamicFields = [];
+    const updateVisibility = () => {
+        for (const { element, showWhen } of conditionalFields) {
+            element.style.display = matchesShowWhen(showWhen, objValue, config.schema, window._jsonEditorData) ? '' : 'none';
+        }
+    };
+    const handleChange = (fieldPath, nextValue) => {
+        if (fieldPath.startsWith(path + '.')) setNestedValue(objValue, fieldPath.slice(path.length + 1), nextValue);
+        onChange?.(fieldPath, nextValue);
+        updateVisibility();
+        for (const item of dynamicFields) {
+            if (fieldPath === `${path}.${item.config.selector}`) {
+                if (item.config.resetOnSelectorChange) {
+                    objValue[item.key]={};onChange?.(`${path}.${item.key}`,{});
+                }
+                const next=renderDynamicObjectField(item.config,objValue[item.key],handleChange,`${path}.${item.key}`,nextValue);
+                item.element.replaceWith(next);item.element=next;
+            }
+        }
+    };
+    const renderSubField = (subKey, subConfig) => {
+        const subPath = `${path}.${subKey}`;
+        const { renderer, config: resolved } = _resolveRenderer(subConfig, subPath);
+        const element = renderer(resolved, objValue[subKey], handleChange, subPath, objValue[subConfig.selector]);
+        if (subConfig.type === 'dynamicObject') dynamicFields.push({element,key:subKey,config:resolved});
+        if (subConfig.showWhen) conditionalFields.push({ element, showWhen: subConfig.showWhen });
+        return element;
+    };
 
     if (config.collapsible) {
         // Version pliable
         const collapsibleLabel = translateLabel(config.collapsibleLabel || config.label);
         wrapper.innerHTML = `
             <div class="json-editor__array-item-subsection">
-                <div class="json-editor__array-item-subsection-header">
+                <div class="json-editor__array-item-subsection-header" role="button" tabindex="0" aria-expanded="false">
                     <i class="fas fa-chevron-right"></i>
                     <span>${escapeHtml(collapsibleLabel)}</span>
                 </div>
@@ -1298,16 +1405,18 @@ export function renderObjectField(config, value, onChange, path) {
         const subsection = wrapper.querySelector('.json-editor__array-item-subsection');
 
         header.addEventListener('click', () => {
-            subsection.classList.toggle('json-editor__array-item-subsection--expanded');
+            const expanded = subsection.classList.toggle('json-editor__array-item-subsection--expanded');
+            header.setAttribute('aria-expanded', String(expanded));
+        });
+
+        header.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); header.click(); }
         });
 
         // Rendre les sous-champs
         if (config.schema) {
             for (const [subKey, subConfig] of Object.entries(config.schema)) {
-                const subPath = `${path}.${subKey}`;
-                const subValue = objValue[subKey];
-                const { renderer, config: resolved } = _resolveRenderer(subConfig, subPath);
-                const subField = renderer(resolved, subValue, onChange, subPath);
+                const subField = renderSubField(subKey, subConfig);
                 content.appendChild(subField);
             }
         }
@@ -1315,10 +1424,7 @@ export function renderObjectField(config, value, onChange, path) {
         // Version sans en-tête : sous-champs rendus directement, pas de div intermédiaire
         if (config.schema) {
             for (const [subKey, subConfig] of Object.entries(config.schema)) {
-                const subPath = `${path}.${subKey}`;
-                const subValue = objValue[subKey];
-                const { renderer, config: resolved } = _resolveRenderer(subConfig, subPath);
-                const subField = renderer(resolved, subValue, onChange, subPath);
+                const subField = renderSubField(subKey, subConfig);
                 wrapper.appendChild(subField);
             }
         }
@@ -1338,15 +1444,13 @@ export function renderObjectField(config, value, onChange, path) {
 
         if (config.schema) {
             for (const [subKey, subConfig] of Object.entries(config.schema)) {
-                const subPath = `${path}.${subKey}`;
-                const subValue = objValue[subKey];
-                const { renderer, config: resolved } = _resolveRenderer(subConfig, subPath);
-                const subField = renderer(resolved, subValue, onChange, subPath);
+                const subField = renderSubField(subKey, subConfig);
                 content.appendChild(subField);
             }
         }
     }
 
+    updateVisibility();
     return wrapper;
 }
 
@@ -2606,4 +2710,62 @@ function renderRubricGridField(config, value, onChange, path) {
 
     renderGrid();
     return wrapper;
+}
+
+/** Piste WebVTT : fichier embarqué, remplaçable et supprimable sans URL externe. */
+export function renderVttField(config, value, onChange, path) {
+    const wrapper=document.createElement('div');wrapper.className='json-editor__field';wrapper.dataset.path=path;
+    const label=document.createElement('label');label.className='json-editor__label';label.textContent=translateLabel(config.label);
+    const input=document.createElement('input');input.type='file';input.accept='.vtt,text/vtt';input.setAttribute('aria-label',label.textContent);
+    const name=document.createElement('span');name.textContent=value?.path||'';
+    const remove=document.createElement('button');remove.type='button';remove.textContent=translateLabel('editor_media_remove');remove.hidden=!value?.path;
+    input.addEventListener('change',async()=>{
+        const file=input.files[0];if(!file)return;
+        try {
+            if(file.size>1024*1024)throw Error('SIZE_EXCEEDED');
+            if(!/^\uFEFF?WEBVTT(?:[ \t].*)?(?:\r?\n|$)/.test(await file.text()))throw Error('FORMAT_INVALID');
+            const mm=await import('../h5p/image-manager.js');const h5pPath='videos/track-'+crypto.randomUUID()+'.vtt';
+            mm.registerMedia(path,{id:path,h5pPath,blob:new Blob([file],{type:'text/vtt'}),mime:'text/vtt',kind:'track'});
+            onChange(path,{path:h5pPath,mime:'text/vtt'});name.textContent=h5pPath;remove.hidden=false;
+        } catch(error){showImageError(wrapper,translateLabel(error.message==='SIZE_EXCEEDED'?'editor_media_error_size':'editor_media_error_format'));}
+        input.value='';
+    });
+    remove.addEventListener('click',()=>{onChange(path,null);name.textContent='';remove.hidden=true;});
+    wrapper.append(label,input,name,remove);return wrapper;
+}
+
+/** Sources vidéo natives : fichiers alternatifs, URL et libellé de qualité. */
+function renderNativeVideoSources(config,value,onChange,path){
+    const wrapper=document.createElement('div');wrapper.dataset.path=path;
+    let sources=Array.isArray(value)?structuredClone(value):[];
+    const render=()=>{
+        wrapper.replaceChildren();
+        for(let index=0;index<Math.max(1,sources.length);index++){
+            const source=sources[index];
+            wrapper.append(renderMediaUploadField('video',{...config,nativeSources:false},source,(_p,next)=>{
+                if(next)sources[index]=next;else sources.splice(index,1);
+                onChange(path,sources.filter(Boolean));render();
+            },path+'.'+index));
+            const fields=[['url','editor_iv_video_url',/^https?:/.test(source?.path||'')?source.path:''],['quality','editor_video_quality_label',source?.metadata?.qualityName||source?.quality?.label||'']];
+            for(const [key,labelKey,current] of fields){
+                const label=document.createElement('label');label.className='json-editor__label';label.textContent=translateLabel(labelKey);
+                const input=document.createElement('input');input.type=key==='url'?'url':'text';input.value=current;input.dataset.nativeSource=key;input.dataset.sourceIndex=index;input.setAttribute('aria-label',label.textContent);
+                input.addEventListener('change',()=>{
+                    const text=input.value.trim();
+                    if(key==='url'){
+                        if(!text)return;if(!/^https?:\/\//i.test(text)){showImageError(wrapper,translateLabel('editor_media_error_format'));return;}
+                        sources[index]={...(sources[index]||{}),path:text,mime:sources[index]?.mime||'video/mp4'};delete sources[index].dataURL;
+                    }else if(sources[index]){
+                        sources[index].metadata={...sources[index].metadata,qualityName:text};
+                        if(sources[index].quality)sources[index].quality={...sources[index].quality,label:text};
+                    }
+                    onChange(path,sources.filter(Boolean));
+                });
+                wrapper.append(label,input);
+            }
+        }
+        const add=document.createElement('button');add.type='button';add.className='json-editor__btn json-editor__btn--secondary';add.textContent=translateLabel('editor_add_item');add.dataset.action='add-video-source';
+        add.addEventListener('click',()=>{if(sources.length&&sources.at(-1)?.path)sources.push(null);else if(!sources.length)sources=[null,null];render();});wrapper.append(add);
+    };
+    render();return wrapper;
 }

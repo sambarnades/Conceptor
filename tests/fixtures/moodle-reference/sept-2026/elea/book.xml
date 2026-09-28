@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="50" moduleid="14006" modulename="book" contextid="17734">
+  <book id="50">
+    <name>Livre : l’eau sur Terre</name>
+    <intro>&lt;p&gt;Un livre en plusieurs chapitres.&lt;/p&gt;</intro>
+    <introformat>1</introformat>
+    <numbering>1</numbering>
+    <navstyle>1</navstyle>
+    <customtitles>0</customtitles>
+    <timecreated>1790541038</timecreated>
+    <timemodified>1790541038</timemodified>
+    <chapters>
+      <chapter id="415">
+        <pagenum>1</pagenum>
+        <subchapter>0</subchapter>
+        <title>L’eau sur Terre</title>
+        <content>&lt;p&gt;97 % de l’eau de la planète est salée.&lt;/p&gt;</content>
+        <contentformat>1</contentformat>
+        <hidden>0</hidden>
+        <timemodified>1790541371</timemodified>
+        <importsrc></importsrc>
+      </chapter>
+      <chapter id="416">
+        <pagenum>2</pagenum>
+        <subchapter>0</subchapter>
+        <title>L’eau douce</title>
+        <content>&lt;p&gt;L’eau douce se trouve dans les glaciers, les nappes et les rivières.&lt;/p&gt;</content>
+        <contentformat>1</contentformat>
+        <hidden>0</hidden>
+        <timemodified>1790541372</timemodified>
+        <importsrc></importsrc>
+      </chapter>
+    </chapters>
+    <chaptertags>
+    </chaptertags>
+  </book>
+</activity>

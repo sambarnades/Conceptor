@@ -7,7 +7,7 @@
  * sans le coût du DOM, ces scénarios vérifient que les mêmes correctifs tiennent quand
  * c'est un humain qui clique.
  *
- * Prérequis : `python3 -m http.server 8010` à la RACINE du dépôt.
+ * Prérequis : `python3 tests/serveur-statique.py 8010` à la RACINE du dépôt.
  * Usage     : node tests/qa-manuel/<scenario>.mjs
  */
 import { chromium } from '../roundtrip/node_modules/playwright/index.mjs';

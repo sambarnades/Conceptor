@@ -343,7 +343,7 @@ export async function runAllTests() {
             await wait(50);
         };
         const boutonAjouterBloc = () =>
-            [...conteneur.querySelectorAll('button')].find(b => b.textContent.includes(t('editor_ib_add_block')));
+            [...conteneur.querySelectorAll('button')].filter(b => b.textContent.includes(t('editor_ib_add_block'))).at(-1);
 
         try {
             // ---- 4.1 : ouverture puis enregistrement sans modification
@@ -386,7 +386,7 @@ export async function runAllTests() {
             await ouvrir();
             await allerAuChapitre(0);
             const avantSuppr = getEditorData().chapters[0].content.length;
-            const item = conteneur.querySelector('.json-editor__array-item[data-index="1"] [data-action="delete"]');
+            const item = boutonAjouterBloc().parentElement.querySelector(':scope > .json-editor__array-item[data-index="1"] [data-action="delete"]');
             assert(!!item, 'Le bouton de suppression du bloc 2 est présent');
             item.click();
             await wait(30);

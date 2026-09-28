@@ -1,0 +1,9 @@
+▶ http://127.0.0.1:8099/tests/test-all.html
+
+   14369PASS  |  0FAIL  |  14369assertions  |  42/42suites  |  141.6stemps total
+
+
+========================================
+suite navigateur : 14369 PASS / 0 FAIL (référence : 0 échec pré-existant)
+========================================
+✅ Suite navigateur conforme à la référence.

@@ -1,0 +1,12 @@
+Comparaison field-constraints.js Sucrerie vs Caramel (source de vérité)
+Caramel  : /Users/egaunard/Desktop/Forge/Caramel/bas
+Sucrerie : /Users/egaunard/Desktop/Forge/Caramel/sucrerie.forge.apps.education.fr
+
+Modules : 42 côté Caramel, 44 côté Sucrerie (42 comparés, 328 champs vérifiés).
+Résolution du repli conteneur : 189 sous-chemins rejoués, 0 divergence(s) d'ordre.
+
+Écarts attendus (liste blanche) :
+  ~ Sucrerie-only : CoursePresentationGeneric
+  ~ Sucrerie-only : DragAndDropGeneric
+
+✓ Parité OK : aucun module ni champ divergent.

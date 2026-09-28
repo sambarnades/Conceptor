@@ -1,0 +1,69 @@
+{
+  "numero": 2,
+  "module": "Summary",
+  "recu": true,
+  "fichier_telechargement": "02-Summary.h5p",
+  "sha256_source": "624eec5d8a333e0aa116c0f2eed5ba69b9920d224fddd920e04244f2bb3c98ed",
+  "sha256_retour": "c5e471b05f112538a93ffe7f6ab0d8568953f47fe947d4ebd8180089c8c23f34",
+  "source_comparee": "a-importer/02-Summary.h5p",
+  "titre": "RECETTE 02 — Résumé",
+  "titre_modifie": false,
+  "champs_retouches_relu": [
+    "summaries[0].tip"
+  ],
+  "bibliotheques": [
+    {
+      "nom": "FontAwesome",
+      "version": "4.5.6"
+    },
+    {
+      "nom": "H5P.Components",
+      "version": "1.0.97"
+    },
+    {
+      "nom": "H5PEditor.RangeList",
+      "version": "1.0.13"
+    },
+    {
+      "nom": "H5PEditor.SummaryTextualEditor",
+      "version": "1.1.12"
+    },
+    {
+      "nom": "H5PEditor.TableList",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "H5P.FontIcons",
+      "version": "1.0.11"
+    },
+    {
+      "nom": "H5P.JoubelUI",
+      "version": "1.3.45"
+    },
+    {
+      "nom": "H5P.Question",
+      "version": "1.5.53"
+    },
+    {
+      "nom": "H5P.Summary",
+      "version": "1.10.32"
+    },
+    {
+      "nom": "H5P.Transition",
+      "version": "1.0.4"
+    },
+    {
+      "nom": "jQuery.ui",
+      "version": "1.10.22"
+    }
+  ],
+  "medias_sources": [],
+  "medias_references_absents_du_retour": [],
+  "ecarts": {
+    "modification": 1,
+    "normalisation_html": 2,
+    "ajout_natif": 0,
+    "retrait_natif": 1,
+    "taille_liste": 0
+  }
+}

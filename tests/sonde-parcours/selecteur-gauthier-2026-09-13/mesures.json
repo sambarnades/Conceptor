@@ -1,0 +1,935 @@
+{
+  "results": [
+    {
+      "viewport": 1280,
+      "pageWidth": 1280,
+      "formulaire": {
+        "x": 110,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 190,
+        "bottom": 299.859375
+      },
+      "selecteur": {
+        "x": 400,
+        "y": 311.859375,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 356.09375
+      },
+      "contenu": {
+        "x": 110,
+        "y": 368.09375,
+        "width": 1060,
+        "height": 52.234375,
+        "bottom": 420.328125
+      },
+      "boutons": [
+        {
+          "x": 404,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 642,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "simple",
+      "choice": "activites"
+    },
+    {
+      "viewport": 1280,
+      "pageWidth": 1280,
+      "formulaire": {
+        "x": 110,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 190,
+        "bottom": 299.859375
+      },
+      "selecteur": {
+        "x": 400,
+        "y": 311.859375,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 356.09375
+      },
+      "contenu": {
+        "x": 110,
+        "y": 368.09375,
+        "width": 1060,
+        "height": 1870.390625,
+        "bottom": 2238.484375
+      },
+      "boutons": [
+        {
+          "x": 404,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 642,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "simple",
+      "choice": "parcours"
+    },
+    {
+      "viewport": 1280,
+      "pageWidth": 1280,
+      "formulaire": {
+        "x": 110,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 671.953125,
+        "bottom": 781.8125
+      },
+      "selecteur": {
+        "x": 400,
+        "y": 793.8125,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 838.046875
+      },
+      "contenu": {
+        "x": 110,
+        "y": 850.046875,
+        "width": 1060,
+        "height": 52.234375,
+        "bottom": 902.28125
+      },
+      "boutons": [
+        {
+          "x": 404,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 642,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "advanced",
+      "choice": "activites"
+    },
+    {
+      "viewport": 1280,
+      "pageWidth": 1280,
+      "formulaire": {
+        "x": 110,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 671.953125,
+        "bottom": 781.8125
+      },
+      "selecteur": {
+        "x": 400,
+        "y": 793.8125,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 838.046875
+      },
+      "contenu": {
+        "x": 110,
+        "y": 850.046875,
+        "width": 1060,
+        "height": 1870.390625,
+        "bottom": 2720.4375
+      },
+      "boutons": [
+        {
+          "x": 404,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 642,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "advanced",
+      "choice": "parcours"
+    },
+    {
+      "viewport": 1127,
+      "pageWidth": 1127,
+      "formulaire": {
+        "x": 33.5,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 190,
+        "bottom": 299.859375
+      },
+      "selecteur": {
+        "x": 323.5,
+        "y": 311.859375,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 356.09375
+      },
+      "contenu": {
+        "x": 33.5,
+        "y": 368.09375,
+        "width": 1060,
+        "height": 52.234375,
+        "bottom": 420.328125
+      },
+      "boutons": [
+        {
+          "x": 327.5,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 565.5,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "simple",
+      "choice": "activites"
+    },
+    {
+      "viewport": 1127,
+      "pageWidth": 1127,
+      "formulaire": {
+        "x": 33.5,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 190,
+        "bottom": 299.859375
+      },
+      "selecteur": {
+        "x": 323.5,
+        "y": 311.859375,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 356.09375
+      },
+      "contenu": {
+        "x": 33.5,
+        "y": 368.09375,
+        "width": 1060,
+        "height": 1870.390625,
+        "bottom": 2238.484375
+      },
+      "boutons": [
+        {
+          "x": 327.5,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 565.5,
+          "y": 315.859375,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 352.09375,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "simple",
+      "choice": "parcours"
+    },
+    {
+      "viewport": 1127,
+      "pageWidth": 1127,
+      "formulaire": {
+        "x": 33.5,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 671.953125,
+        "bottom": 781.8125
+      },
+      "selecteur": {
+        "x": 323.5,
+        "y": 793.8125,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 838.046875
+      },
+      "contenu": {
+        "x": 33.5,
+        "y": 850.046875,
+        "width": 1060,
+        "height": 52.234375,
+        "bottom": 902.28125
+      },
+      "boutons": [
+        {
+          "x": 327.5,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 565.5,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "advanced",
+      "choice": "activites"
+    },
+    {
+      "viewport": 1127,
+      "pageWidth": 1127,
+      "formulaire": {
+        "x": 33.5,
+        "y": 109.859375,
+        "width": 1060,
+        "height": 671.953125,
+        "bottom": 781.8125
+      },
+      "selecteur": {
+        "x": 323.5,
+        "y": 793.8125,
+        "width": 480,
+        "height": 44.234375,
+        "bottom": 838.046875
+      },
+      "contenu": {
+        "x": 33.5,
+        "y": 850.046875,
+        "width": 1060,
+        "height": 1870.390625,
+        "bottom": 2720.4375
+      },
+      "boutons": [
+        {
+          "x": 327.5,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 232,
+          "widthClient": 232
+        },
+        {
+          "x": 565.5,
+          "y": 797.8125,
+          "width": 234,
+          "height": 36.234375,
+          "bottom": 834.046875,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 232,
+          "widthClient": 232
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "advanced",
+      "choice": "parcours"
+    },
+    {
+      "viewport": 390,
+      "pageWidth": 390,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 350,
+        "height": 190,
+        "bottom": 293
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 305,
+        "width": 350,
+        "height": 52,
+        "bottom": 357
+      },
+      "contenu": {
+        "x": 20,
+        "y": 369,
+        "width": 350,
+        "height": 94.46875,
+        "bottom": 463.46875
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 309,
+          "width": 169,
+          "height": 44,
+          "bottom": 353,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 167,
+          "widthClient": 167
+        },
+        {
+          "x": 197,
+          "y": 309,
+          "width": 169,
+          "height": 44,
+          "bottom": 353,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 167,
+          "widthClient": 167
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "simple",
+      "choice": "activites"
+    },
+    {
+      "viewport": 390,
+      "pageWidth": 390,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 350,
+        "height": 190,
+        "bottom": 293
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 305,
+        "width": 350,
+        "height": 52,
+        "bottom": 357
+      },
+      "contenu": {
+        "x": 20,
+        "y": 369,
+        "width": 350,
+        "height": 4343.921875,
+        "bottom": 4712.921875
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 309,
+          "width": 169,
+          "height": 44,
+          "bottom": 353,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 167,
+          "widthClient": 167
+        },
+        {
+          "x": 197,
+          "y": 309,
+          "width": 169,
+          "height": 44,
+          "bottom": 353,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 167,
+          "widthClient": 167
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "simple",
+      "choice": "parcours"
+    },
+    {
+      "viewport": 390,
+      "pageWidth": 390,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 350,
+        "height": 1116.515625,
+        "bottom": 1219.515625
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 1231.515625,
+        "width": 350,
+        "height": 52,
+        "bottom": 1283.515625
+      },
+      "contenu": {
+        "x": 20,
+        "y": 1295.515625,
+        "width": 350,
+        "height": 94.46875,
+        "bottom": 1389.984375
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 1235.515625,
+          "width": 169,
+          "height": 44,
+          "bottom": 1279.515625,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 167,
+          "widthClient": 167
+        },
+        {
+          "x": 197,
+          "y": 1235.515625,
+          "width": 169,
+          "height": 44,
+          "bottom": 1279.515625,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 167,
+          "widthClient": 167
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "advanced",
+      "choice": "activites"
+    },
+    {
+      "viewport": 390,
+      "pageWidth": 390,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 350,
+        "height": 1116.515625,
+        "bottom": 1219.515625
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 1231.515625,
+        "width": 350,
+        "height": 52,
+        "bottom": 1283.515625
+      },
+      "contenu": {
+        "x": 20,
+        "y": 1295.515625,
+        "width": 350,
+        "height": 4343.921875,
+        "bottom": 5639.4375
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 1235.515625,
+          "width": 169,
+          "height": 44,
+          "bottom": 1279.515625,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 167,
+          "widthClient": 167
+        },
+        {
+          "x": 197,
+          "y": 1235.515625,
+          "width": 169,
+          "height": 44,
+          "bottom": 1279.515625,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 167,
+          "widthClient": 167
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "advanced",
+      "choice": "parcours"
+    },
+    {
+      "viewport": 320,
+      "pageWidth": 320,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 280,
+        "height": 211,
+        "bottom": 314
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 326,
+        "width": 280,
+        "height": 52,
+        "bottom": 378
+      },
+      "contenu": {
+        "x": 20,
+        "y": 390,
+        "width": 280,
+        "height": 94.46875,
+        "bottom": 484.46875
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 330,
+          "width": 134,
+          "height": 44,
+          "bottom": 374,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 132,
+          "widthClient": 132
+        },
+        {
+          "x": 162,
+          "y": 330,
+          "width": 134,
+          "height": 44,
+          "bottom": 374,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 132,
+          "widthClient": 132
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "simple",
+      "choice": "activites"
+    },
+    {
+      "viewport": 320,
+      "pageWidth": 320,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 280,
+        "height": 211,
+        "bottom": 314
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 326,
+        "width": 280,
+        "height": 52,
+        "bottom": 378
+      },
+      "contenu": {
+        "x": 20,
+        "y": 390,
+        "width": 280,
+        "height": 5190.703125,
+        "bottom": 5580.703125
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 330,
+          "width": 134,
+          "height": 44,
+          "bottom": 374,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 132,
+          "widthClient": 132
+        },
+        {
+          "x": 162,
+          "y": 330,
+          "width": 134,
+          "height": 44,
+          "bottom": 374,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 132,
+          "widthClient": 132
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "simple",
+      "choice": "parcours"
+    },
+    {
+      "viewport": 320,
+      "pageWidth": 320,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 280,
+        "height": 1229.265625,
+        "bottom": 1332.265625
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 1344.265625,
+        "width": 280,
+        "height": 52,
+        "bottom": 1396.265625
+      },
+      "contenu": {
+        "x": 20,
+        "y": 1408.265625,
+        "width": 280,
+        "height": 94.46875,
+        "bottom": 1502.734375
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 1348.265625,
+          "width": 134,
+          "height": 44,
+          "bottom": 1392.265625,
+          "text": "Une activité",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 132,
+          "widthClient": 132
+        },
+        {
+          "x": 162,
+          "y": 1348.265625,
+          "width": 134,
+          "height": 44,
+          "bottom": 1392.265625,
+          "text": "Un parcours",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 132,
+          "widthClient": 132
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": true,
+      "mode": "advanced",
+      "choice": "activites"
+    },
+    {
+      "viewport": 320,
+      "pageWidth": 320,
+      "formulaire": {
+        "x": 20,
+        "y": 103,
+        "width": 280,
+        "height": 1229.265625,
+        "bottom": 1332.265625
+      },
+      "selecteur": {
+        "x": 20,
+        "y": 1344.265625,
+        "width": 280,
+        "height": 52,
+        "bottom": 1396.265625
+      },
+      "contenu": {
+        "x": 20,
+        "y": 1408.265625,
+        "width": 280,
+        "height": 5190.703125,
+        "bottom": 6598.96875
+      },
+      "boutons": [
+        {
+          "x": 24,
+          "y": 1348.265625,
+          "width": 134,
+          "height": 44,
+          "bottom": 1392.265625,
+          "text": "Une activité",
+          "checked": "false",
+          "tabIndex": -1,
+          "widthContent": 132,
+          "widthClient": 132
+        },
+        {
+          "x": 162,
+          "y": 1348.265625,
+          "width": 134,
+          "height": 44,
+          "bottom": 1392.265625,
+          "text": "Un parcours",
+          "checked": "true",
+          "tabIndex": 0,
+          "widthContent": 132,
+          "widthClient": 132
+        }
+      ],
+      "apresFormulaire": true,
+      "nomAccessible": "Que souhaitez-vous créer ?",
+      "fondActif": "rgb(81, 119, 156)",
+      "texteActif": "rgb(255, 255, 255)",
+      "filtresVisibles": false,
+      "mode": "advanced",
+      "choice": "parcours"
+    }
+  ],
+  "clavier": "OK",
+  "saisiePreservee": true,
+  "errors": []
+}

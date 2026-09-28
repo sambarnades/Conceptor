@@ -1,0 +1,40 @@
+  ✓ le scénario est accessible dès le cadrage
+  ✓ import sans génération ni ressaisie du sujet
+  ✓ enregistrer ouvre l’aperçu de la retouche et y garde le focus
+  ✓ titre, contenu, objectif et notions sont persistés immédiatement
+  ✓ la suivante s’ouvre avec le vrai simulateur Page
+  ✓ refuser l’abandon garde les retouches ouvertes
+  ✓ l’éditeur commun enregistre dans la bonne carte
+  ✓ la relecture H5P utilise le lecteur interactif
+  ✓ Échap ferme, libère le défilement et restitue le focus
+  ✓ les réponses du sondage restent une liste éditable et prévisualisée
+  ✓ le clavier reste dans le panneau
+  ✓ Tab revient à la fermeture depuis le dernier contrôle
+  ✓ changer de type retire le contenu incompatible
+  ✓ annuler retrouve le type ET le contenu édité
+  ✓ une suppression se récupère sans régénérer
+  ✓ le scénario téléchargé contient les retouches, sans corpus
+  ✓ un parcours déjà prêt rejoint la livraison en un clic depuis le plan
+  ✓ le MBZ téléchargé contient le forum, la Page et les réponses réellement retouchés
+  ✓ recharger retrouve le titre édité dans le plan
+  ✓ le plan tient dans 1024 px
+  ✓ le plan tient dans 768 px
+  ✓ le plan tient dans 390 px
+  ✓ le plan tient dans 360 px
+  ✓ le panneau tient sur téléphone
+  ✓ changer de langue traduit aussi les outils persistants et conserve les retouches
+  ✓ un scénario refusé laisse le brouillon intact
+  ✓ l’import répare les IDs doublons et durées négatives
+  ✓ l’import refuse les cartes nulles, contenus incompatibles et plus de 12 activités
+  ✓ un Glossaire généré comme liste se reprend sans perdre ses entrées
+  ✓ une liste reste refusée pour un module qui attend un objet
+  ✓ livrer un parcours partiel reste possible sans relancer les activités manquantes
+  ✓ le cadenas exclut les cartes vides de tous les appels IA
+  ✓ une réponse tardive annulée ne remplace rien et reste à reprendre
+  ✓ une régénération ratée conserve le contenu relu et éditable
+  ✓ une nouvelle file attend la fin de l’ancienne requête annulée
+  ✓ un quota ou un stockage bloqué dégrade explicitement la sauvegarde
+  ✓ aucune erreur JavaScript non gérée
+
+Relecture : 37 PASS / 0 FAIL
+Captures : /tmp/caramel-parcours-captures

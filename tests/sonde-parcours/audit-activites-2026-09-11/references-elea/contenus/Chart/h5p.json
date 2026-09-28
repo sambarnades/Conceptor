@@ -1,0 +1,17 @@
+{
+  "title": "Chart — relecture Éléa",
+  "language": "und",
+  "mainLibrary": "H5P.Chart",
+  "embedTypes": [
+    "iframe"
+  ],
+  "license": "U",
+  "defaultLanguage": "fr",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.Chart",
+      "majorVersion": "1",
+      "minorVersion": "2"
+    }
+  ]
+}
