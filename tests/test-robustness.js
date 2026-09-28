@@ -1032,6 +1032,54 @@ async function runStep11_FullHealPipeline() {
     assert(healedFIB.questions[0].includes('*'),
         `[11e.FIB] FillInTheBlanks : **gras** → *trou*`
     );
+    // Texte à trous réel du 28 sept. 2026 : une synthèse enfermée dans \(\text{…}\), accolade
+    // jamais refermée (« Missing close brace »), qui donnait en gras les mots à trouver.
+    const synthese = "Les **Trente Glorieuses** désignent une période de forte **croissance économique**. Cette époque a vu l'émergence d'un **État-providence** et de la **Sécurité sociale**, puis d'une **consommation de masse** et d'une **pollution** accrue.";
+    const fibSynthese = {
+        taskDescription: `Complète ce texte sur la période des **Trente Glorieuses**.\n\n\\(\\text{${synthese}\\)`,
+        questions: [
+            'Les **Trente Glorieuses** ont duré *30 ans*.',
+            "Elles voient naître l'*État-providence* et la *Sécurité sociale*.",
+            'La *consommation de masse* et la *pollution* progressent.'
+        ]
+    };
+    const fibDeballe = healJsonObject(fibSynthese, 'FillInTheBlanks');
+    assert(fibDeballe.taskDescription.endsWith(synthese) && !fibDeballe.taskDescription.includes('\\text'),
+        `[11e.FIB] Phrase enfermée dans \\(\\text{…\\) sans accolade fermante → texte courant`,
+        { got: fibDeballe.taskDescription }
+    );
+    const fibConsigne = healActivitySpecificFields(fibDeballe, 'FillInTheBlanks');
+    assert(fibConsigne.taskDescription === 'Complète ce texte sur la période des **Trente Glorieuses**.',
+        `[11e.FIB] FillInTheBlanks : le paragraphe de consigne qui dévoile les réponses est retiré`,
+        { got: fibConsigne.taskDescription }
+    );
+    const consigneTheme = 'Complète le texte.\n\nIl porte sur les Trente Glorieuses et la Sécurité sociale.';
+    assert(healActivitySpecificFields({ ...fibDeballe, taskDescription: consigneTheme }, 'FillInTheBlanks').taskDescription === consigneTheme,
+        `[11e.FIB] FillInTheBlanks : une consigne qui cite deux réponses reste intacte`
+    );
+    const formulesTexte = {
+        a: 'Vitesse en \\(\\text{km/h}\\).',
+        b: '\\(\\text{si } x > 0\\)',
+        c: '\\(\\text{Arg}\\)',
+        d: 'Avant \\(\\text{une phrase de plusieurs mots}\\) après.'
+    };
+    const formulesSoignees = healJsonObject(formulesTexte, 'MultipleChoice');
+    assert(formulesSoignees.a === formulesTexte.a && formulesSoignees.b === formulesTexte.b && formulesSoignees.c === formulesTexte.c,
+        `[11e.FIB] Une unité, un mot isolé ou une formule mêlant texte et math restent des formules`,
+        { got: formulesSoignees }
+    );
+    assert(formulesSoignees.d === 'Avant une phrase de plusieurs mots après.',
+        `[11e.FIB] Une phrase refermée dans \\(\\text{…}\\) redevient du texte`,
+        { got: formulesSoignees.d }
+    );
+    const fibGras = await processH5PContent('FillInTheBlanks', {
+        taskDescription: 'Relis les **Trente Glorieuses** et la *croissance*, puis la **Sécurité sociale**.',
+        questions: ['Le *mot* manque.']
+    });
+    assert(fibGras.text === 'Relis les <strong>Trente Glorieuses</strong> et la croissance, puis la <strong>Sécurité sociale</strong>.',
+        `[11e.FIB] Processeur : le **gras** de la consigne survit au retrait des marqueurs *mot*`,
+        { got: fibGras.text }
+    );
 
     // --- 11f. healActivitySpecificFields : Chart LaTeX → Unicode ---
     const chartData = {

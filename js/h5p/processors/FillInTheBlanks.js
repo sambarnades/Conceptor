@@ -48,13 +48,12 @@ const FillInTheBlanks = {
         if (!Array.isArray(jsonObj.questions) || !jsonObj.questions.length) throw Error('Blanks : un paragraphe à compléter est requis.');
 
         // Cas standard — on nettoie le taskDescription si le LLM y a mis des marqueurs de trous *mot*
+        // (conserve le mot en texte brut). Le **gras**, que le prompt demande dans la consigne,
+        // n'est pas un marqueur : l'ancien motif /\*[^*]+\*/ en mangeait les astérisques
+        // intérieures puis appariait les suivantes d'un gras à l'autre (« des *Trente
+        // Glorieuses en utilisant… », 28 sept. 2026).
         let taskDesc = jsonObj.taskDescription ?? jsonObj.text ?? "";
-        const blanksPattern = /\*[^*]+\*/g;
-        const blanksMatches = taskDesc.match(blanksPattern);
-        if (blanksMatches && blanksMatches.length > 0) {
-            // Supprime les astérisques autour des mots (conserve le mot en texte brut)
-            taskDesc = taskDesc.replace(blanksPattern, match => match.slice(1, -1));
-        }
+        taskDesc = taskDesc.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '$1');
 
         return {
             media: prepareQuestionMedia(jsonObj),

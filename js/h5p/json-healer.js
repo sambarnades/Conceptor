@@ -619,6 +619,60 @@ export function repairBrokenLatexEscapes(item) {
     return item;
 }
 
+/** Nombre de mots (au moins une lettre) d'un texte. */
+const compterMots = (texte) => texte.split(/\s+/).filter(m => /\p{L}/u.test(m)).length;
+
+/**
+ * Une PHRASE enfermée dans une formule : `\(\text{Les Trente Glorieuses désignent…}\)`.
+ *
+ * Constaté le 28 sept. 2026 (Texte à trous, mistral-small-4-119b) : le modèle a
+ * rédigé un paragraphe entier dans `\(\text{…}\)`, sans jamais refermer
+ * l'accolade. MathJax affichait « Missing close brace » à la place du texte. Même
+ * refermée, une phrase en mode math ne passe pas à la ligne et garde ses `**`
+ * littéraux.
+ *
+ * Est rendue au texte courant une formule dont TOUT le contenu est un `\text{…}`
+ * (ou `\textrm`, `\mathrm`) sans autre commande :
+ *   - accolade jamais refermée : toujours, la formule est de toute façon cassée ;
+ *   - accolade refermée : si le texte compte au moins quatre mots. Une unité
+ *     (`\(\text{km/h}\)`) ou un mot isolé restent des formules.
+ * Une formule qui mêle texte et math (`\(\text{si } x > 0\)`) n'est pas touchée.
+ *
+ * @param {any} item - L'élément à traiter (string, object, array).
+ * @returns {any} L'élément traité.
+ */
+export function deballerProseEnFormuleDeep(item) {
+    if (typeof item === 'string') {
+        if (!/\\text|\\mathrm/.test(item)) return item;
+        return item.replace(/\\([(\[])\s*\\(?:text|textrm|mathrm)\s*\{([\s\S]*?)\\([)\]])/g, (bloc, ouvrant, interieur, fermant) => {
+            if ((ouvrant === '(') !== (fermant === ')')) return bloc;
+            const fin = interieur.trimEnd();
+            let texte;
+            if (!interieur.includes('}')) {
+                texte = interieur;
+            } else if (fin.endsWith('}') && !fin.slice(0, -1).includes('}')) {
+                texte = fin.slice(0, -1);
+                if (compterMots(texte) < 4) return bloc;
+            } else {
+                return bloc;
+            }
+            // Les sauts de ligne ont pu devenir des `\n` littéraux (repairBrokenLatexEscapes)
+            if (/[\\{}$]/.test(texte.replace(/\\n(?![a-z])/g, ''))) return bloc;
+            debugLog('json-healer', `[JSON Healer] Phrase sortie d'une formule \\text{…} : « ${texte.slice(0, 60)}… »`);
+            return texte.replace(/\\n(?![a-z])/g, '\n').trim();
+        });
+    } else if (Array.isArray(item)) {
+        return item.map(deballerProseEnFormuleDeep);
+    } else if (item !== null && typeof item === 'object') {
+        const result = {};
+        for (const [key, value] of Object.entries(item)) {
+            result[key] = deballerProseEnFormuleDeep(value);
+        }
+        return result;
+    }
+    return item;
+}
+
 /**
  * DIAGNOSTIC (mode ?debug uniquement) — détecte les formules LaTeX déséquilibrées d'un objet :
  * délimiteur `\(`/`\)` ou `\[`/`\]` orphelin, ou accolades `{ }` déséquilibrées dans une formule.
@@ -723,6 +777,9 @@ export function healJsonObject(obj, moduleKey) {
     // 1b. Conversion des délimiteurs $...$ → \(...\) et $$...$$ → \[...\]
     // AVANT autoWrapLatex : les \( posés ici empêchent le re-wrapping de toute la chaîne
     healed = convertLatexDelimitersDeep(healed);
+
+    // 1b'. Phrase enfermée dans \(\text{…}\), souvent sans accolade fermante → texte courant
+    healed = deballerProseEnFormuleDeep(healed);
 
     // 1c. Auto-enveloppement du LaTeX nu (sans délimiteurs $ ni \()
     healed = autoWrapLatex(healed);
@@ -2445,6 +2502,49 @@ export function retirerTexteDeLaConsigneDragText(consigne, texte) {
 }
 
 /**
+ * Retire de la consigne d'un Texte à trous le paragraphe qui en donne les réponses.
+ *
+ * Constaté le 28 sept. 2026 : sous la consigne, le modèle a rédigé une synthèse
+ * (« Les Trente Glorieuses désignent… ») qui contenait, en gras, huit des neuf mots
+ * à trouver ; l'élève n'avait plus qu'à recopier. Ce n'est pas une recopie du texte
+ * à trous (cf. `retirerTexteDeLaConsigneDragText`) mais une reformulation : le
+ * paragraphe se repère donc aux réponses qu'il contient.
+ *
+ * Le premier paragraphe, qui porte la consigne, est toujours gardé. Un paragraphe
+ * suivant n'est retiré que s'il contient au moins trois réponses distinctes ET la
+ * moitié d'entre elles : une consigne qui annonce le thème reste intacte.
+ *
+ * @param {*} consigne
+ * @param {*} questions - Les phrases à trous, APRÈS `cleanBlanksText`.
+ * @returns {*} La consigne, sans le paragraphe qui dévoile les réponses.
+ */
+export function retirerReponsesDeLaConsigneBlanks(consigne, questions) {
+    if (typeof consigne !== 'string' || !Array.isArray(questions)) return consigne;
+    const paragraphes = consigne.split(/\n|\\n(?![a-z])/).map(p => p.trim()).filter(Boolean);
+    if (paragraphes.length < 2) return consigne;
+    const reponses = new Set();
+    for (const q of questions) {
+        if (typeof q !== 'string') continue;
+        for (const m of q.matchAll(/\*([^*]+)\*/g)) {
+            const reponse = m[1].split(':')[0].split('/')[0].trim().toLowerCase();
+            if (reponse) reponses.add(reponse);
+        }
+    }
+    if (reponses.size < 3) return consigne;
+    const seuil = Math.max(3, Math.ceil(reponses.size / 2));
+    const motifs = [...reponses].map(r => new RegExp(
+        `(?<![\\p{L}\\p{N}])${r.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu'));
+    const gardes = paragraphes.filter((p, i) => {
+        if (i === 0) return true;
+        const texte = p.replace(/\*/g, '');
+        return motifs.filter(m => m.test(texte)).length < seuil;
+    });
+    if (gardes.length === paragraphes.length) return consigne;
+    debugLog('json-healer', `[JSON Healer] FillInTheBlanks : ${paragraphes.length - gardes.length} paragraphe(s) de consigne dévoilant les réponses retiré(s)`);
+    return gardes.join('\n\n');
+}
+
+/**
  * Champs dont une liste a un sens propre, normalisés par une fonction dédiée :
  * la jointure générique leur ferait perdre ce sens (les leurres de « Glisser les
  * mots » mêlent le bon mot et le leurre, cf. `normaliserLeurresDragText`).
@@ -2575,6 +2675,9 @@ export function healActivitySpecificFields(obj, moduleKey) {
     if (moduleKey === 'FillInTheBlanks') {
         if (Array.isArray(healed.questions)) {
             healed.questions = healed.questions.map(q => typeof q === 'string' ? cleanBlanksText(q) : q);
+            if (typeof healed.taskDescription === 'string') {
+                healed.taskDescription = retirerReponsesDeLaConsigneBlanks(healed.taskDescription, healed.questions);
+            }
         }
         return healed;
     }

@@ -1193,20 +1193,20 @@
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "eefeec12a961af168e65d18cdcb406ca48c1239fa7d5cd657bef9be5456d0eb6",
-      "sha2": "eefeec12a961af168e65d18cdcb406ca48c1239fa7d5cd657bef9be5456d0eb6",
+      "sha1": "4aec441c5ed8b493193b34e269945b0fd86107f976643e188b8431acebd9b85d",
+      "sha2": "4aec441c5ed8b493193b34e269945b0fd86107f976643e188b8431acebd9b85d",
       "diff": [],
-      "canonSize": 5132
+      "canonSize": 5174
     },
     {
       "file": "fill_in_the_blanks_2.json",
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "98e43673aa1e5773a18df107660e42a411ca211ab5156933ffc839902b1499df",
-      "sha2": "98e43673aa1e5773a18df107660e42a411ca211ab5156933ffc839902b1499df",
+      "sha1": "5da27fc8d07806834918e244e743e15c9a6a1aea05011e336d4f5e699b5c751d",
+      "sha2": "5da27fc8d07806834918e244e743e15c9a6a1aea05011e336d4f5e699b5c751d",
       "diff": [],
-      "canonSize": 4706
+      "canonSize": 4731
     },
     {
       "file": "fill_in_the_blanks_3.json",
@@ -2322,14 +2322,14 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "eefeec12a961af168e65d18cdcb406ca48c1239fa7d5cd657bef9be5456d0eb6",
-      "canonSize": 5132,
+      "totalSha256": "4aec441c5ed8b493193b34e269945b0fd86107f976643e188b8431acebd9b85d",
+      "canonSize": 5174,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4215,
-          "canonSha256": "7ba452105a3cd6359d8a32f3e900f70306b3758f83cbdb2149674a1ca536b87e"
+          "canonSize": 4257,
+          "canonSha256": "dd0cf8fc9b20dcbc186b1a56c751cae09b69bd1552559add6107c06a9f6b33b9"
         },
         {
           "name": "h5p.json",
@@ -2342,14 +2342,14 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "98e43673aa1e5773a18df107660e42a411ca211ab5156933ffc839902b1499df",
-      "canonSize": 4706,
+      "totalSha256": "5da27fc8d07806834918e244e743e15c9a6a1aea05011e336d4f5e699b5c751d",
+      "canonSize": 4731,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3687,
-          "canonSha256": "5e4dc15abae1d173ffcf0677939506bb366e6985ca3896b44189101744f0a566"
+          "canonSize": 3712,
+          "canonSha256": "831edba3b4c61958976254770d8e7188a827c159e6fbbc1e63b07377b92f4fb4"
         },
         {
           "name": "h5p.json",
