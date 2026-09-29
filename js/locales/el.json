@@ -1971,6 +1971,7 @@
   "editor_add_section": "Προσθήκη ενότητας",
   "editor_section_subtitle": "Υπότιτλος ενότητας",
   "editor_image_url": "URL εικόνας",
+  "editor_page_image_upload_hint": "Ή ανεβάστε μια εικόνα από τον υπολογιστή σας: επισυνάπτεται στη δραστηριότητα και αντικαθιστά το παραπάνω URL.",
   "editor_alt_text": "Εναλλακτικό κείμενο",
   "editor_legend": "Λεζάντα",
   "editor_figure_left": "Εικόνα αριστερά",

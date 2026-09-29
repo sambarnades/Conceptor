@@ -1,5 +1,10 @@
 /**
- * @file Parcours — les fichiers qu'un module natif exige à la restauration.
+ * @file Les fichiers qu'une activité Moodle porte dans son backup.
+ *
+ * Né dans l'atelier de parcours (`js/parcours/`), déplacé ici le 29 sept. 2026 :
+ * la Page et le Livre SEULS (`.mbz` mono-activité, `mono-activity-files.js`) y
+ * joignent eux aussi leurs images envoyées depuis l'ordinateur (`page-images.js`),
+ * et un module de la couche Moodle n'a pas à dépendre de l'atelier.
  *
  * **Le Document collaboratif (`mod_collabora`) ne vit pas de son seul XML.** Même
  * au format « texte », le greffon range son texte de départ dans un vrai
@@ -14,17 +19,22 @@
  * le manifeste déployés (zone `content`), l'archive d'origine (zone `backup`).
  * Son constructeur les décrit (`paquet`), on les pose ici.
  *
+ * **Les images envoyées d'une Page ou d'un Livre** (composant `mod_page`, zone
+ * `content`, item 0 ; composant `mod_book`, zone `chapter`, item = identifiant du
+ * chapitre) : même `paquet`, décrit par `page-images.js`. Le HTML ne les cite
+ * que par `@@PLUGINFILE@@/<nom>`.
+ *
  * On pose chaque fichier comme l'export le pose : le contenu dans le pool
  * (`files/<2 car.>/<sha1>`), une entrée dans `files.xml` (plus le dossier « . »
  * de sa zone), et les identifiants dans l'`inforef.xml` de l'activité.
- * APRÈS l'assemblage, comme le fond personnel de la Carte (`carte-image.js`) :
- * le constructeur de cours est partagé avec la Sucrerie, et il refuse — à
- * raison — une activité qui arrive avec ses propres fichiers.
+ * Dans un parcours, APRÈS l'assemblage, comme le fond personnel de la Carte
+ * (`carte-image.js`) : le constructeur de cours est partagé avec la Sucrerie, et
+ * il refuse — à raison — une activité qui arrive avec ses propres fichiers.
  *
- * @module parcours/fichiers-modules
+ * @module moodle/fichiers-modules
  */
 
-import { buildFilesXml, EMPTY_FILE_HASH } from '../moodle/mbz-course-builder.js';
+import { buildFilesXml, EMPTY_FILE_HASH } from './mbz-course-builder.js';
 
 /**
  * Le nom de fichier que le greffon donnerait : `clean_filename(format_string($name))`

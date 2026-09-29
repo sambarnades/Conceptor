@@ -1971,6 +1971,7 @@
   "editor_add_section": "Add section",
   "editor_section_subtitle": "Section subtitle",
   "editor_image_url": "Image URL",
+  "editor_page_image_upload_hint": "Or upload an image from your computer: it is attached to the activity and replaces the URL above.",
   "editor_alt_text": "Alternative text",
   "editor_legend": "Legend",
   "editor_figure_left": "Left figure",

@@ -16,7 +16,63 @@ import { healStructureForActivity } from '../h5p/json-healer.js';
 import { debugLog } from '../core/utils.js';
 import { showConfirm } from './array-manager.js';
 import { importMbz, importStandaloneXml, getEditorModuleKey } from '../moodle/moodle-importer.js';
+import { getPageBlockSchema, getPageBlockTypes } from './field-renderers.js';
 export { setNestedValue };
+
+// =======================================================================
+// IMAGES ENVOYÉES DANS LES BLOCS DE PAGE ET DE LIVRE (Caramel seul)
+// =======================================================================
+
+/**
+ * Champ greffé juste après chaque « URL de l'image » (`img_src`) des blocs de
+ * Page et de Livre : l'envoi d'une image depuis l'ordinateur (retour de
+ * professeur, 29 sept. 2026 — la Page n'acceptait qu'une adresse à coller).
+ *
+ * C'est le widget image de l'éditeur (`renderImageField`), réglé comme pour le
+ * fond d'« Image interactive » : PNG et JPEG gardés tels quels (transparence
+ * comprise), plus grande dimension bornée à 1920 px, photos d'iPhone (HEIC),
+ * TIFF, AVIF, BMP, SVG convertis, 12 Mo au plus. La valeur rangée dans le JSON
+ * est `{path, mime, width, height, dataURL}` ; `moodle/page-images.js` en fait
+ * un fichier du backup, cité par `@@PLUGINFILE@@`.
+ */
+const CHAMP_IMAGE_BLOC_PAGE = {
+    type: 'image',
+    label: 'editor_image',
+    hint: 'editor_page_image_upload_hint',
+    imageProcessor: 'background'
+};
+
+/**
+ * Greffe `img_file` sur les schémas VIVANTS des blocs de Page (communs à la
+ * Page et au Livre), juste après `img_src`. Pourquoi ici et pas dans
+ * `field-renderers.js` : ce fichier est byte-identique avec La Sucrerie
+ * (CLAUDE.md, piège 7), dont l'export ne sait pas encore joindre les images au
+ * backup — la Sucrerie afficherait un champ dont l'image se perdrait. L'ordre
+ * des clés d'un schéma est l'ordre d'affichage : on reconstruit donc l'objet.
+ * Idempotent.
+ */
+function grefferEnvoiImagePage() {
+    const greffer = (schema) => {
+        if (!schema || typeof schema !== 'object') return;
+        if ('img_src' in schema && !('img_file' in schema)) {
+            const champs = Object.entries(schema);
+            for (const [cle] of champs) delete schema[cle];
+            for (const [cle, config] of champs) {
+                schema[cle] = config;
+                if (cle === 'img_src') schema.img_file = { ...CHAMP_IMAGE_BLOC_PAGE };
+            }
+        }
+        // Cartes (#08, tableau) et figures gauche/droite (#09, objets).
+        for (const config of Object.values(schema)) {
+            if (config && typeof config === 'object') {
+                greffer(config.itemSchema);
+                greffer(config.schema);
+            }
+        }
+    };
+    for (const type of getPageBlockTypes()) greffer(getPageBlockSchema(type));
+}
+grefferEnvoiImagePage();
 
 // =======================================================================
 // ETAT GLOBAL

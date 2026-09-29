@@ -1971,6 +1971,7 @@
   "editor_add_section": "添加章节",
   "editor_section_subtitle": "章节副标题",
   "editor_image_url": "图片 URL",
+  "editor_page_image_upload_hint": "或从电脑上传图片：图片将附加到活动中，并替换上方的网址。",
   "editor_alt_text": "替代文本",
   "editor_legend": "标题",
   "editor_figure_left": "左图",

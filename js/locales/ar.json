@@ -1971,6 +1971,7 @@
   "editor_add_section": "إضافة قسم",
   "editor_section_subtitle": "عنوان فرعي للقسم",
   "editor_image_url": "رابط الصورة",
+  "editor_page_image_upload_hint": "أو ارفع صورة من حاسوبك: تُرفق بالنشاط وتحلّ محلّ الرابط أعلاه.",
   "editor_alt_text": "النص البديل",
   "editor_legend": "تعليق",
   "editor_figure_left": "صورة يسار",

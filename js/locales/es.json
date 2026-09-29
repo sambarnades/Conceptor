@@ -1971,6 +1971,7 @@
   "editor_add_section": "Añadir sección",
   "editor_section_subtitle": "Subtítulo de la sección",
   "editor_image_url": "URL de la imagen",
+  "editor_page_image_upload_hint": "O suba una imagen desde su ordenador: se adjunta a la actividad y sustituye la URL anterior.",
   "editor_alt_text": "Texto alternativo",
   "editor_legend": "Leyenda",
   "editor_figure_left": "Figura izquierda",
