@@ -1645,6 +1645,33 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         de ce qu'Éléa doit montrer après restauration. Bancs : `mbz-quiz-backup.mjs`
         (118/0), `run_parcours_course.mjs` (114/0), `run_test_edition_audit.mjs` (59/0),
         suite navigateur `behaviour-settings` (défauts de l'éditeur = défauts du `.mbz`).
+- [x] **D87 — Une séquence de langue vivante est rédigée dans la langue enseignée.**
+      Retour de professeurs d'anglais (29 sept. 2026) : une Page préparée pour un cours
+      d'anglais sortait en français. Mesuré sur le vrai modèle (dev2, mistral-small-4) :
+      « Professeur d'anglais, Seconde, Identités et échanges » → Page à 98 % en français,
+      et un quiz à 100 % — le défaut n'était pas propre à la Page. Cause : la règle commune
+      « rédige dans la langue cible (français sauf indication contraire) » laissait le
+      modèle trancher, et un thème culturel l'emportait sur le rôle.
+      - **Règle commune** (`prompt_regles_pedagogiques_communes`, 11 locales) : langue de
+        l'interface par défaut ; mais si le rôle est d'enseigner une langue vivante (DNL,
+        section européenne comprises) ou si l'objectif est d'apprendre une langue, TOUT ce
+        que lit l'élève est dans la langue enseignée, « même quand le thème est culturel »
+        (sans ce membre de phrase, le cas « Identités et échanges » restait en français),
+        au niveau du public (CECRL) ; seules les consignes peuvent rester dans la langue de
+        l'interface pour des débutants. Le breton garde sa règle « tout en breton » (§ 14
+        du CLAUDE.md), voulue.
+      - **Parcours** : le plan et les modules de la plateforme suivent la même exception
+        (`regleLangue()` de `scenario-prompt.js`, qui remplace « Rédige TOUS les textes en
+        <langue de l'interface> ») ; les objectifs, destinés à l'enseignant, restent dans la
+        langue de l'interface. Les cartes, elles, suivent la règle commune : D82 respecté.
+      - **Mesures après** : Page « Identités et échanges » 97 puis 100 % d'anglais, titres de
+        blocs compris ; quiz : questions, réponses et retours en anglais (le feedback global
+        par tranche reste parfois en français) ; Page d'espagnol en espagnol ; Livre de DNL
+        en anglais. Témoins intacts : un professeur d'histoire sur « la Révolution anglaise »
+        et un professeur de lettres restent en français.
+      - **À surveiller** : aucun parcours réel de langue vivante n'a encore été rejoué
+        (`scripts/generer-parcours-reel.mjs`) ; le faire avant d'annoncer la correction pour
+        les parcours.
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
