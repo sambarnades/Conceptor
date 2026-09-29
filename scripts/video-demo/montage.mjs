@@ -93,3 +93,26 @@ export function chronologie(marques, duree, rallonges = {}) {
     };
     return { blocs, versMonte, dureeMontee: duree + decalage, totalRallonges: decalage };
 }
+
+/**
+ * Où et comment le montage pose une prise réglée : `t` (s) dans le film monté, la part
+ * gardée [debut, fin] de la prise, son gain. Un début coupé laisse la suite à sa place
+ * (la voix reste calée sur l'image) ; un décalage négatif au tout début du film rogne
+ * la prise au lieu de la poser avant zéro.
+ */
+export function poserPrise(bloc, reglage) {
+    const t = bloc.debutMonte + reglage.debut + reglage.decalage;
+    const avance = Math.max(0, -t);
+    return { t: t + avance, debut: reglage.debut + avance, fin: reglage.fin, gain: reglage.gain };
+}
+
+/**
+ * Le filtre ffmpeg d'une prise posée (entrée `k` + 1, la vidéo muette étant l'entrée 0) :
+ * la part gardée, fondue sur 20-30 ms aux coupes (pas de clic), à son gain, retardée
+ * jusqu'à sa place. `debruiter` : le filtre de débruitage mesuré (ou '').
+ */
+export function filtrePrise(pose, k, debruiter = '') {
+    const garde = pose.fin - pose.debut;
+    const coupe = `atrim=start=${pose.debut.toFixed(3)}:end=${pose.fin.toFixed(3)},asetpts=PTS-STARTPTS,afade=t=in:d=0.02,afade=t=out:st=${Math.max(0, garde - 0.03).toFixed(3)}:d=0.03,`;
+    return `[${k + 1}:a]aresample=48000,aformat=channel_layouts=mono,${debruiter}${coupe}${pose.gain ? `volume=${pose.gain}dB,` : ''}adelay=${Math.round(pose.t * 1000)}:all=1[a${k}]`;
+}

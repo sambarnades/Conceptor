@@ -4,6 +4,8 @@
 
 > **Reprise du chantier H5P / parcours / Sucrerie** : lire d’abord [SUIVI_H5P_PARCOURS.md](docs/SUIVI_H5P_PARCOURS.md). Il porte les cases de clôture, les limites et les prochains lots. L’audit exhaustif des capacités H5P et la collection parcours unifiée ne sont pas terminés ; les anciens rapports décrivent des lots plus restreints.
 
+> **Travaux confiés à d'autres agents (29 sept. 2026, branche `emmanuel`)** : [NOTE_ALLER_RETOUR_ELEA_2026-09-29.md](docs/NOTE_ALLER_RETOUR_ELEA_2026-09-29.md) (vérifier sur Éléa les nouveautés du jour) et [NOTE_TEST_ETUDIANT.md](docs/NOTE_TEST_ETUDIANT.md) (ajouter le Test étudiant aux modules de la plateforme).
+
 ## Identité
 
 **Caramel** v7.0.0 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.

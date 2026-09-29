@@ -42,7 +42,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import { writeFile } from 'node:fs/promises';
 import { SCRIPT_PAGE, creerMain } from './plateau.mjs';
 import { SCENES, CARTON_TITRE, RETOUCHE } from './scenario.mjs';
-import { chronologie, lireMontage, reglageAudio } from './montage.mjs';
+import { chronologie, filtrePrise, lireMontage, poserPrise, reglageAudio } from './montage.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const require = createRequire(join(ROOT, 'tests/roundtrip/package.json'));
@@ -136,10 +136,7 @@ if (MIXER) {
             r.gain && `${r.gain > 0 ? '+' : ''}${r.gain} dB`, r.decalage && `décalée de ${r.decalage > 0 ? '+' : ''}${r.decalage.toFixed(2)} s`].filter(Boolean);
         console.log(`  ✓ ${mq.id} : ${f} (${d.toFixed(1)} s pour ${place.toFixed(1)} s de scène${b.rallonge ? `, dont ${b.rallonge} s de rallonge` : ''})${retouches.length ? ` · ${retouches.join(', ')}` : ''}`);
         if (r.fin + r.decalage > place + 0.5) console.warn(`    ⚠ déborde de ${(r.fin + r.decalage - place).toFixed(1)} s sur la scène suivante : lire un peu plus vite, ou rallonger le bloc dans la table de montage`);
-        // Un début coupé laisse la suite à sa place : la voix reste calée sur l'image.
-        const t = b.debutMonte + r.debut + r.decalage;
-        const avance = Math.max(0, -t);                  // un décalage négatif au tout début du film
-        poses.push({ f: join(dossier, f), t: t + avance, debut: r.debut + avance, fin: r.fin, gain: r.gain });
+        poses.push({ f: join(dossier, f), ...poserPrise(b, r) });
     }
     if (!poses.length) { console.error(`Aucun fichier audio reconnu dans ${dossier}`); process.exit(1); }
 
@@ -178,12 +175,8 @@ if (MIXER) {
             ...chrono.blocs.map((b, k) => `[s${k}]trim=start=${b.debut.toFixed(3)}:end=${b.coupe.toFixed(3)},setpts=PTS-STARTPTS${b.rallonge ? `,tpad=stop_mode=clone:stop_duration=${b.rallonge}` : ''}[b${k}]`),
             `${chrono.blocs.map((_, k) => `[b${k}]`).join('')}concat=n=${chrono.blocs.length}:v=1:a=0,tpad=stop_mode=clone:stop_duration=${TENUE}[image]`].join(';')
         : `[0:v]tpad=stop_mode=clone:stop_duration=${TENUE}[image]`;
-    // Chaque prise : sa part gardée, fondue sur 20-30 ms aux coupes (pas de clic), à son gain.
-    const filtres = poses.map((p, k) => {
-        const garde = p.fin - p.debut;
-        const coupe = `atrim=start=${p.debut.toFixed(3)}:end=${p.fin.toFixed(3)},asetpts=PTS-STARTPTS,afade=t=in:d=0.02,afade=t=out:st=${Math.max(0, garde - 0.03).toFixed(3)}:d=0.03,`;
-        return `[${k + 1}:a]aresample=48000,aformat=channel_layouts=mono,${debruiter}${coupe}${p.gain ? `volume=${p.gain}dB,` : ''}adelay=${Math.round(p.t * 1000)}:all=1[a${k}]`;
-    });
+    // Chaque prise : sa part gardée, fondue aux coupes, à son gain (montage.mjs).
+    const filtres = poses.map((p, k) => filtrePrise(p, k, debruiter));
     const mix = `${poses.map((_, k) => `[a${k}]`).join('')}amix=inputs=${poses.length}:normalize=0:dropout_transition=0,highpass=f=70,loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:${total.toFixed(3)}[v]`;
     // `-progress` : l'instant encodé, d'où le pourcentage que suit le studio.
     const job = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-nostats', '-progress', 'pipe:1', '-y', '-i', muet, ...poses.flatMap(p => ['-i', p.f]),
