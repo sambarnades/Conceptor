@@ -74,6 +74,10 @@ tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node
                  `run_parcours_reels.mjs` les rejoue sans modèle et LIT le cours comme la
                  plateforme l'affichera (texte creux, « … », jargon de prompt, `**`, tutoiement
                  d'adultes), avec sa contre-épreuve à défauts injectés (D80).
+                 `scripts/video-demo/` = la vidéo de présentation de Caramel 7 : tournage rejouant
+                 des réponses d'IA enregistrées, studio de voix off au prompteur, table de montage,
+                 habillage (voir son README). Ses sorties (voix, vidéos) restent dans
+                 `tests/.video-demo/`, exclu de git.
                  `scripts/captures-interface.mjs` refait les captures d'écran du tutoriel et du
                  wiki (parcours réel du banc, réseau coupé) ; `scripts/aide-parcours.mjs` écrit ce
                  que Caramelia sait des parcours (trames, modules, conseils) dans son aide

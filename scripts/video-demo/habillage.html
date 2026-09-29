@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Habillage · Caramel 7</title>
+<style>
+/* La composition d'une image du film habillé, 1920 × 1080. Rien n'est animé par CSS :
+   chaque état est calculé depuis l'instant t (rendu image par image, déterministe). */
+:root {
+  --nuit: #0c1524; --nuit-2: #13233d; --bleu: #3a86ff; --caramel: #f29a3f; --caramel-fonce: #d97b1c;
+  --blanc: #f4f7fb; --doux: #a3b3c9; --encre: #0f1a2b;
+  --f: -apple-system, "SF Pro Display", BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--nuit); font-family: var(--f); color: var(--blanc); }
+#scene { position: absolute; inset: 0; overflow: hidden; }
+#fond { position: absolute; inset: 0; background: linear-gradient(135deg, var(--nuit) 0%, var(--nuit-2) 100%); }
+.tache { position: absolute; width: 1400px; height: 1400px; border-radius: 50%; }
+#tache-a { background: radial-gradient(circle, rgba(242,154,63,.34) 0%, rgba(242,154,63,0) 62%); }
+#tache-b { background: radial-gradient(circle, rgba(58,134,255,.30) 0%, rgba(58,134,255,0) 62%); }
+
+#progression { position: absolute; left: 0; top: 0; height: 4px; background: linear-gradient(90deg, var(--caramel), #ffc27a); }
+
+#etapes { position: absolute; top: 22px; left: 0; right: 0; display: flex; justify-content: center; gap: 12px; font: 600 19px/1 var(--f); letter-spacing: .01em; }
+.etape { display: flex; align-items: center; gap: 10px; padding: 9px 18px 9px 10px; border-radius: 999px; color: rgba(244,247,251,.42); background: rgba(255,255,255,.04); }
+.etape i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 700 14px/1 var(--f); font-style: normal; background: rgba(255,255,255,.08); color: rgba(244,247,251,.6); }
+.etape.faite { color: rgba(244,247,251,.72); }
+.etape.faite i { background: rgba(242,154,63,.25); color: var(--caramel); }
+.etape.active { color: var(--blanc); background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+.etape.active i { background: var(--caramel); color: var(--encre); }
+
+#fenetre { position: absolute; left: 192px; top: 76px; width: 1536px; border-radius: 16px; overflow: hidden; background: #fff;
+  box-shadow: 0 40px 90px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08); transform-origin: 50% 50%; }
+.barre-fenetre { height: 34px; background: #e8ecf2; display: flex; align-items: center; gap: 8px; padding: 0 16px; position: relative; }
+.barre-fenetre i { width: 12px; height: 12px; border-radius: 50%; background: #c9d0da; }
+.barre-fenetre span { position: absolute; left: 0; right: 0; text-align: center; font: 600 14px/34px var(--f); color: #6b778a; }
+#ecran { position: relative; width: 1536px; height: 864px; overflow: hidden; background: #f5f7fa; }
+#ecran img { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+
+#legende { position: absolute; left: 50%; top: 994px; display: flex; align-items: center; gap: 16px; padding: 12px 30px 12px 12px;
+  background: #fff; color: var(--encre); border-radius: 999px; box-shadow: 0 18px 40px rgba(0,0,0,.35); white-space: nowrap;
+  font: 650 29px/1.15 var(--f); letter-spacing: -.005em; }
+#legende .num { width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--caramel); color: var(--encre); display: grid; place-items: center; font: 800 20px/1 var(--f); }
+
+.plein { position: absolute; inset: 0; display: grid; align-items: center; }
+.carte { padding: 0 190px; }
+.surtitre { font: 700 20px/1 var(--f); letter-spacing: .22em; text-transform: uppercase; color: var(--caramel); }
+.trait { height: 5px; width: 120px; background: var(--caramel); border-radius: 3px; transform-origin: 0 50%; }
+
+#carte-titre .carte { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 80px; }
+#carte-titre h1 { font: 800 150px/1 var(--f); letter-spacing: -.035em; margin: 26px 0 30px; }
+#carte-titre h1 b { color: var(--caramel); }
+#carte-titre p { font: 500 38px/1.35 var(--f); color: var(--doux); max-width: 1150px; }
+#carte-titre .auteurs { margin-top: 34px; font: 650 28px/1.2 var(--f); color: var(--blanc); letter-spacing: .01em; }
+#carte-titre img { width: 300px; height: 300px; filter: drop-shadow(0 30px 50px rgba(0,0,0,.45)); }
+
+#chapitre .carte { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 60px; }
+#chapitre .grand-num { font: 800 260px/.8 var(--f); letter-spacing: -.05em; color: var(--caramel); }
+#chapitre h2 { font: 800 110px/1 var(--f); letter-spacing: -.03em; margin: 18px 0 22px; }
+#chapitre p { font: 500 38px/1.3 var(--f); color: var(--doux); }
+
+#carte-savoir .carte { display: grid; gap: 34px; }
+#carte-savoir h2 { font: 800 92px/1 var(--f); letter-spacing: -.03em; }
+#carte-savoir ol { list-style: none; padding: 0; display: grid; gap: 22px; }
+#carte-savoir li { display: grid; grid-template-columns: 58px 1fr; gap: 26px; align-items: center; font: 500 36px/1.3 var(--f); color: var(--doux); }
+#carte-savoir li b { color: var(--blanc); font-weight: 700; }
+#carte-savoir li i { width: 58px; height: 58px; border-radius: 16px; background: rgba(242,154,63,.16); color: var(--caramel); display: grid; place-items: center; font: 800 26px/1 var(--f); font-style: normal; }
+
+#carte-fin .carte { display: grid; justify-items: center; text-align: center; gap: 30px; }
+#carte-fin img { width: 150px; height: 150px; filter: drop-shadow(0 24px 40px rgba(0,0,0,.45)); }
+#carte-fin .url { font: 800 84px/1 var(--f); letter-spacing: -.02em; }
+#carte-fin .puces { display: flex; gap: 18px; }
+#carte-fin .puces span { font: 600 28px/1 var(--f); padding: 16px 26px; border-radius: 999px; background: rgba(255,255,255,.08); color: var(--blanc); }
+#carte-fin .credit { font: 500 26px/1.4 var(--f); color: var(--doux); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div id="scene">
+  <div id="fond"><div class="tache" id="tache-a"></div><div class="tache" id="tache-b"></div></div>
+  <div id="progression"></div>
+  <nav id="etapes"></nav>
+  <div id="fenetre">
+    <div class="barre-fenetre"><i></i><i></i><i></i><span>Caramel 7</span></div>
+    <div id="ecran"><img id="img" alt=""></div>
+  </div>
+  <div id="legende" hidden><span class="num"></span><span class="texte"></span></div>
+
+  <div class="plein" id="carte-titre" hidden><div class="carte">
+    <div>
+      <div class="surtitre">Démonstration · septembre 2026</div>
+      <h1>Caramel <b>7</b></h1>
+      <div class="trait"></div>
+      <p style="margin-top: 30px">Préparer des activités pour Éléa, Magistère (Réseau des concepteurs) et Moodle avec l’aide d’une IA, en gardant la main.</p>
+      <div class="auteurs">Emmanuel GAUNARD et Gauthier REMANDE</div>
+    </div>
+    <img src="/logo.svg" alt="">
+  </div></div>
+
+  <div class="plein" id="chapitre" hidden><div class="carte">
+    <div class="grand-num"></div>
+    <div><div class="surtitre">Partie</div><h2></h2><p></p></div>
+  </div></div>
+
+  <div class="plein" id="carte-savoir" hidden><div class="carte">
+    <div class="surtitre">Avant de s’en servir</div>
+    <h2>À savoir</h2>
+    <ol>
+      <li><i>1</i><span>L’IA peut se tromper ou rester vague : <b>tout est à relire</b> avant d’être donné aux élèves.</span></li>
+      <li><i>2</i><span>Ce que vous saisissez ou joignez part au service d’IA : <b>aucune donnée personnelle d’élève</b>.</span></li>
+      <li><i>3</i><span>Le service peut être lent, ou momentanément indisponible.</span></li>
+      <li><i>4</i><span>Caramel ne publie rien : <b>vous importez</b> vous-même. Le dépôt sur La Sucrerie, facultatif, <b>rend l’activité publique</b>.</span></li>
+      <li><i>5</i><span>Un parcours généré est <b>un point de départ</b>, pas une séquence clé en main.</span></li>
+    </ol>
+  </div></div>
+
+  <div class="plein" id="carte-fin" hidden><div class="carte">
+    <img src="/logo.svg" alt="">
+    <div class="url">caramel.forge.apps.education.fr</div>
+    <div class="puces"><span>Gratuit, sans compte</span><span>Tutoriel intégré</span><span>Assistante Caramelia</span></div>
+    <div class="credit">Concepteurs : Emmanuel GAUNARD et Gauthier REMANDE · logiciel libre<br>Forge des communs numériques éducatifs</div>
+  </div></div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+let TL = null;
+const ETAPES = ['Présentation', 'Une activité', 'Un parcours', 'À savoir'];
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const douce = x => { x = clamp(x); return x * x * (3 - 2 * x); };
+const sortie = x => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
+const rebond = x => { x = clamp(x); const c = 1.70158, c3 = c + 1; return 1 + c3 * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+/** Entrée sur `duree` s depuis d, sortie sur les dernières `fuite` s avant f. */
+const presence = (t, d, f, duree = 0.5, fuite = 0.35) => Math.min(sortie((t - d) / duree), clamp((f - t) / fuite));
+
+function poser(el, { o = 1, x = 0, y = 0, s = 1 } = {}) {
+  el.style.opacity = o;
+  el.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+}
+
+window.initialiser = tl => {
+  TL = tl;
+  $('#etapes').innerHTML = ETAPES.map((e, i) => `<div class="etape"><i>${i || '•'}</i>${e}</div>`).join('');
+  const img = $('#img');
+  return new Promise(r => { img.onload = r; img.src = '/cadres/00001.jpg'; });
+};
+
+const actif = (liste, t) => liste.find(x => t >= x.d && t < x.f);
+
+window.rendre = async k => {
+  const t = k / TL.ips, c = TL.cadres[k];
+
+  // Le fond respire doucement.
+  poser($('#tache-a'), { x: -300 + 160 * Math.sin(t * 0.11), y: 280 + 120 * Math.cos(t * 0.09) });
+  poser($('#tache-b'), { x: 1000 + 140 * Math.cos(t * 0.08), y: -700 + 110 * Math.sin(t * 0.12) });
+  $('#progression').style.width = `${(t / TL.duree) * 100}%`;
+
+  // Les étapes.
+  const ch = TL.chapitres.filter(x => x.d <= t + 1e-6).at(-1)?.n ?? 0;
+  [...$('#etapes').children].forEach((el, i) => { el.className = 'etape' + (i === ch ? ' active' : i < ch ? ' faite' : ''); });
+
+  // L'écran : l'image source, sous la caméra.
+  if (c.s !== null) {
+    const img = $('#img'), src = `/cadres/${String(c.s + 1).padStart(5, '0')}.jpg`;
+    if (!img.src.endsWith(src)) { img.src = src; await img.decode().catch(() => {}); }
+    const [z, cx, cy] = c.cam, e = 0.8 * z;
+    img.style.transform = `translate(${768 - cx * e}px, ${432 - cy * e}px) scale(${e})`;
+  }
+
+  // Cartons plein écran.
+  const carte = actif(TL.cartes, t);
+  for (const nom of ['titre', 'chapitre', 'savoir', 'fin']) $(`#${nom === 'titre' ? 'carte-titre' : nom === 'chapitre' ? 'chapitre' : nom === 'savoir' ? 'carte-savoir' : 'carte-fin'}`).hidden = !carte || carte.nom !== nom;
+  const fenetre = $('#fenetre'), etapes = $('#etapes');
+  let visFenetre = 1;
+  if (carte) {
+    const u = t - carte.d, reste = carte.f - t;
+    const racine = { titre: '#carte-titre', chapitre: '#chapitre', savoir: '#carte-savoir', fin: '#carte-fin' }[carte.nom];
+    const el = $(racine);
+    // Le carton entre et sort en fondu, la fenêtre recule derrière lui.
+    const opa = Math.min(clamp(u / 0.35), carte.nom === 'fin' ? 1 : clamp(reste / 0.4));
+    el.style.opacity = opa;
+    visFenetre = 1 - opa;
+    if (carte.nom === 'titre') {
+      poser(el.querySelector('.surtitre'), { o: sortie((u - 0.1) / 0.5), y: 20 * (1 - sortie((u - 0.1) / 0.5)) });
+      poser(el.querySelector('h1'), { o: sortie((u - 0.25) / 0.6), y: 60 * (1 - sortie((u - 0.25) / 0.6)) });
+      el.querySelector('.trait').style.transform = `scaleX(${sortie((u - 0.7) / 0.6)})`;
+      poser(el.querySelector('p'), { o: sortie((u - 0.9) / 0.6), y: 24 * (1 - sortie((u - 0.9) / 0.6)) });
+      poser(el.querySelector('.auteurs'), { o: sortie((u - 1.4) / 0.6), y: 16 * (1 - sortie((u - 1.4) / 0.6)) });
+      poser(el.querySelector('img'), { o: clamp((u - 0.3) / 0.3), s: 0.6 + 0.4 * rebond((u - 0.3) / 0.7), y: 10 * Math.sin(u * 1.4) });
+    } else if (carte.nom === 'chapitre') {
+      el.querySelector('.grand-num').textContent = String(carte.n).padStart(2, '0');
+      el.querySelector('h2').textContent = carte.titre;
+      el.querySelector('p').textContent = carte.sous;
+      poser(el.querySelector('.grand-num'), { o: sortie(u / 0.45), x: -80 * (1 - sortie(u / 0.45)) });
+      poser(el.querySelector('.surtitre'), { o: sortie((u - 0.12) / 0.4) });
+      poser(el.querySelector('h2'), { o: sortie((u - 0.18) / 0.45), y: 40 * (1 - sortie((u - 0.18) / 0.45)) });
+      poser(el.querySelector('p'), { o: sortie((u - 0.35) / 0.45), y: 24 * (1 - sortie((u - 0.35) / 0.45)) });
+    } else if (carte.nom === 'savoir') {
+      poser(el.querySelector('.surtitre'), { o: sortie(u / 0.5) });
+      poser(el.querySelector('h2'), { o: sortie((u - 0.1) / 0.5), y: 40 * (1 - sortie((u - 0.1) / 0.5)) });
+      [...el.querySelectorAll('li')].forEach((li, i) => {
+        const p = sortie((t - carte.puces[i]) / 0.5);
+        poser(li, { o: p, x: -50 * (1 - p) });
+        li.querySelector('i').style.background = t >= carte.puces[i] && (i === carte.puces.length - 1 || t < carte.puces[i + 1]) ? 'var(--caramel)' : '';
+        li.querySelector('i').style.color = li.querySelector('i').style.background ? 'var(--encre)' : '';
+      });
+    } else if (carte.nom === 'fin') {
+      poser(el.querySelector('img'), { o: clamp(u / 0.3), s: 0.6 + 0.4 * rebond(u / 0.7) });
+      poser(el.querySelector('.url'), { o: sortie((u - 0.3) / 0.5), y: 40 * (1 - sortie((u - 0.3) / 0.5)) });
+      [...el.querySelectorAll('.puces span')].forEach((sp, i) => poser(sp, { o: sortie((u - 0.7 - 0.15 * i) / 0.45), y: 20 * (1 - sortie((u - 0.7 - 0.15 * i) / 0.45)) }));
+      poser(el.querySelector('.credit'), { o: sortie((u - 1.3) / 0.6) });
+    }
+  }
+  poser(fenetre, { o: visFenetre, s: 0.94 + 0.06 * visFenetre, y: 30 * (1 - visFenetre) });
+  etapes.style.opacity = carte && (carte.nom === 'titre' || carte.nom === 'fin') ? 1 - parseFloat($(carte.nom === 'titre' ? '#carte-titre' : '#carte-fin').style.opacity || 0) : 1;
+
+  // La phrase clé.
+  const lg = actif(TL.legendes, t), boite = $('#legende');
+  boite.hidden = !lg || !!carte;
+  if (lg && !carte) {
+    boite.querySelector('.num').textContent = lg.n;
+    boite.querySelector('.texte').textContent = lg.texte;
+    const p = presence(t, lg.d, lg.f, 0.4, 0.3);
+    boite.style.opacity = p;
+    boite.style.transform = `translate(-50%, ${22 * (1 - sortie((t - lg.d) / 0.4))}px)`;
+  }
+};
+</script>
+</body>
+</html>

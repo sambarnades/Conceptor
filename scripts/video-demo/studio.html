@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio voix off · Caramel 7</title>
+<style>
+/* Une régie : à gauche l'image et les blocs, à droite le prompteur, lisible de loin. */
+:root {
+  --fond: #eef1f5; --surface: #ffffff; --encre: #17212e; --doux: #5a6778; --filet: #d9e0e8;
+  --accent: #0b5cad; --accent-fond: #e5eef9; --rouge: #c62828; --rouge-fond: #fdecec; --ok: #1f7a3f; --alerte: #a35b00;
+  --p-fond: #0e131a; --p-texte: #f4f6f9; --p-doux: #7d8a9b; --p-actif: #ffd479;
+  --taille-prompteur: 30px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --fond: #12171e; --surface: #1a212b; --encre: #e7ecf2; --doux: #9aa7b6; --filet: #2c3643;
+    --accent: #7db4ee; --accent-fond: #1c2e44; --rouge: #ff6b6b; --rouge-fond: #3a1d1f; --ok: #6fd08f; --alerte: #f0b35a; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--fond); color: var(--encre); display: grid; grid-template-rows: auto 1fr; font-size: 15px; }
+button, select { font: inherit; }
+button { cursor: pointer; border-radius: 8px; border: 1px solid var(--filet); background: var(--surface); color: var(--encre); padding: 8px 14px; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .45; cursor: default; }
+#vers-table { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--accent); color: var(--accent); background: var(--accent-fond); text-decoration: none; font-weight: 600; }
+kbd { font: 12px ui-monospace, Menlo, monospace; border: 1px solid var(--filet); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--surface); }
+
+.barre { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 10px 18px; background: var(--surface); border-bottom: 1px solid var(--filet); }
+.barre h1 { font-size: 17px; margin: 0; display: flex; align-items: center; gap: 10px; }
+.micro { display: flex; align-items: center; gap: 10px; margin-left: auto; flex-wrap: wrap; }
+.micro select { max-width: 260px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--filet); background: var(--surface); color: var(--encre); }
+.vu { width: 140px; height: 10px; border-radius: 5px; background: var(--filet); overflow: hidden; }
+.vu > div { height: 100%; width: 0; background: linear-gradient(90deg, #2e9d57 0 70%, #e0a000 70% 90%, #d63b3b 90%); background-size: 140px 100%; }
+#micro-etat { color: var(--doux); font-size: 13px; }
+#compte { color: var(--doux); font-size: 13px; font-variant-numeric: tabular-nums; }
+
+.studio { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(340px, 1fr); min-height: 0; }
+.gauche { display: grid; grid-template-rows: auto auto auto 1fr; gap: 12px; padding: 16px 18px; min-height: 0; min-width: 0; }
+.cadre { position: relative; }
+video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 10px; display: block; }
+#decompte { position: absolute; inset: 0; display: grid; place-items: center; font: 700 140px/1 -apple-system, sans-serif; color: #fff; text-shadow: 0 4px 30px rgba(0,0,0,.6); pointer-events: none; }
+#rec { position: absolute; top: 12px; left: 12px; background: var(--rouge); color: #fff; font: 700 13px/1 -apple-system, sans-serif; padding: 6px 10px; border-radius: 6px; letter-spacing: .06em; }
+#rec::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #fff; margin-right: 7px; animation: clignote 1s steps(2) infinite; }
+@keyframes clignote { 50% { opacity: 0; } }
+
+.frise { position: relative; display: flex; height: 26px; border-radius: 6px; overflow: hidden; background: var(--filet); cursor: pointer; }
+.frise > span { height: 100%; border-right: 2px solid var(--fond); background: var(--surface); transition: background .2s; }
+.frise > span.faite { background: color-mix(in srgb, var(--ok) 55%, var(--surface)); }
+.frise > span.choisie { outline: 2px solid var(--accent); outline-offset: -2px; }
+#tete-lecture { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--rouge); pointer-events: none; }
+
+.commandes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.rouge { background: var(--rouge); color: #fff; border-color: var(--rouge); font-weight: 600; }
+.rouge:hover:not(:disabled) { filter: brightness(1.08); border-color: var(--rouge); }
+.contour-rouge { color: var(--rouge); border-color: var(--rouge); background: var(--rouge-fond); font-weight: 600; }
+.aide { color: var(--doux); font-size: 13px; }
+.aide kbd { margin: 0 2px; }
+
+.liste { list-style: none; margin: 0; padding: 0 4px 12px 0; overflow-y: auto; display: grid; gap: 6px; align-content: start; min-height: 0; }
+.liste .chap { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin: 10px 0 0; }
+.bloc { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--filet); border-radius: 8px; padding: 7px 10px; cursor: pointer; }
+.bloc.choisi { border-color: var(--accent); background: var(--accent-fond); }
+.bloc .tc { font: 13px ui-monospace, Menlo, monospace; color: var(--doux); font-variant-numeric: tabular-nums; }
+.bloc .nom { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bloc .nom small { font-weight: 400; color: var(--doux); margin-left: 6px; }
+.bloc .etat { font-size: 13px; font-variant-numeric: tabular-nums; }
+.bloc .etat.faite { color: var(--ok); }
+.bloc .etat.alerte { color: var(--alerte); }
+.bloc .etat.vide { color: var(--doux); }
+.bloc button { padding: 4px 9px; font-size: 13px; }
+
+.prompteur { background: var(--p-fond); color: var(--p-texte); display: grid; grid-template-rows: auto 1fr auto; min-height: 0; }
+.p-tete { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 22px; border-bottom: 1px solid #222b36; color: var(--p-doux); font-size: 14px; }
+.p-tete b { color: var(--p-texte); font-weight: 600; }
+.p-taille { display: flex; gap: 6px; }
+.p-taille button { background: #1b232e; color: var(--p-texte); border-color: #2c3746; padding: 3px 9px; }
+#p-temps { font-variant-numeric: tabular-nums; }
+#p-temps.presse { color: var(--p-actif); }
+.p-texte { overflow-y: auto; padding: 26px 30px 40vh; font-size: var(--taille-prompteur); line-height: 1.5; }
+.p-texte span { color: var(--p-doux); transition: color .25s; }
+.p-texte span.passee { color: #4b5563; }
+.p-texte span.active { color: var(--p-texte); text-decoration: underline 3px var(--p-actif); text-underline-offset: 8px; }
+.p-suivant { border-top: 1px solid #222b36; padding: 12px 22px; color: var(--p-doux); font-size: 15px; min-height: 48px; }
+.p-suivant b { color: var(--p-texte); font-weight: 600; }
+
+.message { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); max-width: min(720px, calc(100vw - 32px)); background: var(--surface); color: var(--encre); border: 1px solid var(--filet); border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.18); padding: 10px 16px; font-size: 14px; line-height: 1.45; }
+.message:empty { display: none; }
+.message .ok { color: var(--ok); } .message .alerte { color: var(--alerte); }
+
+dialog { border: 1px solid var(--filet); border-radius: 12px; padding: 0; width: min(980px, calc(100vw - 32px)); background: var(--surface); color: var(--encre); }
+dialog::backdrop { background: rgba(10, 14, 20, .55); }
+.d-corps { padding: 18px 20px; display: grid; gap: 12px; max-height: 90vh; overflow: auto; }
+#finale { max-height: 55vh; }
+.d-corps h2 { margin: 0; font-size: 18px; overflow-wrap: anywhere; }
+#journal { margin: 0; max-height: 200px; overflow: auto; font: 12px/1.5 ui-monospace, Menlo, monospace; background: var(--fond); border-radius: 8px; padding: 10px; white-space: pre-wrap; }
+.d-pied { display: flex; justify-content: flex-end; gap: 8px; }
+
+@media (max-width: 980px) {
+  body { grid-template-rows: auto auto; }
+  .studio { grid-template-columns: minmax(0, 1fr); }
+  .prompteur { min-height: 60vh; }
+}
+@media (prefers-reduced-motion: reduce) { #rec::before { animation: none; } }
+</style>
+</head>
+<body>
+<header class="barre">
+  <h1><img src="/logo.svg" alt="" width="26" height="26">Studio voix off · Caramel 7</h1>
+  <span id="compte"></span>
+  <div class="micro">
+    <select id="micro-choix" aria-label="Microphone" hidden></select>
+    <div class="vu" aria-hidden="true"><div id="vu"></div></div>
+    <span id="micro-etat">Micro non activé</span>
+    <button id="micro-activer" type="button">Activer le micro</button>
+    <a id="vers-table" href="/table">Table de montage</a>
+    <button id="monter" type="button">Monter la vidéo</button>
+    <button id="habiller" type="button" title="Caméra, cartons animés et musique discrète sous la voix (quelques minutes)">Habiller</button>
+  </div>
+</header>
+
+<main class="studio">
+  <section class="gauche">
+    <div class="cadre">
+      <video id="video" src="/video.mp4" preload="auto" muted playsinline></video>
+      <div id="decompte" hidden></div>
+      <div id="rec" hidden>REC</div>
+    </div>
+    <div class="frise" id="frise" aria-label="Frise des blocs"><div id="tete-lecture"></div></div>
+    <div class="commandes">
+      <button id="enr-suite" class="rouge" type="button">● Enregistrer à partir d’ici</button>
+      <button id="enr-bloc" class="contour-rouge" type="button">● Refaire ce bloc seul</button>
+      <button id="ecouter" type="button">▶ Écouter à partir d’ici</button>
+      <button id="arreter" type="button" hidden>■ Arrêter</button>
+      <span class="aide"><kbd>Espace</kbd> enregistrer / arrêter · <kbd>B</kbd> ce bloc seul · <kbd>E</kbd> écouter · <kbd>←</kbd><kbd>→</kbd> bloc</span>
+    </div>
+    <ol class="liste" id="liste"></ol>
+  </section>
+
+  <section class="prompteur" aria-label="Prompteur">
+    <div class="p-tete">
+      <span id="p-bloc"></span>
+      <span id="p-temps"></span>
+      <span class="p-taille"><button id="p-moins" type="button" aria-label="Texte plus petit">A−</button><button id="p-plus" type="button" aria-label="Texte plus grand">A+</button></span>
+    </div>
+    <div class="p-texte" id="p-texte"></div>
+    <div class="p-suivant" id="p-suivant"></div>
+  </section>
+</main>
+
+<div class="message" id="message" role="status" aria-live="polite"></div>
+
+<dialog id="montage">
+  <div class="d-corps">
+    <h2 id="m-titre">Montage en cours…</h2>
+    <video id="finale" controls playsinline hidden></video>
+    <pre id="journal"></pre>
+    <div class="d-pied"><button id="m-fermer" type="button">Fermer</button></div>
+  </div>
+</dialog>
+
+<script>
+(async () => {
+  const $ = s => document.querySelector(s);
+  const video = $('#video');
+  const PREROLL = 3;           // secondes de vidéo avant le bloc, pendant le décompte
+  const APRES = 0.25;          // on dépasse un peu la fin du bloc avant de s'arrêter
+
+  /* ---------------- Données ---------------- */
+  const { duree: DUREE, marques } = await (await fetch('/marques.json', { cache: 'no-store' })).json();
+  const blocs = marques.map((m, k) => ({ ...m, coupe: k + 1 < marques.length ? marques[k + 1].debut : DUREE, rallonge: 0 }));
+  let prises = new Map();
+  let choisi = Math.max(0, blocs.findIndex(b => b.id === new URLSearchParams(location.search).get('bloc')));
+
+  /** Les rallonges de la table de montage : l'image se fige à la fin du bloc, le micro continue. */
+  async function chargerMontage() {
+    const { rallonges } = await (await fetch('/montage', { cache: 'no-store' })).json();
+    for (const b of blocs) { b.rallonge = Number(rallonges?.[b.id]) || 0; b.place = b.coupe - b.debut; }
+  }
+
+  async function chargerPrises() {
+    const r = await (await fetch('/prises', { cache: 'no-store' })).json();
+    prises = new Map(r.prises.map(p => [p.id, { ...(prises.get(p.id) || {}), ...p }]));
+    peindreListe();
+  }
+
+  /* ---------------- Liste et frise ---------------- */
+  const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const liste = $('#liste'), frise = $('#frise');
+  function peindreListe() {
+    liste.replaceChildren();
+    let chap;
+    blocs.forEach((b, i) => {
+      if (b.chapitre !== undefined && b.chapitre !== chap) {
+        chap = b.chapitre;
+        if (chap) { const h = document.createElement('li'); h.className = 'chap'; h.textContent = chap; liste.append(h); }
+      }
+      const p = prises.get(b.id);
+      const li = document.createElement('li');
+      li.className = 'bloc' + (i === choisi ? ' choisi' : '');
+      li.dataset.i = i;
+      const place = `${Math.round(b.place)} s${b.rallonge ? ` + ${b.rallonge} s` : ''}`;
+      const etat = !p ? `<span class="etat vide">à enregistrer · ${place}</span>`
+        : p.alerte ? `<span class="etat alerte" title="${p.alerte}">⚠ ${p.duree?.toFixed(1) ?? '?'} s</span>`
+        : `<span class="etat faite">✓ ${p.duree?.toFixed(1) ?? '?'} s</span>`;
+      li.innerHTML = `<span class="tc">${mmss(b.debut)}</span><span class="nom">${b.id}<small>${b.phrases[0]?.texte.slice(0, 48) ?? ''}…</small></span>${etat}`
+        + (p ? `<button type="button" data-effacer="${i}" aria-label="Effacer la prise ${b.id}">Effacer</button>` : '<span></span>');
+      liste.append(li);
+    });
+    frise.querySelectorAll('span').forEach(s => s.remove());
+    blocs.forEach((b, i) => {
+      const s = document.createElement('span');
+      s.style.width = `${((b.coupe - b.debut) / DUREE) * 100}%`;
+      s.className = (prises.has(b.id) ? 'faite' : '') + (i === choisi ? ' choisie' : '');
+      s.title = b.id;
+      frise.insertBefore(s, $('#tete-lecture'));
+    });
+    const n = blocs.filter(b => prises.has(b.id)).length;
+    $('#compte').textContent = `${n} / ${blocs.length} blocs enregistrés`;
+  }
+  liste.addEventListener('click', async e => {
+    const eff = e.target.closest('[data-effacer]');
+    if (eff) {
+      e.stopPropagation();
+      const b = blocs[Number(eff.dataset.effacer)];
+      await fetch(`/prises/${b.id}.wav`, { method: 'DELETE' });
+      prises.delete(b.id);
+      peindreListe();
+      dire(`Prise « ${b.id} » effacée.`);
+      return;
+    }
+    const li = e.target.closest('.bloc');
+    if (li) choisir(Number(li.dataset.i));
+  });
+  frise.addEventListener('click', e => {
+    const r = frise.getBoundingClientRect();
+    const t = ((e.clientX - r.left) / r.width) * DUREE;
+    choisir(indexA(t));
+  });
+  function choisir(i) {
+    if (capture || ecoute) return;
+    choisi = Math.max(0, Math.min(blocs.length - 1, i));
+    video.pause();
+    video.currentTime = blocs[choisi].debut;
+    peindreListe();
+    liste.querySelector('.bloc.choisi')?.scrollIntoView({ block: 'nearest' });
+  }
+
+  /* ---------------- Prompteur ---------------- */
+  const indexA = t => { let i = 0; while (i + 1 < blocs.length && blocs[i + 1].debut <= t) i++; return i; };
+  let pIndex = -1, pActive = -1;
+  function peindrePrompteur(t) {
+    const i = tenue ? tenue.k : capture && t < blocs[capture.depart].debut ? capture.depart : indexA(t);
+    const b = blocs[i];
+    if (i !== pIndex) {
+      pIndex = i; pActive = -1;
+      $('#p-texte').replaceChildren(...b.phrases.map(p => { const s = document.createElement('span'); s.textContent = p.texte + ' '; return s; }));
+      $('#p-bloc').innerHTML = `<b>${b.id}</b>${b.chapitre ? ' · ' + b.chapitre : ''}`;
+      const s = blocs[i + 1];
+      $('#p-suivant').innerHTML = s ? `Ensuite · <b>${s.id}</b> : ${s.phrases[0]?.texte ?? ''}` : 'Dernier bloc.';
+      $('#p-texte').scrollTop = 0;
+    }
+    const enTenue = tenue && tenue.k === i;
+    const rel = enTenue ? b.place + b.rallonge - (tenue.fin - ctx.currentTime) : t - b.debut;
+    const spans = $('#p-texte').children;
+    let active = -1;
+    b.phrases.forEach((p, k) => {
+      const passee = rel >= p.offset + p.duree + 0.3;
+      const en = rel >= p.offset - 0.15 && !passee;
+      if (en) active = k;
+      spans[k].className = en ? 'active' : passee ? 'passee' : '';
+    });
+    if (active !== pActive && active >= 0) { pActive = active; spans[active].scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    const reste = enTenue ? tenue.fin - ctx.currentTime : b.coupe - t + b.rallonge;
+    const temps = $('#p-temps');
+    const enCours = !video.paused || enTenue;
+    if (rel < 0) { temps.textContent = `début dans ${Math.ceil(-rel)} s`; temps.className = 'presse'; }
+    else { temps.textContent = `${enTenue ? 'rallonge · ' : ''}reste ${Math.max(0, Math.ceil(reste))} s`; temps.className = reste < 3 && enCours ? 'presse' : ''; }
+  }
+  let taille = 30;
+  try { taille = Number(localStorage.getItem('caramel_studio_taille')) || 30; } catch { /* stockage indisponible */ }
+  const appliquerTaille = () => { document.documentElement.style.setProperty('--taille-prompteur', `${taille}px`); try { localStorage.setItem('caramel_studio_taille', String(taille)); } catch { /* idem */ } };
+  appliquerTaille();
+  $('#p-plus').onclick = () => { taille = Math.min(56, taille + 3); appliquerTaille(); };
+  $('#p-moins').onclick = () => { taille = Math.max(18, taille - 3); appliquerTaille(); };
+
+  /* ---------------- Micro ---------------- */
+  let ctx = null, flux = null, source = null, proc = null, analyseur = null;
+  const assurerContexte = async () => { ctx ??= new AudioContext(); if (ctx.state !== 'running') await ctx.resume(); return ctx; };
+  async function activerMicro(idAppareil) {
+    await assurerContexte();
+    try {
+      flux?.getTracks().forEach(t => t.stop());
+      // Ni annulation d'écho, ni réduction de bruit, ni gain automatique : ils abîment une
+      // voix enregistrée au calme. Le niveau est harmonisé au montage.
+      flux = await navigator.mediaDevices.getUserMedia({ audio: {
+        deviceId: idAppareil ? { exact: idAppareil } : undefined, channelCount: 1,
+        echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    } catch (e) {
+      $('#micro-etat').textContent = 'Micro refusé ou absent';
+      dire(`Le navigateur n’a pas donné accès au micro (${e.name}). Autorise-le dans la barre d’adresse, puis réessaie.`, 'alerte');
+      flux = null;
+      return false;
+    }
+    source?.disconnect();
+    source = ctx.createMediaStreamSource(flux);
+    analyseur ??= Object.assign(ctx.createAnalyser(), { fftSize: 2048 });
+    if (!proc) {
+      proc = ctx.createScriptProcessor(1024, 1, 1);
+      proc.onaudioprocess = surAudio;
+      const muet = ctx.createGain(); muet.gain.value = 0;
+      proc.connect(muet).connect(ctx.destination);
+    }
+    source.connect(analyseur);
+    source.connect(proc);
+    const piste = flux.getAudioTracks()[0];
+    const appareils = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'audioinput');
+    const choix = $('#micro-choix');
+    choix.replaceChildren(...appareils.map(d => new Option(d.label || 'Micro', d.deviceId, false, d.deviceId === piste.getSettings().deviceId)));
+    choix.hidden = appareils.length < 2;
+    // Le menu montre déjà le nom du micro quand il y en a plusieurs.
+    $('#micro-etat').textContent = appareils.length < 2 ? (piste.label || 'Micro actif') : 'Micro actif';
+    $('#micro-activer').hidden = true;
+    return true;
+  }
+  $('#micro-activer').onclick = () => activerMicro();
+  $('#micro-choix').onchange = e => activerMicro(e.target.value);
+
+  function surAudio(e) {
+    if (!capture) return;
+    const d = e.inputBuffer.getChannelData(0);
+    if (capture.ctxDebut === null) {
+      const latence = flux?.getAudioTracks()[0].getSettings().latency || 0;
+      capture.ctxDebut = ctx.currentTime - d.length / ctx.sampleRate - latence;
+    }
+    capture.morceaux.push(new Float32Array(d));
+    capture.total += d.length;
+  }
+
+  /* ---------------- Enregistrement ---------------- */
+  let capture = null;
+  /** La tenue en cours : la vidéo est figée à la fin du bloc k jusqu'à l'instant `fin` (horloge audio). */
+  let tenue = null;
+  const attendre = (el, ev) => new Promise(r => el.addEventListener(ev, r, { once: true }));
+  async function allerA(t) { video.pause(); if (Math.abs(video.currentTime - t) < 0.01) return; video.currentTime = t; await attendre(video, 'seeked'); }
+
+  async function enregistrer(mode) {
+    if (capture || ecoute) return;
+    if (!flux && !(await activerMicro())) return;
+    await assurerContexte();
+    const b = blocs[choisi];
+    const preroll = Math.min(PREROLL, b.debut);
+    await allerA(b.debut - preroll);
+    // Chaque plage de lecture continue a son propre décalage vidéo − horloge audio : une
+    // tenue (rallonge) arrête la vidéo, pas le micro.
+    capture = { mode, depart: choisi, bloc: choisi, morceaux: [], total: 0, ctxDebut: null, segments: [{ paires: [] }], sr: ctx.sampleRate };
+    etatInterface();
+    dire('');
+    if (preroll < 1) {                    // premier bloc : pas d'image avant, on décompte à l'arrêt
+      for (let n = 3; n > 0 && capture; n--) { montrerDecompte(n); await new Promise(r => setTimeout(r, 1000)); }
+      montrerDecompte(null);
+      if (!capture) return;
+    }
+    await video.play();
+  }
+  const montrerDecompte = n => { const d = $('#decompte'); d.hidden = !n; d.textContent = n || ''; };
+
+  function mediane(v) { const s = [...v].sort((a, b) => a - b); return s[Math.floor(s.length / 2)]; }
+  function rms(x, a, b) { let s = 0; for (let i = a; i < b; i++) s += x[i] * x[i]; return Math.sqrt(s / Math.max(1, b - a)); }
+
+  /** Ce qu'une prise laisse deviner : rien entendu, début coupé, voix jusqu'à la coupure. */
+  function diagnostiquer(x, sr, { suite = false, enchaine = false } = {}) {
+    const pas = Math.round(sr * 0.05), niveaux = [];
+    for (let i = 0; i + pas <= x.length; i += pas) niveaux.push(rms(x, i, i + pas));
+    if (!niveaux.length) return null;
+    const tri = [...niveaux].sort((a, b) => a - b), voix = tri[Math.floor(tri.length * 0.9)], fond = tri[Math.floor(tri.length * 0.05)];
+    if (voix < 0.004) return 'rien d’audible : le micro est-il le bon ?';
+    // Même seuil que la table de montage : au-dessus du bruit de fond, pas loin du niveau de la voix.
+    const seuil = Math.max(fond * Math.pow(10, 5 / 20), voix * Math.pow(10, -12 / 20));
+    const fin = Math.max(...niveaux.slice(-2)), debut = Math.max(...niveaux.slice(0, 2));
+    if (suite) return null;                     // le bloc suivant de la même prise continue la phrase
+    if (fin > seuil) return 'la voix va jusqu’à la coupure : rallonge ce bloc dans la table de montage, ou lis un peu plus vite';
+    if (debut > seuil && !enchaine) return 'la voix commence dès la coupure : le début est peut-être tronqué';
+    return null;
+  }
+
+  function wav(x, sr) {
+    const b = new ArrayBuffer(44 + x.length * 2), v = new DataView(b);
+    const ecrire = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    ecrire(0, 'RIFF'); v.setUint32(4, 36 + x.length * 2, true); ecrire(8, 'WAVE'); ecrire(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, sr, true);
+    v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); ecrire(36, 'data'); v.setUint32(40, x.length * 2, true);
+    for (let i = 0; i < x.length; i++) { const s = Math.max(-1, Math.min(1, x[i])); v.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true); }
+    return new Blob([b], { type: 'audio/wav' });
+  }
+
+  async function terminer() {
+    const c = capture;
+    if (!c) return;
+    capture = null;
+    video.pause();
+    montrerDecompte(null);
+    etatInterface();
+    tenue = null;
+    const plages = c.segments.filter(sg => sg.paires.length >= 3)
+      .map(sg => ({ tMin: sg.paires[0][0], tMax: sg.paires.at(-1)[0], dec: mediane(sg.paires.map(p => p[1])) }));
+    if (!c.total || c.ctxDebut === null || !plages.length) { dire('Rien d’enregistré.', 'alerte'); return; }
+    const x = new Float32Array(c.total);
+    let o = 0; for (const m of c.morceaux) { x.set(m, o); o += m.length; }
+    // L'instant (horloge audio) où la vidéo passait le début du bloc : dans la plage de lecture
+    // qui le contient — la plus récente, celle qui reprend après une tenue.
+    const debutAudio = b => {
+      const pl = plages.filter(p => p.tMin <= b.debut + 0.15 && p.tMax >= b.debut - 0.05).at(-1);
+      return pl ? b.debut - pl.dec : null;
+    };
+    const gardes = [], alertes = [];
+    let interrompu = null, dernier = c.depart - 1;
+    for (let k = c.depart; k < blocs.length; k++) {
+      const b = blocs[k], a = debutAudio(b);
+      const i0 = a === null ? null : Math.max(0, Math.round((a - c.ctxDebut) * c.sr));
+      const n = Math.round((b.place + b.rallonge) * c.sr);
+      if (i0 === null || i0 + n > c.total) { if (i0 !== null && c.total - i0 > 0.3 * c.sr) interrompu = k; break; }
+      const tranche = x.subarray(i0, i0 + n);
+      // Le bloc suivant est-il entièrement dans cette même prise ? Alors la fin n'est pas une coupure.
+      const bs = blocs[k + 1], as = bs && c.mode !== 'bloc' ? debutAudio(bs) : null;
+      const suiteGardee = as !== null && Math.round((as - c.ctxDebut) * c.sr) + Math.round((bs.place + bs.rallonge) * c.sr) <= c.total;
+      const alerte = diagnostiquer(tranche, c.sr, { suite: suiteGardee, enchaine: k > c.depart });
+      const r = await fetch(`/prises/${b.id}.wav`, { method: 'PUT', body: wav(tranche, c.sr) });
+      if (!r.ok) { alertes.push(`${b.id} : enregistrement refusé par le serveur`); break; }
+      prises.set(b.id, { id: b.id, duree: tranche.length / c.sr, alerte });
+      gardes.push(b.id); dernier = k;
+      if (alerte) alertes.push(`${b.id} : ${alerte}`);
+      if (c.mode === 'bloc') break;
+    }
+    choisi = interrompu ?? Math.min(blocs.length - 1, dernier + 1);
+    await allerA(blocs[choisi].debut);
+    peindreListe();
+    const lignes = [];
+    if (gardes.length) lignes.push(`<span class="ok">Gardé : ${gardes.join(', ')}.</span>`);
+    if (interrompu !== null) lignes.push(`Bloc « ${blocs[interrompu].id} » interrompu, non gardé : <kbd>Espace</kbd> pour le reprendre.`);
+    for (const a of alertes) lignes.push(`<span class="alerte">⚠ ${a}</span>`);
+    dire(lignes.join('<br>') || 'Aucun bloc complet : rien gardé.');
+  }
+
+  /* ---------------- Écoute ---------------- */
+  let ecoute = null;
+  const cache = new Map();
+  async function tampon(id) {
+    const p = prises.get(id);
+    const cle = `${id}:${p?.le ?? p?.duree}`;
+    if (!cache.has(cle)) {
+      const r = await fetch(`/prises/${id}.wav?${Date.now()}`);
+      if (!r.ok) return null;
+      cache.set(cle, await ctx.decodeAudioData(await r.arrayBuffer()));
+    }
+    return cache.get(cle);
+  }
+  async function ecouter() {
+    if (capture || ecoute) return;
+    await assurerContexte();
+    const d = blocs[choisi];
+    const tampons = new Map();
+    for (let k = choisi; k < blocs.length; k++) if (prises.has(blocs[k].id)) tampons.set(blocs[k].id, await tampon(blocs[k].id));
+    if (!tampons.size) { dire('Aucune prise à écouter à partir de ce bloc.', 'alerte'); return; }
+    await allerA(d.debut);
+    // Chaque prise part quand la vidéo entre dans son bloc ; les tenues sont rejouées comme au montage.
+    ecoute = { bloc: choisi, tampons, sources: [], lances: new Set() };
+    etatInterface();
+    await video.play();
+  }
+  function lancerPrise(k, t) {
+    const b = blocs[k], buf = ecoute.tampons.get(b.id);
+    ecoute.lances.add(k);
+    if (!buf) return;
+    const s = ctx.createBufferSource(); s.buffer = buf; s.connect(ctx.destination);
+    s.start(0, Math.max(0, t - b.debut));
+    ecoute.sources.push(s);
+  }
+  function arreterEcoute() {
+    if (!ecoute) return;
+    ecoute.sources.forEach(s => { try { s.stop(); } catch { /* déjà fini */ } });
+    ecoute = null;
+    tenue = null;
+    video.pause();
+    etatInterface();
+  }
+  /**
+   * Au bout de la place d'un bloc : une tenue s'il a une rallonge (la vidéo se fige, le
+   * micro ou la prise continuent), sinon on passe au bloc suivant. `etat` est la capture
+   * ou l'écoute en cours ; son `bloc` est celui qui se joue.
+   */
+  function avancer(etat, t) {
+    const dernierBloc = blocs.length - 1;
+    const finir = () => (etat === capture ? terminer() : arreterEcoute());
+    if (tenue) {
+      if (ctx.currentTime < tenue.fin) return;
+      const k = tenue.k;
+      tenue = null;
+      if (k === dernierBloc || (etat === capture && capture.mode === 'bloc')) return finir();
+      etat.bloc = k + 1;
+      if (etat === capture) capture.segments.push({ paires: [] });
+      video.play();
+      return;
+    }
+    const fini = video.ended;
+    if (video.paused && !fini) return;
+    const b = blocs[etat.bloc];
+    if (t < b.coupe - 0.004 && !fini) return;
+    if (b.rallonge > 0) { video.pause(); tenue = { k: etat.bloc, fin: ctx.currentTime + b.rallonge }; return; }
+    if (etat === capture && capture.mode === 'bloc') { if (t >= b.coupe + APRES || fini) finir(); return; }
+    if (etat.bloc < dernierBloc) etat.bloc++; else if (fini) finir();
+  }
+
+  /* ---------------- Interface ---------------- */
+  function etatInterface() {
+    const occupe = !!capture || !!ecoute;
+    $('#rec').hidden = !capture;
+    $('#arreter').hidden = !occupe;
+    for (const id of ['#enr-suite', '#enr-bloc', '#ecouter', '#monter', '#habiller']) $(id).disabled = occupe;
+  }
+  function dire(html, genre) { const m = $('#message'); m.innerHTML = genre ? `<span class="${genre}">${html}</span>` : html; }
+  // Un bouton cliqué à la souris garderait le focus, et la barre d'espace le recliquerait.
+  document.addEventListener('click', e => { if (e.detail > 0) e.target.closest('button')?.blur(); });
+  $('#enr-suite').onclick = () => enregistrer('suite');
+  $('#enr-bloc').onclick = () => enregistrer('bloc');
+  $('#ecouter').onclick = () => ecouter();
+  $('#arreter').onclick = () => capture ? terminer() : arreterEcoute();
+  document.addEventListener('keydown', e => {
+    if (e.target.closest('select, dialog')) return;
+    if (e.code === 'Space') { e.preventDefault(); if (capture) terminer(); else if (ecoute) arreterEcoute(); else enregistrer('suite'); }
+    else if (e.code === 'Escape') { if (capture) terminer(); else arreterEcoute(); }
+    else if (e.key === 'b' || e.key === 'B') enregistrer('bloc');
+    else if (e.key === 'e' || e.key === 'E') ecouter();
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); choisir(choisi - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); choisir(choisi + 1); }
+  });
+
+  $('#monter').onclick = async () => {
+    const d = $('#montage');
+    $('#m-titre').textContent = 'Montage en cours…';
+    $('#journal').textContent = '';
+    $('#finale').hidden = true;
+    d.showModal();
+    const r = await fetch('/monter', { method: 'POST' });
+    const j = await r.json().catch(() => ({ ok: false, journal: 'réponse illisible' }));
+    $('#journal').textContent = (j.journal || j.erreur || '').trim();
+    $('#m-titre').textContent = j.ok ? `Vidéo montée : ${j.fichier}` : 'Le montage a échoué';
+    if (j.ok) { const f = $('#finale'); f.src = `/finale.mp4?${Date.now()}`; f.hidden = false; }
+  };
+  $('#m-fermer').onclick = () => { $('#finale').pause(); $('#montage').close(); };
+  $('#habiller').onclick = async () => {
+    const d = $('#montage');
+    $('#m-titre').textContent = 'Habillage en cours… (quelques minutes)';
+    $('#journal').textContent = 'Caméra, cartons animés, phrases clés, musique sous la voix. Le montage de la voix doit être à jour (« Monter la vidéo »).';
+    $('#finale').hidden = true;
+    d.showModal();
+    const r = await fetch('/habiller', { method: 'POST' });
+    const j = await r.json().catch(() => ({ ok: false, journal: 'réponse illisible' }));
+    $('#journal').textContent = (j.journal || j.erreur || '').trim();
+    $('#m-titre').textContent = j.ok ? `Vidéo habillée : ${j.copie || j.fichier}` : 'L’habillage a échoué';
+    if (j.ok) { const f = $('#finale'); f.src = `/habillee.mp4?${Date.now()}`; f.hidden = false; }
+  };
+
+  /* ---------------- Boucle ---------------- */
+  const vu = $('#vu'), tete = $('#tete-lecture');
+  const niveau = new Float32Array(2048);
+  function boucle() {
+    const t = video.currentTime;
+    peindrePrompteur(t);
+    tete.style.left = `${(t / DUREE) * 100}%`;
+    if (analyseur) {
+      analyseur.getFloatTimeDomainData(niveau);
+      const r = rms(niveau, 0, niveau.length);
+      vu.style.width = `${Math.min(100, Math.max(0, (20 * Math.log10(r + 1e-6) + 60) / 60 * 100))}%`;
+    }
+    if (capture) {
+      if (!video.paused && !video.seeking && video.readyState >= 3 && !tenue) capture.segments.at(-1).paires.push([t, t - ctx.currentTime]);
+      const b = blocs[capture.depart];
+      if (t < b.debut && !video.paused) montrerDecompte(Math.ceil(b.debut - t)); else if (!video.paused) montrerDecompte(null);
+      avancer(capture, t);
+    } else if (ecoute) {
+      if (!video.paused && !tenue && !ecoute.lances.has(ecoute.bloc) && t >= blocs[ecoute.bloc].debut - 0.02) lancerPrise(ecoute.bloc, t);
+      avancer(ecoute, t);
+    }
+    requestAnimationFrame(boucle);
+  }
+
+  await chargerMontage();
+  await chargerPrises();
+  await allerA(blocs[choisi].debut).catch(() => {});
+  // Revenu de la table de montage (autre onglet) : on relit rallonges et prises.
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState !== 'visible' || capture || ecoute) return;
+    await chargerMontage();
+    await chargerPrises();
+  });
+  etatInterface();
+  requestAnimationFrame(boucle);
+  dire('Active le micro, choisis un bloc, puis <kbd>Espace</kbd> : trois secondes de décompte, et la vidéo part. Lis ce qui s’allume.');
+})();
+</script>
+</body>
+</html>
