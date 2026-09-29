@@ -42,5 +42,27 @@
     "description": "Huit mots de l'univers Caramel cachés dans une grille de lettres.",
     "h5p": "assets/presentation/activites/mots-meles.h5p",
     "dossier": "assets/presentation/activites/mots-meles"
+  },
+  {
+    "id": "video-caramel",
+    "titre": "Découvrez Caramel en vidéo",
+    "type": "Vidéo interactive",
+    "machineName": "H5P.InteractiveVideo",
+    "version": "1.28",
+    "icone": "assets/images/activities/interactive_video_icon-colors_0.webp",
+    "description": "La présentation de Caramel 7, avec quatre pauses-question pour vérifier les points essentiels. Vidéo d’Emmanuel Gaunard, publiée sur PodEduc sous CC BY 4.0.",
+    "h5p": "assets/presentation/activites/video-caramel.h5p",
+    "dossier": "assets/presentation/activites/video-caramel"
+  },
+  {
+    "id": "preparer-une-activite",
+    "titre": "De l’idée à la classe",
+    "type": "Ordonner les paragraphes",
+    "machineName": "H5P.SortParagraphs",
+    "version": "0.11",
+    "icone": "assets/images/activities/sort-paragraphs.webp",
+    "description": "Six étapes à remettre dans l’ordre pour préparer, relire et utiliser une activité avec vos élèves.",
+    "h5p": "assets/presentation/activites/preparer-une-activite.h5p",
+    "dossier": "assets/presentation/activites/preparer-une-activite"
   }
 ]

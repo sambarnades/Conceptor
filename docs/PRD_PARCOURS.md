@@ -2991,6 +2991,79 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
 
+- **29 septembre 2026 — Publication des nouvelles démonstrations et portraits :**
+  Emmanuel autorise le commit et le push de toutes les modifications présentes
+  sur `emmanuel` : deux nouvelles démonstrations H5P avec leurs sources et
+  dossiers jouables, six activités au catalogue, téléchargements compactés,
+  portraits des deux co-créateurs et textes équilibrés. Les entrées précédentes
+  décrivent les étapes locales avant cette autorisation. Branche distante
+  actualisée sans divergence ; banc présentation **321 OK, 0 échec**, contrôle
+  des cinq lignes sur cinq largeurs et `git diff --check` propre. Les imports
+  Éléa et les décisions de licence pédagogique restent ouverts. `main` demeure
+  hors du périmètre de cette publication.
+
+- **29 septembre 2026 — Photo de Gauthier et équilibre des portraits :**
+  `gauthier.jpeg`, fourni à la racine, déplacé sans retouche ni modification des
+  octets vers `assets/images/presentation/gauthier-remande.jpg` (1 024 × 969 px).
+  Le vrai portrait de Gauthier remplace celui d’Emmanuel ; suppression de la
+  mention provisoire et ajout du texte alternatif « Portrait de Gauthier Remande ».
+  Chaque carte comporte cinq lignes : nom, deux lignes de fonction, académie,
+  contact. Pour Gauthier : « Lettres-Histoire » puis « Professeur de lycée
+  professionnel », développement du statut PLP déjà présent dans les mentions.
+  Grille à une colonne sous 1 000 px ; petits portraits latéraux sur téléphone,
+  disposition centrée sous 380 px pour garder tous les textes lisibles.
+  Rendu des deux vrais portraits vérifié dans Chrome. Le banc mesure les lignes
+  réellement rendues à 320, 390, 760, 1 282 et 1 905 px et confirme cinq lignes
+  pour chacun, sans texte tronqué. Présentation : **321 OK, 0 échec** ;
+  `git diff --check` propre. Travail local sur `emmanuel`, sans commit ni push.
+
+- **29 septembre 2026 — Portraits des co-créateurs sur la présentation :**
+  photo fournie par Emmanuel déplacée depuis la racine vers
+  `assets/images/presentation/emmanuel-gaunard.jpg`, avec la vraie extension JPEG,
+  sans retouche ni modification des octets (987 × 1 326 px, 243 547 octets).
+  Ajout d’un bloc « Les co-créateurs de Caramel » avant l’appel final : Emmanuel
+  Gaunard, professeur de mathématiques et chargé de mission DRANE, académie de
+  Grenoble ; Gauthier Remande, professeur de Lettres-Histoire (PLP), académie de
+  Nantes. Fonctions et contacts repris du README et des mentions légales.
+  À la demande d’Emmanuel, sa photo est utilisée provisoirement pour les deux
+  cartes ; celle de Gauthier porte la mention « Portrait à venir » et ne reçoit
+  pas de texte alternatif l’identifiant comme son vrai portrait.
+  Deux cartes côte à côte sur grand écran, une colonne sous 900 px, portraits
+  et textes compacts sur téléphone. Rendu vérifié dans Chrome à 1 920 et 390 px :
+  images chargées, noms et fonctions lisibles, aucun débordement horizontal.
+  Banc présentation complet : **315 OK, 0 échec** ; `git diff --check` propre.
+  Ce nouveau contenu éditorial reste en français, comme les autres descriptions
+  dont l’extension des traductions reste à décider. Travail local sur `emmanuel`,
+  sans nouveau commit ni push.
+
+- **29 septembre 2026 — Deux démonstrations H5P supplémentaires :**
+  `/decouvrir/` propose désormais six activités. `video-caramel.h5p` utilise la
+  vraie présentation Caramel 7 de PodEduc, sans téléchargement ni réhébergement
+  du média : quatre pauses-question (0:34, 2:01, 3:11, 4:27), deux QCM et deux
+  vrai/faux, placés après les passages correspondants de la transcription.
+  Le média source d’Emmanuel Gaunard est crédité CC BY 4.0 sur la page et dans
+  l’écran de démarrage du H5P téléchargé ; la licence des
+  questions pédagogiques reste à décider, comme celle des autres démonstrations.
+  `preparer-une-activite.h5p` fait ordonner six étapes, du cadrage pédagogique à
+  la vérification de l’activité importée en vue élève. Les deux sources JSON
+  passent par le pipeline habituel (healing, processeur, `createH5PBlob`) ; le
+  dossier joué est extrait de l’archive téléchargeable. Régénération à
+  l’identique des six activités ; les quatre démonstrations précédentes restent
+  inchangées octet pour octet.
+  Chrome : lecture réelle du MP4, quatre pauses et quatre corrections à 1/1 ;
+  pause naturelle à 0:34 et réponse correcte dans la fenêtre mobile H5P ;
+  classement déplaçable au clavier. Les deux fichiers téléchargés depuis la
+  page sont identiques aux archives du dépôt. Grille à trois colonnes sur
+  tablette, deux sur téléphone ; liste des six téléchargements compactée,
+  cartes de formation équilibrées à 625 px sur grand écran.
+  Banc présentation : **314 OK, 0 échec**, dont classement ordonné avec les
+  commandes natives jusqu’au score de 5/5, déplacement avec Descendre sur
+  mobile et contrôle de toutes les dépendances.
+  **Import Éléa des deux nouvelles archives encore à faire.** La vidéo nécessite
+  un accès Internet à PodEduc ; aucun verdict de lecteur d’écran ni de licence
+  pédagogique n’est déduit du rendu Chrome. Modifications locales sur
+  `emmanuel`, sans nouveau commit ni push.
+
 - **29 septembre 2026 — Publication Caramel autorisée sur `emmanuel` :**
   Emmanuel demande le commit et le push de toutes les modifications présentes,
   après les corrections d’exports Éléa, de langue enseignée, d’annonce H5P,

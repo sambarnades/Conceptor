@@ -117,6 +117,9 @@ for (const a of activites) {
     ok(`${nom} : sa bibliothèque est dans js/vendor/h5p-libs`,
         (meta.preloadedDependencies || []).filter(d => d.machineName === meta.mainLibrary)
             .every(d => existsSync(resolve(root, `js/vendor/h5p-libs/${d.machineName}-${d.majorVersion}.${d.minorVersion}`))));
+    ok(`${nom} : toutes les dépendances du lecteur sont disponibles`,
+        (meta.preloadedDependencies || []).every(d => existsSync(resolve(root,
+            `js/vendor/h5p-libs/${d.machineName}-${d.majorVersion}.${d.minorVersion}`))));
     const zip = fflate.unzipSync(new Uint8Array(readFileSync(resolve(root, a.h5p))));
     const dansZip = zip['content/content.json'] && Buffer.from(zip['content/content.json']).toString('utf8');
     ok(`${nom} : le .h5p téléchargé contient le content.json joué sur la page`, dansZip === readFileSync(contenu, 'utf8'));
@@ -248,6 +251,33 @@ if (NAVIGATEUR) {
             } catch { /* rendu en échec */ }
             const message = await p.locator('#scene-jeu .scene__attente').count() ? await p.locator('#scene-jeu .scene__attente').textContent() : '';
             ok(`navigateur : l’activité « ${activites[i].id} » se charge (tuile ${i + 1})`, charge, message);
+        }
+
+        // Le classement doit fonctionner avec les commandes natives, jusqu'à la correction.
+        const triIndex = activites.findIndex(a => a.id === 'preparer-une-activite');
+        if (triIndex >= 0) {
+            await p.click(`#tuiles .tuile[data-i="${triIndex}"]`);
+            const cadre = await p.locator('#scene-jeu iframe').elementHandle();
+            const frame = await cadre.contentFrame();
+            const cartes = frame.locator('.h5p-sort-paragraphs-paragraph');
+            const attendu = JSON.parse(lire('scripts/presentation/activites/preparer-une-activite.json')).paragraphs;
+            ok('navigateur : les six étapes sont mélangées et déplaçables', await cartes.count() === 6
+                && await cartes.first().getAttribute('draggable') === 'true');
+            for (const [cible, texte] of attendu.entries()) {
+                let position = (await cartes.allTextContents()).findIndex(t => t.trim() === texte);
+                while (position > cible) {
+                    await cartes.nth(position).locator('.h5p-sort-paragraphs-paragraph-button-up').click();
+                    await frame.waitForFunction(({ texte, position }) =>
+                        [...document.querySelectorAll('.h5p-sort-paragraphs-paragraph')]
+                            .findIndex(e => e.textContent.trim() === texte) === position - 1,
+                    { texte, position });
+                    position--;
+                }
+            }
+            await frame.getByRole('button', { name: /Vérifier les réponses/ }).click();
+            await frame.getByText('Vous avez obtenu 5 sur 5 points', { exact: true }).waitFor();
+            ok('navigateur : six étapes ordonnées avec Monter, correction à 5/5',
+                await frame.getByText('Tout est dans l’ordre !', { exact: false }).isVisible());
         }
 
         // L'affiche d'une vidéo, puis le lecteur Podeduc.
@@ -441,6 +471,24 @@ if (NAVIGATEUR) {
                         return document.documentElement.scrollWidth <= innerWidth
                             && controles.every((r, i) => r.left >= 0 && r.right <= innerWidth && (!i || r.left >= controles[i - 1].right - 1));
                     }));
+                if (langue === 'fr') {
+                    const lignes = await entete.locator('.createur__texte').evaluateAll(cartes => cartes.map(carte =>
+                        ['h3', '.createur__fonction', '.createur__academie', '.createur__contact'].map(selecteur => {
+                            const element = carte.querySelector(selecteur);
+                            const parcours = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+                            const positions = new Set();
+                            for (let texte; (texte = parcours.nextNode());) {
+                                if (!texte.textContent.trim()) continue;
+                                const plage = document.createRange();
+                                plage.selectNodeContents(texte);
+                                for (const rectangle of plage.getClientRects()) positions.add(Math.round(rectangle.top));
+                            }
+                            return positions.size;
+                        })
+                    ));
+                    ok(`navigateur : cinq lignes équilibrées pour les deux co-créateurs (${largeur} px)`,
+                        lignes.length === 2 && lignes.every(carte => carte.join(',') === '1,2,1,1'), JSON.stringify(lignes));
+                }
             }
         }
         await entete.close();
@@ -471,6 +519,20 @@ if (NAVIGATEUR) {
         await mobile.goto(URL_PAGE, { waitUntil: 'networkidle' });
         ok('navigateur : pas de défilement horizontal sur un téléphone',
             await mobile.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+        if (triIndex >= 0) {
+            await mobile.locator(`#tuiles .tuile[data-i="${triIndex}"]`).click();
+            const cadre = await mobile.locator('#scene-jeu iframe').elementHandle();
+            const frame = await cadre.contentFrame();
+            const cartes = frame.locator('.h5p-sort-paragraphs-paragraph');
+            await cartes.first().waitFor();
+            const avant = await cartes.allTextContents();
+            await cartes.first().locator('.h5p-sort-paragraphs-paragraph-button-down').click();
+            await frame.waitForFunction(texte => document.querySelector('.h5p-sort-paragraphs-paragraph')?.textContent !== texte, avant[0]);
+            const apres = await cartes.allTextContents();
+            ok('navigateur : Descendre déplace une étape sur mobile', apres[0] === avant[1] && apres[1] === avant[0]);
+            ok('navigateur : le classement mobile ne déborde pas',
+                await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+        }
         ok('navigateur : les lignes du footer mobile et Découvrir Caramel restent centrées',
             await mobile.locator('.pied__presentation span').isVisible()
             && await mobile.locator('.pied').evaluate(el => {

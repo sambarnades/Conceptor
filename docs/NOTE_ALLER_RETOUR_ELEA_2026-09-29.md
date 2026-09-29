@@ -21,14 +21,14 @@ Note de passation pour les agents (ChatGPT, Codex) qui importent sur Éléa et v
 | A | Réglages de l'activité Test (`quiz_settings`) | D86 | 3 `.mbz` |
 | B | Image envoyée depuis l'ordinateur dans une Page ou un Livre | D88 | 3 `.mbz` |
 | C | Langue du contenu d'une séquence de langue vivante | D87 | à générer dans Caramel |
-| D | Activités H5P de démonstration de la page `/decouvrir/` | — | 4 `.h5p` |
+| D | Activités H5P de démonstration de la page `/decouvrir/` | — | 6 `.h5p` |
 
 ### Fabriquer les fichiers
 
 ```
 node scripts/generer-test-regle-sonde.mjs      # A → tests/.sondes-elea/test-defauts-*.mbz, test-regle-*.mbz, parcours-test-regle-*.mbz
 node scripts/generer-sonde-page-images.mjs     # B → tests/.sondes-elea/sonde-page-images.mbz, sonde-livre-images.mbz, sonde-parcours-page-images.mbz (+ fiche .md)
-ls assets/presentation/activites/*.h5p         # D → quiz-caramel, vocabulaire, en-une-phrase, mots-meles
+ls assets/presentation/activites/*.h5p         # D → quiz-caramel, vocabulaire, en-une-phrase, mots-meles, video-caramel, preparer-une-activite
 ```
 
 `tests/.sondes-elea/` est ignoré par git (le point le masque aussi dans le Finder). Une
@@ -113,11 +113,18 @@ Avant d'accuser le prompt si un résultat déçoit : sonder le modèle seul (pi�
 La page les propose aux formateurs « à ajouter à votre cours » : elles doivent donc
 s'importer sur Éléa comme n'importe quel H5P.
 
-- Importer chacun des 4 `.h5p` (activité H5P, ou dépôt dans la banque de contenus).
+- Importer chacun des 6 `.h5p` (activité H5P, ou dépôt dans la banque de contenus).
 - Vérifier qu'ils s'affichent en français et fonctionnent : le quiz annonce son score
   (et la barre de progression, au lecteur d'écran : « Diapositive 1 sur 7 », plus
   « @slide »), les cartes se retournent, le texte se complète, la grille des mots mêlés
   se résout.
+- Deux démonstrations ajoutées après les premiers imports du 29 septembre :
+  `video-caramel.h5p` (présentation Caramel 7 de PodEduc, quatre pauses-question
+  à 0:34, 2:01, 3:11 et 4:27) et `preparer-une-activite.h5p` (six étapes à
+  ordonner). **Leur import Éléa reste à faire.** Pour la vidéo : accès Internet
+  nécessaire au MP4 public de PodEduc ; vérifier lecture, pauses, réponses et
+  reprise. Pour le classement : déplacer les cartes, vérifier le score et la
+  correction, puis recommencer.
 
 Les régénérer : `node scripts/generer-demos-presentation.mjs` (déterministe). Banc :
 `tests/run_decouvrir.mjs` (volet navigateur en local).

@@ -39,7 +39,7 @@ la [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html), notamment ses sect
 - Les corrections d’aide portent sur les fichiers locaux chargés par Caramelia ;
   aucune ingestion sur un service distant n’a été réalisée.
 - **En attente du choix d’Emmanuel :** la licence du contenu pédagogique des
-  quatre démonstrations. Leur champ H5P reste `U` (non renseigné) ; corriger la
+  six démonstrations (deux ajouts après la première harmonisation). Leur champ H5P reste `U` (non renseigné) ; corriger la
   réponse du quiz sur le logiciel ne revient pas à attribuer une licence au quiz.
 - Le nouveau quiz doit encore être réimporté sur Éléa, avec contrôle de
   l’annonce des diapositives, idéalement au lecteur d’écran.
@@ -48,3 +48,13 @@ la [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html), notamment ses sect
   § 11 Journal de `docs/PRD_PARCOURS.md`.
 - Le fichier `LICENSE` conserve ses fins de ligne CRLF d’origine ; vérification
   des espaces avec `git -c core.whitespace=cr-at-eol diff --check`.
+
+## Deux démonstrations supplémentaires
+
+`video-caramel.h5p` et `preparer-une-activite.h5p` suivent le même périmètre :
+la licence de leur contenu pédagogique n’est pas encore choisie, champ H5P `U`.
+La vidéo source Caramel 7 est celle d’Emmanuel Gaunard sur
+[PodEduc](https://podeduc.apps.education.fr/video/161411-caramel-7/), publiée sous
+CC BY 4.0 ; elle reste hébergée sur PodEduc et son crédit est affiché dans la
+présentation de l’activité et dans l’écran de démarrage du H5P téléchargé. Cette licence du média ne vaut pas décision de
+licence pour les nouvelles questions H5P.

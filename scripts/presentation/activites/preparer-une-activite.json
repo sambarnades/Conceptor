@@ -1,0 +1,33 @@
+{
+  "taskDescription": "Remettez ces étapes dans l’ordre pour passer d’un objectif pédagogique à une activité utilisable en classe. Déplacez les cartes ou utilisez les boutons Monter et Descendre, puis vérifiez votre réponse.",
+  "paragraphs": [
+    "Je précise le public, l’objectif pédagogique et le sujet. Si nécessaire, j’ajoute des documents sources adaptés.",
+    "Je choisis le type d’activité qui convient à cet objectif, puis je lance la génération dans Caramel.",
+    "J’ouvre l’aperçu du résultat généré et je joue l’activité comme le ferait un élève, pour repérer ce qui doit être revu.",
+    "Je relis les questions, les réponses et les explications dans l’éditeur. Je corrige les erreurs repérées, puis j’enregistre.",
+    "Je télécharge le fichier H5P de la version relue et corrigée, prêt à être déposé sur ma plateforme.",
+    "J’importe ce fichier dans mon cours sur Éléa, Magistère ou Moodle, puis je vérifie l’activité en vue élève avant de l’utiliser avec la classe."
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 49,
+      "feedback": "Reprenez le fil : définir l’objectif, générer, essayer, corriger, télécharger, puis vérifier sur la plateforme."
+    },
+    {
+      "from": 50,
+      "to": 99,
+      "feedback": "Vous avez retrouvé une partie du déroulement. La relecture et la correction précèdent le téléchargement du fichier final."
+    },
+    {
+      "from": 100,
+      "to": 100,
+      "feedback": "Tout est dans l’ordre ! Vous gardez la main de l’objectif pédagogique jusqu’à la vérification en vue élève."
+    }
+  ],
+  "behaviour": {
+    "addButtonsForMovement": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true
+  }
+}
