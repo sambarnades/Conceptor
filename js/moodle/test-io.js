@@ -3,6 +3,68 @@ import { parseXml, tagText, escapeXml, rewriteTag, stripParagraphWrap } from './
 import { generateMoodleXml, canonicalizeTestModel } from './moodle-formats.js';
 import { parseBackupQuestions } from './test-backup-parser.js';
 import { buildQuizBackup } from './test-backup-builder.js';
+import { CHAMPS_REVUE, QUIZ_GRADE, presetDeRevue } from './mbz-course-builder.js';
+
+/**
+ * Balises de `<quiz>` que l'éditeur règle (`quiz_settings`). À la réécriture d'un
+ * Test importé, SEULES celles-ci sont remplacées : le reste (dates, mot de passe,
+ * délai de grâce, accès SEB…) garde les valeurs de la plateforme d'origine.
+ */
+const BALISES_REGLAGES = ['timelimit', 'preferredbehaviour', 'attempts_number', 'grademethod',
+    ...CHAMPS_REVUE.map(c => `review${c}`), 'questionsperpage', 'navmethod', 'shuffleanswers'];
+
+/**
+ * Relit les réglages d'un `quiz.xml` (format BACKUP) dans la forme de l'éditeur,
+ * `quiz_settings` — l'inverse de `quizSettingsXml` (mbz-course-builder.js). Les
+ * masques de relecture qui ne correspondent à aucun préréglage sont gardés tels
+ * quels (`review: 'custom'` + `review_masks`) : un Test réglé à la main sur Éléa
+ * ressort avec SES réglages. Le feedback global n'est relu que s'il porte du texte.
+ *
+ * @param {Document} quizDoc
+ * @returns {Object|undefined} `undefined` si le document n'a pas de `<quiz>`.
+ */
+export function lireReglagesTest(quizDoc) {
+    const quiz = quizDoc?.querySelector('activity > quiz');
+    if (!quiz) return undefined;
+    const val = (tag) => quiz.querySelector(`:scope > ${tag}`)?.textContent?.trim() ?? '';
+    const nombre = (tag, defaut) => {
+        const n = Number(val(tag));
+        return val(tag) !== '' && Number.isFinite(n) ? n : defaut;
+    };
+    const preferredbehaviour = val('preferredbehaviour') || 'deferredfeedback';
+    const masques = Object.fromEntries(CHAMPS_REVUE.map(c => [c, nombre(`review${c}`, NaN)]));
+    const review = presetDeRevue(preferredbehaviour, masques);
+    const reglages = {
+        preferredbehaviour,
+        attempts: nombre('attempts_number', 0),
+        grademethod: nombre('grademethod', 1),
+        timelimit_minutes: nombre('timelimit', 0) / 60,
+        questionsperpage: nombre('questionsperpage', 0),
+        navmethod: val('navmethod') || 'free',
+        shuffleanswers: nombre('shuffleanswers', 1) ? 1 : 0,
+        review,
+    };
+    if (review === 'custom' && CHAMPS_REVUE.every(c => Number.isInteger(masques[c]))) reglages.review_masks = masques;
+    // Plages de note (échelle de `<grade>`) → tranches en % de l'éditeur. Une note
+    // maximale autre que 10 est gardée : les plages réécrites se calculent sur elle.
+    const note = nombre('grade', QUIZ_GRADE) || QUIZ_GRADE;
+    if (note !== QUIZ_GRADE) reglages.grade = note;
+    const plages = [...quiz.querySelectorAll(':scope > feedbacks > feedback')]
+        .map(f => ({
+            min: Number(f.querySelector(':scope > mingrade')?.textContent ?? 0) || 0,
+            texte: stripParagraphWrap(f.querySelector(':scope > feedbacktext')?.textContent ?? ''),
+        }))
+        .sort((a, b) => a.min - b.min);
+    if (plages.some(p => p.texte.trim())) {
+        const pct = (g) => Math.max(0, Math.min(100, Math.round(g / note * 100)));
+        reglages.overallfeedback = plages.map((p, i) => ({
+            from: i === 0 ? 0 : pct(p.min),
+            to: i === plages.length - 1 ? 100 : Math.max(0, pct(plages[i + 1].min) - 1),
+            feedback: p.texte,
+        }));
+    }
+    return reglages;
+}
 
 /**
  * Parse une `<question>` Moodle vers la structure éditeur attendue.
@@ -108,6 +170,7 @@ function parseQuestionContent(q, type) {
  *   bank_description: string,
  *   options: Object,
  *   questions: Array<{ type: string, content: Object }>,
+ *   quiz_settings: Object,
  *   _context: { moduleId, activityId, activityContextId }
  * }}
  */
@@ -132,10 +195,12 @@ export function parseFiles(files, activityDir) {
     const qDoc = parseXml(questionXml);
     const model = qDoc.documentElement.tagName === 'question_categories'
         ? parseBackupQuestions(qDoc, doc) : parseStandaloneXml(questionXml);
+    const quiz_settings = lireReglagesTest(doc);
     return {
         ...model,
         title,
         bank_name: model.bank_name || title,
+        ...(quiz_settings ? { quiz_settings } : {}),
         _context: {
             moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
             activityId:        activityNode?.getAttribute('id')        ?? '',
@@ -168,7 +233,12 @@ export function serializeFiles(data, files, activityDir) {
         const xml = new TextDecoder().decode(bytes);
         for (const m of xml.matchAll(/\bid="(\d+)"/g)) maxId = Math.max(maxId, Number(m[1]));
     }
-    const generated = buildQuizBackup(canonicalizeTestModel(data), {
+    // Les réglages de l'éditeur (`quiz_settings`) remplacent leurs balises, et elles
+    // seules ; sans `quiz_settings` (contenu d'avant les réglages), ceux du Test
+    // importé restent intacts — et ses slots se paginent comme le fichier l'indique.
+    const reglages = data.quiz_settings && typeof data.quiz_settings === 'object' ? data.quiz_settings : null;
+    const modele = reglages ? data : { ...data, quiz_settings: lireReglagesTest(oldQuiz) };
+    const generated = buildQuizBackup(canonicalizeTestModel(modele), {
         courseId: course?.getAttribute('id'), courseContextId: course?.getAttribute('contextid'),
         courseShortname: course?.querySelector('shortname')?.textContent || '',
         moduleId: activity.getAttribute('moduleid'), activityId: activity.getAttribute('id'),
@@ -177,8 +247,14 @@ export function serializeFiles(data, files, activityDir) {
         title: data.title || data.bank_name || '', idBase: maxId + 100
     }, Math.floor(Date.now() / 1000));
     const newQuiz = parseXml(generated.quizXml);
-    for (const tag of ['name', 'sumgrades', 'question_instances']) {
-        oldQuiz.querySelector(`quiz > ${tag}`).replaceWith(oldQuiz.importNode(newQuiz.querySelector(`quiz > ${tag}`), true));
+    // Le feedback global n'est réécrit que s'il a été fourni.
+    const balises = ['name', 'sumgrades', 'question_instances',
+        ...(reglages ? BALISES_REGLAGES : []),
+        ...(reglages && Array.isArray(reglages.overallfeedback) ? ['feedbacks'] : [])];
+    for (const tag of balises) {
+        const ancien = oldQuiz.querySelector(`quiz > ${tag}`);
+        const neuf = newQuiz.querySelector(`quiz > ${tag}`);
+        if (ancien && neuf) ancien.replaceWith(oldQuiz.importNode(neuf, true));
     }
     // Une section dont le premier slot a été supprimé ne doit pas référencer le vide.
     const count = newQuiz.querySelectorAll('question_instance').length;

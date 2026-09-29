@@ -3543,8 +3543,8 @@
       "kind": "mbz",
       "ok": true,
       "error": null,
-      "sha": "fa3edc55ccc0753d1835220133b35dddcf60e3e66ba7002510c77c95acc11a75",
-      "blobSize": 10822
+      "sha": "5ecf1bb2b97bf4acd361a39e4501c42ecdac2714a7efbae9147917077e63901e",
+      "blobSize": 10835
     }
   ],
   "T5_moodle_snapshot": {
@@ -3594,8 +3594,8 @@
     "test_1.json": {
       "moduleKey": "test_elea",
       "format": "mbz",
-      "totalSha256": "fa3edc55ccc0753d1835220133b35dddcf60e3e66ba7002510c77c95acc11a75",
-      "canonSize": 82646,
+      "totalSha256": "5ecf1bb2b97bf4acd361a39e4501c42ecdac2714a7efbae9147917077e63901e",
+      "canonSize": 82699,
       "fileCount": 28
     }
   }

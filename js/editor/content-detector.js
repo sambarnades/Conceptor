@@ -2313,6 +2313,11 @@ const fieldSchemas = {
 
     // === MOODLE TEST ===
     // Correspond au format JSON de test_1.json avec types: truefalse, cloze, multichoice, matching, numerical, shortanswer
+    // La section « Réglages du test » (repliée) écrit la clé racine `quiz_settings`,
+    // lue par les DEUX constructeurs (Test seul et Test de parcours) via
+    // `quizSettingsXml` (moodle/mbz-course-builder.js) et relue d'un Test importé par
+    // `lireReglagesTest` (moodle/test-io.js). Ses défauts sont ceux d'un Test créé sur
+    // Éléa. Rien ici n'est demandé à l'IA.
     'elea_test': {
         sections: [
             {
@@ -2527,6 +2532,89 @@ const fieldSchemas = {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            },
+            {
+                // Réglages du Test sur la plateforme (mod_quiz). Défauts = Test créé sur
+                // Éléa, sauf « questions par page » : toutes sur une page, ce que l'élève
+                // voyait déjà. Ni mot de passe (il voyagerait en clair dans le JSON déposé
+                // sur Sucrerie), ni dates (aucun champ date dans l'éditeur), ni achèvement
+                // (un critère mal posé bloquerait l'ouverture progressive d'un parcours).
+                id: 'quiz_settings',
+                label: 'editor_test_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    quiz_settings: {
+                        type: 'object', noHeader: true,
+                        schema: {
+                            preferredbehaviour: {
+                                type: 'select', label: 'editor_test_behaviour', hint: 'editor_test_behaviour_hint',
+                                default: 'deferredfeedback',
+                                options: [
+                                    { value: 'deferredfeedback', label: 'editor_test_behaviour_deferred' },
+                                    { value: 'interactive', label: 'editor_test_behaviour_interactive' },
+                                    { value: 'immediatefeedback', label: 'editor_test_behaviour_immediate' }
+                                ]
+                            },
+                            attempts: {
+                                type: 'select', label: 'editor_test_attempts', default: 0, valueType: 'number',
+                                options: [
+                                    { value: 0, label: 'editor_test_attempts_unlimited' },
+                                    { value: 1, label: '1' },
+                                    { value: 2, label: '2' },
+                                    { value: 3, label: '3' },
+                                    { value: 5, label: '5' }
+                                ]
+                            },
+                            // Sans objet pour une tentative unique. Toute autre valeur (y compris
+                            // un nombre relu d'un Test importé, absent du menu) l'affiche.
+                            grademethod: {
+                                type: 'select', label: 'editor_test_grademethod', default: 1, valueType: 'number',
+                                showWhen: { field: 'attempts', values: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+                                options: [
+                                    { value: 1, label: 'editor_test_grademethod_highest' },
+                                    { value: 2, label: 'editor_test_grademethod_average' },
+                                    { value: 3, label: 'editor_test_grademethod_first' },
+                                    { value: 4, label: 'editor_test_grademethod_last' }
+                                ]
+                            },
+                            timelimit_minutes: {
+                                type: 'number', label: 'editor_test_timelimit', hint: 'editor_test_timelimit_hint',
+                                min: 0, step: 1, default: 0
+                            },
+                            questionsperpage: {
+                                type: 'select', label: 'editor_test_questionsperpage', default: 0, valueType: 'number',
+                                options: [
+                                    { value: 0, label: 'editor_test_perpage_all' },
+                                    { value: 1, label: '1' },
+                                    { value: 2, label: '2' },
+                                    { value: 5, label: '5' },
+                                    { value: 10, label: '10' }
+                                ]
+                            },
+                            navmethod: {
+                                type: 'select', label: 'editor_test_navmethod', default: 'free',
+                                options: [
+                                    { value: 'free', label: 'editor_test_navmethod_free' },
+                                    { value: 'sequential', label: 'editor_test_navmethod_sequential' }
+                                ]
+                            },
+                            shuffleanswers: {
+                                type: 'checkbox', label: 'editor_test_shuffleanswers', default: true, valueType: 'number'
+                            },
+                            review: {
+                                type: 'select', label: 'editor_test_review', hint: 'editor_test_review_hint',
+                                default: 'all',
+                                options: [
+                                    { value: 'all', label: 'editor_test_review_all' },
+                                    { value: 'marks_feedback', label: 'editor_test_review_marks_feedback' },
+                                    { value: 'marks', label: 'editor_test_review_marks' }
+                                ]
+                            },
+                            overallfeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
                         }
                     }
                 }

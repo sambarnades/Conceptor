@@ -49,6 +49,42 @@ try {
         processor.serializeFiles(edit, archive.files, archive.activityDir);
         const again = processor.parseFiles(archive.files, archive.activityDir);
         ok('édition du MBZ : ordre, ajout et texte conservés', again.questions.length === edit.questions.length && again.questions[0].content.questiontext === edit.questions[0].content.questiontext && again.questions.at(-1).content.answer.value === false);
+        // Réglages du Test (D86 du PRD parcours) : .mbz réel → relecture → retouche →
+        // réécriture, sans perte, et SEULES les balises réglées changent.
+        const regle = structuredClone(model);
+        regle.quiz_settings = { preferredbehaviour: 'interactive', attempts: 2, grademethod: 4, timelimit_minutes: 20, questionsperpage: 1, navmethod: 'sequential', shuffleanswers: 0, review: 'marks',
+            overallfeedback: [{ from: 0, to: 49, feedback: 'À revoir' }, { from: 50, to: 100, feedback: 'Bravo' }] };
+        const rb = await buildTestMbz(regle); const ra = await extractMbz(await rb.blob.arrayBuffer());
+        const rr = processor.parseFiles(ra.files, ra.activityDir);
+        ok('réglages : le .mbz réel relu redonne exactement les réglages posés', JSON.stringify(rr.quiz_settings) === JSON.stringify(regle.quiz_settings));
+        const quizDe = (a) => new TextDecoder().decode(a.files[`${a.activityDir}/quiz.xml`]);
+        // Lecture par DOM : la réécriture sérialise `<password></password>` en `<password/>`.
+        const balise = (xml, tag) => new DOMParser().parseFromString(xml, 'application/xml').querySelector(`quiz > ${tag}`)?.textContent;
+        const avant = quizDe(ra);
+        const re = denormalizeDataForSave(normalizeDataForEditor(structuredClone(rr), 'elea_test'), 'elea_test');
+        re.quiz_settings.attempts = 3; re.quiz_settings.review = 'all'; re.quiz_settings.questionsperpage = 2;
+        processor.serializeFiles(re, ra.files, ra.activityDir);
+        const apres = quizDe(ra); const rr2 = processor.parseFiles(ra.files, ra.activityDir);
+        ok('réglages : la réécriture porte les réglages retouchés', rr2.quiz_settings.attempts === 3 && rr2.quiz_settings.review === 'all' && rr2.quiz_settings.navmethod === 'sequential' && rr2.quiz_settings.preferredbehaviour === 'interactive' && rr2.quiz_settings.overallfeedback?.[1]?.feedback === 'Bravo');
+        ok('réglages : pages des slots recalculées à la réécriture (2 par page)', [...apres.matchAll(/<page>(\d+)<\/page>/g)].map(m => m[1]).join(',') === Array.from({ length: re.questions.length }, (_, i) => Math.floor(i / 2) + 1).join(','));
+        ok('réglages : les balises non réglées gardent la valeur du fichier', ['graceperiod', 'overduehandling', 'password', 'timeopen', 'grade', 'decimalpoints'].every(t => balise(apres, t) === balise(avant, t)));
+        // Un Test réglé à la main sur la plateforme (masques hors préréglage) garde SES masques.
+        ra.files[`${ra.activityDir}/quiz.xml`] = new TextEncoder().encode(apres.replace(/<reviewrightanswer>\d+<\/reviewrightanswer>/, '<reviewrightanswer>65552</reviewrightanswer>'));
+        const perso = processor.parseFiles(ra.files, ra.activityDir);
+        ok('réglages : masques de relecture inconnus relus tels quels', perso.quiz_settings.review === 'custom' && perso.quiz_settings.review_masks.rightanswer === 65552);
+        processor.serializeFiles(denormalizeDataForSave(normalizeDataForEditor(structuredClone(perso), 'elea_test'), 'elea_test'), ra.files, ra.activityDir);
+        ok('réglages : masques inconnus réécrits sans perte', balise(quizDe(ra), 'reviewrightanswer') === '65552' && balise(quizDe(ra), 'reviewattempt') === balise(apres, 'reviewattempt'));
+        // Un contenu d'avant les réglages (sans `quiz_settings`) ne touche pas aux réglages du fichier.
+        const sansReglages = structuredClone(perso); delete sansReglages.quiz_settings;
+        const fige = quizDe(ra);
+        processor.serializeFiles(sansReglages, ra.files, ra.activityDir);
+        ok('réglages : sans quiz_settings, les réglages du fichier restent intacts', ['preferredbehaviour', 'attempts_number', 'navmethod', 'reviewrightanswer', 'reviewmarks', 'questionsperpage'].every(t => balise(quizDe(ra), t) === balise(fige, t)));
+        ok('réglages : sans quiz_settings, les slots se paginent comme le fichier (2 par page)', [...quizDe(ra).matchAll(/<page>(\d+)<\/page>/g)].map(m => m[1]).join(',') === Array.from({ length: sansReglages.questions.length }, (_, i) => Math.floor(i / 2) + 1).join(','));
+        // Les masques qu'écrivait Caramel avant les réglages sont relus comme « tout ».
+        const heritage = (await buildTestMbz(structuredClone(model))); const ha = await extractMbz(await heritage.blob.arrayBuffer());
+        ha.files[`${ha.activityDir}/quiz.xml`] = new TextEncoder().encode(quizDe(ha).replace(/<reviewattempt>\d+/, '<reviewattempt>69888').replace(/<reviewmaxmarks>\d+/, '<reviewmaxmarks>69888')
+            .replace(/<review(correctness|marks|specificfeedback|generalfeedback|rightanswer|overallfeedback)>\d+/g, '<review$1>4352'));
+        ok('réglages : un Test d\'avant les réglages est relu « tout » (valeurs d\'Éléa à la réécriture)', processor.parseFiles(ha.files, ha.activityDir).quiz_settings.review === 'all');
         const xml = processor.serializeStandaloneXml(edit); const xmlModel = processor.parseStandaloneXml(xml);
         ok('XML autonome : CDATA, accents et options conservés', xmlModel.questions[0].content.questiontext === edit.questions[0].content.questiontext && xmlModel.questions.find(q => q.type === 'multichoice').content.answernumbering === 'ABCD');
         const ctx = { courseId: 1, courseContextId: 2, courseShortname: 'audit', moduleId: 3, activityId:4, activityContextId:5, gradeItemId:6, title:'Sonde' };
@@ -130,7 +166,8 @@ try {
         const screen=document.createElement('div');document.body.appendChild(screen);
         let finalScore;
         screen.addEventListener('simulator:completed',e=>{finalScore=e.detail.scorePct;});
-        renderTest(screen,{questions:[
+        // Mode interactif (réglage du Test) : « Vérifier » par question.
+        renderTest(screen,{quiz_settings:{preferredbehaviour:'interactive'},questions:[
             {type:'multichoice',content:{questiontext:'Réponse partielle',single:'true',defaultgrade:3,answers:[{text:'Partielle',fraction:50,feedback:'À compléter'},{text:'Exacte',fraction:100}]}},
             {type:'truefalse',content:{questiontext:'Le ciel est vert',defaultgrade:1,answer:{value:false,feedback_true:'Retour du vrai',feedback_false:'Retour du faux'}}}
         ]});
@@ -145,6 +182,33 @@ try {
         screen.querySelector('[data-focus-key="elea-action"]').click();
         ok('aperçu réel : le parcours reçoit le score pondéré de 63 %',finalScore===63);
         screen.remove();
+        // Feedback différé (défaut, comme le .mbz) : pas de « Vérifier », correction à la fin.
+        const differe=document.createElement('div');document.body.appendChild(differe);
+        let scoreDiffere;differe.addEventListener('simulator:completed',e=>{scoreDiffere=e.detail.scorePct;});
+        const questionsDiff=[
+            {type:'multichoice',content:{name:'Q1',questiontext:'Réponse partielle',single:'true',defaultgrade:3,answers:[{text:'Partielle',fraction:50,feedback:'À compléter'},{text:'Exacte',fraction:100}]}},
+            {type:'truefalse',content:{name:'Q2',questiontext:'Le ciel est vert',defaultgrade:1,answer:{value:false,feedback_true:'Retour du vrai',feedback_false:'Retour du faux'}}}
+        ];
+        renderTest(differe,{questions:questionsDiff});
+        const action=()=>differe.querySelector('[data-focus-key="elea-action"]');
+        differe.querySelector('[data-focus-key="mc-0"]').click();
+        const {translations:dico}=await import('/js/core/translation.js');
+        ok('aperçu différé : pas de « Vérifier » ni de correction pendant la tentative',!differe.querySelector('.elea-feedback') && action().textContent.trim()!==(dico.simulator_check||'Vérifier') && !!differe.querySelector('.elea-test-mode-note'));
+        action().click();
+        ok('aperçu différé : navigation libre, « Précédent » présent',!!differe.querySelector('[data-focus-key="elea-prev"]'));
+        differe.querySelector('[data-focus-key="tf-1"]').click();action().click();
+        ok('aperçu différé : correction et note à la fin, score transmis',scoreDiffere===63 && differe.querySelectorAll('.elea-test-end__item').length===2 && !!differe.querySelector('.elea-test-end__grade') && !!differe.querySelector('#elea-review-btn'));
+        differe.querySelector('#elea-review-btn').click();
+        ok('aperçu différé : la relecture montre la correction de chaque question',!!differe.querySelector('.elea-feedback.partial') && !!differe.querySelector('.should-be-selected'));
+        differe.remove();
+        // Séquentiel + « note seule » : pas de retour arrière, pas de relecture.
+        const strict=document.createElement('div');document.body.appendChild(strict);
+        renderTest(strict,{quiz_settings:{navmethod:'sequential',review:'marks'},questions:questionsDiff});
+        strict.querySelector('[data-focus-key="elea-action"]').click();
+        ok('aperçu séquentiel : pas de « Précédent »',!strict.querySelector('[data-focus-key="elea-prev"]'));
+        strict.querySelector('[data-focus-key="elea-action"]').click();
+        ok('aperçu « note seule » : la note, sans correction ni relecture',!!strict.querySelector('.elea-test-end__grade') && !strict.querySelector('.elea-test-end__item') && !strict.querySelector('#elea-review-btn') && !!strict.querySelector('.elea-test-end__note'));
+        strict.remove();
         const nativeEssay=content(await processH5PContent('Essay',{taskDescription:'Rédiger',keywords:[{keyword:'Paris',options:{caseSensitive:true}}]}));
         const nestedEssay=content(await processH5PContent('QuizSet',{questions:[{library:'H5P.Essay 1.5',params:{taskDescription:'Rédiger',keywords:[{keyword:'Paris',options:{caseSensitive:true}}]}}]})).questions[0].params;
         ok('Rédaction : pas de fausse solution, casse locale autorisée par défaut',nativeEssay.solution.sample==='' && nestedEssay.solution.sample==='' && nativeEssay.behaviour.overrideCaseSensitive==null && nestedEssay.behaviour.overrideCaseSensitive==null && nativeEssay.keywords[0].options.caseSensitive===true);

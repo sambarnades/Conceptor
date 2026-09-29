@@ -1565,6 +1565,86 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       - Banc `tests/run_parcours_import.mjs` (19 contrôles, contre-épreuvé : sans l'annexe,
         avec « Nouveau parcours » caché sans plan, ou avec le bouton remis dans le pied, il
         vire au rouge). Trois clés nouvelles et une revue, douze langues.
+- [ ] **D86 — Les réglages du Test (`quiz_settings`), pour le Test seul ET le Test d'un
+      parcours. Livré en local ; aller-retour Éléa à faire avant de l'annoncer (D24).**
+      Retours de professeurs (29 sept. 2026) : « choisir différentes options de
+      feedback / restriction, un peu comme dans le panneau de la vidéo interactive » ;
+      « les paramètres des tests (dispo dans Éléa) ».
+      - **Une clé racine `quiz_settings`**, optionnelle, noms de Moodle :
+        `preferredbehaviour` (feedback différé — défaut —, interactif avec plusieurs essais,
+        immédiat), `attempts` (0 = illimitées), `grademethod` (1 plus haute, 2 moyenne,
+        3 première, 4 dernière), `questionsperpage`, `navmethod` (`free` | `sequential`),
+        `shuffleanswers` ; deux exceptions : `timelimit_minutes` (Moodle compte en
+        secondes) et `review`, un préréglage à trois valeurs — `all` (tout : réponses,
+        correction, retours = Éléa), `marks_feedback` (note et retours, sans la bonne
+        réponse), `marks` (la note et le feedback global) — qui calcule les huit masques
+        `review*`. Plus `overallfeedback`, les tranches de l'éditeur (`feedbackRanges`, en %)
+        converties en plages de note (0-10, la plus haute monte à 11 comme Éléa). **Pas**
+        la clé `options`, déjà fusionnée dans chaque question.
+      - **Écrite par UNE fonction pure partagée** : `quizSettingsXml()` et
+        `quizFeedbacksXml()` (+ `resoudreReglagesTest`, `masquesRevue`, `presetDeRevue`,
+        `pageDuSlot`) dans `mbz-course-builder.js`, appelées par `buildQuizBackup`
+        (`test-backup-builder.js`, Test seul) ET `buildQuizActivityFiles` (parcours). Avant,
+        le bloc de réglages était recopié à l'identique dans les deux : un réglage ajouté
+        à l'un ne se serait pas propagé à l'autre. Le banc
+        `tests/roundtrip/mbz-quiz-backup.mjs` vérifie la parité, octet pour octet, du bloc.
+      - **Masques de relecture** (P pendant 0x10000, I juste après 0x01000, L plus tard
+        0x00100, F après fermeture 0x00010) : après la tentative = ce que montre le
+        préréglage (I+L+F) ; pendant = la tentative et la note maximale toujours, ce que le
+        préréglage montre après (convention d'Éléa), et — en interactif ou immédiat — la
+        correction, les points et les retours, **sans quoi « Vérifier » n'afficherait
+        rien**. Bonne réponse pendant : seulement avec `all`. Feedback global jamais
+        pendant (Moodle ne le permet pas). Défaut = valeurs d'Éléa (69904 ×7, 4368).
+      - **Défauts corrigés au passage** (ils valaient pour les deux voies) : relecture
+        69888/4352 → 69904/4368 (jamais « après fermeture », jamais « pendant » pour les
+        retours) ; `graceperiod` 0 → 86400 ; `<precreateattempts>$@NULL@$` ajouté entre
+        `allowofflineattempts` et le bloc SEB (séquence des 49 balises de `<quiz>` =
+        référence, contrôlée) ; `questionsperpage` 1 → **0** — tous les slots étaient en
+        page 1, c'est donc ce que l'élève voyait : le défaut dit maintenant vrai, et les
+        numéros de `<page>` suivent le réglage. **Test seul** : `completiongradeitemnumber`
+        `$@NULL@$` → 0 (achèvement « recevoir une note », comme Éléa et comme le parcours
+        — l'ancien NULL posait un achèvement automatique SANS condition) et `grademax` du
+        carnet 100 → 10 (= `<grade>`). Cliché T5 du harness (`test_1.json`) mis à jour
+        pour ces raisons, et pour elles seules.
+      - **Éditeur** : section « Réglages du test », repliée, dans le schéma `elea_test` —
+        donc aussi dans l'éditeur des cartes du parcours. Méthode d'évaluation masquée pour
+        une tentative unique (`showWhen`). **Hors v1, délibérément** : mot de passe (il
+        voyagerait en clair dans le JSON déposé sur Sucrerie), dates d'ouverture/fermeture
+        (aucun champ date dans l'éditeur), achèvement (un critère mal posé bloquerait
+        l'ouverture progressive d'un parcours, D71). Rien de tout cela n'est demandé à
+        l'IA : aucun prompt ne change (D82 tenu).
+      - **Aller-retour d'un Test importé** (`test-io.js`) : `parseFiles` relit les réglages
+        (`lireReglagesTest`) ; `serializeFiles` ne réécrit QUE les balises réglées quand
+        `quiz_settings` est présent (dates, mot de passe, délai de grâce, SEB, note
+        maximale du Test d'origine gardés). Masques qu'aucun préréglage ne reproduit →
+        `review: 'custom'` + `review_masks`, réécrits tels quels ; note maximale autre que
+        10 → `grade`, sur laquelle se recalculent les plages. Les masques qu'écrivait
+        Caramel avant D86 sont relus « tout » : réécrits, ils prennent les valeurs d'Éléa.
+      - **Aperçu** (`simulators/elea-test.js`) : suit le comportement. Différé (défaut) :
+        ni « Vérifier » ni correction pendant la tentative, « Précédent » si la navigation
+        est libre, « Terminer le test » corrige tout, puis note, feedback global,
+        correction par question et « Revoir mes réponses » selon le préréglage. Interactif :
+        « Vérifier », un essai de plus par indice. Immédiat : une vérification, sans essai
+        supplémentaire. L'aperçu montre toujours UNE question à la fois (il ne simule pas
+        la pagination).
+      - **Pièges** : (1) le `<select>` de l'éditeur affiche sa première option quand la
+        valeur stockée n'est pas au menu (ex. 4 tentatives ou masques `custom` relus d'un
+        Test importé) : la valeur est conservée, mais l'affichage ment — limite connue.
+        (2) Ouvrir la section écrit ses défauts dans les données (comme toutes les
+        sections de réglages) : l'éditeur se dit alors « modifié ». (3) Les réglages
+        n'entrent JAMAIS dans l'IA : un `quiz_settings` sorti d'un modèle serait borné par
+        `resoudreReglagesTest` (toute valeur hors domaine → défaut) mais n'a rien à y faire.
+      - **Fichiers PARTAGÉS avec Sucrerie touchés** (à recopier par `cp`) :
+        `js/moodle/mbz-course-builder.js`, `js/moodle/test-backup-builder.js`,
+        `js/moodle/test-io.js`, `js/editor/content-detector.js`. Côté Sucrerie, ajouter les
+        26 clés `editor_test_*` nouvelles à SES 12 locales (sinon les libellés s'affichent
+        bruts). Le simulateur de Sucrerie est sa propre copie : il ne suit pas les réglages
+        tant qu'on ne l'y porte pas.
+      - **Sondes** : `node scripts/generer-test-regle-sonde.mjs` → `tests/.sondes-elea/`
+        (Test seul par défaut, Test seul réglé, parcours d'un Test réglé), avec la liste
+        de ce qu'Éléa doit montrer après restauration. Bancs : `mbz-quiz-backup.mjs`
+        (118/0), `run_parcours_course.mjs` (114/0), `run_test_edition_audit.mjs` (59/0),
+        suite navigateur `behaviour-settings` (défauts de l'éditeur = défauts du `.mbz`).
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -2346,6 +2426,9 @@ node tests/run_parcours_natifs.mjs      # modules natifs : forme relevée, achè
 node tests/run_parcours.mjs             # les huit bancs ci-dessus, en série
 node tests/run_module_hygiene.mjs        # imports résolvables (a vu le repli mbz-parser)
 node scripts/generer-parcours-sonde.mjs  # le .mbz à importer pour de vrai (cf. § 10)
+node tests/roundtrip/mbz-quiz-backup.mjs # le Test : banque, câblage, réglages (D86), parité seul/parcours
+node tests/run_test_edition_audit.mjs    # Test : édition, réimport, réglages relus/réécrits, aperçu différé
+node scripts/generer-test-regle-sonde.mjs # les .mbz de Test réglé à importer pour de vrai (D86)
 ```
 
 Passage historique (6 sept. 2026) : suite navigateur **14 200 PASS / 0 FAIL**, aucune
@@ -2823,6 +2906,12 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
 
+- **29 sept. 2026, soir** — **D86** : réglages du Test (`quiz_settings`) pour le Test seul
+  et le Test d'un parcours, par une fonction partagée par les deux constructeurs ;
+  défauts alignés sur Éléa (relecture, délai de grâce, `precreateattempts`, achèvement et
+  carnet du Test seul) ; section « Réglages du test » dans l'éditeur ; aperçu en feedback
+  différé ; relecture/réécriture sans perte d'un Test importé. Sondes produites, aller-retour
+  Éléa À FAIRE avant toute annonce.
 - **29 sept. 2026** — **D85** : « Importer un modèle » en haut de l'atelier (un temps aussi
   dans le pied du cadrage, retiré le matin même), « Nouveau parcours » visible dès le cadrage,
   question « Commencer un nouveau parcours ? » avec son export annexe. Banc dédié 19/0,

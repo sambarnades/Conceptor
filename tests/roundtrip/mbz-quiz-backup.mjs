@@ -11,7 +11,11 @@
  *   3. fractions IMPORT 0-100 → BACKUP 0-1 à 7 décimales ;
  *   4. cloze : defaultmark = Σ poids GIFT, abréviations (NM/MCH/SA) reconnues,
  *      enfants NON slottés ;
- *   5. échappement d'élément XML (`& < >` seulement) + wrapP conditionnel.
+ *   5. échappement d'élément XML (`& < >` seulement) + wrapP conditionnel ;
+ *   6. réglages du Test (`quiz_settings`, D86) : défauts = Test créé sur Éléa (séquence
+ *      et valeurs des balises de la référence sept-2026), Test « réglé », masques de
+ *      relecture, pages des slots, feedback global, achèvement/carnet du Test seul, et
+ *      parité octet pour octet du bloc de réglages entre Test seul et Test de parcours.
  *
  * Node pur (aucun DOM ; le parseur BACKUP de Sucrerie/Caramel exige un DOM et est
  * donc validé côté navigateur + import réel). Lancer :
@@ -235,6 +239,111 @@ const canonBackup = buildQuizBackup(canon, ctx, TS);
 const tf = (canonBackup.questionsXml.match(/<plugin_qtype_truefalse_question>[\s\S]*?<\/plugin_qtype_truefalse_question>/) || [''])[0];
 ok(/<answertext>Vrai<\/answertext>\s*<answerformat>0<\/answerformat>\s*<fraction>0\.0000000<\/fraction>/.test(tf), 'value=false → Vrai fraction 0');
 ok(/<answertext>Faux<\/answertext>\s*<answerformat>0<\/answerformat>\s*<fraction>1\.0000000<\/fraction>/.test(tf), 'value=false → Faux fraction 1 (bonne réponse)');
+
+// --- 8. Réglages du Test (`quiz_settings`, D86 du PRD parcours) ----------------
+console.log('=== 8. Réglages du Test (quiz_settings) ===');
+const { readFileSync } = await import('node:fs');
+const {
+  buildQuizActivityFiles, resoudreReglagesTest, masquesRevue, presetDeRevue, REGLAGES_TEST_DEFAUT,
+} = await import(join(REPO, 'js/moodle/mbz-course-builder.js'));
+const REF_ELEA = readFileSync(join(REPO, 'tests/fixtures/moodle-reference/sept-2026/elea/quiz.xml'), 'utf8');
+/** Enfants directs de `<quiz>` (indentation 4), dans l'ordre. */
+const enfantsQuiz = (xml) => [...xml.slice(xml.indexOf('<quiz id='), xml.lastIndexOf('</quiz>'))
+  .matchAll(/^ {4}<([a-z_0-9]+)[ >/]/gm)].map(m => m[1]);
+const valeur = (xml, tag) => (xml.match(new RegExp(`<${tag}>([^<]*)</${tag}>`)) || [])[1];
+const pages = (xml) => [...xml.matchAll(/<page>(\d+)<\/page>/g)].map(m => Number(m[1]));
+const REVUES = ['attempt', 'correctness', 'maxmarks', 'marks', 'specificfeedback', 'generalfeedback', 'rightanswer', 'overallfeedback'];
+
+// 8a. Défauts (aucune clé) = un Test créé sur Éléa, balise pour balise.
+const defaut = buildQuizBackup(model, ctx, TS).quizXml;
+ok(JSON.stringify(enfantsQuiz(defaut)) === JSON.stringify(enfantsQuiz(REF_ELEA)),
+  'quiz.xml : mêmes balises, dans le même ordre, que la référence Éléa (précreateattempts compris)',
+  `${enfantsQuiz(defaut).length} vs ${enfantsQuiz(REF_ELEA).length}`);
+for (const tag of ['timeopen', 'timeclose', 'timelimit', 'overduehandling', 'graceperiod', 'preferredbehaviour',
+  'canredoquestions', 'attempts_number', 'attemptonlast', 'grademethod', 'decimalpoints', 'questiondecimalpoints',
+  ...REVUES.map(c => `review${c}`), 'navmethod', 'shuffleanswers', 'grade', 'browsersecurity', 'precreateattempts']) {
+  ok(valeur(defaut, tag) === valeur(REF_ELEA, tag), `défaut : <${tag}> = Éléa (${valeur(REF_ELEA, tag)})`, `obtenu ${valeur(defaut, tag)}`);
+}
+ok(valeur(defaut, 'questionsperpage') === '0', 'défaut : questionsperpage = 0 (toutes les questions sur une page, comme les slots)');
+ok(pages(defaut).length === 7 && pages(defaut).every(p => p === 1), 'défaut : les 7 slots en page 1');
+ok(/<feedbacks>\s*<feedback id="\d+">\s*<feedbacktext><\/feedbacktext>[\s\S]*?<mingrade>0\.00000<\/mingrade>\s*<maxgrade>11\.00000<\/maxgrade>\s*<\/feedback>\s*<\/feedbacks>/.test(defaut),
+  'défaut : une plage de feedback vide 0 → 11, comme Éléa');
+ok(buildQuizBackup({ ...model, quiz_settings: {} }, ctx, TS).quizXml === defaut, 'quiz_settings vide = défauts (octet pour octet)');
+ok(buildQuizBackup({ ...model, quiz_settings: { preferredbehaviour: 'bidon', attempts: -3, grademethod: 9, questionsperpage: 'x', navmethod: 1, review: 'rien', timelimit_minutes: -5 } }, ctx, TS).quizXml === defaut,
+  'valeurs hors domaine → défauts (rien d\'invalide n\'atteint le XML)');
+
+// 8b. Test « réglé » : interactif, 2 tentatives, séquentiel, 1 question par page, note seule.
+const REGLE = { preferredbehaviour: 'interactive', attempts: 2, navmethod: 'sequential', questionsperpage: 1, review: 'marks' };
+const regle = buildQuizBackup({ ...model, quiz_settings: REGLE }, ctx, TS).quizXml;
+const attendu = {
+  preferredbehaviour: 'interactive', attempts_number: '2', grademethod: '1', navmethod: 'sequential', questionsperpage: '1',
+  reviewattempt: '65536', reviewcorrectness: '65536', reviewmaxmarks: '69904', reviewmarks: '69904',
+  reviewspecificfeedback: '65536', reviewgeneralfeedback: '65536', reviewrightanswer: '0', reviewoverallfeedback: '4368',
+  graceperiod: '86400', timelimit: '0', shuffleanswers: '1',
+};
+for (const [tag, v] of Object.entries(attendu)) ok(valeur(regle, tag) === v, `réglé : <${tag}> = ${v}`, `obtenu ${valeur(regle, tag)}`);
+ok(JSON.stringify(pages(regle)) === JSON.stringify([1, 2, 3, 4, 5, 6, 7]), 'réglé : une question par page → pages 1..7', pages(regle).join(','));
+ok(JSON.stringify(enfantsQuiz(regle)) === JSON.stringify(enfantsQuiz(REF_ELEA)), 'réglé : séquence de balises inchangée');
+const deux = buildQuizBackup({ ...model, quiz_settings: { questionsperpage: 2 } }, ctx, TS).quizXml;
+ok(JSON.stringify(pages(deux)) === JSON.stringify([1, 1, 2, 2, 3, 3, 4]), 'deux questions par page → pages 1,1,2,2,3,3,4', pages(deux).join(','));
+const autres = buildQuizBackup({ ...model, quiz_settings: { timelimit_minutes: 20, grademethod: 4, shuffleanswers: 0, preferredbehaviour: 'immediatefeedback' } }, ctx, TS).quizXml;
+ok(valeur(autres, 'timelimit') === '1200' && valeur(autres, 'grademethod') === '4' && valeur(autres, 'shuffleanswers') === '0'
+  && valeur(autres, 'preferredbehaviour') === 'immediatefeedback', 'temps limite 20 min → 1200 s ; dernière tentative ; sans mélange ; immédiat');
+// En interactif/immédiat, les retours ont le bit « pendant » : sinon « Vérifier » n'affiche rien.
+ok(['correctness', 'marks', 'specificfeedback', 'generalfeedback'].every(c => Number(valeur(autres, `review${c}`)) & 0x10000),
+  'immédiat : correction, points et retours visibles PENDANT la tentative');
+ok(Number(valeur(autres, 'reviewoverallfeedback')) === 4368, 'le feedback global n\'est jamais « pendant » (Moodle ne le permet pas)');
+// Préréglage « note et retours » en différé : tout sauf la bonne réponse.
+const mf = masquesRevue('deferredfeedback', 'marks_feedback');
+ok(mf.rightanswer === 0 && ['attempt', 'correctness', 'maxmarks', 'marks', 'specificfeedback', 'generalfeedback'].every(c => mf[c] === 69904) && mf.overallfeedback === 4368,
+  '« note et retours » : tout comme Éléa, sauf la bonne réponse');
+ok(presetDeRevue('interactive', masquesRevue('interactive', 'marks')) === 'marks' && presetDeRevue('deferredfeedback', { ...mf, rightanswer: 16 }) === 'custom',
+  'relecture : un préréglage se reconnaît, des masques inconnus restent « custom »');
+ok(buildQuizBackup({ ...model, quiz_settings: { review: 'custom', review_masks: { ...mf, rightanswer: 16 } } }, ctx, TS).quizXml.includes('<reviewrightanswer>16</reviewrightanswer>'),
+  'masques « custom » (Test importé) réécrits tels quels');
+
+// 8c. Feedback global par plage de note (échelle de <grade>, la plus haute plage monte à 11).
+const fb = buildQuizBackup({ ...model, quiz_settings: { overallfeedback: [
+  { from: 0, to: 49, feedback: 'À revoir' }, { from: 50, to: 79, feedback: 'Bien' }, { from: 80, to: 100, feedback: 'Très bien & <b>' }] } }, ctx, TS).quizXml;
+const plages = [...fb.matchAll(/<feedbacktext>([^<]*)<\/feedbacktext>\s*<feedbacktextformat>1<\/feedbacktextformat>\s*<mingrade>([\d.]+)<\/mingrade>\s*<maxgrade>([\d.]+)<\/maxgrade>/g)]
+  .map(m => `${m[2]}-${m[3]}:${m[1]}`);
+ok(JSON.stringify(plages) === JSON.stringify([
+  '8.00000-11.00000:&lt;p&gt;Très bien &amp; &lt;b&gt;&lt;/p&gt;', '5.00000-8.00000:&lt;p&gt;Bien&lt;/p&gt;', '0.00000-5.00000:&lt;p&gt;À revoir&lt;/p&gt;']),
+  'feedback global : trois plages sur la note (0-5, 5-8, 8-11), texte échappé', plages.join(' | '));
+ok(buildQuizBackup({ ...model, quiz_settings: { overallfeedback: [{ from: 0, to: 50, feedback: '' }, { from: 51, to: 100, feedback: ' ' }] } }, ctx, TS).quizXml === defaut,
+  'feedback global sans texte (les deux tranches vides de l\'éditeur) = défaut');
+for (const [nom, xml] of [['réglé', regle], ['feedback global', fb]]) {
+  const p = join(dir, `quiz-${nom.replace(/\W+/g, '-')}.xml`);
+  writeFileSync(p, xml);
+  try { execFileSync('xmllint', ['--noout', p], { stdio: ['ignore', 'ignore', 'pipe'] }); ok(true, `quiz.xml ${nom} bien formé`); }
+  catch (e) { ok(false, `quiz.xml ${nom} bien formé`, String(e.stderr || e)); }
+}
+
+// 8d. Test seul : achèvement et carnet cohérents avec Éléa.
+const moduleXml = files[`activities/quiz_${base.MODULE_ID}/module.xml`];
+const gradesXml = files[`activities/quiz_${base.MODULE_ID}/grades.xml`];
+ok(valeur(moduleXml, 'completion') === '2' && valeur(moduleXml, 'completiongradeitemnumber') === '0',
+  'Test seul : achèvement « note reçue » (completiongradeitemnumber 0, comme Éléa)');
+ok(valeur(gradesXml, 'grademax') === valeur(files[`activities/quiz_${base.MODULE_ID}/quiz.xml`], 'grade'),
+  'Test seul : grademax du carnet = <grade> du quiz (10)', `${valeur(gradesXml, 'grademax')}`);
+const refModule = readFileSync(join(REPO, 'tests/fixtures/moodle-reference/sept-2026/elea/quiz.module.xml'), 'utf8');
+const refGrades = readFileSync(join(REPO, 'tests/fixtures/moodle-reference/sept-2026/elea/quiz.grades.xml'), 'utf8');
+ok(valeur(moduleXml, 'completiongradeitemnumber') === valeur(refModule, 'completiongradeitemnumber')
+  && valeur(gradesXml, 'grademax') === valeur(refGrades, 'grademax'), 'Test seul : mêmes valeurs que les fichiers relevés sur Éléa');
+const filesRegles = assembleTestBackupFiles({ ...model, quiz_settings: REGLE }, base, backupTitle, TS);
+ok(pages(filesRegles[`activities/quiz_${base.MODULE_ID}/quiz.xml`]).at(-1) === 7, 'Test seul assemblé : les réglages atteignent le quiz.xml du .mbz');
+
+// 8e. Parité Test seul / Test de parcours : mêmes réglages → mêmes balises.
+const reglagesDe = (xml) => xml.slice(xml.indexOf('<timeopen>'), xml.indexOf('<subplugin_quizaccess_seb_quiz>'));
+for (const [nom, s] of [['défauts', undefined], ['réglé', REGLE]]) {
+  const parcours = buildQuizActivityFiles({ kind: 'quiz', model: { ...model, quiz_settings: s }, title: 'Mon Test' }, { index: 0, sectionId: 800001, timestamp: TS });
+  const qx = Object.entries(parcours.files).find(([p]) => p.endsWith('/quiz.xml'))[1];
+  const seul = buildQuizBackup({ ...model, quiz_settings: s }, ctx, TS).quizXml;
+  ok(reglagesDe(qx) === reglagesDe(seul) && JSON.stringify(pages(qx)) === JSON.stringify(pages(seul)),
+    `parité ${nom} : le Test de parcours écrit les mêmes réglages et les mêmes pages que le Test seul`);
+}
+ok(JSON.stringify(Object.keys(resoudreReglagesTest(undefined)).filter(k => k in REGLAGES_TEST_DEFAUT)) === JSON.stringify(Object.keys(REGLAGES_TEST_DEFAUT)),
+  'resoudreReglagesTest : toutes les clés par défaut présentes');
 
 // --- Bilan ------------------------------------------------------------------
 console.log(`\n${failed === 0 ? '✅' : '❌'} ${passed} OK, ${failed} KO`);

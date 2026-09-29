@@ -39,6 +39,7 @@
  */
 
 import { buildQuizBackup } from './test-backup-builder.js';
+import { resoudreReglagesTest } from './mbz-course-builder.js';
 export { buildQuizBackup, buildQuestionEntries, escXmlText, parseClozeGaps } from './test-backup-builder.js';
 import { escapeXml } from './moodle-formats.js';
 import { TEMPLATES } from './processors/shared/templates.js';
@@ -113,8 +114,14 @@ export function assembleTestBackupFiles(canonical, base, title, ts) {
   // Fichiers de l'activité quiz (PAS de comments.xml — conforme réf Éléa)
   files[`${activityDir}/quiz.xml`] = quizBackup.quizXml;
   files[`${activityDir}/inforef.xml`] = quizBackup.inforefXml;   // 5 catégories + grade_item
-  files[`${activityDir}/module.xml`] = replacePlaceholders(TEMPLATES.getModuleXml('quiz', QUIZ_MODULE_VERSION), extended);
-  files[`${activityDir}/grades.xml`] = replacePlaceholders(TEMPLATES.getActivityGradesXml('quiz'), extended);
+  // Achèvement « note reçue » et carnet noté sur la note du Test, comme un Test créé
+  // sur Éléa (sept-2026/elea/quiz.module.xml, quiz.grades.xml) et comme le Test d'un
+  // parcours : l'ancien `$@NULL@$` posait un achèvement automatique SANS condition,
+  // et le carnet annonçait 100 pour un Test noté sur 10.
+  files[`${activityDir}/module.xml`] = replacePlaceholders(
+    TEMPLATES.getModuleXml('quiz', QUIZ_MODULE_VERSION, { completionGradeItemNumber: 0 }), extended);
+  files[`${activityDir}/grades.xml`] = replacePlaceholders(
+    TEMPLATES.getActivityGradesXml('quiz', { grademax: resoudreReglagesTest(canonical && canonical.quiz_settings).grade }), extended);
   files[`${activityDir}/roles.xml`] = TEMPLATES.ACTIVITY_ROLES_XML;
   files[`${activityDir}/calendar.xml`] = TEMPLATES.ACTIVITY_CALENDAR_XML;
   files[`${activityDir}/filters.xml`] = TEMPLATES.ACTIVITY_FILTERS_XML;
