@@ -1,0 +1,238 @@
+{
+  "//": "Écrit par scripts/diaporama/generer-diaporama.mjs — ne pas modifier à la main, relancer le script.",
+  "version": "7.0.0",
+  "date": "2026-09-29",
+  "dateLisible": "29 septembre 2026",
+  "fichiers": {
+    "pptx": {
+      "chemin": "caramel-presentation.pptx",
+      "octets": 3558241
+    },
+    "odp": {
+      "chemin": "caramel-presentation.odp",
+      "octets": 2969860
+    },
+    "pdf": {
+      "chemin": "caramel-presentation.pdf",
+      "octets": 2786984
+    }
+  },
+  "diapositives": [
+    {
+      "numero": 1,
+      "partie": null,
+      "titre": "Caramel",
+      "image": "diapositives/01.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Caramel est une application web gratuite, sans compte, qui prépare avec l'IA des activités interactives et des parcours complets pour Éléa, Magistère et Moodle. Ce diaporama présente ce qu'elle fait, comment elle fonctionne et ce à quoi nous tenons : la main laissée à l'enseignant et la protection des données. Il correspond à Caramel 7.0.0 ; il est mis à jour à chaque version."
+    },
+    {
+      "numero": 2,
+      "partie": null,
+      "titre": "Qui sommes-nous ?",
+      "image": "diapositives/02.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Caramel est né de deux enseignants en poste, qui l’ont d’abord conçu pour leurs propres classes. Emmanuel Gaunard enseigne les mathématiques et est chargé de mission à la DRANE de Grenoble ; Gauthier Remande enseigne les lettres et l’histoire en lycée professionnel, dans l’académie de Nantes. Le projet est un logiciel libre, développé en ouvert sur la Forge des communs numériques éducatifs : chacun peut en lire le code, signaler un problème ou proposer une idée."
+    },
+    {
+      "numero": 3,
+      "partie": null,
+      "titre": "D’où vient Caramel ?",
+      "image": "diapositives/03.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Au départ, en 2025, il y a deux enseignants et deux outils, pour un même besoin : gagner du temps grâce à l’IA. Gauthier voulait accélérer la création d’activités H5P pour Éléa ; sa première interface a été présentée au MoodleMoot de juin 2025. Emmanuel voulait refaire plus vite ses parcours Magistère, avec un site qui générait des activités H5P. Leur rencontre, grâce à Bertrand Chartier, a fait converger les deux projets en un seul outil commun, sur la Forge des communs numériques éducatifs. Le projet est bénévole ; il est soutenu par la Direction du numérique pour l’éducation et son incubateur, qui fournissent l’accès à des modèles d’IA hébergés en France. Les chiffres datent de septembre 2026."
+    },
+    {
+      "numero": 4,
+      "partie": null,
+      "titre": "Caramel en bref",
+      "image": "diapositives/04.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Caramel prépare des activités prêtes à importer dans la plateforme de l’établissement. Trente-cinq types d’activités sont proposés : vingt-sept au format H5P, le format libre d’activités interactives que lisent Éléa, Magistère et Moodle, et huit modules propres à Moodle, comme la Page, le Livre ou le Test. Tout se passe dans le navigateur, sans compte. On peut aussi obtenir une version papier de chaque activité, en Word, LibreOffice ou PDF."
+    },
+    {
+      "numero": 5,
+      "partie": null,
+      "titre": "Au programme",
+      "image": "diapositives/05.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La présentation suit quatre temps. D’abord ce qui nous tient à cœur, parce que c’est ce qui distingue Caramel : la main laissée à l’enseignant, la protection des données, les programmes intégrés à bon escient. Ensuite la création d’une activité, étape par étape. Puis la création d’un parcours complet. Enfin le partage sur la Sucrerie et les appuis pour se faire aider."
+    },
+    {
+      "numero": 6,
+      "partie": "Nos principes",
+      "titre": "L’IA propose, vous décidez",
+      "image": "diapositives/06.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "C’est le principe fondateur de Caramel : l’intelligence artificielle est une assistante, l’enseignant pilote. Avant la génération, c’est vous qui posez le cadre, et le prompt envoyé à l’IA n’est pas une boîte noire : on peut le lire et le modifier. Pendant, vous choisissez la voie — l’IA intégrée ou celle de votre choix — et vous relisez tout dans l’aperçu et l’éditeur. Après, rien n’est figé : le fichier se retravaille dans la plateforme ou dans un traitement de texte."
+    },
+    {
+      "numero": 7,
+      "partie": "Nos principes",
+      "titre": "Vos données sont protégées",
+      "image": "diapositives/07.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Caramel ne demande aucun compte et ne collecte aucune donnée personnelle. Les documents que vous déposez sont lus dans votre navigateur : le fichier lui-même ne part sur aucun serveur. La génération en un clic s’appuie sur des modèles d’IA hébergés en France, sur des serveurs de l’Enseignement supérieur et de la recherche (le projet ILaaS), et non sur des IA grand public. La voix fait exception, et c’est dit dans l’application : elle est transcrite par Albert, le service souverain de la DINUM, sans être conservée. Rappel utile en formation : on ne saisit jamais de données personnelles d’élèves."
+    },
+    {
+      "numero": 8,
+      "partie": "Nos principes",
+      "titre": "Les programmes scolaires, intégrés quand c’est utile",
+      "image": "diapositives/08.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Quand votre demande relève de l’école — un niveau de classe, un « professeur de 4e », une « seconde bac pro » — Caramel recherche dans les programmes officiels les passages utiles et les joint à la demande envoyée à l’IA : l’activité colle au programme de la classe. Quand la demande sort du scolaire — enseignement supérieur, formation d’adultes, thème imaginaire — il ne le fait pas, car les programmes n’apporteraient que du bruit. Et quand vous fournissez vos propres documents, ce sont eux la référence. Il n’y a aucun bouton : la décision se déduit de ce que vous avez saisi, dans les douze langues de l’interface."
+    },
+    {
+      "numero": 9,
+      "partie": "Créer une activité",
+      "titre": "1. Décrivez votre besoin",
+      "image": "diapositives/09.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Tout commence par deux champs. Qui êtes-vous : une réponse courte suffit, « professeur de mathématiques », « formatrice académique ». Que souhaitez-vous aborder : c’est le cœur de la demande, et plus elle est précise, meilleure est l’activité — le thème, le niveau, les contraintes. Le mode avancé ajoute des champs structurés, dont le nombre de questions, et la zone des documents. Chaque champ peut aussi se dicter au micro."
+    },
+    {
+      "numero": 10,
+      "partie": "Créer une activité",
+      "titre": "2. Ajoutez vos sources, si vous le souhaitez",
+      "image": "diapositives/10.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "C’est facultatif, mais c’est souvent là que Caramel donne le meilleur. Dans le mode avancé, on colle un texte ou on dépose ses documents : un cours, un manuel en PDF, un diaporama, une photo de page, un enregistrement audio ou vidéo dont la bande-son est transcrite, ou encore une page web par son lien. L’IA travaille alors exclusivement à partir de ces sources : elles priment sur ses connaissances générales et sur les programmes. Sans document, l’IA s’appuie sur ses connaissances."
+    },
+    {
+      "numero": 11,
+      "partie": "Créer une activité",
+      "titre": "3. Choisissez l’activité",
+      "image": "diapositives/11.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Chaque tuile est un type d’activité. Les filtres aident à s’y retrouver : par famille — quiz et tests, manipulation de texte, mémorisation et découverte — et par plateforme. Les activités H5P fonctionnent sur Éléa, Magistère et Moodle ; les modules Moodle, comme la Page, le Livre ou le Test, deviennent des éléments natifs du cours. Un clic sur une tuile ouvre sa fenêtre de génération."
+    },
+    {
+      "numero": 12,
+      "partie": "Créer une activité",
+      "titre": "4. Générez : le prompt reste entre vos mains",
+      "image": "diapositives/12.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La fenêtre d’une tuile offre deux usages. En mode Simple, un seul bouton, « Générer en un clic » : l’IA intégrée, hébergée en France, prépare l’activité en quelques dizaines de secondes, et plusieurs modèles sont au choix. En mode Guidé, le prompt apparaît : c’est l’ensemble des consignes envoyées à l’IA. On peut le lire, le modifier, le verrouiller, ou le copier vers l’IA de son choix puis coller sa réponse dans le panneau de droite. Rien n’est caché : ce que l’IA reçoit, vous pouvez le lire."
+    },
+    {
+      "numero": 13,
+      "partie": "Créer une activité",
+      "titre": "5. Relisez et corrigez",
+      "image": "diapositives/13.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Une fois l’activité générée, l’aperçu la montre telle que les élèves la verront, et on peut la jouer. L’éditeur visuel, derrière le bouton « Éditer », reprend chaque élément : à gauche la liste des questions ou des cartes, à droite le détail. Texte enrichi, formules mathématiques avec un assistant, images, réglages : tout se corrige sans toucher au code. C’est l’étape à ne jamais sauter — l’IA peut se tromper."
+    },
+    {
+      "numero": 14,
+      "partie": "Créer une activité",
+      "titre": "6. Téléchargez, imprimez, partagez",
+      "image": "diapositives/14.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La barre du bas de l’aperçu rassemble les sorties. Pour la plateforme : le fichier H5P, ou selon l’activité un .mbz ou un .xml pour la banque de questions et le glossaire. Pour la classe : une version imprimable en Word, LibreOffice ou PDF, où les formules mathématiques restent éditables. Et pour les collègues : « Vers la Sucrerie » dépose l’activité dans la bibliothèque partagée."
+    },
+    {
+      "numero": 15,
+      "partie": "Créer une activité",
+      "titre": "7. Importez dans votre cours, et continuez à modifier",
+      "image": "diapositives/15.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Chaque format a son chemin d’import, détaillé avec captures dans le tutoriel intégré. Le fichier H5P s’ajoute comme toute activité H5P ; sur Éléa, un simple glisser-déposer dans la section suffit aussi. Le .mbz s’importe sans écraser le contenu du cours. Le .xml alimente la banque de questions ou un glossaire. Et l’activité n’est jamais figée : elle se modifie dans l’éditeur H5P de la plateforme, ou hors ligne avec des logiciels comme Lumi ou Logiquiz ; Digiquiz permet de la diffuser sans plateforme."
+    },
+    {
+      "numero": 16,
+      "partie": "Créer un parcours",
+      "titre": "Un parcours complet, en quatre temps",
+      "image": "diapositives/16.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en trois questions : la plateforme, le déroulé — en classe, à distance ou les deux — et l’ampleur, d’une séance à une séquence entière. On peut aussi partir d’une trame toute faite."
+    },
+    {
+      "numero": 17,
+      "partie": "Créer un parcours",
+      "titre": "Le plan : relu, modifiable, à vous",
+      "image": "diapositives/17.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "L’IA propose un plan : des étapes, des activités, leur durée et leurs consignes. Rien n’est imposé. On réordonne, on change le type d’une activité, on ajuste une durée, on ajoute ou on retire. Le cadenas réserve une place pour une activité dont on fournira soi-même le contenu. Une relecture didactique signale ce qui mérite attention, selon six repères. C’est seulement quand le plan vous convient que la fabrication commence."
+    },
+    {
+      "numero": 18,
+      "partie": "Créer un parcours",
+      "titre": "Fabrication et livraison : un seul fichier de cours",
+      "image": "diapositives/18.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La fabrication génère les activités une à une, sous vos yeux. Chacune peut être relue, essayée, modifiée ou générée à nouveau. À la livraison, un seul fichier .mbz contient tout le cours : sections, activités, consignes. Il se restaure dans un cours existant de la plateforme. S’y ajoutent la fiche de séquence et le détail des activités en Word, LibreOffice ou PDF, et un fichier de scénario qui permet de rouvrir le parcours dans Caramel pour le reprendre plus tard."
+    },
+    {
+      "numero": 19,
+      "partie": "Partager et se faire aider",
+      "titre": "La Sucrerie : partager et piocher",
+      "image": "diapositives/19.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La Sucrerie est la bibliothèque publique qui accompagne Caramel. On y consulte et on y essaie les activités des collègues, on les télécharge dans de nombreux formats, et on y dépose les siennes — directement depuis Caramel avec le bouton « Vers la Sucrerie ». Déposer est un choix volontaire qui vaut publication : l’activité est diffusée sous licence libre CC BY-SA, et l’adresse académique sert seulement d’identifiant. On certifie détenir les droits et qu’aucune donnée personnelle n’y figure."
+    },
+    {
+      "numero": 20,
+      "partie": "Partager et se faire aider",
+      "titre": "Vous n’êtes jamais seul",
+      "image": "diapositives/20.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Plusieurs appuis accompagnent les collègues après la formation. Caramelia, l’assistante intégrée — la bulle en bas à droite — répond aux questions sur l’outil et peut préparer une activité ou un parcours avec vous. Le tutoriel, en haut de l’écran, reprend chaque étape pas à pas. Le wiki est le guide complet. Et le salon Tchap réunit la communauté : questions, idées, entraide."
+    },
+    {
+      "numero": 21,
+      "partie": "Partager et se faire aider",
+      "titre": "Les bons réflexes",
+      "image": "diapositives/21.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Cinq réflexes à transmettre. Relire avant de diffuser : l’IA peut se tromper sur un fait, une réponse, une consigne ; l’enseignant reste l’auteur de ce qu’il donne aux élèves. Protéger les élèves : aucune donnée personnelle. Respecter les droits des documents et des images utilisés. Tester l’activité sur un espace de test avant la classe. Et signaler les problèmes : c’est ainsi que Caramel s’améliore."
+    },
+    {
+      "numero": 22,
+      "partie": null,
+      "titre": "Proposer un atelier de 45 minutes",
+      "image": "diapositives/22.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Une proposition de déroulé pour une séance d’établissement. Cinq minutes de vidéo pour poser le décor, dix minutes de démonstration en direct sur une activité de la discipline du groupe, vingt minutes d’atelier où chacun prépare une activité pour sa classe, la relit et la corrige, puis dix minutes de retour collectif. Pour un format plus ludique, testé au MoodleMoot 2026 : chaque groupe prépare au moins trois activités sur un même thème et les rassemble dans une collection sur la Sucrerie, que les autres découvrent ensuite."
+    },
+    {
+      "numero": 23,
+      "partie": null,
+      "titre": "Liens utiles",
+      "image": "diapositives/23.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Tous les liens utiles, cliquables dans le diaporama. Le premier QR code ouvre Caramel directement sur un téléphone ou une tablette ; le second mène à la page de présentation, où l’on retrouve ce diaporama, la vidéo et des activités à essayer. Le bac à sable permet aux curieux de tester les nouveautés avant tout le monde, et de les commenter sur Tchap."
+    },
+    {
+      "numero": 24,
+      "partie": null,
+      "titre": "À vous de jouer !",
+      "image": "diapositives/24.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.0.0, dans sa version du 29 septembre 2026."
+    }
+  ]
+}

@@ -47,7 +47,17 @@ Section "Identité" : bumper `v5.3.0` → `v5.4.0`.
 - `README.md` si version mentionnée
 - PRD : pas de bump, mais éventuellement update si refonte structurelle
 
-### 6. Cache busting (si applicable)
+### 6. Page de présentation et diaporama de formation
+- `decouvrir/index.html` : son pied de page porte aussi `Caramel vX.Y.Z` — le bumper.
+- Le diaporama (`assets/presentation/diaporama/`) affiche la version et la date sur chaque
+  diapositive : si l'interface a changé, refaire d'abord les captures
+  (`node scripts/captures-interface.mjs`), puis `node scripts/diaporama/generer-diaporama.mjs`
+  (pptxgenjs et Playwright dans `tests/roundtrip/`, LibreOffice, Poppler). Relire le contenu
+  des diapositives dans le script si une fonctionnalité présentée a changé.
+- Garde-fou : `node tests/run_decouvrir.mjs` échoue tant que `diaporama.json` ne porte pas la
+  version d'`index.html`.
+
+### 7. Cache busting (si applicable)
 Vérifier que les imports versionnés des libs vendor (`?v=...`) ou les chemins `vendor/lib/x.y.z/` reflètent les versions effectives.
 
 ## Workflow git
@@ -58,7 +68,7 @@ Branches Caramel typiques :
 
 Commit de release :
 ```
-git add CHANGELOG index.html js/ui/version-checker.js CLAUDE.md
+git add CHANGELOG index.html js/ui/version-checker.js CLAUDE.md decouvrir/index.html assets/presentation/diaporama assets/images/wiki
 git commit -m "Caramel - 5.4.0 (PROD)"
 ```
 

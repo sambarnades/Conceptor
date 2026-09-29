@@ -95,7 +95,8 @@
             const presentation = document.createElement('div');
             presentation.className = 'video-presentation';
             lecteur.before(presentation);
-            presentation.append(commandesVideo(lecteur.dataset.titre, lecteur.dataset.lien), lecteur);
+            // Le lecteur d'abord, ses boutons dessous : le haut de la vidéo s'aligne sur la colonne voisine.
+            presentation.append(lecteur, commandesVideo(lecteur.dataset.titre, lecteur.dataset.lien));
         }
         affiche?.addEventListener('click', () => jouerVideo(lecteur,
             lecteur.dataset.integration, lecteur.dataset.titre, () => lecteur.replaceChildren(affiche)));
@@ -147,12 +148,18 @@
     };
     const codeIntegration = r => `<iframe src="${echapper(urlIntegration(r.integration).href)}" width="640" height="360" style="padding: 0; margin: 0; border:0" allowfullscreen title="${echapper(r.titre)}"></iframe>`;
 
-    function rendreCatalogue(ressources, { listeId, filtresId, types = TYPES }) {
+    /** Du plus récent au plus ancien ; une date au mois passe après les dates au jour du même mois, les entrées sans date à la fin. */
+    const parDate = (a, b) => (b.r.date || '').localeCompare(a.r.date || '') || a.i - b.i;
+
+    function rendreCatalogue(ressources, { listeId, filtresId, types = TYPES, trier = false, repli = null }) {
         const liste = $(listeId), filtres = $(filtresId);
+        // `data-i` garde l'indice d'origine : l'ordre d'affichage peut changer, pas la référence.
+        const ordre = ressources.map((r, i) => ({ r, i }));
+        if (trier) ordre.sort(parDate);
         const presents = Object.keys(types).filter(t => ressources.some(r => r.type === t));
         const bouton = (type, nom, n) => `<button type="button" class="filtre" data-type="${type}" aria-pressed="${type === 'tout'}">${nom}<span>${n}</span></button>`;
         filtres.innerHTML = bouton('tout', tr('all'), ressources.length) + presents.map(t => bouton(t, tr(types[t].nom), ressources.filter(r => r.type === t).length)).join('');
-        liste.innerHTML = ressources.map((r, i) => {
+        liste.innerHTML = ordre.map(({ r, i }) => {
             const t = types[r.type] || TYPES.tutoriel;
             const meta = [r.source, dateLisible(r.date), r.duree].filter(Boolean).map(echapper).map(m => `<span>${m}</span>`).join('');
             const action = r.integration ? tr('watch_here') : t.visuel === 'video' ? tr('watch') : tr('read');
@@ -184,7 +191,43 @@
                 c.hidden = b.dataset.type !== 'tout' && c.dataset.type !== b.dataset.type;
                 if (c.hidden) fermerVideo(c);
             });
+            repli?.();
         });
+    }
+
+    /**
+     * Trois rangées, puis « … » : le nombre de cartes par rangée suit la largeur de la grille.
+     * Le repli a sa propre classe, distincte de `hidden` que posent les filtres.
+     */
+    function replierApresTroisRangees(liste, bouton) {
+        const appliquer = () => {
+            const deplie = bouton.getAttribute('aria-expanded') === 'true';
+            const colonnes = getComputedStyle(liste).gridTemplateColumns.split(' ').filter(Boolean).length || 1;
+            const visibles = [...liste.querySelectorAll('.ressource:not([hidden])')];
+            const restantes = Math.max(0, visibles.length - 3 * colonnes);
+            visibles.forEach((c, k) => {
+                const replie = !deplie && k >= 3 * colonnes;
+                c.classList.toggle('ressource--repliee', replie);
+                if (replie) fermerVideo(c);
+            });
+            bouton.hidden = restantes === 0;
+            bouton.innerHTML = deplie
+                ? `${tr('show_less')} <i class="fas fa-chevron-up" aria-hidden="true"></i>`
+                : `<span aria-hidden="true">…</span> ${tr('show_more').replace('{n}', restantes)}`;
+        };
+        bouton.addEventListener('click', () => {
+            bouton.setAttribute('aria-expanded', String(bouton.getAttribute('aria-expanded') !== 'true'));
+            appliquer();
+        });
+        // Seule la LARGEUR change le nombre de colonnes ; replier change la hauteur, qu'on ignore.
+        let largeur = 0;
+        if ('ResizeObserver' in window) new ResizeObserver(([e]) => {
+            if (Math.round(e.contentRect.width) === largeur) return;
+            largeur = Math.round(e.contentRect.width);
+            appliquer();
+        }).observe(liste);
+        appliquer();
+        return appliquer;
     }
 
     function rendreMentions(mentions) {
@@ -194,7 +237,9 @@
             article: { nom: 'articles', un: 'article', visuel: 'lire' },
             publication: TYPES.publication,
         };
-        rendreCatalogue(mentions, { listeId: '#liste-mentions', filtresId: '#filtres-mentions', types });
+        let repli = null;
+        rendreCatalogue(mentions, { listeId: '#liste-mentions', filtresId: '#filtres-mentions', types, trier: true, repli: () => repli?.() });
+        repli = replierApresTroisRangees($('#liste-mentions'), $('#plus-mentions'));
         const avecDate = mentions.filter(r => r.date);
         const annees = new Set(avecDate.map(r => r.date.slice(0, 4))).size;
         $('#catalogue-intro').innerHTML = `<b>${mentions.length} ${tr('references')}</b><span>${avecDate.length} ${tr('dated')}</span><span>${annees} ${tr('years')}</span>`;
@@ -257,6 +302,84 @@
         $('#liste-ressources').innerHTML = '<p class="signaler">Les ressources n’ont pas pu être chargées.</p>';
         $('#liste-mentions').innerHTML = '<p class="signaler">Le catalogue n’a pas pu être chargé.</p>';
     });
+
+    /* ------------------------------------------------------------ Diaporama */
+    // La visionneuse est écrite dans la page par scripts/diaporama/generer-diaporama.mjs :
+    // première diapositive, sommaire et notes y sont déjà. Ce script ne charge rien, il
+    // passe seulement d'une diapositive à l'autre — d'où aucun saut à l'affichage.
+    const DIAPORAMA = duSite('assets/presentation/diaporama/');
+
+    function demarrerDiaporama() {
+        const visionneuse = $('#visionneuse');
+        if (!visionneuse) return;
+        const scene = $('#diapo-scene'), image = $('#diapo-image'), choix = $('#diapo-choix');
+        const precedente = $('#diapo-precedente'), suivante = $('#diapo-suivante');
+        const options = [...choix.options], notes = [...$('#diapo-notes').children];
+        const total = options.length;
+        let i = 0;
+
+        /** L'image et ses notes changent ENSEMBLE, une fois la nouvelle image décodée : pas d'éclair blanc. */
+        function afficher(k) {
+            const url = DIAPORAMA + options[k].dataset.image;
+            const echanger = () => {
+                if (k !== i) return; // Une autre diapositive a été demandée entre-temps.
+                image.src = url;
+                image.alt = `Diapositive ${k + 1} sur ${total} : ${options[k].textContent.replace(/^\d+\.\s*/, '')}`;
+                notes.forEach((n, j) => {
+                    n.classList.toggle('actuelle', j === k);
+                    if (j === k) n.removeAttribute('aria-hidden'); else n.setAttribute('aria-hidden', 'true');
+                });
+            };
+            const pret = new Image();
+            pret.src = url;
+            (pret.decode ? pret.decode() : Promise.resolve()).then(echanger, echanger);
+        }
+        function aller(k) {
+            i = Math.max(0, Math.min(total - 1, k));
+            $('#diapo-compteur').textContent = `${i + 1} / ${total}`;
+            choix.value = String(i);
+            precedente.disabled = i === 0;
+            suivante.disabled = i === total - 1;
+            afficher(i);
+            // La suivante se charge d'avance : le passage reste immédiat.
+            if (options[i + 1]) new Image().src = DIAPORAMA + options[i + 1].dataset.image;
+        }
+        // Les notes restent fermées par défaut : on les ouvre quand on en a besoin.
+        const boutonNotes = $('#diapo-notes-bouton'), zoneNotes = $('#diapo-notes-zone');
+        boutonNotes.addEventListener('click', () => {
+            const ouvrir = zoneNotes.hidden;
+            zoneNotes.hidden = !ouvrir;
+            boutonNotes.setAttribute('aria-expanded', String(ouvrir));
+        });
+        precedente.addEventListener('click', () => aller(i - 1));
+        suivante.addEventListener('click', () => aller(i + 1));
+        choix.addEventListener('change', () => aller(Number(choix.value)));
+        scene.addEventListener('click', () => aller(i + 1 < total ? i + 1 : 0));
+        visionneuse.addEventListener('keydown', e => {
+            if (e.target === choix) return;
+            const rtl = document.documentElement.dir === 'rtl';
+            const pas = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1, PageDown: 1, PageUp: -1 }[e.key];
+            if (pas) { e.preventDefault(); aller(i + pas); }
+            else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+            else if (e.key === 'End') { e.preventDefault(); aller(total - 1); }
+        });
+        // Balayage au doigt sur tablette et téléphone.
+        let depart = null;
+        scene.addEventListener('pointerdown', e => { depart = e.pointerType === 'mouse' ? null : e.clientX; });
+        scene.addEventListener('pointerup', e => {
+            if (depart === null) return;
+            const dx = e.clientX - depart;
+            depart = null;
+            if (Math.abs(dx) > 50) { e.preventDefault(); aller(i + (dx < 0 ? 1 : -1)); }
+        });
+        const pleinEcran = $('#diapo-plein-ecran');
+        if (!scene.requestFullscreen) pleinEcran.hidden = true;
+        pleinEcran.addEventListener('click', () => {
+            if (document.fullscreenElement) document.exitFullscreen();
+            else scene.requestFullscreen().then(() => scene.focus()).catch(() => {});
+        });
+    }
+    demarrerDiaporama();
 
     /* ------------------------------------------------------------ Activités H5P */
     const H5P_LIBS = duSite('js/vendor/h5p-libs');

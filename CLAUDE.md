@@ -85,6 +85,13 @@ tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node
                  d'emploi dans le fichier) ; ses activités à essayer sont de vrais .h5p régénérés par
                  `node scripts/generer-demos-presentation.mjs` (sources `scripts/presentation/`,
                  sortie `assets/presentation/activites/`). Publiée par le `cp` du job `pages`.
+                 Sa tenue reste SOBRE, celle de l'accueil (retour de Gauthier, sept. 2026 : « ça
+                 fait trop IA ») : ni dégradé, ni élément incliné, ni surtitre en capitales — le
+                 banc `run_decouvrir.mjs` le vérifie. Son diaporama de formation (PPTX, ODP, PDF,
+                 notes du présentateur, visionneuse dans la page) est fabriqué par
+                 `node scripts/diaporama/generer-diaporama.mjs` (pptxgenjs + LibreOffice) : **à
+                 relancer à chaque version** — la version et la date figurent sur chaque diapositive,
+                 et le banc échoue tant que `diaporama.json` ne porte pas celle d'`index.html`.
                  `scripts/captures-interface.mjs` refait les captures d'écran du tutoriel et du
                  wiki (parcours réel du banc, réseau coupé) ; `scripts/aide-parcours.mjs` écrit ce
                  que Caramelia sait des parcours (trames, modules, conseils) dans son aide

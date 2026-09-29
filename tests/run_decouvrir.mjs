@@ -125,6 +125,35 @@ for (const a of activites) {
     ok(`${nom} : le .h5p téléchargé contient le content.json joué sur la page`, dansZip === readFileSync(contenu, 'utf8'));
 }
 
+// Le diaporama de formation (scripts/diaporama/generer-diaporama.mjs).
+let diaporama = { diapositives: [] };
+try { diaporama = JSON.parse(lire('assets/presentation/diaporama/diaporama.json')); } catch (e) { ok('diaporama.json se lit', false, e.message); }
+const versionCaramel = lire('index.html').match(/Caramel v(\d+\.\d+\.\d+)/)?.[1];
+ok('diaporama : il porte la version en cours de Caramel (sinon relancer scripts/diaporama/generer-diaporama.mjs)',
+    diaporama.version === versionCaramel, `${diaporama.version} ≠ ${versionCaramel}`);
+ok('diaporama : une date de mise à jour', /^\d{4}-\d{2}-\d{2}$/.test(diaporama.date || ''));
+for (const f of ['pptx', 'odp', 'pdf']) {
+    const fichier = diaporama.fichiers?.[f];
+    ok(`diaporama : le .${f} existe et sa taille est à jour`,
+        !!fichier && existsSync(resolve(root, 'assets/presentation/diaporama', fichier.chemin))
+        && readFileSync(resolve(root, 'assets/presentation/diaporama', fichier.chemin)).length === fichier.octets);
+}
+ok('diaporama : au moins dix diapositives', diaporama.diapositives.length >= 10);
+diaporama.diapositives.forEach((d, i) => {
+    ok(`diapositive ${i + 1} : numéro, titre et notes`, d.numero === i + 1 && !!d.titre?.trim() && d.notes?.trim().length > 40);
+    ok(`diapositive ${i + 1} : image présente`, existsSync(resolve(root, 'assets/presentation/diaporama', d.image || '-')), d.image);
+});
+// Le .pptx contient bien autant de diapositives, chacune avec ses notes du présentateur.
+if (diaporama.fichiers?.pptx) {
+    const pptx = fflate.unzipSync(new Uint8Array(readFileSync(resolve(root, 'assets/presentation/diaporama', diaporama.fichiers.pptx.chemin))));
+    const noms = Object.keys(pptx);
+    ok('diaporama : le .pptx a une diapositive et une page de notes par entrée du manifeste',
+        noms.filter(n => /^ppt\/slides\/slide\d+\.xml$/.test(n)).length === diaporama.diapositives.length
+        && noms.filter(n => /^ppt\/notesSlides\/notesSlide\d+\.xml$/.test(n)).length === diaporama.diapositives.length);
+    ok('diaporama : le .pptx affiche la version de Caramel',
+        noms.filter(n => /^ppt\/slides\/slide\d+\.xml$/.test(n)).some(n => Buffer.from(pptx[n]).toString('utf8').includes(`Caramel v${versionCaramel}`)));
+}
+
 // Le pied de page de Caramel, et la clé de son libellé.
 const accueil = lire('index.html');
 ok('pied de page : lien « Découvrir Caramel »', /<footer class="footer">[\s\S]*href="decouvrir\/"[\s\S]*data-key="footer_discover"[\s\S]*<\/footer>/.test(accueil));
@@ -162,6 +191,26 @@ ok('ouverture : aucune pastille promotionnelle au-dessus du titre',
 ok('présentation : aucune animation décorative automatique',
     !/@keyframes|animation\s*:(?!\s*none)/.test(cssDecouvrir)
     && !/\b(?:anime|revele|pluie|requestAnimationFrame|data-compter)\b/.test(page + jsDecouvrir));
+// Retour de Gauthier (29 sept. 2026, « ça fait trop IA ») : la page garde la tenue sobre de
+// l'accueil. Ces motifs étaient précisément ceux qui lui donnaient l'air généré.
+ok('présentation : sobre — ni dégradé, ni élément incliné, ni capitales espacées',
+    !/gradient\(/.test(cssDecouvrir)
+    && !/rotate\((?!180deg)/.test(cssDecouvrir)
+    && !/text-transform:\s*uppercase/.test(cssDecouvrir)
+    && !/background-clip:\s*text/.test(cssDecouvrir));
+ok('présentation : aucun surtitre au-dessus des titres de section', !/class="oeil/.test(page));
+ok('présentation : la section du diaporama et ses trois téléchargements',
+    /id="diaporama"/.test(page) && ['pptx', 'odp', 'pdf'].every(f => page.includes(`caramel-presentation.${f}" download="Caramel-v${diaporama.version}-presentation.${f}" data-format="${f}"`)));
+// La visionneuse est ÉCRITE dans la page (pas de chargement après coup, donc pas de saut à
+// l'affichage) : elle doit refléter exactement le manifeste.
+const html = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const blocVisionneuse = page.match(/<!-- diaporama:debut[\s\S]*?<!-- diaporama:fin -->/)?.[0] || '';
+ok('présentation : la visionneuse écrite dans la page suit le manifeste (sinon relancer le générateur)',
+    blocVisionneuse.length > 0
+    && (blocVisionneuse.match(/<option /g) || []).length === diaporama.diapositives.length
+    && diaporama.diapositives.every((d, k) => blocVisionneuse.includes(`<option value="${k}" data-image="${d.image}"`)
+        && blocVisionneuse.includes(`>${html(d.notes)}</p>`))
+    && blocVisionneuse.includes(`Caramel v${diaporama.version} · diaporama mis à jour le ${diaporama.dateLisible}`));
 ok('pied de page : l’étoile reprend la couleur des autres icônes',
     /\.footer \.footer-discover i\s*\{\s*color:\s*inherit;\s*\}/.test(lire('css/base/custom.css')));
 ok('catalogue : les éléments filtrés sont réellement retirés de la mise en page',
@@ -239,6 +288,58 @@ if (NAVIGATEUR) {
         ok('navigateur : deux exemples et une liste compacte pour les autres vidéos',
             await p.locator('.integration-exemples .integration-option').count() === 2
             && await p.locator('.integration-liste').evaluate(e => e.scrollHeight > e.clientHeight && e.clientHeight <= 150));
+        // La visionneuse du diaporama : sommaire, passage d'une diapositive à l'autre, clavier.
+        const nDiapos = diaporama.diapositives.length;
+        ok('navigateur : le sommaire du diaporama liste chaque diapositive',
+            await p.locator('#diapo-choix option').count() === nDiapos
+            && await p.locator('#diapo-compteur').textContent() === `1 / ${nDiapos}`
+            && await p.locator('#diapo-precedente').isDisabled());
+        ok('navigateur : les notes sont fermées au chargement',
+            !await p.locator('#diapo-notes-zone').isVisible()
+            && await p.locator('#diapo-notes-bouton').getAttribute('aria-expanded') === 'false');
+        await p.locator('#diapo-notes-bouton').click();
+        ok('navigateur : « Notes » ouvre celles de la première diapositive',
+            await p.locator('#diapo-notes-zone').isVisible()
+            && await p.locator('#diapo-notes-bouton').getAttribute('aria-expanded') === 'true'
+            && await p.locator('#diapo-notes p.actuelle').textContent() === diaporama.diapositives[0].notes
+            && await p.locator('#diapo-notes p.actuelle').count() === 1);
+        const hauteurNotes = await p.locator('#diapo-notes').evaluate(e => e.getBoundingClientRect().height);
+        await p.locator('#diapo-suivante').click();
+        // L'image n'est échangée qu'une fois décodée : on attend l'échange.
+        await p.waitForFunction(fin => document.querySelector('#diapo-image').getAttribute('src').endsWith(fin),
+            diaporama.diapositives[1].image, { timeout: 5000 }).catch(() => {});
+        ok('navigateur : « suivante » affiche la deuxième diapositive et ses notes',
+            (await p.locator('#diapo-image').getAttribute('src')).endsWith(diaporama.diapositives[1].image)
+            && await p.locator('#diapo-compteur').textContent() === `2 / ${nDiapos}`
+            && await p.locator('#diapo-notes p.actuelle').textContent() === diaporama.diapositives[1].notes
+            && await p.locator('#diapo-notes p.actuelle').isVisible());
+        await p.locator('#diapo-scene').focus();
+        await p.keyboard.press('End');
+        ok('navigateur : Fin mène à la dernière diapositive, « suivante » s’éteint',
+            await p.locator('#diapo-compteur').textContent() === `${nDiapos} / ${nDiapos}` && await p.locator('#diapo-suivante').isDisabled());
+        ok('navigateur : la zone des notes garde sa hauteur d’une diapositive à l’autre',
+            await p.locator('#diapo-notes').evaluate(e => e.getBoundingClientRect().height) === hauteurNotes);
+        await p.keyboard.press('ArrowLeft');
+        ok('navigateur : la flèche gauche recule d’une diapositive', await p.locator('#diapo-compteur').textContent() === `${nDiapos - 1} / ${nDiapos}`);
+        await p.locator('#diapo-choix').selectOption('0');
+        ok('navigateur : le sommaire ramène au début', await p.locator('#diapo-compteur').textContent() === `1 / ${nDiapos}`);
+        ok('navigateur : les téléchargements du diaporama portent la version',
+            (await p.locator('#diapo-fichiers a').evaluateAll(liens => liens.map(a => a.getAttribute('download'))))
+                .join() === ['pptx', 'odp', 'pdf'].map(f => `Caramel-v${diaporama.version}-presentation.${f}`).join());
+        // « On parle de Caramel » : trois rangées, puis « … » ; les plus récentes d'abord.
+        const colonnesMentions = await p.locator('#liste-mentions').evaluate(e => getComputedStyle(e).gridTemplateColumns.split(' ').length);
+        const affichees = () => p.locator('#liste-mentions .ressource:not(.ressource--repliee)');
+        ok('navigateur : trois rangées de publications, puis « … »',
+            await affichees().count() === Math.min(mentions.length, 3 * colonnesMentions)
+            && await p.locator('#plus-mentions').isVisible()
+            && (await p.locator('#plus-mentions').textContent()).includes(String(mentions.length - 3 * colonnesMentions)));
+        const ordreAttendu = mentions.map((m, i) => ({ m, i }))
+            .sort((a, b) => (b.m.date || '').localeCompare(a.m.date || '') || a.i - b.i).map(x => x.m.titre);
+        ok('navigateur : les publications les plus récentes en premier',
+            (await p.locator('#liste-mentions .ressource h3').allTextContents()).map(t => t.trim()).join('|') === ordreAttendu.join('|'));
+        await p.locator('#plus-mentions').click();
+        ok('navigateur : « … » déplie toute la liste',
+            await affichees().count() === mentions.length && await p.locator('#plus-mentions').getAttribute('aria-expanded') === 'true');
         ok('navigateur : une tuile par activité', await p.locator('#tuiles .tuile').count() === activites.length);
 
         // Chaque tuile charge son activité, l'une après l'autre.
@@ -418,6 +519,7 @@ if (NAVIGATEUR) {
             })) })
         }));
         await confidentialite.goto(URL_PAGE, { waitUntil: 'networkidle' });
+        await confidentialite.locator('#plus-mentions').click();
         const integrables = [...ressources, ...mentions].filter(r => r.integration);
         for (const video of mentions.filter(r => r.integration?.includes('youtube-nocookie.com'))) {
             await confidentialite.locator('#liste-mentions .ressource__ouvrir').filter({ hasText: video.titre }).click();
@@ -549,9 +651,9 @@ if (NAVIGATEUR) {
         ok('navigateur : les liens mobiles restent repliés dans le header',
             !await mobile.locator('.navigation').isVisible());
         await mobile.locator('.navigation-bouton').click();
-        ok('navigateur : Explorer ouvre les cinq liens et donne le focus au premier',
+        ok('navigateur : Explorer ouvre les six liens et donne le focus au premier',
             await mobile.locator('.navigation').isVisible()
-            && await mobile.locator('.navigation a').count() === 5
+            && await mobile.locator('.navigation a').count() === 6
             && await mobile.locator('.navigation a').first().evaluate(e => e === document.activeElement));
         await mobile.locator('.navigation a').first().press('Escape');
         ok('navigateur : Échap replie le menu et rend le focus à Explorer',
@@ -561,6 +663,7 @@ if (NAVIGATEUR) {
         await mobile.locator('.navigation a[href="#former"]').click();
         ok('navigateur : choisir une section ferme le menu et conserve son ancre',
             !await mobile.locator('.navigation').isVisible() && mobile.url().endsWith('#former'));
+        await mobile.locator('#plus-mentions').click();
         await mobile.locator('#liste-mentions .ressource__ouvrir').filter({ hasText: 'Caramel au MiniMoot de Brest' }).click();
         ok('navigateur : le MiniMoot intégré reste fluide sur téléphone',
             await mobile.locator('.ressource--ouverte iframe').evaluate(el => {
