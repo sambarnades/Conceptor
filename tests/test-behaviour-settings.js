@@ -500,6 +500,30 @@ async function runTests() {
     const premier = (enTete.content || enTete).keywords[0];
     assert(premier.keyword === 'source' && JSON.stringify(premier.alternatives) === '["document"]', 'Rédaction : en tête de liste, la première alternative devient le mot-clé');
 
+    // Test Éléa (mod_quiz) : la section « Réglages du test » écrit `quiz_settings`.
+    // Ses défauts DOIVENT être ceux des constructeurs (REGLAGES_TEST_DEFAUT, valeurs
+    // d'un Test créé sur Éléa) : sinon ouvrir la section changerait le .mbz.
+    currentModule = 'Test Éléa : réglages du test';
+    const { REGLAGES_TEST_DEFAUT, COMPORTEMENTS_TEST, PRESETS_REVUE_TEST } = await import('../js/moodle/mbz-course-builder.js');
+    const testSchema = getSchemaForType('elea_test');
+    const reglagesSection = testSchema.sections.find(s => s.id === 'quiz_settings');
+    assert(!!reglagesSection && reglagesSection.startCollapsed === true, 'Test : section « Réglages du test » présente et repliée');
+    const champsReglages = reglagesSection?.fields?.quiz_settings?.schema || {};
+    for (const [cle, defaut] of Object.entries(REGLAGES_TEST_DEFAUT)) {
+        const champ = champsReglages[cle];
+        const affiche = champ?.type === 'checkbox' ? (champ.default ? 1 : 0) : champ?.default;
+        assert(!!champ && affiche === defaut, `Test : défaut de l’éditeur = défaut du .mbz pour ${cle} (${defaut})`);
+    }
+    assert(JSON.stringify(champsReglages.preferredbehaviour?.options.map(o => o.value)) === JSON.stringify([...COMPORTEMENTS_TEST]), 'Test : les trois comportements du constructeur, dans l’ordre');
+    assert(JSON.stringify(champsReglages.review?.options.map(o => o.value)) === JSON.stringify([...PRESETS_REVUE_TEST]), 'Test : les trois préréglages de relecture du constructeur');
+    assert(champsReglages.overallfeedback?.type === 'feedbackRanges', 'Test : feedback global par plage de note');
+    assert(!('password' in champsReglages) && !('timeopen' in champsReglages) && !Object.keys(champsReglages).some(k => k.startsWith('completion')),
+        'Test : ni mot de passe, ni dates, ni achèvement dans l’éditeur');
+    const { matchesShowWhen } = await import('../js/editor/json-utils.js');
+    const methode = champsReglages.grademethod;
+    assert(!matchesShowWhen(methode.showWhen, { attempts: 1 }, champsReglages) && matchesShowWhen(methode.showWhen, { attempts: 2 }, champsReglages)
+        && matchesShowWhen(methode.showWhen, {}, champsReglages), 'Test : méthode d’évaluation masquée pour une tentative unique seulement');
+
     return { passCount, failCount, results };
 }
 

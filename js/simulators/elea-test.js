@@ -9,7 +9,9 @@ import { debugLog, markdownToHtml } from '../core/utils.js';
 import { mathRenderer } from '../renderers/math-renderer.js';
 import { sanitizeSync } from '../export/sanitizer.js';
 import { escapeHtml as escapeHtmlCanonical } from '../core/escape.js';
-import { parseClozeGaps, parseGapAnswers } from '../moodle/mbz-course-builder.js';
+import {
+    parseClozeGaps, parseGapAnswers, resoudreReglagesTest, masquesRevue, REVUE_PENDANT, REVUE_JUSTE_APRES,
+} from '../moodle/mbz-course-builder.js';
 import { dansTolerance, correspondanceCourte, fractionTrouCloze, pourcentageTest } from '../moodle/test-evaluation.js';
 import { canonicalizeTestModel, numericalAnswers } from '../moodle/moodle-formats.js';
 
@@ -28,6 +30,13 @@ function isTrueAnswer(value) {
  * @param {Object} data - Le JSON de l'activité.
  * @param {string} [_previewHtml] - inutilisé (signature commune renderSimulator).
  * @param {{mode?: 'teacher'|'student'}} [options] - mode d'affichage.
+ *
+ * Les réglages du Test (`data.quiz_settings`, cf. `resoudreReglagesTest`) pilotent
+ * l'aperçu comme ils pilotent Éléa : en feedback DIFFÉRÉ (le défaut), pas de
+ * « Vérifier » par question — l'élève répond, termine, puis voit sa note et,
+ * selon « ce que l'élève peut revoir », la correction ; en mode INTERACTIF, une
+ * vérification par question et un essai de plus par indice ; en mode IMMÉDIAT,
+ * une seule vérification. La navigation séquentielle retire « Précédent ».
  */
 export default function renderEleaTest(container, data, _previewHtml, options = {}) {
     data = canonicalizeTestModel(Array.isArray(data) ? { questions: data } : data);
@@ -41,6 +50,22 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
     // (consultation). Mode élève (défaut) : émission `simulator:completed`.
     const mode = options.mode === 'teacher' ? 'teacher' : 'student';
     const isTeacher = mode === 'teacher';
+
+    // Réglages du Test : mêmes défauts et mêmes masques de relecture que le .mbz.
+    const reglages = resoudreReglagesTest(data && data.quiz_settings);
+    const differe = reglages.preferredbehaviour === 'deferredfeedback';
+    const essaisMultiples = reglages.preferredbehaviour === 'interactive';
+    const navigationLibre = reglages.navmethod === 'free';
+    const masques = masquesRevue(reglages.preferredbehaviour, reglages.review, reglages.review_masks);
+    const voit = (champ, moment) => (masques[champ] & moment) !== 0;
+    // Ce que montre une question corrigée : PENDANT la tentative (interactif,
+    // immédiat) ou juste APRÈS (différé, une fois le test terminé).
+    const momentRetour = differe ? REVUE_JUSTE_APRES : REVUE_PENDANT;
+    const retour = {
+        statut: voit('correctness', momentRetour),
+        message: voit('specificfeedback', momentRetour) || voit('generalfeedback', momentRetour),
+        bonneReponse: voit('rightanswer', momentRetour),
+    };
 
     let questions = [];
     if (data && Array.isArray(data.questions)) {
@@ -73,6 +98,9 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
     const userAnswers = {};
     const feedbackState = {};
     const hintState = {};
+    // Différé : la tentative est envoyée (« Terminer le test ») — les questions se
+    // relisent alors corrigées, sans être modifiables.
+    let tentativeEnvoyee = false;
 
     // --- Helpers ---
     const formatMarkdown = (text) => !text ? '' : sanitizeSync(markdownToHtml(text, { newlineToBr: true }), 'EDUCATIONAL');
@@ -145,6 +173,12 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
         `;
         const navArrows = header.querySelector('.elea-test-nav-arrows');
         if (navArrows) navArrows.appendChild(createFullscreenButton(true));
+        if (differe && !tentativeEnvoyee) {
+            const note = document.createElement('p');
+            note.className = 'elea-test-mode-note';
+            note.textContent = tr('simulator_test_deferred_note', 'Feedback différé : la correction s’affiche à la fin du test.');
+            header.appendChild(note);
+        }
 
         root.appendChild(header);
 
@@ -202,7 +236,7 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
                     </div>
                 `;
                 card.appendChild(hintDiv);
-            } else {
+            } else if (retour.statut || (retour.message && fState.message)) {
                 const feedbackClass = fState.isCorrect ? 'correct' : (fState.isPartial ? 'partial' : 'incorrect');
                 const feedbackIcon = fState.isCorrect ? 'fa-check-circle' : (fState.isPartial ? 'fa-adjust' : 'fa-times-circle');
                 const feedbackTitle = fState.isCorrect
@@ -213,11 +247,14 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
                 feedbackDiv.className = `elea-feedback ${feedbackClass}`;
                 feedbackDiv.setAttribute('role', 'status');
                 feedbackDiv.setAttribute('aria-live', 'polite');
+                // Sans « correction » dans la relecture, le cadre reste neutre : ni
+                // couleur ni verdict, seulement les retours s'ils sont montrés.
+                if (!retour.statut) feedbackDiv.className = 'elea-feedback neutral';
                 feedbackDiv.innerHTML = `
-                    <div class="elea-feedback-icon"><i class="fas ${feedbackIcon}"></i></div>
+                    ${retour.statut ? `<div class="elea-feedback-icon"><i class="fas ${feedbackIcon}"></i></div>` : ''}
                     <div class="elea-feedback-content">
-                        <div class="elea-feedback-title">${feedbackTitle}</div>
-                        <div class="elea-feedback-text">${formatMarkdown(fState.message)}</div>
+                        ${retour.statut ? `<div class="elea-feedback-title">${feedbackTitle}</div>` : ''}
+                        ${retour.message ? `<div class="elea-feedback-text">${formatMarkdown(fState.message)}</div>` : ''}
                     </div>
                 `;
                 card.appendChild(feedbackDiv);
@@ -235,14 +272,28 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
         actionBtn.type = 'button';
         actionBtn.setAttribute('data-focus-key', 'elea-action');
 
-        if (fState && fState.show) {
+        const derniere = currentQuestionIndex >= questions.length - 1;
+        if (differe) {
+            // Feedback différé : pas de « Vérifier ». On avance, puis on termine ; une
+            // fois le test terminé, la relecture ramène au résultat.
+            if (!derniere) {
+                actionBtn.textContent = tr('simulator_next_question', 'Question Suivante');
+                actionBtn.onclick = handleNext;
+            } else if (tentativeEnvoyee) {
+                actionBtn.textContent = tr('simulator_test_back_to_results', 'Retour au résultat');
+                actionBtn.onclick = afficherResultat;
+            } else {
+                actionBtn.textContent = tr('simulator_finish_test', 'Terminer le test');
+                actionBtn.onclick = handleFinish;
+            }
+        } else if (fState && fState.show) {
             if (fState.hintShown) {
                 actionBtn.textContent = tr('simulator_retry', 'Réessayer');
                 actionBtn.onclick = () => {
                     delete feedbackState[currentQuestionIndex];
                     rerender();
                 };
-            } else if (currentQuestionIndex < questions.length - 1) {
+            } else if (!derniere) {
                 actionBtn.textContent = tr('simulator_next_question', 'Question Suivante');
                 actionBtn.onclick = handleNext;
             } else {
@@ -254,9 +305,18 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
             actionBtn.onclick = () => handleCheck(qType, content, currentQuestionIndex);
         }
 
-        // Pas de bouton « Précédent » dans le pied de page : en mode prof le
-        // retour arrière se fait par la flèche ◀ de l'en-tête (consultation) ; en
-        // mode élève le test est strict (on répond pour avancer, pas de retour).
+        // « Précédent » en mode élève quand la navigation est libre (réglage du
+        // test) ou pendant la relecture ; en navigation séquentielle, pas de retour.
+        // En mode prof, le retour arrière passe par la flèche ◀ de l'en-tête.
+        if (!isTeacher && (navigationLibre || tentativeEnvoyee) && currentQuestionIndex > 0) {
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'elea-btn secondary';
+            prevBtn.type = 'button';
+            prevBtn.setAttribute('data-focus-key', 'elea-prev');
+            prevBtn.textContent = tr('simulator_previous', 'Précédent');
+            prevBtn.onclick = handlePrev;
+            footer.appendChild(prevBtn);
+        }
 
         footer.appendChild(actionBtn);
         // Le pied (« Vérifier » / « Question suivante »…) vit DANS la carte
@@ -307,8 +367,8 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
             if (fState && fState.show) {
                 opt.classList.add('disabled');
                 opt.setAttribute('tabindex', '-1');
-                if (ans.fraction > 0) opt.classList.add('should-be-selected');
-                if (isSelected && ans.fraction <= 0) opt.classList.add('wrong-selection');
+                if (retour.bonneReponse && ans.fraction > 0) opt.classList.add('should-be-selected');
+                if (retour.statut && isSelected && ans.fraction <= 0) opt.classList.add('wrong-selection');
             } else {
                 opt.setAttribute('tabindex', '0');
                 const choose = () => {
@@ -416,8 +476,8 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
                 item.classList.add('disabled');
                 item.setAttribute('tabindex', '-1');
                 const isCorrectVal = (opt.val === isTrueAnswer(content.answer.value));
-                if (isCorrectVal) item.classList.add('should-be-selected');
-                if (isSelected && !isCorrectVal) item.classList.add('wrong-selection');
+                if (retour.bonneReponse && isCorrectVal) item.classList.add('should-be-selected');
+                if (retour.statut && isSelected && !isCorrectVal) item.classList.add('wrong-selection');
             } else {
                 item.setAttribute('tabindex', '0');
                 const choose = () => {
@@ -515,9 +575,12 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
 
     // --- Logic Handlers ---
 
-    function handleCheck(type, content, idx) {
-        if (feedbackState[idx]?.show) return;
-
+    /**
+     * Corrige la réponse donnée à une question, sans rien afficher : fraction
+     * obtenue et message (retour général, retour de la réponse choisie, retour
+     * combiné « correct / partiel / incorrect »).
+     */
+    function evaluer(type, content, idx) {
         let fraction = 0;
         let message = content.feedback || '';
 
@@ -583,17 +646,6 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
         const isCorrect = fraction >= 1 - 1e-7;
         const isPartial = !isCorrect && fraction > 0;
 
-        // Gestion des hints
-        const hints = Array.isArray(content.hints) ? content.hints : [];
-        const nextHint = hintState[idx] || 0;
-
-        if (!isCorrect && nextHint < hints.length) {
-            feedbackState[idx] = { show: true, isCorrect: false, message: hints[nextHint], hintShown: true };
-            hintState[idx] = nextHint + 1;
-            rerender();
-            return;
-        }
-
         // Feedbacks combinés
         if (content.correctfeedback || content.partiallycorrectfeedback || content.incorrectfeedback) {
             let combinedMsg = '';
@@ -609,7 +661,26 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
             }
         }
 
-        feedbackState[idx] = { show: true, isCorrect, isPartial, fraction, message, hintShown: false };
+        return { isCorrect, isPartial, fraction, message };
+    }
+
+    /** « Vérifier » (interactif, immédiat) : corrige la question affichée. */
+    function handleCheck(type, content, idx) {
+        if (feedbackState[idx]?.show) return;
+        const resultat = evaluer(type, content, idx);
+
+        // Interactif avec plusieurs essais : chaque indice vaut un essai de plus,
+        // comme sur Moodle. En feedback immédiat, une seule vérification.
+        const hints = essaisMultiples && Array.isArray(content.hints) ? content.hints : [];
+        const nextHint = hintState[idx] || 0;
+        if (!resultat.isCorrect && nextHint < hints.length) {
+            feedbackState[idx] = { show: true, isCorrect: false, message: hints[nextHint], hintShown: true };
+            hintState[idx] = nextHint + 1;
+            rerender();
+            return;
+        }
+
+        feedbackState[idx] = { show: true, ...resultat, hintShown: false };
         rerender();
     }
 
@@ -630,21 +701,70 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
     }
 
     function handleFinish() {
+        // Feedback différé : « Terminer le test » envoie la tentative — toutes les
+        // questions sont corrigées d'un coup, comme sur la plateforme.
+        if (differe && !tentativeEnvoyee) {
+            questions.forEach((q, i) => {
+                feedbackState[i] = { show: true, ...evaluer(q.type, q.content || {}, i), hintShown: false };
+            });
+            tentativeEnvoyee = true;
+        }
+        afficherResultat();
+
+        // Test terminé : signale la complétion au parcours collection (mode
+        // élève uniquement), avec les points et crédits partiels du Test.
+        const scorePct = pourcentageTest(questions, feedbackState);
+        emitSimulatorCompleted(container, mode, scorePct);
+    }
+
+    /**
+     * Écran de fin. Ce qu'il montre suit « ce que l'élève peut revoir » juste après
+     * la tentative : la note, le feedback global de sa plage, la correction de
+     * chaque question et, si la relecture est ouverte, « Revoir mes réponses ».
+     */
+    function afficherResultat() {
+        const apres = (champ) => voit(champ, REVUE_JUSTE_APRES);
+        const pct = pourcentageTest(questions, feedbackState);
+        const format = new Intl.NumberFormat(document.documentElement.lang || undefined, { maximumFractionDigits: 2 });
+        const noteHtml = apres('marks')
+            ? `<p class="elea-test-end__grade">${tr('simulator_test_grade', 'Note')} : <strong>${format.format(reglages.grade * pct / 100)} / ${format.format(reglages.grade)}</strong></p>`
+            : '';
+        const plage = [...reglages.overallfeedback].reverse().find(t => pct >= t.from);
+        const globalHtml = apres('overallfeedback') && plage && plage.feedback.trim()
+            ? `<div class="elea-test-end__overall">${formatMarkdown(plage.feedback)}</div>` : '';
+        const correctionHtml = differe && apres('correctness')
+            ? `<ol class="elea-test-end__list">${questions.map((q, i) => {
+                const f = feedbackState[i] || {};
+                const etat = f.isCorrect ? 'correct' : (f.isPartial ? 'partial' : 'incorrect');
+                const libelle = f.isCorrect ? tr('simulator_correct', 'Correct !')
+                    : (f.isPartial ? tr('simulator_partial', 'Partiellement correct') : tr('simulator_incorrect', 'Incorrect'));
+                const nom = sanitizeSync((q.content && q.content.name) || `${tr('simulator_question', 'Question')} ${i + 1}`, 'STRICT');
+                return `<li class="elea-test-end__item elea-test-end__item--${etat}"><span>${nom}</span><span>${libelle}</span></li>`;
+            }).join('')}</ol>` : '';
+        const revoir = differe && apres('attempt');
+        const noteSeuleHtml = differe && !revoir
+            ? `<p class="elea-test-end__note">${tr('simulator_test_marks_only', 'Ce test ne montre à l’élève que sa note.')}</p>` : '';
+
         container.innerHTML = `
             <div class="elea-test-end" style="position: relative;">
                 <div class="elea-test-end-icon"><i class="fas fa-flag-checkered"></i></div>
                 <h3>${tr('simulator_test_finished', 'Test terminé !')}</h3>
+                ${noteHtml}${globalHtml}${correctionHtml}${noteSeuleHtml}
                 <p>${tr('simulator_test_preview_message', 'Ceci était une prévisualisation de votre activité.')}</p>
                 <div class="elea-actions">
-                    <button class="elea-btn primary" id="elea-restart-btn">${tr('simulator_restart', 'Recommencer')}</button>
+                    ${revoir ? `<button class="elea-btn secondary" id="elea-review-btn" type="button">${tr('simulator_test_review_answers', 'Revoir mes réponses')}</button>` : ''}
+                    <button class="elea-btn primary" id="elea-restart-btn" type="button">${tr('simulator_restart', 'Recommencer')}</button>
                 </div>
                 <div class="elea-test-end-fullscreen" style="position: absolute; top: 15px; right: 15px;"></div>
             </div>
         `;
         const endFS = container.querySelector('.elea-test-end-fullscreen');
         if (endFS) endFS.appendChild(createFullscreenButton(true));
+        const reviewBtn = container.querySelector('#elea-review-btn');
+        if (reviewBtn) reviewBtn.onclick = () => { currentQuestionIndex = 0; rerender(); };
         container.querySelector('#elea-restart-btn').onclick = () => {
             currentQuestionIndex = 0;
+            tentativeEnvoyee = false;
             for (let k in userAnswers) delete userAnswers[k];
             for (let k in feedbackState) delete feedbackState[k];
             for (let k in hintState) delete hintState[k];
@@ -652,11 +772,6 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
         };
 
         mathRenderer.renderMath(container);
-
-        // Test terminé : signale la complétion au parcours collection (mode
-        // élève uniquement), avec les points et crédits partiels du Test.
-        const scorePct = pourcentageTest(questions, feedbackState);
-        emitSimulatorCompleted(container, mode, scorePct);
     }
 
     render();
