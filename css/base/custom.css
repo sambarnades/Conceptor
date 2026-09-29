@@ -495,3 +495,6 @@ body.version-modal-open {
 }
 
 /* Formulaire vide : les filtres restent disponibles et gardent leurs couleurs. */
+
+/* Le lien vers la page de présentation (/decouvrir/) : une étoile caramel pour le repérer. */
+.footer .footer-discover i { color: #E8913C; }

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "quiz-caramel",
+    "module": "SingleChoiceSet",
+    "titre": "Caramel en 7 questions",
+    "description": "Sept questions pour faire le tour de Caramel, avec une seule bonne réponse à chaque fois."
+  },
+  {
+    "id": "vocabulaire",
+    "module": "DialogCards",
+    "titre": "Le vocabulaire de Caramel",
+    "description": "Huit cartes à retourner pour apprivoiser les mots de Caramel, de H5P à la Sucrerie."
+  },
+  {
+    "id": "en-une-phrase",
+    "module": "DragTheWords",
+    "titre": "Caramel en quelques phrases",
+    "description": "Un court texte à compléter en glissant chaque mot à sa place."
+  },
+  {
+    "id": "mots-meles",
+    "module": "FindTheWords",
+    "titre": "Cherchez les mots de Caramel",
+    "description": "Huit mots de l'univers Caramel cachés dans une grille de lettres."
+  }
+]

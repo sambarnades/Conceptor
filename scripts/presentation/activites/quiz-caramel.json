@@ -1,0 +1,77 @@
+{
+  "choices": [
+    {
+      "question": "Que faut-il faire avant de diffuser une activité préparée avec Caramel ?",
+      "answers": [
+        "La relire, et la corriger si besoin",
+        "Rien : l'IA ne se trompe jamais",
+        "La convertir en PDF"
+      ]
+    },
+    {
+      "question": "Combien coûte Caramel ?",
+      "answers": [
+        "Rien : il est gratuit, sans compte à créer",
+        "Un abonnement par établissement",
+        "Un paiement par activité générée"
+      ]
+    },
+    {
+      "question": "Sur quelles plateformes dépose-t-on une activité Caramel ?",
+      "answers": [
+        "Éléa, Magistère et Moodle",
+        "Uniquement sur Éléa",
+        "Sur aucune : il faut tout recopier à la main"
+      ]
+    },
+    {
+      "question": "Quel fichier obtient-on pour une activité H5P ?",
+      "answers": [
+        "Un fichier .h5p",
+        "Un fichier .pdf",
+        "Une vidéo .mp4"
+      ]
+    },
+    {
+      "question": "Que fabrique le mode « Un parcours » ?",
+      "answers": [
+        "Un cours complet (.mbz) qui enchaîne plusieurs activités",
+        "Une seule question",
+        "Un diaporama PowerPoint"
+      ]
+    },
+    {
+      "question": "Où partager ses activités avec des collègues ?",
+      "answers": [
+        "Sur la Sucrerie",
+        "Nulle part : elles restent sur mon ordinateur",
+        "Uniquement par clé USB"
+      ]
+    },
+    {
+      "question": "Sous quelle licence Caramel est-il publié ?",
+      "answers": [
+        "GNU GPL v3 : c'est un logiciel libre",
+        "Une licence propriétaire",
+        "Aucune licence"
+      ]
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 40,
+      "feedback": "Caramel a encore des choses à vous apprendre : les cartes de vocabulaire ci-dessous sont un bon point de départ."
+    },
+    {
+      "from": 41,
+      "to": 80,
+      "feedback": "Vous connaissez déjà bien Caramel : il ne reste que quelques détails à découvrir."
+    },
+    {
+      "from": 81,
+      "to": 100,
+      "feedback": "Sans faute ! Vous êtes prêt à préparer vos propres activités."
+    }
+  ]
+}

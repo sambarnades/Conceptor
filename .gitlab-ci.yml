@@ -115,7 +115,7 @@ pages:
     # ------------------------------------------------------------------
     - mkdir -p .public
     - |
-      cp -r assets css js index.html .public/
+      cp -r assets css js decouvrir index.html .public/
       cp _headers .public/ 2>/dev/null || true   # headers de sécurité Pages (audit S07)
       rm -rf .public/tests .public/docs .public/scripts
 

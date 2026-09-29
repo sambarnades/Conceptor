@@ -1,0 +1,51 @@
+{
+  "taskDescription": "Glissez chaque mot à sa place.",
+  "textField": "Caramel prépare des activités *interactives* pour Éléa, Magistère et *Moodle*. L'IA *propose*, l'enseignant *relit* et décide. Une fois prêtes, les activités se partagent sur la *Sucrerie*.",
+  "checkAnswer": "Vérifier",
+  "tryAgain": "Recommencer",
+  "showSolution": "Afficher la solution",
+  "behaviour": {
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "instantFeedback": false,
+    "enableCheckButton": true
+  },
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 40,
+      "feedback": "Relisez les phrases à voix haute : le sens de chacune guide vers le bon mot."
+    },
+    {
+      "from": 41,
+      "to": 80,
+      "feedback": "Presque : un ou deux mots restent à déplacer."
+    },
+    {
+      "from": 81,
+      "to": 100,
+      "feedback": "Bravo : chaque mot est à sa place."
+    }
+  ],
+  "media": {
+    "disableImageZooming": false
+  },
+  "dropZoneIndex": "Zone de dépôt @index.",
+  "empty": "La zone de dépôt @index est vide.",
+  "contains": "La zone de dépôt @index contient un élément déplaçable @draggable.",
+  "tipLabel": "Indice",
+  "correctText": "Correct !",
+  "incorrectText": "Incorrect !",
+  "resetDropTitle": "Reparamétrer le déplacement",
+  "resetDropDescription": "Etes-vous certain de vouloir reparamétrer cet élément déplaçable ?",
+  "grabbed": "L'élément déplaçable est saisi.",
+  "cancelledDragging": "Annuler le déplacement.",
+  "correctAnswer": "Réponse correcte :",
+  "feedbackHeader": "Commentaire de retour",
+  "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+  "submitAnswer": "Valider",
+  "ariaDraggableIndex": "@index sur @count éléments.",
+  "a11yCheck": "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+  "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+  "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+}

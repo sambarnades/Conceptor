@@ -78,6 +78,11 @@ tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node
                  des réponses d'IA enregistrées, studio de voix off au prompteur, table de montage,
                  habillage (voir son README). Ses sorties (voix, vidéos) restent dans
                  `tests/.video-demo/`, exclu de git.
+                 `decouvrir/` = la page de présentation publique (/decouvrir/, liée au pied de page) :
+                 ses vidéos, tutoriels et articles viennent de `decouvrir/ressources.json` (mode
+                 d'emploi dans le fichier) ; ses activités à essayer sont de vrais .h5p régénérés par
+                 `node scripts/generer-demos-presentation.mjs` (sources `scripts/presentation/`,
+                 sortie `assets/presentation/activites/`). Publiée par le `cp` du job `pages`.
                  `scripts/captures-interface.mjs` refait les captures d'écran du tutoriel et du
                  wiki (parcours réel du banc, réseau coupé) ; `scripts/aide-parcours.mjs` écrit ce
                  que Caramelia sait des parcours (trames, modules, conseils) dans son aide

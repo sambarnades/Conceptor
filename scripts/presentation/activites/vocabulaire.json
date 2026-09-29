@@ -1,0 +1,45 @@
+{
+  "title": "Le vocabulaire de Caramel",
+  "description": "Retournez chaque carte pour en découvrir la définition.",
+  "dialogs": [
+    {
+      "text": "H5P",
+      "answer": "Un format libre d'activités interactives (quiz, textes à trous, cartes…) que l'on dépose sur Éléa, Magistère ou Moodle."
+    },
+    {
+      "text": ".mbz",
+      "answer": "Une sauvegarde de cours Moodle : on la restaure sur la plateforme pour y retrouver les activités."
+    },
+    {
+      "text": "Éléa",
+      "answer": "La plateforme Moodle proposée aux enseignants de nombreuses académies."
+    },
+    {
+      "text": "Magistère",
+      "answer": "La plateforme de formation des personnels de l'Éducation nationale, bâtie sur Moodle."
+    },
+    {
+      "text": "Parcours",
+      "answer": "Plusieurs activités enchaînées dans un même cours, qui s'ouvrent au fil de la progression."
+    },
+    {
+      "text": "Sucrerie",
+      "answer": "La bibliothèque partagée des activités créées avec Caramel : on y dépose, on y pioche."
+    },
+    {
+      "text": "Caramelia",
+      "answer": "L'assistante intégrée à Caramel, qui répond aux questions sur l'outil."
+    },
+    {
+      "text": "Relecture",
+      "answer": "L'IA propose, l'enseignant décide : chaque activité se relit et se corrige dans l'éditeur avant d'être diffusée."
+    }
+  ],
+  "mode": "normal",
+  "behaviour": {
+    "disableBackwardsNavigation": false,
+    "scaleTextNotCard": true,
+    "maxProficiency": 5,
+    "quickProgression": false
+  }
+}

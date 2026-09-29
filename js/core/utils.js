@@ -650,6 +650,12 @@ export function setupEventListeners() {
         closeLegalBtn.addEventListener('click', closeLegalModal);
     }
 
+    // La page de présentation (/decouvrir/) renvoie ici avec #mentions-legales : on les ouvre.
+    if (legalMentionsLink && location.hash === '#mentions-legales') {
+        const ouvrir = () => legalMentionsLink.click();
+        if (document.readyState === 'complete') ouvrir(); else window.addEventListener('load', ouvrir, { once: true });
+    }
+
     window.addEventListener('click', (e) => {
         if (e.target === legalMentionsModal) {
             closeLegalModal();
