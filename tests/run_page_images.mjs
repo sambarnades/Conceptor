@@ -14,7 +14,8 @@
  *   • Livre seul : mod_book / chapter / identifiant du chapitre ;
  *   • parcours : la Page et le Livre d'un cours gardent leurs images (octets
  *     rangés dans `carte.medias` par l'atelier, joints après l'assemblage) ;
- *   • export en document : l'image envoyée remplace l'adresse du bloc ;
+ *   • export en document : l'image envoyée remplace l'adresse du bloc ET chaque
+ *     bloc illustré, notamment `#13_monument_sheet_long`, devient une section image ;
  *   • éditeur : le champ est greffé juste après `img_src`, sans toucher au
  *     fichier partagé avec La Sucrerie.
  *
@@ -224,6 +225,11 @@ async function verifier() {
         const { hydrateImagesForExport } = await import('/js/ui/notifications.js');
         const h = await hydrateImagesForExport(null, page);
         ok('hydrateImagesForExport (voie des boutons DOCX/ODT/PDF) applique le remplacement', h.blocks[i13].data.img_src === A.dataURL);
+        const { formatContentForDocument } = await import('/js/export/document-formatter.js');
+        const document = await formatContentForDocument('Page', h, { keepLatex: true });
+        const image13 = document.sections.find(s => s.type === 'image' && s.url === A.dataURL && s.alt === h.blocks[i13].data.img_alt);
+        ok('#13_monument_sheet_long devient une image dans les DOCX/ODT/PDF', !!image13,
+            JSON.stringify(document.sections.filter(s => s.type === 'image').map(s => [s.url?.slice(0, 32), s.alt])));
     });
 
     // --- Éditeur ------------------------------------------------------------
@@ -271,6 +277,14 @@ const CONTRE_EPREUVES = [
         vers: 'const contenu = carte.contenu;',
         rouges: ['Parcours'],
         verts: ['Page seule', 'Livre seul'],
+    },
+    {
+        nom: 'formatage documentaire du bloc #13 désarmé (document-formatter.js)',
+        fichier: 'js/export/document-formatter.js',
+        de: "case '#13_monument_sheet_long':",
+        vers: "case '#13_monument_sheet_long_desactive':",
+        rouges: ['Document'],
+        verts: ['Page seule', 'Livre seul', 'Parcours'],
     },
 ];
 

@@ -21,6 +21,7 @@
  */
 
 import { t, currentLang } from '../core/translation.js';
+import { langueEnseignee } from '../core/content-language.js';
 import { CONFIG } from './config.js';
 import { calibrer } from './calibrage.js';
 import { modulesDisponibles, nomModule, moduleDeTrame } from './activity-router.js';
@@ -36,7 +37,13 @@ const CORPUS_MAX = 12000;
  * `prompt_regles_pedagogiques_communes`, que suivent les cartes. Sans elle, un parcours
  * d'anglais sortait en français (retour de professeurs d'anglais, 29 sept. 2026).
  */
-const regleLangue = langue => `- Rédige TOUS les textes en ${langue}, sauf pour une séquence de langue vivante (anglais, espagnol, allemand…, DNL, section européenne) : ce que lit l’élève — titres, contenus, questions, notions pivots — est alors dans la langue enseignée, au niveau du public ; les objectifs pédagogiques, destinés à l’enseignant, et les consignes pour des débutants peuvent rester en ${langue}.`;
+const regleLangue = (langue, contexte = {}) => {
+    const enseignee = langueEnseignee(contexte);
+    if (enseignee) {
+        return `- LANGUE OBLIGATOIRE : rédige en ${enseignee} TOUS les textes lus par l’élève — titres, introductions, contenus, questions, réponses, retours et notions pivots. Cette règle prime la langue de l’interface et les exemples. Garde les clés JSON, identifiants et valeurs d’énumération inchangés. Les objectifs pédagogiques destinés à l’enseignant peuvent rester en ${langue}.`;
+    }
+    return `- Rédige TOUS les textes en ${langue}.`;
+};
 
 /** Noms de langue pour la consigne de rédaction (le modèle lit mieux l'anglais ici). */
 const LANGUES = {
@@ -257,7 +264,7 @@ export function construirePromptPlan(draft) {
         '- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.',
         '- Les durées sont celles d\'un élève moyen, sans les gonfler pour remplir les séances. Repères : texte court à lire 5 à 10 min ; exercice auto-corrigé (vrai/faux, texte à trous, association) 3 à 8 min ; quiz de plusieurs questions ou test 10 à 20 min ; production écrite, projet ou échange 15 à 30 min.',
         ...reglesDeRedaction(ctx),
-        regleLangue(langue),
+        regleLangue(langue, ctx),
         '- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.',
         '- La consigne doit correspondre au geste réellement permis par le module décrit dans le catalogue. Pour faire ORDONNER des événements, utiliser SortParagraphs ; Timeline sert à les CONSULTER.',
         '- Les activités exigeant une vidéo ou une image ne sont proposées que si la demande les justifie explicitement. La personne joindra la source sur la carte ; ne jamais inventer un lien ou prétendre avoir déjà analysé ce média.',
@@ -570,7 +577,7 @@ export function construirePromptModuleParcours(draft, carte) {
             : []),
         '- Ancre tout dans le sujet et les notions du parcours : rien de générique.',
         `- ${CONTENU_SUIT_LA_COMMANDE}`,
-        regleLangue(langue),
+        regleLangue(langue, ctx),
     ].join('\n'));
 
     lignes.push('\n## FORMAT DE SORTIE');

@@ -278,7 +278,7 @@ audience: εκπαιδευτικοί
 
 ### Χρήσιμοι σύνδεσμοι
 
-- **Άδεια**: GNU GPL v3.0 ή νεότερη — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **Άδεια**: GNU AGPL v3.0 ή νεότερη — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **Αναφορά σφάλματος**: https://forge.apps.education.fr/caramel/caramel/-/issues
 - **Πηγαίος κώδικας**: https://forge.apps.education.fr/caramel/caramel
 - **Changelog**: https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

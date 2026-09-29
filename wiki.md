@@ -1162,7 +1162,7 @@ portugais, arabe, chinois, japonais, grec et **breton**. Contribuez aux traducti
 |-----------|------|
 | 📖 README | [Documentation technique complète](https://forge.apps.education.fr/caramel/caramel/-/blob/main/README.md) |
 | 📝 CHANGELOG | [Journal des versions](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG) |
-| ⚖️ LICENCE | [GNU AGPLv3](https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE) |
+| ⚖️ LICENCE | [GNU AGPL v3.0 ou ultérieure](https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE) |
 | 🌐 Site web | [Application en ligne](https://caramel.forge.apps.education.fr/) |
 
 **Pour aller plus loin :**
@@ -1175,16 +1175,20 @@ portugais, arabe, chinois, japonais, grec et **breton**. Contribuez aux traducti
 
 # ⚖️ Licence
 
-Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AGPLv3)**.
+Caramel est distribué sous **licence GNU AGPL v3.0 ou ultérieure**.
 
-| ✅ Vous pouvez | ⚠️ Vous devez |
-|----------------|---------------|
-| Utiliser gratuitement (personnel, professionnel, commercial) | Citer les auteurs (Gauthier REMANDE et Emmanuel GAUNARD) |
-| Modifier le code source | Partager vos modifications sous AGPLv3 |
-| Redistribuer (modifié ou non) | Rendre le code source accessible si déployé en ligne |
-| Héberger sur votre serveur | |
+Vous pouvez utiliser, modifier et redistribuer le logiciel dans les conditions de
+cette licence. Conservez les notices de droit d’auteur et de licence ; fournissez
+le code source dans les cas prévus, notamment lors de la redistribution ou de la
+mise à disposition d’une version modifiée par un réseau.
+
+Les bibliothèques, images et autres ressources tierces gardent leurs propres
+licences. Les contenus pédagogiques créés ou importés avec Caramel ne sont pas
+automatiquement placés sous AGPL : respectez les droits des textes et médias
+employés ainsi que la licence choisie pour leur publication.
 
 ---
+
 
 # 📅 Versions
 
@@ -1202,7 +1206,7 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 - **v6.1.1** : 🎬 **Transcription des vidéos longues fiabilisée**. Les transcriptions qui dépassaient une minute (repli audio d'une vidéo YouTube sans sous-titres, transcription d'un fichier entier, vidéos longues découpées en morceaux) échouaient avec une erreur réseau trompeuse et renvoyaient au collage manuel ; elles s'exécutent désormais en arrière-plan, avec suivi de l'avancement, et aboutissent sans coupure — le bouton « Arrêter » restant disponible à tout moment.
 - **v6.1.0** : 🧩 **Activités H5P à jour avec les nouvelles plateformes éléa**. Caramel s'aligne sur la dernière génération de librairies H5P déployée sur éléa : cela corrige le **bouton de navigation « Suivant / Précédent » qui apparaissait vide** dans les Quiz et les Livres interactifs récemment exportés, et garantit que la prévisualisation reflète exactement le rendu final. Les **mentions légales** affichent désormais, dans une liste dépliable, toutes les versions de librairies H5P utilisées.
 - **v6.0.2** : 🎬 **Vidéo interactive — toutes vos questions sont conservées**. Le contenu généré n'est plus jamais tronqué après coup : un plafond automatique ramenait silencieusement les vidéos courtes à 4 questions (il fallait renseigner le Mode Avancé pour récupérer ses propres questions). Désormais le nombre de questions n'est qu'une **recommandation faite à l'IA** ; tout ce qui est produit — génération « un clic » ou collage d'un JSON d'IA externe — est gardé, et l'enseignant supprime à la main ce qu'il ne veut pas.
-- **v6.0.1** : ⚖️ **Licence de dépôt par défaut sur La Sucrerie : CC BY-SA 4.0** (au lieu de CC BY-NC-SA 4.0). L'abandon de la clause « non commercial » rend les ressources partagées compatibles avec les autres projets libres en CC BY-SA, licence recommandée sur la Forge ; la clause « partage à l'identique » suffit à empêcher la réappropriation marchande. Les dépôts antérieurs gardent leur licence.
+- **v6.0.1** : ⚖️ **Licence de dépôt par défaut sur La Sucrerie : CC BY-SA 4.0** (au lieu de CC BY-NC-SA 4.0). L'abandon de la clause « non commercial » rend les ressources partagées compatibles avec les autres projets libres en CC BY-SA, licence recommandée sur la Forge ; la licence permet aussi les usages commerciaux, avec attribution et partage des adaptations dans les mêmes conditions. Les dépôts antérieurs gardent leur licence.
 - **v6.0.0** : 🎉 **Vidéo interactive** (lien vidéo → transcription → questions placées par l'IA) et **Livre interactif** (livre multi-chapitres mêlant contenus et exercices). 🎙️ **Transcription audio et vidéo** dans le Mode Avancé (jusqu'à 90 min, via Albert/DINUM) + **import d'une page web** par lien. ♻️ **Génération « par lots »** automatique pour produire de nombreux éléments sans buter sur la limite de temps des appels IA. 📄 **Export PDF haute fidélité** (rendu serveur à partir de l'ODT). 🤖 **Caramelia**, l'assistante intégrée. 🧠 Nouveau modèle **Mistral Small 4 (119B)** par défaut.
 - **v5.3.0** : 🤖 **Caramelia**, le chatbot d'assistance qui remplit les champs et pilote l'interface à votre place. Refonte interne des simulateurs de prévisualisation (chargement plus rapide).
 - **v5.2.2** : 🚀 **Nouveau modèle Qwen 3.6 (35B)** — beaucoup plus rapide que Qwen 3.5 sur les générations longues, tout en conservant l'excellente qualité. 🔒 **DOMPurify 3.4.1** (mise à jour de sécurité de la bibliothèque de sanitisation HTML, aucune régression : comportement identique à la 3.3.3 sur 33 cas de test).

@@ -273,7 +273,7 @@ Savet eo an arload evit bezañ kenglotus gant un implij war urzhiataer, gant ar 
 
 ### Liammoù talvoudus
 
-- **Aotre-implijout** : GNU GPL v3.0 pe nevesoc'h — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **Aotre-implijout** : GNU AGPL v3.0 pe nevesoc'h — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **Menegiñ ur bug** : https://forge.apps.education.fr/caramel/caramel/-/issues
 - **Tarzh-kod** : https://forge.apps.education.fr/caramel/caramel
 - **Changelog** : https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

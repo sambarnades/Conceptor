@@ -1,0 +1,208 @@
+{
+  "_mode_emploi": [
+    "Catalogue éditorial des publications extérieures ou des interventions consacrées à Caramel et à la Sucrerie.",
+    "Les entrées sont classées de la plus récente à la plus ancienne ; celles dont la date exacte n'est pas connue viennent à la fin.",
+    "type : conference | video | article | publication. La description explique l'intérêt de la ressource plutôt que de recopier son titre.",
+    "Ne conserver que les liens consultables sans compte. Vérifier le titre, la source et la date avant tout ajout.",
+    "integration est réservé aux lecteurs dont l'adresse d'intégration a été vérifiée."
+  ],
+  "mentions": [
+    {
+      "type": "article",
+      "titre": "Caramel arrive directement dans Éléa",
+      "description": "La documentation nationale annonce l'ajout de Caramel au menu d'édition rapide : une activité peut rejoindre un parcours sans téléchargement intermédiaire.",
+      "source": "Équipe nationale Éléa",
+      "date": "2026-09-08",
+      "lien": "https://moodle-doc.forge.apps.education.fr/elea/nouveautes/2026/09/08/Sprint43/"
+    },
+    {
+      "type": "article",
+      "titre": "Caramel intégré dans Magistère",
+      "description": "Le journal des nouveautés de Magistère présente Caramel parmi les outils d'IA accessibles depuis l'édition rapide des parcours.",
+      "source": "Équipe nationale Magistère",
+      "date": "2026-09-08",
+      "lien": "https://moodle-doc.forge.apps.education.fr/magistere/nouveautes/"
+    },
+    {
+      "type": "article",
+      "titre": "Caramel testé sous trois angles",
+      "description": "Une prise en main indépendante qui distingue les usages rapides, accompagnés et approfondis, puis aborde la diffusion et les limites de l'outil.",
+      "source": "Alegriagogia — Sonia Mangin",
+      "date": "2026-09-07",
+      "lien": "https://www.alegriagogia.fr/caramel-generateur-jeux-interactifs-h5p/"
+    },
+    {
+      "type": "article",
+      "titre": "Caramel dans la rubrique de l'IAN mathématiques",
+      "description": "L'académie de Normandie revient sur l'intégration de Caramel dans Éléa et son intérêt pour créer des activités sans quitter la plateforme.",
+      "source": "Académie de Normandie",
+      "date": "2026-09",
+      "lien": "https://mathematiques.ac-normandie.fr/LA-RUBRIQUE-DE-L-IAN-SEPTEMBRE-2026"
+    },
+    {
+      "type": "video",
+      "titre": "La Sucrerie au MoodleMoot 2026",
+      "description": "La mutualisation des activités produites avec Caramel présentée lors du MoodleMoot francophone 2026 à Tours.",
+      "source": "MoodleMoot francophone",
+      "date": "2026-07",
+      "lien": "https://moodlemoot.ubicast.tv/permalink/v126d506dbfdb1pxp314/",
+      "integration": "https://moodlemoot.ubicast.tv/permalink/v126d506dbfdb1pxp314/iframe/"
+    },
+    {
+      "type": "publication",
+      "titre": "Caramel dans les Cahiers ÉduNum Économie et gestion",
+      "description": "Le cahier disciplinaire n° 64 présente Caramel comme un assistant de création d'activités interactives, libre et sans compte.",
+      "source": "Éduscol",
+      "date": "2026-04",
+      "lien": "https://eduscol.education.gouv.fr/sites/default/files/document/cahier-edunum-economie-gestion-64-avril-2026-126446.pdf"
+    },
+    {
+      "type": "article",
+      "titre": "Création de ressources assistée par une IA",
+      "description": "Une présentation académique centrée sur la simplicité, la confidentialité et la place de l'enseignant dans la relecture des productions.",
+      "source": "DRANE de Lyon",
+      "date": "2026-04",
+      "lien": "https://drane.ac-lyon.fr/spip/Creation-de-ressources-assistee"
+    },
+    {
+      "type": "conference",
+      "titre": "Quartier libre : 23 minutes avec Caramel",
+      "description": "Présentation du projet, démonstration pédagogique, fonctionnement technique et première ressourcerie de la Forge, avec les deux auteurs.",
+      "source": "Académie de Nantes",
+      "date": "2026-03-30",
+      "duree": "23 min",
+      "lien": "https://pedagogie.ac-nantes.fr/poles-et-actions-educatives/numerique-et-enseignement/pilotage-et-formations/webinaires/webinaires-numeriques/quartier-libre-avril-2026-04-caramel",
+      "integration": "https://podeduc.apps.education.fr/video/139355-quartier-libre-2026-04/?is_iframe=true"
+    },
+    {
+      "type": "conference",
+      "titre": "Caramel au MiniMoot de Brest",
+      "description": "Une démonstration de Caramel pendant la rencontre Moodle de Brest, à retrouver de 1 h 25 à 1 h 53 dans la captation.",
+      "source": "MiniMoot Brest",
+      "date": "2026-03-30",
+      "duree": "28 min",
+      "lien": "https://www.youtube.com/live/LbBMKHTpVak?si=KTQ-J55WCadlFpRV&t=5131",
+      "integration": "https://www.youtube-nocookie.com/embed/LbBMKHTpVak?start=5131"
+    },
+    {
+      "type": "video",
+      "titre": "Générer des activités H5P et Moodle avec Caramel",
+      "description": "Un tutoriel qui parcourt le choix de l'activité, l'ajout de documents, la génération, l'édition puis le téléchargement.",
+      "source": "Le Blog du Prof TIM",
+      "date": "2026-03-23",
+      "lien": "https://blogtim.fr/2026/03/23/tuto-video-generer-des-activites-h5p-et-moodle-avec-caramel-de-la-forge-des-apps/",
+      "integration": "https://www.youtube-nocookie.com/embed/ssHqFsGZ-C0"
+    },
+    {
+      "type": "article",
+      "titre": "Caramel et HAPI : deux outils pour produire des activités",
+      "description": "La DRANE de Corse détaille les formats proposés, les deux modes de création et plusieurs scénarios d'usage pédagogique.",
+      "source": "DRANE de Corse",
+      "date": "2026-02-10",
+      "lien": "https://drane.ac-corse.fr/2026/02/10/caramel-et-hapi/"
+    },
+    {
+      "type": "article",
+      "titre": "Créer des activités H5P à partir de ses documents",
+      "description": "Une présentation indépendante et détaillée du fonctionnement, des usages disciplinaires, de la confidentialité et des limites à connaître.",
+      "source": "Les Outils Tice — Fidel Navamuel",
+      "date": "2026-02-08",
+      "lien": "https://outilstice.com/caramel-creer-activites-h5p-ia/"
+    },
+    {
+      "type": "publication",
+      "titre": "Caramel dans la Lettre ÉduNum Ressources n° 20",
+      "description": "La lettre nationale présente le projet, son recours à une IA souveraine et les formats H5P et Éléa qu'il produit.",
+      "source": "Éduscol",
+      "date": "2026-02",
+      "lien": "https://eduscol.education.fr/document/71102/download"
+    },
+    {
+      "type": "article",
+      "titre": "IA et pédagogie : un usage concret pour la mémorisation",
+      "description": "Un retour d'enseignant sur la transformation d'un cours en activités réutilisables dans Éléa, le temps de prise en main et le gain obtenu ensuite.",
+      "source": "EdTechActu",
+      "date": "2026-01-28",
+      "lien": "https://edtechactu.com/digital-learning/ia-et-pedagogie-quen-pensent-vraiment-les-enseignants/"
+    },
+    {
+      "type": "publication",
+      "titre": "Caramel dans la lettre numérique d'histoire-géographie",
+      "description": "Une sélection académique de ressources numériques pour l'enseignement de l'histoire-géographie au début de l'année 2026.",
+      "source": "Académie de Clermont-Ferrand",
+      "date": "2026-01",
+      "lien": "https://pedagogie.ac-clermont.fr/disciplines/histoire-geographie/wp-content/uploads/sites/3/2026/02/Lettre-dinfo-janvier-2026.pdf"
+    },
+    {
+      "type": "article",
+      "titre": "Tout savoir — ou presque — sur Caramel",
+      "description": "Un article très complet : philosophie, modes de génération, usages, tutoriels, intégration à Moodle et alternatives sans plateforme.",
+      "source": "Sylvain Godmé",
+      "date": "2025-11-16",
+      "lien": "https://codimd.apps.education.fr/s/95V3OYJGB"
+    },
+    {
+      "type": "video",
+      "titre": "Des activités numériques en quelques secondes",
+      "description": "Nicolas Gaube découvre Caramel dans une vidéo dynamique destinée aux enseignants qui veulent créer rapidement une première activité.",
+      "source": "Un prof heureux — Nicolas Gaube",
+      "date": "2025-11",
+      "lien": "https://www.youtube.com/watch?v=Nc3qS_YDb5M",
+      "integration": "https://www.youtube-nocookie.com/embed/Nc3qS_YDb5M"
+    },
+    {
+      "type": "video",
+      "titre": "Découvrir Caramel : activités H5P et XML",
+      "description": "Une prise en main pas à pas de la création d'activités réutilisables dans Éléa, Magistère ou Moodle.",
+      "source": "Sciences & Technologies — Vincent Schoeffter",
+      "date": "2025-10-21",
+      "duree": "7 min 03",
+      "lien": "https://tube-sciences-technologies.apps.education.fr/w/nDEHNRJ1EZsk2PKHa9sjSH",
+      "integration": "https://tube-sciences-technologies.apps.education.fr/videos/embed/nDEHNRJ1EZsk2PKHa9sjSH"
+    },
+    {
+      "type": "article",
+      "titre": "L'IA au goût de Caramel",
+      "description": "La DRANE de Grenoble présente le projet, ses garanties, ses modes de génération et les ressources disponibles pour démarrer.",
+      "source": "DRANE de Grenoble",
+      "lien": "https://dane.web.ac-grenoble.fr/intelligence-artificielle-0/lia-au-gout-de-caramel"
+    },
+    {
+      "type": "article",
+      "titre": "Créer une activité H5P en quelques minutes",
+      "description": "Un pas-à-pas disciplinaire qui insiste sur l'édition, l'intégration dans Éléa et la possibilité de travailler uniquement à partir de ses fichiers.",
+      "source": "SES — Académie de Grenoble",
+      "lien": "https://ses-pedagogie.web.ac-grenoble.fr/elea/creer-une-activite-interactive-h5p-en-quelques-minutes"
+    },
+    {
+      "type": "article",
+      "titre": "Caramel : créer simplement des activités interactives",
+      "description": "Une présentation académique de Caramel et de ses principaux usages pour produire des activités H5P ou Éléa.",
+      "source": "DRANE de Martinique",
+      "lien": "https://site.ac-martinique.fr/drane/?p=6308"
+    },
+    {
+      "type": "video",
+      "titre": "Présentation de Caramel par ses auteurs",
+      "description": "Gauthier Remande et Emmanuel Gaunard expliquent l'origine du projet et montrent comment préparer une activité.",
+      "source": "Tube numérique éducatif",
+      "lien": "https://tube-numerique-educatif.apps.education.fr/w/dXauyvNeboox5zBhNSWfVN",
+      "integration": "https://tube-numerique-educatif.apps.education.fr/videos/embed/dXauyvNeboox5zBhNSWfVN"
+    },
+    {
+      "type": "video",
+      "titre": "Caramel résumé avec NotebookLM",
+      "description": "Une présentation synthétique du projet sous la forme d'un résumé vidéo généré à partir de sa documentation.",
+      "source": "Tube numérique éducatif",
+      "lien": "https://tube-numerique-educatif.apps.education.fr/w/k9wg9JQRhwnkEhakQiAmCy"
+    },
+    {
+      "type": "video",
+      "titre": "Caramel dans la Communauté des talents",
+      "description": "Une présentation de l'outil dans un rendez-vous consacré aux initiatives et pratiques partagées par les enseignants.",
+      "source": "La Communauté des talents",
+      "lien": "https://youtu.be/CRg3IYb7C3c",
+      "integration": "https://www.youtube-nocookie.com/embed/CRg3IYb7C3c"
+    }
+  ]
+}

@@ -234,6 +234,19 @@ ok(canon.questions[0].content.answer.value === false, 'truefalse "false" (chaîn
 ok(canon.questions[1].content.answers.filter(a => a.fraction === 100).length === 1, 'multichoice single → exactement 1 réponse à 100');
 ok(canon.questions[2].content.answer.number === '0.83', 'numérique « 0,83 » → « 0.83 » (virgule→point)');
 ok(canon.bank_name === 'B' && canon.bank_description === 'D', 'bank_name/description préservés');
+const feedbackIACanon = canonicalizeTestModel({ ...rawModel, overallfeedback: [
+  { from: 0, to: 25, feedback: 'Reprends la chronologie.' },
+  { from: 26, to: 50, feedback: 'Repère les causes et les conséquences.' },
+  { from: 51, to: 75, feedback: 'Consolide les notions encore hésitantes.' },
+  { from: 76, to: 100, feedback: 'Tu maîtrises les repères essentiels.' },
+] });
+ok(feedbackIACanon.quiz_settings?.overallfeedback?.length === 4
+  && !('overallfeedback' in feedbackIACanon) && !('overallFeedback' in feedbackIACanon),
+  'feedback global IA : replié dans quiz_settings, sans doublon à la racine');
+const feedbackIAXml = buildQuizBackup(feedbackIACanon, ctx, TS).quizXml;
+ok((feedbackIAXml.match(/<feedbacktext>[^<]+<\/feedbacktext>/g) || []).length === 4
+  && feedbackIAXml.includes('Reprends la chronologie.'),
+  'feedback global IA : les quatre messages atteignent quiz.xml');
 // BACKUP depuis le modèle canonicalisé : réponse correcte = Faux (value=false) → Faux fraction 1, Vrai 0.
 const canonBackup = buildQuizBackup(canon, ctx, TS);
 const tf = (canonBackup.questionsXml.match(/<plugin_qtype_truefalse_question>[\s\S]*?<\/plugin_qtype_truefalse_question>/) || [''])[0];

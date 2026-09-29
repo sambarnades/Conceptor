@@ -1,7 +1,7 @@
 {
   "choices": [
     {
-      "question": "Que faut-il faire avant de diffuser une activité préparée avec Caramel ?",
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 1 sur 7</span>Que faut-il faire avant de diffuser une activité préparée avec Caramel ?",
       "answers": [
         "La relire, et la corriger si besoin",
         "Rien : l'IA ne se trompe jamais",
@@ -10,7 +10,7 @@
       "subContentId": "32d54ef3-49a5-4343-ad62-af912c2c6a0d"
     },
     {
-      "question": "Combien coûte Caramel ?",
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 2 sur 7</span>Combien coûte Caramel ?",
       "answers": [
         "Rien : il est gratuit, sans compte à créer",
         "Un abonnement par établissement",
@@ -19,7 +19,7 @@
       "subContentId": "ccccf8f6-c199-47f7-8b9b-99fc6141afaf"
     },
     {
-      "question": "Sur quelles plateformes dépose-t-on une activité Caramel ?",
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 3 sur 7</span>Sur quelles plateformes dépose-t-on une activité Caramel ?",
       "answers": [
         "Éléa, Magistère et Moodle",
         "Uniquement sur Éléa",
@@ -28,7 +28,7 @@
       "subContentId": "501ffdec-5a5e-4071-a49e-8391d47cf7a2"
     },
     {
-      "question": "Quel fichier obtient-on pour une activité H5P ?",
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 4 sur 7</span>Quel fichier obtient-on pour une activité H5P ?",
       "answers": [
         "Un fichier .h5p",
         "Un fichier .pdf",
@@ -37,7 +37,7 @@
       "subContentId": "d3e0a869-a8aa-49ce-a74a-c09cadb2639c"
     },
     {
-      "question": "Que fabrique le mode « Un parcours » ?",
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 5 sur 7</span>Que fabrique le mode « Un parcours » ?",
       "answers": [
         "Un cours complet (.mbz) qui enchaîne plusieurs activités",
         "Une seule question",
@@ -46,7 +46,7 @@
       "subContentId": "87409f78-2dae-4b74-ad67-268dea3a1c33"
     },
     {
-      "question": "Où partager ses activités avec des collègues ?",
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 6 sur 7</span>Où partager ses activités avec des collègues ?",
       "answers": [
         "Sur la Sucrerie",
         "Nulle part : elles restent sur mon ordinateur",
@@ -55,9 +55,9 @@
       "subContentId": "d7104abe-a9a9-4754-9694-eeb317fbb8c7"
     },
     {
-      "question": "Sous quelle licence Caramel est-il publié ?",
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 7 sur 7</span>Sous quelle licence Caramel est-il publié ?",
       "answers": [
-        "GNU GPL v3 : c'est un logiciel libre",
+        "GNU AGPL v3.0 ou ultérieure : c'est un logiciel libre",
         "Une licence propriétaire",
         "Aucune licence"
       ],

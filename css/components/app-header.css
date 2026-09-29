@@ -1,0 +1,311 @@
+/* Barre commune à Caramel et à sa page de découverte. */
+.app-bar {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px 20px;
+    /* Padding vertical réduit */
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header, 1100);
+    /* Au-dessus du bandeau d'urgence et du dropdown */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    height: 50px;
+    /* Taille du logo augmentée */
+    width: auto;
+}
+
+.title-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-bar h1, .app-bar .app-title {
+    margin: 0;
+    font-size: 1.5em;
+    /* Taille du titre principal */
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 0.8em;
+    /* Taille du sous-titre */
+    font-weight: 400;
+    color: #6e6e73;
+    /* Gris plus doux pour le sous-titre */
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* =======================================================================
+   3. SÉLECTEUR DE LANGUE
+   ======================================================================= */
+.language-switcher {
+    position: relative;
+    display: inline-block;
+}
+
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    inset-inline-end: 0;
+    background-color: #ffffff;
+    min-width: 200px;
+    max-height: min(65vh, 520px);
+    overflow-y: auto;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: var(--z-dropdown, 1000);
+    list-style: none;
+    padding: 0;
+    border-radius: 8px;
+}
+
+.language-dropdown li button {
+    color: black;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.language-dropdown li button .flag-icon {
+    font-size: 1.2em;
+    /* Ajustement de la taille pour les icônes SVG */
+    width: 1.33333333em;
+    line-height: 1em;
+}
+
+.language-dropdown li button.active {
+    font-weight: bold;
+    color: #007AFF;
+}
+
+.language-dropdown li button.active::after {
+    content: '✔';
+    position: absolute;
+    inset-inline-end: 15px;
+    color: #007AFF;
+}
+
+.language-dropdown li button:hover {
+    background-color: #f1f1f1;
+}
+
+.language-switcher.open .language-dropdown {
+    display: block;
+}
+
+/* Gwenn ha du (breton) — drapeau ABSENT de flag-icons : la bibliothèque ne couvre que
+   les codes pays ISO 3166 (+ quelques subdivisions GB/ES), et le breton n'en a pas.
+   Plutôt que de patcher `css/vendor/flag-icons/` — qui serait écrasé à la prochaine
+   mise à jour, cf. CLAUDE.md — on complète ici la classe `.fi` du vendor avec un asset
+   Caramel. Le fichier vient de Wikimedia Commons (CC0), sa viewBox est ramenée au
+   rapport 4:3 attendu par le `background-size: contain` de `.fi` : provenance, licence
+   et justification du cadrage sont détaillées dans l'en-tête du SVG lui-même.
+   NB : pas de variante `.fi-squared` (1:1), Caramel n'utilise que le format 4:3. */
+.fi-bzh {
+    background-image: url('../../assets/images/flags/bzh.svg');
+}
+
+
+
+/* Styles pour les boutons de langue, d'aide et de notifications inspirés de LinkedIn */
+.language-btn,
+.help-btn,
+.notification-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #666666;
+    padding: 0 12px;
+    height: 52px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.3s;
+}
+
+.language-btn:hover,
+.help-btn:hover,
+.notification-btn:hover {
+    color: #000000;
+}
+
+.language-btn .fi,
+.help-btn .fas,
+.notification-btn .fas {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Hauteur d'icône uniforme pour aligner les boutons du header */
+.help-btn .fas,
+.help-btn .tchap-icon,
+.help-btn .sucrerie-icon,
+.language-btn .fi,
+.notification-btn .fas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+}
+
+.language-btn span,
+.help-btn span,
+.notification-btn>span[data-key] {
+    display: block;
+}
+
+
+.language-btn .fi {
+    font-size: 18px;
+}
+
+
+@media (max-width: 768px) {
+    .header-right {
+        gap: 8px;
+        justify-content: flex-end;
+        flex-grow: 1;
+    }
+
+    /* Réduire légèrement le padding des boutons */
+    .language-btn,
+    .help-btn,
+    .notification-btn {
+        padding: 0 8px;
+    }
+
+    .subtitle {
+        display: none;
+    }
+
+    .app-bar h1, .app-bar .app-title {
+        font-size: 1.2em;
+    }
+
+    .logo {
+        height: 35px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Masquer UNIQUEMENT les textes des boutons - garder toutes les icônes visibles */
+    .language-btn span:not(.fi),
+    .help-btn span:not(.fas),
+    .notification-btn>span[data-key],
+    #tchap-button span,
+    #sucrerie-button span {
+        display: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-right {
+        /* Espacement resserré : 6 boutons icône doivent tenir sans scroll horizontal */
+        gap: 2px;
+    }
+
+    /* Marges de la barre resserrées elles aussi : avec le commutateur
+       « Une activité | Un parcours » au centre (D46 du PRD parcours), la barre
+       débordait de 40 px à 360 px ; ces 23 px-là, plus ceux du commutateur,
+       la font tenir. Mesuré à treize largeurs. */
+    .app-bar { padding: 5px 12px; }
+    .header-left { gap: 8px; }
+
+    /* Le mot « Caramel » s'efface : le logo EST la marque, et le sous-titre est
+       déjà masqué sous 768 px. Six boutons icône plus le mot débordaient de 30 px
+       sur un iPhone ; sans le mot, ils tiennent jusqu'à 360 px. Le titre reste
+       dans l'arbre d'accessibilité (masquage visuel, pas `display: none`). */
+    .app-bar h1, .app-bar .app-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
+
+    /* Ajuster les boutons pour qu'ils soient compacts et faciles à toucher.
+       min-width 40px (au lieu de 44) : avec 6 boutons et le mot-titre effacé,
+       le header tient sans scroll horizontal jusqu'à 360px tout en restant tactile. */
+    .language-btn,
+    .help-btn,
+    .notification-btn,
+    #tchap-button,
+    #sucrerie-button {
+        padding: 6px;
+        height: auto;
+        min-width: 40px;
+        min-height: 44px;
+    }
+
+    /* Les badges et indicateurs de notification restent visibles */
+    .notification-badge,
+    .error-indicator {
+        display: block;
+    }
+
+    .header-left {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 400px) {
+    .language-btn,
+    .help-btn,
+    .notification-btn,
+    #tchap-button,
+    #sucrerie-button {
+        min-width: 36px;
+        padding: 6px 4px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .notification-toast,
+    .notification-badge {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+.app-bar { font-size: 16px; line-height: 1.6; width: 100%; }
+.app-bar .help-btn { text-decoration: none; }
+.app-bar .language-btn { font-family: inherit; }
+.app-bar .language-dropdown[hidden] { display: none; }
+
+@media (max-width: 480px) {
+    .help-btn .tchap-icon { width: 16px; height: 16px; }
+    .help-btn .sucrerie-icon { width: 20px; height: 20px; }
+}

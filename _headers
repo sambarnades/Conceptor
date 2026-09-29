@@ -15,8 +15,8 @@
 # - YouTube (Vidéo interactive, lecture par embed natif H5P) : www.youtube.com +
 #   www.youtube-nocookie.com en frame-src ; www.youtube.com + s.ytimg.com en script-src
 #   (la lib charge /iframe_api). Vignettes ytimg couvertes par img-src https:.
-# - Podeduc en frame-src : les vidéos de présentation de la page /decouvrir/ (lecteur
-#   `…/video/<id>/?is_iframe=true`, chargé au clic).
+# - Podeduc, les deux Tubes du catalogue et MoodleMoot/Ubicast en frame-src : les vidéos de /decouvrir/
+#   (lecteurs chargés au clic).
 # - Vidéo interactive, plateformes non-YouTube : le navigateur appelle DIRECTEMENT l'API
 #   publique de l'instance (PeerTube /api/v1/videos, VTT de sous-titres, master m3u8) →
 #   connect-src doit lister les Tubes/PodEduc (*.apps.education.fr) et le Tube de Réseau
@@ -32,4 +32,4 @@
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://wa.phm.education.gouv.fr https://www.youtube.com https://s.ytimg.com blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://n8n-caramel.osc-fr1.scalingo.io https://n8n.incubateur.education.gouv.fr https://*.apps.education.fr https://tube.reseau-canope.fr https://s3.reseau-canope.fr https://wa.phm.education.gouv.fr data: blob:; media-src 'self' data: blob: https:; worker-src 'self' blob:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://podeduc.apps.education.fr blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://wa.phm.education.gouv.fr https://www.youtube.com https://s.ytimg.com blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://n8n-caramel.osc-fr1.scalingo.io https://n8n.incubateur.education.gouv.fr https://*.apps.education.fr https://tube.reseau-canope.fr https://s3.reseau-canope.fr https://wa.phm.education.gouv.fr data: blob:; media-src 'self' data: blob: https:; worker-src 'self' blob:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://podeduc.apps.education.fr https://moodlemoot.ubicast.tv https://tube-sciences-technologies.apps.education.fr https://tube-numerique-educatif.apps.education.fr blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'

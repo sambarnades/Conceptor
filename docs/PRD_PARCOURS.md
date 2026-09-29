@@ -1565,8 +1565,8 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       - Banc `tests/run_parcours_import.mjs` (19 contrôles, contre-épreuvé : sans l'annexe,
         avec « Nouveau parcours » caché sans plan, ou avec le bouton remis dans le pied, il
         vire au rouge). Trois clés nouvelles et une revue, douze langues.
-- [ ] **D86 — Les réglages du Test (`quiz_settings`), pour le Test seul ET le Test d'un
-      parcours. Livré en local ; aller-retour Éléa à faire avant de l'annoncer (D24).**
+- [x] **D86 — Les réglages du Test (`quiz_settings`), pour le Test seul ET le Test d'un
+      parcours. Aller-retour Éléa réussi le 29 sept. 2026.**
       Retours de professeurs (29 sept. 2026) : « choisir différentes options de
       feedback / restriction, un peu comme dans le panneau de la vidéo interactive » ;
       « les paramètres des tests (dispo dans Éléa) ».
@@ -1634,6 +1634,12 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         sections de réglages) : l'éditeur se dit alors « modifié ». (3) Les réglages
         n'entrent JAMAIS dans l'IA : un `quiz_settings` sorti d'un modèle serait borné par
         `resoudreReglagesTest` (toute valeur hors domaine → défaut) mais n'a rien à y faire.
+      - **Feedback global produit par l'IA** : le prompt général en demandait un, mais le
+        contrat JSON de `prompt_elea_test` ne le décrivait pas ; les deux tranches visibles
+        dans l'éditeur restaient donc vides. Le contrat exige désormais quatre tranches à la
+        racine `overallfeedback`, que la canonicalisation replie dans
+        `quiz_settings.overallfeedback` avant l'export. Le banc suit leurs quatre messages
+        jusque dans `<feedbacks>` du `quiz.xml`.
       - **Fichiers PARTAGÉS avec Sucrerie touchés** (à recopier par `cp`) :
         `js/moodle/mbz-course-builder.js`, `js/moodle/test-backup-builder.js`,
         `js/moodle/test-io.js`, `js/editor/content-detector.js`. Côté Sucrerie, ajouter les
@@ -1643,9 +1649,10 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       - **Sondes** : `node scripts/generer-test-regle-sonde.mjs` → `tests/.sondes-elea/`
         (Test seul par défaut, Test seul réglé, parcours d'un Test réglé), avec la liste
         de ce qu'Éléa doit montrer après restauration. Bancs : `mbz-quiz-backup.mjs`
-        (118/0), `run_parcours_course.mjs` (114/0), `run_test_edition_audit.mjs` (59/0),
+        (120/0), `run_parcours_course.mjs` (114/0), `run_test_edition_audit.mjs` (59/0),
         suite navigateur `behaviour-settings` (défauts de l'éditeur = défauts du `.mbz`).
-- [x] **D87 — Une séquence de langue vivante est rédigée dans la langue enseignée.**
+- [ ] **D87 — Une séquence de langue vivante est rédigée dans la langue enseignée ; correctif
+      local validé le 29 sept. 2026, vrai modèle et aller-retour Éléa à rejouer.**
       Retour de professeurs d'anglais (29 sept. 2026) : une Page préparée pour un cours
       d'anglais sortait en français. Mesuré sur le vrai modèle (dev2, mistral-small-4) :
       « Professeur d'anglais, Seconde, Identités et échanges » → Page à 98 % en français,
@@ -1664,6 +1671,12 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         (`regleLangue()` de `scenario-prompt.js`, qui remplace « Rédige TOUS les textes en
         <langue de l'interface> ») ; les objectifs, destinés à l'enseignant, restent dans la
         langue de l'interface. Les cartes, elles, suivent la règle commune : D82 respecté.
+      - **Renforcement après l'écart réel** : `content-language.js` reconnaît explicitement
+        la langue enseignée dans le rôle ou l'objectif et injecte une consigne obligatoire,
+        placée après les règles communes, dans les prompts d'activité, de plan et de module.
+        La détection refuse le faux positif « professeur d'histoire — Révolution anglaise ».
+        Le banc 58/0 couvre anglais, espagnol et ce témoin ; il ne remplace pas un nouvel
+        appel au modèle ni la restauration sur Éléa.
       - **Mesures après** : Page « Identités et échanges » 97 puis 100 % d'anglais, titres de
         blocs compris ; quiz : questions, réponses et retours en anglais (le feedback global
         par tranche reste parfois en français) ; Page d'espagnol en espagnol ; Livre de DNL
@@ -1672,7 +1685,7 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       - **À surveiller** : aucun parcours réel de langue vivante n'a encore été rejoué
         (`scripts/generer-parcours-reel.mjs`) ; le faire avant d'annoncer la correction pour
         les parcours.
-- [x] **D88 — Une image envoyée depuis l'ordinateur dans une Page ou un Livre ; ALLER-RETOUR À FAIRE.**
+- [x] **D88 — Une image envoyée depuis l'ordinateur dans une Page ou un Livre.**
       Retour de professeur (29 sept. 2026) : « l'édition de la Page ne permet pas de rajouter une
       image ». Un bloc n'acceptait qu'une adresse à coller (`img_src`, cinq champs dans quatre
       blocs : #08 cartes, #09 gauche/droite, #13, #16).
@@ -1702,11 +1715,15 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         `images/…` dans `carte.medias` et ne laisse que le chemin dans le contenu. Sans
         `contenuPourEdition()` avant la mise en forme (assemblage, aperçu de carte, cours
         documentaire), l'image se perdait en silence.
-      - **Documents** : DOCX/ODT/PDF de la Page (`hydrateImagesForExport`) et cours documentaire
-        du parcours reçoivent l'image dans `img_src` (le formateur partagé sait embarquer une
-        dataURL ; aucune ligne partagée touchée).
-      - Banc `tests/run_page_images.mjs` (44 contrôles, trois contre-épreuves embarquées :
-        extraction, transmission du `paquet`, réhydratation des médias). Sondes :
+      - **Documents — écart corrigé lors de la contre-vérification du 29 sept.** :
+        `hydrateImagesForExport` transmet les cinq images des quatre blocs illustrés dans
+        `img_src`. `document-formatter.js` traite désormais aussi
+        `#13_monument_sheet_long` : les vrais DOCX, ODT et PDF reçoivent #08, les deux côtés
+        de #09, #13 et #16. Ce formateur est partagé avec la Sucrerie : report effectué
+        le 29 sept. sur `emmanuel`, copie byte-identique et manifeste SHA-256 vérifiés.
+      - Banc `tests/run_page_images.mjs` (45 contrôles, quatre contre-épreuves embarquées :
+        extraction, transmission du `paquet`, réhydratation des médias et retrait du cas #13
+        dans le formateur documentaire). Sondes :
         `node scripts/generer-sonde-page-images.mjs` → `tests/.sondes-elea/` (Page, Livre,
         cours) avec la liste des contrôles. **D24 : rien d'annoncé avant l'aller-retour.**
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
@@ -2974,6 +2991,206 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
 
+- **29 septembre 2026 — Publication Caramel autorisée sur `emmanuel` :**
+  Emmanuel demande le commit et le push de toutes les modifications présentes,
+  après les corrections d’exports Éléa, de langue enseignée, d’annonce H5P,
+  de présentation et de licence. Branche distante actualisée avant publication,
+  sans divergence. Les fichiers partagés `document-formatter.js` et
+  `moodle-formats.js` sont identiques octet pour octet à ceux déjà publiés dans
+  la Sucrerie. Vérifications finales : présentation **276/0**, langue **58/0**,
+  backup du Test **120/0**, édition du Test **59/0**, images **45/45** et
+  contre-épreuves concluantes, mentions légales conformes, **1 166 clés partagées
+  présentes dans les douze locales**. Suite navigateur complète finale :
+  **14 435 PASS, 0 FAIL, 42/42 suites**.
+  **Restent ouverts :** D87 avec le vrai modèle puis import Éléa ; réimport du
+  quiz H5P et contrôle des annonces au lecteur d’écran ; décision sur la licence
+  pédagogique des démonstrations et sur l’extension des traductions éditoriales.
+  Les échecs antérieurs des bancs de parcours calibrage et sources ne sont pas
+  attribués aux corrections présentes sans preuve.
+
+- **29 septembre 2026 — Footer de présentation regroupé comme Caramel :**
+  suppression des trois colonnes et des groupes alignés aux bords. Les huit liens
+  forment un ensemble centré avec retour naturel à la ligne, espacements de 25 px
+  et marges identiques au footer de l'application. Sur mobile : espacements de
+  20 px horizontalement et 8 px entre les lignes ; « Découvrir Caramel » conserve
+  son texte sur une ligne centrale, les auteurs restent visibles et centrés.
+  Les liens réduits à leur icône gardent un nom accessible, traduit si nécessaire.
+  Chrome : grand écran à 1 905 px et téléphone à 390 px inspectés. Banc
+  présentation : **276 OK, 0 échec**, comparaison du regroupement et des marges
+  avec Caramel, centrage des lignes mobiles. Modifications locales sur `emmanuel`,
+  sans commit ni push Caramel.
+
+- **29 septembre 2026 — YouTube en mode de confidentialité renforcée :** les
+  quatre intégrations YouTube de `/decouvrir/` étaient déjà en
+  `www.youtube-nocookie.com`. Une fonction commune normalise désormais aussi
+  les futures URL `/embed/` YouTube classiques pour le lecteur et le code copié,
+  en conservant les paramètres, notamment le départ MiniMoot à 5 131 secondes.
+  Le banc signale également une URL classique dans le catalogue. Chrome : les
+  quatre iframe réelles contrôlées sur le domaine nocookie. **274 OK, 0 échec**,
+  dont quatre contre-épreuves avec des URL classiques injectées dans le catalogue
+  de test. Ce mode ne garantit pas l'absence de publicité : l'aide YouTube indique
+  que des annonces non personnalisées peuvent être diffusées
+  (`https://support.google.com/youtube/answer/171780`). Modifications locales sur
+  `emmanuel`, sans commit ni push Caramel.
+
+- **29 septembre 2026 — Actions des lecteurs vidéo de `/decouvrir/` :** boutons
+  « Ouvrir la vidéo » (lien public en nouvel onglet) et « Partager » sur les dix
+  vidéos intégrables, y compris les deux présentations principales. Styles
+  communs, libellés traduits dans les douze langues. Partage natif si disponible,
+  sinon copie du lien public ; l'annulation ne copie rien. Si la copie est refusée,
+  un champ sélectionné affiche le lien sans annoncer un faux succès. Le MiniMoot
+  conserve le départ à 1 h 25 min 31 s dans son lien partagé. Chrome : lecteur
+  et boutons inspectés à 1 282 et 390 px, repli des actions sans débordement.
+  Banc présentation : **269 OK, 0 échec**, liens publics des dix vidéos,
+  simulation du partage natif, annulation, indisponibilité et copie refusée.
+  Aucun envoi réel à un destinataire pendant les tests. Modifications locales sur
+  `emmanuel`, sans commit ni push Caramel.
+
+- **29 septembre 2026 — Choix des vidéos soigné dans le kit de formation :**
+  remplacement du sélecteur natif par deux exemples illustrés (Caramel 7 et la
+  Sucrerie), suivis d'une liste défilante des huit autres vidéos. Titres, sources
+  et durées renseignées sont visibles ; boutons radio natifs et choix surligné,
+  fond crème discret, cartes arrondies et bouton de copie commun. La liste reste
+  limitée à 148 px pour conserver des cartes compactes et alignées. Chrome :
+  trois cartes de 625 px à 1 282 px, contrôle mobile à 390 px sans débordement,
+  sélection MiniMoot visible. Banc présentation : **253 OK, 0 échec**, dont les
+  dix codes copiés et le choix de la Sucrerie par les flèches du clavier.
+  Modifications locales sur `emmanuel`, sans commit ni push Caramel.
+
+- **29 septembre 2026 — Navigation intégrée et étiquette H5P dans `/decouvrir/` :**
+  les cinq liens de section rejoignent la marque et les outils sur une seule ligne,
+  avec un fond discret pour la section active. À 1 180 px et en dessous, le bouton
+  « Explorer », traduit dans les douze langues, ouvre les liens dans le header ;
+  fermeture après choix, clic extérieur, sortie du focus ou Échap. Échap rend le
+  focus au bon bouton, sans être intercepté par le sélecteur de langue fermé.
+  À 360 px et en dessous, le nom Explorer reste accessible et son icône seule
+  laisse la place aux quatre outils. L'étiquette H5P utilise désormais le même
+  HTML et les mêmes styles que Caramel, extraits dans
+  `css/components/module-label.css` ; la tuile active et le focus la rendent visible.
+  Chrome : rendu ordinateur et téléphone inspecté, absence de chevauchement
+  vérifiée à 320 px. Banc présentation : **251 OK, 0 échec**, dont comparaison
+  des styles H5P avec l'application, navigation au clavier et 60 combinaisons
+  langue/largeur (320, 390, 760, 1 282 et 1 905 px). Modifications locales sur
+  `emmanuel`, sans commit ni push Caramel.
+
+- **29 septembre 2026 — Kit de formation compact dans `/decouvrir/` :** les dix
+  lignes de codes vidéo sont remplacées par un sélecteur et un bouton de copie.
+  Toutes les intégrations restent disponibles, dont MiniMoot à 1 h 25 min 31 s.
+  Consigne raccourcie ; choix et confirmation de copie accessibles au clavier.
+  Les trois cartes restent alignées sur ordinateur : hauteur mesurée dans Chrome
+  à 1 282 px, 571 px au lieu de 1 131 px. Sur tablette, les tutoriels occupent la
+  largeur sous les deux premières cartes ; sur téléphone, les cartes s'empilent
+  sans débordement. Vérifications visuelles Chrome à 1 282, 760 et 390 px,
+  passage du sélecteur au bouton par Tab confirmé. Versions des ressources
+  actualisées pour éviter que Chrome conserve l'ancienne liste. Banc présentation :
+  **184 OK, 0 échec**, dont les dix codes réellement copiés dans un presse-papiers
+  simulé. Modifications locales sur `emmanuel`, sans commit ni push Caramel.
+
+- **29 septembre 2026 — Licence et accueil de `/decouvrir/` :** libellés AGPL
+  harmonisés dans les footers, douze langues, aide locale et quiz de présentation ;
+  mentions légales précisées par périmètre. Voir `NOTE_LICENCES_2026-09-29.md` ;
+  la licence pédagogique des démonstrations reste à choisir. Barre de présentation
+  sur toute la largeur, styles communs avec Caramel dans `css/components/app-header.css`,
+  boutons et sélecteur identiques ; navigation de section centrée sur ordinateur,
+  défilable au clavier sur mobile. Accueil raccourci, fond crème, capture encadrée,
+  suppression de la coulure et des tuiles flottantes ; chiffres déplacés après les
+  trois étapes. Chrome : 36 combinaisons langue/largeur, sans chevauchement ni
+  débordement de page ; menu de langues et fermeture Échap vérifiés. Tests
+  présentation 173/0, styles/interface/mentions légales 721/0 sur cinq suites.
+  Aucun commit ni push Caramel.
+  Corrections de licence Sucrerie publiées sur `origin/emmanuel`, commit
+  `e74fd099c80bc14f6e9c0945666d3338ed581f4d` ; référence distante confirmée et
+  worktree propre. Les 52 fichiers partagés et leur manifeste restent intacts.
+
+- **29 septembre 2026 — Footer de `/decouvrir/` :** libellé « Découvrir Caramel »
+  identique à celui de l'application dans les douze langues. Le lien occupe le
+  centre du pied, entre les auteurs et les liens utiles ; son texte reste visible
+  sur mobile. Vérification Chrome à 1 282 px et 320 px : centrage et absence de
+  débordement confirmés. Banc `/decouvrir/` : **173 OK, 0 échec**. Modifications
+  locales sur `emmanuel`, sans commit ni push Caramel.
+
+- **29 sept. 2026, publication de la synchronisation Sucrerie** — commit et push
+  explicitement autorisés par Emmanuel pour la Sucrerie seulement. Commit
+  `d98782011f0ec1fad95ba332b1972eb7ec807044` (« Synchroniser les Tests et les exports
+  documentaires avec Caramel »), poussé sur `origin/emmanuel` ; la branche distante
+  supprimée a été recréée. Référence vérifiée sur la Forge, worktree Sucrerie propre.
+  Avant publication : suite complète Chrome 3 195/0 sur 156 suites, miroirs 52/52,
+  manifeste SHA-256 et traductions conformes. Aucun commit ni push dans Caramel,
+  aucune modification de `main` ; les vérifications Éléa encore ouvertes le restent.
+- **29 sept. 2026, vidéos intégrées dans `/decouvrir/`** — sur demande d'Emmanuel,
+  la fenêtre superposée est remplacée par l'agrandissement de la carte dans sa grille.
+  Le lecteur natif reste dans la page, au format 16/9, avec fermeture et retour du
+  focus au titre. Une seule vidéo lit à la fois, présentations principales comprises ;
+  un filtre qui masque la carte arrête aussi son lecteur. Les intégrations publiques
+  du webinaire Quartier libre (PodEduc), du Blog du Prof TIM (YouTube) et des deux
+  vidéos Tube disponibles sont ajoutées ; leurs hôtes précis sont permis dans la CSP.
+  Chrome réel : lecteurs YouTube, PeerTube, PodEduc et Ubicast affichés ; MiniMoot
+  en lecture à 5 147 s après ouverture au point 5 131 s ; carte mobile à 311 × 175 px,
+  sans débordement. Tests de branchement isolés des serveurs tiers : 172/0.
+  La référence NotebookLM (`k9wg9JQRhwnkEhakQiAmCy`) renvoie 404 : lien conservé,
+  nouvelle adresse demandée à Emmanuel ; aucune intégration inventée pour cette entrée.
+  Aucun commit ni push.
+- **29 sept. 2026, en-tête de `/decouvrir/`** — après le constat d'Emmanuel à
+  1 282 px, marque et actions sur une première ligne, navigation sur une seconde.
+  Intitulés et action principale sans coupure ; navigation conservée sur téléphone,
+  défilable au toucher et au clavier. Sélecteur de langue positionné aussi en RTL ;
+  recul des ancres calculé selon la hauteur réelle de la barre (traductions comprises).
+  Chrome : douze langues à 320, 761 et 1 282 px, 36 configurations sans débordement
+  de page ni chevauchement entre marque et actions ; menu ouvert/fermé avec Échap,
+  dernier lien accessible au clavier sur téléphone et titre des ressources visible
+  sous la barre en allemand. `node tests/run_decouvrir.mjs` : 154/0.
+  Modifications locales sur `emmanuel`, aucun commit ni push.
+- **29 sept. 2026, report vers la Sucrerie** — sept fichiers partagés synchronisés
+  depuis ce dépôt `caramel.forge.apps.education.fr` sur `emmanuel` : formateur
+  documentaire (#13), schéma et validateurs de l'éditeur, constructeur de cours,
+  constructeur de Test seul, lecture/écriture des Tests et formats Moodle.
+  Les 26 libellés des réglages sont présents dans les douze locales Sucrerie.
+  Comparaison binaire : 52/52 identiques ; manifeste SHA-256 régénéré et vérifié.
+  Huit suites ciblées 300/0 ; suite complète Sucrerie dans Chrome 3 195/0 sur
+  156 suites, après adaptation du lecteur propre à Sucrerie : le refus partagé
+  d'un Cloze incomplet devient un diagnostic traduit au lieu de casser le rendu.
+  Vrais DOCX/ODT/PDF de la sonde #13 : image et textes présents, PDF local relu
+  visuellement. Aucun commit ni push ; D87 et réimport du quiz sur Éléa restent
+  ouverts. Le simulateur Sucrerie n'a pas reçu le port intégral des comportements
+  D86 ; seuls lecture/édition/backup et son diagnostic d'entrée sont vérifiés.
+  Preuves : `../sucrerie.forge.apps.education.fr/docs/SYNCHRONISATION_CARAMEL_2026-09-29.md`.
+- **29 sept. 2026, corrections après l'aller-retour** — branche `emmanuel`, Éléa `test03`
+  Moodle version non exposée. L'écart documentaire D88 est corrigé : les cinq images des
+  blocs #08, #09 gauche/droite, #13 et #16 atteignent désormais DOCX, ODT et PDF (45/45,
+  contre-épreuve #13 rouge). Le feedback global d'un Test généré est ajouté au contrat JSON,
+  canonicalisé puis présent dans `quiz.xml` (120/0 ; audit Test 59/0). D87 reçoit une
+  détection explicite de la langue enseignée et une consigne obligatoire dans les prompts
+  d'activité et de parcours (58/0), mais attend encore un nouvel essai du vrai modèle et sa
+  restauration Éléa. La démo `quiz-caramel.h5p` régénérée porte « Diapositive x sur y » dans
+  le nom accessible des groupes ; son ancien import Éléa doit être remplacé avant verdict
+  final. Page `/decouvrir/` : filtres réellement masquants, catalogue compact, repères SVG
+  « à regarder / à lire », MiniMoot dans YouTube sans cookie à 1 h 25 min 31 s ; bandeau
+  et pied rapprochés de ceux de Caramel, sélecteur à douze drapeaux (breton compris),
+  traduction des repères éditoriaux et du catalogue, sens droite-à-gauche en arabe.
+  Validation : page 154/0, suite navigateur 14 435/0 sur 42 suites.
+- **29 sept. 2026, aller-retour sur Éléa `test03`** — version de Moodle non exposée dans
+  l'interface. Importés : `test-defauts-20260929-1858.mbz`,
+  `test-regle-20260929-1858.mbz`, `parcours-test-regle-20260929-1858.mbz`,
+  `sonde-page-images.mbz`, `sonde-livre-images.mbz`,
+  `sonde-parcours-page-images.mbz`, puis `quiz-caramel.h5p`, `vocabulaire.h5p`,
+  `en-une-phrase.h5p` et `mots-meles.h5p`. **D86 conforme** : réglages et
+  prévisualisation attendus ; les `quiz.xml` des trois réexports Éléa sont identiques aux
+  sorties Caramel sur `review*`, comportement, tentatives, méthode de note, durée,
+  pagination, navigation, pages des slots et feedbacks. Le `questionsperpage=0` du Test
+  par défaut est la correction volontaire de D86 par rapport au témoin Moodle de sept.
+  **D88 conforme sur Éléa, avec un écart documentaire local alors observé** : les deux images sont de vrais
+  `pluginfile.php`, restent présentes après enregistrement et s'affichent en rôle Étudiant ;
+  le premier chapitre des Livres n'a pas d'image, le second en a deux. Dans les vrais exports
+  DOCX/ODT/PDF, attendu : cinq occurrences pour #08, #09 gauche/droite, #13 et #16 ; observé :
+  quatre, l'image de #13 manque. **D87 en écart sur les webhooks de développement** :
+  le témoin histoire-géographie reste en français ; les productions anglaises gardent
+  plusieurs libellés, titres ou noms de questions français, les productions espagnoles
+  restent largement françaises ; parcours de langue et restauration non mesurés.
+  **Démonstrations H5P en écart** : les quatre activités s'importent et fonctionnent en
+  français (quiz terminé à 7/7, cartes retournées, texte complété et corrigé, grille des
+  mots mêlés chargée), mais la région `aria-live` du quiz reste vide au changement de
+  question au lieu d'annoncer « Diapositive 1 sur 7 » ; aucun jeton brut `@slide` n'est
+  affiché. La résolution complète de la grille en canevas n'a pas été automatisée.
 - **29 sept. 2026, soir** — **D86** : réglages du Test (`quiz_settings`) pour le Test seul
   et le Test d'un parcours, par une fonction partagée par les deux constructeurs ;
   défauts alignés sur Éléa (relecture, délai de grâce, `precreateattempts`, achèvement et

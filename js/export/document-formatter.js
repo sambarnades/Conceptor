@@ -3653,6 +3653,40 @@ function formatPageBlocks(blocks, sections) {
                     }
                     break;
 
+                case '#13_monument_sheet_long':
+                    // Schéma réel : { title, img_src, img_alt, sections:[{subtitle,text}] }
+                    // Ce bloc était rendu dans les Pages Moodle mais entièrement ignoré par
+                    // les exports documentaires : son image envoyée disparaissait donc des
+                    // DOCX, ODT et PDF alors qu'elle avait bien été réhydratée en dataURL.
+                    if (block.data) {
+                        if (block.data.title) {
+                            sections.push({
+                                type: 'header',
+                                level: 2,
+                                text: cleanHtml(block.data.title)
+                            });
+                        }
+                        if (block.data.img_src) {
+                            sections.push({
+                                type: 'image',
+                                url: block.data.img_src,
+                                alt: cleanHtml(block.data.img_alt || ''),
+                                caption: cleanHtml(block.data.caption || '')
+                            });
+                        }
+                        if (Array.isArray(block.data.sections)) {
+                            block.data.sections.forEach(partie => {
+                                if (partie?.subtitle) {
+                                    sections.push({ type: 'header', level: 3, text: cleanHtml(partie.subtitle) });
+                                }
+                                if (partie?.text) {
+                                    sections.push({ type: 'paragraph', text: cleanHtml(partie.text) });
+                                }
+                            });
+                        }
+                    }
+                    break;
+
                 case '#16_method_image_desc':
                     // Schéma réel : { title, steps:[...], img_src, img_alt, caption }
                     if (block.data) {

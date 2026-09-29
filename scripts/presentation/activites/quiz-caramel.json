@@ -51,7 +51,7 @@
     {
       "question": "Sous quelle licence Caramel est-il publié ?",
       "answers": [
-        "GNU GPL v3 : c'est un logiciel libre",
+        "GNU AGPL v3.0 ou ultérieure : c'est un logiciel libre",
         "Une licence propriétaire",
         "Aucune licence"
       ]

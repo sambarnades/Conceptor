@@ -1,6 +1,6 @@
 /**
  * La page de présentation de Caramel : vidéos à la demande, ressources lues dans
- * ressources.json, activités H5P jouées sur place, et quelques touches d'animation.
+ * ressources.json et activités H5P jouées sur place.
  *
  * Aucune dépendance hors du dépôt : le lecteur H5P est celui de Caramel
  * (js/vendor/h5p-standalone), les bibliothèques celles de js/vendor/h5p-libs.
@@ -9,17 +9,22 @@
     'use strict';
 
     const $ = (s, racine = document) => racine.querySelector(s);
+    const tr = cle => window.CaramelDecouvrirI18n?.t(cle) || cle;
     const RACINE = new URL('../', location.href);
     const duSite = chemin => new URL(chemin, RACINE).href;
     const echapper = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    const mouvement = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (mouvement) document.documentElement.classList.add('anime');
-
     /* ------------------------------------------------------------ Vidéos */
+    /** Même mode de confidentialité pour le lecteur et les codes à intégrer. */
+    function urlIntegration(integration) {
+        const u = new URL(integration);
+        if ((/(^|\.)youtube\.com$/.test(u.hostname) || u.hostname === 'youtube-nocookie.com')
+            && u.pathname.startsWith('/embed/')) u.hostname = 'www.youtube-nocookie.com';
+        return u;
+    }
     /** L'affiche d'abord, le lecteur Podeduc seulement au clic : la page reste légère. */
     function cadreVideo(integration, titre) {
         const f = document.createElement('iframe');
-        const u = new URL(integration);
+        const u = urlIntegration(integration);
         u.searchParams.set('autoplay', 'true');
         f.src = u.href;
         f.title = titre;
@@ -28,32 +33,111 @@
         f.referrerPolicy = 'strict-origin-when-cross-origin';
         return f;
     }
-    document.querySelectorAll('.lecteur').forEach(lecteur => {
-        $('.affiche', lecteur)?.addEventListener('click', () => {
-            const cadre = cadreVideo(lecteur.dataset.integration, lecteur.dataset.titre);
-            lecteur.replaceChildren(cadre);
-            cadre.focus();
+    /** Lien de consultation et partage du lien public, jamais de l'iframe. */
+    function commandesVideo(titre, lien) {
+        const commandes = document.createElement('div');
+        commandes.className = 'ressource__commandes';
+        commandes.innerHTML = `<a class="video-action video-externe" href="${echapper(lien)}" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>${tr('open_video')}</span></a><button type="button" class="video-action video-partager"><i class="fas fa-share-nodes" aria-hidden="true"></i><span aria-live="polite">${tr('share')}</span></button>`;
+        const bouton = $('.video-partager', commandes);
+        let retour;
+        bouton.addEventListener('click', async () => {
+            if (bouton.disabled) return;
+            clearTimeout(retour);
+            commandes.querySelector('.video-lien')?.remove();
+            bouton.querySelector('span').textContent = tr('share');
+            bouton.querySelector('i').className = 'fas fa-share-nodes';
+            bouton.disabled = true;
+            const annoncer = cle => {
+                bouton.querySelector('span').textContent = tr(cle);
+                bouton.querySelector('i').className = 'fas fa-check';
+            };
+            try {
+                let partage = false;
+                if (typeof navigator.share === 'function') {
+                    try { await navigator.share({ title: titre, url: lien }); partage = true; }
+                    catch (e) { if (e.name === 'AbortError') return; }
+                }
+                if (partage) annoncer('shared');
+                else {
+                    try { await navigator.clipboard.writeText(lien); annoncer('link_copied'); }
+                    catch {
+                        // Si la copie est refusée, le lien reste sélectionnable sur place.
+                        const champ = Object.assign(document.createElement('input'), {
+                            className: 'video-lien', value: lien, readOnly: true
+                        });
+                        champ.setAttribute('aria-label', tr('video_link'));
+                        commandes.append(champ); champ.select();
+                        bouton.querySelector('span').textContent = tr('copy_link');
+                        bouton.querySelector('i').className = 'fas fa-link';
+                    }
+                }
+            } finally {
+                bouton.disabled = false;
+                retour = setTimeout(() => {
+                    bouton.querySelector('span').textContent = tr('share');
+                    bouton.querySelector('i').className = 'fas fa-share-nodes';
+                }, 2200);
+            }
         });
+        return commandes;
+    }
+    let arreterLecture = () => {};
+    function jouerVideo(lecteur, integration, titre, arreter) {
+        arreterLecture();
+        const cadre = cadreVideo(integration, titre);
+        lecteur.replaceChildren(cadre);
+        arreterLecture = arreter;
+        cadre.focus();
+    }
+    document.querySelectorAll('.lecteur').forEach(lecteur => {
+        const affiche = $('.affiche', lecteur);
+        if (lecteur.dataset.lien) {
+            const presentation = document.createElement('div');
+            presentation.className = 'video-presentation';
+            lecteur.before(presentation);
+            presentation.append(commandesVideo(lecteur.dataset.titre, lecteur.dataset.lien), lecteur);
+        }
+        affiche?.addEventListener('click', () => jouerVideo(lecteur,
+            lecteur.dataset.integration, lecteur.dataset.titre, () => lecteur.replaceChildren(affiche)));
     });
 
-    const visionneuse = $('#visionneuse');
-    function ouvrirVisionneuse(integration, titre) {
-        $('#visionneuse-titre').textContent = titre;
-        $('#visionneuse-cadre').replaceChildren(cadreVideo(integration, titre));
-        visionneuse.showModal();
+    function fermerVideo(carte, rendreFocus = false) {
+        carte.querySelector('.ressource__video')?.remove(); // Retirer l'iframe arrête la lecture.
+        carte.classList.remove('ressource--ouverte');
+        const bouton = carte.querySelector('.ressource__ouvrir');
+        bouton?.setAttribute('aria-expanded', 'false');
+        if (rendreFocus) bouton?.focus();
     }
-    // Fermer arrête la vidéo : on retire le lecteur.
-    visionneuse.addEventListener('close', () => $('#visionneuse-cadre').replaceChildren());
-    $('.visionneuse__fermer').addEventListener('click', () => visionneuse.close());
-    visionneuse.addEventListener('click', e => { if (e.target === visionneuse) visionneuse.close(); });
+    function ouvrirVideo(carte, ressource) {
+        document.querySelectorAll('.ressource--ouverte').forEach(c => fermerVideo(c));
+        const zone = document.createElement('div');
+        zone.className = 'ressource__video';
+        zone.id = carte.querySelector('.ressource__ouvrir').getAttribute('aria-controls');
+        const commandes = commandesVideo(ressource.titre, ressource.lien);
+        commandes.insertAdjacentHTML('beforeend', `<button type="button" class="video-action ressource__fermer"><i class="fas fa-xmark" aria-hidden="true"></i><span>${tr('close')}</span></button>`);
+        zone.append(commandes);
+        zone.insertAdjacentHTML('beforeend', '<div class="lecteur"></div>');
+        $('.ressource__fermer', zone).addEventListener('click', () => fermerVideo(carte, true));
+        carte.classList.add('ressource--ouverte');
+        carte.querySelector('.ressource__ouvrir').setAttribute('aria-expanded', 'true');
+        carte.querySelector('.ressource__corps').append(zone);
+        jouerVideo($('.lecteur', zone), ressource.integration, ressource.titre, () => fermerVideo(carte));
+        carte.scrollIntoView({ block: 'start' });
+    }
 
     /* ------------------------------------------------------------ Ressources */
     const TYPES = {
-        video: { nom: 'Vidéos', un: 'Vidéo', icone: 'fa-circle-play' },
-        tutoriel: { nom: 'Tutoriels', un: 'Tutoriel', icone: 'fa-book-open' },
-        presentation: { nom: 'Présentations', un: 'Présentation', icone: 'fa-display' },
-        article: { nom: 'On parle de Caramel', un: 'On parle de Caramel', icone: 'fa-newspaper' },
-        communaute: { nom: 'Communauté', un: 'Communauté', icone: 'fa-users' },
+        video: { nom: 'videos', un: 'video', visuel: 'video' },
+        tutoriel: { nom: 'tutorials', un: 'tutorial', visuel: 'lire' },
+        presentation: { nom: 'publications', un: 'presentation', visuel: 'video' },
+        article: { nom: 'articles', un: 'article', visuel: 'lire' },
+        communaute: { nom: 'community', un: 'community', visuel: 'lire' },
+        conference: { nom: 'conferences', un: 'conference', visuel: 'video' },
+        publication: { nom: 'publications', un: 'publication', visuel: 'lire' },
+    };
+    const SVG = {
+        video: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="m10 8 6 4-6 4Z"/></svg>',
+        lire: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2.5h8l4 4V21H6Z"/><path d="M14 2.5V7h4M9 11h6M9 15h6"/></svg>',
     };
     const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
     const dateLisible = d => {
@@ -61,67 +145,118 @@
         if (!m) return d || '';
         return `${m[3] ? `${Number(m[3])} ` : ''}${MOIS[Number(m[2]) - 1]} ${m[1]}`;
     };
-    const codeIntegration = r => `<iframe src="${r.integration}" width="640" height="360" style="padding: 0; margin: 0; border:0" allowfullscreen title="${echapper(r.titre)}"></iframe>`;
+    const codeIntegration = r => `<iframe src="${echapper(urlIntegration(r.integration).href)}" width="640" height="360" style="padding: 0; margin: 0; border:0" allowfullscreen title="${echapper(r.titre)}"></iframe>`;
 
-    function rendreRessources(ressources) {
-        const liste = $('#liste-ressources'), filtres = $('#filtres');
-        const presents = Object.keys(TYPES).filter(t => ressources.some(r => r.type === t));
+    function rendreCatalogue(ressources, { listeId, filtresId, types = TYPES }) {
+        const liste = $(listeId), filtres = $(filtresId);
+        const presents = Object.keys(types).filter(t => ressources.some(r => r.type === t));
         const bouton = (type, nom, n) => `<button type="button" class="filtre" data-type="${type}" aria-pressed="${type === 'tout'}">${nom}<span>${n}</span></button>`;
-        filtres.innerHTML = bouton('tout', 'Tout', ressources.length) + presents.map(t => bouton(t, TYPES[t].nom, ressources.filter(r => r.type === t).length)).join('');
+        filtres.innerHTML = bouton('tout', tr('all'), ressources.length) + presents.map(t => bouton(t, tr(types[t].nom), ressources.filter(r => r.type === t).length)).join('');
         liste.innerHTML = ressources.map((r, i) => {
-            const t = TYPES[r.type] || TYPES.tutoriel;
+            const t = types[r.type] || TYPES.tutoriel;
             const meta = [r.source, dateLisible(r.date), r.duree].filter(Boolean).map(echapper).map(m => `<span>${m}</span>`).join('');
-            return `<article class="ressource ressource--${echapper(r.type)} revele" data-type="${echapper(r.type)}">
+            const action = r.integration ? tr('watch_here') : t.visuel === 'video' ? tr('watch') : tr('read');
+            return `<article class="ressource ressource--${echapper(r.type)}" data-type="${echapper(r.type)}">
                 <div class="ressource__bandeau"></div>
                 <div class="ressource__corps">
-                    <span class="ressource__type"><i class="fas ${t.icone}" aria-hidden="true"></i>${t.un}</span>
-                    <h3><a href="${echapper(r.lien)}" target="_blank" rel="noopener" data-i="${i}">${echapper(r.titre)}</a></h3>
+                    <span class="ressource__type">${SVG[t.visuel] || SVG.lire}<span>${tr(t.un)}<small>${action}</small></span></span>
+                    <h3>${r.integration
+                        ? `<button type="button" class="ressource__ouvrir" data-i="${i}" aria-expanded="false" aria-controls="${liste.id}-video-${i}">${echapper(r.titre)}</button>`
+                        : `<a href="${echapper(r.lien)}" target="_blank" rel="noopener">${echapper(r.titre)}</a>`}</h3>
                     ${r.description ? `<p>${echapper(r.description)}</p>` : ''}
-                    <div class="ressource__meta">${meta}${r.integration ? '<span><i class="fas fa-play" aria-hidden="true"></i> se regarde ici</span>' : ''}</div>
+                    <div class="ressource__meta">${meta}</div>
                 </div></article>`;
         }).join('');
-        // Une vidéo intégrable se regarde sur place ; le reste s'ouvre dans un nouvel onglet.
+        // Une vidéo agrandit sa carte dans la grille et accueille son lecteur natif.
         liste.addEventListener('click', e => {
-            const a = e.target.closest('a[data-i]');
-            const r = a && ressources[Number(a.dataset.i)];
-            if (!r?.integration || e.metaKey || e.ctrlKey) return;
-            e.preventDefault();
-            ouvrirVisionneuse(r.integration, r.titre);
+            const bouton = e.target.closest('.ressource__ouvrir');
+            const r = bouton && ressources[Number(bouton.dataset.i)];
+            if (!r?.integration) return;
+            const carte = bouton.closest('.ressource');
+            if (carte.classList.contains('ressource--ouverte')) fermerVideo(carte, true);
+            else ouvrirVideo(carte, r);
         });
         filtres.addEventListener('click', e => {
             const b = e.target.closest('.filtre');
             if (!b) return;
             filtres.querySelectorAll('.filtre').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-            liste.querySelectorAll('.ressource').forEach(c => { c.hidden = b.dataset.type !== 'tout' && c.dataset.type !== b.dataset.type; });
+            liste.querySelectorAll('.ressource').forEach(c => {
+                c.hidden = b.dataset.type !== 'tout' && c.dataset.type !== b.dataset.type;
+                if (c.hidden) fermerVideo(c);
+            });
         });
-        observer(liste.querySelectorAll('.revele'));
+    }
+
+    function rendreMentions(mentions) {
+        const types = {
+            conference: TYPES.conference,
+            video: TYPES.video,
+            article: { nom: 'articles', un: 'article', visuel: 'lire' },
+            publication: TYPES.publication,
+        };
+        rendreCatalogue(mentions, { listeId: '#liste-mentions', filtresId: '#filtres-mentions', types });
+        const avecDate = mentions.filter(r => r.date);
+        const annees = new Set(avecDate.map(r => r.date.slice(0, 4))).size;
+        $('#catalogue-intro').innerHTML = `<b>${mentions.length} ${tr('references')}</b><span>${avecDate.length} ${tr('dated')}</span><span>${annees} ${tr('years')}</span>`;
     }
 
     function rendreIntegrations(ressources) {
         const zone = $('#integrations');
         const videos = ressources.filter(r => r.integration);
-        zone.innerHTML = videos.map((r, i) => `<div class="integration"><b>${echapper(r.titre)}</b><button type="button" class="copier" data-i="${i}"><i class="fas fa-copy" aria-hidden="true"></i> <span>Copier le code</span></button></div>`).join('');
-        zone.addEventListener('click', async e => {
-            const b = e.target.closest('.copier');
-            if (!b) return;
-            const code = codeIntegration(videos[Number(b.dataset.i)]);
+        const option = (r, i, exemple = false) => `<label class="integration-option${exemple ? ' integration-option--exemple' : ''}">
+            <input type="radio" name="integration-video" value="${i}" ${i === 0 ? 'checked' : ''}>
+            ${exemple ? `<img src="${duSite(`assets/images/branding/${i === 0 ? 'logo_caramel' : 'sucrerie'}.svg`)}" alt="" width="28" height="28">` : '<i class="fas fa-circle-play" aria-hidden="true"></i>'}
+            <span><b>${echapper(r.titre)}</b><small>${[r.source, r.duree].filter(Boolean).map(echapper).join(' · ')}</small></span>
+        </label>`;
+        zone.innerHTML = `<fieldset class="integration-choix"><legend>${tr('choose_video')}</legend>
+            <div class="integration-exemples">${videos.slice(0, 2).map((r, i) => option(r, i, true)).join('')}</div>
+            <div class="integration-liste">${videos.slice(2).map((r, i) => option(r, i + 2)).join('')}</div>
+            </fieldset><button type="button" class="copier"><i class="fas fa-copy" aria-hidden="true"></i> <span aria-live="polite">${tr('copy_code')}</span></button>`;
+        const b = $('.copier', zone);
+        let choisie = 0;
+        let retour;
+        const reinitialiser = () => {
+            clearTimeout(retour);
+            b.classList.remove('fait');
+            b.querySelector('span').textContent = tr('copy_code');
+            b.querySelector('i').className = 'fas fa-copy';
+        };
+        zone.addEventListener('change', e => {
+            if (e.target.name !== 'integration-video') return;
+            choisie = Number(e.target.value);
+            reinitialiser();
+        });
+        b.addEventListener('click', async () => {
+            const selection = choisie;
+            const code = codeIntegration(videos[Number(selection)]);
             try { await navigator.clipboard.writeText(code); }
             catch {
                 // Presse-papiers refusé (page non sûre, navigateur ancien) : on sélectionne le code à la main.
                 const t = Object.assign(document.createElement('textarea'), { value: code });
                 document.body.append(t); t.select(); document.execCommand('copy'); t.remove();
             }
+            // Le retour concerne uniquement la vidéo qui vient d'être copiée.
+            if (choisie !== selection) return;
+            clearTimeout(retour);
             b.classList.add('fait');
-            b.querySelector('span').textContent = 'Copié !';
+            b.querySelector('span').textContent = tr('copied');
             b.querySelector('i').className = 'fas fa-check';
-            setTimeout(() => { b.classList.remove('fait'); b.querySelector('span').textContent = 'Copier le code'; b.querySelector('i').className = 'fas fa-copy'; }, 2200);
+            retour = setTimeout(reinitialiser, 2200);
         });
     }
 
-    fetch('ressources.json', { cache: 'no-cache' })
-        .then(r => r.json())
-        .then(({ ressources = [] }) => { rendreRessources(ressources); rendreIntegrations(ressources); })
-        .catch(() => { $('#liste-ressources').innerHTML = '<p class="signaler">Les ressources n’ont pas pu être chargées.</p>'; });
+    Promise.all([
+        fetch('ressources.json', { cache: 'no-cache' }).then(r => r.json()),
+        fetch('on-parle-de-nous.json', { cache: 'no-cache' }).then(r => r.json()),
+    ]).then(([officielles, catalogue]) => {
+        const ressources = officielles.ressources || [], mentions = catalogue.mentions || [];
+        rendreCatalogue(ressources, { listeId: '#liste-ressources', filtresId: '#filtres' });
+        rendreMentions(mentions);
+        rendreIntegrations([...ressources, ...mentions]);
+    }).catch(() => {
+        $('#liste-ressources').innerHTML = '<p class="signaler">Les ressources n’ont pas pu être chargées.</p>';
+        $('#liste-mentions').innerHTML = '<p class="signaler">Le catalogue n’a pas pu être chargé.</p>';
+    });
 
     /* ------------------------------------------------------------ Activités H5P */
     const H5P_LIBS = duSite('js/vendor/h5p-libs');
@@ -134,8 +269,8 @@
 
     function rendreTuiles() {
         const tuiles = $('#tuiles');
-        tuiles.innerHTML = activites.map((a, i) => `<button type="button" class="tuile" role="tab" aria-selected="false" aria-controls="scene" data-i="${i}">
-            <em class="badge badge--h5p">H5P</em>
+        tuiles.innerHTML = activites.map((a, i) => `<button type="button" class="tuile h5p-tile" role="tab" aria-selected="false" aria-controls="scene" data-i="${i}">
+            <span class="module-label h5p-label"><span>H5P</span></span>
             <img src="${duSite(a.icone)}" alt="" width="56" height="56">
             <span>${echapper(a.type)}</span><small>${echapper(a.titre)}</small></button>`).join('');
         tuiles.addEventListener('click', e => { const t = e.target.closest('.tuile'); if (t) choisir(Number(t.dataset.i)); });
@@ -183,7 +318,7 @@
         }
     }
 
-    /** Un sans-faute fait tomber quelques bonbons : l'activité l'annonce par xAPI. */
+    /** Un sans-faute reçoit un retour discret : l'activité l'annonce par xAPI. */
     function ecouterReussites() {
         const dispatcher = window.H5P?.externalDispatcher;
         if (ecouteXapi || !dispatcher) return;
@@ -209,21 +344,6 @@
         bravo.innerHTML = `<img src="${bonbon}" alt=""> Sans faute, bravo !`;
         document.body.append(bravo);
         setTimeout(() => bravo.remove(), 3200);
-        if (!mouvement) return;
-        const pluie = document.createElement('div');
-        pluie.className = 'pluie';
-        pluie.setAttribute('aria-hidden', 'true');
-        for (let k = 0; k < 18; k++) {
-            const img = document.createElement('img');
-            img.src = bonbon; img.alt = '';
-            img.style.left = `${Math.random() * 96}%`;
-            img.style.animationDuration = `${1.8 + Math.random() * 1.6}s`;
-            img.style.animationDelay = `${Math.random() * .6}s`;
-            img.style.width = `${30 + Math.random() * 26}px`;
-            pluie.append(img);
-        }
-        document.body.append(pluie);
-        setTimeout(() => pluie.remove(), 4400);
     }
 
     fetch(duSite('assets/presentation/activites/index.json'), { cache: 'no-cache' })
@@ -237,36 +357,41 @@
         })
         .catch(() => { $('#scene-jeu').innerHTML = '<p class="scene__attente">Les activités n’ont pas pu être chargées.</p>'; });
 
-    /* ------------------------------------------------------------ Apparitions, compteurs, navigation */
-    const vues = 'IntersectionObserver' in window ? new IntersectionObserver(entrees => {
-        for (const e of entrees) {
-            if (!e.isIntersecting) continue;
-            e.target.classList.add('vu');
-            vues.unobserve(e.target);
-        }
-    }, { rootMargin: '0px 0px -8% 0px' }) : null;
-    function observer(elements) {
-        elements.forEach(el => { if (vues) vues.observe(el); else el.classList.add('vu'); });
-    }
-    document.querySelectorAll('.section__tete, .etape, .carte-kit, .chiffre, .cinema, .sucrerie, .atelier').forEach(el => el.classList.add('revele'));
-    observer(document.querySelectorAll('.revele'));
+    /* ------------------------------------------------------------ Navigation */
+    // Les ancres restent sous la barre, même quand une traduction augmente sa hauteur.
+    const barre = $('#barre');
+    const ajusterRecul = () => document.documentElement.style.setProperty(
+        '--hauteur-entete', `${Math.ceil(barre.getBoundingClientRect().height) + 12}px`);
+    ajusterRecul();
+    if ('ResizeObserver' in window) new ResizeObserver(ajusterRecul).observe(barre);
+    else window.addEventListener('resize', ajusterRecul);
 
-    // Les chiffres montent jusqu'à leur valeur quand ils apparaissent.
-    const compteurs = 'IntersectionObserver' in window ? new IntersectionObserver(entrees => {
-        for (const e of entrees) {
-            if (!e.isIntersecting) continue;
-            compteurs.unobserve(e.target);
-            const cible = Number(e.target.dataset.compter), debut = performance.now();
-            if (!mouvement) continue;
-            const pas = t => {
-                const f = Math.min(1, (t - debut) / 1100);
-                e.target.textContent = String(Math.round(cible * (1 - Math.pow(1 - f, 3))));
-                if (f < 1) requestAnimationFrame(pas);
-            };
-            requestAnimationFrame(pas);
-        }
-    }, { threshold: .6 }) : null;
-    document.querySelectorAll('[data-compter]').forEach(el => { if (mouvement && compteurs) el.textContent = '0'; compteurs?.observe(el); });
+    const navigation = $('.barre__navigation');
+    const boutonNavigation = $('.navigation-bouton');
+    const fermerNavigation = (rendreFocus = false) => {
+        navigation.classList.remove('ouverte');
+        boutonNavigation.setAttribute('aria-expanded', 'false');
+        if (rendreFocus) boutonNavigation.focus();
+    };
+    boutonNavigation.addEventListener('click', () => {
+        const ouvrir = !navigation.classList.contains('ouverte');
+        navigation.classList.toggle('ouverte', ouvrir);
+        boutonNavigation.setAttribute('aria-expanded', String(ouvrir));
+        if (ouvrir) $('.navigation a').focus();
+    });
+    navigation.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { e.preventDefault(); fermerNavigation(true); }
+    });
+    navigation.addEventListener('click', e => {
+        if (e.target.closest('.navigation a')) fermerNavigation(true);
+    });
+    navigation.addEventListener('focusout', e => {
+        if (!navigation.contains(e.relatedTarget)) fermerNavigation();
+    });
+    document.addEventListener('click', e => {
+        if (!navigation.contains(e.target)) fermerNavigation();
+    });
+    window.matchMedia('(max-width: 1180px)').addEventListener('change', () => fermerNavigation());
 
     // Le lien de la section en vue s'allume dans la barre.
     const liens = [...document.querySelectorAll('.navigation a')];

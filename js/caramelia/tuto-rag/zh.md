@@ -253,7 +253,7 @@ Caramel 应用程序仅在一键生成时使用由 ILaaS 运营的 AI 模型，I
 
 ### 实用链接
 
-- **许可证**：GNU GPL v3.0 或更高版本 — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **许可证**：GNU AGPL v3.0 或更高版本 — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **报告错误**：https://forge.apps.education.fr/caramel/caramel/-/issues
 - **源代码**：https://forge.apps.education.fr/caramel/caramel
 - **更新日志**：https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

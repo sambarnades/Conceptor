@@ -12,6 +12,7 @@
 import { showNotification } from '../core/utils.js';
 import { texteAffiche } from '../core/texte-affiche.js';
 import { translations } from '../core/translation.js';
+import { consigneLangueEnseignee } from '../core/content-language.js';
 import { h5pModules, moodleModules } from '../core/definitions.js';
 import { activeTile } from '../ui/ui.js';
 
@@ -384,6 +385,10 @@ export function buildActivityPrompt(activityPrefix, params) {
 
     // 3. RÈGLES PÉDAGOGIQUES (communes)
     const reglesPedagogiques = pt.prompt_regles_pedagogiques_communes || '';
+    // Sur le vrai modèle, la règle générale restait trop loin du rôle et les
+    // exemples français reprenaient le dessus. Une langue enseignée explicite
+    // devient donc une contrainte prioritaire, proche du contexte.
+    const langueObligatoire = consigneLangueEnseignee({ qui, quoi });
 
     // 4. SOURCES (conditionnelles)
     // Une activité peut surcharger le cadrage des sources via `${prefix}_sources`
@@ -395,7 +400,14 @@ export function buildActivityPrompt(activityPrefix, params) {
     }
 
     // 5. STRUCTURE JSON
-    const structureJson = pt[`${activityPrefix}_structure_json`] || '';
+    let structureJson = pt[`${activityPrefix}_structure_json`] || '';
+    if (activityPrefix === 'prompt_elea_test') {
+        // Le feedback global est un CONTENU rédigé par l'IA, contrairement aux
+        // réglages techniques du Test. Il reste donc à la racine de sa réponse,
+        // puis `canonicalizeTestModel` le range dans `quiz_settings` pour l'éditeur
+        // et le backup Moodle. Sans ce contrat, Caramel affichait deux plages vides.
+        structureJson += `\n- \`overallfeedback\` (obligatoire) : tableau de 4 objets \`{ "from", "to", "feedback" }\` couvrant 0-25, 26-50, 51-75 et 76-100 %. Chaque message, dans la langue du contenu, aide à progresser et se rapporte au sujet sans révéler une réponse précise.`;
+    }
 
     // 6. EXEMPLE DE RENDU
     const exempleRendu = pt[`${activityPrefix}_exemple_rendu`] || '';
@@ -403,6 +415,7 @@ export function buildActivityPrompt(activityPrefix, params) {
     // Assemblage final du prompt
     let prompt = `# ${pt.prompt_header_pedagogical_context || 'CONTEXTE PÉDAGOGIQUE'}
 ${contextePedagogique}
+${langueObligatoire ? `\n${langueObligatoire}\n` : ''}
 
 # ${pt.prompt_header_specific_rules || 'RÈGLES SPÉCIFIQUES'}
 ${reglesSpecifiques}

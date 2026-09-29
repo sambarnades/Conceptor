@@ -3,8 +3,9 @@
 <!--
   La page de présentation de Caramel (/decouvrir/), liée depuis le pied de page.
 
-  Ce qui change souvent ne se touche pas ici : les vidéos, tutoriels, présentations
-  et articles viennent de decouvrir/ressources.json (mode d'emploi en tête du fichier).
+  Ce qui change souvent ne se touche pas ici : les ressources officielles viennent de
+  decouvrir/ressources.json et le catalogue éditorial de decouvrir/on-parle-de-nous.json
+  (modes d'emploi en tête des fichiers).
   Les activités à essayer sont de vrais .h5p produits par le pipeline de Caramel
   (scripts/generer-demos-presentation.mjs → assets/presentation/activites/), joués par
   le lecteur H5P déjà embarqué dans Caramel.
@@ -13,14 +14,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Découvrir Caramel</title>
-    <meta name="description" content="Caramel prépare avec l'IA des activités interactives (H5P, Moodle) et des parcours complets pour Éléa, Magistère et Moodle. Gratuit, sans compte, logiciel libre. Vidéos, tutoriels et ressources pour le présenter en formation.">
+    <meta name="description" content="Caramel prépare avec l'IA des activités interactives (H5P, Moodle) et des parcours complets pour Éléa, Magistère et Moodle. Démonstrations, ressources de formation et catalogue des articles et conférences consacrés au projet.">
     <meta property="og:title" content="Découvrir Caramel">
     <meta property="og:description" content="Des activités interactives pour Éléa, Magistère et Moodle, préparées avec l'IA et relues par vous. Gratuit, sans compte, logiciel libre.">
     <meta name="theme-color" content="#f39438">
     <link rel="icon" href="../assets/images/branding/logo_caramel.svg" type="image/svg+xml">
     <link rel="icon" href="../assets/images/branding/logo_caramel.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/vendor/flag-icons/7.5.0/css/flag-icons.min.css">
     <link rel="stylesheet" href="../css/vendor/fontawesome/7.3.1/css/all.min.css">
-    <link rel="stylesheet" href="decouvrir.css">
+    <link rel="stylesheet" href="../css/components/app-header.css">
+    <link rel="stylesheet" href="../css/components/module-label.css">
+    <link rel="stylesheet" href="decouvrir.css?v=20260929-footer-regroupe">
 
     <!-- Début Matomo Code (le même que la page de Caramel) -->
     <script>
@@ -41,71 +45,81 @@
 <body>
     <a href="#contenu" class="evitement">Aller au contenu</a>
 
-    <header class="barre" id="barre">
-        <a class="marque" href="../" aria-label="Ouvrir Caramel">
-            <img src="../assets/images/branding/logo_caramel.svg" alt="" width="36" height="36">
-            <span>Caramel</span>
-        </a>
-        <nav class="navigation" aria-label="Sections de la page">
-            <a href="#video">La vidéo</a>
-            <a href="#essayer">Essayer</a>
-            <a href="#former">Former avec Caramel</a>
-            <a href="#ressources">Ressources</a>
+    <header class="app-bar barre" id="barre">
+        <div class="header-left barre__marque">
+            <a class="marque" href="../" aria-label="Ouvrir Caramel">
+                <img src="../assets/images/branding/logo_caramel.svg" class="logo" alt="" width="50" height="50">
+                <span><b class="app-title">Caramel</b><small class="subtitle" data-decouvrir-key="subtitle">Création Assistée de Ressources et d'Activités Magistère et Éléa</small></span>
+            </a>
+        </div>
+        <div class="barre__navigation">
+            <button type="button" class="navigation-bouton" aria-expanded="false" aria-controls="navigation-sections"><i class="fas fa-compass" aria-hidden="true"></i><span data-decouvrir-key="explore">Explorer</span><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+        <nav id="navigation-sections" class="navigation" aria-label="Sections de la page">
+            <a href="#video" data-decouvrir-key="nav_video">La vidéo</a>
+            <a href="#essayer" data-decouvrir-key="nav_try">Essayer</a>
+            <a href="#former" data-decouvrir-key="nav_trainers">Former</a>
+            <a href="#on-parle" data-decouvrir-key="nav_mentions">On parle de nous</a>
+            <a href="#ressources" data-decouvrir-key="nav_resources">Ressources</a>
         </nav>
-        <a class="bouton bouton--petit bouton--plein" href="../">Ouvrir Caramel <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="header-right barre__actions">
+            <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener" class="help-btn outil-entete" aria-label="Tchap"><img src="../assets/images/branding/tchap.svg" class="tchap-icon" alt="" width="20" height="20"><span>Tchap</span></a>
+            <a href="https://sucrerie.forge.apps.education.fr/" target="_blank" rel="noopener" class="help-btn outil-entete" aria-label="Sucrerie"><img src="../assets/images/branding/sucrerie.svg" class="sucrerie-icon" alt="" width="22" height="22"><span>Sucrerie</span></a>
+            <div class="language-switcher selecteur-langue">
+                <button type="button" class="language-btn bouton-langue" aria-expanded="false" aria-haspopup="true" data-decouvrir-aria="change_language">
+                    <span class="fi fi-fr" aria-hidden="true"></span><span data-decouvrir-key="language">Langue</span>
+                </button>
+                <ul class="language-dropdown menu-langues" hidden>
+                    <li><button type="button" data-lang="fr"><span class="fi fi-fr"></span>Français</button></li>
+                    <li><button type="button" data-lang="en"><span class="fi fi-gb"></span>English</button></li>
+                    <li><button type="button" data-lang="es"><span class="fi fi-es"></span>Español</button></li>
+                    <li><button type="button" data-lang="de"><span class="fi fi-de"></span>Deutsch</button></li>
+                    <li><button type="button" data-lang="it"><span class="fi fi-it"></span>Italiano</button></li>
+                    <li><button type="button" data-lang="nl"><span class="fi fi-nl"></span>Nederlands</button></li>
+                    <li><button type="button" data-lang="pt"><span class="fi fi-pt"></span>Português</button></li>
+                    <li><button type="button" data-lang="ar"><span class="fi fi-sa"></span>عربي</button></li>
+                    <li><button type="button" data-lang="zh"><span class="fi fi-cn"></span>中文</button></li>
+                    <li><button type="button" data-lang="jp"><span class="fi fi-jp"></span>日本語</button></li>
+                    <li><button type="button" data-lang="el"><span class="fi fi-gr"></span>Ελληνικά</button></li>
+                    <li><button type="button" data-lang="br"><span class="fi fi-bzh"></span>Brezhoneg</button></li>
+                </ul>
+            </div>
+            <a class="help-btn ouvrir-caramel" href="../" aria-label="Ouvrir Caramel" data-decouvrir-aria="open_caramel"><i class="fas fa-arrow-right" aria-hidden="true"></i><span data-decouvrir-key="open_caramel">Ouvrir Caramel</span></a>
+        </div>
+
     </header>
 
     <main id="contenu">
         <!-- ============ Ouverture ============ -->
         <section class="ouverture" aria-labelledby="titre-principal">
             <div class="ouverture__texte">
-                <p class="surtitre"><span class="pastille-douce">Gratuit</span><span class="pastille-douce">Sans compte</span><span class="pastille-douce">Logiciel libre</span></p>
-                <h1 id="titre-principal">Des activités interactives pour vos élèves, <span class="sucre">prêtes en quelques minutes.</span></h1>
-                <p class="chapeau">Caramel rédige avec l'IA des quiz, textes à trous, cartes, frises, vidéos interactives… et même des parcours complets, prêts à déposer sur <b class="plateforme plateforme--elea">Éléa</b>, <b class="plateforme plateforme--magistere">Magistère</b> et <b class="plateforme plateforme--moodle">Moodle</b>. L'IA propose&nbsp;; vous relisez, vous ajustez, vous décidez.</p>
+                <h1 id="titre-principal" data-decouvrir-key="hero_title" data-decouvrir-html>Des activités interactives pour vos élèves, <span class="sucre">prêtes en quelques minutes.</span></h1>
+                <p class="chapeau">Créez avec l’IA des activités et des parcours pour Éléa, Magistère et Moodle. Vous relisez, puis vous partagez.</p>
                 <div class="actions">
-                    <a class="bouton bouton--plein" href="../">Ouvrir Caramel <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-                    <a class="bouton bouton--clair" href="#video"><i class="fas fa-circle-play" aria-hidden="true"></i> Voir la vidéo <small>4 min 44</small></a>
+                    <a class="bouton bouton--plein" href="../"><span data-decouvrir-key="open_caramel">Ouvrir Caramel</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    <a class="bouton bouton--clair" href="#video"><i class="fas fa-circle-play" aria-hidden="true"></i> <span data-decouvrir-key="watch">Voir la vidéo</span> <small>4 min 44</small></a>
                 </div>
-                <p class="acronyme" title="Ce que veut dire Caramel"><b>C</b>réation <b>A</b>ssistée de <b>R</b>essources et d'<b>A</b>ctivités <b>M</b>agistère <b>E</b>t É<b>L</b>éa</p>
             </div>
 
-            <!-- Un rappel de l'application : sa fenêtre, et quelques tuiles qui s'en échappent. -->
-            <div class="ouverture__visuel" aria-hidden="true">
-                <div class="fenetre">
-                    <div class="fenetre__barre"><i></i><i></i><i></i><span>caramel.forge.apps.education.fr</span></div>
-                    <img src="../assets/images/wiki/caramel-activites.png" alt="" width="2184" height="1050">
+            <!-- Une capture de l'application, sans éléments décoratifs superposés. -->
+            <div class="ouverture__visuel">
+                <div class="capture">
+                    <div class="capture__barre" aria-hidden="true"><i></i><i></i><i></i><span>Caramel</span></div>
+                    <img src="../assets/images/wiki/caramel-activites.png" alt="L’accueil de Caramel et son choix d’activités" width="2184" height="1050">
                 </div>
-                <div class="tuile-volante tuile-volante--1"><img src="../assets/images/activities/crosswords.webp" alt=""><span>Mots croisés</span><em class="badge badge--h5p">H5P</em></div>
-                <div class="tuile-volante tuile-volante--2"><img src="../assets/images/activities/interactive_video_icon-colors_0.webp" alt=""><span>Vidéo interactive</span><em class="badge badge--h5p">H5P</em></div>
-                <div class="tuile-volante tuile-volante--3"><img src="../assets/images/activities/test.webp" alt=""><span>Test</span><em class="badge badge--elea">Éléa</em></div>
-                <img class="bonbon" src="../assets/images/branding/logo_caramel_2.webp" alt="" width="120" height="120">
             </div>
         </section>
 
-        <!-- La nappe de caramel qui coule sur la suite. -->
-        <svg class="nappe" viewBox="0 0 1440 110" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <defs><linearGradient id="nappe-degrade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8A23D"/><stop offset="1" stop-color="#C97B30"/></linearGradient></defs>
-            <path fill="url(#nappe-degrade)" d="M0 0H1440V24H1405.5Q1398.5 24 1398.5 31V73.2A8.2 8.2 0 0 1 1382 73.2V31Q1382 24 1375 24H1297.6Q1290.6 24 1290.6 31V77.5A20.5 20.5 0 0 1 1249.7 77.5V31Q1249.7 24 1242.7 24H1197Q1190 24 1190 31V64.1A14.8 14.8 0 0 1 1160.4 64.1V31Q1160.4 24 1153.4 24H1125.7Q1118.7 24 1118.7 31V76.8A8.2 8.2 0 0 1 1102.3 76.8V31Q1102.3 24 1095.3 24H1044.6Q1037.6 24 1037.6 31V68.8A10.5 10.5 0 0 1 1016.6 68.8V31Q1016.6 24 1009.6 24H943.5Q936.5 24 936.5 31V36.5A12 12 0 0 1 912.5 36.5V31Q912.5 24 905.5 24H821.8Q814.8 24 814.8 31V46.8A15.2 15.2 0 0 1 784.4 46.8V31Q784.4 24 777.4 24H719.1Q712.1 24 712.1 31V63.2A10.8 10.8 0 0 1 690.4 63.2V31Q690.4 24 683.4 24H604.6Q597.6 24 597.6 31V39.9A18.7 18.7 0 0 1 560.1 39.9V31Q560.1 24 553.1 24H502.5Q495.5 24 495.5 31V63.1A9.8 9.8 0 0 1 475.8 63.1V31Q475.8 24 468.8 24H418.4Q411.4 24 411.4 31V68.8A11.7 11.7 0 0 1 388.1 68.8V31Q388.1 24 381.1 24H343.6Q336.6 24 336.6 31V57.7A14.7 14.7 0 0 1 307.2 57.7V31Q307.2 24 300.2 24H242.8Q235.8 24 235.8 31V54.8A8.6 8.6 0 0 1 218.6 54.8V31Q218.6 24 211.6 24H122.8Q115.8 24 115.8 31V50.3A8 8 0 0 1 99.8 50.3V31Q99.8 24 92.8 24H0Z" />
-        </svg>
-
-        <!-- ============ En chiffres ============ -->
-        <section class="chiffres" aria-label="Caramel en chiffres">
-            <div class="chiffre"><b data-compter="35">35</b><span>types d'activités<br><small>27 H5P · 8 Moodle</small></span></div>
-            <div class="chiffre"><b><i class="fas fa-route" aria-hidden="true"></i></b><span>des parcours complets<br><small>plusieurs activités, un seul cours</small></span></div>
-            <div class="chiffre"><b data-compter="3">3</b><span>plateformes<br><small>Éléa · Magistère · Moodle</small></span></div>
-            <div class="chiffre"><b data-compter="12">12</b><span>langues d'interface<br><small>du breton au japonais</small></span></div>
-            <div class="chiffre"><b>0&nbsp;€</b><span>et aucun compte<br><small>tout se passe dans le navigateur</small></span></div>
-        </section>
 
         <!-- ============ La vidéo ============ -->
         <section class="section section--nuit" id="video" aria-labelledby="titre-video">
             <div class="section__tete">
                 <p class="oeil"><i class="fas fa-film" aria-hidden="true"></i> Présentation</p>
-                <h2 id="titre-video">Caramel 7 en moins de cinq minutes</h2>
+                <h2 id="titre-video" data-decouvrir-key="section_video_title">Caramel 7 en moins de cinq minutes</h2>
                 <p>Une démonstration filmée dans le vrai Caramel, avec les vraies réponses de l'IA et ses temps d'attente, y compris une erreur corrigée à la main. Ce que l'outil fait bien, et ce qu'il faut vérifier.</p>
             </div>
             <div class="cinema">
-                <div class="lecteur" data-integration="https://podeduc.apps.education.fr/video/161411-caramel-7/?is_iframe=true" data-titre="Caramel 7">
+                <div class="lecteur" data-integration="https://podeduc.apps.education.fr/video/161411-caramel-7/?is_iframe=true" data-titre="Caramel 7" data-lien="https://podeduc.apps.education.fr/video/161411-caramel-7/">
                     <button type="button" class="affiche affiche--caramel" aria-label="Lire la vidéo « Caramel 7 » (4 min 44, Podeduc)">
                         <img src="../assets/images/branding/logo_caramel.svg" alt="" width="84" height="84">
                         <strong>Caramel 7</strong>
@@ -126,7 +140,7 @@
         <section class="section" aria-labelledby="titre-etapes">
             <div class="section__tete">
                 <p class="oeil"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> Comment ça marche</p>
-                <h2 id="titre-etapes">Trois étapes, et c'est vous qui avez le dernier mot</h2>
+                <h2 id="titre-etapes" data-decouvrir-key="section_steps_title">Trois étapes, et c'est vous qui avez le dernier mot</h2>
             </div>
             <ol class="etapes">
                 <li class="etape">
@@ -147,11 +161,20 @@
             </ol>
         </section>
 
+        <!-- ============ En chiffres ============ -->
+        <section class="chiffres" aria-label="Caramel en chiffres">
+            <div class="chiffre"><b>35</b><span>types d'activités<br><small>27 H5P · 8 Moodle</small></span></div>
+            <div class="chiffre"><b><i class="fas fa-route" aria-hidden="true"></i></b><span>des parcours complets<br><small>plusieurs activités, un seul cours</small></span></div>
+            <div class="chiffre"><b>3</b><span>plateformes<br><small>Éléa · Magistère · Moodle</small></span></div>
+            <div class="chiffre"><b>12</b><span>langues d'interface<br><small>du breton au japonais</small></span></div>
+            <div class="chiffre"><b>0&nbsp;€</b><span>et aucun compte<br><small>tout se passe dans le navigateur</small></span></div>
+        </section>
+
         <!-- ============ Essayer ============ -->
         <section class="section section--creme" id="essayer" aria-labelledby="titre-essayer">
             <div class="section__tete">
                 <p class="oeil"><i class="fas fa-hand-pointer" aria-hidden="true"></i> À essayer ici</p>
-                <h2 id="titre-essayer">De vraies activités fabriquées par Caramel</h2>
+                <h2 id="titre-essayer" data-decouvrir-key="section_try_title">De vraies activités fabriquées par Caramel</h2>
                 <p>Ce sont les fichiers H5P que produit Caramel, joués ici comme sur une plateforme. Choisissez une tuile, puis jouez. Chaque activité se télécharge pour votre propre cours.</p>
             </div>
             <div class="atelier">
@@ -170,16 +193,16 @@
         <section class="section" aria-labelledby="titre-sucrerie">
             <div class="sucrerie">
                 <div class="sucrerie__texte">
-                    <p class="oeil oeil--rose"><img src="../assets/images/branding/sucrerie.svg" alt="" width="20" height="20"> La Sucrerie</p>
-                    <h2 id="titre-sucrerie">Partager ses activités, piocher dans celles des autres</h2>
+                    <p class="oeil oeil--rose"><img src="../assets/images/branding/sucrerie.svg" class="sucrerie-icon" alt="" width="20" height="20"> La Sucrerie</p>
+                    <h2 id="titre-sucrerie" data-decouvrir-key="section_sucrerie_title">Partager ses activités, piocher dans celles des autres</h2>
                     <p>La Sucrerie est une bibliothèque publique d'activités pédagogiques, notamment créées avec Caramel&nbsp;: on y consulte, on y télécharge, on y dépose, dans de nombreux formats (H5P, MBZ, DOCX, ODT, PDF…). Depuis Caramel, un bouton y envoie directement l'activité que l'on vient de relire.</p>
                     <div class="actions">
                         <a class="bouton bouton--rose" href="https://sucrerie.forge.apps.education.fr/" target="_blank" rel="noopener">Visiter la Sucrerie <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
                     </div>
                 </div>
-                <div class="lecteur" data-integration="https://podeduc.apps.education.fr/video/158264-decouvrez-la-sucrerie/?is_iframe=true" data-titre="Découvrez la Sucrerie">
+                <div class="lecteur" data-integration="https://podeduc.apps.education.fr/video/158264-decouvrez-la-sucrerie/?is_iframe=true" data-titre="Découvrez la Sucrerie" data-lien="https://podeduc.apps.education.fr/caramel/video/158264-decouvrez-la-sucrerie/">
                     <button type="button" class="affiche affiche--sucrerie" aria-label="Lire la vidéo « Découvrez la Sucrerie » (Podeduc)">
-                        <img src="../assets/images/branding/sucrerie.svg" alt="" width="84" height="84">
+                        <img src="../assets/images/branding/sucrerie.svg" class="sucrerie-icon" alt="" width="84" height="84">
                         <strong>Découvrez la Sucrerie</strong>
                         <span>Vidéo · Podeduc</span>
                         <i class="lecture" aria-hidden="true"><i class="fas fa-play"></i></i>
@@ -192,14 +215,14 @@
         <section class="section section--gris" id="former" aria-labelledby="titre-former">
             <div class="section__tete">
                 <p class="oeil"><i class="fas fa-chalkboard-user" aria-hidden="true"></i> Pour les formateurs</p>
-                <h2 id="titre-former">Présenter Caramel dans vos formations</h2>
+                <h2 id="titre-former" data-decouvrir-key="section_trainers_title">Présenter Caramel dans vos formations</h2>
                 <p>Tout ce qu'il faut pour intégrer Caramel et la Sucrerie à votre propre parcours Éléa, Magistère ou Moodle, sans rien réécrire.</p>
             </div>
             <div class="kit">
                 <article class="carte-kit">
                     <span class="carte-kit__icone"><i class="fas fa-code" aria-hidden="true"></i></span>
                     <h3>Intégrer les vidéos</h3>
-                    <p>Copiez le code, puis collez-le dans une Page ou une Zone texte et média, en mode HTML de l'éditeur (bouton <code>&lt;/&gt;</code>).</p>
+                    <p>Choisissez une vidéo et copiez son code dans votre Page ou Zone texte et média, en mode HTML <code>&lt;/&gt;</code>.</p>
                     <div class="integrations" id="integrations"></div>
                 </article>
                 <article class="carte-kit">
@@ -232,12 +255,25 @@
             </div>
         </section>
 
+        <!-- ============ On parle de Caramel ============ -->
+        <section class="section section--creme" id="on-parle" aria-labelledby="titre-on-parle">
+            <div class="section__tete">
+                <p class="oeil"><i class="fas fa-bullhorn" aria-hidden="true"></i> Vu ailleurs</p>
+                <h2 id="titre-on-parle" data-decouvrir-key="section_mentions_title">On parle de Caramel</h2>
+                <p>Conférences, retours d'usage, tutoriels et publications institutionnelles&nbsp;: une sélection vérifiée, classée de la plus récente à la plus ancienne.</p>
+            </div>
+            <div class="catalogue-intro" id="catalogue-intro" aria-live="polite"></div>
+            <div class="filtres" id="filtres-mentions" role="toolbar" aria-label="Filtrer les publications qui parlent de Caramel"></div>
+            <div class="ressources" id="liste-mentions"></div>
+            <p class="signaler">Une publication manque&nbsp;? Envoyez-nous son lien sur <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener">Tchap</a> ou dans un <a href="https://forge.apps.education.fr/caramel/caramel/-/issues" target="_blank" rel="noopener">ticket</a>. La sélection est relue avant publication.</p>
+        </section>
+
         <!-- ============ Ressources ============ -->
         <section class="section" id="ressources" aria-labelledby="titre-ressources">
             <div class="section__tete">
                 <p class="oeil"><i class="fas fa-layer-group" aria-hidden="true"></i> Ressources</p>
-                <h2 id="titre-ressources">Vidéos, tutoriels, présentations</h2>
-                <p>Et ce qui se dit de Caramel ailleurs.</p>
+                <h2 id="titre-ressources" data-decouvrir-key="section_resources_title">Les ressources officielles</h2>
+                <p>Vidéos, tutoriels, documentation et espaces d'échange maintenus par l'équipe de Caramel.</p>
             </div>
             <div class="filtres" id="filtres" role="toolbar" aria-label="Filtrer les ressources"></div>
             <div class="ressources" id="liste-ressources"></div>
@@ -247,34 +283,25 @@
         <!-- ============ Appel final ============ -->
         <section class="appel" aria-labelledby="titre-appel">
             <img src="../assets/images/branding/logo_caramel.svg" alt="" width="64" height="64">
-            <h2 id="titre-appel">Prêt à préparer votre première activité&nbsp;?</h2>
-            <p>Gratuit, sans compte, directement dans votre navigateur.</p>
-            <a class="bouton bouton--blanc" href="../">Ouvrir Caramel <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+            <h2 id="titre-appel" data-decouvrir-key="cta_title">Prêt à préparer votre première activité&nbsp;?</h2>
+            <p data-decouvrir-key="cta_text">Gratuit, sans compte, directement dans votre navigateur.</p>
+            <a class="bouton bouton--blanc" href="../"><span data-decouvrir-key="open_caramel">Ouvrir Caramel</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
         </section>
     </main>
 
-    <footer class="pied">
-        <div class="pied__marque">
-            <img src="../assets/images/branding/logo_caramel.svg" alt="" width="32" height="32">
-            <div><b>Caramel</b><span>Conçu par Emmanuel GAUNARD et Gauthier REMANDE</span></div>
-        </div>
-        <nav class="pied__liens" aria-label="Liens utiles">
-            <a href="../">Ouvrir Caramel</a>
-            <a href="https://sucrerie.forge.apps.education.fr/" target="_blank" rel="noopener">Sucrerie</a>
-            <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener">Tchap</a>
-            <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener">Forge</a>
-            <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE" target="_blank" rel="noopener">GNU GPL v3.0</a>
-            <a href="../#mentions-legales">Mentions légales</a>
-        </nav>
+    <footer class="pied" aria-label="Liens utiles">
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank" rel="noopener" class="pied__version"><i class="fas fa-info-circle" aria-hidden="true"></i><span>Caramel v7.0.0</span></a>
+        <a class="pied__auteur" href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope" aria-hidden="true"></i><span>Gauthier REMANDE</span></a>
+        <a class="pied__auteur" href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope" aria-hidden="true"></i><span>Emmanuel GAUNARD</span></a>
+        <a href="./" class="pied__presentation"><i class="fas fa-star" aria-hidden="true"></i><span data-decouvrir-key="footer_presentation">Découvrir Caramel</span></a>
+        <a aria-label="Forge" href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener"><i class="fas fa-code-branch" aria-hidden="true"></i><span>Forge</span></a>
+        <a data-decouvrir-aria="ticket" href="https://forge.apps.education.fr/caramel/caramel/-/issues" target="_blank" rel="noopener"><i class="fas fa-bug" aria-hidden="true"></i><span data-decouvrir-key="ticket">Ticket</span></a>
+        <a data-decouvrir-aria="license_info" href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE" target="_blank" rel="noopener"><i class="fas fa-scroll" aria-hidden="true"></i><span data-decouvrir-key="license_info">GNU AGPL v3.0 ou ultérieure</span></a>
+        <a data-decouvrir-aria="legal_mentions" href="../#mentions-legales"><i class="fas fa-gavel" aria-hidden="true"></i><span data-decouvrir-key="legal_mentions">Mentions légales</span></a>
     </footer>
 
-    <!-- Une vidéo de la liste des ressources, jouée sur place. -->
-    <dialog class="visionneuse" id="visionneuse" aria-labelledby="visionneuse-titre">
-        <div class="visionneuse__tete"><h2 id="visionneuse-titre"></h2><button type="button" class="visionneuse__fermer" aria-label="Fermer"><i class="fas fa-xmark" aria-hidden="true"></i></button></div>
-        <div class="visionneuse__cadre" id="visionneuse-cadre"></div>
-    </dialog>
-
+    <script src="traductions.js?v=20260929-footer-regroupe" defer></script>
     <script src="../js/vendor/h5p-standalone/3.8.2/main.bundle.js" defer></script>
-    <script src="decouvrir.js" defer></script>
+    <script src="decouvrir.js?v=20260929-footer-regroupe" defer></script>
 </body>
 </html>

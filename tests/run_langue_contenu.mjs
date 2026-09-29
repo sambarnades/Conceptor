@@ -7,9 +7,10 @@
  *    langue cible… »), qui laissait un cours d'anglais sortir en français ; elle porte
  *    l'exception des langues vivantes (repère commun aux 11 langues : le cadre européen,
  *    CECRL / CEFR / MCER…). Le breton garde sa règle « tout en breton », voulue.
- * 2. Elle ARRIVE dans les prompts réels : Page, Livre, quiz (buildActivityPrompt).
+ * 2. Une langue explicitement enseignée devient une consigne prioritaire et déterministe
+ *    dans les prompts réels ; le témoin d'histoire ne déclenche pas cette consigne.
  * 3. PARCOURS : le prompt du plan et celui d'un module de la plateforme portent la même
- *    exception (`regleLangue`).
+ *    langue obligatoire (`regleLangue`).
  * 4. SÉRIE DE CHOIX UNIQUES : la bibliothèque attend `:num` / `:total` ; les 12 locales
  *    écrivaient `@slide` / `@total`, et le lecteur d'écran annonçait « Diapositive @slide
  *    sur @total ». Contre-épreuve : une traduction aux anciens jetons est réparée.
@@ -68,28 +69,40 @@ const { buildActivityPrompt } = await import('../js/services/prompt-generator.js
 const demande = { qui: 'Professeur d’anglais en lycée', quoi: 'Identités et échanges : le voyage aux États-Unis', niveau: 'Seconde', isAdvanced: true, nombreQuestions: '' };
 for (const prefixe of ['prompt_elea_page', 'prompt_elea_livre', 'prompt_quizset_qcm']) {
     const prompt = buildActivityPrompt(prefixe, demande);
-    ok(`${prefixe} : le prompt porte l’exception des langues vivantes`, prompt.includes('Exception, les langues vivantes') && prompt.includes('même quand le thème est culturel'));
+    ok(`${prefixe} : l’anglais est une langue de sortie obligatoire`, prompt.includes('# MANDATORY OUTPUT LANGUAGE') && prompt.includes('EVERY student-visible text in English'));
 }
+const demandeEspagnol = { ...demande, qui: 'Professeure d’espagnol', quoi: 'La fête des morts au Mexique', niveau: '3e' };
+ok('espagnol : la langue obligatoire est explicitement déterminée',
+    buildActivityPrompt('prompt_elea_page', demandeEspagnol).includes('EVERY student-visible text in Spanish'));
+const temoinHistoire = { ...demande, qui: 'Professeur d’histoire-géographie', quoi: 'La Révolution anglaise', niveau: '4e' };
+ok('contre-épreuve : « Révolution anglaise » reste un cours d’histoire en français',
+    !buildActivityPrompt('prompt_elea_page', temoinHistoire).includes('# MANDATORY OUTPUT LANGUAGE'));
+const promptTest = buildActivityPrompt('prompt_elea_test', demande);
+ok('Test : le schéma demande quatre tranches de feedback global rédigées par l’IA',
+    promptTest.includes('`overallfeedback` (obligatoire)') && promptTest.includes('0-25, 26-50, 51-75 et 76-100'));
 
 // ------------------------------------------------------------------ 3. le parcours
 const { construirePromptPlan, construirePromptModuleParcours } = await import('../js/parcours/scenario-prompt.js');
-const EXCEPTION_PARCOURS = 'sauf pour une séquence de langue vivante';
+const EXCEPTION_PARCOURS = 'LANGUE OBLIGATOIRE : rédige en English';
 try {
     const { prompt } = construirePromptPlan({ platform: 'elea', format: 'distanciel', contexte: { qui: demande.qui, quoi: demande.quoi } });
-    ok('parcours : le prompt du plan porte l’exception', prompt.includes(EXCEPTION_PARCOURS));
-    ok('parcours : plus de « Rédige TOUS les textes en … » sans exception', !/Rédige TOUS les textes en \w+\.\n/.test(prompt));
+    ok('parcours : le prompt du plan impose l’anglais', prompt.includes(EXCEPTION_PARCOURS));
 } catch (e) { ok('parcours : le prompt du plan se construit', false, e.stack || e.message); }
 try {
     const draft = { platform: 'elea', format: 'distanciel', contexte: { qui: demande.qui, quoi: demande.quoi }, plan: { titre: 'Identities', etapes: [] } };
     const { prompt } = construirePromptModuleParcours(draft, { module: 'parcours_forum', titre: 'Débat', consigne: '', objectifs: [] });
-    ok('parcours : le prompt d’un module de la plateforme porte l’exception', prompt.includes(EXCEPTION_PARCOURS));
+    ok('parcours : le prompt d’un module de la plateforme impose l’anglais', prompt.includes(EXCEPTION_PARCOURS));
 } catch (e) { ok('parcours : le prompt d’un module se construit', false, e.stack || e.message); }
 
 // ------------------------------------------------------------------ 4. Série de choix uniques
 const { default: singleChoiceSet } = await import('../js/h5p/processors/SingleChoiceSet.js');
-const source = { choices: [{ question: 'Q ?', answers: ['bonne', 'fausse'] }] };
+const source = { choices: [
+    { question: 'Q1 ?', answers: ['bonne', 'fausse'] },
+    { question: 'Q2 ?', answers: ['bonne', 'fausse'] },
+] };
+const traiter = () => singleChoiceSet.process(structuredClone(source));
 const libelles = () => {
-    const sortie = singleChoiceSet.process(structuredClone(source));
+    const sortie = traiter();
     return (sortie.content || sortie).l10n || {};
 };
 for (const l of ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br']) {
@@ -105,6 +118,10 @@ translations.h5p_single_choice_solution_list_question_number = 'Question @questi
 const repare = libelles();
 ok('contre-épreuve : anciens jetons réparés (@slide/@total)', repare.slideOfTotal === 'Diapositive :num sur :total', repare.slideOfTotal);
 ok('contre-épreuve : anciens jetons réparés (@question)', repare.solutionListQuestionNumber === 'Question :num', repare.solutionListQuestionNumber);
+const choixAvecProgression = traiter().choices;
+ok('progression accessible : chaque radiogroupe porte son numéro, même sans aria-live de la plateforme',
+    choixAvecProgression[0].question.includes('h5p-hidden-read">Diapositive 1 sur 2')
+    && choixAvecProgression[1].question.includes('h5p-hidden-read">Diapositive 2 sur 2'));
 
 console.log('');
 if (failures.length) failures.forEach(f => console.log(f));

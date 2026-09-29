@@ -273,7 +273,7 @@ The application is designed for desktop use, with light/dark modes, keyboard nav
 
 ### Useful links
 
-- **Licence**: GNU GPL v3.0 or later — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **Licence**: GNU AGPL v3.0 or later — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **Report a bug**: https://forge.apps.education.fr/caramel/caramel/-/issues
 - **Source code**: https://forge.apps.education.fr/caramel/caramel
 - **Changelog**: https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

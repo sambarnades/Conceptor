@@ -260,7 +260,7 @@ Le module `json-healer.js` répare systématiquement les sorties du LLM (LaTeX, 
 
 - **Éditeurs** : Gauthier Remande (PLP Lettres-Histoire, académie de Nantes) et Emmanuel Gaunard (professeur de mathématiques et chargé de mission DRANE, académie de Grenoble)
 - **Hébergement** : Forge des Communs Numériques Éducatifs — Ministère de l'Éducation nationale et de la Jeunesse, 110 rue de Grenelle, 75007 Paris, France
-- **Licence du code** : GNU AGPLv3
+- **Licence du code** : GNU AGPL v3.0 ou ultérieure
 
 > Le dépôt **facultatif** d'une activité sur la boutique **La Sucrerie** entraîne une **publication publique** sous licence **CC BY-SA 4.0** ; cette démarche est distincte de la simple génération.
 
@@ -339,10 +339,10 @@ Ce que l'IA ne fait **pas** : les décisions pédagogiques, la validation foncti
 
 ## 📄 Licence
 
-Distribué sous **GNU Affero General Public License v3.0 (AGPLv3)** — voir [LICENSE](LICENSE).
+Distribué sous **GNU AGPL v3.0 ou ultérieure** — voir [LICENSE](LICENSE).
 
 ✅ Utilisation (y compris commerciale), modification et redistribution autorisées.
-⚠️ Obligations : attribution des auteurs (Gauthier Remande et Emmanuel Gaunard), partage des modifications sous AGPLv3, mise à disposition du code source si déployé en ligne.
+La réutilisation du code doit respecter cette licence : conservation des notices de droit d’auteur et de licence, et fourniture du code source dans les cas prévus, notamment en cas de redistribution ou de mise à disposition d’une version modifiée par un réseau. Les bibliothèques et ressources tierces gardent leurs propres licences. Les contenus pédagogiques créés ou importés ne passent pas automatiquement sous AGPL.
 
 Chaque bibliothèque tierce conserve sa propre licence (MIT, Apache 2.0, BSD-2-Clause, CC BY 4.0, SIL OFL…).
 

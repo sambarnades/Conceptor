@@ -270,7 +270,7 @@ L'application est conçue pour être compatible avec une utilisation sur ordinat
 
 ### Liens utiles
 
-- **Licence** : GNU GPL v3.0 ou ultérieure — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **Licence** : GNU AGPL v3.0 ou ultérieure — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **Signaler un bug** : https://forge.apps.education.fr/caramel/caramel/-/issues
 - **Code source** : https://forge.apps.education.fr/caramel/caramel
 - **Changelog** : https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG
