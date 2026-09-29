@@ -1,5 +1,8 @@
 /** Banque native Test partagée ; le wrapper du cours appartient à l'hôte. */
-import { buildQuestionEntries as buildSharedQuestionEntries, parseClozeGaps } from './mbz-course-builder.js';
+import {
+  buildQuestionEntries as buildSharedQuestionEntries, parseClozeGaps,
+  resoudreReglagesTest, pageDuSlot, quizSettingsXml, quizFeedbacksXml,
+} from './mbz-course-builder.js';
 export { parseClozeGaps };
 // ownerid/createdby/modifiedby des questions. On met 0 (utilisateur « système/absent »,
 // comme le userid des entrées de Glossaire) plutôt que 2 (= admin par défaut « Administrateur
@@ -63,8 +66,11 @@ function questionCategoryXml({ id, name, contextid, contextlevel, contextinstanc
  * calendar, filters) et le wrapper cours (moodle_backup, course/*, sections/*)
  * sont fournis par l'hôte via les TEMPLATES Caramel + buildCourseBackup.
  *
- * @param {{ bank_name?:string, bank_description?:string, questions:Array<{type,content}> }} model
- *        (modèle CANONIQUE = même donnée que `generateMoodleXml`, fractions 0-100)
+ * @param {{ bank_name?:string, bank_description?:string, questions:Array<{type,content}>, quiz_settings?:Object }} model
+ *        (modèle CANONIQUE = même donnée que `generateMoodleXml`, fractions 0-100).
+ *        `quiz_settings` : réglages du Test, écrits par les MÊMES fonctions que le
+ *        Test de parcours (`quizSettingsXml`, mbz-course-builder.js) ; absent =
+ *        défauts d'un Test créé sur Éléa.
  * @param {Object} ctx - IDs alloués par l'hôte (generateBaseData) :
  *   { courseId, courseContextId, courseShortname, moduleId, activityId,
  *     activityContextId, gradeItemId, title }
@@ -143,12 +149,16 @@ ${[topCourseCat, defCourseCat, bankCat, moduleTopCat, moduleDefCat].join('\n')}
 </question_categories>`;
 
   // quiz.xml : wiring des slots (slot → questionbankentryid). Les enfants cloze
-  // NE sont PAS slottés (seul le parent multianswer l'est).
+  // NE sont PAS slottés (seul le parent multianswer l'est). La page de chaque slot
+  // suit « questions par page » : c'est elle, pas `questionsperpage`, que la
+  // restauration respecte.
+  const settings = model && model.quiz_settings;
+  const { questionsperpage } = resoudreReglagesTest(settings);
   const sumgrades = slots.reduce((s, sl) => s + sl.maxmark, 0);
   const instancesXml = slots.map((sl, i) => `      <question_instance id="${alloc()}">
         <quizid>${activityId}</quizid>
         <slot>${i + 1}</slot>
-        <page>1</page>
+        <page>${pageDuSlot(i, questionsperpage)}</page>
         <displaynumber>$@NULL@$</displaynumber>
         <requireprevious>0</requireprevious>
         <maxmark>${frac7(sl.maxmark)}</maxmark>
@@ -168,43 +178,7 @@ ${[topCourseCat, defCourseCat, bankCat, moduleTopCat, moduleDefCat].join('\n')}
     <name>${escXmlText(title)}</name>
     <intro></intro>
     <introformat>1</introformat>
-    <timeopen>0</timeopen>
-    <timeclose>0</timeclose>
-    <timelimit>0</timelimit>
-    <overduehandling>autosubmit</overduehandling>
-    <graceperiod>0</graceperiod>
-    <preferredbehaviour>deferredfeedback</preferredbehaviour>
-    <canredoquestions>0</canredoquestions>
-    <attempts_number>0</attempts_number>
-    <attemptonlast>0</attemptonlast>
-    <grademethod>1</grademethod>
-    <decimalpoints>2</decimalpoints>
-    <questiondecimalpoints>-1</questiondecimalpoints>
-    <reviewattempt>69888</reviewattempt>
-    <reviewcorrectness>4352</reviewcorrectness>
-    <reviewmaxmarks>69888</reviewmaxmarks>
-    <reviewmarks>4352</reviewmarks>
-    <reviewspecificfeedback>4352</reviewspecificfeedback>
-    <reviewgeneralfeedback>4352</reviewgeneralfeedback>
-    <reviewrightanswer>4352</reviewrightanswer>
-    <reviewoverallfeedback>4352</reviewoverallfeedback>
-    <questionsperpage>1</questionsperpage>
-    <navmethod>free</navmethod>
-    <shuffleanswers>1</shuffleanswers>
-    <sumgrades>${sumgrades.toFixed(5)}</sumgrades>
-    <grade>10.00000</grade>
-    <timecreated>${ts}</timecreated>
-    <timemodified>${ts}</timemodified>
-    <password></password>
-    <subnet></subnet>
-    <browsersecurity>-</browsersecurity>
-    <delay1>0</delay1>
-    <delay2>0</delay2>
-    <showuserpicture>0</showuserpicture>
-    <showblocks>0</showblocks>
-    <completionattemptsexhausted>0</completionattemptsexhausted>
-    <completionminattempts>0</completionminattempts>
-    <allowofflineattempts>0</allowofflineattempts>
+${quizSettingsXml(settings, { sumgrades, ts })}
     <subplugin_quizaccess_seb_quiz>
     </subplugin_quizaccess_seb_quiz>
     <quiz_grade_items>
@@ -219,14 +193,7 @@ ${instancesXml}
         <shufflequestions>0</shufflequestions>
       </section>
     </sections>
-    <feedbacks>
-      <feedback id="${alloc()}">
-        <feedbacktext></feedbacktext>
-        <feedbacktextformat>1</feedbacktextformat>
-        <mingrade>0.00000</mingrade>
-        <maxgrade>11.00000</maxgrade>
-      </feedback>
-    </feedbacks>
+${quizFeedbacksXml(settings, alloc)}
     <overrides>
     </overrides>
     <grades>
