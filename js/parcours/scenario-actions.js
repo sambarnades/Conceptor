@@ -99,7 +99,8 @@ export function construireActionsScenario({ allerA, occupe }) {
     nouveau.id = 'pc-nouveau-parcours';
     // « Importer un modèle » à côté de « Nouveau parcours » (D85) : l'autre façon de
     // changer de parcours. Les deux sont là dès le cadrage, pour que le haut de l'atelier
-    // ne change pas d'un écran à l'autre ; au cadrage, le pied porte aussi l'import.
+    // ne change pas d'un écran à l'autre. C'est le SEUL « Importer un modèle » : son double
+    // dans le pied, à côté de « Partir du modèle », a été retiré (D85).
     const importer = action('parcours_importer_modele', 'fa-file-import', () => {
         if (!occupe()) fichier.click();
     });

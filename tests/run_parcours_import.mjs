@@ -3,15 +3,16 @@
  * PRD parcours).
  *
  * En cliquant dans le vrai DOM, réseau externe bloqué :
- *  - au cadrage, « Importer un modèle » est à droite de « Partir du modèle », sur la
- *    même ligne ; il ouvre le choix d'un fichier et le scénario repris ouvre le plan ;
  *  - en haut, « Nouveau parcours » et « Importer un modèle » sont là dès le cadrage,
  *    le premier grisé tant qu'il n'y a rien à effacer, avec une infobulle qui le dit ;
+ *    l'import ouvre le choix d'un fichier et le scénario repris ouvre le plan ;
+ *  - le pied n'a PLUS d'« Importer un modèle » à côté de « Partir du modèle » (retiré :
+ *    doublon au cadrage, et deux « modèle » côte à côte qui ne désignent pas la même chose) ;
  *  - la fenêtre « Commencer un nouveau parcours ? » ne laisse plus croire que
  *    « Garder ce parcours » sauvegarde : son texte dit d'exporter, et son bouton
  *    annexe télécharge le scénario sans la refermer ;
  *  - la livraison renvoie à « Importer un modèle » pour rouvrir le parcours ;
- *  - sur téléphone, les deux départs prennent leur rangée sans chevaucher l'action.
+ *  - sur téléphone, les trois outils du haut tiennent à côté du fil.
  *
  * Lancement : node tests/run_parcours_import.mjs
  */
@@ -60,40 +61,37 @@ try {
     await page.route(/https?:\/\/(?!127\.0\.0\.1)/, r => r.abort());
     await page.goto(`http://127.0.0.1:${PORT}/index.html`); await page.waitForSelector('#parcours-button');
     await page.fill('#quoi', 'La Révolution française');
-    await page.click('#parcours-button'); await page.waitForSelector('#pc-importer-modele');
+    await page.click('#parcours-button'); await page.waitForSelector('#pc-scenario-importer');
 
-    // --- Le pied du cadrage.
-    const modele = await boite(page, '#pc-modele'), importer = await boite(page, '#pc-importer-modele');
-    ok('cadrage : « Importer un modèle » est à droite de « Partir du modèle », sur la même ligne',
-        modele && importer && Math.abs(importer.t - modele.t) < 2 && importer.l >= modele.r,
-        JSON.stringify({ modele, importer }));
-    ok('cadrage : « Importer un modèle » est actif sans trame ni plan, et son infobulle dit ce qu’il ouvre',
-        importer && !importer.disabled && importer.title === fr.parcours_importer_modele_hint, JSON.stringify(importer));
+    // --- Le pied du cadrage : « Partir du modèle » seul, sans son ancien voisin.
+    ok('cadrage : le pied n’a plus d’« Importer un modèle » à côté de « Partir du modèle »',
+        await page.locator('.pc-actionbar #pc-importer-modele').count() === 0
+        && !(await page.locator('.pc-actionbar').innerText()).includes(fr.parcours_importer_modele)
+        && await page.locator('#pc-modele').isVisible());
 
     // --- Le haut du cadrage.
     const nouveauVide = await boite(page, '#pc-nouveau-parcours'), importerHaut = await boite(page, '#pc-scenario-importer');
     ok('cadrage : « Nouveau parcours » est déjà là, grisé, et son infobulle dit pourquoi',
         nouveauVide && nouveauVide.disabled && nouveauVide.title === fr.parcours_nouveau_vide, JSON.stringify(nouveauVide));
-    ok('cadrage : « Importer un modèle » est aussi en haut, à côté de « Nouveau parcours »',
-        importerHaut && nouveauVide && !importerHaut.disabled && Math.abs(importerHaut.t - nouveauVide.t) < 2 && importerHaut.l >= nouveauVide.r,
+    ok('cadrage : « Importer un modèle » est en haut, à côté de « Nouveau parcours », actif, et son infobulle dit ce qu’il ouvre',
+        importerHaut && nouveauVide && !importerHaut.disabled && Math.abs(importerHaut.t - nouveauVide.t) < 2 && importerHaut.l >= nouveauVide.r
+        && importerHaut.title === fr.parcours_importer_modele_hint,
         JSON.stringify({ nouveauVide, importerHaut }));
 
-    // --- Le bouton du pied ouvre le choix du fichier, et le scénario repris ouvre le plan.
-    const [choix] = await Promise.all([page.waitForEvent('filechooser', { timeout: 5000 }).catch(() => null), page.click('#pc-importer-modele')]);
-    ok('« Importer un modèle » (pied) ouvre le choix d’un fichier .json', !!choix && !choix.isMultiple());
+    // --- Il ouvre le choix du fichier, et le scénario repris ouvre le plan.
+    const [choix] = await Promise.all([page.waitForEvent('filechooser', { timeout: 5000 }).catch(() => null), page.click('#pc-scenario-importer')]);
+    ok('« Importer un modèle » ouvre le choix d’un fichier .json', !!choix && !choix.isMultiple());
     if (choix) await choix.setFiles(fichierScenario);
     await page.waitForSelector('.pc-title-input', { timeout: 5000 }).catch(() => {});
     const apres = await page.evaluate(() => ({
         titre: document.querySelector('.pc-title-input')?.value,
         ecran: document.querySelector('.pc-steps__item--current')?.textContent,
-        departs: document.querySelector('#pc-departs')?.hidden,
     }));
     ok('le scénario importé ouvre son plan', apres.titre === scenario.plan.titre && /Plan/.test(apres.ecran || ''), JSON.stringify(apres));
-    ok('hors du cadrage, les départs du pied disparaissent', apres.departs === true);
     const nouveauPlan = await boite(page, '#pc-nouveau-parcours');
     ok('avec un plan, « Nouveau parcours » est actif', nouveauPlan && !nouveauPlan.disabled && nouveauPlan.title === fr.parcours_nouveau, JSON.stringify(nouveauPlan));
     const [choixHaut] = await Promise.all([page.waitForEvent('filechooser', { timeout: 5000 }).catch(() => null), page.click('#pc-scenario-importer')]);
-    ok('« Importer un modèle » (haut) ouvre le même choix de fichier', !!choixHaut);
+    ok('sur le plan, « Importer un modèle » reste en haut et ouvre le même choix', !!choixHaut);
 
     // --- « Commencer un nouveau parcours ? » : exporter sans fermer, garder sans rien perdre.
     await page.click('#pc-nouveau-parcours');
@@ -133,17 +131,16 @@ try {
     const vide = await page.evaluate(() => ({
         plan: !!document.querySelector('.pc-title-input'),
         nouveau: document.querySelector('#pc-nouveau-parcours')?.disabled,
-        departs: document.querySelector('#pc-departs')?.hidden,
+        modele: !!document.querySelector('#pc-modele')?.offsetParent,
     }));
-    ok('« Nouveau parcours » confirmé ramène au cadrage, bouton regrisé, départs revenus',
-        !vide.plan && vide.nouveau === true && vide.departs === false, JSON.stringify(vide));
+    ok('« Nouveau parcours » confirmé ramène au cadrage, bouton regrisé, « Partir du modèle » revenu',
+        !vide.plan && vide.nouveau === true && vide.modele, JSON.stringify(vide));
 
-    // --- Téléphone : les deux départs sur leur rangée, l'action primaire entière au-dessus.
+    // --- Téléphone : les trois outils du haut (Nouveau, Importer, Tutoriel) à côté du fil.
     await page.setViewportSize({ width: 390, height: 844 }); await pause(200);
-    const [m, i, cta, barre] = await Promise.all(['#pc-modele', '#pc-importer-modele', '.pc-actionbar__droite', '.pc-actionbar__inner'].map(s => boite(page, s)));
-    ok('téléphone : les deux départs côte à côte, sous l’action primaire, sans la chevaucher',
-        m && i && cta && Math.abs(m.t - i.t) < 2 && i.l >= m.r && m.t >= cta.b, JSON.stringify({ m, i, cta }));
-    ok('téléphone : l’action primaire prend toute la largeur au cadrage', cta && barre && Math.abs(cta.l - barre.l) < 2 && Math.abs(cta.r - barre.r) < 2, JSON.stringify({ cta, barre }));
+    const [fil, nv, imp, aide] = await Promise.all(['.pc-navigation .pc-steps', '#pc-nouveau-parcours', '#pc-scenario-importer', '.pc-scenario__aide'].map(s => boite(page, s)));
+    ok('téléphone : « Nouveau parcours », « Importer un modèle » et le tutoriel tiennent sur la ligne du fil',
+        fil && nv && imp && aide && [nv, imp, aide].every(b => b.t < fil.b && Math.abs(b.t - nv.t) < 2), JSON.stringify({ fil, nv, imp, aide }));
     ok('téléphone : la page ne défile pas en largeur', await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
 
     ok('aucune boîte native du navigateur', natifs.length === 0, natifs.join(' | '));

@@ -369,33 +369,10 @@ function construireActionbar() {
     modele.title = t('parcours_cta_modele_hint');
     modele.addEventListener('click', partirDuModele);
 
-    // Juste à droite, l'autre départ sans IA (D85) : rouvrir un scénario .json exporté
-    // à la livraison. Il déclenche le champ fichier des actions du scénario, qui lit,
-    // contrôle, demande avant de remplacer un parcours en cours, puis ouvre le plan.
-    const importer = document.createElement('button');
-    importer.type = 'button';
-    importer.className = 'pc-secondaire';
-    importer.id = 'pc-importer-modele';
-    const ii = document.createElement('i');
-    ii.className = 'fas fa-file-import';
-    ii.setAttribute('aria-hidden', 'true');
-    importer.append(ii, document.createTextNode(t('parcours_importer_modele')));
-    importer.title = t('parcours_importer_modele_hint');
-    importer.addEventListener('click', () => {
-        if (!enCours && !file?.enMarche()) atelier?.querySelector('#pc-scenario-fichier')?.click();
-    });
-
-    // Les deux départs forment UN élément de la grille du pied : ses boutons de gauche
-    // partagent une seule cellule, où « Retour » et eux ne se montrent jamais ensemble.
-    const departs = document.createElement('div');
-    departs.className = 'pc-actionbar__departs';
-    departs.id = 'pc-departs';
-    departs.append(modele, importer);
-
     const note = document.createElement('p');
     note.className = 'pc-actionbar__note';
     note.id = 'pc-action-note';
-    gauche.append(retour, departs, note);
+    gauche.append(retour, modele, note);
 
     const cta = document.createElement('button');
     cta.type = 'button';
@@ -489,11 +466,6 @@ function rafraichirAction() {
     // quand « Laissez Caramel proposer » est coché : il se grise en disant
     // pourquoi. Caché, l'enseignant qui veut éviter l'IA ne découvrait la voie
     // qu'en cliquant une trame par hasard (relecture UX du 6 sept. 2026).
-    // « Importer un modèle » (D85) partage sa place et ses conditions : cadrage seul, hors appel.
-    const departs = atelier.querySelector('#pc-departs');
-    if (departs) departs.hidden = enCours || etape !== 0;
-    const importer = atelier.querySelector('#pc-importer-modele');
-    if (importer) importer.title = t('parcours_importer_modele_hint');
     const modele = atelier.querySelector('#pc-modele');
     if (modele) {
         const d = brouillon();
