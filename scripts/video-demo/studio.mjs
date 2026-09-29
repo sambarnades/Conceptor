@@ -2,7 +2,8 @@
 /**
  * Le studio de voix off : la vidéo muette, un prompteur qui suit la lecture, un
  * bouton micro. On lit au fil de la vidéo ; chaque bloc enregistré est rangé sur
- * le disque, prêt pour le mixage, et « Monter la vidéo » produit le film final.
+ * le disque, prêt pour le mixage, et « Générer la vidéo » produit le film final
+ * (montage des voix, habillage, copie sur le Bureau), pourcentage à l'appui.
  *
  *   node scripts/video-demo/studio.mjs          ouvre http://127.0.0.1:8250/ dans le navigateur
  *
@@ -87,7 +88,73 @@ function servir(req, res, fichier, type) {
 
 const json = (res, code, corps) => { res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(corps)); };
 
-let montageEnCours = false;
+/**
+ * Le travail en cours : une seule génération à la fois, lancée par le studio ou la table,
+ * suivie en pourcentage par GET /travail. Les scripts annoncent leur avancée par des lignes
+ * `@progression <0..1> <étape>` (variable STUDIO_PROGRESSION) ; chaque étape pèse une part
+ * du total, à peu près celle de sa durée (le montage ≈ 1 min, l'habillage ≈ 5 min).
+ */
+const ETAPES = {
+    apercu: [{ nom: 'Montage des voix', script: 'tourner.mjs', args: () => [`--sortie=${SORTIE}`, `--mixer=${PRISES}`], poids: 1 }],
+    finale: [
+        { nom: 'Montage des voix', script: 'tourner.mjs', args: () => [`--sortie=${SORTIE}`, `--mixer=${PRISES}`], poids: 0.2 },
+        { nom: 'Habillage : caméra, cartons, musique', script: 'habillage.mjs', args: () => ['--version=voix', `--sortie=${SORTIE}`], poids: 0.78 },
+        { nom: 'Copie sur le Bureau', poids: 0.02 },
+    ],
+};
+let travail = { etat: 'libre' };
+
+function etatTravail() {
+    const { job, ...t } = travail;
+    const ecoule = t.debut ? ((t.fin || Date.now()) - t.debut) / 1000 : 0;
+    const restant = t.etat === 'en-cours' && t.pourcentage > 3 ? ecoule * (100 - t.pourcentage) / t.pourcentage : null;
+    return { ...t, ecoule, restant, journal: (t.journal || '').slice(-4000), etapes: t.quoi ? ETAPES[t.quoi].map(e => e.nom) : [] };
+}
+
+function lancerTravail(quoi) {
+    travail = { quoi, etat: 'en-cours', debut: Date.now(), pourcentage: 0, indice: 0, etape: '', detail: '', journal: '' };
+    const t = travail;
+    (async () => {
+        let base = 0;
+        for (const [i, e] of ETAPES[quoi].entries()) {
+            t.indice = i; t.etape = e.nom; t.detail = '';
+            if (e.script) {
+                const code = await new Promise(ok => {
+                    const job = spawn(process.execPath, [join(ICI, e.script), ...e.args()], { cwd: ROOT, env: { ...process.env, STUDIO_PROGRESSION: '1' } });
+                    t.job = job;
+                    let reste = '';
+                    job.stdout.on('data', d => {
+                        const lignes = (reste + d).split('\n');
+                        reste = lignes.pop();
+                        for (const l of lignes) {
+                            const m = /^@progression ([\d.]+) ?(.*)$/.exec(l);
+                            if (m) { t.pourcentage = Math.min(99.5, (base + e.poids * Number(m[1])) * 100); if (m[2]) t.detail = m[2]; }
+                            else if (l.trim()) t.journal += l + '\n';
+                        }
+                    });
+                    job.stderr.on('data', d => { t.journal += d; });
+                    job.on('close', ok);
+                });
+                t.job = null;
+                if (code !== 0) {
+                    t.etat = t.annule ? 'annule' : 'echec'; t.fin = Date.now();
+                    console.log(t.annule ? '  ■ génération annulée' : `  ✗ ${e.nom} en échec`);
+                    return;
+                }
+            } else {
+                // La vidéo finale, recopiée là où on la retrouve : le dossier de sortie est masqué par le Finder.
+                try { mkdirSync(BUREAU, { recursive: true }); copyFileSync(HABILLEE, COPIE_HABILLEE); t.copie = COPIE_HABILLEE.replace(homedir(), '~'); }
+                catch (err) { t.journal += `\nCopie sur le Bureau impossible : ${err.message}`; }
+            }
+            base += e.poids;
+            t.pourcentage = Math.min(99.5, base * 100);
+        }
+        t.etat = 'fini'; t.pourcentage = 100; t.fin = Date.now();
+        t.video = quoi === 'finale' ? '/habillee.mp4' : '/finale.mp4';
+        t.fichier = (quoi === 'finale' ? HABILLEE : FINALE).replace(ROOT + '/', '');
+        console.log(`  ✓ ${quoi === 'finale' ? `vidéo finale${t.copie ? ` → ${t.copie}` : ''}` : 'aperçu monté'} (${Math.round((t.fin - t.debut) / 1000)} s)`);
+    })();
+}
 
 const serveur = createServer((req, res) => {
     const url = new URL(req.url, `http://127.0.0.1:${PORT}`);
@@ -96,13 +163,14 @@ const serveur = createServer((req, res) => {
     if (req.method === 'GET' && (p === '/' || p === '/studio.html')) return servir(req, res, join(ICI, 'studio.html'), 'text/html; charset=utf-8');
     if (req.method === 'GET' && p === '/table') return servir(req, res, join(ICI, 'table.html'), 'text/html; charset=utf-8');
     if (req.method === 'GET' && p === '/marques.json') return servir(req, res, MARQUES, 'application/json; charset=utf-8');
-    // Les rallonges de la table de montage.
+    // Les réglages de la table de montage (rallonges, audio) et les textes du prompteur.
     if (req.method === 'GET' && p === '/montage') return json(res, 200, lireMontage(SORTIE));
     if (req.method === 'PUT' && p === '/montage') {
         let corps = '';
         req.on('data', c => { corps += c; if (corps.length > 100000) req.destroy(); });
         req.on('end', () => {
-            try { const m = ecrireMontage(SORTIE, JSON.parse(corps)); console.log(`  ⇥ rallonges : ${Object.entries(m.rallonges).map(([k, v]) => `${k} +${v} s`).join(', ') || 'aucune'}`); json(res, 200, m); }
+            // Chaque page n'envoie que ce qu'elle règle (rallonges, audio ou textes) : le reste est gardé.
+            try { const m = ecrireMontage(SORTIE, { ...lireMontage(SORTIE), ...JSON.parse(corps) }); json(res, 200, m); }
             catch { json(res, 400, { erreur: 'montage illisible' }); }
         });
         return;
@@ -152,42 +220,25 @@ const serveur = createServer((req, res) => {
         }
     }
 
-    if (req.method === 'POST' && p === '/monter') {
-        if (montageEnCours) return json(res, 409, { erreur: 'montage déjà en cours' });
-        montageEnCours = true;
-        const job = spawn(process.execPath, [join(ICI, 'tourner.mjs'), `--sortie=${SORTIE}`, `--mixer=${PRISES}`], { cwd: ROOT });
-        let journal = '';
-        job.stdout.on('data', d => { journal += d; });
-        job.stderr.on('data', d => { journal += d; });
-        job.on('close', code => {
-            montageEnCours = false;
-            console.log(code === 0 ? '  ✓ vidéo montée' : '  ✗ montage en échec');
-            json(res, code === 0 ? 200 : 500, { ok: code === 0, journal, fichier: FINALE.replace(ROOT + '/', '') });
+    // La génération : l'aperçu (voix posées sur l'image) ou la vidéo finale (montage puis habillage).
+    if (req.method === 'GET' && p === '/travail') return json(res, 200, etatTravail());
+    if (req.method === 'POST' && p === '/travail') {
+        let corps = '';
+        req.on('data', c => { corps += c; });
+        req.on('end', () => {
+            let quoi = 'finale'; try { quoi = JSON.parse(corps).quoi; } catch { /* défaut */ }
+            if (!ETAPES[quoi]) return json(res, 400, { erreur: `travail inconnu : ${quoi}` });
+            if (travail.etat === 'en-cours') return json(res, 409, { erreur: 'une génération est déjà en cours', ...etatTravail() });
+            lancerTravail(quoi);
+            json(res, 202, etatTravail());
         });
         return;
     }
-
-    // L'habillage de la version commentée (caméra, cartons, musique discrète sous la voix).
-    if (req.method === 'POST' && p === '/habiller') {
-        if (montageEnCours) return json(res, 409, { erreur: 'un traitement est déjà en cours' });
-        montageEnCours = true;
-        const job = spawn(process.execPath, [join(ICI, 'habillage.mjs'), '--version=voix', `--sortie=${SORTIE}`], { cwd: ROOT });
-        let journal = '';
-        job.stdout.on('data', d => { journal += d; });
-        job.stderr.on('data', d => { journal += d; });
-        job.on('close', code => {
-            montageEnCours = false;
-            let copie = null;
-            if (code === 0) {
-                // Recopiée là où on la retrouve : le dossier de sortie est masqué par le Finder.
-                try { mkdirSync(BUREAU, { recursive: true }); copyFileSync(HABILLEE, COPIE_HABILLEE); copie = COPIE_HABILLEE.replace(homedir(), '~'); }
-                catch (e) { journal += `\nCopie sur le Bureau impossible : ${e.message}`; }
-            }
-            console.log(code === 0 ? `  ✓ vidéo habillée${copie ? ` → ${copie}` : ''}` : '  ✗ habillage en échec');
-            json(res, code === 0 ? 200 : 500, { ok: code === 0, journal, fichier: HABILLEE.replace(ROOT + '/', ''), copie });
-        });
-        return;
+    if (req.method === 'POST' && p === '/travail/annuler') {
+        if (travail.etat === 'en-cours') { travail.annule = true; travail.job?.kill('SIGTERM'); }
+        return json(res, 200, etatTravail());
     }
+    if (req.method === 'GET' && p === '/travail.js') return servir(req, res, join(ICI, 'travail.js'), 'text/javascript; charset=utf-8');
     if (req.method === 'GET' && p === '/habillee.mp4') return servir(req, res, join(SORTIE, 'caramel-7-demo-habillee.mp4'), 'video/mp4');
 
     res.writeHead(404);

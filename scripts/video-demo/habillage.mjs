@@ -50,6 +50,8 @@ const OUVRIERS = Number(option('ouvriers', 3));
 const PORT = 8260;
 const VERSIONS = option('version', 'voix,musique').split(',');
 const ESSAI = option('essai', null)?.split(':').map(Number);
+/** La progression lue par le studio : `@progression <0..1> <étape>`, seulement s'il la demande. */
+const progression = (f, etape) => { if (process.env.STUDIO_PROGRESSION) console.log(`@progression ${Math.min(1, f).toFixed(4)} ${etape}`); };
 
 mkdirSync(TRAVAIL, { recursive: true });
 if (!existsSync(join(SORTIE, 'journal.json'))) { console.error('Pas de journal des gestes : node scripts/video-demo/tourner.mjs --journal'); process.exit(1); }
@@ -337,6 +339,7 @@ async function rendreVideo(feuille, fichier, [k0, k1]) {
             const img = await page.screenshot({ type: 'jpeg', quality: 92 });
             if (!enc.stdin.write(img)) await new Promise(r => enc.stdin.once('drain', r));
             if (++faits % 600 === 0) console.log(`  ${feuille.nom} : ${faits} / ${k1 - k0} images (${Math.round((Date.now() - debut) / 1000)} s)`);
+            if (faits % 15 === 0) progression(0.96 * faits / (k1 - k0), 'images de l’habillage');
         }
         enc.stdin.end();
         await fini;
@@ -375,7 +378,8 @@ for (const version of VERSIONS) {
         const voix = join(SORTIE, 'caramel-7-demo.mp4');
         if (!existsSync(voix)) throw new Error('Pas de voix montée : lancer le studio (« Monter la vidéo ») ou tourner.mjs --mixer');
         // La musique s'efface sous la voix (compresseur piloté par la voix), et remonte dans les silences.
-        ff(['-i', video, '-i', voix, '-i', musique, '-filter_complex',
+        progression(0.97, 'mixage de la voix et de la musique');
+    ff(['-i', video, '-i', voix, '-i', musique, '-filter_complex',
             `[1:a]aresample=48000,apad,atrim=0:${D},asplit[v1][v2];[2:a]aresample=48000,atrim=0:${D},volume=0.2,afade=t=in:d=1.5,afade=t=out:st=${(feuille.duree - 3).toFixed(2)}:d=3[m];`
             + `[m][v1]sidechaincompress=threshold=0.025:ratio=6:attack=20:release=500[md];[v2][md]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.84:level=false[a]`,
             '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', '-t', D, sortie], 'mixage voix');
@@ -385,6 +389,7 @@ for (const version of VERSIONS) {
             `[1:a]aresample=48000,atrim=0:${D},afade=t=in:d=0.4,afade=t=out:st=${(feuille.duree - 3).toFixed(2)}:d=3,loudnorm=I=-16:TP=-1.5:LRA=9,alimiter=limit=0.84:level=false[a]`,
             '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', '-t', D, sortie], 'mixage musique');
     }
+    progression(1, 'habillage terminé');
     console.log(`  ✓ ${sortie.replace(ROOT + '/', '')}`);
 }
 await navigateur.close();

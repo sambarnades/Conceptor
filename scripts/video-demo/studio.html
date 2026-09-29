@@ -26,6 +26,9 @@ button:hover:not(:disabled) { border-color: var(--accent); }
 button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button:disabled { opacity: .45; cursor: default; }
 #vers-table { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--accent); color: var(--accent); background: var(--accent-fond); text-decoration: none; font-weight: 600; }
+.caramel { background: linear-gradient(180deg, #f0a24b, #d97b1c); color: #fff; border-color: #c96d12; font-weight: 700; }
+.caramel:hover:not(:disabled) { filter: brightness(1.06); border-color: #c96d12; }
+[hidden] { display: none !important; }
 kbd { font: 12px ui-monospace, Menlo, monospace; border: 1px solid var(--filet); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--surface); }
 
 .barre { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 10px 18px; background: var(--surface); border-bottom: 1px solid var(--filet); }
@@ -72,17 +75,29 @@ video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 10px
 .bloc .etat.vide { color: var(--doux); }
 .bloc button { padding: 4px 9px; font-size: 13px; }
 
-.prompteur { background: var(--p-fond); color: var(--p-texte); display: grid; grid-template-rows: auto 1fr auto; min-height: 0; }
+.prompteur { position: relative; background: var(--p-fond); color: var(--p-texte); display: grid; grid-template-rows: auto auto 1fr auto; min-height: 0; }
 .p-tete { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 22px; border-bottom: 1px solid #222b36; color: var(--p-doux); font-size: 14px; }
 .p-tete b { color: var(--p-texte); font-weight: 600; }
 .p-taille { display: flex; gap: 6px; }
-.p-taille button { background: #1b232e; color: var(--p-texte); border-color: #2c3746; padding: 3px 9px; }
+.p-taille button, .p-edition button { background: #1b232e; color: var(--p-texte); border-color: #2c3746; padding: 3px 9px; }
+.p-taille button[aria-pressed="true"] { border-color: var(--p-actif); color: var(--p-actif); }
+/* Le temps qui reste au bloc, d'un coup d'œil : la barre se vide, rougit dans les 3 dernières secondes. */
+.p-jauge { height: 4px; background: #1b232e; }
+.p-jauge > div { height: 100%; width: 100%; background: var(--p-actif); transform-origin: left; transition: background .3s; }
+.p-jauge.presse > div { background: #ff6b6b; }
+#p-decompte { position: absolute; left: 0; right: 0; top: 30%; text-align: center; font: 800 120px/1 -apple-system, sans-serif; color: var(--p-actif); pointer-events: none; text-shadow: 0 6px 30px rgba(0,0,0,.5); }
+.p-edition { display: grid; grid-template-rows: 1fr auto; gap: 10px; padding: 18px 22px; min-height: 0; }
+.p-edition textarea { width: 100%; min-height: 200px; resize: none; background: #141b24; color: var(--p-texte); border: 1px solid #2c3746; border-radius: 8px; padding: 14px 16px; font: 22px/1.5 -apple-system, sans-serif; }
+.p-edition div { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--p-doux); font-size: 13px; }
+.p-edition .enregistrer { background: var(--p-actif); color: #1a1300; border-color: var(--p-actif); font-weight: 700; }
+.p-modifie { color: var(--p-actif); font-size: 12px; margin-left: 6px; }
 #p-temps { font-variant-numeric: tabular-nums; }
 #p-temps.presse { color: var(--p-actif); }
 .p-texte { overflow-y: auto; padding: 26px 30px 40vh; font-size: var(--taille-prompteur); line-height: 1.5; }
-.p-texte span { color: var(--p-doux); transition: color .25s; }
+.p-texte { scroll-behavior: smooth; }
+.p-texte span { color: #a9b4c2; transition: color .25s, background-color .25s; border-radius: 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 1px 3px; }
 .p-texte span.passee { color: #4b5563; }
-.p-texte span.active { color: var(--p-texte); text-decoration: underline 3px var(--p-actif); text-underline-offset: 8px; }
+.p-texte span.active { color: #fff; background: rgba(255, 212, 121, .14); box-shadow: inset 3px 0 0 var(--p-actif); }
 .p-suivant { border-top: 1px solid #222b36; padding: 12px 22px; color: var(--p-doux); font-size: 15px; min-height: 48px; }
 .p-suivant b { color: var(--p-texte); font-weight: 600; }
 
@@ -90,14 +105,12 @@ video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 10px
 .message:empty { display: none; }
 .message .ok { color: var(--ok); } .message .alerte { color: var(--alerte); }
 
-dialog { border: 1px solid var(--filet); border-radius: 12px; padding: 0; width: min(980px, calc(100vw - 32px)); background: var(--surface); color: var(--encre); }
-dialog::backdrop { background: rgba(10, 14, 20, .55); }
-.d-corps { padding: 18px 20px; display: grid; gap: 12px; max-height: 90vh; overflow: auto; }
-#finale { max-height: 55vh; }
-.d-corps h2 { margin: 0; font-size: 18px; overflow-wrap: anywhere; }
-#journal { margin: 0; max-height: 200px; overflow: auto; font: 12px/1.5 ui-monospace, Menlo, monospace; background: var(--fond); border-radius: 8px; padding: 10px; white-space: pre-wrap; }
-.d-pied { display: flex; justify-content: flex-end; gap: 8px; }
 
+/* Plein écran : le prompteur prend la place, la vidéo et les commandes passent dans une colonne étroite. */
+body.plein .studio { grid-template-columns: minmax(280px, .5fr) minmax(0, 1.5fr); }
+body.plein .liste, body.plein .aide { display: none; }
+body.plein .gauche { grid-template-rows: auto auto auto; align-content: start; }
+body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 30vh 8% 45vh; line-height: 1.55; }
 @media (max-width: 980px) {
   body { grid-template-rows: auto auto; }
   .studio { grid-template-columns: minmax(0, 1fr); }
@@ -116,8 +129,8 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
     <span id="micro-etat">Micro non activé</span>
     <button id="micro-activer" type="button">Activer le micro</button>
     <a id="vers-table" href="/table">Table de montage</a>
-    <button id="monter" type="button">Monter la vidéo</button>
-    <button id="habiller" type="button" title="Caméra, cartons animés et musique discrète sous la voix (quelques minutes)">Habiller</button>
+    <button id="apercu" type="button" title="Les voix posées sur l’image, sans habillage (une minute environ)">Aperçu rapide</button>
+    <button id="generer" class="caramel" type="button" title="Montage des voix, caméra, cartons animés, musique sous la voix, copie sur le Bureau (6 minutes environ)">▶ Générer la vidéo</button>
   </div>
 </header>
 
@@ -143,23 +156,23 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
     <div class="p-tete">
       <span id="p-bloc"></span>
       <span id="p-temps"></span>
-      <span class="p-taille"><button id="p-moins" type="button" aria-label="Texte plus petit">A−</button><button id="p-plus" type="button" aria-label="Texte plus grand">A+</button></span>
+      <span class="p-taille"><button id="p-modifier" type="button" title="Réécrire le texte de ce bloc (la vidéo ne change pas)">✎ Texte</button><button id="p-moins" type="button" aria-label="Texte plus petit">A−</button><button id="p-plus" type="button" aria-label="Texte plus grand">A+</button><button id="p-plein" type="button" aria-pressed="false" title="Prompteur plein écran (F)">⛶</button></span>
     </div>
+    <div class="p-jauge" id="p-jauge"><div></div></div>
     <div class="p-texte" id="p-texte"></div>
+    <div class="p-edition" id="p-edition" hidden>
+      <textarea id="p-saisie" aria-label="Texte du bloc" spellcheck="true"></textarea>
+      <div><button id="p-garder" class="enregistrer" type="button">Garder ce texte</button><button id="p-original" type="button">Revenir au texte d’origine</button><button id="p-annuler" type="button">Annuler</button>
+        <span>Le prompteur répartit le nouveau texte sur la durée du bloc.</span></div>
+    </div>
+    <div id="p-decompte" hidden></div>
     <div class="p-suivant" id="p-suivant"></div>
   </section>
 </main>
 
 <div class="message" id="message" role="status" aria-live="polite"></div>
 
-<dialog id="montage">
-  <div class="d-corps">
-    <h2 id="m-titre">Montage en cours…</h2>
-    <video id="finale" controls playsinline hidden></video>
-    <pre id="journal"></pre>
-    <div class="d-pied"><button id="m-fermer" type="button">Fermer</button></div>
-  </div>
-</dialog>
+<script src="/travail.js"></script>
 
 <script>
 (async () => {
@@ -173,11 +186,38 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
   const blocs = marques.map((m, k) => ({ ...m, coupe: k + 1 < marques.length ? marques[k + 1].debut : DUREE, rallonge: 0 }));
   let prises = new Map();
   let choisi = Math.max(0, blocs.findIndex(b => b.id === new URLSearchParams(location.search).get('bloc')));
+  /** Les réglages de la table de montage (part gardée, gain, décalage) et les textes réécrits. */
+  let audio = {}, textes = {};
 
   /** Les rallonges de la table de montage : l'image se fige à la fin du bloc, le micro continue. */
   async function chargerMontage() {
-    const { rallonges } = await (await fetch('/montage', { cache: 'no-store' })).json();
-    for (const b of blocs) { b.rallonge = Number(rallonges?.[b.id]) || 0; b.place = b.coupe - b.debut; }
+    const m = await (await fetch('/montage', { cache: 'no-store' })).json();
+    for (const b of blocs) { b.rallonge = Number(m.rallonges?.[b.id]) || 0; b.place = b.coupe - b.debut; }
+    audio = m.audio || {}; textes = m.textes || {};
+    pIndex = -1;
+  }
+
+  /** Une prise telle que la table l'a réglée (même règle que le montage, montage.mjs). */
+  function reglage(id, duree) {
+    const a = audio[id] || {};
+    const debut = Math.min(Number(a.debut) || 0, Math.max(0, duree - 0.1));
+    return { debut, fin: Math.max(debut + 0.05, Math.min(duree, a.fin ?? duree)), gain: Number(a.gain) || 0, decalage: Number(a.decalage) || 0 };
+  }
+
+  /**
+   * Les phrases que lit le prompteur. Un texte réécrit est découpé en phrases, réparties
+   * sur le temps de la voix d'origine, allongé au prorata du texte (sans dépasser la place).
+   */
+  function phrasesDe(b) {
+    const t = textes[b.id];
+    if (!t) return b.phrases;
+    const morceaux = t.match(/[^.!?…]+(?:[.!?…]+["»”)]*|$)\s*/g)?.map(x => x.trim()).filter(Boolean) || [t];
+    const d0 = b.phrases[0]?.offset ?? 0.3, der = b.phrases.at(-1);
+    const origine = der ? der.offset + der.duree - d0 : b.place - 1;
+    const nOrig = b.phrases.reduce((n, p) => n + p.texte.length, 0) || 1, n = morceaux.reduce((a, x) => a + x.length, 0);
+    const etendue = Math.max(1, Math.min(b.place + b.rallonge - d0 - 0.3, origine * n / nOrig));
+    let o = d0;
+    return morceaux.map(texte => { const duree = etendue * texte.length / n; const p = { texte, offset: o, duree: Math.max(0.3, duree - 0.15) }; o += duree; return p; });
   }
 
   async function chargerPrises() {
@@ -205,7 +245,7 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
       const etat = !p ? `<span class="etat vide">à enregistrer · ${place}</span>`
         : p.alerte ? `<span class="etat alerte" title="${p.alerte}">⚠ ${p.duree?.toFixed(1) ?? '?'} s</span>`
         : `<span class="etat faite">✓ ${p.duree?.toFixed(1) ?? '?'} s</span>`;
-      li.innerHTML = `<span class="tc">${mmss(b.debut)}</span><span class="nom">${b.id}<small>${b.phrases[0]?.texte.slice(0, 48) ?? ''}…</small></span>${etat}`
+      li.innerHTML = `<span class="tc">${mmss(b.debut)}</span><span class="nom">${b.id}<small>${textes[b.id] ? '✎ ' : ''}${phrasesDe(b)[0]?.texte.slice(0, 48) ?? ''}…</small></span>${etat}`
         + (p ? `<button type="button" data-effacer="${i}" aria-label="Effacer la prise ${b.id}">Effacer</button>` : '<span></span>');
       liste.append(li);
     });
@@ -254,19 +294,21 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
   function peindrePrompteur(t) {
     const i = tenue ? tenue.k : capture && t < blocs[capture.depart].debut ? capture.depart : indexA(t);
     const b = blocs[i];
+    const phrases = phrasesDe(b);
     if (i !== pIndex) {
       pIndex = i; pActive = -1;
-      $('#p-texte').replaceChildren(...b.phrases.map(p => { const s = document.createElement('span'); s.textContent = p.texte + ' '; return s; }));
-      $('#p-bloc').innerHTML = `<b>${b.id}</b>${b.chapitre ? ' · ' + b.chapitre : ''}`;
+      if (!$('#p-edition').hidden && !capture && !ecoute) fermerEdition();
+      $('#p-texte').replaceChildren(...phrases.map(p => { const s = document.createElement('span'); s.textContent = p.texte; return s; }).flatMap(s => [s, document.createTextNode(' ')]));
+      $('#p-bloc').innerHTML = `<b>${b.id}</b>${b.chapitre ? ' · ' + b.chapitre : ''}${textes[b.id] ? '<span class="p-modifie">texte réécrit</span>' : ''}`;
       const s = blocs[i + 1];
-      $('#p-suivant').innerHTML = s ? `Ensuite · <b>${s.id}</b> : ${s.phrases[0]?.texte ?? ''}` : 'Dernier bloc.';
+      $('#p-suivant').innerHTML = s ? `Ensuite · <b>${s.id}</b> : ${phrasesDe(s)[0]?.texte ?? ''}` : 'Dernier bloc.';
       $('#p-texte').scrollTop = 0;
     }
     const enTenue = tenue && tenue.k === i;
     const rel = enTenue ? b.place + b.rallonge - (tenue.fin - ctx.currentTime) : t - b.debut;
     const spans = $('#p-texte').children;
     let active = -1;
-    b.phrases.forEach((p, k) => {
+    phrases.forEach((p, k) => {
       const passee = rel >= p.offset + p.duree + 0.3;
       const en = rel >= p.offset - 0.15 && !passee;
       if (en) active = k;
@@ -278,6 +320,12 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
     const enCours = !video.paused || enTenue;
     if (rel < 0) { temps.textContent = `début dans ${Math.ceil(-rel)} s`; temps.className = 'presse'; }
     else { temps.textContent = `${enTenue ? 'rallonge · ' : ''}reste ${Math.max(0, Math.ceil(reste))} s`; temps.className = reste < 3 && enCours ? 'presse' : ''; }
+    const jauge = $('#p-jauge');
+    jauge.firstElementChild.style.transform = `scaleX(${Math.max(0, Math.min(1, reste / (b.place + b.rallonge)))})`;
+    jauge.classList.toggle('presse', rel >= 0 && reste < 3 && enCours);
+    // Le décompte, dans le prompteur aussi : en plein écran, la vidéo est petite.
+    const dc = $('#p-decompte'), n = capture && rel < 0 && enCours ? Math.ceil(-rel) : decompteFixe;
+    dc.hidden = !n; if (n) dc.textContent = n;
   }
   let taille = 30;
   try { taille = Number(localStorage.getItem('caramel_studio_taille')) || 30; } catch { /* stockage indisponible */ }
@@ -285,6 +333,43 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
   appliquerTaille();
   $('#p-plus').onclick = () => { taille = Math.min(56, taille + 3); appliquerTaille(); };
   $('#p-moins').onclick = () => { taille = Math.max(18, taille - 3); appliquerTaille(); };
+
+  /** Le plein écran du prompteur (F) : la vraie fenêtre plein écran, et la mise en page qui va avec. */
+  function basculerPlein(forcer) {
+    const plein = forcer ?? !document.body.classList.contains('plein');
+    document.body.classList.toggle('plein', plein);
+    $('#p-plein').setAttribute('aria-pressed', String(plein));
+    if (plein && !document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+    if (!plein && document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    pActive = -1;
+  }
+  $('#p-plein').onclick = () => basculerPlein();
+  document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && document.body.classList.contains('plein')) basculerPlein(false); });
+
+  /* Réécrire le texte d'un bloc : pour dire autre chose que la voix témoin sur la même image. */
+  function ouvrirEdition() {
+    if (capture || ecoute) return;
+    const b = blocs[pIndex >= 0 ? pIndex : choisi];
+    $('#p-saisie').value = textes[b.id] || b.phrases.map(p => p.texte).join(' ');
+    $('#p-saisie').dataset.id = b.id;
+    $('#p-texte').hidden = true; $('#p-edition').hidden = false;
+    $('#p-saisie').focus();
+  }
+  function fermerEdition() { $('#p-edition').hidden = true; $('#p-texte').hidden = false; }
+  async function sauverTextes(id, texte) {
+    const origine = blocs.find(b => b.id === id).phrases.map(p => p.texte).join(' ');
+    if (texte && texte.replace(/\s+/g, ' ').trim() !== origine) textes[id] = texte; else delete textes[id];
+    const r = await fetch('/montage', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ textes }) });
+    if (r.ok) textes = (await r.json()).textes || {};
+    pIndex = -1;
+    fermerEdition();
+    peindreListe();
+    dire(textes[id] ? `Texte de « ${id} » réécrit : le prompteur le suit. Réenregistre ce bloc (<kbd>B</kbd>).` : `Texte d’origine rétabli pour « ${id} ».`);
+  }
+  $('#p-modifier').onclick = () => ouvrirEdition();
+  $('#p-garder').onclick = () => sauverTextes($('#p-saisie').dataset.id, $('#p-saisie').value);
+  $('#p-original').onclick = () => sauverTextes($('#p-saisie').dataset.id, '');
+  $('#p-annuler').onclick = () => fermerEdition();
 
   /* ---------------- Micro ---------------- */
   let ctx = null, flux = null, source = null, proc = null, analyseur = null;
@@ -365,7 +450,8 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
     }
     await video.play();
   }
-  const montrerDecompte = n => { const d = $('#decompte'); d.hidden = !n; d.textContent = n || ''; };
+  let decompteFixe = null;
+  const montrerDecompte = n => { const d = $('#decompte'); d.hidden = !n; d.textContent = n || ''; if (capture && video.paused) decompteFixe = n; if (!n) decompteFixe = null; };
 
   function mediane(v) { const s = [...v].sort((a, b) => a - b); return s[Math.floor(s.length / 2)]; }
   function rms(x, a, b) { let s = 0; for (let i = a; i < b; i++) s += x[i] * x[i]; return Math.sqrt(s / Math.max(1, b - a)); }
@@ -470,14 +556,22 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
     etatInterface();
     await video.play();
   }
-  function lancerPrise(k, t) {
+  /** Lance la prise du bloc k, `rel` secondes après le début du bloc (négatif : avant), réglée comme au montage. */
+  function lancerPrise(k, rel) {
     const b = blocs[k], buf = ecoute.tampons.get(b.id);
     ecoute.lances.add(k);
     if (!buf) return;
-    const s = ctx.createBufferSource(); s.buffer = buf; s.connect(ctx.destination);
-    s.start(0, Math.max(0, t - b.debut));
+    const r = reglage(b.id, buf.duration);
+    const tau = Math.max(r.debut, rel - r.decalage), duree = r.fin - tau;
+    if (duree <= 0.02) return;
+    const s = ctx.createBufferSource(); s.buffer = buf;
+    const g = ctx.createGain(); g.gain.value = Math.pow(10, r.gain / 20);
+    s.connect(g).connect(ctx.destination);
+    s.start(ctx.currentTime + Math.max(0, tau + r.decalage - rel), tau, duree);
     ecoute.sources.push(s);
   }
+  /** Une prise avancée (décalage négatif) part avant le début de son bloc. */
+  const avanceDe = k => { const b = blocs[k], buf = ecoute?.tampons.get(b.id); if (!buf) return 0; const r = reglage(b.id, buf.duration); return Math.max(0, -(r.debut + r.decalage)); };
   function arreterEcoute() {
     if (!ecoute) return;
     ecoute.sources.forEach(s => { try { s.stop(); } catch { /* déjà fini */ } });
@@ -518,7 +612,7 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
     const occupe = !!capture || !!ecoute;
     $('#rec').hidden = !capture;
     $('#arreter').hidden = !occupe;
-    for (const id of ['#enr-suite', '#enr-bloc', '#ecouter', '#monter', '#habiller']) $(id).disabled = occupe;
+    for (const id of ['#enr-suite', '#enr-bloc', '#ecouter', '#apercu', '#generer', '#p-modifier']) $(id).disabled = occupe;
   }
   function dire(html, genre) { const m = $('#message'); m.innerHTML = genre ? `<span class="${genre}">${html}</span>` : html; }
   // Un bouton cliqué à la souris garderait le focus, et la barre d'espace le recliquerait.
@@ -528,40 +622,18 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
   $('#ecouter').onclick = () => ecouter();
   $('#arreter').onclick = () => capture ? terminer() : arreterEcoute();
   document.addEventListener('keydown', e => {
-    if (e.target.closest('select, dialog')) return;
+    if (e.target.closest('select, dialog, textarea')) return;
     if (e.code === 'Space') { e.preventDefault(); if (capture) terminer(); else if (ecoute) arreterEcoute(); else enregistrer('suite'); }
     else if (e.code === 'Escape') { if (capture) terminer(); else arreterEcoute(); }
     else if (e.key === 'b' || e.key === 'B') enregistrer('bloc');
     else if (e.key === 'e' || e.key === 'E') ecouter();
+    else if (e.key === 'f' || e.key === 'F') basculerPlein();
     else if (e.key === 'ArrowLeft') { e.preventDefault(); choisir(choisi - 1); }
     else if (e.key === 'ArrowRight') { e.preventDefault(); choisir(choisi + 1); }
   });
 
-  $('#monter').onclick = async () => {
-    const d = $('#montage');
-    $('#m-titre').textContent = 'Montage en cours…';
-    $('#journal').textContent = '';
-    $('#finale').hidden = true;
-    d.showModal();
-    const r = await fetch('/monter', { method: 'POST' });
-    const j = await r.json().catch(() => ({ ok: false, journal: 'réponse illisible' }));
-    $('#journal').textContent = (j.journal || j.erreur || '').trim();
-    $('#m-titre').textContent = j.ok ? `Vidéo montée : ${j.fichier}` : 'Le montage a échoué';
-    if (j.ok) { const f = $('#finale'); f.src = `/finale.mp4?${Date.now()}`; f.hidden = false; }
-  };
-  $('#m-fermer').onclick = () => { $('#finale').pause(); $('#montage').close(); };
-  $('#habiller').onclick = async () => {
-    const d = $('#montage');
-    $('#m-titre').textContent = 'Habillage en cours… (quelques minutes)';
-    $('#journal').textContent = 'Caméra, cartons animés, phrases clés, musique sous la voix. Le montage de la voix doit être à jour (« Monter la vidéo »).';
-    $('#finale').hidden = true;
-    d.showModal();
-    const r = await fetch('/habiller', { method: 'POST' });
-    const j = await r.json().catch(() => ({ ok: false, journal: 'réponse illisible' }));
-    $('#journal').textContent = (j.journal || j.erreur || '').trim();
-    $('#m-titre').textContent = j.ok ? `Vidéo habillée : ${j.copie || j.fichier}` : 'L’habillage a échoué';
-    if (j.ok) { const f = $('#finale'); f.src = `/habillee.mp4?${Date.now()}`; f.hidden = false; }
-  };
+  $('#apercu').onclick = () => Travail.lancer('apercu');
+  $('#generer').onclick = () => Travail.lancer('finale');
 
   /* ---------------- Boucle ---------------- */
   const vu = $('#vu'), tete = $('#tete-lecture');
@@ -581,7 +653,14 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
       if (t < b.debut && !video.paused) montrerDecompte(Math.ceil(b.debut - t)); else if (!video.paused) montrerDecompte(null);
       avancer(capture, t);
     } else if (ecoute) {
-      if (!video.paused && !tenue && !ecoute.lances.has(ecoute.bloc) && t >= blocs[ecoute.bloc].debut - 0.02) lancerPrise(ecoute.bloc, t);
+      const k = ecoute.bloc, suivant = k + 1 < blocs.length ? k + 1 : null;
+      if (!video.paused && !tenue) {
+        if (!ecoute.lances.has(k) && t >= blocs[k].debut - avanceDe(k) - 0.02) lancerPrise(k, t - blocs[k].debut);
+        if (suivant !== null && !blocs[k].rallonge && !ecoute.lances.has(suivant) && t >= blocs[suivant].debut - avanceDe(suivant) - 0.02) lancerPrise(suivant, t - blocs[suivant].debut);
+      } else if (tenue && suivant !== null && !ecoute.lances.has(suivant)) {
+        const reste = tenue.fin - ctx.currentTime;
+        if (reste <= avanceDe(suivant) + 0.02) lancerPrise(suivant, -reste);
+      }
       avancer(ecoute, t);
     }
     requestAnimationFrame(boucle);
@@ -598,7 +677,7 @@ dialog::backdrop { background: rgba(10, 14, 20, .55); }
   });
   etatInterface();
   requestAnimationFrame(boucle);
-  dire('Active le micro, choisis un bloc, puis <kbd>Espace</kbd> : trois secondes de décompte, et la vidéo part. Lis ce qui s’allume.');
+  dire('Active le micro, choisis un bloc, puis <kbd>Espace</kbd> : trois secondes de décompte, et la vidéo part. Lis ce qui s’allume. <kbd>F</kbd> : prompteur plein écran.');
 })();
 </script>
 </body>

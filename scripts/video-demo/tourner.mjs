@@ -42,7 +42,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import { writeFile } from 'node:fs/promises';
 import { SCRIPT_PAGE, creerMain } from './plateau.mjs';
 import { SCENES, CARTON_TITRE, RETOUCHE } from './scenario.mjs';
-import { chronologie, lireMontage } from './montage.mjs';
+import { chronologie, lireMontage, reglageAudio } from './montage.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const require = createRequire(join(ROOT, 'tests/roundtrip/package.json'));
@@ -104,6 +104,12 @@ function ecrireTexte({ duree, marques }) {
 }
 if (argv.includes('--texte')) { ecrireTexte(JSON.parse(readFileSync(join(SORTIE, 'marques.json'), 'utf8'))); process.exit(0); }
 
+/**
+ * La progression lue par le studio (qui lance ce script) : une ligne `@progression <0..1> <étape>`
+ * sur la sortie, seulement quand on la demande — en terminal, elle encombrerait.
+ */
+const progression = (f, etape) => { if (process.env.STUDIO_PROGRESSION) console.log(`@progression ${f.toFixed(4)} ${etape}`); };
+
 const MIXER = option('mixer', null);
 if (MIXER) {
     const { readdirSync } = await import('node:fs');
@@ -111,7 +117,8 @@ if (MIXER) {
     const { duree, marques } = JSON.parse(readFileSync(join(SORTIE, 'marques.json'), 'utf8'));
     const muet = join(SORTIE, 'caramel-7-demo-muette.mp4');
     // Les rallonges de la table de montage : chaque bloc peut durer un peu plus que sa scène.
-    const chrono = chronologie(marques, duree, lireMontage(SORTIE).rallonges);
+    const montage = lireMontage(SORTIE);
+    const chrono = chronologie(marques, duree, montage.rallonges);
     if (chrono.totalRallonges) console.log(`  rallonges : ${chrono.blocs.filter(b => b.rallonge).map(b => `${b.id} +${b.rallonge} s`).join(', ')}`);
     const dureeAudio = f => Number(spawnSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f], { encoding: 'utf8' }).stdout.trim());
     const fichiers = readdirSync(dossier).filter(f => /\.(m4a|mp3|wav|aac|ogg|opus|flac|aiff?)$/i.test(f));
@@ -123,9 +130,16 @@ if (MIXER) {
         // La place d'un bloc court jusqu'au bloc suivant (le dernier, jusqu'à la fin du film), rallonge comprise.
         const b = chrono.blocs.find(x => x.id === mq.id);
         const place = b.place + b.rallonge;
-        console.log(`  ✓ ${mq.id} : ${f} (${d.toFixed(1)} s pour ${place.toFixed(1)} s de scène${b.rallonge ? `, dont ${b.rallonge} s de rallonge` : ''})`);
-        if (d > place + 0.5) console.warn(`    ⚠ déborde de ${(d - place).toFixed(1)} s sur la scène suivante : lire un peu plus vite, ou rallonger le bloc dans la table de montage`);
-        poses.push({ f: join(dossier, f), t: b.debutMonte });
+        // Les réglages de la table de montage : part gardée, gain, décalage (la prise reste intacte).
+        const r = reglageAudio(montage, mq.id, d);
+        const retouches = [r.debut > 0 && `début coupé ${r.debut.toFixed(2)} s`, r.fin < d - 0.01 && `fin coupée à ${r.fin.toFixed(2)} s`,
+            r.gain && `${r.gain > 0 ? '+' : ''}${r.gain} dB`, r.decalage && `décalée de ${r.decalage > 0 ? '+' : ''}${r.decalage.toFixed(2)} s`].filter(Boolean);
+        console.log(`  ✓ ${mq.id} : ${f} (${d.toFixed(1)} s pour ${place.toFixed(1)} s de scène${b.rallonge ? `, dont ${b.rallonge} s de rallonge` : ''})${retouches.length ? ` · ${retouches.join(', ')}` : ''}`);
+        if (r.fin + r.decalage > place + 0.5) console.warn(`    ⚠ déborde de ${(r.fin + r.decalage - place).toFixed(1)} s sur la scène suivante : lire un peu plus vite, ou rallonger le bloc dans la table de montage`);
+        // Un début coupé laisse la suite à sa place : la voix reste calée sur l'image.
+        const t = b.debutMonte + r.debut + r.decalage;
+        const avance = Math.max(0, -t);                  // un décalage négatif au tout début du film
+        poses.push({ f: join(dossier, f), t: t + avance, debut: r.debut + avance, fin: r.fin, gain: r.gain });
     }
     if (!poses.length) { console.error(`Aucun fichier audio reconnu dans ${dossier}`); process.exit(1); }
 
@@ -164,13 +178,29 @@ if (MIXER) {
             ...chrono.blocs.map((b, k) => `[s${k}]trim=start=${b.debut.toFixed(3)}:end=${b.coupe.toFixed(3)},setpts=PTS-STARTPTS${b.rallonge ? `,tpad=stop_mode=clone:stop_duration=${b.rallonge}` : ''}[b${k}]`),
             `${chrono.blocs.map((_, k) => `[b${k}]`).join('')}concat=n=${chrono.blocs.length}:v=1:a=0,tpad=stop_mode=clone:stop_duration=${TENUE}[image]`].join(';')
         : `[0:v]tpad=stop_mode=clone:stop_duration=${TENUE}[image]`;
-    const filtres = poses.map((p, k) => `[${k + 1}:a]aresample=48000,aformat=channel_layouts=mono,${debruiter}adelay=${Math.round(p.t * 1000)}:all=1[a${k}]`);
+    // Chaque prise : sa part gardée, fondue sur 20-30 ms aux coupes (pas de clic), à son gain.
+    const filtres = poses.map((p, k) => {
+        const garde = p.fin - p.debut;
+        const coupe = `atrim=start=${p.debut.toFixed(3)}:end=${p.fin.toFixed(3)},asetpts=PTS-STARTPTS,afade=t=in:d=0.02,afade=t=out:st=${Math.max(0, garde - 0.03).toFixed(3)}:d=0.03,`;
+        return `[${k + 1}:a]aresample=48000,aformat=channel_layouts=mono,${debruiter}${coupe}${p.gain ? `volume=${p.gain}dB,` : ''}adelay=${Math.round(p.t * 1000)}:all=1[a${k}]`;
+    });
     const mix = `${poses.map((_, k) => `[a${k}]`).join('')}amix=inputs=${poses.length}:normalize=0:dropout_transition=0,highpass=f=70,loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:${total.toFixed(3)}[v]`;
-    const r = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', muet, ...poses.flatMap(p => ['-i', p.f]),
+    // `-progress` : l'instant encodé, d'où le pourcentage que suit le studio.
+    const job = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-nostats', '-progress', 'pipe:1', '-y', '-i', muet, ...poses.flatMap(p => ['-i', p.f]),
         '-filter_complex', [image, ...filtres, mix].join(';'),
         '-map', '[image]', '-map', '[v]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
-        '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-movflags', '+faststart', sortie], { encoding: 'utf8' });
-    if (r.status !== 0) { console.error(r.stderr); process.exit(1); }
+        '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-movflags', '+faststart', sortie]);
+    let erreurs = '', dernier = -1;
+    job.stderr.on('data', d => { erreurs += d; });
+    job.stdout.on('data', d => {
+        const m = /out_time_us=(\d+)/.exec(String(d).split('\n').reverse().join('\n'));
+        if (!m) return;
+        const f = Math.min(1, Number(m[1]) / 1e6 / total);
+        if (f - dernier >= 0.01) { dernier = f; progression(f, 'montage des voix'); }
+    });
+    const code = await new Promise(ok => job.on('close', ok));
+    if (code !== 0) { console.error(erreurs); process.exit(1); }
+    progression(1, 'montage des voix');
     console.log(`\n✓ ${sortie.replace(ROOT + '/', '')}`);
     process.exit(0);
 }
