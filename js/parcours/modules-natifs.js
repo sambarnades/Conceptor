@@ -1190,7 +1190,7 @@ function construireChoixGroupe(d, ts) {
  * matières est la `structure` : le tableau que Moodle tire du manifeste au
  * dépôt, SÉRIALISÉ À LA PHP — la restauration la reprend telle quelle, sans
  * relire le manifeste. Les fichiers se posent après l'assemblage
- * (`fichiers-modules.js`), comme le texte du Document collaboratif.
+ * (`moodle/fichiers-modules.js`), comme le texte du Document collaboratif.
  *
  * Jamais proposé par le plan (`surDemande`) : sur Moodle, un Livre fait la même
  * chose en mieux intégré. Le paquetage sert à qui veut un contenu PORTABLE —

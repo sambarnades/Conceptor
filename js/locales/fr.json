@@ -1977,6 +1977,7 @@
   "editor_add_section": "Ajouter une section",
   "editor_section_subtitle": "Sous-titre de la section",
   "editor_image_url": "URL de l'image",
+  "editor_page_image_upload_hint": "Ou envoyez une image depuis votre ordinateur : elle est jointe à l'activité et remplace l'URL ci-dessus.",
   "editor_alt_text": "Texte alternatif",
   "editor_legend": "Légende",
   "editor_figure_left": "Figure gauche",

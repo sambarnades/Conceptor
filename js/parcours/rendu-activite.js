@@ -113,7 +113,8 @@ export async function rendreApercu(hote, cible, { valide, avantLecteur = () => {
     ]);
     let html;
     if (['Page', 'Livre'].includes(cible.module)) {
-        html = (await construireFichiersActivite(typeMoodle(cible.module), donnees)).previewHtml;
+        // Les images envoyées dans les blocs : octets rangés dans `cible.medias`.
+        html = (await construireFichiersActivite(typeMoodle(cible.module), contenuPourEdition(cible))).previewHtml;
     }
     if (!valide()) return rien;
     // Le conteneur de montage des simulateurs, comme dans l'éditeur : le

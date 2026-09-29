@@ -15,6 +15,7 @@ import * as MoodleProcessors from './processors/index.js';
 import { assembleTestBackupFiles } from './mbz-quiz-backup.js';
 import { healStructureForActivity, normalizeDoubleEscapedLatex, repairBrokenLatexEscapes, autoWrapLatex, convertLatexDelimitersDeep, convertLatexEnvironmentsDeep, latexToUnicode, checkLatexBalance } from '../h5p/json-healer.js';
 import { getTheme } from './page-themes.js';
+import { PREMIER_ID_CHAPITRE } from './page-images.js';
 
 /**
  * Pipeline complet de réparation LaTeX pour les activités Moodle/Éléa.
@@ -581,8 +582,9 @@ export async function buildChaptersXml(chapters, theme) {
         // Héros décoratif (le titre de chapitre est déjà posé par Moodle).
         const chapterHtml = await generateHtmlFromBlocks(chapterJsonData, { headingBase: 4 });
 
-        // ID séquentiel pour le chapitre (interne au livre)
-        const chapterId = 100 + i;
+        // ID séquentiel pour le chapitre (interne au livre). Les images envoyées
+        // d'un chapitre sont rangées sous CET identifiant (page-images.js).
+        const chapterId = PREMIER_ID_CHAPITRE + i;
         const pagenum = i + 1;
         const subchapter = chapter.subchapter ? 1 : 0;
 

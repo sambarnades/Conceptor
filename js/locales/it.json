@@ -1977,6 +1977,7 @@
   "editor_add_section": "Aggiungi sezione",
   "editor_section_subtitle": "Sottotitolo della sezione",
   "editor_image_url": "URL dell'immagine",
+  "editor_page_image_upload_hint": "Oppure carica un'immagine dal tuo computer: viene allegata all'attività e sostituisce l'URL qui sopra.",
   "editor_alt_text": "Testo alternativo",
   "editor_legend": "Didascalia",
   "editor_figure_left": "Figura sinistra",

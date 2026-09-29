@@ -59,17 +59,25 @@ export function typeMoodle(moduleKey) {
  * racine du backup, pas dans le dossier d'activité, et le constructeur de cours
  * la régénère lui-même à partir du modèle (cf. `buildQuizActivityFiles`).
  *
+ * **Images envoyées (Page, Livre).** Elles ne sont PAS dans `files` : la carte
+ * rendue reste celle d'une activité sans fichiers, parce que le constructeur de
+ * cours du parcours (partagé avec La Sucrerie) refuse une activité qui arrive
+ * avec les siens. Elles sont décrites dans `paquet` ; `fichiersMonoActivite()`
+ * les pose pour un `.mbz` d'activité seule, l'atelier les pose après
+ * l'assemblage du cours. `previewHtml`, lui, montre déjà les images.
+ *
  * @param {string} moodleType - 'Page' | 'Livre' | 'Millionnaire' | 'Appariement' | 'QCM' | 'Devoir'
  * @param {Object} donnees - Le JSON de l'activité (déjà réparé).
  * @param {Object} [options]
  * @param {string} [options.titreParDefaut] - Titre de repli si le JSON n'en porte pas.
- * @returns {Promise<{files:Object<string,string>, moduleName:string, activityDir:string, title:string, previewHtml:string|null}>}
+ * @returns {Promise<{files:Object<string,string>, moduleName:string, activityDir:string, title:string, previewHtml:string|null, paquet:Object|null}>}
  */
 export async function construireFichiersActivite(moodleType, donnees, { titreParDefaut = '' } = {}) {
-    const [{ healLatexForTest, prepareIntroHtml }, MoodleProcessors, { escapeXml, escapeXmlPreservingEntities }] = await Promise.all([
+    const [{ healLatexForTest, prepareIntroHtml }, MoodleProcessors, { escapeXml, escapeXmlPreservingEntities }, { extraireImagesEnvoyees, versApercu }] = await Promise.all([
         import('./moodle-creator.js'),
         import('./processors/index.js'),
         import('./moodle-formats.js'),
+        import('./page-images.js'),
     ]);
     // Pipeline LaTeX complet pour Moodle (identique à moodle-creator.js).
     const healLatex = healLatexForTest;
@@ -86,6 +94,8 @@ export async function construireFichiersActivite(moodleType, donnees, { titrePar
 
     // Transformations SPÉCIFIQUES à chaque type d'activité.
     let activitySpecificData = {};
+    // Fichiers joints de l'activité (images envoyées d'une Page ou d'un Livre).
+    let paquet = null;
 
     switch (moodleType) {
         case 'Appariement': {
@@ -189,8 +199,12 @@ export async function construireFichiersActivite(moodleType, donnees, { titrePar
         }
 
         case 'Page': {
+            // Les images envoyées sortent du JSON AVANT la réparation LaTeX, qui
+            // n'a rien à faire dans leur base64 (cf. page-images.js).
+            const images = await extraireImagesEnvoyees(donnees, 'Page');
+            paquet = images.paquet;
             // Pipeline LaTeX complet pour MathJax Moodle
-            donnees = healLatex(donnees);
+            donnees = healLatex(images.donnees);
             // Pour Page, on a besoin de CONTENT et INTRO
             // Import dynamique de la fonction de génération HTML
             let generatedHtml = null;
@@ -207,14 +221,18 @@ export async function construireFichiersActivite(moodleType, donnees, { titrePar
             }
             activitySpecificData.PAGE_NAME = escapeXml(donnees.title || titreParDefaut || 'Page');
             activitySpecificData.INTRO = escapeXml(donnees.intro || '');
-            // Stocker le HTML généré pour le retourner plus tard (pour previewHtml)
-            activitySpecificData._generatedPreviewHtml = generatedHtml;
+            // Stocker le HTML généré pour le retourner plus tard (pour previewHtml).
+            // Le backup cite les images par `@@PLUGINFILE@@` ; l'aperçu, lui, les montre.
+            activitySpecificData._generatedPreviewHtml = versApercu(generatedHtml, images.apercu);
             break;
         }
 
         case 'Livre': {
+            // Images envoyées : même traitement que la Page, une zone par chapitre.
+            const images = await extraireImagesEnvoyees(donnees, 'Livre');
+            paquet = images.paquet;
             // Pipeline LaTeX complet pour MathJax Moodle
-            donnees = healLatex(donnees);
+            donnees = healLatex(images.donnees);
             // Healing Livre : injecte les défauts numbering/customtitles + valide la séquence des chapitres
             const { healStructureForActivity } = await import('../h5p/json-healer.js');
             donnees = healStructureForActivity(donnees, 'Livre');
@@ -226,7 +244,7 @@ export async function construireFichiersActivite(moodleType, donnees, { titrePar
                 const { buildChaptersXml, buildLivrePreviewHtml } = await import('./moodle-creator.js');
                 const theme = donnees.theme || 'elea';
                 chaptersXml = await buildChaptersXml(donnees.chapters || [], theme);
-                previewHtml = await buildLivrePreviewHtml(donnees);
+                previewHtml = versApercu(await buildLivrePreviewHtml(donnees), images.apercu);
             } catch (e) {
                 console.warn('[mono-activity-files] buildChaptersXml/buildLivrePreviewHtml not available:', e);
             }
@@ -304,5 +322,27 @@ export async function construireFichiersActivite(moodleType, donnees, { titrePar
         // Page et Livre savent rendre leur aperçu au passage : l'éditeur s'en sert
         // pour son mode « fidélité », le parcours l'ignore.
         previewHtml: activitySpecificData._generatedPreviewHtml || null,
+        // Fichiers à joindre au backup, au format de `joindreFichiersInitiaux`.
+        paquet,
     };
+}
+
+/**
+ * La carte de fichiers d'un `.mbz` d'activité SEULE : celle de
+ * `construireFichiersActivite()`, plus les fichiers joints de l'activité (les
+ * images envoyées d'une Page ou d'un Livre), posés comme un export Moodle les
+ * pose — pool `files/`, `files.xml`, `inforef.xml` de l'activité.
+ *
+ * Le parcours ne passe PAS par ici : il joint les mêmes `paquet` après
+ * l'assemblage du cours (`parcours-builder.js`).
+ *
+ * @param {{files:Object, activityDir:string, paquet:Object|null}} resultat
+ * @param {Object} [options]
+ * @param {number} [options.timestamp]
+ * @returns {Promise<Object>} La carte complète (une nouvelle carte s'il y a des fichiers).
+ */
+export async function fichiersMonoActivite({ files, activityDir, paquet }, { timestamp } = {}) {
+    if (!paquet) return files;
+    const { joindreFichiersInitiaux } = await import('./fichiers-modules.js');
+    return joindreFichiersInitiaux(files, { timestamp, joints: [{ dir: activityDir, paquet }] });
 }

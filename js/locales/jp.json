@@ -1977,6 +1977,7 @@
   "editor_add_section": "セクションを追加",
   "editor_section_subtitle": "セクションサブタイトル",
   "editor_image_url": "画像URL",
+  "editor_page_image_upload_hint": "またはコンピューターから画像をアップロードできます。画像はアクティビティに添付され、上のURLの代わりに使用されます。",
   "editor_alt_text": "代替テキスト",
   "editor_legend": "キャプション",
   "editor_figure_left": "左図",

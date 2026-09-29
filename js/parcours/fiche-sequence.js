@@ -31,6 +31,8 @@ import { nomModule } from './activity-router.js';
 import { carteDisponible } from './carte-progression.js';
 import { formaterDuree } from './duree.js';
 import { MODULES_PARCOURS } from './modules-parcours.js';
+import { contenuPourEdition } from './sources.js';
+import { imagesEnvoyeesPourDocument } from '../moodle/page-images.js';
 
 /** Substitution de jetons, à l'identique des écrans de l'atelier. */
 function tr(cle, jetons) {
@@ -214,7 +216,10 @@ export function construireCoursDocumentaire(plan) {
         } : {
             moduleKey: c.module,
             jsonData: c.medias?.[c.contenu.image?.path]
-                ? { ...c.contenu, _backgroundImage: c.medias[c.contenu.image.path] } : c.contenu,
+                ? { ...c.contenu, _backgroundImage: c.medias[c.contenu.image.path] }
+                // Page, Livre : les images envoyées prennent la place de l'adresse du bloc.
+                : (c.medias && (c.module === 'Page' || c.module === 'Livre'))
+                    ? imagesEnvoyeesPourDocument(contenuPourEdition(c)) : c.contenu,
             title: String(c.titre || '').trim() || nomModule(c.module),
         }));
     return {

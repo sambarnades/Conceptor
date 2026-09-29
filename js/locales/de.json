@@ -1977,6 +1977,7 @@
   "editor_add_section": "Abschnitt hinzufügen",
   "editor_section_subtitle": "Abschnittsuntertitel",
   "editor_image_url": "Bild-URL",
+  "editor_page_image_upload_hint": "Oder laden Sie ein Bild von Ihrem Computer hoch: Es wird der Aktivität beigefügt und ersetzt die URL oben.",
   "editor_alt_text": "Alternativtext",
   "editor_legend": "Legende",
   "editor_figure_left": "Abbildung links",

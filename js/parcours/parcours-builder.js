@@ -31,7 +31,7 @@
 
 import { h5pModules } from '../core/definitions.js';
 import { debugLog, horodatageFichier } from '../core/utils.js';
-import { mediaFilesPour } from './sources.js';
+import { mediaFilesPour, contenuPourEdition } from './sources.js';
 import { currentLang, translations } from '../core/translation.js';
 import {
     assembleCourseFiles,
@@ -44,7 +44,7 @@ import { estModuleParcours, construireActiviteParcours, MODULES_PARCOURS } from 
 import { ligneAFaire } from './modules-natifs.js';
 import { carteAPoser, construireCarteProgression } from './carte-progression.js';
 import { joindreFondCarte } from './carte-image.js';
-import { joindreFichiersInitiaux } from './fichiers-modules.js';
+import { joindreFichiersInitiaux } from '../moodle/fichiers-modules.js';
 import { progressionAPoser, poserProgression } from './progression.js';
 
 /**
@@ -179,12 +179,19 @@ export async function activiteDepuisCarte(carte) {
     if (!type) throw new Error(`parcours_module_non_gere:${moduleKey}`);
 
     const { construireFichiersActivite } = await import('../moodle/mono-activity-files.js');
-    const { files, moduleName, activityDir } = await construireFichiersActivite(
+    // Les octets des images envoyées d'une Page ou d'un Livre sont rangés à part,
+    // dans `carte.medias` (`recueillirMedias`), le contenu n'en gardant que le
+    // chemin : on les y remet avant la mise en forme.
+    const contenu = carte.medias ? contenuPourEdition(carte) : carte.contenu;
+    const { files, moduleName, activityDir, paquet } = await construireFichiersActivite(
         type,
-        { ...carte.contenu, title: titre },
+        { ...contenu, title: titre },
         { titreParDefaut: titre },
     );
-    return { files, moduleName, activityDir, title: titre };
+    // Les images envoyées d'une Page ou d'un Livre voyagent à part (`paquet`) :
+    // `assemblerParcours` les joint après l'assemblage, comme les fichiers du
+    // Paquetage IMS — le constructeur partagé refuserait une activité à fichiers.
+    return { files, moduleName, activityDir, title: titre, ...(paquet ? { paquet } : {}) };
 }
 
 /* ------------------------------------------------------------------ *
@@ -408,7 +415,8 @@ export async function assemblerParcours(plan, { timestamp, platformId } = {}) {
     const { createMbz } = await import('../moodle/moodle-creator.js');
     files = await joindreFondCarte(files, plan.carte, { timestamp: ts });
     // Le Document collaboratif exige son fichier de départ à la restauration
-    // (D75) ; le Paquetage IMS n'existe que par ses fichiers. Le constructeur
+    // (D75) ; le Paquetage IMS n'existe que par ses fichiers ; une Page ou un
+    // Livre y joint ses images envoyées depuis l'ordinateur. Le constructeur
     // rend une activité posée par activité reçue, dans le même ordre : c'est ce
     // qui retrouve le dossier renuméroté de chacune.
     const joints = activities

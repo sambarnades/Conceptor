@@ -1977,6 +1977,7 @@
   "editor_add_section": "Sectie toevoegen",
   "editor_section_subtitle": "Sectie ondertitel",
   "editor_image_url": "Afbeeldings-URL",
+  "editor_page_image_upload_hint": "Of upload een afbeelding vanaf uw computer: die wordt bij de activiteit gevoegd en vervangt de URL hierboven.",
   "editor_alt_text": "Alternatieve tekst",
   "editor_legend": "Legenda",
   "editor_figure_left": "Afbeelding links",
