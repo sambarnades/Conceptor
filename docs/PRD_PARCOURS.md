@@ -1528,6 +1528,47 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         pictogramme SVG à gauche, dessiné sur place (`tuileChiffre()`, `screen-plan.js`) :
         liste, grille, horloge, en couleur héritée ; au-dessus du chiffre sur téléphone. Le
         miroir des sept familles garde ses tuiles sans pictogramme.
+- [x] **D85 — « Importer un modèle » à côté de « Partir du modèle » et de « Nouveau parcours ».**
+      Trois demandes d'Emmanuel (28-29 sept. 2026). Elles reviennent sur la place « d'usage
+      avancé » donnée à la reprise de scénario (D48, troisième retour du 14 sept.) : le `.json`
+      exporté à la livraison sert de gabarit pour le parcours suivant, il faut le retrouver
+      sans chercher.
+      - **Pied du cadrage** : « Importer un modèle » (`#pc-importer-modele`) juste à droite de
+        « Partir du modèle », les deux dans un groupe `#pc-departs`. Ce groupe est UN seul
+        élément de la grille du pied : la cellule de gauche est partagée avec « Retour »,
+        et un troisième bouton posé à côté s'y serait superposé. Le bouton déclenche le champ
+        `#pc-scenario-fichier` existant (lecture, contrôles, `confirmerRemplacement()`, plan),
+        rien n'est dupliqué. Actif sans trame : l'import n'en a pas besoin. Son infobulle
+        dit ce qu'on importe (un scénario `.json` exporté depuis Caramel), car « modèle »
+        désigne aussi la trame à côté.
+      - **Haut de l'atelier** : « Importer un modèle » à côté de « Nouveau parcours », les
+        deux visibles DÈS le cadrage, pour que le haut ne change pas d'un écran à l'autre.
+        Sans plan, « Nouveau parcours » n'a rien à effacer : il reste visible, grisé, et son
+        infobulle le dit (`parcours_nouveau_vide`), même règle que « Partir du modèle ». Au
+        cadrage, l'import est donc offert deux fois (haut et pied), comme demandé.
+      - **« Commencer un nouveau parcours ? »** disait « gardez son scénario (.json) » à côté
+        d'un bouton « Garder ce parcours » qui ne téléchargeait rien : on croyait sauvegarder.
+        Le texte dit désormais « exportez d'abord son scénario (.json) », et la question porte
+        l'action annexe « Exporter le scénario (.json) » de D84, qui télécharge sans refermer
+        (`annexeExporterScenario()`, partagée avec « Remplacer le parcours en cours ? »).
+        « Garder ce parcours » reste une annulation : lui faire télécharger aurait mêlé
+        deux gestes.
+      - La note de reprise de la livraison nomme « Importer un modèle » (visible à cet écran)
+        au lieu de « Reprendre un scénario », qui reste l'outil du panneau 2 de la fenêtre
+        « Personnaliser le plan ». Le tutoriel, l'aide embarquée et les fiches RAG le décrivent
+        toujours là, dans les douze langues : ils sont justes mais ne citent pas encore les
+        nouveaux boutons (lot à part, avec réingestion ILaaS).
+      - **Mise en page mesurée** dans les douze langues de 360 à 1 440 px. Pied : les deux
+        départs côte à côte quand la place suffit, sinon « Importer » passe dessous (grec dès
+        1 440 px, la plupart des langues sous 1 024 px) et les actions de droite restent en
+        haut ; sur téléphone, leur propre rangée à parts égales sous l'action primaire, qui
+        prend toute la largeur. Haut : « Nouveau parcours » et « Importer » en icônes sous
+        1 100 px ; « Tutoriel » aussi sous 480 px, boutons-icônes de 30 px. Le fil ne passe
+        plus à la ligne que dans 8 cas au lieu de 17 avant la modification (tous préexistants,
+        360 px surtout).
+      - Banc `tests/run_parcours_import.mjs` (22 contrôles, contre-épreuvé : sans l'annexe,
+        avec « Nouveau parcours » caché sans plan, ou sans la rangée téléphone, il vire au
+        rouge). Trois clés nouvelles et une revue, douze langues.
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -2296,6 +2337,7 @@ node scripts/check-shared-i18n.mjs       # parité des fichiers partagés
 node tests/run_browser_suite.mjs         # doit rester à 0 échec de plus que la référence
 node tests/run_parcours_course.mjs       # le .mbz de cours (H5P, Moodle, Test, Carte)
 node tests/run_parcours_atelier.mjs      # la file en série, le socle, le scénario
+node tests/run_parcours_import.mjs       # « Importer un modèle », « Nouveau parcours » et sa question (D85)
 node tests/run_parcours_gardefous.mjs   # la relecture didactique (Node pur, instantané)
 node tests/run_parcours_types.mjs       # le miroir des types d'apprentissage (Node pur)
 node tests/run_parcours_fiche.mjs       # la fiche de séquence et le détail des activités
@@ -2785,6 +2827,9 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
 
+- **29 sept. 2026** — **D85** : « Importer un modèle » dans le pied du cadrage et en haut de
+  l'atelier, « Nouveau parcours » visible dès le cadrage, question « Commencer un nouveau
+  parcours ? » avec son export annexe. Banc dédié 22/0, contre-épreuvé.
 - **28 sept. 2026, après-midi** — **D81, état de l'art didactique** : trames confrontées à
   ABC Learning Design, aux didactiques et aux sciences cognitives
   ([document](ETAT_DE_L_ART_DIDACTIQUE_PARCOURS_2026-09-28.md), références vérifiées).

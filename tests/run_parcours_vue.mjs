@@ -287,7 +287,8 @@ try {
   ok('nouveau parcours : le bouton est là une fois le plan posé', await nouveau.isVisible());
   await nouveau.click();
   await page.waitForSelector('.pc-confirmation');
-  await page.locator('.pc-confirmation button').first().click();
+  // D85 : la question porte aussi « Exporter le scénario (.json) », qui ne la ferme pas.
+  await page.locator('.pc-confirmation__actions button:not(.pc-confirmation__annexe):not(.pc-confirmation__abandon)').click();
   await page.waitForSelector('.pc-confirmation', { state: 'detached' });
   ok('nouveau parcours : « Garder ce parcours » ne touche à rien', await page.evaluate(async () => Boolean((await import('/js/parcours/state.js')).brouillon()?.plan)));
   await nouveau.click();
@@ -297,11 +298,12 @@ try {
   await page.waitForSelector('.pc-atelier--cadrage');
   const neuf = await page.evaluate(async () => ({
     plan: (await import('/js/parcours/state.js')).brouillon()?.plan ?? null,
-    bouton: document.querySelector('#pc-nouveau-parcours')?.hidden,
+    bouton: document.querySelector('#pc-nouveau-parcours')?.disabled,
     sujet: document.querySelector('#quoi')?.value,
     notification: (await import('/js/ui/notifications.js')).getNotifications().some(n => n.parcours),
   }));
-  ok('nouveau parcours : retour au cadrage, brouillon vidé, sujet de l’accueil gardé, MBZ toujours en notification',
+  // D85 : sans plan, « Nouveau parcours » reste visible, grisé.
+  ok('nouveau parcours : retour au cadrage, brouillon vidé, bouton grisé, sujet de l’accueil gardé, MBZ toujours en notification',
     neuf.plan === null && neuf.bouton === true && neuf.sujet === 'La Révolution française' && neuf.notification, JSON.stringify(neuf));
   ok('aucune erreur JavaScript', erreurs.length === 0, erreurs.join(' | '));
   console.log(`Vue du parcours : ${reussis} PASS / ${echecs} FAIL`);

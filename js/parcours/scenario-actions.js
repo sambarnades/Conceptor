@@ -21,14 +21,23 @@ export function confirmerRemplacement(panneau) {
         garderIcone: 'fa-arrow-left',
         quitter: 'parcours_remplacer_confirmer',
         quitterIcone: 'fa-arrows-rotate',
-        annexe: {
-            cle: 'parcours_liv_scenario_exporter', icone: 'fa-download',
-            faire: () => {
-                const draft = brouillon();
-                if (draft?.plan) telecharger(new Blob([JSON.stringify(versScenario(draft), null, 2)], { type: 'application/json' }), nomFichierScenario(draft));
-            },
-        },
+        annexe: annexeExporterScenario(),
     });
+}
+
+/**
+ * L'action annexe des questions qui effacent le parcours : télécharger son scénario
+ * sans refermer la question. Le texte conseille d'exporter ; le bouton le fait, au lieu
+ * de laisser croire que « Garder ce parcours » sauvegarde (retour d'Emmanuel, 29 sept. 2026).
+ */
+function annexeExporterScenario() {
+    return {
+        cle: 'parcours_liv_scenario_exporter', icone: 'fa-download',
+        faire: () => {
+            const draft = brouillon();
+            if (draft?.plan) telecharger(new Blob([JSON.stringify(versScenario(draft), null, 2)], { type: 'application/json' }), nomFichierScenario(draft));
+        },
+    };
 }
 
 export function telecharger(blob, nom) {
@@ -79,6 +88,7 @@ export function construireActionsScenario({ allerA, occupe }) {
             garderIcone: 'fa-route',
             quitter: 'parcours_nouveau',
             quitterIcone: 'fa-plus',
+            annexe: annexeExporterScenario(),
         });
         if (!accord || occupe()) return;
         reinitialiser();
@@ -87,6 +97,14 @@ export function construireActionsScenario({ allerA, occupe }) {
     });
     nouveau.classList.add('pc-scenario__nouveau');
     nouveau.id = 'pc-nouveau-parcours';
+    // « Importer un modèle » à côté de « Nouveau parcours » (D85) : l'autre façon de
+    // changer de parcours. Les deux sont là dès le cadrage, pour que le haut de l'atelier
+    // ne change pas d'un écran à l'autre ; au cadrage, le pied porte aussi l'import.
+    const importer = action('parcours_importer_modele', 'fa-file-import', () => {
+        if (!occupe()) fichier.click();
+    });
+    importer.classList.add('pc-scenario__importer');
+    importer.id = 'pc-scenario-importer';
     const etat = el('p', 'pc-scenario__etat');
     etat.setAttribute('role', 'status');
     const memoire = el('p', 'pc-scenario__memoire');
@@ -111,7 +129,7 @@ export function construireActionsScenario({ allerA, occupe }) {
             signaler({ ok: false, message: etat.textContent });
         } finally { fichier.value = ''; }
     });
-    outils.append(nouveau, sauvegarder, aide, fichier);
+    outils.append(nouveau, importer, sauvegarder, aide, fichier);
     node.append(outils, memoire, etat);
     function rafraichir() {
         const plan = Boolean(brouillon()?.plan);
@@ -121,12 +139,18 @@ export function construireActionsScenario({ allerA, occupe }) {
         // puisque le message d'alerte y renvoie.
         sauvegarder.hidden = !plan || niveauActuel === 'complet';
         // Sur un écran étroit, seules les icônes restent : le nom passe en infobulle.
-        nouveau.hidden = !plan;
-        nouveau.disabled = occupe();
-        for (const [bouton, cle] of [[nouveau, 'parcours_nouveau'], [sauvegarder, 'parcours_liv_scenario_exporter'], [aide, 'tutorial']]) {
+        // Sans plan, rien à effacer : « Nouveau parcours » reste visible, grisé, et son
+        // infobulle dit pourquoi (même règle que « Partir du modèle »).
+        nouveau.disabled = occupe() || !plan;
+        nouveau.setAttribute('aria-disabled', String(nouveau.disabled));
+        importer.disabled = occupe();
+        for (const [bouton, cle] of [[nouveau, 'parcours_nouveau'], [importer, 'parcours_importer_modele'], [sauvegarder, 'parcours_liv_scenario_exporter'], [aide, 'tutorial']]) {
             bouton.title = t(cle);
             bouton.setAttribute('aria-label', t(cle));
         }
+        if (!plan) nouveau.title = t('parcours_nouveau_vide');
+        // L'infobulle dit ce qu'on importe : le mot « modèle » seul ne désigne pas le .json.
+        importer.title = t('parcours_importer_modele_hint');
         sauvegarder.disabled = occupe();
         fichier.disabled = occupe();
         const niveau = etatSauvegarde();

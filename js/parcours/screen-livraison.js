@@ -392,7 +392,7 @@ export function construireLivraison(draft, api) {
     texteReprise.append(
         el('h3', 'pc-livrer__titre', t('parcours_liv_reprise_titre')),
         // Le nom du bouton de reprise est celui de l'interface, jamais recopié.
-        el('p', 'pc-block__hint', `${t('parcours_liv_scenario_hint')} ${tr('parcours_liv_reprise_note', { b: t('parcours_liv_scenario_importer') })}`),
+        el('p', 'pc-block__hint', `${t('parcours_liv_scenario_hint')} ${tr('parcours_liv_reprise_note', { b: t('parcours_importer_modele') })}`),
     );
     blocReprise.append(texteReprise, btnJson);
 

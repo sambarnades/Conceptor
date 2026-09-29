@@ -2225,6 +2225,18 @@ body.pc-locked { overflow: hidden; }
 /* « Retour » et l'action principale (Arrêter, Assembler…) ont le même gabarit :
    côte à côte, deux hauteurs différentes se lisaient comme un défaut (28 sept.). */
 .pc-actionbar__gauche > button { min-height: 48px; padding: 12px 20px; font-size: 1rem; }
+/* « Partir du modèle » et « Importer un modèle » (D85) : un seul élément de la grille,
+   dans la cellule de « Retour » (jamais visibles ensemble). Côte à côte quand la place
+   suffit ; sinon « Importer » passe dessous, et un libellé trop long revient à la ligne
+   DANS son bouton plutôt que de déborder sur « Personnaliser le plan » (grec dès 1 440 px,
+   la plupart des langues sous 1 024 px — mesuré le 29 sept. 2026). Les actions de droite
+   restent alors en haut au lieu de s'étirer sur deux hauteurs de bouton. */
+@media (min-width: 600px) {
+    .pc-actionbar__inner:has(.pc-actionbar__departs:not([hidden])) { align-items: start; }
+}
+.pc-actionbar__departs { grid-column: 1; grid-row: 1; justify-self: start; display: flex; flex-wrap: wrap; gap: 12px; min-width: 0; max-width: 100%; }
+.pc-actionbar__departs[hidden] { display: none; }
+.pc-actionbar__departs > button { min-height: 48px; max-width: 100%; padding: 12px 20px; font-size: 1rem; white-space: normal; text-align: start; }
 .pc-actionbar #pc-cta { grid-column: 2; grid-row: 1; max-width: 100%; }
 .pc-actionbar__note { display: block; grid-column: 1 / -1; grid-row: 2; margin: 0; text-align: start; font-size: .82rem; }
 .pc-actionbar__note:empty { display: none; }
@@ -2800,6 +2812,26 @@ body.pc-locked { overflow: hidden; }
     .pc-actionbar #pc-back > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .pc-actionbar .pc-guide-open { grid-column: 1 / -1; grid-row: 2; width: 100%; padding: 10px 12px; }
     .pc-actionbar__inner:has(> .pc-guide-open:not([hidden])) .pc-actionbar__note { grid-row: 3; }
+    /* Les deux départs (D85) sur leur propre rangée, à parts égales, sous l'action
+       primaire qui prend alors toute la largeur (« Retour » n'existe pas au cadrage). */
+    .pc-actionbar__departs { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; flex-wrap: nowrap; gap: 10px; }
+    .pc-actionbar__departs > button { flex: 1 1 0; min-width: 0; justify-content: center; text-align: center; }
+    .pc-actionbar__inner:has(.pc-actionbar__departs:not([hidden])) .pc-guide-open { grid-row: 3; }
+    .pc-actionbar__inner:has(.pc-actionbar__departs:not([hidden])) .pc-actionbar__note { grid-row: 4; }
+    .pc-actionbar__inner:has(.pc-back[hidden]) .pc-actionbar__droite { grid-column: 1 / -1; }
+}
+/* Outils du haut (D85) : sous 1 100 px, « Nouveau parcours » et « Importer un modèle »
+   n'affichent que leur icône et gardent leur nom en infobulle et en nom accessible.
+   Avec leurs libellés, ils passaient sous le fil dès 1 024 px (italien, grec) et à
+   960 px dans la plupart des langues (mesuré le 29 sept. 2026). */
+@media (max-width: 1099px) {
+    .pc-navigation .pc-scenario__nouveau > span,
+    .pc-navigation .pc-scenario__importer > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+/* Sur téléphone, le tutoriel aussi : trois icônes tiennent à côté du fil à 390 px, pas
+   deux icônes et le mot « Tutoriel ». */
+@media (max-width: 480px) {
+    .pc-navigation .pc-scenario__aide > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
 /* =========================================================================
@@ -2877,7 +2909,7 @@ body.pc-locked { overflow: hidden; }
     .pc-navigation .pc-steps__sep { width: 6px; }
     .pc-navigation .pc-steps__cible { padding: 4px 2px; gap: 5px; }
     .pc-navigation .pc-scenario__outils { flex-wrap: nowrap; gap: 0; flex: none; }
-    .pc-navigation .pc-scenario__outils > button { min-width: 32px; padding: 6px; }
+    .pc-navigation .pc-scenario__outils > button { min-width: 30px; padding: 6px 5px; }
     /* « Nouveau parcours » garde son nom en infobulle et en nom accessible. */
     .pc-navigation .pc-scenario__nouveau > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }

@@ -51,8 +51,8 @@ try {
     await page.goto(`http://127.0.0.1:${PORT}/index.html`);
     await page.waitForFunction(() => document.querySelectorAll('[data-module]').length > 0);
     await page.click('#parcours-button');
-    // D64 : reprendre un scénario .json est rangé dans « Personnaliser les instructions ».
-    ok('le cadrage n’affiche pas d’outil de scénario', await page.locator('#pc-scenario-importer').count() === 0 && !(await page.locator('#pc-scenario-exporter').isVisible()));
+    // D85 : « Importer un modèle » est en haut dès le cadrage ; l'export attend un plan (D64).
+    ok('le cadrage offre « Importer un modèle » mais pas encore l’export du scénario', await page.locator('#pc-scenario-importer').isVisible() && !(await page.locator('#pc-scenario-exporter').isVisible()));
     await page.locator('#pc-guide-open').click();
     await page.locator('#pc-guide-importer').waitFor({ state: 'visible' });
     ok('« Reprendre un scénario » est dans la fenêtre de personnalisation', await page.locator('#pc-guide-importer').isVisible());
