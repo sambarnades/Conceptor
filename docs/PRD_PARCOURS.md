@@ -1229,7 +1229,7 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       (composant `mod_collabora`, zone `initial`) — le relevé le montrait (`fileref` dans
       son `inforef`), la fabrique l'avait ignoré. `collabora_fs::get_initial_file()` lève
       l'exception quand la zone est vide, et une exception interrompt tout le cours.
-      `js/parcours/fichiers-modules.js` pose désormais ce fichier APRÈS l'assemblage,
+      `js/parcours/fichiers-modules.js` (dans `js/moodle/` depuis D86) pose désormais ce fichier APRÈS l'assemblage,
       exactement comme l'export : contenu dans le pool, deux entrées `files.xml` (le
       fichier et son dossier « . »), identifiants dans l'`inforef` de l'activité ; le
       constructeur partagé n'est pas touché (même voie que le fond de la Carte, D61).
@@ -1565,6 +1565,43 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       - Banc `tests/run_parcours_import.mjs` (19 contrôles, contre-épreuvé : sans l'annexe,
         avec « Nouveau parcours » caché sans plan, ou avec le bouton remis dans le pied, il
         vire au rouge). Trois clés nouvelles et une revue, douze langues.
+- [x] **D86 — Une image envoyée depuis l'ordinateur dans une Page ou un Livre ; ALLER-RETOUR À FAIRE.**
+      Retour de professeur (29 sept. 2026) : « l'édition de la Page ne permet pas de rajouter une
+      image ». Un bloc n'acceptait qu'une adresse à coller (`img_src`, cinq champs dans quatre
+      blocs : #08 cartes, #09 gauche/droite, #13, #16).
+      - **Éditeur** : `editor/index.js` (non partagé) greffe `img_file` juste après chaque
+        `img_src`, sur les schémas VIVANTS de `getPageBlockSchema()` (communs à la Page et au
+        Livre ; l'ordre des clés est celui de l'affichage, l'objet est reconstruit). C'est le
+        widget image de l'éditeur (`renderImageField`) réglé en processeur « fond » : PNG et JPEG
+        gardés (transparence comprise), 1 920 px au plus, HEIC/TIFF/AVIF/BMP/SVG convertis,
+        12 Mo. `field-renderers.js` (partagé avec La Sucrerie) n'est PAS touché : la Sucrerie ne
+        sait pas encore joindre les images au backup, elle aurait montré un champ dont l'image se
+        perdait. Une clé nouvelle, douze langues (`editor_page_image_upload_hint`).
+      - **Backup** : `moodle/page-images.js` sort les images du JSON AVANT la réparation LaTeX,
+        vérifie la signature du format (un scénario importé est un fichier tiers), les nomme
+        d'après leur contenu (`image-<sha1:12>.<ext>` : une image citée deux fois n'est posée
+        qu'une fois, deux exports donnent le même fichier) et remplace `img_src` par
+        `@@PLUGINFILE@@/<nom>` sur la copie rendue. Zones : `mod_page`/`content`/0 ;
+        `mod_book`/`chapter`/identifiant du chapitre (`PREMIER_ID_CHAPITRE` = 100, partagé avec
+        `buildChaptersXml`). L'image envoyée l'emporte sur l'adresse ; la retirer fait revenir
+        l'adresse. L'aperçu reçoit le même HTML, dataURL remise ; aucune dataURL dans le `.mbz`.
+      - **Pose des fichiers** : `construireFichiersActivite()` les rend à part (`paquet`) ; la
+        Page ou le Livre SEULS les posent par `fichiersMonoActivite()` (éditeur,
+        `notifications.js`) ; le parcours les passe en `joints` à `joindreFichiersInitiaux()`
+        après l'assemblage, comme le Paquetage IMS — `mbz-course-builder.js` n'est pas touché.
+        `fichiers-modules.js` est DÉPLACÉ de `js/parcours/` vers `js/moodle/` : la couche Moodle
+        n'a pas à dépendre de l'atelier.
+      - **Piège évité** : dans l'atelier, `recueillirMedias()` range les octets de toute image
+        `images/…` dans `carte.medias` et ne laisse que le chemin dans le contenu. Sans
+        `contenuPourEdition()` avant la mise en forme (assemblage, aperçu de carte, cours
+        documentaire), l'image se perdait en silence.
+      - **Documents** : DOCX/ODT/PDF de la Page (`hydrateImagesForExport`) et cours documentaire
+        du parcours reçoivent l'image dans `img_src` (le formateur partagé sait embarquer une
+        dataURL ; aucune ligne partagée touchée).
+      - Banc `tests/run_page_images.mjs` (44 contrôles, trois contre-épreuves embarquées :
+        extraction, transmission du `paquet`, réhydratation des médias). Sondes :
+        `node scripts/generer-sonde-page-images.mjs` → `tests/.sondes-elea/` (Page, Livre,
+        cours) avec la liste des contrôles. **D24 : rien d'annoncé avant l'aller-retour.**
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -2310,6 +2347,10 @@ js/moodle/
                          pas des deux côtés (cf. piège 7 du CLAUDE.md)
   mono-activity-files.js JSON → carte de fichiers d'un backup mono-activité,   [fait]
                          partagée par l'éditeur et le parcours (D16)
+  fichiers-modules.js    les fichiers d'une activité (pool, files.xml,         [fait]
+                         inforef) — venu de js/parcours/ le 29 sept. (D86)
+  page-images.js         images envoyées d'une Page / d'un Livre → paquet,     [fait]
+                         @@PLUGINFILE@@, aperçu en dataURL (D86)
 
 tests/
   run_parcours_course.mjs   le .mbz de cours, dans un vrai navigateur          [fait]
@@ -2823,6 +2864,9 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
 
+- **29 sept. 2026, soir** — **D86** : envoi d'image depuis l'ordinateur dans les blocs de Page et
+  de Livre, fichiers joints au backup (Page seule, Livre seul, cours). `run_page_images.mjs`
+  44/0, trois contre-épreuves au rouge. Sondes fabriquées ; **aller-retour Éléa à faire**.
 - **29 sept. 2026** — **D85** : « Importer un modèle » en haut de l'atelier (un temps aussi
   dans le pied du cadrage, retiré le matin même), « Nouveau parcours » visible dès le cadrage,
   question « Commencer un nouveau parcours ? » avec son export annexe. Banc dédié 19/0,
