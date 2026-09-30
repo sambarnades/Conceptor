@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "Une fiche à rubriques que chaque élève remplit : la classe construit une collection commune.",
   "parcours_mod_groupe_name": "Choix de groupe",
   "parcours_mod_groupe_desc": "Chaque élève choisit son groupe. Les groupes sont à créer sur la plateforme.",
+  "parcours_mod_test_etudiant_name": "Test étudiant",
+  "parcours_mod_test_etudiant_desc": "Les élèves écrivent eux-mêmes les questions, répondent à celles des autres, les notent et les commentent ; un classement par points les encourage. Il arrive vide, avec sa consigne.",
   "parcours_mod_champ_questions": "Les questions",
   "parcours_mod_champ_pages": "Les pages de la leçon",
   "parcours_mod_champ_consigneAuteurs": "Consigne pour le travail à remettre",

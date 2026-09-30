@@ -1,8 +1,8 @@
 {
   "//": "Écrit par scripts/diaporama/generer-diaporama.mjs — ne pas modifier à la main, relancer le script.",
-  "version": "7.0.0",
-  "date": "2026-09-29",
-  "dateLisible": "29 septembre 2026",
+  "version": "7.0.1",
+  "date": "2026-09-30",
+  "dateLisible": "30 septembre 2026",
   "fichiers": {
     "pptx": {
       "chemin": "caramel-presentation.pptx",
@@ -10,11 +10,11 @@
     },
     "odp": {
       "chemin": "caramel-presentation.odp",
-      "octets": 2969860
+      "octets": 2969872
     },
     "pdf": {
       "chemin": "caramel-presentation.pdf",
-      "octets": 2786984
+      "octets": 2786993
     }
   },
   "diapositives": [
@@ -25,7 +25,7 @@
       "image": "diapositives/01.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "Caramel est une application web gratuite, sans compte, qui prépare avec l'IA des activités interactives et des parcours complets pour Éléa, Magistère et Moodle. Ce diaporama présente ce qu'elle fait, comment elle fonctionne et ce à quoi nous tenons : la main laissée à l'enseignant et la protection des données. Il correspond à Caramel 7.0.0 ; il est mis à jour à chaque version."
+      "notes": "Caramel est une application web gratuite, sans compte, qui prépare avec l'IA des activités interactives et des parcours complets pour Éléa, Magistère et Moodle. Ce diaporama présente ce qu'elle fait, comment elle fonctionne et ce à quoi nous tenons : la main laissée à l'enseignant et la protection des données. Il correspond à Caramel 7.0.1 ; il est mis à jour à chaque version."
     },
     {
       "numero": 2,
@@ -232,7 +232,7 @@
       "image": "diapositives/24.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.0.0, dans sa version du 29 septembre 2026."
+      "notes": "Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.0.1, dans sa version du 30 septembre 2026."
     }
   ]
 }

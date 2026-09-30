@@ -97,6 +97,7 @@ const CONTENUS = {
     parcours_classe_virtuelle: { title: 'Classe', intro: 'En direct.', accueil: 'Bienvenue' },
     parcours_base: { title: 'Base', intro: 'Remplis.', rubriques: ['Lieu : où', 'Observation : quoi'] },
     parcours_choix_groupe: { title: 'Groupes', intro: 'Choisis.' },
+    parcours_test_etudiant: { title: 'Nos questions sur l’eau', intro: 'Crée **une** question, puis réponds à celles des autres.' },
     parcours_ims: { title: 'Données & « vie privée » <essentiel>', intro: 'Parcourez les pages.', pages: [
         { titre: 'Pourquoi protéger ?', texte: 'Les données d’un élève sont **personnelles**.\n## Ce que dit la loi\nLe RGPD encadre la collecte.\n- minimiser\n- informer' },
         { titre: 'Les bons réflexes', texte: 'Un mot de passe par service.' },
@@ -367,6 +368,49 @@ try {
             plan: scen.construirePromptPlan({ platform: pl, format: 'distanciel', ampleur: 'moyenne', trame: null, contexte: { quoi: 'X' } }).modules.some(m => m.cle === 'parcours_ims'),
         }));
 
+        // Test étudiant (D89) : Éléa seul, sur demande, `<coursemodule>` recalé après l'assemblage.
+        const lireTexte = octets => {
+            const t = window.fflate.gunzipSync(octets), sortie = {};
+            for (let off = 0; off + 512 <= t.length;) {
+                const nom = dec.decode(t.subarray(off, off + 100)).replace(/\0.*$/s, '');
+                if (!nom) break;
+                const prefixe = dec.decode(t.subarray(off + 345, off + 500)).replace(/\0.*$/s, '');
+                const taille = parseInt(dec.decode(t.subarray(off + 124, off + 136)).replace(/\0.*$/s, '').trim() || '0', 8);
+                sortie[prefixe ? `${prefixe}/${nom}` : nom] = dec.decode(t.subarray(off + 512, off + 512 + taille));
+                off += 512 + Math.ceil(taille / 512) * 512;
+            }
+            return sortie;
+        };
+        const planTe = { titre: 'TE', etapes: [
+            { id: 't1', titre: 'Un', cartes: [
+                carte('t1c1', 'parcours_wiki', CONTENUS.parcours_wiki),
+                carte('t1c2', 'parcours_test_etudiant', CONTENUS.parcours_test_etudiant),
+            ] },
+            { id: 't2', titre: 'Deux', cartes: [carte('t2c1', 'parcours_forum', { title: 'Forum', intro: 'Échange.' })] },
+        ], progression: { actif: true } };
+        const paquetTe = await assemblerParcours(planTe, { timestamp: TS, platformId: 'elea' });
+        const fichiersTe = lireTexte(paquetTe.bytes);
+        const cheminTe = Object.keys(fichiersTe).find(k => /^activities\/studentquiz_\d+\/studentquiz\.xml$/.test(k)) || '';
+        const draftTe = { platform: 'elea', format: 'distanciel', ampleur: 'moyenne', trame: null, contexte: { quoi: 'Le cycle de l’eau', niveau: '5e' },
+            plan: { titre: 'Eau', etapes: [{ titre: 'E', cartes: [{ id: 'te1', module: 'parcours_test_etudiant', titre: 'Nos questions', palier: 'entrainement', duree: 20 }] }] } };
+        const testEtudiant = {
+            xml: fichiersTe[cheminTe] || '',
+            module: fichiersTe[cheminTe.replace('studentquiz.xml', 'module.xml')] || '',
+            activites: paquetTe.activites.map(a => ({ moduleName: a.moduleName, moduleId: a.moduleId })),
+            sections: Object.fromEntries(Object.entries(fichiersTe).filter(([k]) => /sections\/section_\d+\/section\.xml$/.test(k))),
+            // Le recalage ne touche que le Test étudiant, avec le `moduleid` de SON enveloppe.
+            recale: natifs.recalerModulesDeCours({
+                'activities/studentquiz_42/studentquiz.xml': '<activity id="7" moduleid="42" modulename="studentquiz" contextid="9">\n  <studentquiz id="7">\n    <coursemodule>1</coursemodule>',
+                'activities/wiki_43/wiki.xml': '<activity id="8" moduleid="43" modulename="wiki" contextid="10"><coursemodule>1</coursemodule>',
+            }),
+            catalogue: ['elea', 'magistere', 'moodle'].map(pl => ({
+                mosaique: routeur.modulesDisponibles(pl).some(m => m.cle === 'parcours_test_etudiant'),
+                plan: scen.construirePromptPlan({ platform: pl, format: 'distanciel', ampleur: 'moyenne', trame: null, contexte: { quoi: 'X' } }).modules.some(m => m.cle === 'parcours_test_etudiant'),
+            })),
+            prompt: (await scen.construirePromptRemplissage(draftTe, draftTe.plan.etapes[0].cartes[0])).prompt,
+            famille: (await import('/js/parcours/types-apprentissage.js')).familleDe('parcours_test_etudiant'),
+        };
+
         // Une question à trous injouable est REFUSÉE (jamais retirée en silence).
         const formats = await import('/js/moodle/moodle-formats.js');
         const { reparer } = await import('/js/parcours/parcours-runner.js');
@@ -408,7 +452,7 @@ try {
         const doc = cours.activities.map(a => ({ moduleKey: a.moduleKey, blocs: (a.jsonData.blocks || []).length, json: JSON.stringify(a.jsonData) }));
 
         return { fabriques, deterministe, idsDisjoints, q, qRetour, p, pRetour, pageBancale, palettes, glossaire, lien, gras, fichiersDoc,
-            alt, altDoc, bbb, images, doc, ims, promptPlan, promptNatif, promptH5p, catalogueIms, cloze, promptVote, promptPremierVote, isolement,
+            alt, altDoc, bbb, images, doc, ims, testEtudiant, promptPlan, promptNatif, promptH5p, catalogueIms, cloze, promptVote, promptPremierVote, isolement,
             registre: Object.entries(mp.MODULES_PARCOURS).map(([cle, d]) => ({ cle, moduleName: d.moduleName, platforms: d.platforms })),
             aFaire: paquet.aFaire, activites: paquet.activites, sections: paquet.sections, fichiers };
     }, CONTENUS);
@@ -611,6 +655,45 @@ try {
         `${(ims.maladroit.page.match(/<strong>/g) || []).length} dans la page`);
     ok('proposé dans la mosaïque des trois plateformes, jamais par le plan de l’IA',
         r.catalogueIms.every(c => c.mosaique && !c.plan), JSON.stringify(r.catalogueIms));
+
+    console.log('\n── 8 bis. Le Test étudiant (D89) ───────────────────────────');
+    const te = r.testEtudiant;
+    const refTe = releve('studentquiz');
+    ok('Test étudiant : dans la mosaïque d’Éléa seulement (absent des palettes de Magistère et de Moodle)',
+        te.catalogue[0].mosaique && !te.catalogue[1].mosaique && !te.catalogue[2].mosaique, JSON.stringify(te.catalogue));
+    ok('… jamais proposé par le plan : il se choisit dans la mosaïque', te.catalogue.every(c => !c.plan), JSON.stringify(te.catalogue));
+    // Barème de points, types de questions, publication… : les valeurs d'Éléa, sauf ce que D89 règle.
+    const reglesD89 = ['coursemodule', 'name', 'intro', 'completionpoint', 'completionquestionpublished'];
+    const scalaires = [...refTe.xml.matchAll(/<([a-z]+)>([^<]*)<\/\1>/g)].map(m => m[1]).filter(t => !reglesD89.includes(t));
+    const differents = scalaires.filter(t => champ(te.xml, t) !== champ(refTe.xml, t));
+    ok(`… ses ${scalaires.length} réglages sont ceux d’Éléa (barème, types de questions, publication)`, differents.length === 0,
+        differents.map(t => `${t} : ${champ(te.xml, t)} ≠ ${champ(refTe.xml, t)}`).join(' · '));
+    ok('… arrive vide : aucune question, tentative, note ni commentaire d’élève',
+        ['attempts', 'questions', 'progresses', 'rates', 'comments', 'notifications', 'statehistories']
+            .every(t => new RegExp(`<${t}>\\s*</${t}>`).test(te.xml)));
+    ok('achèvement : avoir créé une question (et rien qui dépende des autres élèves)',
+        champ(te.module, 'completion') === '2' && champ(te.module, 'completionview') === '0'
+        && champ(te.xml, 'completionquestionpublished') === '1' && champ(te.xml, 'completionpoint') === '0'
+        && champ(te.xml, 'completionquestionapproved') === '0',
+        `completion ${champ(te.module, 'completion')}, publiée ${champ(te.xml, 'completionquestionpublished')}, points ${champ(te.xml, 'completionpoint')}`);
+    const cmTe = te.activites.find(a => a.moduleName === 'studentquiz')?.moduleId;
+    ok('<coursemodule> = identifiant du module dans le cours (la restauration le traduit par get_mappingid)',
+        !!cmTe && champ(te.xml, 'coursemodule') === String(cmTe)
+        && te.xml.includes(`moduleid="${cmTe}"`) && te.module.includes(`<module id="${cmTe}"`),
+        `coursemodule ${champ(te.xml, 'coursemodule')}, module ${cmTe}`);
+    ok('… recalé après l’assemblage : la fabrique seule pose l’identifiant neutre, qui ne désigne pas le module',
+        champ(r.fabriques.parcours_test_etudiant.xml, 'coursemodule') === '1' && String(cmTe) !== '1');
+    ok('… et le recalage ne touche que le Test étudiant',
+        te.recale['activities/studentquiz_42/studentquiz.xml'].includes('<coursemodule>42</coursemodule>')
+        && te.recale['activities/wiki_43/wiki.xml'].includes('<coursemodule>1</coursemodule>'));
+    const conditionsTe = Object.values(te.sections).find(v => v.includes('<number>2</number>'))?.match(/<availabilityjson>([^<]*)<\/availabilityjson>/)?.[1] || '';
+    const cmsTe = conditionsTe && conditionsTe !== '$@NULL@$'
+        ? JSON.parse(conditionsTe.replace(/&quot;/g, '"').replace(/&amp;/g, '&')).c.map(c => c.cm) : [];
+    ok('ouverture progressive : l’étape 2 attend le Test étudiant (le wiki n’a pas d’achèvement)',
+        cmsTe.length === 1 && cmsTe[0] === cmTe, JSON.stringify(cmsTe));
+    ok('le prompt : une consigne, sans promettre de note, avec un test qui arrive vide',
+        te.prompt.includes('arrive VIDE') && te.prompt.includes("N'annonce ni note ni évaluation"), te.prompt.slice(-600));
+    ok('famille « coopérer » : la classe écrit ensemble sa banque de questions', te.famille === 'cooperer', te.famille);
 
     console.log('\n── 9. Ce que lit le participant ────────────────────────────');
     for (const [nom, prompt] of [['plan', r.promptPlan], ['module de la plateforme', r.promptNatif], ['activité H5P', r.promptH5p]]) {

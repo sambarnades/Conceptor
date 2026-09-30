@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "Una ficha con campos que cada alumno rellena: la clase construye una colección común.",
   "parcours_mod_groupe_name": "Elección de grupo",
   "parcours_mod_groupe_desc": "Cada alumno elige su grupo. Los grupos deben crearse en la plataforma.",
+  "parcours_mod_test_etudiant_name": "Cuestionario de alumnos (StudentQuiz)",
+  "parcours_mod_test_etudiant_desc": "Los propios alumnos escriben las preguntas, responden a las de los demás, las valoran y las comentan; una clasificación por puntos los anima. Llega vacío, con su consigna.",
   "parcours_mod_champ_questions": "Las preguntas",
   "parcours_mod_champ_pages": "Las páginas de la lección",
   "parcours_mod_champ_consigneAuteurs": "Consigna para el trabajo que se debe entregar",

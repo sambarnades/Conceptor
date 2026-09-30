@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "Een formulier met velden dat elke leerling invult: de klas bouwt een gezamenlijke verzameling op.",
   "parcours_mod_groupe_name": "Groepskeuze",
   "parcours_mod_groupe_desc": "Elke leerling kiest zijn groep. De groepen moet u op het platform aanmaken.",
+  "parcours_mod_test_etudiant_name": "Leerlingenquiz (StudentQuiz)",
+  "parcours_mod_test_etudiant_desc": "De leerlingen schrijven zelf de vragen, beantwoorden die van de anderen, beoordelen ze en geven er commentaar op; een puntenklassement moedigt hen aan. Hij komt leeg aan, met de opdracht.",
   "parcours_mod_champ_questions": "De vragen",
   "parcours_mod_champ_pages": "De pagina's van de les",
   "parcours_mod_champ_consigneAuteurs": "Opdracht voor het in te leveren werk",

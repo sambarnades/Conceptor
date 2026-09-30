@@ -14,6 +14,9 @@ import { formatTextToHtml, generateUUID } from '../../core/utils.js';
 /** Les anciens jetons Caramel (@slide, @total, @question) → ceux de la bibliothèque (:num, :total). */
 const jetonsSingleChoice = texte => texte && texte.replaceAll('@slide', ':num').replaceAll('@total', ':total').replaceAll('@question', ':num');
 const echapperHtml = texte => String(texte).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+/** Retire l'annonce « Diapositive x sur y » posée par un passage précédent : un contenu déjà
+ *  traité, relu puis retraité, en recevait une de plus à chaque passage (banc T2 du harness). */
+const sansAnnonce = texte => String(texte).replace(/^\s*<span class="h5p-hidden-read">[^<]*<\/span>/, '');
 
 
 export default {
@@ -35,7 +38,7 @@ export default {
                 // annonce masquée garantit « Diapositive x sur y » au déplacement du
                 // focus, sans dépendre du lecteur installé par la plateforme.
                 question: `<span class="h5p-hidden-read">${echapperHtml(slideOfTotal
-                    .replace(':num', String(index + 1)).replace(':total', String(total)))}</span>${formatTextToHtml(choice.question || '')}`,
+                    .replace(':num', String(index + 1)).replace(':total', String(total)))}</span>${formatTextToHtml(sansAnnonce(choice.question || ''))}`,
                 answers: (Array.isArray(choice.answers) ? choice.answers : []).map(a =>
                     typeof a === 'string' ? formatTextToHtml(a) : a
                 ),

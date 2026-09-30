@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "Ur fichenn gant maeziennoù, leuniet gant pep skoliad : ar c’hlas a sav un dastumadenn voutin.",
   "parcours_mod_groupe_name": "Dibab ur strollad",
   "parcours_mod_groupe_desc": "Pep skoliad a zibab e strollad. Ar strolladoù a zo da grouiñ war ar savenn.",
+  "parcours_mod_test_etudiant_name": "Test ar skolidi (StudentQuiz)",
+  "parcours_mod_test_etudiant_desc": "Ar skolidi o-unan a skriv ar goulennoù, a respont da re ar re all, a ro ur poent dezho hag a lak evezhiadennoù warno ; ur renkadur dre boentoù a ro lañs dezho. Goullo e erru, gant e urzhiad.",
   "parcours_mod_champ_questions": "Ar goulennoù",
   "parcours_mod_champ_pages": "Pajennoù ar gentel",
   "parcours_mod_champ_consigneAuteurs": "Urzhiad evit al labour da gas",

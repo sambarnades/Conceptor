@@ -222,7 +222,9 @@ ok('présentation : le sélecteur reprend les douze langues et leurs drapeaux',
     && /flag-icons/.test(page) && /class="fi fi-bzh"/.test(page));
 ok('présentation : le bandeau et le pied reprennent les repères structurants de Caramel',
     /class="marque"[\s\S]*class="header-right barre__actions"/.test(page)
-    && /Caramel v7\.0\.0/.test(page) && /Gauthier REMANDE/.test(page) && /Emmanuel GAUNARD/.test(page));
+    // La version du pied est celle de l'accueil : écrite en dur, ce contrôle échouait à chaque sortie.
+    && Boolean(versionCaramel) && page.includes(`<span>Caramel v${versionCaramel}</span>`)
+    && /Gauthier REMANDE/.test(page) && /Emmanuel GAUNARD/.test(page));
 
 // =======================================================================
 // Volet 2 — dans un navigateur

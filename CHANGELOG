@@ -1,5 +1,38 @@
 # Journal des modifications — Caramel
 
+## [7.0.1] - 30-09-2026
+
+**Réglez vos Tests comme sur Éléa, faites écrire les questions par vos élèves avec le Test étudiant, illustrez vos Pages et vos Livres avec vos propres images, et présentez Caramel à vos collègues.**
+
+### Nouveautés
+
+- **Les réglages du Test** : une section « Réglages du test » rejoint l’éditeur de l’activité Test, pour un Test seul comme pour le Test d’un parcours. Choisissez le comportement des questions (feedback différé, interactif avec plusieurs essais ou feedback immédiat), le nombre de tentatives et la méthode d’évaluation, un temps limite, le nombre de questions par page, une navigation libre ou séquentielle, le mélange des réponses, ce que l’élève peut revoir après sa tentative et le feedback global selon la note. Sans réglage, le Test reprend les valeurs d’un Test créé sur Éléa ; un Test importé conserve les siens.
+- **Un aperçu du Test fidèle au comportement choisi** : en feedback différé, l’élève répond à tout, puis « Terminer le test » affiche la note, le feedback global et la correction autorisée ; en mode interactif, « Vérifier » est proposé à chaque question, avec un essai supplémentaire par indice ; en feedback immédiat, une seule vérification.
+- **Le Test étudiant dans les parcours Éléa** : dans la mosaïque des modules de la plateforme, choisissez le Test étudiant, où les élèves écrivent eux-mêmes les questions, répondent à celles des autres, les notent et les commentent. Il arrive vide, avec une consigne rédigée par l’IA, et il est terminé dès que l’élève a créé une question. Le plan ne le propose pas de lui-même.
+- **Vos images dans les Pages et les Livres** : les blocs illustrés acceptent désormais une image envoyée depuis l’ordinateur, et plus seulement une adresse web. Les PNG (transparence comprise) et les JPEG sont conservés, les photos d’iPhone et les autres formats convertis, les grandes images réduites. L’image est jointe au `.mbz` : aucun hébergement externe n’est nécessaire, elle reste modifiable sur la plateforme et figure aussi dans les documents Word, ODT et PDF. Cela vaut pour une Page ou un Livre seuls comme dans un parcours.
+- **Découvrir Caramel** : une page de présentation, accessible depuis le pied de page, rassemble les vidéos de Caramel et de la Sucrerie, six activités H5P à essayer sur place et à télécharger pour votre cours, un diaporama de formation (PowerPoint, LibreOffice Impress et PDF, avec notes du présentateur), le déroulé d’un atelier de 45 minutes, des tutoriels et les articles qui parlent de Caramel.
+
+### Corrections
+
+- **Les séquences de langue vivante sont rédigées dans la langue enseignée** : une Page ou un quiz préparés pour un cours d’anglais sortaient en français. Lorsque vous enseignez une langue vivante (y compris en DNL ou en section européenne) ou que l’objectif est d’apprendre une langue, tout ce que lit l’élève est désormais dans cette langue, au niveau du public ; les consignes peuvent rester en français pour des débutants. Le plan et les modules d’un parcours suivent la même règle. Un sujet comme « la Révolution anglaise » en histoire reste en français.
+- **Le feedback global des Tests générés** : les plages de feedback global de l’éditeur restaient vides. L’IA rédige désormais quatre messages selon la note obtenue (0-25, 26-50, 51-75 et 76-100 %), repris dans l’éditeur et dans le `.mbz`.
+- **Des Tests conformes à ceux d’Éléa** : options de relecture, délai de grâce et mise en page identiques à un Test créé sur la plateforme, pour un Test seul comme dans un parcours. Un Test seul est désormais achevé quand l’élève reçoit une note (il l’était auparavant sans condition), et le carnet de notes annonce la même note maximale que le Test (10 au lieu de 100).
+- **Série de choix uniques et lecteurs d’écran** : la progression était annoncée « Diapositive @slide sur @total » ; elle annonce désormais « Diapositive 1 sur 7 », dans les 12 langues, y compris sur Éléa.
+- **Documents d’une Page ou d’un Livre** : le bloc « Fiche document long » n’apparaissait pas dans les exports Word, ODT et PDF ; son titre, son image et ses sections y figurent désormais.
+
+### Notes techniques
+
+- **Réglages du Test** : clé racine facultative `quiz_settings` (noms de Moodle), résolue et écrite par `resoudreReglagesTest`, `quizSettingsXml` et `quizFeedbacksXml` de `js/moodle/mbz-course-builder.js`, appelées par le Test seul (`buildQuizBackup`) et par le parcours (`buildQuizActivityFiles`), qui recopiaient jusqu’ici le même bloc ; relue par `js/moodle/test-io.js`. Les réglages ne passent jamais par l’IA ; seul le feedback global est demandé au modèle, à la racine (`overallfeedback`), puis replié dans `quiz_settings` par `canonicalizeTestModel`. Décision D86 de `docs/PRD_PARCOURS.md`.
+- **Images de Page et de Livre** : `js/moodle/page-images.js` (nouveau) sort les images du JSON avant la réparation LaTeX, les nomme par leur empreinte et les cite en `@@PLUGINFILE@@` (zones `mod_page/content/0` et `mod_book/chapter/<id>`) ; aucune dataURL dans le `.mbz`. Le champ `img_file` est greffé par `js/editor/index.js`, hors fichiers partagés ; `fichiers-modules.js` passe de `js/parcours/` à `js/moodle/`. Décision D88.
+- **Test étudiant** : module `parcours_test_etudiant` (`mod_studentquiz`, Éléa seul, `surDemande`), relevé sur l’export d’Éléa ; achèvement « au moins une question créée ». Sa restauration traduit `<coursemodule>` par la table des modules : `recalerModulesDeCours()` (`js/parcours/modules-natifs.js`) le recale après l’assemblage, sans toucher au constructeur partagé. Décision D89.
+- **Langue enseignée** : `js/core/content-language.js` (nouveau) ajoute une consigne prioritaire aux prompts d’activité (`prompt-generator.js`), de plan et de module (`scenario-prompt.js`) ; règle commune revue dans 11 locales, le breton garde sa règle « tout en breton ». Décision D87.
+- **Série de choix uniques** : l’annonce masquée « Diapositive x sur y » est posée en tête de chaque question par `SingleChoiceSet.js`, qui retire désormais celle d’un passage précédent (un contenu déjà traité en recevait une de plus à chaque passage : banc T2 du harness). La sortie d’une première génération est inchangée. `tests/run_h5p_ui_coverage.mjs` reconnaît aussi les propriétés abrégées (`slideOfTotal,`).
+- **Fichiers partagés avec la Sucrerie modifiés** : `mbz-course-builder.js`, `test-backup-builder.js`, `test-io.js`, `moodle-formats.js`, `document-formatter.js` et `js/editor/content-detector.js` (26 clés `editor_test_*` à porter dans les locales de la Sucrerie).
+- **Nouveaux bancs** : `tests/run_langue_contenu.mjs`, `tests/run_decouvrir.mjs` (sans navigateur en CI ; la version attendue est lue dans `index.html`) et `tests/run_video_demo_montage.mjs` rejoignent le job `validate` ; `tests/run_page_images.mjs` (Playwright, à lancer à la main). Sondes d’aller-retour : `scripts/generer-test-regle-sonde.mjs` et `scripts/generer-sonde-page-images.mjs`.
+- **Présentation** : dossier `decouvrir/` publié par le job `pages` ; PodEduc, deux Tubes et MoodleMoot (Ubicast) ajoutés en `frame-src` de la CSP. Diaporama fabriqué par `scripts/diaporama/generer-diaporama.mjs`, à relancer à chaque version. En-tête (`css/components/app-header.css`) et étiquette H5P (`css/components/module-label.css`) communs à l’accueil et à `/decouvrir/`. Outillage de la vidéo de présentation dans `scripts/video-demo/`, hors application.
+
+---
+
 ## [7.0.0] - 28-09-2026
 
 **Créez des parcours complets pour Éléa, Magistère et Moodle, personnalisez davantage vos activités H5P et retrouvez des exports plus fidèles.**

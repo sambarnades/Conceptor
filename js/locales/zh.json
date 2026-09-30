@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "每名学生填写一张含多个栏目的卡片：全班共同建立一个资料集。",
   "parcours_mod_groupe_name": "分组选择",
   "parcours_mod_groupe_desc": "每名学生选择自己的小组。小组需在平台上创建。",
+  "parcours_mod_test_etudiant_name": "学生出题测验（StudentQuiz）",
+  "parcours_mod_test_etudiant_desc": "学生自己出题，回答同学的题目，并为其评分和评论；积分排行榜激励他们参与。创建时为空，附有说明。",
   "parcours_mod_champ_questions": "问题",
   "parcours_mod_champ_pages": "程序教学的页面",
   "parcours_mod_champ_consigneAuteurs": "待提交作业的说明",

@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "بطاقة ذات حقول يملؤها كل متعلم: يبني الصف مجموعة مشتركة.",
   "parcours_mod_groupe_name": "اختيار المجموعة",
   "parcours_mod_groupe_desc": "يختار كل متعلم مجموعته. يجب إنشاء المجموعات على المنصة.",
+  "parcours_mod_test_etudiant_name": "اختبار المتعلمين (StudentQuiz)",
+  "parcours_mod_test_etudiant_desc": "يكتب المتعلمون الأسئلة بأنفسهم، ويجيبون عن أسئلة زملائهم، ويقيّمونها ويعلّقون عليها؛ ويحفّزهم ترتيب بالنقاط. يصل فارغًا، مع تعليماته.",
   "parcours_mod_champ_questions": "الأسئلة",
   "parcours_mod_champ_pages": "صفحات الدرس",
   "parcours_mod_champ_consigneAuteurs": "تعليمات العمل المطلوب تسليمه",

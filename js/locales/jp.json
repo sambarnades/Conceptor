@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "生徒一人ひとりが記入する項目つきのカード。クラスで共有のコレクションを作ります。",
   "parcours_mod_groupe_name": "グループ選択",
   "parcours_mod_groupe_desc": "生徒がそれぞれ自分のグループを選びます。グループはプラットフォーム上で作成してください。",
+  "parcours_mod_test_etudiant_name": "生徒作成クイズ（StudentQuiz）",
+  "parcours_mod_test_etudiant_desc": "生徒が自分で問題を作り、ほかの生徒の問題に答え、評価してコメントします。ポイントのランキングが意欲を高めます。空の状態で、指示がついて届きます。",
   "parcours_mod_champ_questions": "質問",
   "parcours_mod_champ_pages": "レッスンのページ",
   "parcours_mod_champ_consigneAuteurs": "提出課題の指示",

@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "Una scheda a campi che ogni allievo compila: la classe costruisce una raccolta comune.",
   "parcours_mod_groupe_name": "Scelta del gruppo",
   "parcours_mod_groupe_desc": "Ogni allievo sceglie il proprio gruppo. I gruppi vanno creati sulla piattaforma.",
+  "parcours_mod_test_etudiant_name": "Quiz degli allievi (StudentQuiz)",
+  "parcours_mod_test_etudiant_desc": "Gli allievi scrivono da soli le domande, rispondono a quelle degli altri, le valutano e le commentano; una classifica a punti li incoraggia. Arriva vuoto, con la sua consegna.",
   "parcours_mod_champ_questions": "Le domande",
   "parcours_mod_champ_pages": "Le pagine della lezione",
   "parcours_mod_champ_consigneAuteurs": "Consegna per il lavoro da presentare",

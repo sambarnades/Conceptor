@@ -1179,7 +1179,8 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       l'autre — 9 sur Éléa, 1 sur Magistère — et dont le backup n'emporte pas l'adresse),
       GeoGebra, SCORM, paquetage IMS, H5P et Contenu interactif génériques (ils exigent un
       fichier que Caramel ne produit pas, ou produit déjà par sa propre voie H5P), Test
-      étudiant (sa banque de questions appartient aux élèves), Mots croisés / Mots mêlés
+      étudiant (sa banque de questions appartient aux élèves — revu par D89 : il arrive vide,
+      avec sa consigne, comme le wiki), Mots croisés / Mots mêlés
       natifs d'Éléa (ils se nourrissent d'un glossaire alimenté, perdu au restore — mais le
       relevé montre qu'ils peuvent aussi se nourrir d'un TEST : piste ouverte), Module
       (`programcourse`, renvoie à un autre cours), Fichier et Dossier (à ouvrir avec le dépôt
@@ -1726,6 +1727,58 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         dans le formateur documentaire). Sondes :
         `node scripts/generer-sonde-page-images.mjs` → `tests/.sondes-elea/` (Page, Livre,
         cours) avec la liste des contrôles. **D24 : rien d'annoncé avant l'aller-retour.**
+- [x] **D89 — Le Test étudiant (`mod_studentquiz`) rejoint les modules de la plateforme, sur
+      Éléa seul, choisi dans la mosaïque et jamais proposé par le plan. Aller-retour Éléa réussi
+      le 30 sept. 2026.**
+      Retour de collègues (29 sept. 2026) : « Rajouter test étudiant et les paramètres des tests
+      (dispo dans Éléa) ». Les paramètres, c'est D86 ; le Test étudiant, c'est ici. Il REVIENT
+      sur D70, qui l'avait écarté parce que « sa banque de questions appartient aux élèves » :
+      c'est vrai, mais c'est aussi le cas du wiki ou du glossaire à construire, qui arrivent
+      vides avec leur consigne. Même modèle ici : **rien à générer, l'IA écrit la consigne**.
+      - **Registre** : `parcours_test_etudiant` dans `MODULES_NATIFS`, `rienAGenerer`,
+        `niveau: 'amorce'`, `platforms: ['Éléa']` (palettes relevées : ni Magistère ni Moodle
+        nu, D26), **`surDemande`** comme le Paquetage IMS (demande d'Emmanuel : « dans les
+        éléments de génération prévus, mais pas dans la liste prévue par défaut ») — le prompt
+        de plan ne le voit pas, la mosaïque le propose. Famille « coopérer » : la classe écrit
+        ensemble sa banque de questions. Pas `note` : le greffon ne déclare pas de carnet de
+        notes (aucun `grades.xml` au relevé) ; des points et un classement, que la consigne
+        n'a pas à promettre.
+      - **XML** : relevé `sept-2026/elea/studentquiz.xml` (Moodle 5.1.7, greffon 2026030600,
+        version identique à la branche `main` du dépôt amont), balise pour balise ; les
+        31 réglages hors nom, consigne, `coursemodule` et achèvement sont ceux d'Éléa (barème
+        10/5/3/2/−1, 13 types de questions, publication immédiate). Conteneurs d'élèves
+        vides. La catégorie de questions n'est PAS à joindre : le greffon la crée au premier
+        affichage (`question_make_default_categories`, `mod_studentquiz_load_studentquiz`).
+      - **Piège : `<coursemodule>`**. Le greffon garde l'identifiant de son module de cours
+        dans sa propre table, et sa restauration le traduit par
+        `get_mappingid('course_module', …)` : il doit valoir l'identifiant que le cours donne
+        au module, sinon 0 et un Test étudiant qui ne s'ouvre pas. `renumberActivity` (partagé
+        avec la Sucrerie) ne le connaît pas : `recalerModulesDeCours()` le recale APRÈS
+        l'assemblage, sur le `moduleid` de l'enveloppe `<activity>` — même logique que les
+        fichiers joints. `mbz-course-builder.js` n'est pas touché.
+      - **Achèvement** : `completion` 2, `completionquestionpublished` 1, `completionpoint` 0
+        (Éléa pose `completionpoint` 1). Une règle à 0 est inactive (`get_available_custom_rules`) ;
+        « avoir créé une question » ne dépend que de l'élève, alors que les points baissent
+        de 1 par réponse fausse et peuvent tenir le total sous le seuil. Le module entre donc
+        dans l'ouverture progressive (D71) : l'étape suivante attend sa question.
+        **Si la restauration ne garde pas ce réglage**, passer le module `sansAchevement`.
+      - **Vignette** : `plateforme-studentquiz.webp`, rendue depuis le pictogramme d'Éléa
+        (`theme/image.php/elea/studentquiz/-1/monologo`) comme les vingt autres, fond violet
+        « collaboration ».
+      - **Libellés** : `parcours_mod_test_etudiant_name` / `_desc` dans les 12 locales ; une
+        phrase dans le tutoriel des parcours (12 langues), reprise par
+        `scripts/aide-parcours.mjs` dans la fiche RAG `parcours-modules` (écrite, pas ingérée).
+      - **Banc** `run_parcours_natifs.mjs`, volet 8 bis (11 contrôles) ; contre-épreuves faites
+        à la main : recalage désarmé, achèvement « 1 point », `surDemande` retiré → rouge.
+        Sonde : `node scripts/generer-parcours-sonde.mjs --plateforme=elea` (carte « Sonde —
+        Test étudiant », étape 6). **À vérifier sur Éléa** : restauration complète ; titre et
+        consigne ; en élève, créer une question, y répondre, la noter, la commenter ;
+        achèvement « au moins 1 question » sans condition de points ; l'étape suivante
+        s'ouvre après la question ; ré-export : `coursemodule` égal au module restauré.
+      - **Résultat (30 sept. 2026, Emmanuel)** : la sonde s'importe sur Éléa ; le Test étudiant
+        s'affiche avec sa consigne. Aide de Caramelia : les 12 fiches `parcours-modules` du RAG
+        remplacées le même jour (seule la phrase du Test étudiant différait de la version en
+        ligne, vérifié par empreinte).
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -2990,6 +3043,15 @@ court « Parcours » ; la barre mesurée à dix largeurs avant et après, et deu
 dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
+
+- **30 septembre 2026 — Test étudiant (D89) et validation de la 7.0.1 :**
+  le Test étudiant rejoint la mosaïque d'Éléa, hors plan par défaut. Relevé
+  confronté au code amont de `mod_studentquiz` (sauvegarde, restauration,
+  achèvement) : `<coursemodule>` doit porter l'identifiant du module, recalé après
+  l'assemblage. Banc natifs **178/0** avec trois contre-épreuves au rouge ; sonde
+  Éléa régénérée. Aller-retour Éléa réussi le même jour (import, module et consigne
+  visibles). RAG Caramelia : 12 fiches `parcours-modules` remplacées, 852 documents, aucun
+  autre touché (`rag/ingest-parcours-2026-09-30.mjs`).
 
 - **29 septembre 2026 — Publication des nouvelles démonstrations et portraits :**
   Emmanuel autorise le commit et le push de toutes les modifications présentes

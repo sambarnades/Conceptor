@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "Ein Formular mit Feldern, das alle Lernenden ausfüllen: die Klasse baut eine gemeinsame Sammlung auf.",
   "parcours_mod_groupe_name": "Gruppenwahl",
   "parcours_mod_groupe_desc": "Alle Lernenden wählen ihre Gruppe. Die Gruppen müssen auf der Plattform angelegt werden.",
+  "parcours_mod_test_etudiant_name": "Lernendenquiz (StudentQuiz)",
+  "parcours_mod_test_etudiant_desc": "Die Lernenden schreiben die Fragen selbst, beantworten die der anderen, bewerten und kommentieren sie; eine Punkterangliste spornt sie an. Es kommt leer an, mit seiner Anweisung.",
   "parcours_mod_champ_questions": "Die Fragen",
   "parcours_mod_champ_pages": "Die Seiten der Lektion",
   "parcours_mod_champ_consigneAuteurs": "Anweisung für die einzureichende Arbeit",

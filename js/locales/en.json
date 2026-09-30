@@ -3199,6 +3199,8 @@
   "parcours_mod_base_desc": "A form with fields that each student fills in: the class builds a shared collection.",
   "parcours_mod_groupe_name": "Group choice",
   "parcours_mod_groupe_desc": "Each student chooses a group. The groups must be created on the platform.",
+  "parcours_mod_test_etudiant_name": "Student quiz (StudentQuiz)",
+  "parcours_mod_test_etudiant_desc": "Students write the questions themselves, answer each other’s, rate them and comment on them; a points leaderboard keeps them going. It arrives empty, with its instructions.",
   "parcours_mod_champ_questions": "The questions",
   "parcours_mod_champ_pages": "The lesson pages",
   "parcours_mod_champ_consigneAuteurs": "Instructions for the work to submit",

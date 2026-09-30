@@ -8,7 +8,7 @@
 
 ## Identité
 
-**Caramel** v7.0.0 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
+**Caramel** v7.0.1 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
 
 Lancement local : `python3 tests/serveur-statique.py 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL. (Pas `python3 -m http.server` : sa file de 5 connexions fait refuser des modules par macOS au premier chargement, page inerte au hasard ; tous les bancs utilisent ce serveur.)
 

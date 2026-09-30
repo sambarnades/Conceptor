@@ -1,5 +1,12 @@
 # Ajouter le « Test étudiant » (mod_studentquiz) aux modules de la plateforme
 
+> **État au 30 sept. 2026 : fait (D89 de `docs/PRD_PARCOURS.md`), aller-retour Éléa
+> réussi le même jour.** Module `parcours_test_etudiant`, Éléa seul, sur demande (mosaïque, pas le
+> plan). L'achèvement recommandé ci-dessous est retenu (`completionquestionpublished` 1).
+> Un point manquait : `<coursemodule>` doit porter l'identifiant du module (la restauration
+> le traduit par `get_mappingid`), recalé après l'assemblage par `recalerModulesDeCours()`.
+> La banque de questions n'est pas à joindre : le greffon la crée au premier affichage.
+
 Note de passation pour l'agent (ChatGPT) qui fera le travail, du code à l'aller-retour
 sur Éléa. Écrite par Claude le 29 sept. 2026, à la demande d'Emmanuel GAUNARD.
 

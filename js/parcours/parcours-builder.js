@@ -41,7 +41,7 @@ import {
 import { typeMoodle } from '../moodle/mono-activity-files.js';
 import { nomModule, modulesDisponibles } from './activity-router.js';
 import { estModuleParcours, construireActiviteParcours, MODULES_PARCOURS } from './modules-parcours.js';
-import { ligneAFaire } from './modules-natifs.js';
+import { ligneAFaire, recalerModulesDeCours } from './modules-natifs.js';
 import { carteAPoser, construireCarteProgression } from './carte-progression.js';
 import { joindreFondCarte } from './carte-image.js';
 import { joindreFichiersInitiaux } from '../moodle/fichiers-modules.js';
@@ -390,13 +390,16 @@ export async function assemblerParcours(plan, { timestamp, platformId } = {}) {
 
     const titre = String(plan && plan.titre || '').trim() || (translations.parcours_titre || 'Parcours');
 
-    const { files: assembles, activities: posees, sectionsUsed } = assembleCourseFiles({
+    const { files: bruts, activities: posees, sectionsUsed } = assembleCourseFiles({
         courseTitle: titre,
         timestamp: ts,
         activities,
         sections,
         identite: IDENTITE_CARAMEL,
     });
+    // Le Test étudiant cite son propre module de cours (`<coursemodule>`), dont
+    // l'identifiant n'existe qu'une fois l'activité posée (D89).
+    const assembles = recalerModulesDeCours(bruts);
 
     // L'ouverture progressive se pose APRÈS l'assemblage, sur la carte de
     // fichiers rendue. Le constructeur est partagé avec La Sucrerie : il

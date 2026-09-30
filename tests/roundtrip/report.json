@@ -1023,20 +1023,20 @@
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "ef46c860bf492a9280a390a21993ee85936732dcffd6a0a5a0965129f09abe14",
-      "sha2": "ef46c860bf492a9280a390a21993ee85936732dcffd6a0a5a0965129f09abe14",
+      "sha1": "6b610fa7e726e89d84e2d61b6748619e93e51f096dfc790fadb9ac5a1f98b43e",
+      "sha2": "6b610fa7e726e89d84e2d61b6748619e93e51f096dfc790fadb9ac5a1f98b43e",
       "diff": [],
-      "canonSize": 60153
+      "canonSize": 60327
     },
     {
       "file": "course_presentation_5.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "0edf1ea7d56fcf7fdb0be9d79843ae7356523b67cd6f4d8f2c7d9e1d88944030",
-      "sha2": "0edf1ea7d56fcf7fdb0be9d79843ae7356523b67cd6f4d8f2c7d9e1d88944030",
+      "sha1": "ad1befa4a2fb4f6c4ec9f53a33988050e3eae0d969fed161b49fc4335b5c9b87",
+      "sha2": "ad1befa4a2fb4f6c4ec9f53a33988050e3eae0d969fed161b49fc4335b5c9b87",
       "diff": [],
-      "canonSize": 67351
+      "canonSize": 67583
     },
     {
       "file": "crosswords_1.json",
@@ -1323,60 +1323,60 @@
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "aa2ce093e3afd34335f06ea721c3791e10033dcadb1517a40366338cf730f61b",
-      "sha2": "aa2ce093e3afd34335f06ea721c3791e10033dcadb1517a40366338cf730f61b",
+      "sha1": "f9c178f31572baf9536832a274ddfa80f195cc8eedcec88f5b3e52d0772504e1",
+      "sha2": "f9c178f31572baf9536832a274ddfa80f195cc8eedcec88f5b3e52d0772504e1",
       "diff": [],
-      "canonSize": 31274
+      "canonSize": 31448
     },
     {
       "file": "interactive_book_11.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "e149790508b88a04826305cdef76423c3aba4714384c3b7ea2b2c8875b19a419",
-      "sha2": "e149790508b88a04826305cdef76423c3aba4714384c3b7ea2b2c8875b19a419",
+      "sha1": "a8477c25ad9762497e35b4a5243d13970e5f210541506b5257fb0259d230b134",
+      "sha2": "a8477c25ad9762497e35b4a5243d13970e5f210541506b5257fb0259d230b134",
       "diff": [],
-      "canonSize": 29935
+      "canonSize": 30109
     },
     {
       "file": "interactive_book_12.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "ea8ac2cc631aeee0e8e2a19e1d86fb4cfd4d3d1f7628578a9f08d7955f7d88b1",
-      "sha2": "ea8ac2cc631aeee0e8e2a19e1d86fb4cfd4d3d1f7628578a9f08d7955f7d88b1",
+      "sha1": "42e73fdafd9f2d89a4a167598b6cab13a860b888aae9dd75d3dd1a3393e6b3dd",
+      "sha2": "42e73fdafd9f2d89a4a167598b6cab13a860b888aae9dd75d3dd1a3393e6b3dd",
       "diff": [],
-      "canonSize": 45151
+      "canonSize": 45325
     },
     {
       "file": "interactive_book_13.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "b75f5af9158731dd16b03177c1ddd5333f022a9cb6f767574db50c56049de454",
-      "sha2": "b75f5af9158731dd16b03177c1ddd5333f022a9cb6f767574db50c56049de454",
+      "sha1": "86789e6b5ef7e2182a943453c7d21017656ef547a99c2a151b53a7bccff25c65",
+      "sha2": "86789e6b5ef7e2182a943453c7d21017656ef547a99c2a151b53a7bccff25c65",
       "diff": [],
-      "canonSize": 41575
+      "canonSize": 41749
     },
     {
       "file": "interactive_book_2.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "4b0d0956eae5a341e050912c0622a23a60b08ccbc22809da576c2d47e4925d3f",
-      "sha2": "4b0d0956eae5a341e050912c0622a23a60b08ccbc22809da576c2d47e4925d3f",
+      "sha1": "9ade212c4ac4f5c34fc6195b4b463805c210b6adfcb9dbf469955f9c4eda2e21",
+      "sha2": "9ade212c4ac4f5c34fc6195b4b463805c210b6adfcb9dbf469955f9c4eda2e21",
       "diff": [],
-      "canonSize": 46333
+      "canonSize": 46449
     },
     {
       "file": "interactive_book_3.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "7be0c0e62a0f30c50f194714cb652a2d4c6ba810ae3b217f93acf0891054dbc2",
-      "sha2": "7be0c0e62a0f30c50f194714cb652a2d4c6ba810ae3b217f93acf0891054dbc2",
+      "sha1": "d53943f636583ff863cac8d77f96e727323ff7cde2d88fc3ab1a3c3787a36f1b",
+      "sha2": "d53943f636583ff863cac8d77f96e727323ff7cde2d88fc3ab1a3c3787a36f1b",
       "diff": [],
-      "canonSize": 46132
+      "canonSize": 46306
     },
     {
       "file": "interactive_book_4.json",
@@ -1393,20 +1393,20 @@
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "82f1538e571d7bf07b18a9b66de53ebe0c170c0ba62d0f9e31eb47891906fe2c",
-      "sha2": "82f1538e571d7bf07b18a9b66de53ebe0c170c0ba62d0f9e31eb47891906fe2c",
+      "sha1": "a76fde67ab697c486a27e47a591a1cda097b9a21ac4b9456a01b9c992efe0e35",
+      "sha2": "a76fde67ab697c486a27e47a591a1cda097b9a21ac4b9456a01b9c992efe0e35",
       "diff": [],
-      "canonSize": 24698
+      "canonSize": 24872
     },
     {
       "file": "interactive_book_6.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "8c56eb365f6b33c36f7deb05376b5c6f6638f90f9e50df7217748704a346c00a",
-      "sha2": "8c56eb365f6b33c36f7deb05376b5c6f6638f90f9e50df7217748704a346c00a",
+      "sha1": "e9684b2e278fbdcc318f21c7c866928d6c137277e9c5d6f4865830543932bf05",
+      "sha2": "e9684b2e278fbdcc318f21c7c866928d6c137277e9c5d6f4865830543932bf05",
       "diff": [],
-      "canonSize": 29554
+      "canonSize": 29728
     },
     {
       "file": "interactive_book_7.json",
@@ -1653,20 +1653,20 @@
       "moduleKey": "SingleChoiceSet",
       "ok": true,
       "error": null,
-      "sha1": "03ad023fb908fe5c6fdb33a751df1aadd11d589283ad489f0cc2c295868e2595",
-      "sha2": "03ad023fb908fe5c6fdb33a751df1aadd11d589283ad489f0cc2c295868e2595",
+      "sha1": "09633b34bbca70cd279769ef323807a4362a3c3824b0f010105b0bee99ba392a",
+      "sha2": "09633b34bbca70cd279769ef323807a4362a3c3824b0f010105b0bee99ba392a",
       "diff": [],
-      "canonSize": 4643
+      "canonSize": 4875
     },
     {
       "file": "single_choice_set_2.json",
       "moduleKey": "SingleChoiceSet",
       "ok": true,
       "error": null,
-      "sha1": "6fd560a5f22214707bb63545f5d9cbcf31d21ca2d1114b576693ad5d37a31d12",
-      "sha2": "6fd560a5f22214707bb63545f5d9cbcf31d21ca2d1114b576693ad5d37a31d12",
+      "sha1": "f45bce614bd384d5d306b98a57ad902d4954c58acd2c4044ddebc20068e80ddd",
+      "sha2": "f45bce614bd384d5d306b98a57ad902d4954c58acd2c4044ddebc20068e80ddd",
       "diff": [],
-      "canonSize": 4159
+      "canonSize": 4333
     },
     {
       "file": "sort_the_paragraphs_1.json",
@@ -1996,14 +1996,14 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ef46c860bf492a9280a390a21993ee85936732dcffd6a0a5a0965129f09abe14",
-      "canonSize": 60153,
+      "totalSha256": "6b610fa7e726e89d84e2d61b6748619e93e51f096dfc790fadb9ac5a1f98b43e",
+      "canonSize": 60327,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 56954,
-          "canonSha256": "f3592ce33b1a0a1c6fcdb6dd40e65a73176688a67dbd7433a8f9a4811d6203af"
+          "canonSize": 57128,
+          "canonSha256": "c2ae4f056899c8943fb45464a5d73747dbf28d3b6595574db2dbda6c61625aaa"
         },
         {
           "name": "h5p.json",
@@ -2016,14 +2016,14 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "0edf1ea7d56fcf7fdb0be9d79843ae7356523b67cd6f4d8f2c7d9e1d88944030",
-      "canonSize": 67351,
+      "totalSha256": "ad1befa4a2fb4f6c4ec9f53a33988050e3eae0d969fed161b49fc4335b5c9b87",
+      "canonSize": 67583,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 64188,
-          "canonSha256": "a74c246c37c912e55efa23cd39259581c7e0b6cd81fe9854631c758a8420b3a7"
+          "canonSize": 64420,
+          "canonSha256": "c44e840c3e8ce96352437f898ee18e2d46168bb8d60f3760171089e7577b3166"
         },
         {
           "name": "h5p.json",
@@ -2582,14 +2582,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "aa2ce093e3afd34335f06ea721c3791e10033dcadb1517a40366338cf730f61b",
-      "canonSize": 31274,
+      "totalSha256": "f9c178f31572baf9536832a274ddfa80f195cc8eedcec88f5b3e52d0772504e1",
+      "canonSize": 31448,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 28084,
-          "canonSha256": "136f897ca72de154731c801bbcae192be18144e52135a611c10ac9a9338d8100"
+          "canonSize": 28258,
+          "canonSha256": "270ca5f7e408a9d15551e24b85f9c23ec4fa1656f4ffe07d5cf71588c2f21056"
         },
         {
           "name": "h5p.json",
@@ -2602,14 +2602,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "e149790508b88a04826305cdef76423c3aba4714384c3b7ea2b2c8875b19a419",
-      "canonSize": 29935,
+      "totalSha256": "a8477c25ad9762497e35b4a5243d13970e5f210541506b5257fb0259d230b134",
+      "canonSize": 30109,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 26755,
-          "canonSha256": "1d037c903287260947798b4978622532a4309ad5a60786643e9dd2df5a8c5f6d"
+          "canonSize": 26929,
+          "canonSha256": "9106806d05e6c25063daab9803e770a256a7a993b39bbd5fecfde330389c806b"
         },
         {
           "name": "h5p.json",
@@ -2622,14 +2622,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ea8ac2cc631aeee0e8e2a19e1d86fb4cfd4d3d1f7628578a9f08d7955f7d88b1",
-      "canonSize": 45151,
+      "totalSha256": "42e73fdafd9f2d89a4a167598b6cab13a860b888aae9dd75d3dd1a3393e6b3dd",
+      "canonSize": 45325,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 41943,
-          "canonSha256": "d391d886db34bdabaa3261a84bcf7befbc0cc00a2184a14c97ff1258531d53e6"
+          "canonSize": 42117,
+          "canonSha256": "7a4a363a846b6ba895b3ff44d0c1b28d88cf8a84fe61a5de94f8e9639aba7215"
         },
         {
           "name": "h5p.json",
@@ -2642,14 +2642,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "b75f5af9158731dd16b03177c1ddd5333f022a9cb6f767574db50c56049de454",
-      "canonSize": 41575,
+      "totalSha256": "86789e6b5ef7e2182a943453c7d21017656ef547a99c2a151b53a7bccff25c65",
+      "canonSize": 41749,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 38379,
-          "canonSha256": "ed8cc6e3cbfbd2ea916b52acac488dad6022f8b3dd4ae392ba5566a501c9bf30"
+          "canonSize": 38553,
+          "canonSha256": "98465c1a8f2c2a667a9be5afd33122305cb5bc5993e50145e67ba4c5d1bcc092"
         },
         {
           "name": "h5p.json",
@@ -2662,14 +2662,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "4b0d0956eae5a341e050912c0622a23a60b08ccbc22809da576c2d47e4925d3f",
-      "canonSize": 46333,
+      "totalSha256": "9ade212c4ac4f5c34fc6195b4b463805c210b6adfcb9dbf469955f9c4eda2e21",
+      "canonSize": 46449,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 43071,
-          "canonSha256": "f0e66d5c7a5b4bd26fd9f9d575ffaf8bd5a3e7c08ca3aff7bd1c28244405ddb8"
+          "canonSize": 43187,
+          "canonSha256": "34bfb714cabae56da4d37689d3bfc148f984606d25b87ddf25e22032cd83b325"
         },
         {
           "name": "h5p.json",
@@ -2682,14 +2682,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "7be0c0e62a0f30c50f194714cb652a2d4c6ba810ae3b217f93acf0891054dbc2",
-      "canonSize": 46132,
+      "totalSha256": "d53943f636583ff863cac8d77f96e727323ff7cde2d88fc3ab1a3c3787a36f1b",
+      "canonSize": 46306,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 42910,
-          "canonSha256": "45c4a7979940a75656a82f96031cae3424881a19fa07d87ce5a078a2ab645a2d"
+          "canonSize": 43084,
+          "canonSha256": "2c0177e076f528be8a83927b283b47aab92084d13f543c852b24e72b802912c2"
         },
         {
           "name": "h5p.json",
@@ -2722,14 +2722,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "82f1538e571d7bf07b18a9b66de53ebe0c170c0ba62d0f9e31eb47891906fe2c",
-      "canonSize": 24698,
+      "totalSha256": "a76fde67ab697c486a27e47a591a1cda097b9a21ac4b9456a01b9c992efe0e35",
+      "canonSize": 24872,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 21426,
-          "canonSha256": "b8b2022fa47a3478d385552e1c65aa32aed3dcd9eee5c13ab31a6de3ed6cce1a"
+          "canonSize": 21600,
+          "canonSha256": "8a9667b6eb856c0e239f4d27a5dea29931545900374b69e0abd9f4ef6b950e48"
         },
         {
           "name": "h5p.json",
@@ -2742,14 +2742,14 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8c56eb365f6b33c36f7deb05376b5c6f6638f90f9e50df7217748704a346c00a",
-      "canonSize": 29554,
+      "totalSha256": "e9684b2e278fbdcc318f21c7c866928d6c137277e9c5d6f4865830543932bf05",
+      "canonSize": 29728,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 26370,
-          "canonSha256": "78240fd1834af7d253157920ca93946c5e61083a381c0c5883153275bd2110dd"
+          "canonSize": 26544,
+          "canonSha256": "887c87e6b158839980a6bcb12c9cc74c5735eb48c76f80197780483783d8ac35"
         },
         {
           "name": "h5p.json",
@@ -3242,14 +3242,14 @@
       "moduleKey": "SingleChoiceSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "03ad023fb908fe5c6fdb33a751df1aadd11d589283ad489f0cc2c295868e2595",
-      "canonSize": 4643,
+      "totalSha256": "09633b34bbca70cd279769ef323807a4362a3c3824b0f010105b0bee99ba392a",
+      "canonSize": 4875,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3812,
-          "canonSha256": "e190d4f99158f45847f487c6fbbef7001f675fb766bc5dedae43a18751b0a0a9"
+          "canonSize": 4044,
+          "canonSha256": "6248ac13c8ff973e5e879ca2648f1e3ea829a2251d927bcc1495a027fa4e2cff"
         },
         {
           "name": "h5p.json",
@@ -3262,14 +3262,14 @@
       "moduleKey": "SingleChoiceSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "6fd560a5f22214707bb63545f5d9cbcf31d21ca2d1114b576693ad5d37a31d12",
-      "canonSize": 4159,
+      "totalSha256": "f45bce614bd384d5d306b98a57ad902d4954c58acd2c4044ddebc20068e80ddd",
+      "canonSize": 4333,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3226,
-          "canonSha256": "7ce01e878a2b40a12ceef06d966a92bc92580e8a552e63e376869f70da5cd05e"
+          "canonSize": 3400,
+          "canonSha256": "c229addbcc74db08f342ab8632896fca2fba188863e7f7bf2dd8cfd6c1eab886"
         },
         {
           "name": "h5p.json",
