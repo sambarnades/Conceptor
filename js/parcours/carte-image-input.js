@@ -1,5 +1,5 @@
 /** Tuile « + » et aperçu du fond personnel, à côté des thèmes Éléa. */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { el, icone, action } from './dom.js';
 import { preparerImageCarte, traceCartePersonnelle } from './carte-image.js';
 

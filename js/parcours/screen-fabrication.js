@@ -20,7 +20,7 @@
  */
 
 import { construireSaisieSource } from './source-input.js';
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { nomModule, imageModule, iconeModule } from './activity-router.js';
 import { creerFile, cartesAPlat, ETATS } from './parcours-runner.js';
 import { ouvrirActivite, titreActivite } from './activity-panel.js';

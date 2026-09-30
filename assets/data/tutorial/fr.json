@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ."
+          "text": "Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ. L’atelier parle le vocabulaire de la plateforme choisie : des élèves sur Éléa, des stagiaires sur Magistère, des étudiants sur Moodle — à l’écran, dans le cours et dans les textes que rédige l’IA."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur, **Un même chemin pour tous** ou **Des chemins selon les résultats**, et une trame : trois sont proposées, **Voir les autres modèles** affiche les suivantes. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.",
+            "Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur, **Un même chemin pour tous** ou **Des chemins selon les résultats**, et une trame : les plus courantes sont proposées d’abord — apprendre en autonomie, réviser, s’entraîner, évaluer —, **Voir les autres modèles** affiche les suivantes. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.",
             "Dans **Plan**, modifiez le titre, l’objectif général, les notions du parcours, les étapes et les activités. Déplacez les activités avec les flèches ou leur vignette. **Consigne et palier** permet d’ajuster les indications de génération. Les repères pédagogiques vous aident à relire sans imposer un modèle. Le maximum est de **12 activités**.",
             "Dans la carte d’une **Vidéo interactive**, collez le lien de la vidéo. La transcription est récupérée pendant la fabrication ; vous pouvez aussi la coller manuellement. Pour **Image interactive**, **Trouver la zone** ou **Trouver les zones**, joignez une image dans la carte : elle sera analysée avant la génération. Ces supports peuvent aussi être complétés dans **Fabrication**. Sans support, l’activité attend et les autres avancent. Le scénario conserve les images et les liens propres aux activités ; les documents du formulaire d’accueil restent à part. Pour un **Lien web**, collez l’adresse de la ressource dans la carte : l’IA rédige la consigne de lecture sans ouvrir la page.",
             "Validez le plan pour lancer la fabrication. Vous pouvez arrêter, reprendre les activités manquantes ou refaire une activité. Le cadenas **Ne pas générer cette activité** réserve son contenu à une saisie manuelle : l’IA ne la remplit pas. Une tentative de régénération ratée conserve le contenu précédent. Les activités absentes sont nommées avant l’export.",

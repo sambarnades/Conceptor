@@ -297,11 +297,11 @@ The application is designed for desktop use, with light/dark modes, keyboard nav
 <!-- parcours-complet -->
 ## Create and reopen a complete course
 
-In Caramel, **A pathway** creates a course for Éléa, Magistère or Moodle: several activities organised into sections in one **.mbz** file. Start with the usual form: topic, audience and attached documents.
+In Caramel, **A pathway** creates a course for Éléa, Magistère or Moodle: several activities organised into sections in one **.mbz** file. Start with the usual form: topic, audience and attached documents. The workshop uses the vocabulary of the chosen platform: learners on Éléa, trainees on Magistère, students on Moodle — on screen, in the course and in the texts the AI writes.
 
 In the Caramelia menu, **Create a course** opens the workshop directly, without an AI request. If a draft exists, **Resume my course** reopens it. Existing fields and sources are preserved. Review the setup and plan in the workshop before starting generation.
 
-Choose **A pathway** below the form, then the platform, delivery mode, scope, **One path for everyone** or **Paths based on results**, and a template: three are offered, and **Show the other templates** displays the rest. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.
+Choose **A pathway** below the form, then the platform, delivery mode, scope, **One path for everyone** or **Paths based on results**, and a template: the most common come first — learn a new topic independently, revise, practise step by step, assess — and **Show the other templates** displays the rest. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.
 
 In **Plan**, edit the title, overall objective, key concepts, stages and activities. Move activities with the arrows or by dragging their thumbnail. **Instructions and stage** adjusts the generation instructions. Teaching prompts help you review without enforcing a model. The limit is **12 activities**.
 
@@ -327,8 +327,10 @@ On Éléa, open **Course settings**, enable the progress map and use the **+ Add
 
 After **A pathway**, the template sets the sequence that the AI adapts to your topic. The list shown depends on the delivery mode and scope you choose; every activity can still be changed in the plan.
 
+- **Learn a new topic independently** — A new idea, learned alone: discover it step by step, practise with immediate feedback, retain the essentials, then check. *(One session · Two or three sessions · A full unit)*
 - **Revise before the test** — Find out what is already known, put the essentials back in view, practise, then self-test. *(One session · Two or three sessions)*
-- **Prepare and sit a test** — Practice in the exam format, the graded test, the answer key. Three activities, no more. *(One session)*
+- **Practise step by step** — A recall to reactivate, exercises with options then without, a final check: the difficulty rises, the lesson is not taught again. *(One session · Two or three sessions · A full unit)*
+- **Assess** — What is expected, practice in the test format, then the test itself: a single timed attempt, no answers shown; only the grade at the end. *(One session)*
 - **Remedy after the test** — Start from the actual mistakes: name them, re-explain the exact point, redo, then check again. *(One session · Two or three sessions · Remote · Both)*
 - **Short ritual** — Ten minutes, always the same shape. It is repetition that makes it stick, not variety. *(One session)*
 - **Discover a new idea** — A situation that raises questions, documents to explore, then the summary, and only then the application. *(Two or three sessions · A full unit)*

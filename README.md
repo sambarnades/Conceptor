@@ -64,7 +64,7 @@ Le commutateur placé sous le formulaire propose **« Une activité »**, le fon
 
 - **Des chemins selon les résultats** : d’après sa note à la première tentative, chaque élève suit l’un de deux à quatre chemins (Reprendre les bases, Renforcer, Consolider, Approfondir) et ne voit que le sien ; le cours pose lui-même les restrictions d’accès de la plateforme.
 - **Deux trames pour différencier**, des seuils réglés en bonnes réponses dans le plan, et **Voir comme un élève** pour contrôler la page du cours avant de l’importer.
-- **Dans tous les parcours** : une section « Fin du parcours » et la durée estimée de chaque activité ; trois trames à l’écran, les autres sous « Voir les autres modèles ».
+- **Dans tous les parcours** : une section « Fin du parcours » et la durée estimée de chaque activité ; une vitrine de quatre trames — apprendre en autonomie, réviser, s’entraîner, évaluer —, les autres sous « Voir les autres modèles ».
 
 ## Nouveautés 7.0.0
 

@@ -1,5 +1,5 @@
 /** Petites fabriques DOM de l’atelier : texte traduit, jamais de HTML implicite. */
-import { t } from '../core/translation.js';
+import { t, cleSelonPlateforme } from './vocabulaire.js';
 
 export function el(tag, classe, texte) {
     const node = document.createElement(tag);
@@ -45,8 +45,12 @@ export function iconeTutoriel() {
     return svg;
 }
 
-export function tr(cle, jetons = {}) {
-    let texte = t(cle);
+/**
+ * Traduit et substitue les jetons `@x`. La plateforme nomme le public (D105) :
+ * celle du brouillon par défaut, ou celle que l'appelant donne.
+ */
+export function tr(cle, jetons = {}, plateforme) {
+    let texte = t(cle, plateforme);
     for (const [k, v] of Object.entries(jetons)) texte = texte.split(`@${k}`).join(String(v));
     return texte;
 }
@@ -83,11 +87,12 @@ export function bonbon(niveau, modificateur = '') {
     return node;
 }
 
-export function action(cle, image, clic, classe = 'pc-secondaire') {
+export function action(cle, image, clic, classe = 'pc-secondaire', plateforme) {
     const node = el('button', classe);
     node.type = 'button';
-    const label = el('span', null, t(cle));
-    label.dataset.key = cle;
+    const label = el('span', null, t(cle, plateforme));
+    // La clé de la plateforme (D105) : `translatePage()` la relit au changement de langue.
+    label.dataset.key = cleSelonPlateforme(cle, plateforme);
     // `image` : nom d'icône Font Awesome, ou élément déjà construit (SVG dessiné pour l'atelier).
     node.append(typeof image === 'string' ? icone(image) : image, label);
     node.addEventListener('click', clic);

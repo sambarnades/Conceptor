@@ -250,6 +250,8 @@ const CAPTURES = {
         await remplirFormulaire(page);
         await page.click('#parcours-button');
         await page.waitForSelector('.pc-trames');
+        // Une séance : la vitrine montre ses quatre intentions (D102).
+        await page.click('.pc-choice[data-choix="courte"]');
         await page.locator('.pc-trames > *', { hasText: 'Réviser avant l' }).first().click();
         await page.waitForTimeout(600);
         // L'en-tête et les deux premières rangées : la bibliothèque entière ferait une image démesurée.

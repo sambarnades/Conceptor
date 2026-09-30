@@ -40,6 +40,7 @@ import { construirePromptRemplissage, nbElementsCarte } from './scenario-prompt.
 import { modeleParcours } from './model-selector.js';
 import { metaActiviteParcours } from './stats-parcours.js';
 import { reglagesDeCarte } from './aiguillage.js';
+import { reglagesDeTrame } from './templates.js';
 
 /** États possibles d'une carte pendant la fabrication. */
 export const ETATS = {
@@ -162,6 +163,29 @@ export async function reparer(brut, moduleKey) {
     return obj;
 }
 
+/** Les exercices à consigne, nommés comme dans le prompt du quiz. */
+const NOMS_EXERCICES = {
+    MarkTheWords: 'Surligner les mots', DragTheWords: 'Glisser les mots',
+    FillInTheBlanks: 'Texte à trous', Essay: 'Rédaction',
+};
+
+/**
+ * La correction demandée au modèle quand des exercices sont revenus SANS consigne :
+ * elle nomme les questions en cause, et redit ce qu'est une consigne.
+ * @param {Array<{numero:number, module:string}>} manques - `consignesManquantes()`.
+ * @returns {string}
+ */
+export function rappelConsignes(manques) {
+    const lesquelles = manques.map(m => (m.numero
+        ? `la question ${m.numero} (${NOMS_EXERCICES[m.module] || m.module})`
+        : `l'activité (${NOMS_EXERCICES[m.module] || m.module})`)).join(', ');
+    return '\n\n# CORRECTION DEMANDÉE\n' +
+        `Dans ta réponse précédente, ${lesquelles} ${manques.length > 1 ? 'n’avaient' : 'n’avait'} pas de consigne : ` +
+        'l’élève voyait un texte sans savoir quoi y faire. Rends à nouveau le JSON COMPLET. ' +
+        'Chaque exercice Texte à trous, Glisser les mots, Surligner les mots ou Rédaction porte `taskDescription` : ' +
+        'une consigne adressée à l’élève, qui dit quoi faire et selon quel critère (par exemple « Surligne les mots qui décrivent… »).';
+}
+
 /**
  * Crée la file de fabrication d'un brouillon.
  *
@@ -234,10 +258,28 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
                 : await generateH5PWithLLM(prompt, modele, metaActiviteParcours(draft, carte.module));
 
             const brut = await appliquerSource(await extraireJson(reponse), source, carte.module);
-            const contenu = await reparer(brut, carte.module);
+            let contenu = await reparer(brut, carte.module);
+            // Un exercice SANS consigne est injouable : dans le quiz de Gauthier
+            // (30 sept. 2026), le modèle l'avait omise sur trois questions sur dix,
+            // et l'élève voyait un texte sans savoir quoi y faire. On la redemande
+            // UNE fois, en nommant les questions ; au second oubli, la carte échoue
+            // et se refait d'un clic.
+            const { consignesManquantes } = await import('../h5p/json-healer.js');
+            const manques = consignesManquantes(contenu, carte.module);
+            if (manques.length && !arretDemande) {
+                const rappel = rappelConsignes(manques);
+                debugLog('parcours', `carte « ${carte.titre} » : consigne absente (${manques.map(m => m.numero).join(', ')}), seconde demande`);
+                const reponse2 = appelModele
+                    ? await appelModele(prompt + rappel, carte)
+                    : await generateH5PWithLLM(prompt + rappel, modele, metaActiviteParcours(draft, carte.module));
+                contenu = await reparer(await appliquerSource(await extraireJson(reponse2), source, carte.module), carte.module);
+                const encore = consignesManquantes(contenu, carte.module);
+                if (encore.length) throw new Error(`parcours_consigne_manquante:${encore.map(m => m.numero).join(',')}`);
+            }
             if (arretDemande) { etat.statut = carte.contenu ? ETATS.faite : ETATS.annulee; return; }
             // Les réglages de son chemin, ou du test qui aiguille (D90, D93).
-            carte.contenu = reglagesDeCarte(plan, carte, contenu);
+            // …et ceux que sa trame impose au Test (« Évaluer », D102).
+            carte.contenu = reglagesDeTrame(draft.trame, carte, reglagesDeCarte(plan, carte, contenu));
             carte.sourceUtilisee = carte.source ? JSON.stringify(carte.source) : null;
             purgerMedias(carte);
             // Le titre du plan fait foi : c'est celui que l'enseignant a relu,
@@ -257,7 +299,8 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
                 // Une tentative ratée ne retire pas un contenu déjà relu.
                 etat.statut = carte.contenu ? ETATS.faite : ETATS.echouee;
                 etat.erreurKey = String(e.message || '').startsWith('parcours_source_') ? e.message
-                    : (info && info.userMessageKey) || 'parcours_fab_echec_carte';
+                    : String(e.message || '').startsWith('parcours_consigne_manquante') ? 'parcours_consigne_manquante'
+                        : (info && info.userMessageKey) || 'parcours_fab_echec_carte';
                 etat.detail = String((e && e.message) || e);
                 console.error(`[parcours] carte « ${carte.titre} » (${carte.module}) échouée :`, e);
             }

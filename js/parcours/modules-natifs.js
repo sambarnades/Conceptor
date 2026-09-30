@@ -28,7 +28,8 @@
  * @module parcours/modules-natifs
  */
 
-import { t, currentLang } from '../core/translation.js';
+import { currentLang } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { languageCodes } from '../core/language-codes.js';
 import { tr } from './dom.js';
 import { escapeXml } from '../moodle/moodle-formats.js';

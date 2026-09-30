@@ -497,6 +497,8 @@ button.pc-steps__cible:focus-visible { outline: 2px solid var(--pc-blue); outlin
 
 @media (min-width: 700px) { .pc-trames { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1060px) { .pc-trames { grid-template-columns: repeat(3, 1fr); } }
+/* Quatre modèles en vitrine (D102) : deux par ligne plutôt qu'un orphelin sous trois. */
+@media (min-width: 1060px) { .pc-trames--4 { grid-template-columns: repeat(2, 1fr); } }
 
 .pc-trame {
     position: relative;

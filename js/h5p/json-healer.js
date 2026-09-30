@@ -2616,6 +2616,72 @@ function soignerLeurresDragText(params) {
  * @param {string} moduleKey - Le type de module
  * @returns {Object} L'objet avec les champs texte nettoyés
  */
+/**
+ * Les exercices dont la consigne vit dans `taskDescription` : sans elle, l'élève
+ * voit un texte à surligner, à compléter ou à trous, sans savoir quoi y faire.
+ * Pour le Texte à trous, `text` est le champ natif de H5P : le processeur le lit.
+ */
+const LIBRAIRIES_A_CONSIGNE = {
+    'H5P.MarkTheWords': 'MarkTheWords', 'H5P.DragText': 'DragTheWords',
+    'H5P.Blanks': 'FillInTheBlanks', 'H5P.Essay': 'Essay',
+};
+const MODULES_A_CONSIGNE = new Set(Object.values(LIBRAIRIES_A_CONSIGNE));
+
+/** Les noms qu'un modèle donne à la consigne quand il oublie `taskDescription`. */
+const CLES_DE_CONSIGNE = ['consigne', 'instruction', 'instructions', 'task', 'taskdescription', 'task_description',
+    'question', 'text', 'intro', 'introduction'];
+
+/**
+ * Remet la consigne d'un exercice à sa place (`taskDescription`) quand le modèle
+ * l'a écrite sous un autre nom : le processeur l'ignorait, et la question
+ * s'affichait SANS consigne (parcours de Gauthier, 30 sept. 2026). On la déplace ;
+ * on n'en invente jamais une.
+ *
+ * @param {Object} params - Les paramètres de l'exercice (modifiés en place).
+ * @param {string} module - `MarkTheWords`, `DragTheWords`, `FillInTheBlanks` ou `Essay`.
+ */
+function recupererConsigne(params, module) {
+    if (!params || typeof params !== 'object') return;
+    if (typeof params.taskDescription === 'string' && params.taskDescription.trim()) return;
+    for (const cle of CLES_DE_CONSIGNE) {
+        // `text` est déjà la consigne native du Texte à trous : le processeur la lit.
+        if (module === 'FillInTheBlanks' && cle === 'text') continue;
+        const valeur = params[cle];
+        if (typeof valeur === 'string' && valeur.trim()) {
+            params.taskDescription = valeur;
+            delete params[cle];
+            debugLog('json-healer', `[JSON Healer] ${module} : consigne retrouvée sous « ${cle} »`);
+            return;
+        }
+    }
+}
+
+/** Le texte d'une consigne, sans balises ni blancs. */
+const texteDeConsigne = v => (typeof v === 'string' ? v.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').trim() : '');
+
+/**
+ * Les exercices SANS consigne d'un contenu déjà réparé : une question à surligner,
+ * à glisser, à trous ou à rédiger qui ne dit pas quoi faire est injouable.
+ *
+ * @param {Object} obj - Contenu réparé (JSON du modèle, pas le content.json final).
+ * @param {string} moduleKey
+ * @returns {Array<{numero:number, module:string}>} `numero` : rang de la question
+ *          dans un quiz (à partir de 1), 0 pour une activité seule.
+ */
+export function consignesManquantes(obj, moduleKey) {
+    if (!obj || typeof obj !== 'object') return [];
+    const consigne = (p, module) => texteDeConsigne(p?.taskDescription)
+        || (module === 'FillInTheBlanks' ? texteDeConsigne(p?.text) : '');
+    if (MODULES_A_CONSIGNE.has(moduleKey)) return consigne(obj, moduleKey) ? [] : [{ numero: 0, module: moduleKey }];
+    if (!['QuizSet', 'QuizSetQCM', 'QuizSetVF'].includes(moduleKey) || !Array.isArray(obj.questions)) return [];
+    const manques = [];
+    obj.questions.forEach((q, i) => {
+        const module = LIBRAIRIES_A_CONSIGNE[String(q?.library || '').split(' ')[0]];
+        if (module && !consigne(q.params, module)) manques.push({ numero: i + 1, module });
+    });
+    return manques;
+}
+
 export function healActivitySpecificFields(obj, moduleKey) {
     if (!obj) return obj;
 
@@ -2648,6 +2714,9 @@ export function healActivitySpecificFields(obj, moduleKey) {
             }
         }
     }
+
+    // --- 1 bis. La consigne écrite sous un autre nom ---
+    if (MODULES_A_CONSIGNE.has(moduleKey)) recupererConsigne(healed, moduleKey);
 
     // --- 2. Conversions unicode+markers (fonctions spécialisées par type de marqueur) ---
 
@@ -2782,6 +2851,7 @@ export function healActivitySpecificFields(obj, moduleKey) {
         healed.questions = healed.questions.map(q => {
             if (!q.library || !q.params) return q;
             const libName = q.library.split(' ')[0];
+            if (LIBRAIRIES_A_CONSIGNE[libName]) recupererConsigne(q.params, LIBRAIRIES_A_CONSIGNE[libName]);
 
             if (libName === 'H5P.MarkTheWords' && q.params.textField) {
                 q.params.textField = cleanMarkTheWordsText(q.params.textField);

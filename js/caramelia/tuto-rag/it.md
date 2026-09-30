@@ -298,11 +298,11 @@ L'applicazione è progettata per essere compatibile con l'uso su computer, inclu
 <!-- parcours-complet -->
 ## Creare e riprendere un corso completo
 
-In Caramel, **Un percorso** crea un corso per Éléa, Magistère o Moodle: più attività organizzate in sezioni in un unico file **.mbz**. Il punto di partenza resta il modulo abituale: argomento, destinatari e documenti allegati.
+In Caramel, **Un percorso** crea un corso per Éléa, Magistère o Moodle: più attività organizzate in sezioni in un unico file **.mbz**. Il punto di partenza resta il modulo abituale: argomento, destinatari e documenti allegati. Il laboratorio usa il vocabolario della piattaforma scelta: alunni su Éléa, partecipanti su Magistère, studenti su Moodle — sullo schermo, nel corso e nei testi che scrive l’IA.
 
 Nel menu di Caramelia, **Crea un percorso** apre direttamente il laboratorio senza chiamare l’IA. Se esiste una bozza, **Riprendi il mio percorso** la riapre. I campi e le fonti presenti vengono conservati. Rileggi le impostazioni e il piano nel laboratorio prima di avviare la generazione.
 
-Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza, **Uno stesso cammino per tutti** o **Cammini in base ai risultati**, e un modello: ne vengono proposti tre, e **Vedi gli altri modelli** mostra i successivi. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.
+Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza, **Uno stesso cammino per tutti** o **Cammini in base ai risultati**, e un modello: i più comuni vengono proposti per primi — imparare in autonomia, ripassare, allenarsi, valutare — e **Vedi gli altri modelli** mostra i successivi. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.
 
 In **Piano**, modifica titolo, obiettivo generale, concetti chiave, fasi e attività. Sposta le attività con le frecce o trascinando la miniatura. **Consegna e fase** permette di regolare le istruzioni di generazione. I suggerimenti pedagogici aiutano a rileggere senza imporre un modello. Il massimo è di **12 attività**.
 
@@ -328,8 +328,10 @@ Su Éléa, apri **Impostazioni del corso**, attiva la mappa di avanzamento e usa
 
 Dopo **Un percorso**, il modello dà lo svolgimento che l’IA adatta all’argomento. L’elenco mostrato dipende dalla modalità e dall’ampiezza scelte; ogni attività resta modificabile nel piano.
 
+- **Imparare in autonomia** — Un concetto nuovo, imparato da soli: scoprirlo passo dopo passo, esercitarsi con una correzione immediata, fissare l’essenziale, verificare. *(Una lezione · Da due a tre lezioni · Un'unità completa)*
 - **Ripassare prima della verifica** — Si individua ciò che è acquisito, si rimette sotto gli occhi l'essenziale, ci si esercita, ci si mette alla prova. *(Una lezione · Da due a tre lezioni)*
-- **Preparare e sostenere una verifica** — Un allenamento nel formato della prova, la verifica valutata, la correzione. Tre attività, niente di più. *(Una lezione)*
+- **Allenarsi** — Un richiamo per riattivare, esercizi prima con proposte e poi senza, una verifica finale: la difficoltà cresce, la lezione non viene rifatta. *(Una lezione · Da due a tre lezioni · Un'unità completa)*
+- **Valutare** — Le attese, un allenamento nel formato della prova, poi la verifica: un solo tentativo, a tempo, senza correzione visibile; alla fine solo il voto. *(Una lezione)*
 - **Recuperare dopo la verifica** — Si riparte dagli errori constatati: si nominano, si rispiega il punto preciso, si rifà, si ricontrolla. *(Una lezione · Da due a tre lezioni · A distanza · Entrambe)*
 - **Rituale breve** — Dieci minuti, sempre la stessa forma. È la ripetizione che fissa, non la varietà. *(Una lezione)*
 - **Scoprire un concetto** — Una situazione che interroga, documenti da esplorare, poi la sintesi, e solo dopo l'applicazione. *(Da due a tre lezioni · Un'unità completa)*

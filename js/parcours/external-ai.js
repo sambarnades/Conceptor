@@ -1,5 +1,5 @@
 /** Les réponses externes suivent les contrats et réparations du parcours existant. */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { allModules, h5pModules } from '../core/definitions.js';
 import { brouillon, majBrouillon } from './state.js';
 import { construirePromptPlan, construirePromptRemplissage, nbElementsCarte } from './scenario-prompt.js';
@@ -14,6 +14,7 @@ import { confirmerRemplacement } from './scenario-actions.js';
 import { releverParcours, ORIGINES_PLAN } from './stats-parcours.js';
 import { nomModule, imageModule, iconeModule } from './activity-router.js';
 import { reglagesDeCarte } from './aiguillage.js';
+import { reglagesDeTrame } from './templates.js';
 
 function objet(value) {
     if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('parcours_reponse_sans_json');
@@ -95,7 +96,7 @@ export function ouvrirActiviteExterne(draft, carte, apresApplication, { genererE
         appliquer: async (contenu, contexte, panneau) => {
             if (brouillon() !== draft || draft.plan !== contexte.plan || carte.module !== contexte.module || carte.contenu !== contexte.contenuInitial) throw new Error(t('parcours_external_changed'));
             if (carte.contenu && !await confirmerRegeneration(panneau)) return false;
-            carte.contenu = reglagesDeCarte(draft.plan, carte, contenu); carte.sourceUtilisee = carte.source ? JSON.stringify(carte.source) : null;
+            carte.contenu = reglagesDeTrame(draft.trame, carte, reglagesDeCarte(draft.plan, carte, contenu)); carte.sourceUtilisee = carte.source ? JSON.stringify(carte.source) : null;
             purgerMedias(carte); majBrouillon({ plan: draft.plan }); apresApplication();
         },
     });

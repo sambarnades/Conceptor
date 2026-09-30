@@ -17,7 +17,7 @@
  *
  * Appels au modèle RÉELS (proxy n8n de développement), un à la fois.
  *
- * Lancement : node scripts/generer-parcours-reel.mjs [--scenario=pix-edu-donnees] [--tous]
+ * Lancement : node scripts/generer-parcours-reel.mjs [--scenario=pix-edu-donnees[,autre]] [--tous]
  */
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
@@ -90,6 +90,49 @@ const SCENARIOS = {
             niveau: '4e',
         },
     },
+    // 7.1.0 (1er oct. 2026) : les trames de la vitrine (D102), les chemins selon
+    // les résultats (D90), et le vocabulaire de chaque plateforme (D105) — des
+    // étudiants sur Moodle, des stagiaires sur Magistère.
+    'moodle-fluides-evaluer': {
+        adultes: true,
+        titre: 'Évaluer — Mécanique des fluides (Licence 1)',
+        platform: 'moodle', format: 'distanciel', ampleur: 'courte', trame: 'evaluation',
+        contexte: {
+            qui: 'Enseignant de physique à l’université',
+            quoi: 'Mécanique des fluides : pression, principe fondamental de l’hydrostatique, poussée d’Archimède, débit et équation de continuité',
+            niveau: 'Licence 1 de physique',
+        },
+    },
+    'elea-proportionnalite-chemins': {
+        titre: 'Différencier — La proportionnalité (5e)',
+        platform: 'elea', format: 'distanciel', ampleur: 'courte', trame: 'differenciation',
+        structure: 'chemins', chemins: 3,
+        contexte: {
+            qui: 'Professeur de mathématiques',
+            quoi: 'La proportionnalité : reconnaître une situation de proportionnalité, coefficient de proportionnalité, quatrième proportionnelle, pourcentages simples',
+            niveau: '5e',
+        },
+    },
+    'magistere-laicite-entrainement': {
+        adultes: true,
+        titre: 'S’entraîner — Faire vivre la laïcité à l’école',
+        platform: 'magistere', format: 'distanciel', ampleur: 'moyenne', trame: 'entrainement',
+        contexte: {
+            qui: 'Formatrice académique « valeurs de la République »',
+            quoi: 'Réagir à des situations de classe qui mettent en jeu la laïcité : lois de 1905 et de 2004, charte de la laïcité à l’école, neutralité des personnels, liberté de conscience des élèves',
+            niveau: 'Professeurs néo-titulaires en formation continue',
+        },
+    },
+    'moodle-statistiques-autonomie': {
+        adultes: true,
+        titre: 'Apprendre en autonomie — Statistiques descriptives (BUT)',
+        platform: 'moodle', format: 'distanciel', ampleur: 'courte', trame: 'autonomie',
+        contexte: {
+            qui: 'Enseignante de mathématiques en IUT',
+            quoi: 'Statistiques descriptives : moyenne, médiane, quartiles, étendue, écart-type, lecture d’une boîte à moustaches',
+            niveau: 'BUT 1re année',
+        },
+    },
     'projet-podcast': {
         titre: 'Démarche de projet — Un podcast sur la biodiversité',
         platform: 'elea', format: 'hybride', ampleur: 'longue', trame: 'projet',
@@ -109,11 +152,16 @@ const LIENS = {
     'revision-fractions': 'https://eduscol.education.fr/',
     'projet-podcast': 'https://www.ofb.gouv.fr/',
     'apprendre-revolution': 'https://www.lumni.fr/',
+    'moodle-fluides-evaluer': 'https://fr.wikipedia.org/wiki/M%C3%A9canique_des_fluides',
+    'elea-proportionnalite-chemins': 'https://eduscol.education.fr/',
+    'magistere-laicite-entrainement': 'https://www.education.gouv.fr/la-laicite-l-ecole-12415',
+    'moodle-statistiques-autonomie': 'https://www.insee.fr/fr/information/2549813',
 };
 
 const argv = process.argv.slice(2);
 const choisi = (argv.find(a => a.startsWith('--scenario=')) || '').split('=')[1];
-const ids = argv.includes('--tous') ? Object.keys(SCENARIOS) : [choisi || 'pix-edu-donnees'];
+// `--scenario=a,b` enchaîne plusieurs scénarios, un à la fois.
+const ids = argv.includes('--tous') ? Object.keys(SCENARIOS) : (choisi || 'pix-edu-donnees').split(',').filter(Boolean);
 
 const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'], { cwd: ROOT, stdio: 'ignore' });
 process.on('exit', () => { try { server.kill('SIGTERM'); } catch { /* déjà mort */ } });
@@ -126,7 +174,7 @@ mkdirSync(join(ROOT, 'tests/sonde-parcours'), { recursive: true });
 for (const id of ids) {
     const sc = SCENARIOS[id];
     if (!sc) { console.error(`scénario inconnu : ${id}`); continue; }
-    console.log(`\n▶ ${id} — ${sc.titre} (${sc.platform}, ${sc.format}, ${sc.ampleur}, trame ${sc.trame})`);
+    console.log(`\n▶ ${id} — ${sc.titre} (${sc.platform}, ${sc.format}, ${sc.ampleur}, trame ${sc.trame}${sc.structure === 'chemins' ? `, ${sc.chemins} chemins` : ''})`);
     const page = await browser.newPage();
     page.setDefaultTimeout(1800000);
     const erreurs = [];
@@ -152,6 +200,7 @@ for (const id of ids) {
         const { nomModule } = await import('/js/parcours/activity-router.js');
 
         const draft = { platform: sc.platform, format: sc.format, ampleur: sc.ampleur, trame: sc.trame,
+            structure: sc.structure || 'lineaire', chemins: sc.chemins || 2,
             contexte: { ...sc.contexte, corpus: '' } };
 
         // 1. Le plan, par le modèle — avec le même rattrapage unique que l'atelier.

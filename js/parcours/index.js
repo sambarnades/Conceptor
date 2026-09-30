@@ -20,7 +20,7 @@
  * @module parcours/index
  */
 
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { debugLog, classifyError } from '../core/utils.js';
 import {
     generateRawWithLLM,

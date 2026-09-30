@@ -1,20 +1,20 @@
 {
   "//": "Écrit par scripts/diaporama/generer-diaporama.mjs — ne pas modifier à la main, relancer le script.",
   "version": "7.1.0",
-  "date": "2026-09-30",
-  "dateLisible": "30 septembre 2026",
+  "date": "2026-10-01",
+  "dateLisible": "1er octobre 2026",
   "fichiers": {
     "pptx": {
       "chemin": "caramel-presentation.pptx",
-      "octets": 4083290
+      "octets": 4083295
     },
     "odp": {
       "chemin": "caramel-presentation.odp",
-      "octets": 3480818
+      "octets": 3480821
     },
     "pdf": {
       "chemin": "caramel-presentation.pdf",
-      "octets": 3205126
+      "octets": 3204516
     }
   },
   "diapositives": [
@@ -160,7 +160,7 @@
       "image": "diapositives/16.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en quatre questions : la plateforme, le déroulé — en classe, à distance ou les deux —, l’ampleur, d’une séance à une séquence entière, et le chemin des élèves : le même pour tous, ou des chemins selon les résultats d’un test. On peut aussi partir d’une trame toute faite : trois sont proposées, les autres sont à un clic."
+      "notes": "Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en quatre questions : la plateforme, le déroulé — en classe, à distance ou les deux —, l’ampleur, d’une séance à une séquence entière, et le chemin des élèves : le même pour tous, ou des chemins selon les résultats d’un test. On peut aussi partir d’une trame toute faite : apprendre en autonomie, réviser, s’entraîner ou évaluer — et une vingtaine d’autres à un clic."
     },
     {
       "numero": 17,
@@ -241,7 +241,7 @@
       "image": "diapositives/25.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.1.0, dans sa version du 30 septembre 2026."
+      "notes": "Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.1.0, dans sa version du 1er octobre 2026."
     }
   ]
 }

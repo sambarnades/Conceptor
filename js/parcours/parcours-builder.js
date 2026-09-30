@@ -33,6 +33,7 @@ import { h5pModules } from '../core/definitions.js';
 import { debugLog, horodatageFichier } from '../core/utils.js';
 import { mediaFilesPour, contenuPourEdition } from './sources.js';
 import { currentLang, translations } from '../core/translation.js';
+import { texteSelonPlateforme } from './vocabulaire.js';
 import {
     assembleCourseFiles,
     hasEmbeddedFiles,
@@ -338,7 +339,7 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
         // un certain intervalle »), il faut donc les lui écrire (D94).
         const groupe = aiguillages.find(g => g.chemins.some(c => c.etape === etape));
         if (groupe) {
-            const note = etiquetteDuChemin(groupe, etape, index);
+            const note = etiquetteDuChemin(groupe, etape, index, platformId);
             if (note) activities.push(note);
         }
         // L'introduction de l'étape ouvre sa section, avant la première activité.
@@ -393,7 +394,7 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
     // la voit en tête de son cours, marquée « Caché pour les étudiants », et la
     // supprime une fois le travail fait. Une étiquette ne s'achève pas : elle
     // n'entre dans aucune condition d'ouverture.
-    const memo = nbActivites ? etiquetteAFaire(aFaire) : null;
+    const memo = nbActivites ? etiquetteAFaire(aFaire, platformId) : null;
     if (memo) activities.unshift(memo);
 
     return { activities, sections, sectionsPlan, exclues, aFaire };
@@ -412,9 +413,12 @@ function etiquetteTexte(texte, titre, sectionIndex, { visible = 1 } = {}) {
     return { extracted: { ...extracted, title }, title, sectionIndex, scenario: true };
 }
 
-/** Substitue les jetons `@x` d'un libellé traduit. */
-function jetons(cle, defaut, valeurs) {
-    let s = translations[cle] || defaut;
+/**
+ * Substitue les jetons `@x` d'un libellé traduit. Avec une plateforme, le libellé
+ * nomme SON public — stagiaires sur Magistère, étudiants sur Moodle (D105).
+ */
+function jetons(cle, defaut, valeurs, plateforme = null) {
+    let s = texteSelonPlateforme(cle, plateforme) || defaut;
     for (const [k, v] of Object.entries(valeurs)) s = s.split(`@${k}`).join(String(v));
     return s;
 }
@@ -434,7 +438,7 @@ export function texteDePlage([de, a], n) {
  * L'étiquette de l'enseignant en tête d'un chemin, CACHÉE aux élèves : à qui ce
  * chemin s'ouvre, et comment réorienter un élève.
  */
-function etiquetteDuChemin(groupe, etape, sectionIndex) {
+function etiquetteDuChemin(groupe, etape, sectionIndex, plateforme = null) {
     const j = groupe.chemins.findIndex(c => c.etape === etape);
     if (j < 0 || !groupe.test) return null;
     const k = groupe.chemins.length;
@@ -444,7 +448,7 @@ function etiquetteDuChemin(groupe, etape, sectionIndex) {
     const echapper = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const texte = jetons('parcours_chemin_prof',
         'Visible par vous seul. Chemin « @r » : il s’ouvre aux élèves qui obtiennent @p au test « @t », à leur première tentative. Pour réorienter un élève, modifiez sa note à ce test dans le carnet de notes.',
-        { r: role, p: texteDePlage(plages[j], n), t: titreCarte(groupe.test) });
+        { r: role, p: texteDePlage(plages[j], n), t: titreCarte(groupe.test) }, plateforme);
     return etiquetteTexte(`<p>${echapper(texte)}</p>`, `${role} · ${translations.parcours_titre || 'Parcours'}`, sectionIndex, { visible: 0 });
 }
 
@@ -468,14 +472,15 @@ function phraseDureeParcours(plan, activities) {
 /**
  * L'étiquette « À faire avant d'ouvrir le cours », cachée aux élèves (D72).
  * @param {string[]} lignes
+ * @param {string|null} [plateforme] - Pour nommer le public caché (D105).
  * @returns {Object|null}
  */
-function etiquetteAFaire(lignes) {
+function etiquetteAFaire(lignes, plateforme = null) {
     if (!lignes.length) return null;
     const echapper = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const title = translations.parcours_afaire_titre || 'À faire avant d’ouvrir le cours';
     const intro = `<p><strong>${echapper(title)}</strong></p>`
-        + `<p>${echapper(translations.parcours_afaire_note || '')}</p>`
+        + `<p>${echapper(texteSelonPlateforme('parcours_afaire_note', plateforme) || '')}</p>`
         + `<ul>${lignes.map(l => `<li>${echapper(l)}</li>`).join('')}</ul>`;
     const extracted = construireActiviteParcours('parcours_etiquette', { title, intro }, { visible: 0 });
     return { extracted: { ...extracted, title }, title, sectionIndex: 0, scenario: true };

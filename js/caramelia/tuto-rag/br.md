@@ -296,11 +296,11 @@ Savet eo an arload evit bezañ kenglotus gant un implij war urzhiataer, gant ar 
 <!-- parcours-complet -->
 ## Krouiñ hag adkregiñ gant un heuliad klok
 
-E Caramel, **Un hent** a grou ur gentel evit Éléa, Magistère pe Moodle : meur a obererezh, renket e rannoù, en ur restr **.mbz** hepken. Ar furmskrid boas eo ar poent loc’hañ : danvez, publik ha teulioù stag.
+E Caramel, **Un hent** a grou ur gentel evit Éléa, Magistère pe Moodle : meur a obererezh, renket e rannoù, en ur restr **.mbz** hepken. Ar furmskrid boas eo ar poent loc’hañ : danvez, publik ha teulioù stag. Ar stal a implij geriaoueg ar savenn zibabet : skolidi war Éléa, stajidi war Magistère, studierien war Moodle — war ar skramm, er gentel hag en testennoù a skriv an NA.
 
 E lañser Caramelia e tigor **Krouiñ un heuliad** an atalier war-eeun, hep goulenn ouzh an NA. Ma’z eus ur brouilhed, e c’haller e adkav gant **Kenderc’hel gant ma heuliad**. Miret e vez ar maeziennoù hag ar mammennoù a zo dija. Adlenn ar stern hag ar steuñv en atalier a-raok loc’hañ ar c’hrouiñ.
 
-Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment, **Ar memes gwenodenn evit an holl** pe **Gwenodennoù hervez an disoc’hoù**, hag ur patrom : tri a vez kinniget, ha **Gwelet ar patromoù all** a ziskouez ar re all. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.
+Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment, **Ar memes gwenodenn evit an holl** pe **Gwenodennoù hervez an disoc’hoù**, hag ur patrom : ar re implijet ar muiañ a vez kinniget da gentañ — deskiñ e-unan, adwelet, en em bleustriñ, priziañ —, ha **Gwelet ar patromoù all** a ziskouez ar re all. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.
 
 E **Steuñv**, kemmit an titl, ar pal hollek, ar meizadoù pennañ, ar pazennoù hag an obererezhioù. Dilec’hit an obererezhioù gant ar biroù pe o riklañ o skeudennig. **Kemennoù ha pazenn** a servij da azasaat kemennoù ar c’hrouidigezh. Ar c’huzulioù pedagogel a sikour da adlenn hep rediañ ur patrom. **12 obererezh** d’ar muiañ.
 
@@ -326,8 +326,10 @@ War Éléa, digorit **Arventennoù ar c’hentel**, gweredekait ar gartenn araok
 
 Goude **Un hent**, ar patrom a ro an droienn a vez azasaet gant an IA d’ar sujed. Ar roll diskouezet a zepant eus ar mod kelenn hag eus ar ment dibabet ; pep obererezh a c’haller kemmañ c’hoazh er steuñv.
 
+- **Deskiñ e-unan** — Ur mennozh nevez, desket e-unan : e zizoleiñ tamm ha tamm, en em bleustriñ gant ur reizhadenn diouzhtu, derc’hel soñj eus ar pennañ, gwiriañ. *(Ur prantad · Daou pe dri frantad · Un unvez a-bezh)*
 - **Adwelet a-raok ar priziadur** — Lakaat war wel ar pezh a zo gounezet, adkinnig ar pennañ, pleustriñ, en em amprouiñ. *(Ur prantad · Daou pe dri frantad)*
-- **Prientiñ ha tremen ur priziadur** — Ur pleustr e stumm an amprouenn, ar priziadur merket, ar reizhadur. Tri obererezh, netra ken. *(Ur prantad)*
+- **En em bleustriñ** — Un adwel berr evit dihuniñ ar soñj, pleustradennoù gant kinnigoù ha goude hepto, ur gwiriadur diwezhañ : kreskiñ a ra an diaester, ne vez ket adgraet ar gentel. *(Ur prantad · Daou pe dri frantad · Un unvez a-bezh)*
+- **Priziañ** — Ar pezh a c’hortozer, ur pleustr e stumm an amprouenn, ha goude ar priziadur : ur c’hlask hepken, gant ur vevenn amzer, hep diskouez ar reizhadur ; an notenn hepken en dibenn. *(Ur prantad)*
 - **Reizhañ goude ar priziadur** — Loc'hañ a reomp diwar ar fazioù gwelet : o anvel, displegañ en-dro ar poent resis, adober, ha gwiriañ en-dro. *(Ur prantad · Daou pe dri frantad · A-bell · An daou)*
 - **Boaz berr** — Dek munutenn, atav er memes stumm. An adlavar eo a stag, n'eo ket al liesseurted. *(Ur prantad)*
 - **Dizoleiñ ur mennozh** — Un degouezh a sav goulennoù, teulioù da furchal, ha neuze an diverradenn, hag an arload nemet goude. *(Daou pe dri frantad · Un unvez a-bezh)*

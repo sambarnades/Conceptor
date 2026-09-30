@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "En Caramel, **Un itinerario** crea un curso para Éléa, Magistère o Moodle: varias actividades organizadas en secciones dentro de un solo archivo **.mbz**. El punto de partida es el formulario habitual: tema, público y documentos adjuntos."
+          "text": "En Caramel, **Un itinerario** crea un curso para Éléa, Magistère o Moodle: varias actividades organizadas en secciones dentro de un solo archivo **.mbz**. El punto de partida es el formulario habitual: tema, público y documentos adjuntos. El taller usa el vocabulario de la plataforma elegida: alumnos en Éléa, personas en formación en Magistère, estudiantes en Moodle, tanto en pantalla como en el curso y en los textos que redacta la IA."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión, **Un mismo camino para todos** o **Caminos según los resultados**, y una plantilla: se proponen tres y **Ver las demás plantillas** muestra las siguientes. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.",
+            "Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión, **Un mismo camino para todos** o **Caminos según los resultados**, y una plantilla: las más habituales se proponen primero —aprender de forma autónoma, repasar, entrenarse, evaluar— y **Ver las demás plantillas** muestra las siguientes. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.",
             "En **Plan**, edite el título, objetivo general, conceptos clave, etapas y actividades. Mueva actividades con las flechas o arrastrando su miniatura. **Instrucciones y etapa** permite ajustar las instrucciones de generación. Las orientaciones pedagógicas ayudan a revisar sin imponer un modelo. El máximo es de **12 actividades**.",
             "En la tarjeta de un **Vídeo interactivo**, pegue el enlace del vídeo. La transcripción se obtiene durante la generación; también puede pegarla manualmente. Para **Imagen interactiva**, **Encontrar la zona** o **Encontrar las zonas**, adjunte una imagen en la tarjeta: se analizará antes de generar el contenido. También puede añadir estos recursos durante la generación. Una actividad sin recurso espera mientras las demás avanzan. El escenario conserva las imágenes y los enlaces de las actividades; los documentos del formulario inicial quedan aparte. Para un **Enlace web**, pegue la dirección del recurso en la tarjeta: la IA redacta la consigna de lectura sin abrir la página.",
             "Valide el plan para iniciar la generación. Puede detenerla, retomar actividades pendientes o regenerar una actividad. El candado **No generar esta actividad** reserva el contenido para completarlo manualmente: la IA no lo genera. Si falla una regeneración, se conserva el contenido anterior. Se indican las actividades ausentes antes de exportar.",

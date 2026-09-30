@@ -56,8 +56,11 @@ process.on('exit', () => rmSync(temp, { recursive: true, force: true }));
 const VERSION = readFileSync(join(ROOT, 'index.html'), 'utf8').match(/Caramel v(\d+\.\d+\.\d+)/)?.[1];
 if (!VERSION) throw new Error('version introuvable dans le pied de page d’index.html');
 const jour = option('date') ? new Date(`${option('date')}T12:00:00`) : new Date();
-const DATE_ISO = jour.toISOString().slice(0, 10);
-const DATE = jour.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+// La date du jour en heure LOCALE : `toISOString()` passe en UTC et, après minuit à
+// Paris, donnait la veille (« 2026-09-30 » à côté de « 1er octobre 2026 »).
+const DATE_ISO = [jour.getFullYear(), String(jour.getMonth() + 1).padStart(2, '0'), String(jour.getDate()).padStart(2, '0')].join('-');
+// « 1er octobre », pas « 1 octobre » : l'ordinal du premier du mois, que `toLocaleDateString` n'écrit pas.
+const DATE = jour.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).replace(/^1 /, '1er ');
 const MOIS = jour.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
 // ─────────────────────────────────────────────────────────────── Charte
@@ -692,7 +695,7 @@ diapo({
 // 16 ── Parcours : cadrage
 diapo({
     partie: PARTIES[2], titre: 'Un parcours complet, en quatre temps',
-    notes: 'Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en quatre questions : la plateforme, le déroulé — en classe, à distance ou les deux —, l’ampleur, d’une séance à une séquence entière, et le chemin des élèves : le même pour tous, ou des chemins selon les résultats d’un test. On peut aussi partir d’une trame toute faite : trois sont proposées, les autres sont à un clic.',
+    notes: 'Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en quatre questions : la plateforme, le déroulé — en classe, à distance ou les deux —, l’ampleur, d’une séance à une séquence entière, et le chemin des élèves : le même pour tous, ou des chemins selon les résultats d’un test. On peut aussi partir d’une trame toute faite : apprendre en autonomie, réviser, s’entraîner ou évaluer — et une vingtaine d’autres à un clic.',
     dessiner(s) {
         entete(s, PARTIES[2], 'Un parcours complet, en quatre temps');
         const etapes = [['Cadrage', 'vos réglages'], ['Plan', 'relu et modifié'], ['Fabrication', 'activité par activité'], ['Livraison', 'un seul fichier de cours']];

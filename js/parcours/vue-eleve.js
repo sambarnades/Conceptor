@@ -19,7 +19,7 @@
  * @module parcours/vue-eleve
  */
 
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { el, icone, tr } from './dom.js';
 import { nomModule, imageModule, iconeModule } from './activity-router.js';
 import { moduleSAcheve } from './modules-parcours.js';
@@ -88,6 +88,10 @@ function eleveAuMoment(cours, groupe, moment, score, n) {
  * @param {string} [o.platform]
  */
 export function ouvrirVueEleve(plan, { platform } = {}) {
+    // Le public de la plateforme du parcours montré (D105), qui peut ne pas être
+    // celle du brouillon ouvert : un parcours rouvert depuis sa notification.
+    const tp = cle => t(cle, platform);
+    const trp = (cle, jetons) => tr(cle, jetons, platform);
     const retour = document.activeElement;
     const cours = coursDuPlan(plan, { sAcheve: moduleSAcheve });
     // Les aiguillages DU COURS reconstruit : ses sections et ses notes se
@@ -100,17 +104,17 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
     const dialog = el('dialog', 'pc-eleve');
     dialog.setAttribute('aria-labelledby', 'pc-eleve-titre');
     const tete = el('header', 'pc-eleve__tete');
-    const titre = el('h3', 'pc-eleve__titre', t('parcours_eleve_titre'));
+    const titre = el('h3', 'pc-eleve__titre', tp('parcours_eleve_titre'));
     titre.id = 'pc-eleve-titre';
     const fermer = el('button', 'pc-icon-btn pc-eleve__fermer');
     fermer.type = 'button';
-    fermer.setAttribute('aria-label', t('parcours_eleve_fermer'));
-    fermer.title = t('parcours_eleve_fermer');
+    fermer.setAttribute('aria-label', tp('parcours_eleve_fermer'));
+    fermer.title = tp('parcours_eleve_fermer');
     fermer.append(icone('fa-xmark'));
     fermer.addEventListener('click', () => dialog.close());
     tete.append(titre, fermer);
 
-    const aide = el('p', 'pc-eleve__aide', t(groupe ? 'parcours_eleve_aide' : 'parcours_eleve_aide_simple'));
+    const aide = el('p', 'pc-eleve__aide', tp(groupe ? 'parcours_eleve_aide' : 'parcours_eleve_aide_simple'));
     const commandes = el('div', 'pc-eleve__commandes');
     const page = el('div', 'pc-eleve__cours');
     page.setAttribute('aria-live', 'polite');
@@ -118,13 +122,13 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
     /** Un groupe de boutons-radios à un seul arrêt de tabulation. */
     function radios(labelKey, options, valeur, surChoix) {
         const ligne = el('div', 'pc-eleve__commande');
-        const lab = el('span', 'pc-eleve__lab', t(labelKey));
+        const lab = el('span', 'pc-eleve__lab', tp(labelKey));
         lab.id = `pc-eleve-${labelKey}`;
         const segment = el('div', 'pc-segment');
         segment.setAttribute('role', 'radiogroup');
         segment.setAttribute('aria-labelledby', lab.id);
         const boutons = options.map(([id, cle], i) => {
-            const b = el('button', 'pc-segment__b', t(cle));
+            const b = el('button', 'pc-segment__b', tp(cle));
             b.type = 'button';
             b.setAttribute('role', 'radio');
             b.setAttribute('aria-checked', String(id === valeur));
@@ -158,7 +162,7 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
                 (id) => { etat.moment = id; dessiner(); }));
             if (groupe && groupe.test) {
                 const ligne = el('div', 'pc-eleve__commande');
-                const lab = el('label', 'pc-eleve__lab', t('parcours_eleve_score'));
+                const lab = el('label', 'pc-eleve__lab', tp('parcours_eleve_score'));
                 lab.htmlFor = 'pc-eleve-score';
                 const curseur = el('input', 'pc-eleve__curseur');
                 curseur.type = 'range';
@@ -172,8 +176,8 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
                 sortie.htmlFor = 'pc-eleve-score';
                 const peindreScore = () => {
                     const j = bornesEnReponses(groupe.chemins.slice(1).map(c => c.depuis), n).filter(b => etat.score >= b).length;
-                    sortie.replaceChildren(document.createTextNode(tr('parcours_eleve_score_val', { k: etat.score, n })),
-                        el('span', `pc-role pc-role--${groupe.chemins[j].role}`, t(`parcours_role_${groupe.chemins[j].role}`)));
+                    sortie.replaceChildren(document.createTextNode(trp('parcours_eleve_score_val', { k: etat.score, n })),
+                        el('span', `pc-role pc-role--${groupe.chemins[j].role}`, tp(`parcours_role_${groupe.chemins[j].role}`)));
                 };
                 curseur.addEventListener('input', () => { etat.score = Number(curseur.value); peindreScore(); dessinerCours(); });
                 peindreScore();
@@ -195,10 +199,10 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
         } else vignette.append(icone(iconeModule(carte.module) || 'fa-puzzle-piece'));
         const corps = el('span', 'pc-eleve__corps');
         corps.append(el('span', 'pc-eleve__nom', titreDe(carte)));
-        if (carte.duree) corps.append(el('span', 'pc-eleve__duree', tr('parcours_duree_activite', { d: formaterDuree(carte.duree) })));
+        if (carte.duree) corps.append(el('span', 'pc-eleve__duree', trp('parcours_duree_activite', { d: formaterDuree(carte.duree) })));
         const statut = el('span', `pc-eleve__statut${fait ? ' pc-eleve__statut--fait' : ''}`);
         if (fait) statut.append(icone('fa-check'));
-        statut.append(document.createTextNode(t(fait ? 'parcours_eleve_fait' : 'parcours_eleve_a_faire')));
+        statut.append(document.createTextNode(tp(fait ? 'parcours_eleve_fait' : 'parcours_eleve_a_faire')));
         ligne.append(vignette, corps, statut);
         return ligne;
     }
@@ -208,8 +212,8 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
         page.replaceChildren();
         const accueil = el('section', 'pc-eleve__section');
         const d = dureeParEleve(plan);
-        const texteDuree = d.min === d.max ? tr('parcours_duree_parcours', { d: formaterDuree(d.max) })
-            : tr('parcours_duree_parcours_chemins', { min: formaterDuree(d.min), max: formaterDuree(d.max) });
+        const texteDuree = d.min === d.max ? trp('parcours_duree_parcours', { d: formaterDuree(d.max) })
+            : trp('parcours_duree_parcours_chemins', { min: formaterDuree(d.min), max: formaterDuree(d.max) });
         if (String(plan.introduction || '').trim()) accueil.append(el('p', 'pc-eleve__texte', plan.introduction));
         accueil.append(el('p', 'pc-eleve__texte pc-eleve__texte--fort', texteDuree));
         page.append(accueil);
@@ -225,11 +229,11 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
             if (s.role) section.dataset.role = s.role;
             const h = el('h4', 'pc-eleve__section-titre');
             if (s.type === 'fin') {
-                h.append(icone('fa-flag-checkered'), document.createTextNode(t('parcours_fin_titre')));
+                h.append(icone('fa-flag-checkered'), document.createTextNode(tp('parcours_fin_titre')));
             } else {
                 h.append(document.createTextNode(String(s.etape.titre || '').trim()
-                    || (s.role ? t(`parcours_role_${s.role}`) : tr('parcours_fiche_etape', { n: numero }))));
-                if (s.role && etat.prof) h.append(el('span', `pc-role pc-role--${s.role}`, t(`parcours_role_${s.role}`)));
+                    || (s.role ? tp(`parcours_role_${s.role}`) : trp('parcours_fiche_etape', { n: numero }))));
+                if (s.role && etat.prof) h.append(el('span', `pc-role pc-role--${s.role}`, tp(`parcours_role_${s.role}`)));
             }
             section.append(h);
             if (etat.prof && s.condition) {
@@ -238,16 +242,16 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
                         : s.condition.op === '|' ? 'parcours_eleve_cond_apres' : 'parcours_eleve_cond_progression';
                 const note = el('p', 'pc-eleve__condition');
                 note.append(icone('fa-lock'), document.createTextNode(s.type === 'chemin'
-                    ? tr(cle, { p: textePlage(s.plage, n) }) : t(cle)));
+                    ? trp(cle, { p: textePlage(s.plage, n) }) : tp(cle)));
                 section.append(note);
             } else if (vis === 'grisee') {
                 const note = el('p', 'pc-eleve__condition');
-                note.append(icone('fa-lock'), document.createTextNode(t('parcours_eleve_grisee')));
+                note.append(icone('fa-lock'), document.createTextNode(tp('parcours_eleve_grisee')));
                 section.append(note);
             }
             if (s.type === 'fin') {
                 const bravo = el('div', 'pc-eleve__bravo');
-                bravo.append(el('strong', null, t('parcours_fin_bravo')));
+                bravo.append(el('strong', null, tp('parcours_fin_bravo')));
                 if (String(plan.conclusion || '').trim()) bravo.append(el('p', null, plan.conclusion));
                 section.append(bravo);
             } else {
@@ -255,14 +259,14 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
                 for (const carte of (s.etape.cartes || [])) {
                     section.append(activite(carte, eleve.acheves.has(cours.cm.get(carte))));
                     if (groupe && groupe.test === carte && !etat.prof) {
-                        section.append(el('p', 'pc-eleve__texte pc-eleve__texte--suite', t('parcours_chemins_suite')));
+                        section.append(el('p', 'pc-eleve__texte pc-eleve__texte--suite', tp('parcours_chemins_suite')));
                     }
                 }
             }
             if (vis === 'ouverte' || etat.prof) rien = false;
             page.append(section);
         }
-        if (rien) page.append(el('p', 'pc-eleve__texte', t('parcours_eleve_rien')));
+        if (rien) page.append(el('p', 'pc-eleve__texte', tp('parcours_eleve_rien')));
     }
 
     function dessiner() {

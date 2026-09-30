@@ -41,8 +41,9 @@
  * Moodle nu — et le banc de calibrage exige qu'aucune carte ne se replie.
  *
  * `famille` regroupe les trames (séance / séquence / projet / spécialisé) sous
- * « Voir les autres modèles » (D92) : trois trames seulement s'affichent d'emblée,
- * les premières compatibles dans l'ordre de la bibliothèque.
+ * « Voir les autres modèles » (D92). S'affichent d'emblée celles de la VITRINE
+ * (D102 : apprendre en autonomie, réviser, s'entraîner, évaluer), complétées au
+ * besoin par les suivantes de la bibliothèque.
  *
  * ---- Les trames à CHEMINS (D90) ----
  *
@@ -70,6 +71,29 @@ export const CHEMINS = '@chemins';
 
 export const TRAMES = [
     {
+        // D102 : la vitrine de Gauthier (30 sept. 2026) — apprendre, réviser,
+        // s'entraîner, évaluer. Apprendre SEUL une notion nouvelle : personne pour
+        // expliquer, chaque consigne se suffit à elle-même.
+        id: 'autonomie',
+        variantes: {
+            courte: [['CoursePresentation'], ['DragTheWords'], ['QuizSetQCM']],
+            longue: [['Page', 'CoursePresentation'], ['DragTheWords', 'FillInTheBlanks', 'MarkTheWords'], ['Flashcards', 'SortParagraphs'], ['QuizSet', 'QuizSetQCM']],
+        },
+        intention: "Apprendre seul une notion nouvelle, sans personne pour expliquer : la découvrir pas à pas, par une présentation qui pose des questions et y répond avec des exemples ; s’exercer avec une correction immédiate qui explique l’erreur ; retenir l’essentiel ; vérifier ce qu’on sait faire, sur des exemples nouveaux. Chaque consigne se suffit à elle-même.",
+        nameKey: 'parcours_t_autonomie_name',
+        descKey: 'parcours_t_autonomie_desc',
+        famille: 'seance',
+        formats: ['presentiel', 'distanciel', 'hybride'],
+        ampleurs: ['courte', 'moyenne', 'longue'],
+        paliers: ['decouverte', 'entrainement', 'entrainement', 'transfert'],
+        modules: [
+            ['CoursePresentation'],
+            ['DragTheWords', 'FillInTheBlanks'],
+            ['Flashcards'],
+            ['QuizSetQCM'],
+        ],
+    },
+    {
         id: 'revision',
         // Le diagnostic est une SÉRIE d'affirmations : un Vrai/Faux n'en porte
         // qu'une, et une réponse sur deux y est juste au hasard — il ne
@@ -90,15 +114,46 @@ export const TRAMES = [
         ],
     },
     {
+        // D102 : pratiquer, de la reconnaissance à la production ; le cours n'est
+        // pas refait, la difficulté monte d'une étape à l'autre.
+        id: 'entrainement',
+        variantes: {
+            courte: [['Flashcards'], ['DragTheWords'], ['FillInTheBlanks'], ['QuizSetQCM']],
+            longue: [['Flashcards', 'DialogCards'], ['DragTheWords', 'MarkTheWords', 'SortParagraphs'], ['FillInTheBlanks', 'Crossword', 'QuizSet'], ['QuizSetQCM']],
+        },
+        intention: "Consolider par la pratique, de la reconnaissance à la production : un rappel sans support pour réactiver ce qui est su ; des exercices avec propositions, corrigés tout de suite ; les mêmes notions sans propositions ; une vérification finale qui mêle tout. La difficulté monte d’une étape à l’autre ; aucune étape ne réexplique le cours.",
+        nameKey: 'parcours_t_entrainement_name',
+        descKey: 'parcours_t_entrainement_desc',
+        famille: 'seance',
+        formats: ['presentiel', 'distanciel', 'hybride'],
+        ampleurs: ['courte', 'moyenne', 'longue'],
+        paliers: ['entrainement', 'entrainement', 'entrainement', 'transfert'],
+        modules: [
+            ['Flashcards'],
+            ['DragTheWords', 'MarkTheWords'],
+            ['FillInTheBlanks', 'QuizSet'],
+            ['QuizSetQCM'],
+        ],
+    },
+    {
+        // D102 : « Évaluer » impose au Test ses réglages d'épreuve — une seule
+        // tentative, chronométrée sur la durée de la carte, sans correction :
+        // la note seule à la fin (Gauthier, 30 sept. 2026). La page de corrigé
+        // qui suivait le Test est retirée : sans ouverture progressive, l'élève
+        // pouvait la lire AVANT l'épreuve.
         id: 'evaluation',
-        intention: "Se familiariser avec le format par un entraînement corrigé ; passer une évaluation alignée sur les objectifs ; comprendre la correction : pour chaque erreur fréquente, pourquoi elle est fausse et comment la corriger.",
+        intention: "Préparer puis passer une évaluation : une page dit ce qui est évalué, sous quelle forme, en combien de temps et comment c’est noté ; un entraînement au format de l’épreuve, corrigé ; puis l’évaluation elle-même, alignée sur les objectifs et sur tout le parcours — une seule tentative, chronométrée, sans correction affichée : l’élève voit sa note à la fin.",
         nameKey: 'parcours_t_evaluation_name',
         descKey: 'parcours_t_evaluation_desc',
         famille: 'seance',
         formats: ['presentiel', 'distanciel', 'hybride'],
         ampleurs: ['courte'],
-        paliers: ['entrainement', 'transfert', 'decouverte'],
-        modules: [['QuizSet'], ['test_elea'], ['Page']],
+        paliers: ['decouverte', 'entrainement', 'transfert'],
+        modules: [['Page'], ['QuizSet'], ['test_elea']],
+        // Posés sur le Test à la génération (`reglagesDeTrame`) ; l'enseignant
+        // les retouche ensuite dans l'éditeur s'il le veut.
+        reglagesTest: { attempts: 1, preferredbehaviour: 'deferredfeedback', review: 'marks' },
+        chronometre: true,
     },
     {
         id: 'remediation',
@@ -523,6 +578,55 @@ export function nbActivitesParEleve(trame) {
     const a = trame.aiguillage;
     if (!a) return r.reduce((x, y) => x + y, 0);
     return r.reduce((x, y, i) => x + (i >= a.debut && i < a.debut + a.nombre ? 0 : y), 0) + r[a.debut];
+}
+
+/**
+ * La VITRINE : les trames montrées d'abord, dans cet ordre, quand la modalité et
+ * l'ampleur le permettent — quatre intentions nettement distinctes, proposées par
+ * Gauthier (30 sept. 2026) : « trop de choix, et peu de différence entre réviser et
+ * remédier ». Les autres restent sous « Voir les autres modèles » (D102).
+ */
+export const VITRINE = Object.freeze(['autonomie', 'revision', 'entrainement', 'evaluation']);
+
+/** Au moins autant de modèles en vitrine : complétée dans l'ordre de la bibliothèque. */
+export const VITRINE_MIN = 3;
+
+/**
+ * Les trames de la vitrine parmi celles qui sont compatibles, complétées jusqu'à
+ * `VITRINE_MIN` par les suivantes de la bibliothèque (la structure libre exceptée).
+ * @param {Array<Object>} compatibles - Sortie de `tramesCompatibles`.
+ * @returns {Array<Object>}
+ */
+export function trameEnVitrine(compatibles) {
+    const enVitrine = VITRINE.map(id => compatibles.find(tr => tr.id === id)).filter(Boolean);
+    for (const tr of compatibles) {
+        if (enVitrine.length >= VITRINE_MIN) break;
+        if (tr.id !== 'libre' && !enVitrine.includes(tr)) enVitrine.push(tr);
+    }
+    return enVitrine;
+}
+
+/**
+ * Les réglages qu'une trame impose au Test d'un parcours (« Évaluer », D102), posés
+ * UNE fois, à la génération : l'enseignant les retouche ensuite dans l'éditeur, et
+ * rien ne les réimpose à l'assemblage. Le temps limite est la durée de la carte.
+ *
+ * @param {string} trameId - La trame du cadrage (`draft.trame`).
+ * @param {Object} carte
+ * @param {Object} contenu
+ * @returns {Object} Le contenu, réglé (une copie s'il a changé).
+ */
+export function reglagesDeTrame(trameId, carte, contenu) {
+    const trame = TRAMES.find(tr => tr.id === trameId);
+    if (!trame?.reglagesTest || carte?.module !== 'test_elea' || !contenu || typeof contenu !== 'object') return contenu;
+    return {
+        ...contenu,
+        quiz_settings: {
+            ...(contenu.quiz_settings || {}),
+            ...trame.reglagesTest,
+            ...(trame.chronometre ? { timelimit_minutes: Number(carte.duree) || 20 } : {}),
+        },
+    };
 }
 
 /** La trame ouvre-t-elle des chemins ? */

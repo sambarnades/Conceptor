@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten."
+          "text": "Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten. Het atelier gebruikt de woordenschat van het gekozen platform: leerlingen op Éléa, cursisten op Magistère, studenten op Moodle — op het scherm, in de cursus en in de teksten die de AI schrijft."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang, **Eén route voor iedereen** of **Routes volgens de resultaten**, en een sjabloon: er worden er drie voorgesteld; met **De andere sjablonen tonen** ziet u de volgende. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.",
+            "Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang, **Eén route voor iedereen** of **Routes volgens de resultaten**, en een sjabloon: de meest gebruikte komen eerst — nieuwe stof zelfstandig leren, herhalen, trainen, toetsen — en met **De andere sjablonen tonen** ziet u de volgende. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.",
             "In **Plan** bewerkt u titel, algemeen doel, kernbegrippen, stappen en activiteiten. Verplaats activiteiten met de pijlen of door hun miniatuur te slepen. Met **Instructie en leerfase** past u de generatie-instructies aan. Pedagogische aanwijzingen helpen bij het nakijken zonder een model op te leggen. Het maximum is **12 activiteiten**.",
             "Plak de videolink in de kaart van een **interactieve video**. Het transcript wordt tijdens het genereren opgehaald; u kunt het ook zelf plakken. Voeg voor een **interactieve afbeelding** en de activiteiten waarbij één of meer gebieden gezocht worden een afbeelding toe aan de kaart. Deze wordt vóór het genereren geanalyseerd. U kunt deze bronnen ook tijdens de generatiefase toevoegen. Een activiteit zonder bron wacht terwijl de andere doorgaan. Het scenario bewaart de afbeeldingen en links van de activiteiten; de documenten van het startformulier blijven apart. Plak voor een **Weblink** het adres van de bron in de kaart: de AI schrijft de leesopdracht zonder de pagina te openen.",
             "Keur het plan goed om het genereren te starten. U kunt stoppen, ontbrekende activiteiten hervatten of één activiteit opnieuw genereren. Het slot **Deze activiteit niet maken** reserveert de inhoud voor handmatige invoer: AI vult die niet. Een mislukte nieuwe generatie behoudt de vorige inhoud. Ontbrekende activiteiten worden vóór export vermeld.",

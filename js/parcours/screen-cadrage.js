@@ -15,20 +15,20 @@
  * @module parcours/screen-cadrage
  */
 
-import { t } from '../core/translation.js';
+import { t, cleSelonPlateforme } from './vocabulaire.js';
 import { CONFIG } from './config.js';
-import { TRAMES, tramesCompatibles, nbActivites, nbEtapes, rythme, palierEtape, nbActivitesParEleve } from './templates.js';
+import { TRAMES, tramesCompatibles, trameEnVitrine, nbActivites, nbEtapes, rythme, palierEtape, nbActivitesParEleve } from './templates.js';
 import { ouvrirBrouillon, majBrouillon, validerCadrage } from './state.js';
 import { nomModule, moduleDeTrame } from './activity-router.js';
 import { ROLES_PAR_NOMBRE } from './aiguillage.js';
 
-/**
- * Combien de trames s'affichent d'emblée (D92). Retour de Gauthier (sept.
- * 2026) : devant une douzaine de modèles, on se perd. Les trois premiers
- * compatibles, dans l'ordre de la bibliothèque (du besoin le plus fréquent au
- * plus spécialisé), et les autres derrière « Voir les autres modèles ».
+/*
+ * Les trames montrées d'emblée (D92, D102). Retour de Gauthier (sept. 2026) : devant
+ * une vingtaine de modèles, on se perd, et réviser ou remédier se ressemblent. La
+ * VITRINE de `templates.js` — apprendre en autonomie, réviser, s'entraîner,
+ * évaluer — quand la modalité et l'ampleur le permettent ; les autres derrière
+ * « Voir les autres modèles ».
  */
-const TRAMES_EN_VUE = 3;
 
 /** Les autres modèles restent dépliés le temps de la visite de l'atelier. */
 let autresModelesOuverts = false;
@@ -117,13 +117,21 @@ function construireChoix({ titleKey, hintKey, options, valeur, variante, platefo
     const bloc = el('div', 'pc-block');
     const peintres = [];
 
+    // Titre, aide et options se repeignent quand la plateforme change : chacune
+    // nomme son public — élèves, stagiaires, étudiants (D105).
     const head = el('div', 'pc-block__head');
-    head.append(el('h3', 'pc-block__title', t(titleKey)));
-    if (hintKey) head.append(el('p', 'pc-block__hint', t(hintKey)));
+    const titre = el('h3', 'pc-block__title');
+    head.append(titre);
+    const aide = hintKey ? el('p', 'pc-block__hint') : null;
+    if (aide) head.append(aide);
 
     const groupe = el('div', `pc-choices${classe ? ` ${classe}` : ''}`);
     groupe.setAttribute('role', 'group');
-    groupe.setAttribute('aria-label', t(titleKey));
+    peintres.push(() => {
+        titre.textContent = t(titleKey);
+        groupe.setAttribute('aria-label', t(titleKey));
+        if (aide) aide.textContent = t(hintKey);
+    });
 
     for (const opt of options) {
         const btn = el('button', 'pc-choice');
@@ -140,9 +148,9 @@ function construireChoix({ titleKey, hintKey, options, valeur, variante, platefo
         const description = el('span', 'pc-choice__desc');
         peintres.push(() => {
             const libelles = { ...opt, ...opt.platformLabels?.[plateforme()] };
-            nom.dataset.key = libelles.nameKey;
+            nom.dataset.key = cleSelonPlateforme(libelles.nameKey);
             texteNom.textContent = t(libelles.nameKey);
-            description.dataset.key = libelles.descKey;
+            description.dataset.key = cleSelonPlateforme(libelles.descKey);
             description.textContent = t(libelles.descKey);
         });
 
@@ -445,7 +453,8 @@ export function construireCadrage(api) {
             autres.hidden = true;
             return;
         }
-        const enVue = dispo.filter(tr2 => tr2.id !== 'libre').slice(0, TRAMES_EN_VUE);
+        const enVue = trameEnVitrine(dispo);
+        grilleTrames.classList.toggle('pc-trames--4', enVue.length === 4);
         const reste = dispo.filter(tr2 => !enVue.includes(tr2));
         for (const trame of enVue) {
             grilleTrames.append(carteTrame(trame, trame.id === draft.trame, choisirTrame, draft.platform));
@@ -525,8 +534,11 @@ export function construireCadrage(api) {
         variante: 'platform',
         onPick: (id) => {
             majBrouillon({ platform: id });
+            // Chaque bloc nomme le public de la plateforme (D105) ; l'aperçu des
+            // trames résout aussi ses alternatives sur elle.
             blocFormat.rafraichirLibelles();
-            // L'aperçu des trames résout ses alternatives sur la plateforme.
+            blocStructure.rafraichirLibelles();
+            peindreNombre();
             dessinerTrames();
         },
     });

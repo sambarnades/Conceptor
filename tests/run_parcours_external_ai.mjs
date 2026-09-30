@@ -184,6 +184,13 @@ try {
         results.push({module:'Alternative de l’image conservée',ok:imageResult.value.backgroundImageAltText === imageExample.backgroundImageAltText});
         try { await verifierActiviteExterne('{}', {carte:{module:'MultipleChoice'},source:null}); results.push({module: 'Réponse vide refusée',ok:false}); }
         catch { results.push({module:'Réponse vide refusée',ok:true}); }
+        // Un exercice collé sans consigne est refusé, en nommant la question (D103) :
+        // le schéma de l'éditeur tient la consigne pour obligatoire.
+        const quiz = await fetch('/assets/data/examples/quiz_mixte_1.json').then(r => r.json());
+        const rang = quiz.questions.findIndex(q => String(q.library).startsWith('H5P.MarkTheWords'));
+        delete quiz.questions[rang].params.taskDescription;
+        try { await verifierActiviteExterne(JSON.stringify(quiz), {carte:{module:'QuizSet',titre:'Essai'},source:null}); results.push({module:'Consigne manquante refusée',ok:false}); }
+        catch (e) { const nommee = new RegExp(`Question ${rang + 1} .*Consigne`).test(e.message); results.push({module:'Consigne manquante refusée, question nommée',ok:nommee,...(nommee ? {} : {error:e.message})}); }
         return results;
     }, examples);
     for (const result of contracts) check(result.ok, 'Réponse exemple ' + result.module + (result.error ? ': ' + result.error : ''));

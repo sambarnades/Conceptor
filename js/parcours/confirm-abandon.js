@@ -1,5 +1,5 @@
 /** Confirmation propre à l'atelier, sans dialogue natif superposé. */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { el, action } from './dom.js';
 
 /**

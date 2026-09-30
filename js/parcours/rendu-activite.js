@@ -14,7 +14,7 @@
  * @module parcours/rendu-activite
  */
 import { mediaFilesPour, contenuPourEdition } from './sources.js';
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { allModules, h5pModules } from '../core/definitions.js';
 import { formatTextToHtml } from '../core/utils.js';
 import { nomModule } from './activity-router.js';

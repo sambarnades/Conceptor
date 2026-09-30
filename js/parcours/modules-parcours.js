@@ -57,7 +57,7 @@
  * @module parcours/modules-parcours
  */
 
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { escapeXml } from '../moodle/moodle-formats.js';
 import { ID, tronquer, nom, html, moduleXml, activiteXml } from './modules-socle.js';
 import { MODULES_NATIFS } from './modules-natifs.js';

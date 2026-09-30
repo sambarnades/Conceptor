@@ -301,11 +301,11 @@ De applicatie is ontworpen voor gebruik op een computer, met donkere/lichte modi
 <!-- parcours-complet -->
 ## Een volledige cursus maken en hervatten
 
-Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten.
+Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten. Het atelier gebruikt de woordenschat van het gekozen platform: leerlingen op Éléa, cursisten op Magistère, studenten op Moodle — op het scherm, in de cursus en in de teksten die de AI schrijft.
 
 In het menu van Caramelia opent **Een cursus maken** direct de werkplaats, zonder AI-aanvraag. Als er een concept bestaat, opent **Mijn cursus hervatten** dit opnieuw. Bestaande velden en bronnen blijven behouden. Controleer de opzet en het plan in de werkplaats voordat je de generatie start.
 
-Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang, **Eén route voor iedereen** of **Routes volgens de resultaten**, en een sjabloon: er worden er drie voorgesteld; met **De andere sjablonen tonen** ziet u de volgende. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.
+Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang, **Eén route voor iedereen** of **Routes volgens de resultaten**, en een sjabloon: de meest gebruikte komen eerst — nieuwe stof zelfstandig leren, herhalen, trainen, toetsen — en met **De andere sjablonen tonen** ziet u de volgende. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.
 
 In **Plan** bewerkt u titel, algemeen doel, kernbegrippen, stappen en activiteiten. Verplaats activiteiten met de pijlen of door hun miniatuur te slepen. Met **Instructie en leerfase** past u de generatie-instructies aan. Pedagogische aanwijzingen helpen bij het nakijken zonder een model op te leggen. Het maximum is **12 activiteiten**.
 
@@ -331,8 +331,10 @@ Open in Éléa **Cursusinstellingen**, schakel de voortgangskaart in en kies met
 
 Na **Een leerpad** bepaalt het sjabloon het verloop dat de AI aan uw onderwerp aanpast. De getoonde lijst hangt af van de gekozen lesvorm en omvang; elke activiteit blijft aanpasbaar in het plan.
 
+- **Nieuwe stof zelfstandig leren** — Een nieuw begrip, zelfstandig geleerd: het stap voor stap ontdekken, oefenen met directe feedback, het wezenlijke onthouden, controleren. *(Eén les · Twee tot drie lessen · Een volledige lessenreeks)*
 - **Herhalen vóór de toets** — Nagaan wat al zit, het wezenlijke opnieuw voor ogen brengen, oefenen, jezelf testen. *(Eén les · Twee tot drie lessen)*
-- **Een toets voorbereiden en afleggen** — Oefenen in het toetsformaat, de beoordeelde toets, de verbetersleutel. Drie activiteiten, niet meer. *(Eén les)*
+- **Trainen** — Een korte herhaling om te activeren, oefeningen eerst met en dan zonder keuzemogelijkheden, een eindcontrole: de moeilijkheid stijgt, de les wordt niet overgedaan. *(Eén les · Twee tot drie lessen · Een volledige lessenreeks)*
+- **Toetsen** — Wat er verwacht wordt, oefenen in het toetsformaat, dan de toets: één poging, met tijdslimiet, zonder zichtbare verbetering; op het einde alleen het cijfer. *(Eén les)*
 - **Herstellen na de toets** — Je vertrekt van de vastgestelde fouten: benoemen, het precieze punt opnieuw uitleggen, overdoen, opnieuw nagaan. *(Eén les · Twee tot drie lessen · Op afstand · Allebei)*
 - **Kort ritueel** — Tien minuten, altijd dezelfde vorm. Het is de herhaling die het vastzet, niet de afwisseling. *(Eén les)*
 - **Een begrip ontdekken** — Een situatie die vragen oproept, documenten om te verkennen, dan de samenvatting en pas daarna de toepassing. *(Twee tot drie lessen · Een volledige lessenreeks)*

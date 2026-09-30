@@ -19,7 +19,7 @@
  * @module parcours/screen-livraison
  */
 
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { debugLog, classifyError } from '../core/utils.js';
 import { nomModule } from './activity-router.js';
 import { cartesAPlat } from './parcours-runner.js';

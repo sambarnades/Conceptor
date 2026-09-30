@@ -18,7 +18,7 @@
  */
 
 import { allModules } from '../core/definitions.js';
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { CONFIG } from './config.js';
 import { MODULES_PARCOURS, modulesParcoursPour, estModuleParcours } from './modules-parcours.js';
 

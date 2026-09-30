@@ -17,14 +17,17 @@
  *  4. Édition du plan — ouvrir, ajouter, retirer, refermer, normaliser ;
  *  5. Problèmes bloquants, historique d'une carte, réglages du test et des rôles ;
  *  6. Trames et calibrage — ce que fait UN élève tient dans l'ampleur, ce qui se
- *     fabrique sous le plafond de douze.
+ *     fabrique sous le plafond de douze ;
+ *  7. La vitrine et « Évaluer » (D102) ;
+ *  8. Le vocabulaire de la plateforme (D105) — élèves, stagiaires, étudiants.
  *
  * Lancement :  node tests/run_parcours_chemins.mjs
  */
 import * as A from '../js/parcours/aiguillage.js';
 import { CONFIG } from '../js/parcours/config.js';
-import { tramesCompatibles, nbActivites, nbActivitesParEleve } from '../js/parcours/templates.js';
+import { tramesCompatibles, nbActivites, nbActivitesParEleve, trameEnVitrine, VITRINE, reglagesDeTrame } from '../js/parcours/templates.js';
 import { calibrer } from '../js/parcours/calibrage.js';
+import { readFileSync, readdirSync } from 'fs';
 
 let pass = 0, fail = 0;
 const echecs = [];
@@ -329,6 +332,58 @@ console.log('\n── 6. Trames et calibrage ───────────�
     ok('aucune trame linéaire ne se glisse parmi les trames à chemins, et inversement', CONFIG.ampleurs.every(a => CONFIG.formats.every(f =>
         tramesCompatibles(f.id, a.id, { structure: 'chemins' }).every(tr => tr.id === 'libre' || tr.structure === 'chemins')
         && tramesCompatibles(f.id, a.id).every(tr => tr.structure !== 'chemins'))));
+}
+
+/* ------------------------------------------------------------------ */
+console.log('\n── 7. La vitrine et « Évaluer » (D102) ─────────────────────');
+{
+    const ecarts = [];
+    for (const a of CONFIG.ampleurs) for (const f of CONFIG.formats) {
+        const compatibles = tramesCompatibles(f.id, a.id);
+        const vitrine = trameEnVitrine(compatibles).map(tr => tr.id);
+        const attendues = VITRINE.filter(id => compatibles.some(tr => tr.id === id));
+        if (JSON.stringify(vitrine.slice(0, attendues.length)) !== JSON.stringify(attendues)) ecarts.push(`${a.id}/${f.id} : ${vitrine.join(',')}`);
+        if (vitrine.length < Math.min(3, compatibles.filter(tr => tr.id !== 'libre').length) || vitrine.includes('libre')) ecarts.push(`${a.id}/${f.id} : ${vitrine.length} en vitrine`);
+    }
+    ok('la vitrine montre d’abord apprendre, réviser, s’entraîner, évaluer (quand ils sont compatibles), trois au moins, jamais la structure libre',
+        ecarts.length === 0, ecarts.join(' | '));
+    const seance = trameEnVitrine(tramesCompatibles('distanciel', 'courte')).map(tr => tr.id).join(',');
+    ok('en séance, les quatre intentions de Gauthier, dans son ordre', seance === 'autonomie,revision,entrainement,evaluation', seance);
+    const test = { module: 'test_elea', duree: 25 };
+    const regle = reglagesDeTrame('evaluation', test, { questions: [], quiz_settings: { overallfeedback: [{ from: 0, to: 100, feedback: 'x' }] } });
+    ok('« Évaluer » règle le Test en épreuve : une tentative, feedback différé, note seule, chronométré sur la durée de la carte',
+        JSON.stringify(regle.quiz_settings) === JSON.stringify({ overallfeedback: [{ from: 0, to: 100, feedback: 'x' }], attempts: 1, preferredbehaviour: 'deferredfeedback', review: 'marks', timelimit_minutes: 25 }),
+        JSON.stringify(regle.quiz_settings));
+    const intact = { questions: [] };
+    ok('les autres trames, et les autres activités d’« Évaluer », ne sont pas touchées',
+        reglagesDeTrame('revision', test, intact) === intact && reglagesDeTrame('evaluation', { module: 'QuizSet', duree: 10 }, intact) === intact);
+}
+
+console.log('\n── 8. Le vocabulaire de la plateforme (D105) ───────────────');
+{
+    // Élèves sur Éléa, stagiaires sur Magistère, étudiants sur Moodle : un texte qui
+    // nomme le public a sa variante `<clé>_magistere` / `<clé>_moodle`, que seul le
+    // `t()` de `vocabulaire.js` sait choisir. Un module qui importerait celui du cœur
+    // reparlerait d'élèves partout, sans que rien d'autre ne le voie.
+    const dossier = new URL('../js/parcours/', import.meta.url);
+    const directs = readdirSync(dossier).filter(f => f.endsWith('.js') && f !== 'vocabulaire.js')
+        .filter(f => /import\s*\{[^}]*\bt\b[^}]*\}\s*from\s*'\.\.\/core\/translation\.js'/.test(readFileSync(new URL(f, dossier), 'utf8')));
+    ok('aucun module de l’atelier ne prend `t` au cœur : tous passent par vocabulaire.js', !directs.length, directs.join(', '));
+
+    const locales = Object.fromEntries(['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br']
+        .map(l => [l, JSON.parse(readFileSync(new URL(`../js/locales/${l}.json`, import.meta.url), 'utf8'))]));
+    const fr = locales.fr;
+    const variantes = Object.keys(fr).filter(k => /_(magistere|moodle)$/.test(k) && k.startsWith('parcours_')
+        && fr[k.replace(/_(magistere|moodle)$/, '')] !== undefined);
+    const jetons = x => String(x).match(/@\w+/g)?.sort().join(',') || '';
+    ok(`${variantes.length} variantes, chacune à côté de sa clé de base, avec les mêmes jetons dans les 12 langues`,
+        variantes.length >= 120 && Object.entries(locales).every(([, d]) => variantes.every(k => jetons(d[k]) === jetons(d[k.replace(/_(magistere|moodle)$/, '')]))),
+        Object.entries(locales).flatMap(([l, d]) => variantes.filter(k => jetons(d[k]) !== jetons(d[k.replace(/_(magistere|moodle)$/, '')])).map(k => `${l}:${k}`)).slice(0, 8).join(' '));
+    const fautives = variantes.filter(k => /élève/i.test(fr[k]) || (/_moodle$/.test(k) && /stagiaire/.test(fr[k])) || (/_magistere$/.test(k) && /étudiant/.test(fr[k])));
+    ok('en français, une variante Magistère ne parle que de stagiaires, une variante Moodle que d’étudiants', !fautives.length, fautives.join(', '));
+    const nonTraduites = Object.entries(locales).filter(([l]) => l !== 'fr')
+        .flatMap(([l, d]) => variantes.filter(k => d[k] === fr[k]).map(k => `${l}:${k}`));
+    ok('les variantes sont traduites dans les 11 autres langues', !nonTraduites.length, `${nonTraduites.length} : ${nonTraduites.slice(0, 6).join(' ')}`);
 }
 
 console.log('\n========================================');

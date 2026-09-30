@@ -1,5 +1,5 @@
 /** Le même support dans le plan et dans la file, sans quitter la carte. */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { action } from './dom.js';
 import { typeSource, joindreImage, purgerMedias, transcriptionDecalee } from './sources.js';
 

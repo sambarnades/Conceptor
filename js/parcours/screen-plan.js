@@ -14,13 +14,13 @@
 
 import { construireSaisieSource } from './source-input.js';
 import { typeSource, sourceManquante, purgerMedias } from './sources.js';
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { dureeTotale, formaterDuree, expliquerEstimation } from './duree.js';
 // Réexportés : l'écran de livraison et les bancs les prennent ici.
 export { dureeTotale, formaterDuree };
 import { nomModule, imageModule, iconeModule, modulesDisponibles, resoudreModule, moduleDeTrame } from './activity-router.js';
 import { majBrouillon } from './state.js';
-import { palierEtape, trameParId } from './templates.js';
+import { palierEtape, trameParId, TRAMES } from './templates.js';
 import { normaliserPalier } from './calibrage.js';
 import { relirePlan, nbAttentions, ciblesSignalees } from './garde-fous.js';
 import { carteDisponible, carteParDefaut, normaliserCarte } from './carte-progression.js';
@@ -1434,6 +1434,13 @@ export function construirePlan(draft, api) {
             const marque = el('p', 'pc-carte__aiguille');
             marque.append(icone('fa-code-fork'), document.createTextNode(t('parcours_aig_pivot')));
             marque.title = t('parcours_aig_pivot_hint');
+            corps.append(marque);
+        }
+        // Le Test d'une trame « Évaluer » part réglé en épreuve (D102) : on le dit.
+        const trameDuParcours = TRAMES.find(tr => tr.id === draft.trame);
+        if (carte.module === 'test_elea' && trameDuParcours?.reglagesTest) {
+            const marque = el('p', 'pc-carte__aiguille pc-carte__epreuve');
+            marque.append(icone('fa-stopwatch'), document.createTextNode(tr('parcours_carte_epreuve', { d: formaterDuree(Number(carte.duree) || 20) })));
             corps.append(marque);
         }
         if (carte.moduleReplie) {

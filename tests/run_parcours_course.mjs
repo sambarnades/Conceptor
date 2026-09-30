@@ -439,6 +439,20 @@ try {
         return Object.entries(files).find(([k]) => /activities\/quiz_\d+\/quiz\.xml$/.test(k))?.[1] || '';
     }, PLAN);
 
+    // « Évaluer » (D102) : le Test d'une trame d'épreuve reçoit ses réglages à la
+    // génération (`reglagesDeTrame`) ; ils doivent atteindre le quiz.xml du cours.
+    const quizEpreuve = await page.evaluate(async (plan) => {
+        const { planVersActivites, IDENTITE_CARAMEL } = await import('/js/parcours/parcours-builder.js');
+        const { assembleCourseFiles } = await import('/js/moodle/mbz-course-builder.js');
+        const { reglagesDeTrame } = await import('/js/parcours/templates.js');
+        const p = structuredClone(plan);
+        const carte = p.etapes.flatMap(e => e.cartes).find(c => c.module === 'test_elea');
+        carte.contenu = reglagesDeTrame('evaluation', carte, carte.contenu);
+        const { activities, sections } = await planVersActivites(p);
+        const { files } = assembleCourseFiles({ courseTitle: p.titre, timestamp: 1756000000, activities, sections, identite: IDENTITE_CARAMEL });
+        return { xml: Object.entries(files).find(([k]) => /activities\/quiz_\d+\/quiz\.xml$/.test(k))?.[1] || '', duree: carte.duree };
+    }, PLAN);
+
     console.log('\n── Les sept cartes du plan ─────────────────────────────────');
     for (const v of r.voies) console.log(`   ${v.titre} → ${v.moduleName} (voie « ${v.kind} »)`);
     if (r.exclues.length) console.log('   écartées :', JSON.stringify(r.exclues));
@@ -826,6 +840,19 @@ try {
     ok('achèvement « note reçue » et carnet noté sur la note du Test, comme Éléa',
         /<completion>2<\/completion>\s*<completiongradeitemnumber>0<\/completiongradeitemnumber>/.test(r.quizModuleXml)
         && val(r.quizGradesXml, 'grademax') === val(r.quizXml, 'grade') && val(r.quizXml, 'grade') === '10.00000');
+
+    const epreuve = quizEpreuve.xml;
+    ok('« Évaluer » : une seule tentative, chronométrée sur la durée de la carte, feedback différé',
+        val(epreuve, 'attempts_number') === '1' && val(epreuve, 'timelimit') === String(quizEpreuve.duree * 60)
+        && val(epreuve, 'preferredbehaviour') === 'deferredfeedback',
+        ['attempts_number', 'timelimit', 'preferredbehaviour'].map(t => `${t}=${val(epreuve, t)}`).join(' '));
+    // Relecture « note seule » : sans `attempt`, la page de relecture ne s'ouvre pas
+    // — ni réponses, ni correction, ni retours ; la note, elle, s'affiche.
+    ok('« Évaluer » : après la tentative, la note seule — ni réponses, ni correction, ni retours',
+        (Number(val(epreuve, 'reviewattempt')) & 0x01000) === 0 && (Number(val(epreuve, 'reviewcorrectness')) & 0x01000) === 0
+        && (Number(val(epreuve, 'reviewspecificfeedback')) & 0x01000) === 0 && (Number(val(epreuve, 'reviewrightanswer')) & 0x01000) === 0
+        && (Number(val(epreuve, 'reviewmarks')) & 0x01000) !== 0,
+        ['reviewattempt', 'reviewcorrectness', 'reviewmarks', 'reviewrightanswer'].map(t => `${t}=${val(epreuve, t)}`).join(' '));
 
     console.log('\n── Le pool de fichiers (le .h5p embarqué) ──────────────────');
     const hash = r.voies[0]?.contenthash || '';

@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Mit **Ein Lernpfad** erstellt Caramel einen Kurs für Éléa, Magistère oder Moodle: mehrere Aktivitäten in Abschnitten, in einer einzigen **.mbz**-Datei. Ausgangspunkt bleibt das gewohnte Formular mit Thema, Zielgruppe und angehängten Dokumenten."
+          "text": "Mit **Ein Lernpfad** erstellt Caramel einen Kurs für Éléa, Magistère oder Moodle: mehrere Aktivitäten in Abschnitten, in einer einzigen **.mbz**-Datei. Ausgangspunkt bleibt das gewohnte Formular mit Thema, Zielgruppe und angehängten Dokumenten. Die Werkstatt spricht die Sprache der gewählten Plattform: Lernende auf Éléa, Teilnehmende auf Magistère, Studierende auf Moodle – auf dem Bildschirm, im Kurs und in den Texten, die die KI verfasst."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang, **Ein Weg für alle** oder **Wege je nach Ergebnis** und eine Vorlage: Drei werden vorgeschlagen, über **Weitere Vorlagen anzeigen** erscheinen die übrigen. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.",
+            "Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang, **Ein Weg für alle** oder **Wege je nach Ergebnis** und eine Vorlage: Die gängigsten werden zuerst vorgeschlagen – Neues eigenständig erarbeiten, wiederholen, trainieren, prüfen –, über **Weitere Vorlagen anzeigen** erscheinen die übrigen. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.",
             "Unter **Plan** bearbeiten Sie Titel, Gesamtziel, Schlüsselbegriffe, Abschnitte und Aktivitäten. Verschieben Sie Aktivitäten mit den Pfeilen oder an ihrem Vorschaubild. **Arbeitsauftrag und Lernphase** erlaubt das Anpassen der Generierungsanweisungen. Pädagogische Hinweise unterstützen die Durchsicht, ohne ein Modell vorzuschreiben. Maximal **12 Aktivitäten** sind möglich.",
             "Fügen Sie den Videolink in die Karte eines **interaktiven Videos** ein. Das Transkript wird beim Erstellen abgerufen; Sie können es auch selbst einfügen. Hängen Sie für **interaktive Bilder** und die Aktivitäten zum Finden einer oder mehrerer Bildstellen ein Bild an die Karte an. Es wird vor der Erstellung analysiert. Sie können diese Medien auch während der Erstellungsphase ergänzen. Eine Aktivität ohne Medium wartet, während die anderen fortfahren. Die Szenariodatei enthält die Bilder und Links der Aktivitäten; die Dokumente des Startformulars bleiben davon getrennt. Fügen Sie bei einem **Weblink** die Adresse der Ressource in die Karte ein: Die KI verfasst die Leseanweisung, ohne die Seite zu öffnen.",
             "Bestätigen Sie den Plan, um die Erstellung zu starten. Sie können stoppen, fehlende Aktivitäten fortsetzen oder eine Aktivität neu erstellen. Das Schloss **Diese Aktivität nicht erzeugen** reserviert den Inhalt für manuelle Eingabe: Die KI füllt ihn nicht. Eine fehlgeschlagene Neuerstellung erhält den bisherigen Inhalt. Fehlende Aktivitäten werden vor dem Export benannt.",

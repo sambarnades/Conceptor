@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "In Caramel, **Un percorso** crea un corso per Éléa, Magistère o Moodle: più attività organizzate in sezioni in un unico file **.mbz**. Il punto di partenza resta il modulo abituale: argomento, destinatari e documenti allegati."
+          "text": "In Caramel, **Un percorso** crea un corso per Éléa, Magistère o Moodle: più attività organizzate in sezioni in un unico file **.mbz**. Il punto di partenza resta il modulo abituale: argomento, destinatari e documenti allegati. Il laboratorio usa il vocabolario della piattaforma scelta: alunni su Éléa, partecipanti su Magistère, studenti su Moodle — sullo schermo, nel corso e nei testi che scrive l’IA."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza, **Uno stesso cammino per tutti** o **Cammini in base ai risultati**, e un modello: ne vengono proposti tre, e **Vedi gli altri modelli** mostra i successivi. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.",
+            "Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza, **Uno stesso cammino per tutti** o **Cammini in base ai risultati**, e un modello: i più comuni vengono proposti per primi — imparare in autonomia, ripassare, allenarsi, valutare — e **Vedi gli altri modelli** mostra i successivi. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.",
             "In **Piano**, modifica titolo, obiettivo generale, concetti chiave, fasi e attività. Sposta le attività con le frecce o trascinando la miniatura. **Consegna e fase** permette di regolare le istruzioni di generazione. I suggerimenti pedagogici aiutano a rileggere senza imporre un modello. Il massimo è di **12 attività**.",
             "Nella scheda di un **Video interattivo**, incollate il link del video. La trascrizione viene recuperata durante la generazione; potete anche incollarla manualmente. Per **Immagine interattiva**, **Trova la zona** o **Trova le zone**, allegate un’immagine alla scheda: sarà analizzata prima della generazione. Potete aggiungere questi supporti anche durante la fase di generazione. Un’attività senza supporto attende mentre le altre proseguono. Lo scenario conserva le immagini e i link delle attività; i documenti del modulo iniziale restano separati. Per un **Link web**, incollate l’indirizzo della risorsa nella scheda: l’IA scrive la consegna di lettura senza aprire la pagina.",
             "Approva il piano per avviare la generazione. Puoi fermarla, riprendere le attività mancanti o rigenerarne una. Il lucchetto **Non generare questa attività** riserva il contenuto all’inserimento manuale: l’IA non lo compila. Una rigenerazione fallita conserva il contenuto precedente. Le attività assenti sono indicate prima dell’esportazione.",

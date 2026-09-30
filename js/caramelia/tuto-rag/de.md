@@ -305,11 +305,11 @@ Die Anwendung ist für die Nutzung am Computer konzipiert, einschließlich Hell-
 <!-- parcours-complet -->
 ## Einen vollständigen Kurs erstellen und wieder öffnen
 
-Mit **Ein Lernpfad** erstellt Caramel einen Kurs für Éléa, Magistère oder Moodle: mehrere Aktivitäten in Abschnitten, in einer einzigen **.mbz**-Datei. Ausgangspunkt bleibt das gewohnte Formular mit Thema, Zielgruppe und angehängten Dokumenten.
+Mit **Ein Lernpfad** erstellt Caramel einen Kurs für Éléa, Magistère oder Moodle: mehrere Aktivitäten in Abschnitten, in einer einzigen **.mbz**-Datei. Ausgangspunkt bleibt das gewohnte Formular mit Thema, Zielgruppe und angehängten Dokumenten. Die Werkstatt spricht die Sprache der gewählten Plattform: Lernende auf Éléa, Teilnehmende auf Magistère, Studierende auf Moodle – auf dem Bildschirm, im Kurs und in den Texten, die die KI verfasst.
 
 Im Menü von Caramelia öffnet **Einen Kurs erstellen** direkt die Werkstatt, ohne KI-Anfrage. Ein vorhandener Entwurf wird mit **Meinen Kurs fortsetzen** wieder geöffnet. Ausgefüllte Felder und Quellen bleiben erhalten. Prüfe Rahmen und Plan in der Werkstatt, bevor du die Generierung startest.
 
-Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang, **Ein Weg für alle** oder **Wege je nach Ergebnis** und eine Vorlage: Drei werden vorgeschlagen, über **Weitere Vorlagen anzeigen** erscheinen die übrigen. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.
+Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang, **Ein Weg für alle** oder **Wege je nach Ergebnis** und eine Vorlage: Die gängigsten werden zuerst vorgeschlagen – Neues eigenständig erarbeiten, wiederholen, trainieren, prüfen –, über **Weitere Vorlagen anzeigen** erscheinen die übrigen. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.
 
 Unter **Plan** bearbeiten Sie Titel, Gesamtziel, Schlüsselbegriffe, Abschnitte und Aktivitäten. Verschieben Sie Aktivitäten mit den Pfeilen oder an ihrem Vorschaubild. **Arbeitsauftrag und Lernphase** erlaubt das Anpassen der Generierungsanweisungen. Pädagogische Hinweise unterstützen die Durchsicht, ohne ein Modell vorzuschreiben. Maximal **12 Aktivitäten** sind möglich.
 
@@ -335,8 +335,10 @@ Zum Weiterlesen: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses
 
 Nach **Ein Lernpfad** gibt die Vorlage den Ablauf vor, den die KI an Ihr Thema anpasst. Die angezeigte Liste hängt von Unterrichtsform und Umfang ab; jede Aktivität bleibt im Plan veränderbar.
 
+- **Neues eigenständig erarbeiten** — Ein neuer Begriff, allein erarbeitet: Schritt für Schritt entdecken, mit sofortiger Korrektur üben, das Wesentliche behalten, überprüfen. *(Eine Stunde · Zwei bis drei Stunden · Eine ganze Einheit)*
 - **Vor der Prüfung wiederholen** — Feststellen, was sitzt, das Wesentliche wieder sichtbar machen, üben, sich selbst testen. *(Eine Stunde · Zwei bis drei Stunden)*
-- **Eine Prüfung vorbereiten und schreiben** — Üben im Prüfungsformat, die benotete Prüfung, die Lösung. Drei Aktivitäten, mehr nicht. *(Eine Stunde)*
+- **Trainieren** — Kurzes Abrufen zum Aktivieren, Übungen erst mit, dann ohne Vorgaben, eine abschließende Überprüfung: Die Schwierigkeit steigt, der Stoff wird nicht neu erklärt. *(Eine Stunde · Zwei bis drei Stunden · Eine ganze Einheit)*
+- **Prüfen** — Die Erwartungen, Üben im Prüfungsformat, dann die Prüfung: ein einziger Versuch, mit Zeitlimit, ohne angezeigte Korrektur; am Ende nur die Note. *(Eine Stunde)*
 - **Nach der Prüfung nacharbeiten** — Man geht von den tatsächlichen Fehlern aus: benennen, den genauen Punkt neu erklären, wiederholen, erneut prüfen. *(Eine Stunde · Zwei bis drei Stunden · Auf Distanz · Beides)*
 - **Kurzes Ritual** — Zehn Minuten, immer dieselbe Form. Es ist die Wiederholung, die sitzt, nicht die Abwechslung. *(Eine Stunde)*
 - **Einen Begriff entdecken** — Eine Situation, die Fragen aufwirft, Dokumente zum Erkunden, dann die Zusammenfassung und erst danach die Anwendung. *(Zwei bis drei Stunden · Eine ganze Einheit)*

@@ -222,8 +222,8 @@ try {
             ] };
 
         const TS = 1759000000;
-        const lire = async (plan) => {
-            const paquet = await assemblerParcours(plan, { timestamp: TS, platformId: 'elea' });
+        const lire = async (plan, platformId = 'elea') => {
+            const paquet = await assemblerParcours(plan, { timestamp: TS, platformId });
             const tar = window.fflate.gunzipSync(paquet.bytes);
             const textes = {};
             for (let o = 0; o + 512 <= tar.length;) {
@@ -258,7 +258,42 @@ try {
         const testRegle = reglages(await contenuDe(await activiteDepuisCarte(carte('x1', 'QuizSetQCM', piege), { aiguille: true })));
         const testLibre = reglages(await contenuDe(await activiteDepuisCarte(carte('x2', 'QuizSetQCM', piege))));
 
-        return { h5p: await lire(planH5P), test: await lire(planTest), lineaire: await lire(planLineaire), incomplet, testRegle, testLibre };
+        // Le vocabulaire de la plateforme (D105) : le même parcours, sur Magistère et
+        // sur Moodle, avec un choix de groupe (Magistère) pour la liste « À faire ».
+        const { construireFiche } = await import('/js/parcours/fiche-sequence.js');
+        const { construirePromptPlan, construirePromptModuleParcours } = await import('/js/parcours/scenario-prompt.js');
+        const { cleSelonPlateforme } = await import('/js/parcours/vocabulaire.js');
+        const avecGroupe = structuredClone(planH5P);
+        avecGroupe.etapes[0].cartes.unshift({ ...carte('g0', 'parcours_choix_groupe', null, 2, 'decouverte'),
+            contenu: { title: 'Les groupes', intro: 'Choisissez votre groupe de travail.' } });
+        const texteCours = paquet => Object.values(paquet.textes).map(x => deXmlPage(deXmlPage(x))).join('\n');
+        // Le cours encode ses accents en entités numériques (« &#233; ») : on les rend.
+        const deXmlPage = x => String(x).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#0*39;/g, "'")
+            .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&amp;/g, '&');
+        const brouillonDe = platform => ({ platform, format: 'distanciel', ampleur: 'courte', trame: 'libre', structure: 'lineaire', chemins: 2,
+            contexte: { qui: 'un formateur', quoi: 'les accords', niveau: 'adultes', corpus: '' }, plan: structuredClone(planLineaire) });
+        const vocabulaire = {};
+        for (const platform of ['elea', 'magistere', 'moodle']) {
+            const cours = texteCours(await lire(platform === 'magistere' ? avecGroupe : planH5P, platform));
+            const fiche = construireFiche(planH5P, { platformId: platform });
+            vocabulaire[platform] = {
+                prof: (cours.match(/Visible par vous seul\.[^<]*/g) || []),
+                aFaire: (cours.match(/Cette liste est cachée[^<]*/g) || []),
+                fiche: [...fiche.meta, ...fiche.sections.flatMap(x => [x.titre, ...(x.lignes || [])])].join(' | '),
+                promptPlan: construirePromptPlan(brouillonDe(platform)).prompt,
+                promptModule: construirePromptModuleParcours(brouillonDe(platform), { id: 'm', titre: 'Le forum', objectif: 'Échanger',
+                    consigne: 'Discuter', module: 'parcours_forum', palier: 'transfert', duree: 10 }).prompt,
+            };
+        }
+        vocabulaire.cles = {
+            moodle: cleSelonPlateforme('parcours_structure_titre', 'moodle'),
+            magistere: cleSelonPlateforme('parcours_structure_titre', 'magistere'),
+            elea: cleSelonPlateforme('parcours_structure_titre', 'elea'),
+            sansVariante: cleSelonPlateforme('parcours_fin_titre', 'moodle'),
+            formateurMoodle: cleSelonPlateforme('parcours_eleve_enseignant', 'moodle'),
+        };
+
+        return { h5p: await lire(planH5P), test: await lire(planTest), lineaire: await lire(planLineaire), incomplet, testRegle, testLibre, vocabulaire };
     });
 
     // ─── Le test qui oriente : une question = un point ──────────────────────
@@ -487,6 +522,96 @@ try {
     await ui.click('.pc-annulation [data-key="parcours_annuler_modification"]');
     ok('« Annuler » rend les deux chemins', (await lirePlan()).roles === 'renforcer,approfondir');
     ok('aucune erreur dans l’interface', !erreursUi.length, erreursUi.join(' | '));
+
+    // ─── G. Le vocabulaire de la plateforme (D105) ──────────────────────────
+    // Des élèves sur Éléa, des stagiaires sur Magistère, des étudiants sur Moodle
+    // (Emmanuel, 1er oct. 2026) : à l'écran, dans le cours, la fiche et les prompts.
+    console.log('\n── G. Le vocabulaire de la plateforme : élèves, stagiaires, étudiants ──');
+    const v = r.vocabulaire;
+    ok('une clé prend la variante de sa plateforme, et seulement si elle existe',
+        v.cles.moodle === 'parcours_structure_titre_moodle' && v.cles.magistere === 'parcours_structure_titre_magistere'
+        && v.cles.elea === 'parcours_structure_titre' && v.cles.sansVariante === 'parcours_fin_titre'
+        && v.cles.formateurMoodle === 'parcours_eleve_enseignant', JSON.stringify(v.cles));
+    ok('dans le cours, l’étiquette de chaque chemin parle de SON public',
+        v.elea.prof.length === 3 && v.elea.prof.every(x => /aux élèves .*un élève/.test(x))
+        && v.magistere.prof.length === 3 && v.magistere.prof.every(x => /aux stagiaires .*un stagiaire/.test(x) && !/élève/.test(x))
+        && v.moodle.prof.length === 3 && v.moodle.prof.every(x => /aux étudiants .*un étudiant/.test(x) && !/élève/.test(x)),
+        JSON.stringify({ elea: v.elea.prof[0], magistere: v.magistere.prof[0], moodle: v.moodle.prof[0] }));
+    ok('la liste « À faire » est cachée « aux stagiaires » sur Magistère',
+        v.magistere.aFaire.length === 1 && /cachée aux stagiaires/.test(v.magistere.aFaire[0]), JSON.stringify(v.magistere.aFaire));
+    ok('la fiche de séquence compte « par stagiaire », « par étudiant »',
+        /par élève/.test(v.elea.fiche) && /par stagiaire/.test(v.magistere.fiche) && /par étudiant/.test(v.moodle.fiche)
+        && !/élève/.test(v.magistere.fiche) && !/élève/.test(v.moodle.fiche),
+        JSON.stringify({ magistere: v.magistere.fiche.slice(0, 200), moodle: v.moodle.fiche.slice(0, 200) }));
+    ok('le prompt dit au modèle qui lira : des stagiaires, des étudiants, au vouvoiement',
+        /tutoiement pour des élèves/.test(v.elea.promptPlan)
+        && /des STAGIAIRES en formation/.test(v.magistere.promptPlan) && /Registre : vouvoiement/.test(v.magistere.promptPlan)
+        && /des ÉTUDIANTS/.test(v.moodle.promptPlan) && /Registre : vouvoiement/.test(v.moodle.promptPlan)
+        && /des STAGIAIRES/.test(v.magistere.promptModule) && /des ÉTUDIANTS/.test(v.moodle.promptModule));
+    ok('sur Magistère, la pièce de plateforme est préparée par un formateur, entre stagiaires',
+        /^Tu es un formateur qui prépare une pièce de sa formation/.test(v.magistere.promptModule)
+        && /entre stagiaires/.test(v.magistere.promptModule) && /^Tu es un enseignant/.test(v.moodle.promptModule)
+        && /entre étudiants/.test(v.moodle.promptModule), v.magistere.promptModule.slice(0, 200));
+
+    // L'écran, par de vrais clics : Moodle, puis Magistère sans recharger.
+    const voc = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    const erreursVoc = [];
+    voc.on('pageerror', e => erreursVoc.push(String(e.message || e)));
+    await voc.route(/https?:\/\/(?!127\.0\.0\.1|localhost)/, rt => rt.abort());
+    await voc.goto(`http://127.0.0.1:${PORT}/index.html`);
+    await voc.waitForSelector('#parcours-button');
+    await voc.fill('#qui', 'Enseignant en licence');
+    await voc.fill('#quoi', 'Les accords du participe passé');
+    await voc.click('#parcours-button');
+    await voc.click('.pc-choice[data-choix="moodle"]');
+    await voc.click('.pc-choice[data-choix="chemins"]');
+    // Le texte visible du cadrage, hors du bloc des plateformes (« Éléa : pour les élèves » reste juste).
+    const lireCadrage = () => voc.evaluate(() => {
+        const blocs = [...document.querySelectorAll('.pc-atelier .pc-block, .pc-atelier .pc-trames, .pc-atelier .pc-nb-chemins')]
+            .filter(b => !b.querySelector('[data-choix="elea"]'));
+        return { texte: blocs.map(b => b.innerText).join(' | '),
+            titre: [...document.querySelectorAll('.pc-block__title')].map(x => x.textContent).find(x => /chemin \?$/.test(x)),
+            // Les variantes posées en data-key (hors noms de plateforme, qui finissent aussi en _moodle).
+            cles: [...document.querySelectorAll('.pc-atelier [data-key]')].map(x => x.dataset.key)
+                .filter(k => /_moodle$|_magistere$/.test(k) && !/^parcours_platform_/.test(k)) };
+    });
+    const cadrageMoodle = await lireCadrage();
+    ok('cadrage Moodle : « Tous vos étudiants suivent-ils le même chemin ? », et nulle part « élève »',
+        cadrageMoodle.titre === 'Tous vos étudiants suivent-ils le même chemin ?' && /chaque étudiant ne voit que le sien/.test(cadrageMoodle.texte)
+        && !/élève/i.test(cadrageMoodle.texte), JSON.stringify({ titre: cadrageMoodle.titre, extrait: (cadrageMoodle.texte.match(/.{0,60}élève.{0,60}/i) || [''])[0] }));
+    await voc.click('.pc-choice[data-choix="magistere"]');
+    const cadrageMag = await lireCadrage();
+    ok('passer à Magistère repeint le cadrage sur place : « Tous vos stagiaires… », data-key compris',
+        cadrageMag.titre === 'Tous vos stagiaires suivent-ils le même chemin ?' && /chaque stagiaire ne voit que le sien/.test(cadrageMag.texte)
+        && !/élève|étudiant/i.test(cadrageMag.texte) && cadrageMag.cles.every(k => !/_moodle$/.test(k)),
+        JSON.stringify({ titre: cadrageMag.titre, cles: cadrageMag.cles, extrait: (cadrageMag.texte.match(/.{0,60}(élève|étudiant).{0,60}/i) || [''])[0] }));
+    await voc.locator('.pc-trame--chemins').first().locator('.pc-trame__select').click();
+    await voc.click('#pc-modele');
+    await voc.waitForSelector('.pc-aiguillage');
+    const planMag = await voc.evaluate(() => ({
+        voir: document.querySelector('.pc-aiguillage__voir')?.textContent.trim(),
+        pivot: document.querySelector('.pc-carte__aiguille')?.textContent.trim(),
+        tuiles: [...document.querySelectorAll('.pc-summary__item--kpi .pc-summary__lab')].map(x => x.textContent.trim()),
+        chrome: [...document.querySelectorAll('.pc-aiguillage__aide, .pc-summary, .pc-aiguillage__actions, .pc-etape__num--fin')].map(x => x.innerText).join(' | '),
+    }));
+    ok('plan Magistère : « Voir comme un stagiaire », « Oriente les stagiaires », « par stagiaire »',
+        planMag.voir === 'Voir comme un stagiaire' && /Oriente les stagiaires/.test(planMag.pivot || '')
+        && planMag.tuiles.filter(x => /par stagiaire/.test(x)).length === 2 && !/élève/i.test(planMag.chrome), JSON.stringify(planMag));
+    await voc.click('.pc-aiguillage__voir');
+    await voc.waitForSelector('.pc-eleve[open]');
+    const vueMag = await voc.evaluate(() => ({
+        titre: document.querySelector('.pc-eleve__titre')?.textContent,
+        qui: [...document.querySelectorAll('.pc-eleve .pc-segment__b')].map(x => x.textContent.trim()),
+        texte: document.querySelector('.pc-eleve')?.innerText || '',
+    }));
+    ok('la vue élève devient « Voir comme un stagiaire » : « Un stagiaire » | « Le formateur »',
+        vueMag.titre === 'Voir comme un stagiaire' && vueMag.qui.includes('Un stagiaire') && vueMag.qui.includes('Le formateur')
+        && !/élève|enseignant/i.test(vueMag.texte.replace(/Enseignant en licence/g, '')), JSON.stringify({ ...vueMag, texte: (vueMag.texte.match(/.{0,50}(élève|enseignant).{0,50}/i) || [''])[0] }));
+    await voc.locator('.pc-eleve .pc-segment__b', { hasText: 'Le formateur' }).click();
+    const conditions = await voc.locator('.pc-eleve .pc-eleve__condition').allTextContents();
+    ok('vu par le formateur, les conditions parlent des stagiaires',
+        conditions.length >= 3 && conditions.some(x => /des stagiaires qui obtiennent/.test(x)) && !conditions.some(x => /élève/.test(x)), JSON.stringify(conditions));
+    ok('aucune erreur dans l’interface (vocabulaire)', !erreursVoc.length, erreursVoc.join(' | '));
     await browser.close();
 } catch (e) {
     console.error(e);

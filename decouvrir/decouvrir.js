@@ -144,7 +144,8 @@
     const dateLisible = d => {
         const m = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(d || '');
         if (!m) return d || '';
-        return `${m[3] ? `${Number(m[3])} ` : ''}${MOIS[Number(m[2]) - 1]} ${m[1]}`;
+        // « 1er octobre » : l'ordinal du premier du mois.
+        return `${m[3] ? `${Number(m[3]) === 1 ? '1er' : Number(m[3])} ` : ''}${MOIS[Number(m[2]) - 1]} ${m[1]}`;
     };
     const codeIntegration = r => `<iframe src="${echapper(urlIntegration(r.integration).href)}" width="640" height="360" style="padding: 0; margin: 0; border:0" allowfullscreen title="${echapper(r.titre)}"></iframe>`;
 

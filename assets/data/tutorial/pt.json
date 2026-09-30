@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "No Caramel, **Um percurso** cria um curso para Éléa, Magistère ou Moodle: várias atividades organizadas em secções num único ficheiro **.mbz**. O ponto de partida continua a ser o formulário habitual: tema, público e documentos anexos."
+          "text": "No Caramel, **Um percurso** cria um curso para Éléa, Magistère ou Moodle: várias atividades organizadas em secções num único ficheiro **.mbz**. O ponto de partida continua a ser o formulário habitual: tema, público e documentos anexos. O ateliê usa o vocabulário da plataforma escolhida: alunos no Éléa, formandos no Magistère, estudantes no Moodle — no ecrã, no curso e nos textos que a IA redige."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão, **Um mesmo caminho para todos** ou **Caminhos consoante os resultados**, e um modelo: são propostos três, e **Ver os outros modelos** mostra os seguintes. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.",
+            "Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão, **Um mesmo caminho para todos** ou **Caminhos consoante os resultados**, e um modelo: os mais habituais são propostos primeiro — aprender de forma autónoma, rever, treinar, avaliar — e **Ver os outros modelos** mostra os seguintes. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.",
             "Em **Plano**, edite o título, objetivo geral, conceitos-chave, etapas e atividades. Mova as atividades com as setas ou arrastando a miniatura. **Instruções e etapa** permite ajustar as instruções de geração. As orientações pedagógicas ajudam a rever sem impor um modelo. O máximo é de **12 atividades**.",
             "Na ficha de um **Vídeo interativo**, cole a ligação do vídeo. A transcrição é obtida durante a geração; também pode colá-la manualmente. Para **Imagem interativa**, **Encontrar a zona** ou **Encontrar as zonas**, anexe uma imagem à ficha: será analisada antes da geração. Também pode adicionar estes recursos na fase de geração. Uma atividade sem recurso aguarda enquanto as restantes avançam. O cenário conserva as imagens e ligações das atividades; os documentos do formulário inicial ficam separados. Para uma **Ligação web**, cole o endereço do recurso na ficha: a IA redige a instrução de leitura sem abrir a página.",
             "Aprove o plano para iniciar a geração. Pode parar, retomar atividades em falta ou gerar novamente uma atividade. O cadeado **Não gerar esta atividade** reserva o conteúdo para preenchimento manual: a IA não o preenche. Uma nova geração falhada conserva o conteúdo anterior. As atividades ausentes são identificadas antes da exportação.",

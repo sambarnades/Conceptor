@@ -15,7 +15,7 @@
  * @module parcours/choix-module
  */
 
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { h5pModules } from '../core/definitions.js';
 import { el, icone } from './dom.js';
 import { imageModule, iconeModule, nomModule } from './activity-router.js';

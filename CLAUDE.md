@@ -56,7 +56,11 @@ js/parcours/     atelier de parcours : intention → plan → N générations �
                  « Fin du parcours » et durées dans TOUS les parcours. Bancs
                  `run_parcours_chemins.mjs` (Node, CI) et `run_parcours_aiguillage.mjs` ;
                  sonde Éléa `scripts/generer-parcours-sonde-chemins.mjs`.
-                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D101 avec leur
+                 **Le VOCABULAIRE suit la plateforme (D105)** : élèves (Éléa), stagiaires
+                 (Magistère), étudiants (Moodle). Un texte qui nomme le public a ses variantes
+                 `<clé>_magistere` / `<clé>_moodle` ; l'atelier prend `t` dans
+                 `./vocabulaire.js`, JAMAIS dans `core/translation.js` (banc des chemins).
+                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D105 avec leur
                  raison, pièges, et le journal des allers-retours réels sur plateforme.
                  Ne rien y rouvrir sans lire ce fichier ; y écrire toute décision nouvelle.
 js/locales/      12 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el, br (~2873 clés/fichier)

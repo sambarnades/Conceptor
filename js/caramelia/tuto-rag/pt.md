@@ -300,11 +300,11 @@ A aplicação foi concebida para ser compatível com o uso em computador, inclui
 <!-- parcours-complet -->
 ## Criar e retomar um curso completo
 
-No Caramel, **Um percurso** cria um curso para Éléa, Magistère ou Moodle: várias atividades organizadas em secções num único ficheiro **.mbz**. O ponto de partida continua a ser o formulário habitual: tema, público e documentos anexos.
+No Caramel, **Um percurso** cria um curso para Éléa, Magistère ou Moodle: várias atividades organizadas em secções num único ficheiro **.mbz**. O ponto de partida continua a ser o formulário habitual: tema, público e documentos anexos. O ateliê usa o vocabulário da plataforma escolhida: alunos no Éléa, formandos no Magistère, estudantes no Moodle — no ecrã, no curso e nos textos que a IA redige.
 
 No menu da Caramelia, **Criar um percurso** abre diretamente o ateliê sem chamar a IA. Se existir um rascunho, **Retomar o meu percurso** recupera-o. Os campos e as fontes existentes são mantidos. Revê o enquadramento e o plano no ateliê antes de iniciar a geração.
 
-Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão, **Um mesmo caminho para todos** ou **Caminhos consoante os resultados**, e um modelo: são propostos três, e **Ver os outros modelos** mostra os seguintes. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.
+Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão, **Um mesmo caminho para todos** ou **Caminhos consoante os resultados**, e um modelo: os mais habituais são propostos primeiro — aprender de forma autónoma, rever, treinar, avaliar — e **Ver os outros modelos** mostra os seguintes. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.
 
 Em **Plano**, edite o título, objetivo geral, conceitos-chave, etapas e atividades. Mova as atividades com as setas ou arrastando a miniatura. **Instruções e etapa** permite ajustar as instruções de geração. As orientações pedagógicas ajudam a rever sem impor um modelo. O máximo é de **12 atividades**.
 
@@ -330,8 +330,10 @@ No Éléa, abra **Definições do curso**, ative o mapa de progresso e use o blo
 
 Depois de **Um percurso**, o modelo dá o desenvolvimento que a IA adapta ao tema. A lista apresentada depende da modalidade e da extensão escolhidas; cada atividade continua editável no plano.
 
+- **Aprender de forma autónoma** — Uma noção nova, aprendida sozinho: descobri-la passo a passo, praticar com correção imediata, reter o essencial, verificar. *(Uma aula · Duas a três aulas · Uma sequência completa)*
 - **Rever antes da avaliação** — Identifica-se o que está adquirido, volta-se a pôr o essencial à vista, treina-se, faz-se uma autoavaliação. *(Uma aula · Duas a três aulas)*
-- **Preparar e fazer uma avaliação** — Um treino no formato da prova, a avaliação classificada, a correção. Três atividades, nada mais. *(Uma aula)*
+- **Treinar** — Uma recordação para reativar, exercícios primeiro com opções e depois sem, uma verificação final: a dificuldade aumenta e a aula não é repetida. *(Uma aula · Duas a três aulas · Uma sequência completa)*
+- **Avaliar** — O que se espera, um treino no formato da prova e depois a avaliação: uma única tentativa, cronometrada, sem correção visível; no fim, apenas a nota. *(Uma aula)*
 - **Remediar depois da avaliação** — Parte-se dos erros constatados: nomeá-los, reexplicar o ponto exato, refazer e voltar a verificar. *(Uma aula · Duas a três aulas · À distância · Ambas)*
 - **Ritual curto** — Dez minutos, sempre com a mesma forma. É a repetição que fixa, não a variedade. *(Uma aula)*
 - **Descobrir uma noção** — Uma situação que interroga, documentos para explorar, depois a síntese, e só então a aplicação. *(Duas a três aulas · Uma sequência completa)*

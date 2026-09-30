@@ -299,11 +299,11 @@ La aplicación está diseñada para ser compatible con un uso en ordenador, incl
 <!-- parcours-complet -->
 ## Crear y retomar un curso completo
 
-En Caramel, **Un itinerario** crea un curso para Éléa, Magistère o Moodle: varias actividades organizadas en secciones dentro de un solo archivo **.mbz**. El punto de partida es el formulario habitual: tema, público y documentos adjuntos.
+En Caramel, **Un itinerario** crea un curso para Éléa, Magistère o Moodle: varias actividades organizadas en secciones dentro de un solo archivo **.mbz**. El punto de partida es el formulario habitual: tema, público y documentos adjuntos. El taller usa el vocabulario de la plataforma elegida: alumnos en Éléa, personas en formación en Magistère, estudiantes en Moodle, tanto en pantalla como en el curso y en los textos que redacta la IA.
 
 En el menú de Caramelia, **Crear un curso** abre directamente el taller sin llamar a la IA. Si existe un borrador, **Retomar mi curso** lo recupera. Se conservan los campos y las fuentes existentes. Revisa la configuración y el plan en el taller antes de iniciar la generación.
 
-Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión, **Un mismo camino para todos** o **Caminos según los resultados**, y una plantilla: se proponen tres y **Ver las demás plantillas** muestra las siguientes. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.
+Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión, **Un mismo camino para todos** o **Caminos según los resultados**, y una plantilla: las más habituales se proponen primero —aprender de forma autónoma, repasar, entrenarse, evaluar— y **Ver las demás plantillas** muestra las siguientes. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.
 
 En **Plan**, edite el título, objetivo general, conceptos clave, etapas y actividades. Mueva actividades con las flechas o arrastrando su miniatura. **Instrucciones y etapa** permite ajustar las instrucciones de generación. Las orientaciones pedagógicas ayudan a revisar sin imponer un modelo. El máximo es de **12 actividades**.
 
@@ -329,8 +329,10 @@ En Éléa, abre **Ajustes del curso**, activa el mapa de progreso y utiliza la t
 
 Tras **Un itinerario**, la plantilla da el desarrollo que la IA adapta al tema. La lista mostrada depende de la modalidad y la extensión elegidas; cada actividad sigue siendo modificable en el plan.
 
+- **Aprender de forma autónoma** — Un concepto nuevo, aprendido en solitario: descubrirlo paso a paso, practicar con corrección inmediata, retener lo esencial y comprobar. *(Una sesión · De dos a tres sesiones · Una secuencia completa)*
 - **Repasar antes de la evaluación** — Se sitúa lo adquirido, se vuelve a poner lo esencial a la vista, se practica y se hace una autoevaluación. *(Una sesión · De dos a tres sesiones)*
-- **Preparar y hacer una evaluación** — Un entrenamiento con el formato de la prueba, la evaluación calificada y la corrección. Tres actividades, nada más. *(Una sesión)*
+- **Entrenarse** — Un repaso para reactivar, ejercicios con opciones y después sin ellas, una comprobación final: la dificultad aumenta y no se repite la lección. *(Una sesión · De dos a tres sesiones · Una secuencia completa)*
+- **Evaluar** — Lo que se espera, un entrenamiento con el formato y después la evaluación: un solo intento, cronometrado, sin corrección visible; al final, solo la calificación. *(Una sesión)*
 - **Remediar tras la evaluación** — Se parte de los errores constatados: se nombran, se reexplica el punto exacto, se rehace y se vuelve a comprobar. *(Una sesión · De dos a tres sesiones · A distancia · Ambas)*
 - **Ritual corto** — Diez minutos, siempre con la misma forma. Es la repetición la que fija, no la variedad. *(Una sesión)*
 - **Descubrir un concepto** — Una situación que interroga, documentos que explorar, luego la síntesis, y solo después la aplicación. *(De dos a tres sesiones · Una secuencia completa)*

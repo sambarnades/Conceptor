@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "In Caramel, **A pathway** creates a course for Éléa, Magistère or Moodle: several activities organised into sections in one **.mbz** file. Start with the usual form: topic, audience and attached documents."
+          "text": "In Caramel, **A pathway** creates a course for Éléa, Magistère or Moodle: several activities organised into sections in one **.mbz** file. Start with the usual form: topic, audience and attached documents. The workshop uses the vocabulary of the chosen platform: learners on Éléa, trainees on Magistère, students on Moodle — on screen, in the course and in the texts the AI writes."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Choose **A pathway** below the form, then the platform, delivery mode, scope, **One path for everyone** or **Paths based on results**, and a template: three are offered, and **Show the other templates** displays the rest. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.",
+            "Choose **A pathway** below the form, then the platform, delivery mode, scope, **One path for everyone** or **Paths based on results**, and a template: the most common come first — learn a new topic independently, revise, practise step by step, assess — and **Show the other templates** displays the rest. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.",
             "In **Plan**, edit the title, overall objective, key concepts, stages and activities. Move activities with the arrows or by dragging their thumbnail. **Instructions and stage** adjusts the generation instructions. Teaching prompts help you review without enforcing a model. The limit is **12 activities**.",
             "In an **Interactive Video** card, paste the video link. The transcript is retrieved during generation; you can also paste it manually. For **Image Hotspots**, **Find the Hotspot** or **Find Multiple Hotspots**, attach an image to the card: it will be analysed before generation. You can also add these sources during the generation stage. An activity without its source waits while the others continue. The scenario keeps activity images and links; documents attached to the home form remain separate. For a **Web link**, paste the resource’s address into the card: the AI writes the reading instructions without opening the page.",
             "Approve the plan to start generation. You can stop, resume missing activities or regenerate one activity. The **Do not generate this activity** lock reserves its content for manual entry: AI will not fill it. A failed regeneration keeps the previous content. Missing activities are listed before export.",

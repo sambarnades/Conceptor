@@ -19,7 +19,7 @@
  *
  * @module parcours/vue-parcours
  */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { formatTextToHtml } from '../core/utils.js';
 import { cartesAPlat } from './parcours-runner.js';
 import { nomModule, imageModule, iconeModule } from './activity-router.js';
@@ -74,7 +74,7 @@ export async function construireVueParcours(plan, { platform, onOuvrir }) {
     for (const m of construireFiche(plan, { platformId: platform }).meta) meta.append(el('li', null, m));
     tete.append(meta);
     // Ce que VERRA l'élève, chemin compris (D99) : la même fenêtre que depuis le plan.
-    tete.append(action('parcours_aig_voir_eleve', 'fa-eye', () => ouvrirVueEleve(plan, { platform }), 'pc-secondaire pc-vue__eleve'));
+    tete.append(action('parcours_aig_voir_eleve', 'fa-eye', () => ouvrirVueEleve(plan, { platform }), 'pc-secondaire pc-vue__eleve', platform));
     page.append(tete);
     const groupes = aiguillagesDuPlan(plan);
 

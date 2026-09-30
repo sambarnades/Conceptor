@@ -295,11 +295,11 @@ L'application est conçue pour être compatible avec une utilisation sur ordinat
 <!-- parcours-complet -->
 ## Créer et reprendre un parcours complet
 
-Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ.
+Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ. L’atelier parle le vocabulaire de la plateforme choisie : des élèves sur Éléa, des stagiaires sur Magistère, des étudiants sur Moodle — à l’écran, dans le cours et dans les textes que rédige l’IA.
 
 Depuis le menu de Caramelia, **Créer un parcours** ouvre directement l’atelier, sans appel à l’IA. Si un brouillon existe, **Reprendre mon parcours** le retrouve. Les champs et les sources déjà présents sont conservés. Le cadrage et le plan se relisent dans l’atelier avant de lancer la génération.
 
-Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur, **Un même chemin pour tous** ou **Des chemins selon les résultats**, et une trame : trois sont proposées, **Voir les autres modèles** affiche les suivantes. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.
+Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur, **Un même chemin pour tous** ou **Des chemins selon les résultats**, et une trame : les plus courantes sont proposées d’abord — apprendre en autonomie, réviser, s’entraîner, évaluer —, **Voir les autres modèles** affiche les suivantes. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.
 
 Dans **Plan**, modifiez le titre, l’objectif général, les notions du parcours, les étapes et les activités. Déplacez les activités avec les flèches ou leur vignette. **Consigne et palier** permet d’ajuster les indications de génération. Les repères pédagogiques vous aident à relire sans imposer un modèle. Le maximum est de **12 activités**.
 
@@ -325,8 +325,10 @@ Sur Éléa, dans **Réglages du cours**, activez la carte de progression puis ut
 
 Après **Un parcours**, la trame donne le déroulé que l’IA adapte au sujet. La liste affichée dépend de la modalité et de l’ampleur choisies ; chaque activité reste modifiable dans le plan.
 
+- **Apprendre en autonomie** — Une notion nouvelle, apprise seul : la découvrir pas à pas, s’exercer avec une correction immédiate, retenir l’essentiel, vérifier. *(Une séance · Deux à trois séances · Une séquence entière)*
 - **Réviser avant l'évaluation** — On situe ce qui est acquis, on remet l'essentiel sous les yeux, on s'entraîne, on se teste. *(Une séance · Deux à trois séances)*
-- **Préparer et passer une évaluation** — Un entraînement au format de l'épreuve, l'évaluation notée, le corrigé. Trois activités, rien de plus. *(Une séance)*
+- **S’entraîner** — Un rappel pour réactiver, des exercices avec propositions puis sans, une vérification finale : la difficulté monte, le cours n’est pas refait. *(Une séance · Deux à trois séances · Une séquence entière)*
+- **Évaluer** — Les attendus, un entraînement au format, puis l’évaluation : une seule tentative, chronométrée, sans correction affichée ; la note seule à la fin. *(Une séance)*
 - **Remédier après l'évaluation** — On repart des erreurs constatées : on les nomme, on réexplique le point précis, on refait, on revérifie. *(Une séance · Deux à trois séances · À distance · Les deux)*
 - **Rituel court** — Dix minutes, toujours la même forme. C'est la répétition qui installe, pas la variété. *(Une séance)*
 - **Découvrir une notion** — Une situation qui interroge, des documents à explorer, puis la synthèse, et seulement ensuite l'application. *(Deux à trois séances · Une séquence entière)*

@@ -20,7 +20,8 @@
  * @module parcours/scenario-prompt
  */
 
-import { t, currentLang } from '../core/translation.js';
+import { currentLang } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { langueEnseignee } from '../core/content-language.js';
 import { CONFIG } from './config.js';
 import { calibrer } from './calibrage.js';
@@ -57,6 +58,23 @@ const LANGUES = {
 };
 
 /**
+ * Le public que la plateforme désigne (D105) : des élèves sur Éléa, des STAGIAIRES
+ * sur Magistère, des ÉTUDIANTS sur Moodle. Hors d'Éléa, le modèle ne le déduit
+ * plus du seul « public visé » : la plateforme le dit, et l'interface parle de même.
+ */
+const PUBLIC_ADULTE = {
+    magistere: {
+        qui: 'des STAGIAIRES en formation',
+        appel: '« vous », « les stagiaires » ou « les participants »',
+        concepteur: 'le formateur qui conçoit la formation',
+    },
+    moodle: {
+        qui: 'des ÉTUDIANTS',
+        appel: '« vous » ou « les étudiants »',
+    },
+};
+
+/**
  * Règles de rédaction communes au plan et à chaque activité.
  *
  * Nées d'un parcours réel de formation d'enseignants (28 sept. 2026) : le
@@ -69,14 +87,24 @@ const LANGUES = {
  * @param {Object} ctx - Le contexte du brouillon.
  * @returns {string[]}
  */
-export function reglesDeRedaction(ctx = {}) {
+export function reglesDeRedaction(ctx = {}, plateforme = null) {
+    const publicVise = ctx.niveau ? ` (public visé : ${ctx.niveau})` : '';
+    const adultes = PUBLIC_ADULTE[plateforme];
+    const memeRegistre = 'Le MÊME registre dans tous les textes du parcours, retours et commentaires par tranche de score compris : ' +
+        'les exemples de ces instructions tutoient, adapte-les au registre choisi.';
     return [
-        `- Dans ces instructions, « l'élève » désigne la personne qui suit le parcours${ctx.niveau ? ` (public visé : ${ctx.niveau})` : ''}. ` +
-        'Si ce sont des adultes en formation, ne les appelle jamais « élèves » : écris « vous », « les participants » ou « les collègues » ' +
-        '(les élèves dont ils parlent restent des élèves).',
-        '- Registre : tutoiement pour des élèves, vouvoiement pour des adultes (formation d’enseignants, formation continue, études supérieures). ' +
-        'Le MÊME registre dans tous les textes du parcours, retours et commentaires par tranche de score compris : ' +
-        'les exemples de ces instructions tutoient, adapte-les au registre choisi.',
+        adultes
+            ? `- Dans ces instructions, « l'élève » désigne la personne qui suit le parcours : sur cette plateforme, ${adultes.qui}${publicVise}. ` +
+              `Dans les textes qu'ils liront, ne les appelle jamais « élèves » : écris ${adultes.appel} ` +
+              '(les élèves dont ils parlent restent des élèves) ; leur groupe n’est pas « la classe » : écris « le groupe ».' +
+              (adultes.concepteur ? ` « L'enseignant » y désigne ${adultes.concepteur}.` : '')
+            : `- Dans ces instructions, « l'élève » désigne la personne qui suit le parcours${publicVise}. ` +
+              'Si ce sont des adultes en formation, ne les appelle jamais « élèves » : écris « vous », « les participants » ou « les collègues » ' +
+              '(les élèves dont ils parlent restent des élèves).',
+        adultes
+            ? `- Registre : vouvoiement, pour des adultes. ${memeRegistre}`
+            : '- Registre : tutoiement pour des élèves, vouvoiement pour des adultes (formation d’enseignants, formation continue, études supérieures). ' +
+              memeRegistre,
         '- Aucun texte lu par les participants ne reprend le vocabulaire de ces instructions : jamais « notions pivots », « mot pour mot », ' +
         '« palier », « carte », « trame », « socle » ni « version longue ».',
     ];
@@ -243,7 +271,7 @@ export function construirePromptPlan(draft) {
 
     if (calibrage.trame) {
         lignes.push(
-            `\nTrame imposée : « ${t(calibrage.trame.nameKey)} » — ${t(calibrage.trame.descKey)}`
+            `\nTrame imposée : « ${t(calibrage.trame.nameKey, draft.platform)} » — ${t(calibrage.trame.descKey, draft.platform)}`
         );
         lignes.push(
             `Elle compte EXACTEMENT ${calibrage.etapesMin} étapes, contenant respectivement ` +
@@ -342,7 +370,7 @@ export function construirePromptPlan(draft) {
         '- Une activité qui vérifie les acquis en fin de parcours porte sur l’ensemble du parcours, notions mélangées, et pas seulement sur la dernière étape : rappeler plus tard ce qu’on a vu au début aide à le retenir.',
         '- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.',
         '- Les durées sont celles d\'un élève moyen, sans les gonfler pour remplir les séances. Repères : texte court à lire 5 à 10 min ; exercice auto-corrigé (vrai/faux, texte à trous, association) 3 à 8 min ; quiz de plusieurs questions ou test 10 à 20 min ; production écrite, projet ou échange 15 à 30 min.',
-        ...reglesDeRedaction(ctx),
+        ...reglesDeRedaction(ctx, draft.platform),
         regleLangue(langue, ctx),
         '- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.',
         '- La consigne doit correspondre au geste réellement permis par le module décrit dans le catalogue. Pour faire ORDONNER des événements, utiliser SortParagraphs ; Timeline sert à les CONSULTER.',
@@ -407,6 +435,35 @@ export function construirePromptPlan(draft) {
  *  Remplissage : le prompt d'UNE carte du plan
  * ------------------------------------------------------------------ */
 
+/**
+ * Un quiz mixte : chaque exercice porte SA consigne. Le prompt du quiz la demande
+ * déjà ; sur un long quiz, le modèle l'omettait (trois questions sur dix dans le
+ * parcours de Gauthier, 30 sept. 2026), et l'élève voyait un texte sans savoir quoi
+ * y faire. La file la redemande de toute façon si elle manque (`rappelConsignes`).
+ */
+const CONSIGNE_DES_EXERCICES = 'Chaque question Texte à trous, Glisser les mots, Surligner les mots ou Rédaction ' +
+    'porte `taskDescription` : une consigne adressée à l’élève, qui dit quoi faire et selon quel critère. ' +
+    'Sans elle, l’élève voit un texte sans savoir quoi y faire.';
+
+/**
+ * Les modules qui se LISENT : leur longueur suit la durée. Une Page de 5 minutes et
+ * une de 25 se ressemblaient (retour de Gauthier, 30 sept. 2026) : le nombre de blocs
+ * suivait la durée, pas leur longueur. Environ 80 mots par minute de lecture
+ * attentive d'un contenu nouveau, prise de notes comprise.
+ */
+const MOTS_PAR_MINUTE = 80;
+const MODULES_A_LIRE = new Set(['Page', 'Livre']);
+
+/**
+ * La longueur visée d'une carte à lire, en mots ; `null` pour les autres modules.
+ * @param {Object} carte
+ * @returns {number|null}
+ */
+export function motsVises(carte) {
+    if (!carte || !MODULES_A_LIRE.has(carte.module)) return null;
+    return Math.max(150, Math.round(((Number(carte.duree) || 10) * MOTS_PAR_MINUTE) / 50) * 50);
+}
+
 /** Extrait de corpus joint envoyé avec chaque carte (plus court que pour le plan). */
 const CORPUS_MAX_CARTE = 6000;
 
@@ -450,7 +507,7 @@ export function nbElementsCarte(carte) {
  * @param {Object} carte - La carte à remplir (exclue de l'historique).
  * @returns {string}
  */
-export function construireSocleCommun(plan, carte, ctx = {}) {
+export function construireSocleCommun(plan, carte, ctx = {}, plateforme = null) {
     const lignes = [];
 
     lignes.push(`Cette activité fait partie d'un parcours intitulé « ${plan.titre || '(sans titre)'} ».`);
@@ -502,7 +559,7 @@ export function construireSocleCommun(plan, carte, ctx = {}) {
 
     lignes.push('');
     lignes.push('RÉDACTION :');
-    lignes.push(...reglesDeRedaction(ctx));
+    lignes.push(...reglesDeRedaction(ctx, plateforme));
 
     return lignes.join('\n');
 }
@@ -547,6 +604,8 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
         // et l'enseignant corrigera sur l'écran de fabrication.
         carte.titre ? `Titre attendu de l'activité : « ${carte.titre} »` : '',
         `Durée visée : ${carte.duree || 10} minutes.`,
+        motsVises(carte) ? `Longueur visée : environ ${motsVises(carte)} mots de contenu à lire, pour ${carte.duree || 10} minutes ` +
+            'de lecture attentive ; la longueur suit la durée, une activité de 25 minutes n’a pas celle d’une activité de 5.' : '',
     ].filter(Boolean).join(' — ');
 
     const corpus = String(ctx.corpus || '').trim();
@@ -585,12 +644,13 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
     const cadre = [
         '',
         `# ${t('parcours_prompt_cadre') || 'CADRE DU PARCOURS'}`,
-        construireSocleCommun(plan, carte, ctx),
+        construireSocleCommun(plan, carte, ctx, draft.platform),
         '',
         `Palier de cette activité : ${t(`parcours_palier_${carte.palier}`)}.`,
         'Respecte ce palier : une activité de découverte ne piège pas, ' +
         'une activité de transfert ne récite pas.',
         CONTENU_SUIT_LA_COMMANDE,
+        ...(carte.module === 'QuizSet' ? [CONSIGNE_DES_EXERCICES] : []),
     ].join('\n');
 
     return { prompt: base + '\n' + cadre, prefix, nbElements };
@@ -621,8 +681,10 @@ export function construirePromptModuleParcours(draft, carte) {
 
     const lignes = [];
     lignes.push(
-        `Tu es un enseignant qui prépare une pièce de son cours en ligne : ` +
-        `« ${t(def.nameKey)} » — ${t(def.descKey)}`
+        (draft.platform === 'magistere'
+            ? 'Tu es un formateur qui prépare une pièce de sa formation en ligne : '
+            : 'Tu es un enseignant qui prépare une pièce de son cours en ligne : ') +
+        `« ${t(def.nameKey, draft.platform)} » — ${t(def.descKey, draft.platform)}`
     );
 
     lignes.push('\n## CONTEXTE');
@@ -637,7 +699,7 @@ export function construirePromptModuleParcours(draft, carte) {
     if (def.source === 'lien' && carte.source?.url) lignes.push(`Adresse de la ressource (fournie par l'enseignant) : ${carte.source.url}`);
 
     lignes.push(`\n## ${t('parcours_prompt_cadre') || 'CADRE DU PARCOURS'}`);
-    lignes.push(construireSocleCommun(plan, carte, ctx));
+    lignes.push(construireSocleCommun(plan, carte, ctx, draft.platform));
 
     // Un second sondage mesure le plus souvent ce qui a bougé depuis le
     // premier : il n'y parvient que s'il propose les MÊMES réponses. Constaté

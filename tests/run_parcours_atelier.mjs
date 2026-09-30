@@ -1133,6 +1133,16 @@ try {
         && libre.longue && libre.longue.length === 4 && libre.origine === 'libre', JSON.stringify(libre));
     // « Structure libre » vit parmi les autres modèles, repliés sous les trois
     // premiers (D91) : on les déplie, comme l'enseignant.
+    // La vitrine (D102) : les intentions de Gauthier d'abord, dans son ordre.
+    const vitrine = await page.evaluate(async () => {
+        const { brouillon } = await import('/js/parcours/state.js');
+        const d = brouillon();
+        return { format: d.format, ampleur: d.ampleur,
+            noms: [...document.querySelectorAll('.pc-trames > .pc-trame:not(.pc-trame--auto) .pc-trame__name')].map(n => n.textContent.trim()) };
+    });
+    ok('la vitrine montre d’abord apprendre en autonomie, réviser, s’entraîner (deux à trois séances)',
+        vitrine.ampleur !== 'moyenne' || JSON.stringify(vitrine.noms) === JSON.stringify(['Apprendre en autonomie', 'Réviser avant l\'évaluation', 'S’entraîner']),
+        JSON.stringify(vitrine));
     const basculeAutres = page.locator('.pc-trames__autres');
     ok('« Voir les autres modèles » est un bouton replié qui dit combien il en cache',
         await basculeAutres.getAttribute('aria-expanded') === 'false'
@@ -1513,6 +1523,82 @@ try {
         apresDico.libelle === 'Un parcours' && apresDico.titre === 'Créer un parcours' && apresDico.nomGroupe === 'Que souhaitez-vous créer ?',
         JSON.stringify(apresDico));
     await lente.close();
+
+    // ── « Évaluer » (D102) : le Test porte ses réglages d'épreuve, et le plan le dit ──
+    console.log('\n── « Évaluer » : le Test réglé en épreuve, dit sur le plan ──');
+    const epreuve = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await epreuve.route(/https?:\/\/(?!127\.0\.0\.1|localhost)/, rt => rt.abort());
+    await epreuve.goto(`http://127.0.0.1:${PORT}/index.html`);
+    await epreuve.waitForSelector('#parcours-button');
+    await epreuve.fill('#qui', 'Professeur de physique');
+    await epreuve.fill('#quoi', 'La mécanique des fluides');
+    await epreuve.click('#parcours-button');
+    await epreuve.click('.pc-choice[data-choix="courte"]');
+    const carteEvaluer = epreuve.locator('.pc-trames > .pc-trame', { hasText: 'Évaluer' }).first();
+    const vitrineSeance = await epreuve.evaluate(() => [...document.querySelectorAll('.pc-trames > .pc-trame:not(.pc-trame--auto) .pc-trame__name')].map(n => n.textContent.trim()));
+    ok('en séance, la vitrine montre les quatre intentions : apprendre, réviser, s’entraîner, évaluer',
+        JSON.stringify(vitrineSeance) === JSON.stringify(['Apprendre en autonomie', 'Réviser avant l\'évaluation', 'S’entraîner', 'Évaluer']), JSON.stringify(vitrineSeance));
+    await carteEvaluer.locator('.pc-trame__select').click();
+    await epreuve.click('#pc-modele');
+    await epreuve.waitForSelector('.pc-carte');
+    const marqueEpreuve = await epreuve.locator('.pc-carte__epreuve').allTextContents();
+    ok('sur le plan, le Test d’« Évaluer » dit qu’il part en épreuve : une tentative, chronométrée, la note seule',
+        marqueEpreuve.length === 1 && /^Épreuve : une seule tentative, en \d+ min, la note seule à la fin$/.test(marqueEpreuve[0].trim()), JSON.stringify(marqueEpreuve));
+    await epreuve.close();
+
+    // ── Une consigne oubliée est redemandée (quiz de Gauthier, 30 sept. 2026) ──
+    // Le modèle avait rendu trois exercices d'un quiz mixte SANS consigne : l'élève
+    // voyait un texte à surligner sans savoir quoi y surligner. La file redemande UNE
+    // fois en nommant les questions ; au second oubli, la carte échoue et se refait.
+    console.log('\n── Une consigne oubliée est redemandée, la longueur suit la durée ──');
+    const consignes = await page.evaluate(async () => {
+        const { creerFile } = await import('/js/parcours/parcours-runner.js');
+        const { construirePromptRemplissage } = await import('/js/parcours/scenario-prompt.js');
+        const quiz = sans => JSON.stringify({ title: 'Le quiz', questions: [
+            { library: 'H5P.MultiChoice 1.16', params: { question: 'Quel port ?', answers: [{ text: 'Nantes', correct: true }, { text: 'Brest', correct: false }] } },
+            { library: 'H5P.MarkTheWords 1.11', params: { ...(sans ? {} : { taskDescription: 'Surligne les noms de ports.' }), textField: 'Les navires partent de *Nantes* et de *Bordeaux*.' } },
+            { library: 'H5P.DragText 1.10', params: { taskDescription: 'Place les mots.', textField: 'Le *Code noir* date de *1685*.' } },
+        ] });
+        const brouillon = () => ({
+            platform: 'elea', format: 'distanciel', ampleur: 'courte', trame: 'libre',
+            contexte: { qui: 'un professeur', quoi: 'la traite atlantique', niveau: 'quatrième', corpus: '' },
+            plan: { titre: 'Traite', objectifGeneral: 'Comprendre', notionsPivots: [], etapes: [{ id: 'e1', titre: 'Vérifier', cartes: [
+                { id: 'q1', titre: 'Le quiz', objectif: 'Se tester', consigne: 'Répondre', module: 'QuizSet', palier: 'entrainement', duree: 10, verrouillee: false }] }] },
+        });
+        const essai = async (reponses) => {
+            const d = brouillon();
+            const prompts = [];
+            const file = creerFile(d, { appelModele: async (prompt) => { prompts.push(prompt); return reponses[prompts.length - 1]; } });
+            const etat = await file.demarrer();
+            return { prompts, ligne: etat.lignes[0], contenu: d.plan.etapes[0].cartes[0].contenu };
+        };
+        const rattrape = await essai([quiz(true), quiz(false)]);
+        const obstine = await essai([quiz(true), quiz(true)]);
+        const complet = await essai([quiz(false)]);
+        const page = mots => construirePromptRemplissage({ ...brouillon(), plan: { ...brouillon().plan } },
+            { id: 'p', titre: 'La leçon', objectif: 'Lire', consigne: 'Lire', module: 'Page', palier: 'decouverte', duree: mots, verrouillee: false });
+        const [p5, p25] = await Promise.all([page(5), page(25)]);
+        const { prompt: pQuiz } = await construirePromptRemplissage(brouillon(), brouillon().plan.etapes[0].cartes[0]);
+        return {
+            rattrape: { appels: rattrape.prompts.length, statut: rattrape.ligne.statut,
+                rappel: rattrape.prompts[1] || '', consigne: rattrape.contenu?.questions?.[1]?.params?.taskDescription || null },
+            obstine: { appels: obstine.prompts.length, statut: obstine.ligne.statut, cle: obstine.ligne.erreurKey },
+            complet: { appels: complet.prompts.length, statut: complet.ligne.statut },
+            p5: p5.prompt.match(/Longueur visée : environ (\d+) mots/)?.[1], p25: p25.prompt.match(/Longueur visée : environ (\d+) mots/)?.[1],
+            quizLongueur: /Longueur visée/.test(pQuiz), quizRegle: pQuiz.includes('porte `taskDescription`'),
+        };
+    });
+    ok('un exercice revenu sans consigne est redemandé UNE fois, en nommant la question',
+        consignes.rattrape.appels === 2 && consignes.rattrape.statut === 'faite'
+        && /CORRECTION DEMANDÉE[\s\S]*la question 2 \(Surligner les mots\)/.test(consignes.rattrape.rappel)
+        && consignes.rattrape.consigne === 'Surligne les noms de ports.', JSON.stringify(consignes.rattrape));
+    ok('au second oubli, la carte échoue avec un message clair, et se refait d’un clic',
+        consignes.obstine.appels === 2 && consignes.obstine.statut === 'echouee' && consignes.obstine.cle === 'parcours_consigne_manquante',
+        JSON.stringify(consignes.obstine));
+    ok('un quiz complet ne coûte qu’un appel', consignes.complet.appels === 1 && consignes.complet.statut === 'faite', JSON.stringify(consignes.complet));
+    ok('le prompt d’un quiz mixte rappelle la consigne de chaque exercice', consignes.quizRegle && !consignes.quizLongueur);
+    ok('une Page de 25 minutes vise cinq fois la longueur d’une Page de 5 (400 → 2 000 mots)',
+        consignes.p5 === '400' && consignes.p25 === '2000', JSON.stringify({ p5: consignes.p5, p25: consignes.p25 }));
 
     await browser.close();
 } catch (e) {

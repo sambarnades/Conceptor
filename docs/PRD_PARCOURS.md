@@ -1782,7 +1782,8 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         ligne, vérifié par empreinte).
 - [x] **D90 — Les chemins selon les résultats : UN mécanisme, l'aiguillage. La note d'un
       test ouvre à chaque élève un chemin parmi deux à quatre, puis tous se retrouvent.
-      Livré le 30 sept. 2026 (7.1.0) ; aller-retour Éléa à faire (D24).**
+      Livré le 30 sept. 2026 (7.1.0) ; aller-retour Éléa PARTIEL le soir même (compte
+      enseignant), la vue d'un vrai compte élève reste à voir (D24).**
       Demande d'Emmanuel et de Gauthier (30 sept. 2026) : « si un élève se trompe, en fonction
       du score plutôt, il est redirigé vers la remédiation ou autre chose » ; les modèles de
       Gauthier (`gabarit-de-parcours-de-differenciation-pedagogique-.mbz`,
@@ -1867,7 +1868,8 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       à tout refaire. Tout se retouche ensuite dans le plan. Les deux listes de trames ne se
       mêlent pas ; « Structure libre » vaut pour les deux (des chemins sans modèle : une étape
       de test, les chemins, une étape commune).
-- [x] **D92 — Trois modèles à l'écran, puis « Voir les autres modèles ».** Retour de Gauthier :
+- [x] **D92 — Trois modèles à l'écran, puis « Voir les autres modèles ».** *(Choix des trames
+      montrées revu par D102 : une vitrine de quatre intentions.)* Retour de Gauthier :
       « beaucoup de modèles, les gens se perdent ». Les trois premiers compatibles avec la
       modalité et l'ampleur s'affichent en cartes, avec « Caramel propose » ; les autres, sous
       un bouton qui dit leur nombre, en lignes rangées par famille (séance, séquence, projets,
@@ -1948,6 +1950,78 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       exemple les respecte (`exempleLibreAChemins` : sur une séquence à quatre chemins, un
       seul temps différencié d'une activité par chemin). Constaté par le banc de calibrage :
       l'exemple d'une structure libre à chemins contredisait sa propre consigne.
+- [x] **D102 — La vitrine : quatre intentions, et « Évaluer » règle le Test en épreuve.**
+      Retour de Gauthier après un parcours réel (30 sept. 2026, au soir) : « trop de choix,
+      et peu de différence entre réviser et remédier à l’évaluation ; il faut plutôt apprendre
+      en autonomie, réviser, s’entraîner, évaluer — avec les bons paramètres obligatoires du
+      test : une seule tentative, sans feedback, chronométré ». D92 montrait les trois
+      PREMIÈRES trames compatibles, dans l’ordre de la bibliothèque : réviser, remédier et
+      découvrir se côtoyaient. `VITRINE` (`templates.js`) fixe désormais l’ordre et le choix :
+      apprendre en autonomie, réviser, s’entraîner, évaluer, quand la modalité et l’ampleur le
+      permettent, complétées jusqu’à trois par les suivantes de la bibliothèque
+      (`trameEnVitrine` : une séquence entière montre apprendre, s’entraîner, découvrir).
+      - **Deux trames nouvelles**, pour toutes les modalités et les trois ampleurs :
+        `autonomie` (découvrir pas à pas par une présentation qui pose des questions, s’exercer
+        avec correction immédiate, retenir, vérifier ; chaque consigne se suffit à elle-même)
+        et `entrainement` (rappel sans support, exercices avec propositions, les mêmes sans
+        propositions, vérification finale ; le cours n’est pas refait).
+      - **« Évaluer »** (ex-« Préparer et passer une évaluation ») : une page des attendus
+        (ce qui est évalué, la forme, la durée, le barème), un entraînement au format, puis
+        le Test. Ses réglages d’épreuve (`reglagesTest` + `chronometre`) sont posés UNE fois, à
+        la génération (`reglagesDeTrame`) : une tentative, feedback différé, relecture « note
+        seule » (ni réponses, ni correction), temps limite = durée de la carte. L’enseignant
+        les retouche dans l’éditeur ; rien ne les réimpose à l’assemblage. La carte du Test
+        le dit sur le plan (« Épreuve : une seule tentative, en 20 min, la note seule à la
+        fin »). **La page de corrigé qui suivait le Test est retirée** : sans ouverture
+        progressive, l’élève pouvait la lire AVANT l’épreuve.
+- [x] **D103 — Une consigne d’exercice ne manque jamais en silence.** Même parcours réel : dans
+      un Quiz mixte de dix questions, trois exercices (Surligner, Glisser les mots, Texte à
+      trous) sont arrivés SANS consigne ; l’élève voyait un texte sans savoir quoi y faire,
+      et le retour d’un score faible (« Repérez les mots qui… ») passait pour la consigne.
+      Le prompt la demandait ; le pipeline la gardait (vérifié sur l’exemple du dépôt) : le
+      modèle l’avait omise. Trois parades :
+      - **Le réparateur** remet à sa place (`taskDescription`) une consigne écrite sous un
+        autre nom (`consigne`, `instruction(s)`, `question`, `text`…) — activité seule comme
+        question de quiz ; il n’en invente jamais (`recupererConsigne`, `json-healer.js`).
+      - **La file du parcours** vérifie (`consignesManquantes`) et redemande UNE fois en nommant
+        les questions (`rappelConsignes`) ; au second oubli, la carte échoue
+        (`parcours_consigne_manquante`) et se refait d’un clic.
+      - **Le cadre du prompt** d’un Quiz mixte rappelle la règle (D82 : ajout, pas retouche).
+      La fenêtre « IA externe » la refusait déjà : le schéma de l’éditeur tient la consigne
+      pour obligatoire (« Question 4 › … › Consigne : ce champ est obligatoire », contrôlé par
+      `run_parcours_external_ai.mjs`). La génération d’une activité seule profite du
+      réparateur, pas encore de la seconde demande. Bancs : `run_deformations_modele.mjs` (152 consignes déplacées, retrouvées à
+      l’identique ; contre-épreuve : 0/152 sans le réparateur), `run_parcours_atelier.mjs`.
+- [x] **D104 — La longueur d’une Page ou d’un Livre suit sa durée.** « Pas de différence entre
+      une page de 5 minutes et une de 25 » (Gauthier) : la durée fixait le nombre de blocs
+      (3 à 6), pas leur longueur. Le prompt de la carte vise désormais environ 80 mots par
+      minute de lecture attentive, prise de notes comprise (`motsVises` : 5 min → 400 mots,
+      25 min → 2 000).
+- [x] **D105 — Le vocabulaire suit la plateforme : élèves, stagiaires, étudiants.** « Pour
+      Moodle on parle d’étudiant, Magistère c’est pour les stagiaires, et Éléa pour les
+      élèves ; dans les choix de bifurcation et tout, c’est important à respecter » (Emmanuel,
+      1er oct. 2026, sur une capture du cadrage Moodle qui disait « Tous vos élèves… »).
+      Remplacer un mot dans une phrase ne tient pas dans douze langues (articles, élisions,
+      accords, cas) : chaque texte de l’atelier qui nomme le public a ses VARIANTES rédigées,
+      `<clé>_magistere` et `<clé>_moodle` (125 clés, rangées juste après leur base) ; la clé de
+      base parle d’élèves. Le `t()` de `js/parcours/vocabulaire.js` choisit la variante de la
+      plateforme du brouillon, ou de celle qu’on lui passe (la fiche, le cours assemblé, la vue
+      d’un parcours rouvert depuis sa notification) ; une clé sans variante se traduit comme
+      avant. **Aucun module de l’atelier ne prend `t` au cœur** (garde-fou du banc des
+      chemins). Portée : le cadrage (repeint sur place quand on change de plateforme,
+      `data-key` compris), le plan et ses chemins, « Voir comme un stagiaire / un étudiant »
+      (« Le formateur » sur Magistère), la relecture, la fiche de séquence, les descriptions
+      des modules de la plateforme (« entre stagiaires », « le groupe » au lieu de « la
+      classe », « ses pairs »), et ce que le cours écrit (étiquette de chaque chemin, liste
+      « À faire »). Pas de variante là où le texte ne peut pas s’afficher (module absent de la
+      plateforme, Carte de progression d’Éléa) ni pour les noms (« Classe inversée », « Classe
+      virtuelle »). **Les prompts** gardent « l’élève » comme nom de la personne qui suit le
+      parcours (D82) ; hors d’Éléa, la règle de rédaction le définit désormais par la
+      plateforme — des STAGIAIRES (« le formateur » pour l’enseignant) ou des ÉTUDIANTS, jamais
+      appelés « élèves », « le groupe » et non « la classe », vouvoiement — au lieu de le
+      laisser deviner au modèle depuis le seul « public visé ». Banc :
+      `run_parcours_aiguillage.mjs` (section G, contre-épreuve : 10 contrôles au rouge si la
+      variante n’est plus choisie) et `run_parcours_chemins.mjs` (section 8).
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -2173,6 +2247,9 @@ avait cinq, et deux surprises (D17, et les octets bruts de `createMbz`).
 > **28 sept. 2026 (D81)** : trames relues à l'aune de l'état de l'art — quatre structures
 > ajustées, toutes les intentions précisées, une intention par ampleur quand les
 > emplacements diffèrent (`intentions`).
+> **1er oct. 2026 (D102)** : vingt-trois trames. La vitrine — apprendre en autonomie
+> (`autonomie`), réviser, s’entraîner (`entrainement`), évaluer (Test réglé en épreuve) —
+> remplace les trois premières de la bibliothèque.
 > **30 sept. 2026 (D91, D92)** : vingt et une trames. Trois à l'écran, les autres sous « Voir
 > les autres modèles », par famille. Deux trames à CHEMINS (`structure: 'chemins'`), qui ne
 > se proposent qu'en mode chemins : `differenciation` (« Différencier dès le départ ») et
@@ -2190,8 +2267,10 @@ information finissent toujours par se contredire.
 
 | id | Famille | Modalités | Étapes × activités, par ampleur |
 |---|---|---|---|
-| `revision` | séance | toutes | courte 4×4 · moyenne 4×6 |
-| `evaluation` | séance | toutes | courte 3×3 |
+| `autonomie` | séance (vitrine) | toutes | courte 3×3 · moyenne 4×5 · longue 4×9 |
+| `revision` | séance (vitrine) | toutes | courte 4×4 · moyenne 4×6 |
+| `entrainement` | séance (vitrine) | toutes | courte 4×4 · moyenne 4×6 · longue 4×9 |
+| `evaluation` | séance (vitrine) | toutes | courte 3×3 (attendus, entraînement, Test en épreuve) |
 | `remediation` | séance | distanciel, hybride | courte 3×4 · moyenne 3×5 |
 | `rituel` | séance | toutes | courte 3×3 |
 | `decouverte` | séquence | toutes | moyenne 4×8 · longue 4×9 |
@@ -3286,6 +3365,32 @@ court « Parcours » ; la barre mesurée à dix largeurs avant et après, et deu
 dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
+
+- **1er octobre 2026, soir — Le vocabulaire suit la plateforme (D105) :** sur une capture du
+  cadrage Moodle (« Tous vos élèves… »), Emmanuel demande « étudiants » sur Moodle et
+  « stagiaires » sur Magistère, choix des chemins compris. 125 variantes rédigées en français
+  puis traduites dans les 11 autres langues ; règle de rédaction des prompts définie par la
+  plateforme ; tutoriel et fiche RAG `parcours-creation` (1.5.0) d’une phrase — la fiche
+  n’est pas encore réingérée.
+
+- **1er octobre 2026 — Retours de Gauthier sur un parcours réel (D102 à D104) :** un parcours
+  de mécanique des fluides généré en production (7.0.1). Trois exercices d’un Quiz mixte sans
+  consigne (le modèle l’avait omise ; le retour d’un score faible passait pour la consigne) :
+  réparateur, seconde demande dans la file, règle au cadre (D103). La vitrine des trames suit
+  sa proposition — apprendre en autonomie, réviser, s’entraîner, évaluer ; « Évaluer » règle le
+  Test en épreuve (D102). La longueur d’une Page suit sa durée (D104). La fin du parcours et
+  les durées qu’il demandait étaient déjà livrées (D96, D97). RAG : 48 fiches parcours écrites
+  le matin (12 ajoutées, 36 remplacées, 864 documents), puis 24 le soir (trames et étape 1 de
+  la création, après D102) ; aucun autre document touché (`rag/ingest-parcours-2026-10-01.mjs`,
+  un rapport par passage).
+
+- **30 septembre 2026 au soir — Premier essai des chemins sur Éléa (Emmanuel) :** la sonde
+  s'importe ; avec son compte enseignant, des réponses toutes justes puis toutes fausses au
+  test mènent chacune au bon chemin. Pas de compte élève de test sur la plateforme : ce qu'un
+  élève VOIT (autres chemins masqués, étape commune et fin qui apparaissent au bon moment,
+  réorientation par le carnet de notes) reste à confirmer avec la fiche
+  `sonde-chemins-elea.md`, dès qu'un compte élève sera disponible. Un compte enseignant
+  n'est pas soumis aux restrictions d'accès : seul un compte élève les éprouve vraiment.
 
 - **30 septembre 2026 — Les chemins selon les résultats (D90 à D101, 7.1.0) :**
   demande d'Emmanuel et de Gauthier, maquette validée le jour même (« tes choix sont

@@ -12,21 +12,26 @@
 - **Voir comme un élève** : depuis le plan ou « Relire le parcours », la page du cours telle qu’un élève la verra — avant le test, pendant son chemin, à la fin —, pour le score de votre choix, ou telle que vous la verrez en tant qu’enseignant.
 - **Une section « Fin du parcours » dans tous les parcours** : elle n’apparaît qu’une fois tout terminé, félicite l’élève et lui laisse le mot de la fin écrit avec le plan.
 - **La durée dans le cours** : chaque activité affiche sa durée estimée sous son titre, et l’accueil du parcours annonce la durée d’un élève, selon son chemin.
+- **Quatre trames pour commencer** : apprendre en autonomie, réviser, s’entraîner, évaluer. « Apprendre en autonomie » (découvrir pas à pas, s’exercer avec une correction immédiate, retenir, vérifier) et « S’entraîner » (un rappel, des exercices avec propositions puis sans, une vérification finale) sont nouvelles. « Évaluer » règle le Test en épreuve : une seule tentative, chronométrée sur sa durée, sans correction affichée, la note seule à la fin — réglages que l’on peut retoucher dans l’éditeur.
 
 ### Améliorations
 
-- **Moins de modèles à l’écran** : trois trames adaptées à vos réglages, puis « Voir les autres modèles », rangés par famille (pour une séance, pour une séquence, projets, démarches particulières).
+- **Moins de modèles à l’écran** : les quatre trames de départ, puis « Voir les autres modèles », rangés par famille (pour une séance, pour une séquence, projets, démarches particulières).
+- **La longueur suit la durée** : une Page ou un Livre de 25 minutes vise environ 2 000 mots à lire, une Page de 5 minutes environ 400.
 - **Des activités réglées selon le chemin** : correction immédiate dans les chemins qui reprennent ou renforcent, solution retirée dans celui qui approfondit. Le test qui oriente ne propose pas de recommencer, et chaque question y vaut un point.
 - **Une fiche de séquence qui parle des chemins** : ce que fait un élève (activités, durée), à qui s’ouvre chaque chemin, et le mot de la fin.
 - **La livraison** rappelle qu’un parcours à chemins s’importe dans un cours vide, et pourquoi.
+- **Le vocabulaire de votre plateforme** : l’atelier parle d’élèves sur Éléa, de stagiaires sur Magistère et d’étudiants sur Moodle — au cadrage, dans les chemins, « Voir comme un stagiaire » (avec « Le formateur »), la fiche de séquence, les notes écrites dans le cours et les consignes données à l’IA, qui vouvoie des adultes et parle du groupe plutôt que de la classe.
 
 ### Corrections
 
+- **Des questions de quiz sans consigne** : dans un Quiz mixte, une question Surligner, Glisser les mots, Texte à trous ou Rédaction pouvait arriver sans consigne — l’élève voyait un texte sans savoir quoi y faire, et le retour d’un faible score semblait tenir lieu de consigne. Une consigne écrite sous un autre nom est désormais remise à sa place ; dans un parcours, une consigne oubliée est redemandée au modèle, et la carte échoue avec un message clair si elle manque encore.
 - **Des activités H5P qui ne s’achevaient jamais dans un parcours** : la Frise chronologique, le Glossaire, les Cartes de dialogue, le Diagramme, l’Image interactive, le Résumé, la Série de choix uniques, la Vidéo interactive, la Présentation de cours et le Livre interactif ne transmettent pas de note à la plateforme. Réglés pour s’achever « à la note », ils ne s’achevaient jamais, et l’ouverture progressive laissait l’étape suivante fermée. Ils s’achèvent désormais dès que l’élève les a consultés.
 
 ### Notes techniques
 
-- **Modèle** : une étape peut être un chemin, `etape.chemin = { depuis: <pourcentage> }` ; tout le reste se déduit (`js/parcours/aiguillage.js`, module pur). Seuils gardés en pourcentage, réglés en bonnes réponses, écrits à mi-point dans le cours ; scénario au format 2 quand il y a des chemins. Décisions D90 à D101 de `docs/PRD_PARCOURS.md`.
+- **Modèle** : une étape peut être un chemin, `etape.chemin = { depuis: <pourcentage> }` ; tout le reste se déduit (`js/parcours/aiguillage.js`, module pur). Seuils gardés en pourcentage, réglés en bonnes réponses, écrits à mi-point dans le cours ; scénario au format 2 quand il y a des chemins. Décisions D90 à D105 de `docs/PRD_PARCOURS.md`.
+- **Vocabulaire par plateforme (D105)** : un texte de l’atelier qui nomme le public a ses variantes `<clé>_magistere` / `<clé>_moodle` (125 clés, 12 langues) ; `js/parcours/vocabulaire.js` choisit celle de la plateforme, et aucun module de l’atelier ne prend `t` directement dans `core/translation.js`.
 - **Passes d’après l’assemblage** : `achevement-h5p.js` (D100), `aiguillage-cours.js` (conditions des chemins, de l’étape commune et de la fin), `progression.js` (ne remplit plus que les sections libres), `durees-cours.js` (D97). `mbz-course-builder.js` n’est pas modifié, ni aucun autre fichier partagé avec la Sucrerie.
 - **Bancs** : `tests/run_parcours_chemins.mjs` (Node pur, en CI : tous les seuils et tous les scores), `tests/run_parcours_aiguillage.mjs` (trois cours relus comme Moodle, un élève par score, contre-épreuves, interface par de vrais clics). Sonde pour l’aller-retour : `node scripts/generer-parcours-sonde-chemins.mjs`. Les bancs `calibrage` et `sources` simulent désormais les points d’accès de production comme ceux du bac à sable.
 - **Aide** : tutoriel, aide embarquée de Caramelia et fiches du RAG (dont une fiche `parcours-chemins`, générée depuis le tutoriel par `scripts/aide-parcours.mjs`) dans les 12 langues ; captures refaites, dont deux nouvelles (`parcours-chemins`, `parcours-eleve`).
