@@ -33,6 +33,9 @@ import { formaterDuree } from './duree.js';
 import { MODULES_PARCOURS } from './modules-parcours.js';
 import { contenuPourEdition } from './sources.js';
 import { imagesEnvoyeesPourDocument } from '../moodle/page-images.js';
+import {
+    aiguillagesDuPlan, nombreQuestions, bornesEnReponses, plagesEnReponses, dureeParEleve, activitesParEleve,
+} from './aiguillage.js';
 
 /** Substitution de jetons, à l'identique des écrans de l'atelier. */
 function tr(cle, jetons) {
@@ -79,14 +82,26 @@ export function construireFiche(plan, { platformId } = {}) {
     const carteActive = Boolean(p.carte && p.carte.actif) && carteDisponible(platformId);
     const progressionActive = Boolean(p.progression && p.progression.actif) && etapes.length >= 2;
 
-    const meta = [
+    // Avec des chemins, l'en-tête dit ce que vit UN élève — ses activités, sa
+    // durée — et selon quel test (D90) : additionner les chemins annoncerait une
+    // séquence que personne ne suit. Pas de Carte de progression avec des chemins (D95).
+    const groupes = aiguillagesDuPlan(p);
+    const fourchette = ({ min, max }, f = String) => (min === max ? f(max) : `${f(min)}–${f(max)}`);
+    const titreTest = g => (g.test ? String(g.test.titre || '').trim() || nomModule(g.test.module) : '');
+    const meta = (groupes.length ? [
+        platformId ? nomPlateforme(platformId) : '',
+        ...groupes.map(g => tr('parcours_fiche_meta_chemins', { k: String(g.chemins.length), t: titreTest(g) })),
+        tr('parcours_fiche_meta_par_eleve', { e: fourchette(activitesParEleve(p)), f: String(cartes.length) }),
+        tr('parcours_fiche_meta_duree_eleve', { d: fourchette(dureeParEleve(p), duree) }),
+        progressionActive ? t('parcours_fiche_meta_progression') : '',
+    ] : [
         platformId ? nomPlateforme(platformId) : '',
         tr('parcours_fiche_meta_etapes', { n: String(etapes.length) }),
         tr('parcours_fiche_meta_activites', { n: String(cartes.length) }),
         duree(total),
         carteActive ? t('parcours_fiche_meta_carte') : '',
         progressionActive ? t('parcours_fiche_meta_progression') : '',
-    ].filter(Boolean);
+    ]).filter(Boolean);
 
     const sections = [];
 
@@ -104,14 +119,31 @@ export function construireFiche(plan, { platformId } = {}) {
         t('parcours_fiche_col_duree'),
     ];
 
-    etapes.forEach((etape, i) => {
+    // Les étapes communes sont numérotées comme à l'écran du plan ; un chemin
+    // porte le nom de son rôle et dit à quels élèves il s'ouvre, en bonnes
+    // réponses au test — jamais en pourcentage.
+    let numero = 0;
+    etapes.forEach((etape) => {
         const titreEtape = String(etape.titre || '').trim();
-        const bloc = {
-            titre: titreEtape
-                ? tr('parcours_fiche_etape_titree', { n: String(i + 1), t: titreEtape })
-                : tr('parcours_fiche_etape', { n: String(i + 1) }),
-            lignes: [],
-        };
+        const g = groupes.find(x => x.chemins.some(c => c.etape === etape));
+        const chemin = g && g.chemins.find(c => c.etape === etape);
+        let titreBloc;
+        if (chemin) {
+            const role = t(`parcours_role_${chemin.role}`);
+            titreBloc = titreEtape ? tr('parcours_fiche_chemin', { r: role, t: titreEtape }) : tr('parcours_fiche_chemin_seul', { r: role });
+        } else {
+            numero += 1;
+            titreBloc = titreEtape
+                ? tr('parcours_fiche_etape_titree', { n: String(numero), t: titreEtape })
+                : tr('parcours_fiche_etape', { n: String(numero) });
+        }
+        const bloc = { titre: titreBloc, lignes: [] };
+        if (chemin && g.test) {
+            const n = nombreQuestions(g.test, g.chemins.length);
+            const [de, a] = plagesEnReponses(bornesEnReponses(g.chemins.slice(1).map(c => c.depuis), n), n)[g.chemins.indexOf(chemin)];
+            const plage = de === a ? tr('parcours_plage_une', { de, n }) : tr('parcours_plage', { de, a, n });
+            bloc.lignes.push(tr('parcours_fiche_chemin_pour', { p: plage, t: titreTest(g) }));
+        }
         const objectif = String(etape.objectif || '').trim();
         if (objectif) bloc.lignes.push(tr('parcours_fiche_objectif', { t: objectif }));
 
@@ -128,6 +160,10 @@ export function construireFiche(plan, { platformId } = {}) {
 
         sections.push(bloc);
     });
+
+    // Le mot de la fin, lu par l'élève dans la dernière section du cours (D96).
+    const conclusion = String(p.conclusion || '').trim();
+    if (conclusion) sections.push({ titre: t('parcours_fin_titre'), lignes: [conclusion] });
 
     // Les consignes, à la fin : elles ne se lisent pas dans un tableau, mais
     // elles sont ce que l'élève aura sous les yeux. Un enseignant qui prépare

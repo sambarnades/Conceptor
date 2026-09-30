@@ -120,14 +120,18 @@ const THRESHOLDS = {
     // Même raisonnement au relèvement de 2026-09-06 : ce qui reste du lot 2 (Questionnaire,
     // Leçon, Atelier, différenciation) ajoutera des clés, et un seuil qu'on frôle ne
     // garde plus rien — il ne fait que se faire relever en catastrophe.
-    LOCALE_SIZE: 680 * 1024,    // 680 Ko par fichier (el = 607 Ko → ~12 % de marge)
+    // → 760 Ko (7.1.0 : les chemins selon les résultats, ~110 clés dans les 12 langues ;
+    //   el passe de 670 Ko — 1,5 % sous l'ancien seuil à la 7.0.1 — à 684 Ko). Parité
+    //   stricte vérifiée : 3583 clés dans chaque locale.
+    LOCALE_SIZE: 760 * 1024,    // 760 Ko par fichier (el = 684 Ko → ~11 % de marge)
     // Le seuil PAR FICHIER ci-dessus est le vrai garde anti-bloat ; le total ne fait que
     // borner le poids servi. Il croît donc mécaniquement d'un fichier entier à chaque
     // langue ajoutée : 4,5 Mo couvrait 11 locales, le breton (2026-08-28) porte le total
     // à ~4,85 Mo. Relevé à 5,5 Mo — marge pour la croissance du breton une fois traduit
     // (le breton est un peu plus long que le français) sans masquer un emballement, qui
     // se verrait de toute façon d'abord sur LOCALE_SIZE.
-    TOTAL_LOCALES_SIZE: 6 * 1024 * 1024, // 6 Mo total (5,09 Mo avec 12 locales ; ~18 % de marge)
+    // 7.1.0 : 5,74 Mo pour 12 locales, 4 % sous les 6 Mo → relevé à 6,5 Mo (~13 % de marge).
+    TOTAL_LOCALES_SIZE: 6.5 * 1024 * 1024, // 6,5 Mo total (5,74 Mo avec 12 locales)
     TRANSLATE_PAGE: 200,        // ms
     HEAL_STRING: 100,           // ms par fixture
     HEAL_STRING_AVG: 50,        // ms moyenne

@@ -8,7 +8,7 @@
 
 ## Identité
 
-**Caramel** v7.0.1 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
+**Caramel** v7.1.0 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
 
 Lancement local : `python3 tests/serveur-statique.py 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL. (Pas `python3 -m http.server` : sa file de 5 connexions fait refuser des modules par macOS au premier chargement, page inerte au hasard ; tous les bancs utilisent ce serveur.)
 
@@ -38,7 +38,7 @@ js/export/       document-exporter, document-formatter, sanitizer, latex-parser,
 js/editor/       index, editor-core, content-detector, field-renderers, array-manager, validators, feedback-editor, json-utils, richtext-editor, formula-assistant
 js/caramelia/    chatbot flottant (13 modules) — voir ARCHITECTURE.md local
 js/parcours/     atelier de parcours : intention → plan → N générations → UN .mbz de COURS
-                 (39 modules ; un commutateur « Une activité | Un parcours » sous le
+                 (46 modules ; un commutateur « Une activité | Un parcours » sous le
                  formulaire commun — D63 — met l'atelier à la place des tuiles, sous le
                  formulaire de l'accueil qui reste en place — D39).
                  Les modules de la PLATEFORME (forum, questionnaire, leçon, atelier, wiki…)
@@ -49,7 +49,14 @@ js/parcours/     atelier de parcours : intention → plan → N générations �
                  réutilise leur gabarit et lui AJOUTE son cadre ; ce qui lui est propre (retours
                  d'exemple impersonnels, `retours-impersonnels.js`) se substitue dans SON prompt (D82).
                  Branche `emmanuel` du dépôt `bas`.
-                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D84 avec leur
+                 **Les CHEMINS selon les résultats (7.1.0, D90–D101)** : la note d'un test
+                 ouvre à chaque élève un chemin parmi 2 à 4. Modèle : `etape.chemin =
+                 { depuis: <%> }`, le reste se DÉDUIT (`aiguillage.js`, pur) ; conditions
+                 posées APRÈS l'assemblage (`aiguillage-cours.js`), seuils à mi-point ;
+                 « Fin du parcours » et durées dans TOUS les parcours. Bancs
+                 `run_parcours_chemins.mjs` (Node, CI) et `run_parcours_aiguillage.mjs` ;
+                 sonde Éléa `scripts/generer-parcours-sonde-chemins.mjs`.
+                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D101 avec leur
                  raison, pièges, et le journal des allers-retours réels sur plateforme.
                  Ne rien y rouvrir sans lire ce fichier ; y écrire toute décision nouvelle.
 js/locales/      12 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el, br (~2873 clés/fichier)

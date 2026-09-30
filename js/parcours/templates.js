@@ -1,8 +1,9 @@
 /**
  * @file Parcours — bibliothèque de trames didactiques.
  *
- * Données pures, SANS import. Ajouter une trame ne demande AUCUN code : une
- * entrée ici, deux clés dans les locales, et elle apparaît dans l'atelier.
+ * Données pures ; un seul import, lui-même pur (`aiguillage.js`). Ajouter une
+ * trame ne demande AUCUN code : une entrée ici, deux clés dans les locales, et
+ * elle apparaît dans l'atelier.
  *
  * L'ordre est signifiant : il va du besoin le plus fréquent au plus spécialisé.
  * « Structure libre » ferme la marche — c'est un outil d'expert, pas une porte
@@ -39,12 +40,33 @@
  * ainsi qu'une trame emploie un greffon d'Éléa ou de Magistère sans casser sur un
  * Moodle nu — et le banc de calibrage exige qu'aucune carte ne se replie.
  *
- * `famille` regroupe les trames (séance / séquence / projet / spécialisé). Le
- * champ n'est pas encore affiché : il attend que la bibliothèque justifie un
- * regroupement à l'écran.
+ * `famille` regroupe les trames (séance / séquence / projet / spécialisé) sous
+ * « Voir les autres modèles » (D92) : trois trames seulement s'affichent d'emblée,
+ * les premières compatibles dans l'ordre de la bibliothèque.
+ *
+ * ---- Les trames à CHEMINS (D90) ----
+ *
+ * `structure: 'chemins'` : après un test, chaque élève suit un chemin parmi deux à
+ * quatre, selon sa note. Dans `modules`, l'entrée `CHEMINS` marque la place des
+ * chemins ; `chemins.modules` donne les types d'activité de chaque rôle, du plus
+ * étayé au moins étayé, et `chemins.longueur` combien en prendre selon l'ampleur
+ * et le nombre de chemins. `trameParId(id, ampleur, k)` DÉPLIE la trame : les
+ * chemins deviennent k étapes ordinaires, et `aiguillage` dit lesquelles. Le reste
+ * de l'atelier lit donc une trame à chemins comme les autres.
+ *
+ * Le long des chemins, c'est l'AIDE qui change, pas l'objectif : on glisse des
+ * mots proposés avant d'écrire sans propositions, on écrit avant de produire
+ * (la gradation de la séance de Gauthier, sept. 2026).
  *
  * @module parcours/templates
  */
+
+// Le seul import : un module lui aussi pur, sans aucun import (les rôles des
+// chemins n'ont qu'une source).
+import { ROLES_PAR_NOMBRE, CHEMINS_DEFAUT, seuilsParDefaut } from './aiguillage.js';
+
+/** La place des chemins dans le `modules` d'une trame à chemins. */
+export const CHEMINS = '@chemins';
 
 export const TRAMES = [
     {
@@ -235,23 +257,66 @@ export const TRAMES = [
         ],
     },
     {
+        // D90 : la différenciation devient RÉELLE. Le test de positionnement
+        // ouvre, selon la note, un chemin parmi deux à quatre ; les autres restent
+        // invisibles pour l'élève, et tous se retrouvent pour le bilan. C'est le
+        // gabarit de Gauthier (sept. 2026), sans ses failles.
         id: 'differenciation',
-        variantes: { longue: [['test_elea'], ['Page', 'Flashcards', 'FillInTheBlanks'], ['QuizSet', 'Crossword'], ['Devoir', 'Essay', 'Page']] },
-        // L'élève choisit mal seul ce dont il a besoin : l'orientation s'appuie
-        // sur le score du positionnement, pas sur le ressenti (D81).
-        intention: "Se positionner ; proposer un appui de consolidation ; poursuivre l’entraînement ; approfondir. Indiquer à qui sert chaque activité d’après le résultat du test de positionnement (des seuils de score explicites, pas le ressenti) ; tous visent le même objectif. Les choix sont guidés par les consignes : aucune branche ni restriction automatique par note.",
+        structure: 'chemins',
+        // En une séance, le test SEUL ouvre le parcours ; au-delà, une page
+        // présente d'abord le texte ou le document à lire (la page « Commencer le
+        // parcours » du modèle de Gauthier).
+        variantes: { courte: [['QuizSetQCM'], CHEMINS, ['Essay']] },
+        intention: "Première étape : une page présente le texte ou le document de travail, puis un test de positionnement porte sur toutes les notions du parcours, une notion par question, des questions simples aux plus exigeantes. Étapes suivantes : un chemin par groupe de résultats au test. Tous visent le même objectif sur les mêmes notions, avec le même nombre d’activités et une durée comparable ; seule l’aide change. Le premier chemin part d’un exemple résolu et fait choisir ou glisser des mots proposés, avec une correction immédiate qui explique ; le dernier fait écrire sans propositions, appliquer à un cas nouveau et produire, avec une correction donnée à la fin. Dernière étape, commune : un écrit court où chacun réinvestit les notions.",
+        intentions: {
+            courte: "Première étape : un test de positionnement porte sur toutes les notions du parcours, une notion par question, des questions simples aux plus exigeantes. Étape suivante : un chemin par groupe de résultats au test. Tous visent le même objectif sur les mêmes notions, avec le même nombre d’activités et une durée comparable ; seule l’aide change. Le premier chemin part d’un exemple résolu et fait choisir ou glisser des mots proposés, avec une correction immédiate qui explique ; le dernier fait écrire sans propositions et appliquer à un cas nouveau, avec une correction donnée à la fin. Dernière étape, commune : un écrit court où chacun réinvestit les notions.",
+        },
         nameKey: 'parcours_t_differenciation_name',
         descKey: 'parcours_t_differenciation_desc',
         famille: 'sequence',
-        formats: ['distanciel', 'hybride'],
-        ampleurs: ['moyenne', 'longue'],
-        paliers: ['entrainement', 'decouverte', 'entrainement', 'transfert'],
-        modules: [
-            ['test_elea'],
-            ['Flashcards', 'FillInTheBlanks'],
-            ['QuizSet', 'Crossword'],
-            ['Devoir', 'Essay'],
-        ],
+        formats: ['presentiel', 'distanciel', 'hybride'],
+        ampleurs: ['courte', 'moyenne'],
+        paliers: ['decouverte', 'entrainement', 'transfert'],
+        modules: [['Page', 'QuizSetQCM'], CHEMINS, ['Essay']],
+        chemins: {
+            // Du plus étayé au moins étayé : reconnaître, puis retrouver, puis produire.
+            modules: {
+                reprendre: ['DialogCards', 'DragTheWords', 'QuizSetVF', 'MarkTheWords'],
+                renforcer: ['Page', 'DragTheWords', 'MarkTheWords', 'QuizSetVF'],
+                consolider: ['FillInTheBlanks', 'QuizSetQCM', 'DragAndDrop', 'Crossword'],
+                approfondir: ['FillInTheBlanks', 'Essay', 'QuizSetQCM', 'SortParagraphs'],
+            },
+            // Activités par chemin : douze au plus pour TOUT le parcours (D5).
+            longueur: { courte: { 2: 2, 3: 2, 4: 2 }, moyenne: { 2: 4, 3: 3, 4: 2 } },
+        },
+    },
+    {
+        // D90 : la remédiation « en cours de route » — la pédagogie de maîtrise :
+        // un point de contrôle après une première découverte, puis revoir ou aller
+        // plus loin selon le score, avant de réinvestir ensemble.
+        id: 'point_controle',
+        structure: 'chemins',
+        variantes: { courte: [['Page'], ['QuizSetQCM'], CHEMINS] },
+        intention: "Première étape : découvrir la notion par une présentation guidée par des questions, puis s’exercer brièvement. Deuxième étape : un point de contrôle, un quiz sur ce qui vient d’être vu, dont le score oriente la suite. Étapes suivantes : un chemin par groupe de résultats. Le premier fait revoir : une page énonce l’erreur fréquente telle qu’on la commet, montre pourquoi elle ne tient pas, puis explique avec un exemple résolu, avant un exercice guidé et une seconde vérification sur des exemples nouveaux. Le dernier fait aller plus loin : un cas nouveau, un défi, une production. Dernière étape, commune : un test qui mélange les notions de tout le parcours.",
+        intentions: {
+            courte: "Première étape : découvrir la notion par une page qui pose une question et y répond pas à pas. Deuxième étape : un point de contrôle, un quiz sur ce qui vient d’être vu, dont le score oriente la suite. Dernière étape : un chemin par groupe de résultats. Le premier fait revoir : une page énonce l’erreur fréquente, montre pourquoi elle ne tient pas et explique avec un exemple résolu, puis un exercice guidé. Le dernier fait aller plus loin : un cas nouveau ou un défi.",
+        },
+        nameKey: 'parcours_t_point_controle_name',
+        descKey: 'parcours_t_point_controle_desc',
+        famille: 'sequence',
+        formats: ['presentiel', 'distanciel', 'hybride'],
+        ampleurs: ['courte', 'moyenne'],
+        paliers: ['decouverte', 'entrainement', 'entrainement', 'transfert'],
+        modules: [['CoursePresentation', 'FillInTheBlanks'], ['QuizSetQCM'], CHEMINS, ['test_elea']],
+        chemins: {
+            modules: {
+                reprendre: ['DialogCards', 'DragTheWords', 'QuizSetVF', 'MarkTheWords'],
+                renforcer: ['Page', 'DragTheWords', 'QuizSetVF', 'MarkTheWords'],
+                consolider: ['FillInTheBlanks', 'QuizSetQCM', 'DragAndDrop', 'SortParagraphs'],
+                approfondir: ['Essay', 'FillInTheBlanks', 'SortParagraphs', 'QuizSetQCM'],
+            },
+            longueur: { courte: { 2: 2, 3: 2, 4: 2 }, moyenne: { 2: 4, 3: 2, 4: 2 } },
+        },
     },
     {
         id: 'langue',
@@ -451,26 +516,83 @@ export function palierEtape(trame, index) {
     return (Array.isArray(trame.paliers) && trame.paliers[index]) || 'entrainement';
 }
 
+/** Nombre d'activités que fait UN élève : les étapes communes et un seul chemin. */
+export function nbActivitesParEleve(trame) {
+    const r = rythme(trame);
+    if (!r) return 0;
+    const a = trame.aiguillage;
+    if (!a) return r.reduce((x, y) => x + y, 0);
+    return r.reduce((x, y, i) => x + (i >= a.debut && i < a.debut + a.nombre ? 0 : y), 0) + r[a.debut];
+}
+
+/** La trame ouvre-t-elle des chemins ? */
+export function aDesCheminsTrame(trame) {
+    return Boolean(trame && trame.structure === 'chemins');
+}
+
 /**
- * Trames compatibles avec la modalité et l'ampleur choisies.
+ * Trames compatibles avec la modalité, l'ampleur et la structure choisies.
+ *
+ * Une trame à chemins ne se propose QUE si l'enseignant a choisi « des chemins
+ * selon les résultats », et inversement : les deux listes ne se mêlent pas
+ * (D91). La structure libre vaut pour les deux.
+ *
  * @param {string} format  - `presentiel` | `distanciel` | `hybride`
  * @param {string} ampleur - `courte` | `moyenne` | `longue`
+ * @param {Object} [o]
+ * @param {'lineaire'|'chemins'} [o.structure]
+ * @param {number} [o.chemins] - Nombre de chemins (2 à 4).
  * @returns {Array<Object>} Les trames retenues, dans l'ordre de la bibliothèque.
  */
-export function tramesCompatibles(format, ampleur) {
-    return TRAMES.filter(tr => tr.formats.includes(format) && tr.ampleurs.includes(ampleur))
-        .map(tr => adapterTrame(tr, ampleur));
+export function tramesCompatibles(format, ampleur, { structure = 'lineaire', chemins = CHEMINS_DEFAUT } = {}) {
+    return TRAMES.filter(tr => tr.formats.includes(format) && tr.ampleurs.includes(ampleur)
+            && (tr.id === 'libre' || aDesCheminsTrame(tr) === (structure === 'chemins')))
+        .map(tr => adapterTrame(tr, ampleur, chemins));
 }
 
-/** Une trame par son identifiant. */
-export function trameParId(id, ampleur) {
+/**
+ * Une trame par son identifiant, dépliée pour l'ampleur et le nombre de chemins.
+ * @param {string} id
+ * @param {string} [ampleur]
+ * @param {number} [chemins]
+ */
+export function trameParId(id, ampleur, chemins = CHEMINS_DEFAUT) {
     const trame = TRAMES.find(tr => tr.id === id);
-    return trame ? adapterTrame(trame, ampleur) : null;
+    return trame ? adapterTrame(trame, ampleur, chemins) : null;
 }
 
-/** La même variante alimente la carte, le départ sans IA et le prompt. */
-function adapterTrame(trame, ampleur) {
-    const modules = trame.variantes?.[ampleur] || trame.modules;
+/**
+ * La même variante alimente la carte, le départ sans IA et le prompt.
+ *
+ * Une trame à chemins est DÉPLIÉE : l'entrée `CHEMINS` devient k étapes, une par
+ * rôle, chacune avec ses types d'activité ; `aiguillage` dit où elles commencent,
+ * combien il y en a, leurs rôles et leurs seuils par défaut.
+ */
+function adapterTrame(trame, ampleur, k = CHEMINS_DEFAUT) {
+    const base = trame.variantes?.[ampleur] || trame.modules;
     const intention = trame.intentions?.[ampleur] || trame.intention;
-    return { ...trame, modules, intention };
+    if (!aDesCheminsTrame(trame) || !Array.isArray(base)) return { ...trame, modules: base, intention };
+    const n = ROLES_PAR_NOMBRE[k] ? k : CHEMINS_DEFAUT;
+    const roles = ROLES_PAR_NOMBRE[n];
+    const longueur = trame.chemins.longueur?.[ampleur]?.[n] || 2;
+    const modules = [];
+    const paliers = [];
+    let debut = -1;
+    base.forEach((entree, i) => {
+        const palier = trame.paliers?.[i] || 'entrainement';
+        if (entree === CHEMINS) {
+            debut = modules.length;
+            for (const role of roles) {
+                modules.push(trame.chemins.modules[role].slice(0, longueur));
+                paliers.push(palier);
+            }
+        } else {
+            modules.push(entree);
+            paliers.push(palier);
+        }
+    });
+    return {
+        ...trame, modules, paliers, intention,
+        aiguillage: { debut, nombre: n, roles: [...roles], seuils: seuilsParDefaut(n) },
+    };
 }

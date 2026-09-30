@@ -304,7 +304,7 @@ No Caramel, **Um percurso** cria um curso para Éléa, Magistère ou Moodle: vá
 
 No menu da Caramelia, **Criar um percurso** abre diretamente o ateliê sem chamar a IA. Se existir um rascunho, **Retomar o meu percurso** recupera-o. Os campos e as fontes existentes são mantidos. Revê o enquadramento e o plano no ateliê antes de iniciar a geração.
 
-Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão e modelo. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.
+Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão, **Um mesmo caminho para todos** ou **Caminhos consoante os resultados**, e um modelo: são propostos três, e **Ver os outros modelos** mostra os seguintes. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.
 
 Em **Plano**, edite o título, objetivo geral, conceitos-chave, etapas e atividades. Mova as atividades com as setas ou arrastando a miniatura. **Instruções e etapa** permite ajustar as instruções de geração. As orientações pedagógicas ajudam a rever sem impor um modelo. O máximo é de **12 atividades**.
 
@@ -320,7 +320,7 @@ Em **Entrega**, descarregue o **.mbz** e use a importação ou o restauro de cur
 
 O plano propõe também os módulos do seu Éléa, Magistère ou Moodle, agrupados no menu de cada atividade em **Módulos da plataforma**: fórum, sondagem, questionário, inquérito, lição, workshop de avaliação entre pares, quadro, wiki, documento colaborativo, glossário e base de dados a construir, sala de aula virtual, escolha de grupo, partilha de ficheiros e ligação web. A IA redige o que a plataforma conserva na importação; os espaços coletivos chegam vazios, com a respetiva instrução. Quando um módulo exige uma definição na plataforma (fases do workshop, hora da sala de aula virtual, grupos), o Caramel escreve-a numa nota **A fazer antes de abrir o curso**, oculta para os alunos, no início do curso importado. O **pacote de conteúdo IMS** — páginas para ler com o seu índice, escritas inteiramente pelo Caramel — escolhe-se no mosaico; o plano não o propõe.
 
-O mapa de progressão é específico do Éléa. O mapa e o acesso progressivo são opcionais e ainda requerem verificações em utilização real. O modelo de diferenciação não cria ramificações automáticas segundo a nota. A colaboração acontece na plataforma. A publicação de um percurso completo na Sucrerie ainda não está disponível.
+O mapa de progressão é específico do Éléa. O mapa, o acesso progressivo e os caminhos consoante os resultados ainda requerem verificações em utilização real. A colaboração acontece na plataforma. A publicação de um percurso completo na Sucrerie ainda não está disponível.
 
 Para saber mais: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) ajuda a refletir sobre as atividades de aprendizagem. As sete famílias do Caramel, entre as quais **Discutir** e **Colaborar**, são orientações simplificadas baseadas nas ferramentas, não os seis tipos ABC nem uma avaliação do seu ensino.
 No Éléa, abra **Definições do curso**, ative o mapa de progresso e use o bloco **+ Adicionar a minha imagem** para escolher o seu fundo. Pode alterar ou remover a imagem e voltar aos temas propostos. O fundo é guardado no cenário **.json** e incluído no curso **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG ou TIFF · Máx. 12 MB. Conversão automática, sem recorte.
@@ -340,7 +340,8 @@ Depois de **Um percurso**, o modelo dá o desenvolvimento que a IA adapta ao tem
 - **Conduzir uma investigação** — Uma pergunta, uma hipótese, dados, uma conclusão: o método científico, por ordem. *(Duas a três aulas · Uma sequência completa · Na aula · Ambas)*
 - **Analisar uma fonte** — De onde vem a informação, quem a produz, o que omite. Preparar o olhar antes de julgar. *(Uma aula · Duas a três aulas)*
 - **Debate argumentado** — Uma votação para dizer de onde se parte, fontes para se informar, um fórum para debater e um texto para concluir. *(Duas a três aulas · Uma sequência completa)*
-- **Diferenciação a três velocidades** — Um teste inicial, seguido de atividades para consolidar, prosseguir ou aprofundar. As instruções orientam as escolhas, sem ramificações automáticas em função da nota. *(Duas a três aulas · Uma sequência completa · À distância · Ambas)*
+- **Diferenciar desde o início** — Um teste inicial abre a cada aluno um caminho adaptado ao seu resultado; todos se reencontram para um balanço comum. *(Uma aula · Duas a três aulas · Caminhos consoante os resultados)*
+- **Remediar durante o percurso** — Descobre-se, faz-se o ponto da situação com um quiz: consoante a pontuação, revê-se ou vai-se mais longe, e depois aplica-se tudo em conjunto. *(Uma aula · Duas a três aulas · Caminhos consoante os resultados)*
 - **Sequência de língua estrangeira** — Primeiro o léxico, depois a compreensão, a produção no fim. *(Duas a três aulas)*
 - **Preparar uma apresentação oral** — O que se vai dizer, por que ordem, e como se treina a dizê-lo. *(Uma aula · Duas a três aulas · Na aula · Ambas)*
 - **Aprender a aprender** — O que ajuda mesmo a memorizar, experimentado no tema do curso: testar-se, espaçar, explicar. Depois, cada um planeia as suas revisões. *(Uma aula · Duas a três aulas)*
@@ -351,4 +352,17 @@ Depois de **Um percurso**, o modelo dá o desenvolvimento que a IA adapta ao tem
 - **Jogo de fuga** — Uma missão, pistas, enigmas de dificuldade crescente, um código final e o debate final. *(Uma aula · Duas a três aulas · Na aula · Ambas)*
 - **Estrutura livre** — Nenhum desenvolvimento imposto: compõe as etapas você mesmo e o Caramel preenche o que lá colocar. *(Uma aula · Duas a três aulas · Uma sequência completa)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Caminhos consoante os resultados
+
+Na configuração, **Caminhos consoante os resultados** leva os seus alunos a fazer um teste: consoante a nota na primeira tentativa, cada um segue um dos 2 a 4 caminhos — **Retomar as bases**, **Reforçar**, **Consolidar**, **Aprofundar** — e depois todos se reencontram numa etapa comum. Cada aluno só vê o seu caminho. Há dois modelos pensados para isso: **Diferenciar desde o início** e **Remediar durante o percurso**.
+
+- Em **Plano**, a barra de pontuações mostra que caminho se abre para cada número de respostas certas; os botões **−** e **+** antecipam ou adiam numa resposta certa o início de um caminho. **Adicionar um caminho**, **Retirar um caminho** e **Um só caminho para todos** alteram a bifurcação.
+- O teste que encaminha é um **Quiz de múltipla escolha**, um **Quiz Verdadeiro/Falso** ou um **Teste**, colocado no fim da etapa que antecede os caminhos. Cada pergunta vale um ponto e o teste não propõe nova tentativa.
+- **Ver como aluno** mostra a página do curso tal como o aluno a verá — antes do teste, durante o seu caminho, no fim — para a pontuação que escolher.
+- Para reencaminhar um aluno, altere a nota dele no teste no livro de notas da plataforma.
+
+Importe um percurso com caminhos para um curso **vazio**: o Moodle arruma as secções do ficheiro nas do curso, e as suas secções existentes receberiam as restrições dos caminhos. Todos os percursos terminam agora com uma secção **Fim do percurso**, e a duração estimada aparece por baixo de cada atividade.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

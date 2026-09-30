@@ -109,7 +109,9 @@ const IMAGES = {
     apercu: { src: 'assets/images/wiki/modale_visualisation.PNG', crop: [180, 0, 1580, 660], max: 1600 },
     barre: { src: 'assets/images/wiki/vers-sucrerie.webp', max: 1405 },
     editeur: { src: 'assets/images/wiki/caramel-menu-edition.webp', crop: [64, 20, 1216, 780], max: 1400 },
-    cadrage: { src: 'assets/images/wiki/parcours-cadrage.webp', crop: [0, 540, 2184, 1710], max: 1800 },
+    cadrage: { src: 'assets/images/wiki/parcours-cadrage.webp', crop: [0, 540, 2184, 2044], max: 1800 },
+    chemins: { src: 'assets/images/wiki/parcours-chemins.webp', crop: [0, 690, 2184, 1650], max: 1800 },
+    eleve: { src: 'assets/images/wiki/parcours-eleve.webp', max: 1400 },
     plan: { src: 'assets/images/wiki/parcours-plan.webp', crop: [0, 0, 2184, 1990], max: 1600 },
     fabrication: { src: 'assets/images/wiki/parcours-fabrication.webp', crop: [0, 0, 2184, 1400], max: 1600 },
     livraison: { src: 'assets/images/wiki/parcours-livraison.webp', crop: [0, 0, 2184, 1605], max: 1600 },
@@ -690,7 +692,7 @@ diapo({
 // 16 ── Parcours : cadrage
 diapo({
     partie: PARTIES[2], titre: 'Un parcours complet, en quatre temps',
-    notes: 'Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en trois questions : la plateforme, le déroulé — en classe, à distance ou les deux — et l’ampleur, d’une séance à une séquence entière. On peut aussi partir d’une trame toute faite.',
+    notes: 'Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en quatre questions : la plateforme, le déroulé — en classe, à distance ou les deux —, l’ampleur, d’une séance à une séquence entière, et le chemin des élèves : le même pour tous, ou des chemins selon les résultats d’un test. On peut aussi partir d’une trame toute faite : trois sont proposées, les autres sont à un clic.',
     dessiner(s) {
         entete(s, PARTIES[2], 'Un parcours complet, en quatre temps');
         const etapes = [['Cadrage', 'vos réglages'], ['Plan', 'relu et modifié'], ['Fabrication', 'activité par activité'], ['Livraison', 'un seul fichier de cours']];
@@ -707,7 +709,7 @@ diapo({
         const x = r.x + r.w + 0.5, w = X0 + XW - x;
         puces(s, [
             [gras('« Un parcours »'), { text: ', sous le formulaire, ouvre l’atelier.' }],
-            [gras('Trois réglages'), { text: ' : la plateforme, le déroulé (en classe, à distance, les deux), l’ampleur (d’une séance à une séquence).' }],
+            [gras('Quatre réglages'), { text: ' : la plateforme, le déroulé (en classe, à distance, les deux), l’ampleur (d’une séance à une séquence), un même chemin pour tous ou des chemins selon les résultats.' }],
             [gras('Ou une trame'), { text: ' toute faite : réviser avant une évaluation, découvrir une notion…' }],
         ], { x, y: 2.65, w, h: 3.6, corps: 14.5, espace: 12 });
     },
@@ -730,10 +732,29 @@ diapo({
     },
 });
 
+// 17 bis ── Parcours : des chemins selon les résultats (7.1.0)
+diapo({
+    partie: PARTIES[2], titre: 'Des chemins selon les résultats',
+    notes: 'Au cadrage, on peut choisir des chemins selon les résultats. Un test — un quiz ou un Test de la plateforme — oriente chaque élève, d’après sa note à la première tentative, vers l’un de deux à quatre chemins : reprendre les bases, renforcer, consolider, approfondir. Chaque élève ne voit que le sien, puis tous se retrouvent pour une étape commune. Dans le plan, les seuils se règlent en nombre de bonnes réponses, jamais en pourcentage, et « Voir comme un élève » montre la page du cours telle qu’un élève la verra, selon son score. Le cours pose lui-même les restrictions d’accès ; on l’importe dans un cours vide. Pour réorienter un élève, il suffit de modifier sa note au test.',
+    dessiner(s) {
+        entete(s, PARTIES[2], 'Des chemins selon les résultats');
+        const hEleve = 4.6;
+        const lwEleve = hEleve * IMAGES.eleve.largeur / IMAGES.eleve.hauteur;
+        const e = capture(s, 'eleve', X0 + XW - 0.08 - lwEleve, 1.7, { h: hEleve });
+        const c = capture(s, 'chemins', X0 + 0.08, 1.7, { w: e.x - 0.55 - (X0 + 0.08) });
+        const y = c.y + c.h + 0.35;
+        puces(s, [
+            [gras('Un test oriente'), { text: ' : sa note, à la première tentative, ouvre à chaque élève l’un de 2 à 4 chemins.' }],
+            [gras('Chacun ne voit que le sien'), { text: ', puis tous se retrouvent ; les seuils se règlent en bonnes réponses.' }],
+            [gras('Voir comme un élève'), { text: ' : la page du cours telle qu’il la verra, selon son score.' }],
+        ], { x: c.x, y, w: c.w, h: 6.95 - y, corps: 14, espace: 8 });
+    },
+});
+
 // 18 ── Parcours : fabrication et livraison
 diapo({
     partie: PARTIES[2], titre: 'Fabrication et livraison : un seul fichier de cours',
-    notes: 'La fabrication génère les activités une à une, sous vos yeux. Chacune peut être relue, essayée, modifiée ou générée à nouveau. À la livraison, un seul fichier .mbz contient tout le cours : sections, activités, consignes. Il se restaure dans un cours existant de la plateforme. S’y ajoutent la fiche de séquence et le détail des activités en Word, LibreOffice ou PDF, et un fichier de scénario qui permet de rouvrir le parcours dans Caramel pour le reprendre plus tard.',
+    notes: 'La fabrication génère les activités une à une, sous vos yeux. Chacune peut être relue, essayée, modifiée ou générée à nouveau. À la livraison, un seul fichier .mbz contient tout le cours : sections, activités, consignes. Il se restaure dans un cours de la plateforme — un cours vide pour un parcours à chemins. Chaque parcours se termine par une section « Fin du parcours », et chaque activité affiche sa durée estimée. S’y ajoutent la fiche de séquence et le détail des activités en Word, LibreOffice ou PDF, et un fichier de scénario qui permet de rouvrir le parcours dans Caramel pour le reprendre plus tard.',
     dessiner(s) {
         entete(s, PARTIES[2], 'Fabrication et livraison : un seul fichier de cours');
         const hauteur = 3.45;

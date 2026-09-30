@@ -781,7 +781,8 @@ function jalonVoile(index) {
 /** Ouvre le tableau de bord sur le squelette du modèle, sans appeler le modèle. */
 async function partirDuModele() {
     const draft = ouvrirBrouillon();
-    const plan = planDepuisTrame(draft.trame, draft.platform, draft.ampleur);
+    const plan = planDepuisTrame(draft.trame, draft.platform, draft.ampleur,
+        { structure: draft.structure, chemins: draft.chemins });
     if (!plan) return;
     if (draft.plan && !await confirmerRemplacement(atelier)) return;
     majBrouillon({ plan, statsId: releverParcours(draft, plan, { origine: ORIGINES_PLAN.modele }) });

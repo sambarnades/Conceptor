@@ -301,7 +301,7 @@ In Caramel, **A pathway** creates a course for Éléa, Magistère or Moodle: sev
 
 In the Caramelia menu, **Create a course** opens the workshop directly, without an AI request. If a draft exists, **Resume my course** reopens it. Existing fields and sources are preserved. Review the setup and plan in the workshop before starting generation.
 
-Choose **A pathway** below the form, then the platform, delivery mode, scope and template. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.
+Choose **A pathway** below the form, then the platform, delivery mode, scope, **One path for everyone** or **Paths based on results**, and a template: three are offered, and **Show the other templates** displays the rest. **Compose the plan** uses AI to adapt a plan to your topic. **Start from the template** immediately opens a structure to complete without an AI request. Activities are generated only after you approve the plan.
 
 In **Plan**, edit the title, overall objective, key concepts, stages and activities. Move activities with the arrows or by dragging their thumbnail. **Instructions and stage** adjusts the generation instructions. Teaching prompts help you review without enforcing a model. The limit is **12 activities**.
 
@@ -317,7 +317,7 @@ In **Delivery**, download the **.mbz** and use your platform’s course import o
 
 The plan also offers the modules of your Éléa, Magistère or Moodle platform, grouped in each activity’s menu under **Platform modules**: forum, poll, questionnaire, survey, lesson, peer-assessment workshop, board, wiki, collaborative document, glossary and database to build together, virtual classroom, group choice, file sharing and web link. The AI writes the parts that the platform keeps on import; collaborative spaces arrive empty, with their instructions. When a module needs a setting on the platform (workshop phases, virtual classroom time, groups), Caramel writes it in a **To do before opening the course** note, hidden from students, at the top of the imported course. The **IMS content package** — pages to read with their table of contents, written entirely by Caramel — is chosen from the mosaic; the plan does not suggest it.
 
-The progression map is specific to Éléa. The map and progressive access are optional and still require checks in actual platform use. The differentiation template does not create automatic score-based branches. Collaboration takes place on the platform. Publishing a complete course to Sucrerie is not yet available.
+The progression map is specific to Éléa. The map, progressive access and paths based on results still require checks in actual platform use. Collaboration takes place on the platform. Publishing a complete course to Sucrerie is not yet available.
 
 To explore further: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) helps you reflect on learning activities. Caramel’s seven families, including **Discuss** and **Collaborate**, are simplified guides based on tools, not the six ABC types or an assessment of your teaching.
 On Éléa, open **Course settings**, enable the progress map and use the **+ Add my image** tile to choose your own background. You can replace or remove the image and return to the suggested themes. The background is saved in the **.json** scenario and included in the **.mbz** course. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG or TIFF · Max. 12 MB. Converted automatically, without cropping.
@@ -337,7 +337,8 @@ After **A pathway**, the template sets the sequence that the AI adapts to your t
 - **Run an investigation** — A question, a hypothesis, data, a conclusion: the scientific method, in order. *(Two or three sessions · A full unit · In class · Both)*
 - **Analyse a source** — Where the information comes from, who produces it, what it leaves out. Equip the eye before judging. *(One session · Two or three sessions)*
 - **Structured debate** — A vote to say where you start, sources to get informed, a forum to debate, a text to conclude. *(Two or three sessions · A full unit)*
-- **Three-speed differentiation** — A placement test, then activities to consolidate, continue or explore further. Instructions guide the choices; there is no automatic branching by score. *(Two or three sessions · A full unit · Remote · Both)*
+- **Differentiate from the start** — A placement test opens a path suited to each learner's result; everyone comes back together for a shared review. *(One session · Two or three sessions · Paths based on results)*
+- **Remedy along the way** — Discover, then take stock with a quiz: depending on the score, review or go further, then apply it all together. *(One session · Two or three sessions · Paths based on results)*
 - **Modern language unit** — Vocabulary first, comprehension next, production last. *(Two or three sessions)*
 - **Prepare a spoken presentation** — What you will say, in what order, and how you rehearse saying it. *(One session · Two or three sessions · In class · Both)*
 - **Learning to learn** — What really helps you remember, tried out on the course topic: self-testing, spacing, explaining. Then everyone plans their revision. *(One session · Two or three sessions)*
@@ -348,4 +349,17 @@ After **A pathway**, the template sets the sequence that the AI adapts to your t
 - **Escape game** — A mission, clues, puzzles of rising difficulty, a final code, and the debrief. *(One session · Two or three sessions · In class · Both)*
 - **Free structure** — No imposed sequence: you compose the steps yourself and Caramel fills in whatever you place there. *(One session · Two or three sessions · A full unit)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Paths based on results
+
+In the setup, **Paths based on results** has your students take a test: depending on their grade at the first attempt, each one follows one of 2 to 4 paths — **Back to basics**, **Reinforce**, **Consolidate**, **Go further** — and then everyone comes together for a shared stage. Each student only sees their own path. Two templates are designed for this: **Differentiate from the start** and **Remedy along the way**.
+
+- In **Plan**, the score bar shows which path opens for each number of correct answers; the **−** and **+** buttons move the start of a path one correct answer earlier or later. **Add a path**, **Remove a path** and **One path for everyone** change the branching.
+- The test that directs students is an **MCQ Quiz**, a **True/False Quiz** or a Moodle **Quiz**, placed at the end of the stage before the paths. Each question is worth one point, and the test does not offer a retry.
+- **View as a learner** shows the course page as the student will see it — before the test, during their path, at the end — for the score you choose.
+- To move a student to another path, change their grade for the test in the platform’s gradebook.
+
+Import a course with paths into an **empty** course: Moodle places the file’s sections into the course’s own sections, so your existing sections would receive the paths’ restrictions. Every pathway now ends with an **End of the course** section, and the estimated time appears under each activity.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

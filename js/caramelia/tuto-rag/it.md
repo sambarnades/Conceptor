@@ -302,7 +302,7 @@ In Caramel, **Un percorso** crea un corso per Éléa, Magistère o Moodle: più 
 
 Nel menu di Caramelia, **Crea un percorso** apre direttamente il laboratorio senza chiamare l’IA. Se esiste una bozza, **Riprendi il mio percorso** la riapre. I campi e le fonti presenti vengono conservati. Rileggi le impostazioni e il piano nel laboratorio prima di avviare la generazione.
 
-Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza e modello. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.
+Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza, **Uno stesso cammino per tutti** o **Cammini in base ai risultati**, e un modello: ne vengono proposti tre, e **Vedi gli altri modelli** mostra i successivi. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.
 
 In **Piano**, modifica titolo, obiettivo generale, concetti chiave, fasi e attività. Sposta le attività con le frecce o trascinando la miniatura. **Consegna e fase** permette di regolare le istruzioni di generazione. I suggerimenti pedagogici aiutano a rileggere senza imporre un modello. Il massimo è di **12 attività**.
 
@@ -318,7 +318,7 @@ In **Consegna**, scarica il **.mbz** e usa l’importazione o il ripristino del 
 
 Il piano propone anche i moduli del vostro Éléa, Magistère o Moodle, raccolti nel menu di ogni attività sotto **Moduli della piattaforma**: forum, sondaggio, questionario, indagine, lezione, workshop di valutazione tra pari, bacheca, wiki, documento collaborativo, glossario e database da costruire, aula virtuale, scelta del gruppo, condivisione di file e link web. L’IA ne scrive ciò che la piattaforma conserva all’importazione; gli spazi collettivi arrivano vuoti, con la loro consegna. Quando un modulo richiede un’impostazione sulla piattaforma (fasi del workshop, orario dell’aula virtuale, gruppi), Caramel la scrive in una nota **Da fare prima di aprire il corso**, nascosta agli allievi, in cima al corso importato. Il **pacchetto di contenuti IMS** — pagine da leggere con il loro indice, scritte interamente da Caramel — si sceglie nel mosaico; il piano non lo propone.
 
-La mappa di avanzamento è specifica di Éléa. La mappa e l’accesso progressivo sono facoltativi e richiedono ancora verifiche nell’uso reale sulla piattaforma. Il modello di differenziazione non crea ramificazioni automatiche in base al voto. La collaborazione avviene sulla piattaforma. La pubblicazione di un percorso completo su Sucrerie non è ancora disponibile.
+La mappa di avanzamento è specifica di Éléa. La mappa, l’accesso progressivo e i cammini in base ai risultati richiedono ancora verifiche nell’uso reale sulla piattaforma. La collaborazione avviene sulla piattaforma. La pubblicazione di un percorso completo su Sucrerie non è ancora disponibile.
 
 Per approfondire: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) aiuta a riflettere sulle attività di apprendimento. Le sette famiglie di Caramel, tra cui **Discutere** e **Collaborare**, sono indicazioni semplificate basate sugli strumenti, non i sei tipi ABC né una valutazione della sua didattica.
 Su Éléa, apri **Impostazioni del corso**, attiva la mappa di avanzamento e usa il riquadro **+ Aggiungi la mia immagine** per scegliere il tuo sfondo. Puoi cambiare o rimuovere l’immagine e tornare ai temi proposti. Lo sfondo viene salvato nello scenario **.json** e incluso nel corso **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG o TIFF · Max. 12 MB. Conversione automatica, senza ritaglio.
@@ -338,7 +338,8 @@ Dopo **Un percorso**, il modello dà lo svolgimento che l’IA adatta all’argo
 - **Condurre un'indagine** — Una domanda, un'ipotesi, dei dati, una conclusione: il metodo scientifico, nell'ordine. *(Da due a tre lezioni · Un'unità completa · In classe · Entrambe)*
 - **Analizzare una fonte** — Da dove viene l'informazione, chi la produce, che cosa omette. Attrezzare lo sguardo prima di giudicare. *(Una lezione · Da due a tre lezioni)*
 - **Dibattito argomentato** — Un voto per dire da dove si parte, fonti per informarsi, un forum per discutere, un testo per concludere. *(Da due a tre lezioni · Un'unità completa)*
-- **Differenziazione a tre velocità** — Un test iniziale, poi attività per consolidare, proseguire o approfondire. Le istruzioni guidano le scelte, senza ramificazioni automatiche in base al voto. *(Da due a tre lezioni · Un'unità completa · A distanza · Entrambe)*
+- **Differenziare fin dall’inizio** — Un test iniziale apre a ogni alunno un cammino adatto al suo risultato; tutti si ritrovano per un bilancio comune. *(Una lezione · Da due a tre lezioni · Cammini in base ai risultati)*
+- **Recuperare strada facendo** — Si scopre, si fa il punto con un quiz: in base al punteggio si ripassa o si va oltre, poi si mette in pratica insieme. *(Una lezione · Da due a tre lezioni · Cammini in base ai risultati)*
 - **Sequenza di lingua straniera** — Prima il lessico, poi la comprensione, la produzione per ultima. *(Da due a tre lezioni)*
 - **Preparare un intervento orale** — Che cosa si dirà, in quale ordine, e come ci si allena a dirlo. *(Una lezione · Da due a tre lezioni · In classe · Entrambe)*
 - **Imparare a imparare** — Ciò che aiuta davvero a ricordare, provato sull’argomento del corso: mettersi alla prova, distanziare, spiegare. Poi ognuno pianifica i propri ripassi. *(Una lezione · Da due a tre lezioni)*
@@ -349,4 +350,17 @@ Dopo **Un percorso**, il modello dà lo svolgimento che l’IA adatta all’argo
 - **Gioco di fuga** — Una missione, indizi, enigmi di difficoltà crescente, un codice finale e il debriefing. *(Una lezione · Da due a tre lezioni · In classe · Entrambe)*
 - **Struttura libera** — Nessuno svolgimento imposto: componi tu le tappe e Caramel riempie ciò che ci metti. *(Una lezione · Da due a tre lezioni · Un'unità completa)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Cammini in base ai risultati
+
+Nell’impostazione, **Cammini in base ai risultati** fa svolgere un test ai tuoi allievi: in base al voto al primo tentativo, ognuno segue uno dei cammini previsti, da 2 a 4 — **Riprendere le basi**, **Rinforzare**, **Consolidare**, **Approfondire** — e poi tutti si ritrovano in una fase comune. Ogni allievo vede solo il proprio cammino. Due modelli sono pensati per questo: **Differenziare fin dall’inizio** e **Recuperare strada facendo**.
+
+- In **Piano**, la barra dei punteggi mostra quale cammino si apre per ogni numero di risposte corrette; i pulsanti **−** e **+** anticipano o posticipano di una risposta corretta l’inizio di un cammino. **Aggiungi un cammino**, **Rimuovi un cammino** e **Un solo cammino per tutti** cambiano la diramazione.
+- Il test che orienta è un **Quiz a scelta multipla**, un **Quiz Vero/Falso** o un **Test**, posto alla fine della fase che precede i cammini. Ogni domanda vale un punto e il test non propone di riprovare.
+- **Visualizza come alunno** mostra la pagina del corso come la vedrà l’allievo — prima del test, durante il suo cammino, alla fine — per il punteggio che scegli.
+- Per riorientare un allievo, modifica il suo voto al test nel registro del valutatore della piattaforma.
+
+Importa un percorso con cammini in un corso **vuoto**: Moodle sistema le sezioni del file in quelle del corso, e le tue sezioni esistenti riceverebbero le restrizioni dei cammini. Ora tutti i percorsi terminano con una sezione **Fine del percorso**, e la durata stimata compare sotto ogni attività.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

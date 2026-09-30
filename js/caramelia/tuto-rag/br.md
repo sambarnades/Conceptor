@@ -300,7 +300,7 @@ E Caramel, **Un hent** a grou ur gentel evit Éléa, Magistère pe Moodle : meur
 
 E lañser Caramelia e tigor **Krouiñ un heuliad** an atalier war-eeun, hep goulenn ouzh an NA. Ma’z eus ur brouilhed, e c’haller e adkav gant **Kenderc’hel gant ma heuliad**. Miret e vez ar maeziennoù hag ar mammennoù a zo dija. Adlenn ar stern hag ar steuñv en atalier a-raok loc’hañ ar c’hrouiñ.
 
-Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment hag ur patrom. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.
+Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment, **Ar memes gwenodenn evit an holl** pe **Gwenodennoù hervez an disoc’hoù**, hag ur patrom : tri a vez kinniget, ha **Gwelet ar patromoù all** a ziskouez ar re all. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.
 
 E **Steuñv**, kemmit an titl, ar pal hollek, ar meizadoù pennañ, ar pazennoù hag an obererezhioù. Dilec’hit an obererezhioù gant ar biroù pe o riklañ o skeudennig. **Kemennoù ha pazenn** a servij da azasaat kemennoù ar c’hrouidigezh. Ar c’huzulioù pedagogel a sikour da adlenn hep rediañ ur patrom. **12 obererezh** d’ar muiañ.
 
@@ -316,7 +316,7 @@ E **Kas**, pellgargit ar **.mbz** hag implijit enporzhiadur pe adsevel ar gentel
 
 Kinnig a ra ar steuñv ivez modulioù hoc’h Éléa, Magistère pe Moodle, renket e lañser pep obererezh dindan **Modulioù ar savenn**: forom, sontadeg, goulennaoueg, enklask, kentel, atalier priziañ etre par ha par, taolenn, wiki, teul kenlabour, geriadurig ha diaz roadennoù da sevel, klas virtuel, dibab ur strollad, rannañ restroù ha liamm web. An IA a skriv ar pezh a vez miret gant ar savenn pa vez enporzhiet ar gentel; goullo e erru al lec’hioù labour a-stroll, gant o urzhiad. Pa vez ezhomm eus un arventenn war ar savenn evit ur modul (pazennoù an atalier, eur ar c’hlas virtuel, strolladoù), e verk Caramel anezhi en un notenn **Da ober a-raok digeriñ ar gentel**, kuzhet ouzh ar skolidi, e penn ar gentel enporzhiet. Ar **pakad danvez IMS** — pajennoù da lenn gant o zaolenn, skrivet penn-da-benn gant Caramel — a zibaber er mozaik ; ar steuñv n’her kinnig ket.
 
-Kartenn ar c’henderc’hel zo evit Éléa hepken. Diret eo ar gartenn hag an digoradur tamm-ha-tamm, ha ret eo c’hoazh o gwiriañ en implij gwirion war ar savenn. Patrom an diforc’hañ ne grou ket skourroù emgefre hervez an notenn. War ar savenn e vez graet al labour a-stroll. N’haller ket c’hoazh embann un heuliad klok e Sucrerie.
+Kartenn ar c’henderc’hel zo evit Éléa hepken. Ret eo c’hoazh gwiriañ ar gartenn, an digoradur tamm-ha-tamm hag ar gwenodennoù hervez an disoc’hoù en implij gwirion war ar savenn. War ar savenn e vez graet al labour a-stroll. N’haller ket c’hoazh embann un heuliad klok e Sucrerie.
 
 Evit mont pelloc’h : [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) a sikour da soñjal en obererezhioù deskiñ. Seizh familh Caramel, en o zouez **Kaozeal** ha **Kenlabourat**, zo reperezhioù eeunaet liammet ouzh an ostilhoù, n’int ket c’hwec’h doare ABC nag ur priziadur eus ho kelenn.
 War Éléa, digorit **Arventennoù ar c’hentel**, gweredekait ar gartenn araokaat hag implijit an deolenn **+ Ouzhpennañ ma skeudenn** evit dibab ho foñs deoc’h. Gallout a rit cheñch pe tennañ ar skeudenn ha distreiñ d’an temoù kinniget. Miret eo ar foñs er senario **.json** hag enframmet eo er parcours **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG pe TIFF · 12 Mo d’ar muiañ. Amdreiñ emgefre, hep troc’hañ.
@@ -336,7 +336,8 @@ Goude **Un hent**, ar patrom a ro an droienn a vez azasaet gant an IA d’ar suj
 - **Kas un enklask** — Ur goulenn, ur rakdamall, roadennoù, ur c'hlozadur : an hentenn skiantel, en he urzh. *(Daou pe dri frantad · Un unvez a-bezh · Er c'hlas · An daou)*
 - **Dielfennañ un tarzh** — Eus pelec'h e teu an titour, piv en produ, ha petra a lez a-gostez. Armañ ar sell a-raok barn. *(Ur prantad · Daou pe dri frantad)*
 - **Breutadeg arguzennet** — Ur votadeg evit lavaret a-belec'h e loc'her, mammennoù evit en em gelaouiñ, ur forom evit breutaat, un destenn evit klozañ. *(Daou pe dri frantad · Un unvez a-bezh)*
-- **Diforc'hañ war dri dizh** — Ur prouad evit lec’hiañ an deskerien, ha goude obererezhioù evit kreñvaat, kenderc’hel pe mont donoc’h. An ditouroù a heñch an dibaboù, hep skourroù emgefreek hervez an notenn. *(Daou pe dri frantad · Un unvez a-bezh · A-bell · An daou)*
+- **Diforc’hañ adalek ar penn-kentañ** — Ur prouad lec’hiañ a zigor da bep skoliad ur wenodenn azasaet d’e zisoc’h ; en em adkavout a ra an holl evit ur c’hlozadur boutin. *(Ur prantad · Daou pe dri frantad · Gwenodennoù hervez an disoc’hoù)*
+- **Reizhañ e-kerzh an heuliad** — Dizoloiñ, ober ar poent gant ur quiz : hervez ar skor, adwelet pe mont pelloc’h, ha goude adimplijout an traoù a-stroll. *(Ur prantad · Daou pe dri frantad · Gwenodennoù hervez an disoc’hoù)*
 - **Kevrenn yezh vev** — Ar geriaoueg da gentañ, ar gompren goude, ar produiñ e fin. *(Daou pe dri frantad)*
 - **Prientiñ ur brezegenn** — Petra a vo lavaret, e peseurt urzh, ha penaos en em bleustrañ d'e lavarout. *(Ur prantad · Daou pe dri frantad · Er c'hlas · An daou)*
 - **Deskiñ da zeskiñ** — Ar pezh a sikour da vat da zerc’hel soñj, amprouet war sujed ar gentel : en em amprouiñ, skignañ an adweladennoù, displegañ. Goude e steuñv pep hini e adweladennoù. *(Ur prantad · Daou pe dri frantad)*
@@ -347,4 +348,17 @@ Goude **Un hent**, ar patrom a ro an droienn a vez azasaet gant an IA d’ar suj
 - **C'hoari diankañ** — Ur gefridi, menegerioù, kudennoù diaesoc'h-diaesañ, ur c'hod diwezhañ, hag ar sked goude. *(Ur prantad · Daou pe dri frantad · Er c'hlas · An daou)*
 - **Frammadur dieub** — Kerzhed ebet gourc'hemennet : c'hwi a aoz ar pazennoù hag e leugn Caramel ar pezh a lakait enno. *(Ur prantad · Daou pe dri frantad · Un unvez a-bezh)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Gwenodennoù hervez an disoc’hoù
+
+En dibaboù, **Gwenodennoù hervez an disoc’hoù** a lak ho skolidi da dremen ur prouad : hervez o notenn d’ar c’hlask kentañ, pep hini a heuilh unan eus ar gwenodennoù, etre 2 ha 4 — **Adkemer an diazezoù**, **Kreñvaat**, **Startaat**, **Mont donoc’h** —, ha goude en em adkav an holl en ur bazenn voutin. Pep skoliad ne wel nemet e wenodenn. Daou batrom a zo bet soñjet evit se : **Diforc’hañ adalek ar penn-kentañ** ha **Reizhañ e-kerzh an heuliad**.
+
+- E **Steuñv**, barrenn ar skorioù a ziskouez peseurt gwenodenn a zigor evit pep niver a respontoù reizh ; ar boutonoù **−** ha **+** a vount penn-kentañ ur wenodenn eus ur respont reizh war-raok pe war-dreñv. **Ouzhpennañ ur wenodenn**, **Dilemel ur wenodenn** hag **Ur wenodenn hepken evit an holl** a gemm ar rannadur.
+- Ar prouad a heñch ar skolidi a c’hall bezañ ur **Quiz QCM**, ur **Quiz Gwir/Gaou** pe un **Test**, lakaet e dibenn ar bazenn a-raok ar gwenodennoù. Pep goulenn a dalv ur poent, ha ne ginnig ket ar prouad e adober.
+- **Gwelet evel ur skoliad** a ziskouez pajenn ar gentel evel ma welo ar skoliad anezhi — a-raok ar prouad, e-kerzh e wenodenn, en dibenn — evit ar skor a zibabit.
+- Evit kas ur skoliad war ur wenodenn all, kemmit e notenn er prouad e kaier notennoù ar savenn.
+
+Enporzhiit un heuliad gant gwenodennoù en ur gentel **c’houllo** : Moodle a laka rannoù ar restr e re ar gentel, hag ho rannoù a zo anezho dija a resevfe harzoù ar gwenodennoù. Bremañ ec’h echu an holl heuliadoù gant ur rann **Dibenn an heuliad**, ha diskouezet e vez ar padelezh priziet dindan pep obererezh.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

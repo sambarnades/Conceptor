@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment hag ur patrom. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.",
+            "Dibabit **Un hent** dindan ar furmskrid, ha goude ar savenn, ar mod kelenn, ar ment, **Ar memes gwenodenn evit an holl** pe **Gwenodennoù hervez an disoc’hoù**, hag ur patrom : tri a vez kinniget, ha **Gwelet ar patromoù all** a ziskouez ar re all. **Aozañ ar steuñv** a azasa ar steuñv ouzh ho tanvez gant an NA. **Loc'hañ diwar ar patrom** a zigor diouzhtu ur framm da glokaat, hep goulenn digant an NA. Ne vez krouet an obererezhioù nemet goude ho kadarnadur eus ar steuñv.",
             "E **Steuñv**, kemmit an titl, ar pal hollek, ar meizadoù pennañ, ar pazennoù hag an obererezhioù. Dilec’hit an obererezhioù gant ar biroù pe o riklañ o skeudennig. **Kemennoù ha pazenn** a servij da azasaat kemennoù ar c’hrouidigezh. Ar c’huzulioù pedagogel a sikour da adlenn hep rediañ ur patrom. **12 obererezh** d’ar muiañ.",
             "E kartenn ur **Video etreoberiat**, pegit liamm ar video. Adkavet e vo an treuzskrivadur pa vo krouet an obererezh; gallout a rit ivez e begañ dre zorn. Evit ur **Skeudenn etreoberiat** hag an obererezhioù da gavout ur zonenn pe meur a zonenn, stagit ur skeudenn ouzh ar gartenn: dielfennet e vo a-raok ar c’hrouiñ. Gallout a rit ouzhpennañ ar skoroù-se e-pad ar c’hrouiñ ivez. Un obererezh hep skor a c’hortoz tra ma kendalc’h ar re all. Ar senario a vir skeudennoù ha liammoù an obererezhioù; chom a ra teulioù furmskrid ar bajenn degemer a-gostez. Evit ul **Liamm web**, pegit chomlec’h an danvez er gartenn: an IA a skriv an urzhiad lenn hep digeriñ ar bajenn.",
             "Kadarnait ar steuñv evit kregiñ gant ar c’hrouiñ. Gallout a rit paouez, adkregiñ gant an obererezhioù a vank pe adkrouiñ un obererezh. Ar prenestrig-prenn **Na grouiñ ket an obererezh-mañ** a vir an danvez evit bezañ skrivet dre zorn : ne vo ket leuniet gant an NA. Ma c’hwit an adkrouiñ, e vo miret an danvez kent. An obererezhioù a vank a vez meneget a-raok an ezporzhiañ.",
@@ -685,7 +685,7 @@
         },
         {
           "type": "warn",
-          "text": "Kartenn ar c’henderc’hel zo evit Éléa hepken. Diret eo ar gartenn hag an digoradur tamm-ha-tamm, ha ret eo c’hoazh o gwiriañ en implij gwirion war ar savenn. Patrom an diforc’hañ ne grou ket skourroù emgefre hervez an notenn. War ar savenn e vez graet al labour a-stroll."
+          "text": "Kartenn ar c’henderc’hel zo evit Éléa hepken. Ret eo c’hoazh gwiriañ ar gartenn, an digoradur tamm-ha-tamm hag ar gwenodennoù hervez an disoc’hoù en implij gwirion war ar savenn. War ar savenn e vez graet al labour a-stroll."
         },
         {
           "type": "h",
@@ -723,6 +723,37 @@
           "type": "shot",
           "src": "assets/images/wiki/parcours-miroir.webp",
           "alt": "Ar pezh a labour an hent-mañ : ar seizh familh, hag ar re a vank."
+        },
+        {
+          "type": "h",
+          "text": "Gwenodennoù hervez an disoc’hoù"
+        },
+        {
+          "type": "p",
+          "text": "En dibaboù, **Gwenodennoù hervez an disoc’hoù** a lak ho skolidi da dremen ur prouad : hervez o notenn d’ar c’hlask kentañ, pep hini a heuilh unan eus ar gwenodennoù, etre 2 ha 4 — **Adkemer an diazezoù**, **Kreñvaat**, **Startaat**, **Mont donoc’h** —, ha goude en em adkav an holl en ur bazenn voutin. Pep skoliad ne wel nemet e wenodenn. Daou batrom a zo bet soñjet evit se : **Diforc’hañ adalek ar penn-kentañ** ha **Reizhañ e-kerzh an heuliad**."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-chemins.webp",
+          "alt": "Ar gwenodennoù er steuñv : barrenn ar skorioù, ar skorioù a zigor pep gwenodenn hag hec’h obererezhioù."
+        },
+        {
+          "type": "list",
+          "items": [
+            "E **Steuñv**, barrenn ar skorioù a ziskouez peseurt gwenodenn a zigor evit pep niver a respontoù reizh ; ar boutonoù **−** ha **+** a vount penn-kentañ ur wenodenn eus ur respont reizh war-raok pe war-dreñv. **Ouzhpennañ ur wenodenn**, **Dilemel ur wenodenn** hag **Ur wenodenn hepken evit an holl** a gemm ar rannadur.",
+            "Ar prouad a heñch ar skolidi a c’hall bezañ ur **Quiz QCM**, ur **Quiz Gwir/Gaou** pe un **Test**, lakaet e dibenn ar bazenn a-raok ar gwenodennoù. Pep goulenn a dalv ur poent, ha ne ginnig ket ar prouad e adober.",
+            "**Gwelet evel ur skoliad** a ziskouez pajenn ar gentel evel ma welo ar skoliad anezhi — a-raok ar prouad, e-kerzh e wenodenn, en dibenn — evit ar skor a zibabit.",
+            "Evit kas ur skoliad war ur wenodenn all, kemmit e notenn er prouad e kaier notennoù ar savenn."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-eleve.webp",
+          "alt": "Gwelet evel ur skoliad : pajenn ar gentel e-kerzh e wenodenn, evit ar skor dibabet."
+        },
+        {
+          "type": "tip",
+          "text": "Enporzhiit un heuliad gant gwenodennoù en ur gentel **c’houllo** : Moodle a laka rannoù ar restr e re ar gentel, hag ho rannoù a zo anezho dija a resevfe harzoù ar gwenodennoù. Bremañ ec’h echu an holl heuliadoù gant ur rann **Dibenn an heuliad**, ha diskouezet e vez ar padelezh priziet dindan pep obererezh."
         }
       ]
     },

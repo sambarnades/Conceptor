@@ -40,12 +40,20 @@ import {
 } from '../moodle/mbz-course-builder.js';
 import { typeMoodle } from '../moodle/mono-activity-files.js';
 import { nomModule, modulesDisponibles } from './activity-router.js';
-import { estModuleParcours, construireActiviteParcours, MODULES_PARCOURS } from './modules-parcours.js';
+import { estModuleParcours, construireActiviteParcours, MODULES_PARCOURS, moduleSAcheve } from './modules-parcours.js';
 import { ligneAFaire, recalerModulesDeCours } from './modules-natifs.js';
 import { carteAPoser, construireCarteProgression } from './carte-progression.js';
 import { joindreFondCarte } from './carte-image.js';
 import { joindreFichiersInitiaux } from '../moodle/fichiers-modules.js';
 import { progressionAPoser, poserProgression } from './progression.js';
+import {
+    aiguillagesDuPlan, aDesChemins, nombreQuestions, bornesEnReponses, plagesEnReponses, dureeParEleve,
+    reglagesDuTest,
+} from './aiguillage.js';
+import { poserAiguillages, cheminsIncomplets } from './aiguillage-cours.js';
+import { poserDurees } from './durees-cours.js';
+import { poserAchevementsH5P } from './achevement-h5p.js';
+import { formaterDuree } from './duree.js';
 
 /**
  * Ce que le backup déclare de son origine. Les valeurs par défaut du
@@ -123,10 +131,14 @@ function titreCarte(carte) {
  * Met une carte du plan sous la forme attendue par le constructeur de cours.
  *
  * @param {Object} carte - Carte du plan, `carte.contenu` déjà généré et réparé.
+ * @param {Object} [o]
+ * @param {boolean} [o.aiguille] - La carte est le test qui aiguille vers des
+ *        chemins : un Test n'accepte alors qu'UNE tentative (D93), sans quoi une
+ *        seconde tentative pourrait faire changer l'élève de chemin.
  * @returns {Promise<Object>} La forme `extracted` du constructeur.
  * @throws {Error} `parcours_module_non_gere:<module>` si aucune voie ne convient.
  */
-export async function activiteDepuisCarte(carte) {
+export async function activiteDepuisCarte(carte, { aiguille = false } = {}) {
     const moduleKey = carte.module;
     const titre = titreCarte(carte);
 
@@ -135,7 +147,9 @@ export async function activiteDepuisCarte(carte) {
         const { packageActivity } = await import('../core/package-activity.js');
         const paquet = await packageActivity({
             moduleKey,
-            content: carte.contenu,
+            // Le test qui aiguille garde ses réglages quoi qu'en ait fait
+            // l'éditeur : première tentative, un point par question (D93).
+            content: aiguille ? reglagesDuTest(moduleKey, carte.contenu) : carte.contenu,
             mediaFiles: mediaFilesPour(carte),
             title: titre,
             lang: currentLang,
@@ -160,6 +174,7 @@ export async function activiteDepuisCarte(carte) {
         if (!Array.isArray(modele.questions) || !modele.questions.length) {
             throw new Error('parcours_test_sans_question');
         }
+        if (aiguille) modele.quiz_settings = { ...(modele.quiz_settings || {}), attempts: 1 };
         return { kind: 'quiz', moduleName: 'quiz', model: modele, title: titre };
     }
 
@@ -255,6 +270,9 @@ function etiquetteDeScenario(texte, titre, sectionIndex) {
 export async function planVersActivites(plan, { platformId, timestamp } = {}) {
     const activities = [];
     const sections = [{ index: 0, name: '' }];
+    // D'où vient chaque section : l'étape du plan, ou la fin du parcours. C'est
+    // ce qui permet de poser les chemins APRÈS l'assemblage (`aiguillage-cours.js`).
+    const sectionsPlan = [{ index: 0 }];
     const exclues = [];
     // Ce que l'enseignant devra faire sur la plateforme avant d'ouvrir le cours
     // (planifier la classe virtuelle, créer les groupes…) : D72.
@@ -262,6 +280,8 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
     const disponibles = platformId ? new Set(modulesDisponibles(platformId).map(m => m.cle)) : null;
 
     const etapes = (plan && Array.isArray(plan.etapes)) ? plan.etapes : [];
+    const aiguillages = aiguillagesDuPlan(plan);
+    const tests = new Set(aiguillages.map(g => g.test).filter(Boolean));
 
     for (let i = 0; i < etapes.length; i++) {
         const etape = etapes[i];
@@ -280,14 +300,17 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
                 continue;
             }
             try {
-                const extracted = await activiteDepuisCarte(carte);
+                const extracted = await activiteDepuisCarte(carte, { aiguille: tests.has(carte) });
                 // Un backup à médias ferait un cours aux références cassées : le
                 // constructeur échoue bruyamment, autant l'écarter avec un motif.
                 if (extracted.files && hasEmbeddedFiles(extracted.files)) {
                     exclues.push({ titre: titreCarte(carte), module: carte.module, motif: MOTIFS.medias });
                     continue;
                 }
-                retenues.push({ extracted, title: titreCarte(carte) });
+                // `carteId` et `duree` ne servent pas au constructeur : ils
+                // permettent aux passes d'après l'assemblage de retrouver la carte
+                // de chaque activité posée (le test d'un aiguillage, sa durée).
+                retenues.push({ extracted, title: titreCarte(carte), carteId: carte.id, module: carte.module, duree: carte.duree, test: tests.has(carte) });
                 const ligne = ligneAFaire(MODULES_PARCOURS[carte.module], titreCarte(carte));
                 if (ligne) aFaire.push(ligne);
             } catch (e) {
@@ -309,25 +332,62 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
         const index = sections.length;
         const nomSection = String(etape.titre || '').trim() || `${translations.parcours_step_plan || 'Étape'} ${i + 1}`;
         sections.push({ index, name: nomSection });
+        sectionsPlan.push({ index, etapeId: etape.id });
+        // Un chemin s'ouvre par une étiquette que SEUL l'enseignant voit : Moodle
+        // ne lui montre pas les seuils d'une restriction par note (« une note dans
+        // un certain intervalle »), il faut donc les lui écrire (D94).
+        const groupe = aiguillages.find(g => g.chemins.some(c => c.etape === etape));
+        if (groupe) {
+            const note = etiquetteDuChemin(groupe, etape, index);
+            if (note) activities.push(note);
+        }
         // L'introduction de l'étape ouvre sa section, avant la première activité.
         const intro = etiquetteDeScenario(etape.introduction, nomSection, index);
         if (intro) activities.push(intro);
-        for (const r of retenues) activities.push({ ...r, sectionIndex: index });
+        for (const r of retenues) {
+            activities.push({ ...r, sectionIndex: index });
+            // Sous le test qui aiguille, l'élève lit que la suite va s'afficher :
+            // avant le test, aucun chemin n'est visible, et sans ce mot le cours
+            // semblerait s'arrêter là.
+            if (r.test) activities.push(etiquetteTexte(translations.parcours_chemins_suite
+                || 'Les activités suivantes s’afficheront ci-dessous dès la fin du test (bouton « Terminer »).',
+                translations.parcours_titre || 'Parcours', index));
+        }
+    }
+
+    const nbActivites = activities.filter(a => !a.scenario).length;
+
+    // La FIN DU PARCOURS, dans tous les parcours (D96) : une dernière section,
+    // masquée tant que l'élève n'a pas terminé ce qu'il avait à faire, qui lui dit
+    // qu'il a fini. Elle n'a de sens que si une activité au moins s'achève.
+    const achevables = activities.filter(a => a.carteId && moduleSAcheve(carteDe(etapes, a.carteId)?.module));
+    if (achevables.length) {
+        const index = sections.length;
+        const nomFin = translations.parcours_fin_titre || 'Fin du parcours';
+        sections.push({ index, name: nomFin });
+        sectionsPlan.push({ index, fin: true });
+        const bravo = translations.parcours_fin_bravo || 'Bravo ! Le parcours est terminé.';
+        const conclusion = String(plan && plan.conclusion || '').trim();
+        activities.push(etiquetteTexte(`**${bravo}**${conclusion ? `\n\n${conclusion}` : ''}`, nomFin, index));
     }
 
     // La Carte de progression ferme la marche du calcul et ouvre celle du cours :
     // elle se pose en section 0, EN TÊTE des activités, une fois qu'on sait
     // qu'au moins une activité a abouti. Une carte sans chemin n'est pas une
-    // carte — elle dessinerait un tracé au-dessus d'un cours vide.
-    const nbActivites = activities.filter(a => !a.scenario).length;
-    if (carteAPoser(plan, platformId, nbActivites)) {
+    // carte — elle dessinerait un tracé au-dessus d'un cours vide. Et pas de
+    // Carte dans un parcours à chemins (D95) : le greffon montrerait à chaque
+    // élève les activités des AUTRES chemins, verrouillées pour toujours.
+    if (!aiguillages.length && carteAPoser(plan, platformId, nbActivites)) {
         const carte = construireCarteProgression(plan, { timestamp });
         activities.unshift({ extracted: carte, title: carte.title, sectionIndex: 0 });
         debugLog('parcours', `carte de progression posée en section 0 (${carte.title})`);
     }
     // L'accueil du parcours ouvre le cours, avant la Carte : on lit d'abord où
-    // l'on va, puis on voit le chemin. Pas d'accueil sur un cours sans activité.
-    const accueil = nbActivites ? etiquetteDeScenario(plan && plan.introduction, plan && plan.titre, 0) : null;
+    // l'on va, puis on voit le chemin. Il dit aussi la DURÉE du parcours, pour
+    // l'élève (D97). Pas d'accueil sur un cours sans activité.
+    const texteAccueil = [String(plan && plan.introduction || '').trim(), phraseDureeParcours(plan, activities)]
+        .filter(Boolean).join('\n\n');
+    const accueil = nbActivites ? etiquetteDeScenario(texteAccueil, plan && plan.titre, 0) : null;
     if (accueil) activities.unshift(accueil);
     // La liste « À faire » passe devant tout, CACHÉE aux élèves : l'enseignant
     // la voit en tête de son cours, marquée « Caché pour les étudiants », et la
@@ -336,7 +396,73 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
     const memo = nbActivites ? etiquetteAFaire(aFaire) : null;
     if (memo) activities.unshift(memo);
 
-    return { activities, sections, exclues, aFaire };
+    return { activities, sections, sectionsPlan, exclues, aFaire };
+}
+
+/** La carte du plan qui porte cet identifiant. */
+function carteDe(etapes, id) {
+    for (const e of etapes) for (const c of (e.cartes || [])) if (c.id === id) return c;
+    return null;
+}
+
+/** Une étiquette de texte posée par l'atelier (pas par le plan). */
+function etiquetteTexte(texte, titre, sectionIndex, { visible = 1 } = {}) {
+    const title = String(titre || '').trim() || (translations.parcours_titre || 'Parcours');
+    const extracted = construireActiviteParcours('parcours_etiquette', { title, intro: texte }, { visible });
+    return { extracted: { ...extracted, title }, title, sectionIndex, scenario: true };
+}
+
+/** Substitue les jetons `@x` d'un libellé traduit. */
+function jetons(cle, defaut, valeurs) {
+    let s = translations[cle] || defaut;
+    for (const [k, v] of Object.entries(valeurs)) s = s.split(`@${k}`).join(String(v));
+    return s;
+}
+
+/**
+ * La plage d'un chemin, écrite pour l'enseignant : « de 4 à 7 sur 10 ».
+ * @param {number[]} plage - `[de, a]`
+ * @param {number} n
+ */
+export function texteDePlage([de, a], n) {
+    return de === a
+        ? jetons('parcours_plage_une', '@de sur @n', { de, n })
+        : jetons('parcours_plage', 'de @de à @a sur @n', { de, a, n });
+}
+
+/**
+ * L'étiquette de l'enseignant en tête d'un chemin, CACHÉE aux élèves : à qui ce
+ * chemin s'ouvre, et comment réorienter un élève.
+ */
+function etiquetteDuChemin(groupe, etape, sectionIndex) {
+    const j = groupe.chemins.findIndex(c => c.etape === etape);
+    if (j < 0 || !groupe.test) return null;
+    const k = groupe.chemins.length;
+    const n = nombreQuestions(groupe.test, k);
+    const plages = plagesEnReponses(bornesEnReponses(groupe.chemins.slice(1).map(c => c.depuis), n), n);
+    const role = translations[`parcours_role_${groupe.chemins[j].role}`] || groupe.chemins[j].role;
+    const echapper = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const texte = jetons('parcours_chemin_prof',
+        'Visible par vous seul. Chemin « @r » : il s’ouvre aux élèves qui obtiennent @p au test « @t », à leur première tentative. Pour réorienter un élève, modifiez sa note à ce test dans le carnet de notes.',
+        { r: role, p: texteDePlage(plages[j], n), t: titreCarte(groupe.test) });
+    return etiquetteTexte(`<p>${echapper(texte)}</p>`, `${role} · ${translations.parcours_titre || 'Parcours'}`, sectionIndex, { visible: 0 });
+}
+
+/**
+ * La durée du parcours pour l'élève, dans la phrase de l'accueil : la somme de
+ * ses activités, ou, avec des chemins, la plus courte et la plus longue suite.
+ * Seules les activités qui entrent dans le cours comptent.
+ */
+function phraseDureeParcours(plan, activities) {
+    const retenues = new Set(activities.filter(a => a.carteId).map(a => a.carteId));
+    if (!retenues.size) return '';
+    const planRetenu = { ...plan, etapes: (plan.etapes || []).map(e => ({ ...e, cartes: (e.cartes || []).filter(c => retenues.has(c.id)) })) };
+    const { min, max } = dureeParEleve(planRetenu);
+    if (!max) return '';
+    return min === max
+        ? jetons('parcours_duree_parcours', 'Durée estimée du parcours : @d', { d: formaterDuree(max) })
+        : jetons('parcours_duree_parcours_chemins', 'Durée estimée du parcours : @min à @max selon le chemin',
+            { min: formaterDuree(min), max: formaterDuree(max) });
 }
 
 /**
@@ -384,9 +510,22 @@ function nomFichier(titre) {
  */
 export async function assemblerParcours(plan, { timestamp, platformId } = {}) {
     const ts = timestamp || Math.floor(Date.now() / 1000);
-    const { activities, sections, exclues, aFaire } = await planVersActivites(plan, { platformId, timestamp: ts });
+    const { activities, sections, sectionsPlan, exclues, aFaire } = await planVersActivites(plan, { platformId, timestamp: ts });
     if (!activities.some(a => !a.scenario)) throw new Error('parcours_aucune_activite');
     const textes = activities.filter(a => a.scenario).length;
+
+    // Un parcours à chemins ne se livre pas à moitié : un chemin sans activité
+    // prête, ou un test absent, laisserait des élèves sans suite. La livraison
+    // partielle (D49) reste possible pour tout le reste.
+    if (aDesChemins(plan)) {
+        const retenues = new Set(activities.filter(a => a.carteId).map(a => a.carteId));
+        const manques = cheminsIncomplets(plan, c => retenues.has(c.id), c => moduleSAcheve(c.module));
+        if (manques.length) {
+            const erreur = new Error('parcours_chemins_incomplets');
+            erreur.manques = manques;
+            throw erreur;
+        }
+    }
 
     const titre = String(plan && plan.titre || '').trim() || (translations.parcours_titre || 'Parcours');
 
@@ -401,19 +540,33 @@ export async function assemblerParcours(plan, { timestamp, platformId } = {}) {
     // l'identifiant n'existe qu'une fois l'activité posée (D89).
     const assembles = recalerModulesDeCours(bruts);
 
+    // Les CHEMINS et la FIN DU PARCOURS d'abord (D90, D96) : leurs sections
+    // reçoivent leur restriction avant l'ouverture progressive, qui ne remplit
+    // que les sections encore libres — elle ne peut donc ni écraser un chemin
+    // ni conditionner le bilan sur le seul dernier chemin.
+    // Les H5P qui ne rendent jamais de note s'achèvent à la consultation (D100) :
+    // sans quoi tout ce qui les attend resterait fermé.
+    const acheves = poserAchevementsH5P(assembles, { activites: posees, entrees: activities });
+    const chemins = poserAiguillages(acheves.files, { plan, activites: posees, entrees: activities, sectionsPlan });
+    let files = chemins.files;
+    if (chemins.chemins) debugLog('parcours', `aiguillage : ${chemins.chemins} chemin(s)`, chemins.tests);
+
     // L'ouverture progressive se pose APRÈS l'assemblage, sur la carte de
     // fichiers rendue. Le constructeur est partagé avec La Sucrerie : il
     // assemble, il ne décide pas de pédagogie. Et poser ici traite d'un coup les
     // trois voies (H5P, Test, module Moodle) sans rien savoir d'aucune.
     const etapes = sectionsUsed.filter(s => s.number >= 1).length;
-    let files = assembles;
     let etapesContraintes = 0;
     if (progressionAPoser(plan, etapes)) {
-        const r = poserProgression(assembles, { activites: posees, sections: sectionsUsed });
+        const r = poserProgression(files, { activites: posees, sections: sectionsUsed });
         files = r.files;
         etapesContraintes = r.etapesContraintes;
         debugLog('parcours', `ouverture progressive : ${etapesContraintes} étape(s) contrainte(s)`);
     }
+
+    // La durée de chaque activité, en tête de sa description (D97).
+    const durees = poserDurees(files, { activites: posees, entrees: activities });
+    files = durees.files;
 
     const { createMbz } = await import('../moodle/moodle-creator.js');
     files = await joindreFondCarte(files, plan.carte, { timestamp: ts });
@@ -443,6 +596,12 @@ export async function assemblerParcours(plan, { timestamp, platformId } = {}) {
         /** Gestes à faire sur la plateforme, aussi posés en étiquette cachée (D72). */
         aFaire,
         etapesContraintes,
+        /** Chemins posés, tests qui aiguillent, fin du parcours (D90, D96). */
+        chemins: chemins.chemins,
+        tests: chemins.tests,
+        fin: chemins.fin,
+        /** Activités dont la description porte la durée (D97). */
+        durees: durees.n,
         /** Étiquettes d'accueil et d'introduction, comprises dans `activites`. */
         textes,
     };

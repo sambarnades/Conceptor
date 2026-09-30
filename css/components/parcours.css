@@ -3071,3 +3071,196 @@ button.pc-vue__activite:focus-visible { outline: 2px solid var(--pc-blue); outli
 }
 .notification-toast__icon.notification-parcours-icone { font-size: 11px; }
 .notification-parcours-icone i { color: var(--pc-blue) !important; margin: 0 !important; }
+
+/* =========================================================================
+   Chemins selon le résultat (D90-D99, 30 sept. 2026)
+   -------------------------------------------------------------------------
+   Une couleur par RÔLE, jamais par lettre (retour d'Emmanuel : « chemin B,
+   chemin A… on s'y perd ») : le rôle se lit en toutes lettres, la couleur ne
+   fait que le répéter. Tons sourds, distincts des trois paliers (découverte,
+   entraînement, transfert) pour ne pas mêler les deux lectures.
+   ========================================================================= */
+:root {
+    --pc-role-reprendre: #8f5a00;   --pc-role-reprendre-soft: #fdf1dc;
+    --pc-role-renforcer: #0e7468;   --pc-role-renforcer-soft: #e2f3f0;
+    --pc-role-consolider: #1a5fb4;  --pc-role-consolider-soft: #e8f0fb;
+    --pc-role-approfondir: #6a3fa3; --pc-role-approfondir-soft: #f1ebfa;
+}
+.pc-role--reprendre, .pc-chemin--reprendre { --pc-role: var(--pc-role-reprendre); --pc-role-soft: var(--pc-role-reprendre-soft); }
+.pc-role--renforcer, .pc-chemin--renforcer { --pc-role: var(--pc-role-renforcer); --pc-role-soft: var(--pc-role-renforcer-soft); }
+.pc-role--consolider, .pc-chemin--consolider { --pc-role: var(--pc-role-consolider); --pc-role-soft: var(--pc-role-consolider-soft); }
+.pc-role--approfondir, .pc-chemin--approfondir { --pc-role: var(--pc-role-approfondir); --pc-role-soft: var(--pc-role-approfondir-soft); }
+.pc-role {
+    display: inline-flex; align-items: center; gap: 4px;
+    border-radius: var(--pc-pill); padding: 1px 9px;
+    font-size: .78rem; font-weight: 600; white-space: nowrap;
+    background: var(--pc-role-soft, #f2f2f7); color: var(--pc-role, var(--pc-ink-2));
+}
+
+/* --- Cadrage : un chemin pour tous, ou des chemins (D91) --- */
+@media (min-width: 560px) { .pc-choices--2 { grid-template-columns: repeat(2, 1fr); } }
+.pc-choice__picto { color: var(--pc-blue); margin-right: 4px; }
+.pc-nb-chemins {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    margin-top: 12px; padding: 12px 14px;
+    border-radius: var(--pc-radius-sm); background: var(--pc-blue-soft);
+}
+.pc-nb-chemins[hidden] { display: none; }
+.pc-nb-chemins__lab { font-weight: 600; font-size: .9rem; }
+.pc-nb-chemins__resume { flex: 1 1 240px; min-width: 0; font-size: .9rem; color: var(--pc-ink-2); }
+.pc-segment {
+    display: inline-flex; gap: 2px; padding: 3px;
+    border: 1px solid var(--pc-line-strong); border-radius: var(--pc-pill); background: var(--pc-surface);
+}
+.pc-segment__b {
+    min-width: 40px; min-height: 32px; padding: 0 12px;
+    border: 0; border-radius: var(--pc-pill); background: transparent;
+    font: inherit; font-size: .88rem; font-weight: 600; color: var(--pc-ink-2); cursor: pointer;
+}
+.pc-segment__b[aria-checked="true"] { background: var(--pc-blue); color: #fff; }
+.pc-segment__b:focus-visible { outline: 3px solid rgba(0, 122, 255, .35); outline-offset: 1px; }
+
+/* --- Trames : trois en vue, les autres par famille (D92) --- */
+.pc-trames__autres {
+    justify-self: start; display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 2px; padding: 9px 14px;
+    border: 1px dashed var(--pc-line-strong); border-radius: var(--pc-radius-sm); background: transparent;
+    font: inherit; font-weight: 600; color: var(--pc-blue-dark); cursor: pointer;
+}
+.pc-trames__autres:hover { background: var(--pc-blue-soft); }
+.pc-trames__autres[hidden], .pc-familles[hidden] { display: none; }
+.pc-familles { display: grid; gap: 16px; margin-top: 4px; }
+.pc-famille__titre { margin: 0 0 8px; font-size: .9rem; font-weight: 600; color: var(--pc-ink-2); }
+.pc-famille__trames { display: grid; gap: 8px; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .pc-famille__trames { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1060px) { .pc-famille__trames { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.pc-trame-ligne {
+    display: grid; gap: 2px; min-width: 0; padding: 9px 12px; text-align: left;
+    border: 1px solid var(--pc-line); border-radius: var(--pc-radius-sm); background: var(--pc-surface);
+    font: inherit; cursor: pointer;
+}
+.pc-trame-ligne:hover { border-color: var(--pc-line-strong); }
+.pc-trame-ligne[aria-pressed="true"] { border-color: var(--pc-blue); box-shadow: 0 0 0 1px var(--pc-blue) inset; background: #f4f8ff; }
+.pc-trame-ligne__nom { font-weight: 600; font-size: .95rem; }
+.pc-trame-ligne__desc { font-size: .85rem; color: var(--pc-ink-2); }
+
+/* Le déroulé d'une trame à chemins : on se sépare, puis on se retrouve. */
+.pc-flux {
+    list-style: none; margin: 0; padding: 10px 0 0;
+    border-top: 1px solid var(--pc-line);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; font-size: .8rem;
+}
+.pc-flux__etape {
+    position: relative; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 5px;
+    padding: 3px 8px; border: 1px solid var(--pc-line); border-radius: 7px; background: var(--pc-field);
+}
+.pc-flux__etape + .pc-flux__etape::before { content: "→"; position: absolute; left: -16px; color: var(--pc-ink-3); }
+.pc-flux__etape--chemins { border-style: dashed; background: var(--pc-surface); }
+.pc-flux__etape--chemins > i, .pc-flux__etape--fin > i { color: var(--pc-ink-3); }
+
+/* --- Plan : l'aiguillage --- */
+.pc-aiguillage {
+    display: grid; gap: 14px; padding: 16px;
+    border: 1.5px solid #e8913c; border-radius: var(--pc-radius);
+    background: #fffaf4;
+}
+.pc-aiguillage__tete { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; }
+.pc-aiguillage__titre { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 1.02rem; font-weight: 700; }
+.pc-aiguillage__titre > i { color: var(--pc-caramel); }
+.pc-aiguillage__aide { margin: 0; font-size: .9rem; color: var(--pc-ink-2); }
+.pc-aiguillage__cases { display: grid; gap: 2px; }
+.pc-aiguillage__case {
+    height: 30px; border-radius: 5px; display: grid; place-items: center;
+    font-size: .78rem; font-weight: 700; font-variant-numeric: tabular-nums;
+    background: var(--pc-role-soft); color: var(--pc-role);
+    border: 1px solid color-mix(in srgb, var(--pc-role) 25%, transparent);
+}
+.pc-aiguillage__axe { display: flex; justify-content: space-between; margin-top: 4px; font-size: .78rem; color: var(--pc-ink-3); }
+.pc-aiguillage__plages { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.pc-aiguillage__plage { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.pc-aiguillage__pas { display: inline-flex; gap: 2px; }
+.pc-aiguillage__pas .pc-icon-btn { border: 1px solid var(--pc-line-strong); background: var(--pc-surface); }
+.pc-aiguillage__pas .pc-icon-btn:disabled { opacity: .35; cursor: not-allowed; }
+.pc-aiguillage__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.pc-aiguillage__actions .pc-secondaire, .pc-aiguillage__voir { padding: 7px 12px; font-size: .85rem; }
+
+.pc-chemins { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 760px) {
+    .pc-chemins--2, .pc-chemins--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pc-chemins--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1060px) { .pc-chemins--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.pc-chemin {
+    display: grid; align-content: start; min-width: 0; overflow: hidden;
+    border: 1.5px solid color-mix(in srgb, var(--pc-role) 40%, var(--pc-line));
+    border-radius: 14px; background: var(--pc-surface);
+}
+.pc-chemin__tete { display: grid; gap: 6px; padding: 10px; background: var(--pc-role-soft); }
+.pc-chemin__tete .pc-role { justify-self: start; background: var(--pc-surface); }
+.pc-chemin__plage { font-size: .82rem; font-weight: 600; color: var(--pc-role); font-variant-numeric: tabular-nums; }
+.pc-chemin__tete input, .pc-chemin__tete textarea { width: 100%; min-width: 0; text-overflow: ellipsis; }
+.pc-chemin .pc-cartes { padding: 8px; }
+.pc-chemin__pied {
+    display: flex; align-items: center; gap: 6px; margin: 0; padding: 8px 12px;
+    border-top: 1px solid var(--pc-line); background: #fafafa; font-size: .85rem; color: var(--pc-ink-2);
+}
+/* Dans une colonne, la carte se range sur trois rangées : vignette et titre,
+   type et durée, actions. Le palier est celui de l'étape : inutile de le redire. */
+.pc-chemin .pc-carte { grid-template-columns: auto minmax(0, 1fr); }
+.pc-chemin .pc-carte__reglages { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) 84px; }
+.pc-chemin .pc-carte__reglages .pc-palier { display: none; }
+.pc-chemin .pc-carte__actions { grid-column: 1 / -1; justify-content: flex-end; }
+.pc-chemin .pc-carte__complements { grid-column: 1 / -1; flex-wrap: wrap; }
+.pc-carte__aiguille {
+    display: inline-flex; align-items: center; gap: 6px; width: fit-content;
+    margin: 4px 0 0; padding: 2px 9px; border-radius: var(--pc-pill);
+    font-size: .78rem; font-weight: 600; background: #fbeee4; color: var(--pc-caramel);
+}
+.pc-etape__chemins { margin: 0 12px 12px; padding: 7px 12px; font-size: .85rem; }
+
+/* --- La fin du parcours (D96) --- */
+.pc-etape__num--fin { background: #e9f5ef; color: #24765f; font-size: .75rem; }
+.pc-fin__bravo { margin: 2px 0 0; font-weight: 600; color: #24765f; }
+
+/* --- Voir comme un élève (D98) --- */
+.pc-eleve {
+    width: min(920px, calc(100vw - 32px)); max-height: calc(100vh - 48px);
+    padding: 0; border: 0; border-radius: var(--pc-radius);
+    box-shadow: var(--pc-shadow); background: var(--pc-ground); color: var(--pc-ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+}
+.pc-eleve::backdrop { background: var(--backdrop-light, rgba(0, 0, 0, .4)); }
+.pc-eleve__tete { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; background: var(--pc-surface); border-bottom: 1px solid var(--pc-line); position: sticky; top: 0; z-index: 1; }
+.pc-eleve__titre { margin: 0; font-size: 1.1rem; }
+.pc-eleve__aide { margin: 12px 18px 0; font-size: .9rem; color: var(--pc-ink-2); }
+.pc-eleve__commandes { display: grid; gap: 10px; margin: 12px 18px; padding: 12px 14px; border: 1px solid var(--pc-line); border-radius: var(--pc-radius-sm); background: var(--pc-surface); }
+.pc-eleve__commande { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.pc-eleve .pc-segment { flex-wrap: wrap; border-radius: 16px; }
+.pc-eleve .pc-segment__b { white-space: nowrap; }
+.pc-eleve__lab { font-size: .85rem; font-weight: 600; color: var(--pc-ink-2); }
+.pc-eleve__curseur { flex: 1 1 220px; min-width: 0; accent-color: var(--pc-blue); }
+.pc-eleve__score { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pc-eleve__cours { margin: 0 18px 18px; border: 1px solid var(--pc-line); border-radius: var(--pc-radius-sm); background: var(--pc-surface); overflow: hidden; }
+.pc-eleve__section { display: grid; gap: 8px; padding: 14px 16px; }
+.pc-eleve__section + .pc-eleve__section { border-top: 1px solid var(--pc-line); }
+.pc-eleve__section--grisee { opacity: .6; }
+.pc-eleve__section-titre { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 1rem; }
+.pc-eleve__condition { display: flex; gap: 7px; align-items: flex-start; margin: 0; padding: 6px 9px; border-radius: 8px; background: #fafafa; font-size: .82rem; color: var(--pc-ink-2); }
+.pc-eleve__texte { margin: 0; padding: 9px 12px; border-radius: 10px; background: #f7f7f8; font-size: .9rem; }
+.pc-eleve__texte--fort { font-weight: 600; }
+.pc-eleve__texte--suite { background: var(--pc-blue-soft); }
+.pc-eleve__activite { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 2px 12px; }
+.pc-eleve__vignette { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px; background: #f2f2f7; color: var(--pc-ink-2); overflow: hidden; }
+.pc-eleve__corps { display: grid; min-width: 0; }
+.pc-eleve__nom { font-weight: 600; color: var(--pc-blue-dark); }
+.pc-eleve__duree { font-size: .8rem; color: var(--pc-ink-2); }
+.pc-eleve__statut { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border: 1px solid var(--pc-line); border-radius: 7px; font-size: .78rem; color: var(--pc-ink-2); white-space: nowrap; }
+.pc-eleve__statut--fait { border-color: transparent; background: #e9f5ef; color: #24765f; }
+.pc-eleve__bravo { padding: 10px 12px; border-radius: 10px; background: #e9f5ef; }
+.pc-eleve__bravo strong { display: block; color: #24765f; }
+.pc-eleve__bravo p { margin: 4px 0 0; }
+@media (max-width: 560px) {
+    .pc-eleve__aide, .pc-eleve__commandes, .pc-eleve__cours { margin-left: 12px; margin-right: 12px; }
+    .pc-eleve__activite { grid-template-columns: 32px minmax(0, 1fr); }
+    .pc-eleve__statut { grid-column: 2; justify-self: start; }
+}

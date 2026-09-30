@@ -30,6 +30,8 @@ import { el, icone, tr, action } from './dom.js';
 import { titreActivite, rendreApercu, rendreEdition, attendreEditeur, prechargerBibliotheques } from './rendu-activite.js';
 import { recueillirMedias } from './sources.js';
 import { confirmerAbandon } from './confirm-abandon.js';
+import { aiguillagesDuPlan, nombreQuestions, bornesEnReponses, plagesEnReponses } from './aiguillage.js';
+import { ouvrirVueEleve, textePlage } from './vue-eleve.js';
 
 /** Un texte de l'enseignant, en HTML nettoyé. */
 async function prose(texte, classe = 'pc-vue__prose') {
@@ -71,7 +73,10 @@ export async function construireVueParcours(plan, { platform, onOuvrir }) {
     const meta = el('ul', 'pc-vue__meta');
     for (const m of construireFiche(plan, { platformId: platform }).meta) meta.append(el('li', null, m));
     tete.append(meta);
+    // Ce que VERRA l'élève, chemin compris (D99) : la même fenêtre que depuis le plan.
+    tete.append(action('parcours_aig_voir_eleve', 'fa-eye', () => ouvrirVueEleve(plan, { platform }), 'pc-secondaire pc-vue__eleve'));
     page.append(tete);
+    const groupes = aiguillagesDuPlan(plan);
 
     // Section 0 : l'accueil du cours, et la Carte de progression si elle est posée.
     const carteActive = Boolean(plan.carte?.actif) && platform === 'elea';
@@ -93,11 +98,25 @@ export async function construireVueParcours(plan, { platform, onOuvrir }) {
         page.append(accueil);
     }
 
+    // Comme sur l'écran du plan, seules les étapes communes sont numérotées : un
+    // chemin se nomme par son rôle et dit à qui il s'ouvre (D90, D99).
+    let numero = 0;
     for (const [i, etape] of (plan.etapes || []).entries()) {
         const section = el('section', 'pc-vue__section');
         const h = el('h4', 'pc-vue__section-titre');
-        h.append(el('span', 'pc-vue__numero', String(i + 1)),
-            document.createTextNode(String(etape.titre || '').trim() || tr('parcours_fiche_etape', { n: i + 1 })));
+        const g = groupes.find(x => i >= x.debut && i <= x.fin);
+        if (!g) numero += 1;
+        if (!g) h.append(el('span', 'pc-vue__numero', String(numero)));
+        h.append(document.createTextNode(String(etape.titre || '').trim()
+            || (g ? t(`parcours_role_${g.chemins[i - g.debut].role}`) : tr('parcours_fiche_etape', { n: numero }))));
+        if (g) {
+            const j = i - g.debut;
+            const n = g.test ? nombreQuestions(g.test, g.chemins.length) : 10;
+            const plage = plagesEnReponses(bornesEnReponses(g.chemins.slice(1).map(c => c.depuis), n), n)[j];
+            section.classList.add('pc-vue__section--chemin');
+            h.append(el('span', `pc-role pc-role--${g.chemins[j].role}`, t(`parcours_role_${g.chemins[j].role}`)),
+                el('span', 'pc-vue__plage', textePlage(plage, n)));
+        }
         section.append(h);
         if (etape.objectif) section.append(el('p', 'pc-vue__objectif-etape', etape.objectif));
         if (String(etape.introduction || '').trim()) section.append(await prose(etape.introduction));
@@ -131,6 +150,13 @@ export async function construireVueParcours(plan, { platform, onOuvrir }) {
         section.append(liste);
         page.append(section);
     }
+    // La fin du parcours, telle que l'élève la lira (D96).
+    const fin = el('section', 'pc-vue__section pc-vue__section--fin');
+    const hFin = el('h4', 'pc-vue__section-titre');
+    hFin.append(icone('fa-flag-checkered'), document.createTextNode(t('parcours_fin_titre')));
+    fin.append(hFin, el('p', 'pc-vue__objectif-etape', t('parcours_fin_bravo')));
+    if (String(plan.conclusion || '').trim()) fin.append(await prose(plan.conclusion));
+    page.append(fin);
     return page;
 }
 

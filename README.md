@@ -4,7 +4,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-7.0.1-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-7.1.0-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 [![Langues](https://img.shields.io/badge/langues-12-purple.svg)](#-fonctionnalités)
@@ -56,7 +56,17 @@ Le commutateur placé sous le formulaire propose **« Une activité »**, le fon
 
 ---
 
-## 🆕 Nouveautés 7.0.0
+## 🆕 Nouveautés 7.1.0
+
+> **Des parcours différenciés** — un test oriente chaque élève vers le chemin qui lui convient, puis tous se retrouvent.
+
+![Les chemins dans le plan : la barre des scores, la plage de chaque chemin et ses activités](assets/images/wiki/parcours-chemins.webp)
+
+- **Des chemins selon les résultats** : d’après sa note à la première tentative, chaque élève suit l’un de deux à quatre chemins (Reprendre les bases, Renforcer, Consolider, Approfondir) et ne voit que le sien ; le cours pose lui-même les restrictions d’accès de la plateforme.
+- **Deux trames pour différencier**, des seuils réglés en bonnes réponses dans le plan, et **Voir comme un élève** pour contrôler la page du cours avant de l’importer.
+- **Dans tous les parcours** : une section « Fin du parcours » et la durée estimée de chaque activité ; trois trames à l’écran, les autres sous « Voir les autres modèles ».
+
+## Nouveautés 7.0.0
 
 > **28 septembre 2026** — De l’activité unique au parcours complet, dans les 12 langues de Caramel.
 

@@ -309,7 +309,7 @@ Mit **Ein Lernpfad** erstellt Caramel einen Kurs für Éléa, Magistère oder Mo
 
 Im Menü von Caramelia öffnet **Einen Kurs erstellen** direkt die Werkstatt, ohne KI-Anfrage. Ein vorhandener Entwurf wird mit **Meinen Kurs fortsetzen** wieder geöffnet. Ausgefüllte Felder und Quellen bleiben erhalten. Prüfe Rahmen und Plan in der Werkstatt, bevor du die Generierung startest.
 
-Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang und Vorlage. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.
+Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang, **Ein Weg für alle** oder **Wege je nach Ergebnis** und eine Vorlage: Drei werden vorgeschlagen, über **Weitere Vorlagen anzeigen** erscheinen die übrigen. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.
 
 Unter **Plan** bearbeiten Sie Titel, Gesamtziel, Schlüsselbegriffe, Abschnitte und Aktivitäten. Verschieben Sie Aktivitäten mit den Pfeilen oder an ihrem Vorschaubild. **Arbeitsauftrag und Lernphase** erlaubt das Anpassen der Generierungsanweisungen. Pädagogische Hinweise unterstützen die Durchsicht, ohne ein Modell vorzuschreiben. Maximal **12 Aktivitäten** sind möglich.
 
@@ -325,7 +325,7 @@ Unter **Auslieferung** laden Sie die **.mbz**-Datei herunter und nutzen den Kurs
 
 Der Plan bietet auch die Module Ihrer Éléa-, Magistère- oder Moodle-Plattform an; sie stehen im Menü jeder Aktivität unter **Module der Plattform**: Forum, Abstimmung, Fragebogen, Umfrage, Lektion, Workshop mit gegenseitiger Beurteilung, Pinnwand, Wiki, kollaboratives Dokument, Glossar und Datenbank zum gemeinsamen Aufbau, virtuelles Klassenzimmer, Gruppenwahl, Dateiaustausch und Weblink. Die KI verfasst die Inhalte, die die Plattform beim Import übernimmt; gemeinsame Arbeitsbereiche kommen leer an, mit ihrem Arbeitsauftrag. Erfordert ein Modul eine Einstellung auf der Plattform (Phasen des Workshops, Uhrzeit des virtuellen Klassenzimmers, Gruppen), schreibt Caramel sie in eine für die Lernenden verborgene Notiz **Vor dem Öffnen des Kurses zu erledigen** am Anfang des importierten Kurses. Das **IMS-Content-Paket** – Seiten zum Lesen mit Inhaltsverzeichnis, vollständig von Caramel geschrieben – wählen Sie im Mosaik; der Plan schlägt es nicht vor.
 
-Die Fortschrittskarte gibt es nur für Éléa. Karte und schrittweiser Zugang sind optional und müssen noch im tatsächlichen Plattformbetrieb geprüft werden. Die Differenzierungsvorlage erzeugt keine automatischen Verzweigungen nach Note. Zusammenarbeit findet auf der Plattform statt. Die Veröffentlichung eines vollständigen Kurses in Sucrerie ist noch nicht verfügbar.
+Die Fortschrittskarte gibt es nur für Éléa. Karte, schrittweiser Zugang und Wege je nach Ergebnis müssen noch im tatsächlichen Plattformbetrieb geprüft werden. Zusammenarbeit findet auf der Plattform statt. Die Veröffentlichung eines vollständigen Kurses in Sucrerie ist noch nicht verfügbar.
 
 Zum Weiterlesen: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) unterstützt das Nachdenken über Lernaktivitäten. Die sieben Kategorien in Caramel, darunter **Diskutieren** und **Zusammenarbeiten**, sind vereinfachte, werkzeugbezogene Orientierungshilfen, nicht die sechs ABC-Lerntypen oder eine Bewertung Ihrer Lehre.
 Öffne in Éléa **Kurseinstellungen**, aktiviere die Fortschrittskarte und wähle über die Kachel **+ Eigenes Bild hinzufügen** ein eigenes Hintergrundbild. Du kannst das Bild ersetzen oder entfernen und zu den vorgeschlagenen Motiven zurückkehren. Das Bild wird im **.json**-Szenario gespeichert und in den **.mbz**-Kurs eingebettet. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG oder TIFF · Max. 12 MB. Automatische Umwandlung, ohne Zuschneiden.
@@ -345,7 +345,8 @@ Nach **Ein Lernpfad** gibt die Vorlage den Ablauf vor, den die KI an Ihr Thema a
 - **Eine Untersuchung führen** — Eine Frage, eine Hypothese, Daten, ein Ergebnis: die wissenschaftliche Vorgehensweise, der Reihe nach. *(Zwei bis drei Stunden · Eine ganze Einheit · Im Unterricht · Beides)*
 - **Eine Quelle prüfen** — Woher die Information kommt, wer sie herstellt, was sie auslässt. Den Blick schulen, bevor man urteilt. *(Eine Stunde · Zwei bis drei Stunden)*
 - **Begründete Debatte** — Eine Abstimmung zum Ausgangspunkt, Quellen zur Information, ein Forum zum Debattieren, ein Text als Abschluss. *(Zwei bis drei Stunden · Eine ganze Einheit)*
-- **Differenzierung in drei Geschwindigkeiten** — Ein Einstufungstest, danach Aktivitäten zum Festigen, Weiterlernen oder Vertiefen. Die Anweisungen leiten die Auswahl; es gibt keine automatische Verzweigung nach Punktzahl. *(Zwei bis drei Stunden · Eine ganze Einheit · Auf Distanz · Beides)*
+- **Von Anfang an differenzieren** — Ein Einstufungstest öffnet allen Lernenden einen Weg, der zu ihrem Ergebnis passt; danach kommen alle zu einer gemeinsamen Bilanz zusammen. *(Eine Stunde · Zwei bis drei Stunden · Wege je nach Ergebnis)*
+- **Unterwegs nacharbeiten** — Entdecken, mit einem Quiz Bilanz ziehen: je nach Punktzahl wiederholen oder weitergehen, danach gemeinsam anwenden. *(Eine Stunde · Zwei bis drei Stunden · Wege je nach Ergebnis)*
 - **Fremdsprachliche Einheit** — Zuerst der Wortschatz, dann das Verstehen, zuletzt das Sprechen und Schreiben. *(Zwei bis drei Stunden)*
 - **Einen Vortrag vorbereiten** — Was gesagt wird, in welcher Reihenfolge, und wie man das Sprechen übt. *(Eine Stunde · Zwei bis drei Stunden · Im Unterricht · Beides)*
 - **Lernen lernen** — Was beim Behalten wirklich hilft, am Thema des Kurses ausprobiert: sich selbst abfragen, verteilt wiederholen, erklären. Dann plant jede und jeder die eigenen Wiederholungen. *(Eine Stunde · Zwei bis drei Stunden)*
@@ -356,4 +357,17 @@ Nach **Ein Lernpfad** gibt die Vorlage den Ablauf vor, den die KI an Ihr Thema a
 - **Escape Game** — Ein Auftrag, Hinweise, Rätsel mit steigendem Schwierigkeitsgrad, ein Schlusscode und die Nachbesprechung. *(Eine Stunde · Zwei bis drei Stunden · Im Unterricht · Beides)*
 - **Freie Struktur** — Kein vorgegebener Verlauf: Sie stellen die Schritte selbst zusammen, und Caramel füllt, was Sie hineinsetzen. *(Eine Stunde · Zwei bis drei Stunden · Eine ganze Einheit)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Wege je nach Ergebnis
+
+Bei der Rahmenwahl lässt **Wege je nach Ergebnis** Ihre Lernenden einen Test machen: Je nach Note beim ersten Versuch folgen sie einem von 2 bis 4 Wegen – **Grundlagen wiederholen**, **Aufbauen**, **Festigen**, **Vertiefen** –, danach kommen alle in einem gemeinsamen Abschnitt wieder zusammen. Alle Lernenden sehen nur ihren eigenen Weg. Zwei Vorlagen sind dafür gedacht: **Von Anfang an differenzieren** und **Unterwegs nacharbeiten**.
+
+- Unter **Plan** zeigt die Punkteleiste, welcher Weg sich bei welcher Zahl richtiger Antworten öffnet; die Schaltflächen **−** und **+** verschieben den Beginn eines Wegs um eine richtige Antwort nach vorn oder nach hinten. **Weg hinzufügen**, **Weg entfernen** und **Ein Weg für alle** ändern die Verzweigung.
+- Der Test, der die Lernenden leitet, ist ein **Multiple-Choice-Quiz**, ein **Wahr/Falsch-Quiz** oder ein **Test** am Ende des Abschnitts vor den Wegen. Jede Frage zählt einen Punkt, und der Test bietet keinen neuen Versuch an.
+- **Aus Sicht der Lernenden ansehen** zeigt die Kursseite so, wie die Lernenden sie sehen werden – vor dem Test, auf ihrem Weg, am Ende –, für die Punktzahl, die Sie wählen.
+- Um eine Person umzuleiten, ändern Sie ihre Note für den Test in den Bewertungen der Plattform.
+
+Importieren Sie einen Lernpfad mit Wegen in einen **leeren** Kurs: Moodle ordnet die Abschnitte der Datei den Abschnitten des Kurses zu, und Ihre bestehenden Abschnitte würden die Zugriffsbeschränkungen der Wege erhalten. Jeder Lernpfad endet jetzt mit einem Abschnitt **Ende des Lernpfads**, und die geschätzte Dauer steht unter jeder Aktivität.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

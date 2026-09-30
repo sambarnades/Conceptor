@@ -469,6 +469,23 @@ export const MODULES_SANS_ACHEVEMENT = Object.freeze(new Set([
     ...Object.values(MODULES_NATIFS).filter(m => m.sansAchevement).map(m => m.moduleName),
 ]));
 
+/**
+ * Une activité de cette clé s'achève-t-elle, une fois posée dans le cours ?
+ *
+ * Les activités que Caramel génère (H5P, Test, Page, Livre, Devoir…) portent
+ * toutes un critère effectif (§ 6 du PRD) ; parmi les modules de la plateforme,
+ * ceux de `MODULES_SANS_ACHEVEMENT` jamais. Un chemin, un bilan ou la fin du
+ * parcours ne peuvent dépendre que des premières (D71, D90).
+ *
+ * @param {string} cle
+ * @returns {boolean}
+ */
+export function moduleSAcheve(cle) {
+    if (!cle) return false;
+    const def = MODULES_PARCOURS[cle];
+    return def ? !MODULES_SANS_ACHEVEMENT.has(def.moduleName) : true;
+}
+
 /** Les noms de module Moodle apportés par le parcours. */
 export const NOMS_MODULE_PARCOURS = Object.freeze(
     Object.values(MODULES_PARCOURS).map(m => m.moduleName));

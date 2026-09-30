@@ -17,9 +17,21 @@
 
 import { t } from '../core/translation.js';
 import { CONFIG } from './config.js';
-import { TRAMES, tramesCompatibles, nbActivites, nbEtapes, rythme, palierEtape } from './templates.js';
+import { TRAMES, tramesCompatibles, nbActivites, nbEtapes, rythme, palierEtape, nbActivitesParEleve } from './templates.js';
 import { ouvrirBrouillon, majBrouillon, validerCadrage } from './state.js';
 import { nomModule, moduleDeTrame } from './activity-router.js';
+import { ROLES_PAR_NOMBRE } from './aiguillage.js';
+
+/**
+ * Combien de trames s'affichent d'emblée (D92). Retour de Gauthier (sept.
+ * 2026) : devant une douzaine de modèles, on se perd. Les trois premiers
+ * compatibles, dans l'ordre de la bibliothèque (du besoin le plus fréquent au
+ * plus spécialisé), et les autres derrière « Voir les autres modèles ».
+ */
+const TRAMES_EN_VUE = 3;
+
+/** Les autres modèles restent dépliés le temps de la visite de l'atelier. */
+let autresModelesOuverts = false;
 
 /** Fabrique un élément avec ses classes et son texte. */
 function el(tag, className, text) {
@@ -96,10 +108,12 @@ function peindreSources(zone) {
  * @param {string} opts.valeur    - id sélectionné
  * @param {string} [opts.variante]- suffixe de classe (`elea`…) pour la coloration
  * @param {Function} [opts.plateforme] - plateforme courante pour les libellés contextualisés
+ * @param {string} [opts.classe] - classe de plus pour la rangée (`pc-choices--2`)
+ * @param {Object<string,string>} [opts.pictos] - une icône par option
  * @param {Function} opts.onPick
  * @returns {{ node: HTMLElement, rafraichirLibelles: Function }}
  */
-function construireChoix({ titleKey, hintKey, options, valeur, variante, plateforme = () => null, onPick }) {
+function construireChoix({ titleKey, hintKey, options, valeur, variante, plateforme = () => null, classe, pictos, onPick }) {
     const bloc = el('div', 'pc-block');
     const peintres = [];
 
@@ -107,18 +121,20 @@ function construireChoix({ titleKey, hintKey, options, valeur, variante, platefo
     head.append(el('h3', 'pc-block__title', t(titleKey)));
     if (hintKey) head.append(el('p', 'pc-block__hint', t(hintKey)));
 
-    const groupe = el('div', 'pc-choices');
+    const groupe = el('div', `pc-choices${classe ? ` ${classe}` : ''}`);
     groupe.setAttribute('role', 'group');
     groupe.setAttribute('aria-label', t(titleKey));
 
     for (const opt of options) {
         const btn = el('button', 'pc-choice');
         btn.type = 'button';
+        btn.dataset.choix = opt.id;
         if (variante) btn.classList.add(`pc-choice--${opt.id}`);
         btn.setAttribute('aria-pressed', String(opt.id === valeur));
 
         const nom = el('span', 'pc-choice__name');
         if (variante) nom.append(el('span', `pc-dot pc-dot--${opt.id}`));
+        if (pictos && pictos[opt.id]) nom.append(icone(`${pictos[opt.id]} pc-choice__picto`));
         const texteNom = document.createTextNode('');
         nom.append(texteNom);
         const description = el('span', 'pc-choice__desc');
@@ -260,6 +276,69 @@ function carteTrame(trame, selectionnee, onPick, plateforme) {
     return carte;
 }
 
+/**
+ * Une trame à CHEMINS : le déroulé se lit comme un chemin qui se sépare puis se
+ * rejoint — étapes communes, les chemins côte à côte, la fin (D90). Même carte
+ * que les autres trames ; seul l'aperçu change.
+ */
+function carteTrameChemins(trame, selectionnee, onPick, plateforme) {
+    const carte = el('article', `pc-trame pc-trame--chemins${selectionnee ? ' pc-trame--selected' : ''}`);
+    const select = el('button', 'pc-trame__select');
+    select.type = 'button';
+    select.setAttribute('aria-pressed', String(selectionnee));
+    const tick = el('span', 'pc-choice__tick');
+    tick.append(icone('fa-check'));
+    select.append(tick, el('span', 'pc-trame__name', t(trame.nameKey)));
+    const idDescription = `pc-trame-desc-${trame.id}`;
+    const description = el('p', 'pc-trame__desc', t(trame.descKey));
+    description.id = idDescription;
+    select.setAttribute('aria-describedby', idDescription);
+    const zone = el('div', 'pc-trame__description');
+    zone.append(description);
+    const a = trame.aiguillage;
+    const meta = el('div', 'pc-trame__meta-row');
+    meta.append(el('span', 'pc-trame__meta', tr('parcours_trame_chemins_meta', {
+        k: a.nombre, e: nbActivitesParEleve(trame), f: nbActivites(trame),
+    })));
+
+    const flux = el('ol', 'pc-flux');
+    trame.modules.forEach((modulesEtape, i) => {
+        if (i > a.debut && i < a.debut + a.nombre) return;
+        const li = el('li', 'pc-flux__etape');
+        if (i === a.debut) {
+            li.classList.add('pc-flux__etape--chemins');
+            li.append(icone('fa-code-fork'));
+            for (const role of a.roles) {
+                const chip = el('span', `pc-role pc-role--${role}`, t(`parcours_role_${role}`));
+                chip.title = t(`parcours_role_${role}_hint`);
+                li.append(chip);
+            }
+        } else {
+            li.append(el('span', 'pc-flux__modules', modulesEtape.map(m => nomModule(moduleDeTrame(m, plateforme))).join(' · ')));
+        }
+        flux.append(li);
+    });
+    const fin = el('li', 'pc-flux__etape pc-flux__etape--fin');
+    fin.append(icone('fa-flag-checkered'), document.createTextNode(t('parcours_fin_titre')));
+    flux.append(fin);
+
+    carte.append(select, zone, meta, flux);
+    select.addEventListener('click', () => onPick(trame.id));
+    carte.addEventListener('click', (event) => { if (!event.target.closest('button')) onPick(trame.id); });
+    return carte;
+}
+
+/** Une trame en une ligne, dans « Voir les autres modèles ». */
+function ligneTrame(trame, selectionnee, onPick) {
+    const btn = el('button', 'pc-trame-ligne');
+    btn.type = 'button';
+    btn.dataset.trame = trame.id;
+    btn.setAttribute('aria-pressed', String(selectionnee));
+    btn.append(el('span', 'pc-trame-ligne__nom', t(trame.nameKey)), el('span', 'pc-trame-ligne__desc', t(trame.descKey)));
+    btn.addEventListener('click', () => onPick(trame.id));
+    return btn;
+}
+
 function carteAuto(selectionnee, onPick) {
     const btn = el('button', 'pc-trame pc-trame--auto');
     btn.type = 'button';
@@ -301,14 +380,24 @@ export function construireCadrage(api) {
     // --- Trames : conteneur redessiné à chaque changement de modalité/ampleur.
     const blocTrames = el('div', 'pc-block');
     const headTrames = el('div', 'pc-block__head');
-    headTrames.append(
-        el('h3', 'pc-block__title', t('parcours_trame_titre')),
-        el('p', 'pc-block__hint', t('parcours_trame_hint')),
-    );
+    const aideTrames = el('p', 'pc-block__hint');
+    headTrames.append(el('h3', 'pc-block__title', t('parcours_trame_titre')), aideTrames);
     const grilleTrames = el('div', 'pc-trames');
     grilleTrames.setAttribute('role', 'group');
     grilleTrames.setAttribute('aria-label', t('parcours_trame_titre'));
-    blocTrames.append(headTrames, grilleTrames);
+    // « Voir les autres modèles » (D92) : les trames au-delà des trois premières,
+    // rangées par famille, en lignes courtes.
+    const basculeAutres = el('button', 'pc-trames__autres');
+    basculeAutres.type = 'button';
+    basculeAutres.setAttribute('aria-controls', 'pc-trames-autres');
+    const autres = el('div', 'pc-familles');
+    autres.id = 'pc-trames-autres';
+    basculeAutres.addEventListener('click', () => {
+        autresModelesOuverts = !autresModelesOuverts;
+        dessinerTrames();
+        basculeAutres.focus();
+    });
+    blocTrames.append(headTrames, grilleTrames, basculeAutres, autres);
 
     function choisirTrame(id) {
         majBrouillon({ trame: id });
@@ -317,28 +406,117 @@ export function construireCadrage(api) {
     }
 
     function dessinerTrames() {
-        const dispo = tramesCompatibles(draft.format, draft.ampleur);
+        const chemins = draft.structure === 'chemins';
+        const dispo = tramesCompatibles(draft.format, draft.ampleur, { structure: draft.structure, chemins: draft.chemins });
 
         // Si la trame retenue ne survit pas au nouveau cadrage, on retombe sur
-        // « Caramel propose » plutôt que de laisser une sélection fantôme.
-        if (draft.trame !== 'auto' && !dispo.some(tr2 => tr2.id === draft.trame)) {
-            draft.trame = 'auto';
-            majBrouillon({ trame: 'auto' });
+        // « Caramel propose » — ou, avec des chemins, sur la première trame à
+        // chemins — plutôt que de laisser une sélection fantôme.
+        if (!dispo.some(tr2 => tr2.id === draft.trame) && (chemins || draft.trame !== 'auto')) {
+            const repli = chemins ? ((dispo.find(tr2 => tr2.structure === 'chemins') || dispo[0])?.id || 'libre') : 'auto';
+            draft.trame = repli;
+            majBrouillon({ trame: repli });
         }
+        aideTrames.textContent = t(chemins ? 'parcours_trame_hint_chemins' : 'parcours_trame_hint');
 
         grilleTrames.replaceChildren();
-        grilleTrames.append(carteAuto(draft.trame === 'auto', choisirTrame));
+        autres.replaceChildren();
+        // « Caramel propose » choisit parmi les trames d'un seul chemin : avec des
+        // chemins, les deux trames dédiées disent déjà tout.
+        if (!chemins) grilleTrames.append(carteAuto(draft.trame === 'auto', choisirTrame));
+
+        if (chemins) {
+            basculeAutres.hidden = true;
+            autres.hidden = true;
+            if (!dispo.some(tr2 => tr2.structure === 'chemins')) grilleTrames.append(el('p', 'pc-empty', t('parcours_trame_chemins_aucune')));
+            for (const trame of dispo) {
+                grilleTrames.append(trame.structure === 'chemins'
+                    ? carteTrameChemins(trame, trame.id === draft.trame, choisirTrame, draft.platform)
+                    : carteTrame(trame, trame.id === draft.trame, choisirTrame, draft.platform));
+            }
+            return;
+        }
 
         if (!dispo.length) {
             // Filet de sécurité : la carte « Caramel propose » garantit qu'il
             // reste toujours une action possible.
             grilleTrames.append(el('p', 'pc-empty', t('parcours_trame_aucune')));
+            basculeAutres.hidden = true;
+            autres.hidden = true;
             return;
         }
-        for (const trame of dispo) {
+        const enVue = dispo.filter(tr2 => tr2.id !== 'libre').slice(0, TRAMES_EN_VUE);
+        const reste = dispo.filter(tr2 => !enVue.includes(tr2));
+        for (const trame of enVue) {
             grilleTrames.append(carteTrame(trame, trame.id === draft.trame, choisirTrame, draft.platform));
         }
+        // Une trame choisie parmi les autres les garde dépliées : la sélection
+        // ne doit jamais être hors de vue.
+        if (reste.some(tr2 => tr2.id === draft.trame)) autresModelesOuverts = true;
+        basculeAutres.hidden = !reste.length;
+        basculeAutres.setAttribute('aria-expanded', String(autresModelesOuverts));
+        basculeAutres.replaceChildren(icone(autresModelesOuverts ? 'fa-chevron-up' : 'fa-chevron-down'),
+            document.createTextNode(autresModelesOuverts ? t('parcours_trames_autres_masquer')
+                : tr('parcours_trames_autres', { n: reste.length })));
+        autres.hidden = !autresModelesOuverts;
+        for (const famille of ['seance', 'sequence', 'projet', 'specialise']) {
+            const liste = reste.filter(tr2 => tr2.famille === famille);
+            if (!liste.length) continue;
+            const groupe = el('section', 'pc-famille');
+            groupe.append(el('h4', 'pc-famille__titre', t(`parcours_famille_${famille}`)));
+            const lignes = el('div', 'pc-famille__trames');
+            for (const trame of liste) lignes.append(ligneTrame(trame, trame.id === draft.trame, choisirTrame));
+            groupe.append(lignes);
+            autres.append(groupe);
+        }
     }
+
+    // --- Un chemin pour tous, ou des chemins selon les résultats (D91).
+    const blocStructure = construireChoix({
+        titleKey: 'parcours_structure_titre',
+        options: CONFIG.structures,
+        valeur: draft.structure,
+        classe: 'pc-choices--2',
+        pictos: { lineaire: 'fa-arrow-right-long', chemins: 'fa-code-fork' },
+        onPick: (id) => { majBrouillon({ structure: id }); peindreNombre(); dessinerTrames(); api.rafraichirAction(); },
+    });
+    const ligneNombre = el('div', 'pc-nb-chemins');
+    const libelleNombre = el('span', 'pc-nb-chemins__lab', t('parcours_chemins_nombre'));
+    libelleNombre.id = 'pc-nb-chemins-lab';
+    const segment = el('div', 'pc-segment');
+    segment.setAttribute('role', 'radiogroup');
+    segment.setAttribute('aria-labelledby', 'pc-nb-chemins-lab');
+    const resume = el('span', 'pc-nb-chemins__resume');
+    ligneNombre.append(libelleNombre, segment, resume);
+    blocStructure.node.append(ligneNombre);
+    const boutonsNombre = CONFIG.nombresDeChemins.map((k) => {
+        const b = el('button', 'pc-segment__b', String(k));
+        b.type = 'button';
+        b.setAttribute('role', 'radio');
+        b.dataset.chemins = String(k);
+        b.addEventListener('click', () => { majBrouillon({ chemins: k }); peindreNombre(); dessinerTrames(); b.focus(); });
+        b.addEventListener('keydown', (e) => {
+            const i = CONFIG.nombresDeChemins.indexOf(k);
+            const j = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? i + 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? i - 1 : null;
+            if (j === null || j < 0 || j >= CONFIG.nombresDeChemins.length) return;
+            e.preventDefault();
+            boutonsNombre[j].click();
+        });
+        segment.append(b);
+        return b;
+    });
+    function peindreNombre() {
+        ligneNombre.hidden = draft.structure !== 'chemins';
+        for (const b of boutonsNombre) {
+            const actif = Number(b.dataset.chemins) === draft.chemins;
+            b.setAttribute('aria-checked', String(actif));
+            b.tabIndex = actif ? 0 : -1;
+        }
+        resume.textContent = tr('parcours_chemins_resume', {
+            r: (ROLES_PAR_NOMBRE[draft.chemins] || []).map(r => t(`parcours_role_${r}`)).join(' · '),
+        });
+    }
+    peindreNombre();
 
     const blocPlateforme = construireChoix({
         titleKey: 'parcours_platform_titre',
@@ -370,7 +548,7 @@ export function construireCadrage(api) {
 
     dessinerTrames();
 
-    page.append(hero, blocPlateforme.node, blocFormat.node, blocAmpleur.node, blocTrames);
+    page.append(hero, blocPlateforme.node, blocFormat.node, blocAmpleur.node, blocStructure.node, blocTrames);
     return { node: page, rafraichir: () => peindreSources(sources) };
 }
 

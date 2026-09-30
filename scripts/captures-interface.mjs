@@ -133,6 +133,41 @@ async function ouvrirParcours(page, { aFabriquer = 0 } = {}) {
     await page.waitForTimeout(800);
 }
 
+/**
+ * Le même parcours réel, mis en CHEMINS (D90) : son quiz diagnostic oriente vers
+ * trois chemins — ses deux étapes de révision et une étape « Aller plus loin » —,
+ * puis tous se retrouvent pour le test final. Les deux activités ajoutées n'ont
+ * pas de contenu : le plan les montre à générer, comme dans l'atelier.
+ */
+async function ouvrirParcoursAChemins(page) {
+    await remplirFormulaire(page);
+    await page.click('#parcours-button');
+    await page.waitForTimeout(600);
+    const scenario = JSON.parse(readFileSync(SCENARIO, 'utf8'));
+    const [test, bases, entrainement, bilan] = scenario.plan.etapes;
+    const aFaire = (id, module, titre, duree) => ({ id, module, titre, duree, palier: 'transfert', objectif: titre, consigne: '', verrouillee: false, contenu: null });
+    scenario.format = 2;
+    scenario.cadrage = { ...scenario.cadrage, trame: 'differenciation', structure: 'chemins', chemins: 3 };
+    scenario.plan.conclusion = 'Tu sais maintenant comparer, simplifier et additionner des fractions.';
+    scenario.plan.etapes = [
+        test,
+        // Chaque chemin a SON introduction : l'élève ne sait rien des autres (D94).
+        { ...bases, titre: 'Revoir les bases pas à pas', chemin: { depuis: 0 },
+          introduction: 'Reprends les règles une à une, avec des exemples résolus, puis refais-les sur ton brouillon.' },
+        { ...entrainement, titre: 'S’entraîner sur les points difficiles', chemin: { depuis: 40 },
+          introduction: 'Entraîne-toi sur les calculs qui posent le plus de problèmes, puis vérifie tes résultats.' },
+        { id: 'e20', titre: 'Aller plus loin', objectif: 'Appliquer les fractions à des situations nouvelles', chemin: { depuis: 75 },
+          introduction: 'Applique ce que tu sais à des situations nouvelles, et explique ta méthode.',
+          cartes: [aFaire('c21', 'Essay', 'Expliquer sa méthode de comparaison', 12), aFaire('c22', 'SortParagraphs', 'Remettre un calcul dans l’ordre', 10)] },
+        bilan,
+    ];
+    const fichier = join(temp, 'scenario-chemins.json');
+    writeFileSync(fichier, JSON.stringify(scenario));
+    await page.setInputFiles('#pc-scenario-fichier', fichier);
+    await page.waitForSelector('.pc-aiguillage');
+    await page.waitForTimeout(800);
+}
+
 const ATELIER = '#pc-atelier';
 
 const CAPTURES = {
@@ -206,7 +241,8 @@ const CAPTURES = {
         await page.click('#parcours-button');
         await page.waitForSelector('.pc-choice');
         await page.waitForTimeout(600);
-        await capturer(page, 'parcours-cadrage', ['.prompt-generator', '.pc-commutateur', '.pc-navigation', '.pc-page > .pc-block:nth-of-type(-n+4)'], { webp: true });
+        // Jusqu'à la question des chemins (D91), sous l'ampleur.
+        await capturer(page, 'parcours-cadrage', ['.prompt-generator', '.pc-commutateur', '.pc-navigation', '.pc-page > .pc-block:nth-of-type(-n+4)', '.pc-page > .pc-block:has(.pc-choices--2)'], { webp: true });
         return page;
     },
     'parcours-trames': async () => {
@@ -217,13 +253,35 @@ const CAPTURES = {
         await page.locator('.pc-trames > *', { hasText: 'Réviser avant l' }).first().click();
         await page.waitForTimeout(600);
         // L'en-tête et les deux premières rangées : la bibliothèque entière ferait une image démesurée.
-        await capturer(page, 'parcours-trames', ['.pc-page > .pc-block:has(.pc-trames) > .pc-block__head', '.pc-trames > *:nth-child(-n+7)'], { webp: true, cadre: ATELIER });
+        // Trois modèles, puis « Voir les autres modèles » (D92).
+        await capturer(page, 'parcours-trames', ['.pc-page > .pc-block:has(.pc-trames) > .pc-block__head', '.pc-trames > *:nth-child(-n+7)', '.pc-trames__autres'], { webp: true, cadre: ATELIER });
         return page;
     },
     'parcours-plan': async () => {
         const page = await ouvrir();
         await ouvrirParcours(page);
         await capturer(page, 'parcours-plan', ['.pc-navigation', '.pc-overview', '.pc-relecture', '.pc-etape:nth-of-type(-n+2)'], { webp: true, cadre: ATELIER });
+        return page;
+    },
+    // ── Les chemins selon les résultats (D90, D99).
+    'parcours-chemins': async () => {
+        const page = await ouvrir({ hauteur: 1000 });
+        await ouvrirParcoursAChemins(page);
+        await capturer(page, 'parcours-chemins', ['.pc-etape:has(.pc-carte__aiguille)', '.pc-aiguillage'], { webp: true, cadre: ATELIER });
+        return page;
+    },
+    'parcours-eleve': async () => {
+        const page = await ouvrir({ hauteur: 1000 });
+        await ouvrirParcoursAChemins(page);
+        await page.click('.pc-aiguillage__voir');
+        await page.waitForSelector('dialog.pc-eleve[open]');
+        await page.locator('.pc-eleve .pc-segment__b', { hasText: 'Pendant son chemin' }).click();
+        await page.locator('#pc-eleve-score').fill('4');
+        await page.waitForTimeout(400);
+        const png = join(temp, 'parcours-eleve.png');
+        await page.locator('dialog.pc-eleve').screenshot({ path: png });
+        versWebp(png, join(DOSSIER, 'parcours-eleve.webp'));
+        console.log('  ✓ parcours-eleve.webp');
         return page;
     },
     'parcours-mosaique': async () => {

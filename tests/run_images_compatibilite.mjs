@@ -62,7 +62,7 @@ try {
         const z = await window.JSZip.loadAsync(refait.h5pBytes);
         ok('reprise et édition : texte retouché conservé avec image convertie', (await z.file('content/content.json').async('string')).includes('Retouche conservée') && !Object.keys(z.files).some(p => p.endsWith('.webp')));
         const cours = await assemblerParcours(draft.plan, { platformId: 'elea' });
-        ok('les trois activités entrent dans le MBZ du parcours', cours.activites.length === 3 && cours.blob.size > 0);
+        ok('les trois activités entrent dans le MBZ du parcours', cours.activites.length - cours.textes === 3 && cours.blob.size > 0);
         return preuves;
     });
     resultats.forEach(n => console.log(`✓ ${n}`)); console.log(`Images compatibles : ${resultats.length} PASS / 0 FAIL`);

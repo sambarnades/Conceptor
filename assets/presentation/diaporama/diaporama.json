@@ -1,20 +1,20 @@
 {
   "//": "Écrit par scripts/diaporama/generer-diaporama.mjs — ne pas modifier à la main, relancer le script.",
-  "version": "7.0.1",
+  "version": "7.1.0",
   "date": "2026-09-30",
   "dateLisible": "30 septembre 2026",
   "fichiers": {
     "pptx": {
       "chemin": "caramel-presentation.pptx",
-      "octets": 3558241
+      "octets": 4083290
     },
     "odp": {
       "chemin": "caramel-presentation.odp",
-      "octets": 2969872
+      "octets": 3480818
     },
     "pdf": {
       "chemin": "caramel-presentation.pdf",
-      "octets": 2786993
+      "octets": 3205126
     }
   },
   "diapositives": [
@@ -25,7 +25,7 @@
       "image": "diapositives/01.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "Caramel est une application web gratuite, sans compte, qui prépare avec l'IA des activités interactives et des parcours complets pour Éléa, Magistère et Moodle. Ce diaporama présente ce qu'elle fait, comment elle fonctionne et ce à quoi nous tenons : la main laissée à l'enseignant et la protection des données. Il correspond à Caramel 7.0.1 ; il est mis à jour à chaque version."
+      "notes": "Caramel est une application web gratuite, sans compte, qui prépare avec l'IA des activités interactives et des parcours complets pour Éléa, Magistère et Moodle. Ce diaporama présente ce qu'elle fait, comment elle fonctionne et ce à quoi nous tenons : la main laissée à l'enseignant et la protection des données. Il correspond à Caramel 7.1.0 ; il est mis à jour à chaque version."
     },
     {
       "numero": 2,
@@ -160,7 +160,7 @@
       "image": "diapositives/16.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en trois questions : la plateforme, le déroulé — en classe, à distance ou les deux — et l’ampleur, d’une séance à une séquence entière. On peut aussi partir d’une trame toute faite."
+      "notes": "Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en quatre questions : la plateforme, le déroulé — en classe, à distance ou les deux —, l’ampleur, d’une séance à une séquence entière, et le chemin des élèves : le même pour tous, ou des chemins selon les résultats d’un test. On peut aussi partir d’une trame toute faite : trois sont proposées, les autres sont à un clic."
     },
     {
       "numero": 17,
@@ -174,65 +174,74 @@
     {
       "numero": 18,
       "partie": "Créer un parcours",
-      "titre": "Fabrication et livraison : un seul fichier de cours",
+      "titre": "Des chemins selon les résultats",
       "image": "diapositives/18.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "La fabrication génère les activités une à une, sous vos yeux. Chacune peut être relue, essayée, modifiée ou générée à nouveau. À la livraison, un seul fichier .mbz contient tout le cours : sections, activités, consignes. Il se restaure dans un cours existant de la plateforme. S’y ajoutent la fiche de séquence et le détail des activités en Word, LibreOffice ou PDF, et un fichier de scénario qui permet de rouvrir le parcours dans Caramel pour le reprendre plus tard."
+      "notes": "Au cadrage, on peut choisir des chemins selon les résultats. Un test — un quiz ou un Test de la plateforme — oriente chaque élève, d’après sa note à la première tentative, vers l’un de deux à quatre chemins : reprendre les bases, renforcer, consolider, approfondir. Chaque élève ne voit que le sien, puis tous se retrouvent pour une étape commune. Dans le plan, les seuils se règlent en nombre de bonnes réponses, jamais en pourcentage, et « Voir comme un élève » montre la page du cours telle qu’un élève la verra, selon son score. Le cours pose lui-même les restrictions d’accès ; on l’importe dans un cours vide. Pour réorienter un élève, il suffit de modifier sa note au test."
     },
     {
       "numero": 19,
+      "partie": "Créer un parcours",
+      "titre": "Fabrication et livraison : un seul fichier de cours",
+      "image": "diapositives/19.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La fabrication génère les activités une à une, sous vos yeux. Chacune peut être relue, essayée, modifiée ou générée à nouveau. À la livraison, un seul fichier .mbz contient tout le cours : sections, activités, consignes. Il se restaure dans un cours de la plateforme — un cours vide pour un parcours à chemins. Chaque parcours se termine par une section « Fin du parcours », et chaque activité affiche sa durée estimée. S’y ajoutent la fiche de séquence et le détail des activités en Word, LibreOffice ou PDF, et un fichier de scénario qui permet de rouvrir le parcours dans Caramel pour le reprendre plus tard."
+    },
+    {
+      "numero": 20,
       "partie": "Partager et se faire aider",
       "titre": "La Sucrerie : partager et piocher",
-      "image": "diapositives/19.webp",
+      "image": "diapositives/20.webp",
       "largeur": 1601,
       "hauteur": 900,
       "notes": "La Sucrerie est la bibliothèque publique qui accompagne Caramel. On y consulte et on y essaie les activités des collègues, on les télécharge dans de nombreux formats, et on y dépose les siennes — directement depuis Caramel avec le bouton « Vers la Sucrerie ». Déposer est un choix volontaire qui vaut publication : l’activité est diffusée sous licence libre CC BY-SA, et l’adresse académique sert seulement d’identifiant. On certifie détenir les droits et qu’aucune donnée personnelle n’y figure."
     },
     {
-      "numero": 20,
+      "numero": 21,
       "partie": "Partager et se faire aider",
       "titre": "Vous n’êtes jamais seul",
-      "image": "diapositives/20.webp",
+      "image": "diapositives/21.webp",
       "largeur": 1601,
       "hauteur": 900,
       "notes": "Plusieurs appuis accompagnent les collègues après la formation. Caramelia, l’assistante intégrée — la bulle en bas à droite — répond aux questions sur l’outil et peut préparer une activité ou un parcours avec vous. Le tutoriel, en haut de l’écran, reprend chaque étape pas à pas. Le wiki est le guide complet. Et le salon Tchap réunit la communauté : questions, idées, entraide."
     },
     {
-      "numero": 21,
+      "numero": 22,
       "partie": "Partager et se faire aider",
       "titre": "Les bons réflexes",
-      "image": "diapositives/21.webp",
+      "image": "diapositives/22.webp",
       "largeur": 1601,
       "hauteur": 900,
       "notes": "Cinq réflexes à transmettre. Relire avant de diffuser : l’IA peut se tromper sur un fait, une réponse, une consigne ; l’enseignant reste l’auteur de ce qu’il donne aux élèves. Protéger les élèves : aucune donnée personnelle. Respecter les droits des documents et des images utilisés. Tester l’activité sur un espace de test avant la classe. Et signaler les problèmes : c’est ainsi que Caramel s’améliore."
     },
     {
-      "numero": 22,
+      "numero": 23,
       "partie": null,
       "titre": "Proposer un atelier de 45 minutes",
-      "image": "diapositives/22.webp",
+      "image": "diapositives/23.webp",
       "largeur": 1601,
       "hauteur": 900,
       "notes": "Une proposition de déroulé pour une séance d’établissement. Cinq minutes de vidéo pour poser le décor, dix minutes de démonstration en direct sur une activité de la discipline du groupe, vingt minutes d’atelier où chacun prépare une activité pour sa classe, la relit et la corrige, puis dix minutes de retour collectif. Pour un format plus ludique, testé au MoodleMoot 2026 : chaque groupe prépare au moins trois activités sur un même thème et les rassemble dans une collection sur la Sucrerie, que les autres découvrent ensuite."
     },
     {
-      "numero": 23,
+      "numero": 24,
       "partie": null,
       "titre": "Liens utiles",
-      "image": "diapositives/23.webp",
+      "image": "diapositives/24.webp",
       "largeur": 1601,
       "hauteur": 900,
       "notes": "Tous les liens utiles, cliquables dans le diaporama. Le premier QR code ouvre Caramel directement sur un téléphone ou une tablette ; le second mène à la page de présentation, où l’on retrouve ce diaporama, la vidéo et des activités à essayer. Le bac à sable permet aux curieux de tester les nouveautés avant tout le monde, et de les commenter sur Tchap."
     },
     {
-      "numero": 24,
+      "numero": 25,
       "partie": null,
       "titre": "À vous de jouer !",
-      "image": "diapositives/24.webp",
+      "image": "diapositives/25.webp",
       "largeur": 1601,
       "hauteur": 900,
-      "notes": "Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.0.1, dans sa version du 30 septembre 2026."
+      "notes": "Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.1.0, dans sa version du 30 septembre 2026."
     }
   ]
 }

@@ -75,12 +75,27 @@ export const CONFIG = {
         { id: 'longue',  nameKey: 'parcours_ampleur_longue',  descKey: 'parcours_ampleur_longue_desc',  activites: [9, 12] },
     ],
 
+    /**
+     * Tous les élèves suivent-ils le même chemin ? (D91) « Des chemins selon les
+     * résultats » ouvre, après un test, un chemin par groupe de résultats ; le
+     * nombre de chemins se choisit juste en dessous.
+     */
+    structures: [
+        { id: 'lineaire', nameKey: 'parcours_structure_lineaire', descKey: 'parcours_structure_lineaire_desc' },
+        { id: 'chemins',  nameKey: 'parcours_structure_chemins',  descKey: 'parcours_structure_chemins_desc' },
+    ],
+
+    /** Nombre de chemins proposé au cadrage. */
+    nombresDeChemins: [2, 3, 4],
+
     /** Valeurs par défaut d'un nouveau brouillon. */
     defaults: {
         platform: 'elea',
         format: 'distanciel',
         ampleur: 'moyenne',
         trame: 'auto',
+        structure: 'lineaire',
+        chemins: 3,
     },
 
     /**

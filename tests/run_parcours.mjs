@@ -3,7 +3,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const bancs = ['gardefous', 'types', 'calibrage', 'sources', 'fonds', 'atelier', 'import', 'course', 'fiche', 'relecture', 'apercu', 'vue', 'stabilite', 'documentation', 'caramelia', 'harmonie', 'natifs', 'reels'];
+const bancs = ['gardefous', 'chemins', 'types', 'calibrage', 'sources', 'fonds', 'atelier', 'import', 'course', 'fiche', 'relecture', 'apercu', 'vue', 'stabilite', 'documentation', 'caramelia', 'harmonie', 'natifs', 'aiguillage', 'reels'];
 const echecs = [];
 for (const banc of bancs) {
     console.log(`\n▶ Parcours : ${banc}`);

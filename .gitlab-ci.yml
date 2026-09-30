@@ -45,6 +45,9 @@ validate:
     - echo "→ Garde-fous et documentation du parcours"
     - node tests/run_parcours_gardefous.mjs
     - node tests/run_parcours_types.mjs
+    # Les chemins selon les résultats (D90-D101) : chaque score ouvre un chemin,
+    # le sien, pour tous les nombres de questions et tous les seuils réglables.
+    - node tests/run_parcours_chemins.mjs
     - node tests/run_parcours_documentation.mjs
     # Ces bancs Node (sans navigateur) ne tournaient qu'à la main. Un champ texte
     # rendu en liste par le modèle faisait planter la mise en forme de 24 modules,

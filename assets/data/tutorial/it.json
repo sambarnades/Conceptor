@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza e modello. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.",
+            "Scegli **Un percorso** sotto il modulo, poi piattaforma, modalità, ampiezza, **Uno stesso cammino per tutti** o **Cammini in base ai risultati**, e un modello: ne vengono proposti tre, e **Vedi gli altri modelli** mostra i successivi. **Comporre il piano** adatta il piano all’argomento con l’IA. **Partire dal modello** apre subito una struttura da completare senza chiamare l’IA. Le attività vengono generate solo dopo la tua approvazione del piano.",
             "In **Piano**, modifica titolo, obiettivo generale, concetti chiave, fasi e attività. Sposta le attività con le frecce o trascinando la miniatura. **Consegna e fase** permette di regolare le istruzioni di generazione. I suggerimenti pedagogici aiutano a rileggere senza imporre un modello. Il massimo è di **12 attività**.",
             "Nella scheda di un **Video interattivo**, incollate il link del video. La trascrizione viene recuperata durante la generazione; potete anche incollarla manualmente. Per **Immagine interattiva**, **Trova la zona** o **Trova le zone**, allegate un’immagine alla scheda: sarà analizzata prima della generazione. Potete aggiungere questi supporti anche durante la fase di generazione. Un’attività senza supporto attende mentre le altre proseguono. Lo scenario conserva le immagini e i link delle attività; i documenti del modulo iniziale restano separati. Per un **Link web**, incollate l’indirizzo della risorsa nella scheda: l’IA scrive la consegna di lettura senza aprire la pagina.",
             "Approva il piano per avviare la generazione. Puoi fermarla, riprendere le attività mancanti o rigenerarne una. Il lucchetto **Non generare questa attività** riserva il contenuto all’inserimento manuale: l’IA non lo compila. Una rigenerazione fallita conserva il contenuto precedente. Le attività assenti sono indicate prima dell’esportazione.",
@@ -685,7 +685,7 @@
         },
         {
           "type": "warn",
-          "text": "La mappa di avanzamento è specifica di Éléa. La mappa e l’accesso progressivo sono facoltativi e richiedono ancora verifiche nell’uso reale sulla piattaforma. Il modello di differenziazione non crea ramificazioni automatiche in base al voto. La collaborazione avviene sulla piattaforma."
+          "text": "La mappa di avanzamento è specifica di Éléa. La mappa, l’accesso progressivo e i cammini in base ai risultati richiedono ancora verifiche nell’uso reale sulla piattaforma. La collaborazione avviene sulla piattaforma."
         },
         {
           "type": "h",
@@ -723,6 +723,37 @@
           "type": "shot",
           "src": "assets/images/wiki/parcours-miroir.webp",
           "alt": "Cosa fa lavorare questo percorso: le sette famiglie e quelle assenti."
+        },
+        {
+          "type": "h",
+          "text": "Cammini in base ai risultati"
+        },
+        {
+          "type": "p",
+          "text": "Nell’impostazione, **Cammini in base ai risultati** fa svolgere un test ai tuoi allievi: in base al voto al primo tentativo, ognuno segue uno dei cammini previsti, da 2 a 4 — **Riprendere le basi**, **Rinforzare**, **Consolidare**, **Approfondire** — e poi tutti si ritrovano in una fase comune. Ogni allievo vede solo il proprio cammino. Due modelli sono pensati per questo: **Differenziare fin dall’inizio** e **Recuperare strada facendo**."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-chemins.webp",
+          "alt": "I cammini nel piano: la barra dei punteggi, l’intervallo di ogni cammino e le sue attività."
+        },
+        {
+          "type": "list",
+          "items": [
+            "In **Piano**, la barra dei punteggi mostra quale cammino si apre per ogni numero di risposte corrette; i pulsanti **−** e **+** anticipano o posticipano di una risposta corretta l’inizio di un cammino. **Aggiungi un cammino**, **Rimuovi un cammino** e **Un solo cammino per tutti** cambiano la diramazione.",
+            "Il test che orienta è un **Quiz a scelta multipla**, un **Quiz Vero/Falso** o un **Test**, posto alla fine della fase che precede i cammini. Ogni domanda vale un punto e il test non propone di riprovare.",
+            "**Visualizza come alunno** mostra la pagina del corso come la vedrà l’allievo — prima del test, durante il suo cammino, alla fine — per il punteggio che scegli.",
+            "Per riorientare un allievo, modifica il suo voto al test nel registro del valutatore della piattaforma."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-eleve.webp",
+          "alt": "Visualizza come alunno: la pagina del corso durante il suo cammino, per il punteggio scelto."
+        },
+        {
+          "type": "tip",
+          "text": "Importa un percorso con cammini in un corso **vuoto**: Moodle sistema le sezioni del file in quelle del corso, e le tue sezioni esistenti riceverebbero le restrizioni dei cammini. Ora tutti i percorsi terminano con una sezione **Fine del percorso**, e la durata stimata compare sotto ogni attività."
         }
       ]
     },

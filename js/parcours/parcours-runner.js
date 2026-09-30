@@ -39,6 +39,7 @@ import { sourceManquante, preparerSource, appliquerSource, purgerMedias } from '
 import { construirePromptRemplissage, nbElementsCarte } from './scenario-prompt.js';
 import { modeleParcours } from './model-selector.js';
 import { metaActiviteParcours } from './stats-parcours.js';
+import { reglagesDeCarte } from './aiguillage.js';
 
 /** États possibles d'une carte pendant la fabrication. */
 export const ETATS = {
@@ -235,7 +236,8 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
             const brut = await appliquerSource(await extraireJson(reponse), source, carte.module);
             const contenu = await reparer(brut, carte.module);
             if (arretDemande) { etat.statut = carte.contenu ? ETATS.faite : ETATS.annulee; return; }
-            carte.contenu = contenu;
+            // Les réglages de son chemin, ou du test qui aiguille (D90, D93).
+            carte.contenu = reglagesDeCarte(plan, carte, contenu);
             carte.sourceUtilisee = carte.source ? JSON.stringify(carte.source) : null;
             purgerMedias(carte);
             // Le titre du plan fait foi : c'est celui que l'enseignant a relu,

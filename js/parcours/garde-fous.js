@@ -24,8 +24,18 @@
  *
  * Chaque contrôle rend un `Constat` : jamais une exception, jamais un blocage.
  *
+ * Un plan à chemins (D90) reçoit trois repères de plus — un test qui oriente,
+ * assez de questions, des chemins parallèles —, et les deux contrôles qui lisent
+ * la SUITE des activités (alternance, durée) la lisent chemin par chemin.
+ *
+ * Seul import : `aiguillage.js`, lui aussi pur — le banc Node tourne sans DOM.
+ *
  * @module parcours/garde-fous
  */
+
+import {
+    aiguillagesDuPlan, aDesChemins, suitesPossibles, dureeParEleve, nombreQuestions, QUESTIONS_CONSEILLEES,
+} from './aiguillage.js';
 
 /**
  * Modules qui rendent un VERDICT à l'élève, tout de suite et sans l'enseignant.
@@ -138,23 +148,25 @@ function auMoinsUneVerification(plan) {
  *
  * Trois QCM à la suite, c'est le moment où la classe décroche. On regarde la
  * suite des activités À PLAT, par-dessus les étapes : un élève qui enchaîne ne
- * voit pas les frontières qu'on a tracées.
+ * voit pas les frontières qu'on a tracées. Avec des chemins, on regarde la suite
+ * de CHAQUE élève — la sienne, chemin compris, jamais celui des autres (D34).
  */
 function pasTroisIdentiques(plan) {
-    const cartes = cartesAPlat(plan);
-    const coupables = [];
-    let debut = 0;
-    for (let i = 1; i <= cartes.length; i++) {
-        if (i < cartes.length && cartes[i].module === cartes[debut].module) continue;
-        if (i - debut >= SERIE_MAX) coupables.push(...cartes.slice(debut, i));
-        debut = i;
+    const coupables = new Map();
+    for (const cartes of suitesPossibles(plan)) {
+        let debut = 0;
+        for (let i = 1; i <= cartes.length; i++) {
+            if (i < cartes.length && cartes[i].module === cartes[debut].module) continue;
+            if (i - debut >= SERIE_MAX) for (const c of cartes.slice(debut, i)) coupables.set(c.id, c);
+            debut = i;
+        }
     }
-    if (coupables.length) {
+    if (coupables.size) {
         return {
             cle: 'pas_trois_identiques', ok: false,
             messageKey: 'parcours_gf_serie_ko',
-            jetons: { n: String(coupables.length) },
-            cartes: coupables.map(c => c.id),
+            jetons: { n: String(coupables.size) },
+            cartes: [...coupables.keys()],
         };
     }
     return { cle: 'pas_trois_identiques', ok: true, messageKey: 'parcours_gf_serie_ok' };
@@ -193,7 +205,8 @@ function objectifParEtape(plan) {
 function dureeTenable(plan) {
     const cartes = cartesAPlat(plan);
     const trop = cartes.filter(c => Number(c.duree) > MINUTES_MAX_ACTIVITE);
-    const total = cartes.reduce((s, c) => s + (Number(c.duree) || 0), 0);
+    // Ce que fait UN élève : avec des chemins, le plus long d'entre eux.
+    const total = dureeParEleve(plan).max;
 
     if (trop.length) {
         return {
@@ -253,6 +266,68 @@ function entrainementAvecRetour(plan) {
 }
 
 /* ------------------------------------------------------------------ *
+ *  Les repères des chemins (D90)
+ * ------------------------------------------------------------------ */
+
+/**
+ * 7. Un test oriente-t-il les élèves ? Sans lui, aucun chemin ne s'ouvre. (La
+ * validation du plan bloque aussi : ici, on dit où et quoi faire.)
+ */
+function testQuiOriente(plan) {
+    const sans = aiguillagesDuPlan(plan).filter(g => !g.test);
+    if (sans.length) {
+        return {
+            cle: 'chemins_test', ok: false, messageKey: 'parcours_gf_chemins_test_ko',
+            etapes: sans.map(g => (g.etapeTest || g.chemins[0].etape).id),
+        };
+    }
+    return { cle: 'chemins_test', ok: true, messageKey: 'parcours_gf_chemins_test_ok' };
+}
+
+/**
+ * 8. Assez de questions pour aiguiller ? Trier en trois sur cinq questions,
+ * c'est laisser une seule réponse décider du chemin.
+ */
+function assezDeQuestions(plan) {
+    for (const g of aiguillagesDuPlan(plan)) {
+        if (!g.test) continue;
+        const k = g.chemins.length;
+        const n = nombreQuestions(g.test, k);
+        const conseil = QUESTIONS_CONSEILLEES[k];
+        if (n < conseil) {
+            return {
+                cle: 'chemins_questions', ok: false, messageKey: 'parcours_gf_chemins_questions_ko',
+                jetons: { n: String(n), k: String(k), c: String(conseil) }, cartes: [g.test.id],
+            };
+        }
+    }
+    return { cle: 'chemins_questions', ok: true, messageKey: 'parcours_gf_chemins_questions_ok' };
+}
+
+/**
+ * 9. Les chemins sont-ils parallèles ? Même nombre d'activités, durées proches :
+ * chaque élève a le même temps pour le même objectif (Gauthier, sept. 2026).
+ */
+function cheminsParalleles(plan) {
+    for (const g of aiguillagesDuPlan(plan)) {
+        const durees = g.chemins.map(c => (c.etape.cartes || []).reduce((s, x) => s + (Number(x.duree) || 0), 0));
+        const tailles = g.chemins.map(c => (c.etape.cartes || []).length);
+        const min = Math.min(...durees);
+        const max = Math.max(...durees);
+        if ((max && min < 0.75 * max) || Math.max(...tailles) - Math.min(...tailles) > 1) {
+            return {
+                cle: 'chemins_paralleles', ok: false, messageKey: 'parcours_gf_chemins_paralleles_ko',
+                // Des MINUTES, écrites par l'écran avec `duree.js` (« 1 h 05 », jamais
+                // un « min » latin figé en arabe ou en chinois) — cf. `dureeTenable`.
+                jetons: { min: `${min} min`, max: `${max} min` }, durees: { min, max },
+                etapes: g.chemins.map(c => c.etape.id),
+            };
+        }
+    }
+    return { cle: 'chemins_paralleles', ok: true, messageKey: 'parcours_gf_chemins_paralleles_ok' };
+}
+
+/* ------------------------------------------------------------------ *
  *  L'entrée publique
  * ------------------------------------------------------------------ */
 
@@ -266,6 +341,9 @@ const CONTROLES = [
     dureeTenable,
 ];
 
+/** Les repères propres aux chemins, ajoutés aux six quand le plan en a. */
+const CONTROLES_CHEMINS = [testQuiOriente, assezDeQuestions, cheminsParalleles];
+
 /**
  * Relit un plan et rend les six constats.
  *
@@ -273,11 +351,12 @@ const CONTROLES = [
  * ce qui garantit qu'aucun contrôle ne peut faire tomber l'écran du plan.
  *
  * @param {Object} plan - Le plan normalisé.
- * @returns {Constat[]} Toujours six constats, dans le même ordre.
+ * @returns {Constat[]} Les six constats, dans le même ordre ; neuf avec des chemins.
  */
 export function relirePlan(plan) {
     const p = plan && typeof plan === 'object' ? plan : { etapes: [] };
-    return CONTROLES.map((controle) => {
+    const controles = aDesChemins(p) ? [...CONTROLES, ...CONTROLES_CHEMINS] : CONTROLES;
+    return controles.map((controle) => {
         try {
             return controle(p);
         } catch {

@@ -27,6 +27,10 @@ import { calibrer } from './calibrage.js';
 import { modulesDisponibles, nomModule, moduleDeTrame } from './activity-router.js';
 import { MODULES_PARCOURS, estModuleParcours } from './modules-parcours.js';
 import { retoursImpersonnels } from './retours-impersonnels.js';
+import {
+    historiqueDeLaCarte, roleDuChemin, aiguillageDuTest, questionsVisees,
+    MODULES_AIGUILLEURS, MODULE_AIGUILLEUR_DEFAUT,
+} from './aiguillage.js';
 
 /** Longueur de corpus au-delà de laquelle on tronque avant envoi. */
 const CORPUS_MAX = 12000;
@@ -135,6 +139,66 @@ function libelle(liste, id) {
 }
 
 /**
+ * Ce que change chaque chemin : l'AIDE, jamais l'objectif (D90, table de
+ * gradation). Consignes internes, décrites en GESTES : le modèle recopie le
+ * vocabulaire de ses instructions dans les textes lus par l'élève (D80, D81) —
+ * d'où l'absence de « étayage », « niveau » ou « remédiation ».
+ */
+const CONSIGNES_ROLES = {
+    reprendre: 'pour les élèves qui ont eu le moins de réussite au test : reprendre les bases indispensables, en phrases courtes, avec un exemple résolu pas à pas avant de faire faire ; faire reconnaître ou choisir plutôt qu’écrire ; des indices, et une correction immédiate qui explique chaque erreur',
+    renforcer: 'pour les élèves qui ont eu des difficultés au test : commencer par un exemple résolu ; des questions courtes et progressives ; faire choisir, relier ou glisser des propositions plutôt qu’écrire de mémoire ; des distracteurs nettement différents ; une correction immédiate qui explique l’erreur',
+    consolider: 'pour les élèves qui ont en partie réussi le test : des exercices d’application sans modèle à recopier ; faire retrouver et écrire les réponses ; des distracteurs plausibles ; une correction immédiate',
+    approfondir: 'pour les élèves qui ont bien réussi le test : pas d’exemple résolu ; des cas plus complexes ou nouveaux ; des distracteurs proches qui reprennent les erreurs fréquentes ; faire écrire, justifier, appliquer à une situation nouvelle ; la correction vient à la fin',
+};
+
+/** Règles communes à tous les chemins, au plan comme à chaque activité. */
+const REGLES_CHEMINS = 'Tous les chemins visent le même objectif sur les mêmes notions : on ne réduit pas l’ambition, on change l’aide. ' +
+    'Aucun texte lu par l’élève ne dit à quel niveau ou dans quel groupe il se trouve, ni qu’il existe d’autres chemins : ' +
+    'un titre dit la tâche (« Pas à pas… », « Défis… »), jamais le niveau (« débutant », « faible », « niveau 1 », « avancé »).';
+
+/** Le cadre du test qui aiguille (plan et activité). */
+const CONSIGNE_TEST = 'Ce test oriente chaque élève vers la suite du parcours d’après sa note : il couvre TOUTES les notions du parcours, une notion par question ; ' +
+    'la difficulté varie (environ un tiers de questions simples, un tiers intermédiaires, un tiers exigeantes) ; aucune question ne donne la réponse d’une autre ; ' +
+    'les retours expliquent la bonne réponse. Il n’annonce ni note à atteindre, ni groupes.';
+
+/** « 5 » ou « 5 à 8 ». */
+function fourchette([de, a]) {
+    return de === a ? String(de) : `${de} à ${a}`;
+}
+
+/** Ce que fait UN élève dans l'exemple : les étapes communes et le plus long chemin. */
+function parEleveExemple(calibrage) {
+    const a = calibrage.aiguillage;
+    const debut = a.debut ?? 1;
+    const chemins = calibrage.exemple.slice(debut, debut + a.nombre);
+    return calibrage.exemple.reduce((s, n, i) => s + (i >= debut && i < debut + a.nombre ? 0 : n), 0) + Math.max(...chemins);
+}
+
+/**
+ * La section du prompt de plan propre aux CHEMINS.
+ * @param {Object} calibrage
+ * @param {string} platform
+ * @returns {string[]}
+ */
+function consignesChemins(calibrage, platform) {
+    const a = calibrage.aiguillage;
+    const lignes = ['\n## CHEMINS SELON LE RÉSULTAT DU TEST'];
+    if (a.debut !== null && a.debut !== undefined) {
+        lignes.push(`Les étapes ${a.debut + 1} à ${a.debut + a.nombre} sont des CHEMINS : chaque élève n’en suit qu’UN, ouvert par sa note au test qui termine l’étape ${a.debut} ; les autres lui restent invisibles. L’étape suivante, commune, réunit tout le monde.`);
+    } else {
+        const tests = [...MODULES_AIGUILLEURS].filter(m => modulesDisponibles(platform).some(x => x.cle === m));
+        lignes.push(`Place UN aiguillage : une première étape qui se termine par le test qui oriente les élèves (module parmi ${tests.join(', ')}), puis ${a.nombre} étapes-CHEMINS consécutives (chaque élève n’en suit qu’une, ouverte par sa note au test), puis au moins une étape commune qui réunit tout le monde.`);
+    }
+    lignes.push(`Chaque étape-chemin porte le champ "chemin", dans cet ordre : ${a.roles.map(r => `"${r}"`).join(', ')}. Ne mets ce champ sur aucune autre étape.`);
+    for (const role of a.roles) lignes.push(`- "${role}" : ${CONSIGNES_ROLES[role]}.`);
+    lignes.push(`- ${REGLES_CHEMINS}`);
+    lignes.push('- Les chemins sont parallèles : même nombre d’activités, durées proches, les mêmes notions dans le même ordre ; seule change la façon de les travailler.');
+    lignes.push(`- Le test : ${CONSIGNE_TEST}`);
+    lignes.push('- L’`introduction` d’un chemin dit à l’élève ce qu’il va faire et comment réussir, sans parler de sa note ni de son niveau.');
+    return lignes;
+}
+
+/**
  * Construit le prompt de plan.
  *
  * @param {Object} draft - Le brouillon de `state.js` (contexte déjà lu).
@@ -198,6 +262,13 @@ export function construirePromptPlan(draft) {
             calibrage.trame.modules.map((e, i) => `étape ${i + 1} → ${e.map(m => moduleDeTrame(m, draft.platform)).join(', ')}`).join(' ; ') +
             '. Suis-les sauf si le sujet appelle clairement autre chose.'
         );
+    } else if (calibrage.aiguillage) {
+        // Avec des chemins, l'ampleur mesure ce que fait UN élève ; le plafond
+        // borne ce qui se fabrique, tous chemins compris.
+        lignes.push(
+            `\nAucune trame imposée : choisis le déroulé le mieux adapté. Chaque élève fait ${fourchette(calibrage.parEleve)} activités : les étapes communes et UN chemin. ` +
+            `À fabriquer en tout, tous chemins compris : ${fourchette([calibrage.min, calibrage.max])} activités, réparties en ${calibrage.etapesMin} à ${calibrage.etapesMax} étapes non vides.`
+        );
     } else {
         lignes.push(
             `\nAucune trame imposée : choisis le déroulé le mieux adapté, entre ` +
@@ -205,7 +276,12 @@ export function construirePromptPlan(draft) {
         );
     }
 
-    lignes.push(`\nBUDGET : ${calibrage.exemple.reduce((a, b) => a + b, 0)} activités prévues, dans la limite de ${calibrage.min} à ${calibrage.max} pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.`);
+    if (calibrage.aiguillage) lignes.push(...consignesChemins(calibrage, draft.platform));
+
+    const prevues = calibrage.exemple.reduce((a, b) => a + b, 0);
+    lignes.push(calibrage.aiguillage
+        ? `\nBUDGET : ${prevues} activités à fabriquer, tous chemins compris${calibrage.min === calibrage.max ? '' : ` (de ${calibrage.min} à ${calibrage.max})`} ; chaque élève en fait ${parEleveExemple(calibrage)} : les étapes communes et UN chemin. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.`
+        : `\nBUDGET : ${prevues} activités prévues, dans la limite de ${calibrage.min} à ${calibrage.max} pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.`);
     if (draft.ampleur === 'courte') lignes.push('Sauf durée explicite dans la demande ou la trame, viser une séance de 30 à 55 minutes de travail. Alléger les tâches plutôt que multiplier les exercices.');
     lignes.push('\n## MODULES AUTORISÉS');
     lignes.push(
@@ -251,6 +327,9 @@ export function construirePromptPlan(draft) {
         '   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |',
         '   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases',
         '   disant ce que l\'élève aura à faire).',
+        '6. `conclusion` : le texte que l\'élève lit à la toute fin, une fois tout terminé (2 ou 3 phrases) :',
+        '   ce qu\'il sait faire désormais, et une suite possible (une lecture, une prochaine séance). Sans « bravo » en tête :',
+        '   la plateforme l\'affiche déjà.',
     ].join('\n'));
 
     lignes.push('\n## RÈGLES');
@@ -282,7 +361,9 @@ export function construirePromptPlan(draft) {
         // (« lesquels de ces outils utilisez-vous ? ») — une habitude n'a pas de
         // bonne réponse, le stagiaire était noté faux sur sa propre pratique.
         '- Un test, un quiz ou tout exercice corrigé porte sur des connaissances qui ont une bonne réponse. Pour faire le point sur des pratiques, des habitudes, des besoins ou des opinions, choisis un questionnaire, une enquête ou un sondage, qui ne notent pas.',
-        `- CONTRÔLE FINAL : ${calibrage.min} à ${calibrage.max} activités pour TOUT le parcours${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''}. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`,
+        calibrage.aiguillage
+            ? `- CONTRÔLE FINAL : ${fourchette([calibrage.min, calibrage.max])} activités à fabriquer, tous chemins compris${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''} ; ${fourchette(calibrage.parEleve)} par élève. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`
+            : `- CONTRÔLE FINAL : ${calibrage.min} à ${calibrage.max} activités pour TOUT le parcours${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''}. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`,
     ].join('\n'));
 
     lignes.push('\n## FORMAT DE SORTIE');
@@ -290,19 +371,28 @@ export function construirePromptPlan(draft) {
         'Réponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, ' +
         'sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :'
     );
+    // Où tombent les chemins dans l'exemple : ceux de la trame, sinon juste après
+    // la première étape (la structure libre à chemins).
+    const debutChemins = calibrage.aiguillage ? (calibrage.aiguillage.debut ?? 1) : -1;
     lignes.push(JSON.stringify({
         titre: '…',
         objectifGeneral: '…',
         introduction: '…',
+        conclusion: '…',
         notionsPivots: Array.from({ length: calibrage.notions[0] }, () => '…'),
         etapes: calibrage.exemple.map((n, i) => ({
             titre: '…',
             objectif: '…',
             introduction: '…',
-            cartes: Array.from({ length: n }, () => ({
+            ...(calibrage.aiguillage && i >= debutChemins && i < debutChemins + calibrage.aiguillage.nombre
+                ? { chemin: calibrage.aiguillage.roles[i - debutChemins] } : {}),
+            cartes: Array.from({ length: n }, (_, j) => ({
                 titre: '…',
                 objectif: '…',
-                module: modules[0] ? modules[0].cle : 'Page',
+                // L'étape qui précède les chemins se termine par le test qui aiguille.
+                module: calibrage.aiguillage && i === debutChemins - 1 && j === n - 1
+                    && modules.some(m => m.cle === MODULE_AIGUILLEUR_DEFAUT)
+                    ? MODULE_AIGUILLEUR_DEFAUT : (modules[0] ? modules[0].cle : 'Page'),
                 palier: calibrage.trame?.paliers?.[i] || 'entrainement',
                 duree: calibrage.trame?.id === 'rituel' ? [2, 4, 4][i] : 10,
                 consigne: '…',
@@ -377,23 +467,17 @@ export function construireSocleCommun(plan, carte, ctx = {}) {
     }
 
     // L'historique s'arrête à la carte courante : une activité ne peut pas
-    // « réinvestir » ce qui viendra après elle.
-    const avant = [];
-    let atteinte = false;
-    for (const etape of (plan.etapes || [])) {
-        for (const c of (etape.cartes || [])) {
-            if (c === carte || c.id === carte.id) { atteinte = true; break; }
-            avant.push({ etape: etape.titre || '', c });
-        }
-        if (atteinte) break;
-    }
+    // « réinvestir » ce qui viendra après elle. Et il suit le CHEMIN de l'élève :
+    // les autres chemins d'un aiguillage, il ne les a jamais vus (D90).
+    const avant = historiqueDeLaCarte(plan, carte);
 
     if (avant.length) {
         lignes.push('');
         lignes.push('DÉJÀ TRAVAILLÉ par l\'élève dans les activités précédentes :');
-        lignes.push(avant.map(({ etape, c }) =>
-            `- ${etape ? `[${etape}] ` : ''}${c.titre || (c.contenu && c.contenu.title) || nomModule(c.module)}` +
-            `${c.objectif ? ` — ${c.objectif}` : ''}`).join('\n'));
+        lignes.push(avant.map(({ etape, carte: c, chemins }) => (chemins
+            ? `- Un entraînement adapté à son résultat au test, parmi : ${chemins.filter(Boolean).map(x => `« ${x} »`).join(' / ') || '(plusieurs chemins)'} — les mêmes notions, avec plus ou moins d'aide.`
+            : `- ${etape ? `[${etape}] ` : ''}${c.titre || (c.contenu && c.contenu.title) || nomModule(c.module)}` +
+            `${c.objectif ? ` — ${c.objectif}` : ''}`)).join('\n'));
         lignes.push('');
         lignes.push('RÉINVESTIS ces acquis, ne les RÉINTRODUIS pas : ne redonne pas les mêmes ' +
             'définitions, ne repose pas les mêmes questions, ne reprends pas les mêmes exemples. ' +
@@ -402,6 +486,18 @@ export function construireSocleCommun(plan, carte, ctx = {}) {
         lignes.push('');
         lignes.push('C\'est la PREMIÈRE activité du parcours : elle pose les bases, ' +
             'sans supposer aucun acquis préalable sur le sujet.');
+    }
+
+    // Le chemin de la carte, ou le test qui aiguille : ce qui change la manière,
+    // jamais l'objectif (D90).
+    const etapeDeLaCarte = (plan.etapes || []).find(e => (e.cartes || []).some(c => c === carte || c.id === carte.id));
+    const role = etapeDeLaCarte ? roleDuChemin(plan, etapeDeLaCarte) : null;
+    if (role) {
+        lignes.push('');
+        lignes.push(`CHEMIN : cette activité fait partie d'un chemin ${CONSIGNES_ROLES[role]}. ${REGLES_CHEMINS}`);
+    } else if (aiguillageDuTest(plan, carte)) {
+        lignes.push('');
+        lignes.push(`TEST QUI ORIENTE : ${CONSIGNE_TEST}`);
     }
 
     lignes.push('');
@@ -437,7 +533,10 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
 
     const plan = draft.plan || {};
     const ctx = draft.contexte || {};
-    const nbElements = nbElementsCarte(carte);
+    // Le test qui aiguille compte assez de questions pour trier en autant de
+    // chemins (D93) ; les autres cartes suivent leur durée (D19).
+    const groupe = aiguillageDuTest(plan, carte);
+    const nbElements = groupe ? questionsVisees(carte, groupe.chemins.length) : nbElementsCarte(carte);
 
     // `quoi` porte la commande PRÉCISE de cette carte : c'est ce que le gabarit
     // commun insère derrière « Ton objectif pédagogique ».

@@ -1040,6 +1040,19 @@ try {
     // Les descriptions longues restent comparables en deux lignes, mais leur
     // contenu n'est jamais perdu : un vrai bouton les déplie et les replie au
     // clavier sans sélectionner la trame par mégarde.
+    // Trois modèles seulement à l'écran (D91) : aucun descriptif français n'y
+    // déborde. On en allonge un, comme le ferait une langue plus longue, pour
+    // éprouver le repli ; il est rendu à la fin de ces contrôles.
+    await page.evaluate(async () => {
+        const { translations } = await import('/js/core/translation.js');
+        const { tramesCompatibles } = await import('/js/parcours/templates.js');
+        const { brouillon } = await import('/js/parcours/state.js');
+        const d = brouillon();
+        const premiere = tramesCompatibles(d.format, d.ampleur).find(tr => tr.id !== 'libre');
+        window.__descriptifOrigine = [premiere.descKey, translations[premiere.descKey]];
+        translations[premiere.descKey] = Array(3).fill(translations[premiere.descKey]).join(' ');
+    });
+    await formats.locator('.pc-choice').nth(1).click();
     const descriptifLong = page.locator('.pc-trame:not(.pc-trame--auto) .pc-trame__desc-toggle:not([hidden])').first();
     const descriptifCompact = await descriptifLong.evaluate((bascule) => {
         const carte = bascule.closest('.pc-trame');
@@ -1095,6 +1108,12 @@ try {
             return carte?.querySelector('.pc-trame__select')?.getAttribute('aria-pressed') === 'true'
                 && carte?.querySelector('.pc-trame__desc-toggle')?.getAttribute('aria-expanded') === 'false';
         }, idDescriptif));
+    await page.evaluate(async () => {
+        const { translations } = await import('/js/core/translation.js');
+        const [cle, texte] = window.__descriptifOrigine;
+        translations[cle] = texte;
+    });
+    await formats.locator('.pc-choice').nth(1).click();
 
     // « Structure libre » puis « Partir du modèle » : un squelette VIDE, dimensionné
     // par l'ampleur, où l'on compose soi-même — et non un bouton muet (retour
@@ -1112,13 +1131,18 @@ try {
     ok('« Structure libre » donne des étapes vides, deux en courte, quatre en longue',
         libre.courte && libre.courte.length === 2 && libre.courte.every(n => n === 0)
         && libre.longue && libre.longue.length === 4 && libre.origine === 'libre', JSON.stringify(libre));
-    await page.evaluate(async () => {
-        const { t } = await import('/js/core/translation.js');
-        const nom = t('parcours_t_libre_name');
-        const libre = [...document.querySelectorAll('.pc-trame')]
-            .find(c => (c.querySelector('.pc-trame__name') || {}).textContent === nom);
-        if (libre) libre.click();
-    });
+    // « Structure libre » vit parmi les autres modèles, repliés sous les trois
+    // premiers (D91) : on les déplie, comme l'enseignant.
+    const basculeAutres = page.locator('.pc-trames__autres');
+    ok('« Voir les autres modèles » est un bouton replié qui dit combien il en cache',
+        await basculeAutres.getAttribute('aria-expanded') === 'false'
+        && /\(\d+\)/.test(await basculeAutres.textContent()), await basculeAutres.textContent());
+    await basculeAutres.click();
+    ok('déplié, il range les autres modèles par famille, « Structure libre » compris',
+        await basculeAutres.getAttribute('aria-expanded') === 'true'
+        && await page.locator('.pc-famille').count() >= 2
+        && await page.locator('.pc-trame-ligne[data-trame="libre"]').isVisible());
+    await page.locator('.pc-trame-ligne[data-trame="libre"]').click();
     await page.waitForTimeout(120);
     const modele = await page.evaluate(() => ({ present: !!document.querySelector('#pc-modele'), inactif: document.querySelector('#pc-modele').disabled }));
     ok('avec « Structure libre » choisie, « Partir du modèle » est actif', modele.present && !modele.inactif, JSON.stringify(modele));

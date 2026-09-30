@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión y plantilla. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.",
+            "Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión, **Un mismo camino para todos** o **Caminos según los resultados**, y una plantilla: se proponen tres y **Ver las demás plantillas** muestra las siguientes. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.",
             "En **Plan**, edite el título, objetivo general, conceptos clave, etapas y actividades. Mueva actividades con las flechas o arrastrando su miniatura. **Instrucciones y etapa** permite ajustar las instrucciones de generación. Las orientaciones pedagógicas ayudan a revisar sin imponer un modelo. El máximo es de **12 actividades**.",
             "En la tarjeta de un **Vídeo interactivo**, pegue el enlace del vídeo. La transcripción se obtiene durante la generación; también puede pegarla manualmente. Para **Imagen interactiva**, **Encontrar la zona** o **Encontrar las zonas**, adjunte una imagen en la tarjeta: se analizará antes de generar el contenido. También puede añadir estos recursos durante la generación. Una actividad sin recurso espera mientras las demás avanzan. El escenario conserva las imágenes y los enlaces de las actividades; los documentos del formulario inicial quedan aparte. Para un **Enlace web**, pegue la dirección del recurso en la tarjeta: la IA redacta la consigna de lectura sin abrir la página.",
             "Valide el plan para iniciar la generación. Puede detenerla, retomar actividades pendientes o regenerar una actividad. El candado **No generar esta actividad** reserva el contenido para completarlo manualmente: la IA no lo genera. Si falla una regeneración, se conserva el contenido anterior. Se indican las actividades ausentes antes de exportar.",
@@ -685,7 +685,7 @@
         },
         {
           "type": "warn",
-          "text": "El mapa de progreso es exclusivo de Éléa. El mapa y el acceso progresivo son opcionales y aún requieren comprobaciones en uso real. La plantilla de diferenciación no crea ramas automáticas según la nota. La colaboración ocurre en la plataforma."
+          "text": "El mapa de progreso es exclusivo de Éléa. El mapa, el acceso progresivo y los caminos según los resultados aún requieren comprobaciones en uso real. La colaboración ocurre en la plataforma."
         },
         {
           "type": "h",
@@ -723,6 +723,37 @@
           "type": "shot",
           "src": "assets/images/wiki/parcours-miroir.webp",
           "alt": "Lo que trabaja este itinerario: las siete familias y las que faltan."
+        },
+        {
+          "type": "h",
+          "text": "Caminos según los resultados"
+        },
+        {
+          "type": "p",
+          "text": "En la configuración, **Caminos según los resultados** hace que sus alumnos pasen una prueba: según su calificación en el primer intento, cada uno sigue uno de los 2 a 4 caminos —**Repasar las bases**, **Reforzar**, **Consolidar**, **Profundizar**— y después todos se reúnen en una etapa común. Cada alumno solo ve su camino. Hay dos plantillas pensadas para ello: **Diferenciar desde el principio** y **Remediar sobre la marcha**."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-chemins.webp",
+          "alt": "Los caminos en el plan: la barra de puntuaciones, el intervalo de cada camino y sus actividades."
+        },
+        {
+          "type": "list",
+          "items": [
+            "En **Plan**, la barra de puntuaciones muestra qué camino se abre con cada número de respuestas correctas; los botones **−** y **+** adelantan o retrasan en una respuesta correcta el inicio de un camino. **Añadir un camino**, **Quitar un camino** y **Un solo camino para todos** modifican la bifurcación.",
+            "La prueba que orienta es un **Quiz de opción múltiple**, un **Quiz Verdadero/Falso** o un **Cuestionario**, situado al final de la etapa que precede a los caminos. Cada pregunta vale un punto y la prueba no permite volver a intentarlo.",
+            "**Ver como alumno** muestra la página del curso tal como la verá el alumno —antes de la prueba, durante su camino, al final— para la puntuación que usted elija.",
+            "Para reorientar a un alumno, modifique su calificación de la prueba en el libro de calificaciones de la plataforma."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-eleve.webp",
+          "alt": "Ver como alumno: la página del curso durante su camino, para la puntuación elegida."
+        },
+        {
+          "type": "tip",
+          "text": "Importe un itinerario con caminos en un curso **vacío**: Moodle coloca las secciones del archivo en las del curso, y sus secciones existentes recibirían las restricciones de los caminos. Ahora todos los itinerarios terminan con una sección **Fin del itinerario**, y la duración estimada aparece debajo de cada actividad."
         }
       ]
     },

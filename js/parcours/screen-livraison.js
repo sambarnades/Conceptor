@@ -29,7 +29,8 @@ import { ouvrirActivite } from './activity-panel.js';
 import { action } from './dom.js';
 import { CONFIG } from './config.js';
 import { exporterFiche, exporterDetail, FORMATS } from './fiche-sequence.js';
-import { tuileDuree, tuileChiffre } from './screen-plan.js';
+import { tuilesSynthese } from './screen-plan.js';
+import { aDesChemins } from './aiguillage.js';
 
 function el(tag, className, text) {
     const n = document.createElement(tag);
@@ -109,14 +110,13 @@ export function construireLivraison(draft, api) {
         .filter(e => (e.cartes || []).some(c => c.contenu)).length;
 
     // Les MÊMES trois repères que sur l'écran du plan, dans le MÊME ordre —
-    // étapes, activités, durée. Le bandeau n'en montrait que deux, inversés :
-    // l'enseignant qui venait du plan y lisait autre chose au même endroit.
+    // étapes, activités, durée ; avec des chemins, ce que fait UN élève (D90).
+    // Ils portent sur ce qui part dans le fichier : les activités prêtes.
     const synthese = el('div', 'pc-summary');
-    synthese.append(
-        tuileChiffre('etapes', etapesPleines, t('parcours_plan_n_etapes')),
-        tuileChiffre('activites', pretes, t('parcours_plan_n_activites')),
-    );
-    synthese.append(tuileDuree({ etapes: plan.etapes.map(e => ({ ...e, cartes: e.cartes.filter(c => c.contenu) })) }));
+    const etapesPretes = plan.etapes
+        .map(e => ({ ...e, cartes: (e.cartes || []).filter(c => c.contenu) }))
+        .filter(e => e.cartes.length);
+    synthese.append(...tuilesSynthese({ ...plan, etapes: etapesPretes }));
 
     // --- Ce qui manque, dit sur place.
     const manquantes = cartes.filter(({ carte }) => !carte.contenu);
@@ -157,7 +157,8 @@ export function construireLivraison(draft, api) {
     titreFichier.id = 'pc-livrer-titre';
 
     const statutMbz = statutExport([t('parcours_liv_assemblage'), tr('parcours_liv_fait', {
-        a: pretes + (plan.carte?.actif && draft.platform === 'elea' ? 1 : 0), s: etapesPleines + 1,
+        // Les sections : « Généralités », les étapes, et la Fin du parcours (D96).
+        a: pretes + (plan.carte?.actif && draft.platform === 'elea' ? 1 : 0), s: etapesPleines + 2,
     })]);
     const etatMbz = statutMbz.message;
 
@@ -249,8 +250,12 @@ export function construireLivraison(draft, api) {
         } catch (e) {
             const info = classifyError ? classifyError(e) : null;
             etatMbz.className = 'pc-liv__etat pc-liv__etat--echec';
-            etatMbz.textContent = t(e.message === 'parcours_carte_perso_manquante' ? e.message
-                : info && info.userMessageKey ? info.userMessageKey : 'parcours_liv_echec');
+            etatMbz.textContent = e.message === 'parcours_chemins_incomplets'
+                // Un chemin sans activité prête : on dit lequel, et quoi faire.
+                ? tr('parcours_chemins_incomplets', { l: (e.manques || []).map(m => (m.role === 'test'
+                    ? t('parcours_aig_pivot') : t(`parcours_role_${m.role}`))).join(', ') })
+                : t(e.message === 'parcours_carte_perso_manquante' ? e.message
+                    : info && info.userMessageKey ? info.userMessageKey : 'parcours_liv_echec');
             console.error('[parcours] assemblage échoué :', e);
         } finally {
             liberer();
@@ -308,12 +313,17 @@ export function construireLivraison(draft, api) {
     etats.append(statutMbz.node, etatPartage);
     action_.append(btnMbz, el('p', 'pc-block__hint', t('parcours_liv_mbz_hint')), deposer, etats);
 
+    // Un parcours à chemins s'importe dans un cours VIDE (D98) : Moodle range les
+    // sections du fichier dans celles du cours, par numéro ; dans un cours déjà
+    // rempli, les sections de l'enseignant recevraient les restrictions des chemins.
+    const avecChemins = aDesChemins(plan);
     const marche = el('ol', 'pc-marche');
-    for (const cle of ['parcours_liv_import_1', 'parcours_liv_import_2', 'parcours_liv_import_3']) {
+    for (const cle of [avecChemins ? 'parcours_liv_import_1_chemins' : 'parcours_liv_import_1', 'parcours_liv_import_2', 'parcours_liv_import_3']) {
         marche.append(el('li', null, t(cle)));
     }
     const importer = el('div', 'pc-livrer__import');
     importer.append(el('p', 'pc-livrer__soustitre', t('parcours_liv_import_titre')), marche);
+    if (avecChemins) importer.append(el('p', 'pc-liv__etat pc-liv__etat--alerte', t('parcours_liv_import_vide_note')));
 
     const corps = el('div', 'pc-livrer__corps');
     corps.append(action_, importer);

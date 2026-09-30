@@ -1,5 +1,36 @@
 # Journal des modifications — Caramel
 
+## [7.1.0] - 30-09-2026
+
+**Différenciez vos parcours : un test oriente chaque élève vers le chemin qui lui convient, puis tous se retrouvent pour la suite.**
+
+### Nouveautés
+
+- **Des chemins selon les résultats** : au cadrage d’un parcours, une nouvelle question, « Tous vos élèves suivent-ils le même chemin ? ». Avec « Des chemins selon les résultats », un test ouvre à chaque élève, d’après sa note à la première tentative, l’un de deux à quatre chemins — Reprendre les bases, Renforcer, Consolider, Approfondir. Chaque élève ne voit que le sien ; tous se retrouvent ensuite pour une étape commune. Le cours pose lui-même les restrictions d’accès de la plateforme : rien à régler à la main.
+- **Deux trames pour différencier** : « Différencier dès le départ » (un test de positionnement, les chemins, puis un écrit commun) et « Remédier en cours de route » (découvrir, faire le point par un quiz, revoir ou aller plus loin, puis un test final). La structure libre permet aussi de composer ses propres chemins.
+- **Les chemins dans le plan** : une barre montre quel chemin s’ouvre pour chaque nombre de bonnes réponses, et « − » / « + » avancent ou reculent le début d’un chemin d’une bonne réponse. Les chemins s’affichent côte à côte avec leurs activités ; on en ajoute, on en retire, ou l’on revient à un seul chemin pour tous (avec « Annuler »). Une étape qui se termine par un quiz propose « Ouvrir des chemins selon ce test ».
+- **Voir comme un élève** : depuis le plan ou « Relire le parcours », la page du cours telle qu’un élève la verra — avant le test, pendant son chemin, à la fin —, pour le score de votre choix, ou telle que vous la verrez en tant qu’enseignant.
+- **Une section « Fin du parcours » dans tous les parcours** : elle n’apparaît qu’une fois tout terminé, félicite l’élève et lui laisse le mot de la fin écrit avec le plan.
+- **La durée dans le cours** : chaque activité affiche sa durée estimée sous son titre, et l’accueil du parcours annonce la durée d’un élève, selon son chemin.
+
+### Améliorations
+
+- **Moins de modèles à l’écran** : trois trames adaptées à vos réglages, puis « Voir les autres modèles », rangés par famille (pour une séance, pour une séquence, projets, démarches particulières).
+- **Des activités réglées selon le chemin** : correction immédiate dans les chemins qui reprennent ou renforcent, solution retirée dans celui qui approfondit. Le test qui oriente ne propose pas de recommencer, et chaque question y vaut un point.
+- **Une fiche de séquence qui parle des chemins** : ce que fait un élève (activités, durée), à qui s’ouvre chaque chemin, et le mot de la fin.
+- **La livraison** rappelle qu’un parcours à chemins s’importe dans un cours vide, et pourquoi.
+
+### Corrections
+
+- **Des activités H5P qui ne s’achevaient jamais dans un parcours** : la Frise chronologique, le Glossaire, les Cartes de dialogue, le Diagramme, l’Image interactive, le Résumé, la Série de choix uniques, la Vidéo interactive, la Présentation de cours et le Livre interactif ne transmettent pas de note à la plateforme. Réglés pour s’achever « à la note », ils ne s’achevaient jamais, et l’ouverture progressive laissait l’étape suivante fermée. Ils s’achèvent désormais dès que l’élève les a consultés.
+
+### Notes techniques
+
+- **Modèle** : une étape peut être un chemin, `etape.chemin = { depuis: <pourcentage> }` ; tout le reste se déduit (`js/parcours/aiguillage.js`, module pur). Seuils gardés en pourcentage, réglés en bonnes réponses, écrits à mi-point dans le cours ; scénario au format 2 quand il y a des chemins. Décisions D90 à D101 de `docs/PRD_PARCOURS.md`.
+- **Passes d’après l’assemblage** : `achevement-h5p.js` (D100), `aiguillage-cours.js` (conditions des chemins, de l’étape commune et de la fin), `progression.js` (ne remplit plus que les sections libres), `durees-cours.js` (D97). `mbz-course-builder.js` n’est pas modifié, ni aucun autre fichier partagé avec la Sucrerie.
+- **Bancs** : `tests/run_parcours_chemins.mjs` (Node pur, en CI : tous les seuils et tous les scores), `tests/run_parcours_aiguillage.mjs` (trois cours relus comme Moodle, un élève par score, contre-épreuves, interface par de vrais clics). Sonde pour l’aller-retour : `node scripts/generer-parcours-sonde-chemins.mjs`. Les bancs `calibrage` et `sources` simulent désormais les points d’accès de production comme ceux du bac à sable.
+- **Aide** : tutoriel, aide embarquée de Caramelia et fiches du RAG (dont une fiche `parcours-chemins`, générée depuis le tutoriel par `scripts/aide-parcours.mjs`) dans les 12 langues ; captures refaites, dont deux nouvelles (`parcours-chemins`, `parcours-eleve`).
+
 ## [7.0.1] - 30-09-2026
 
 **Réglez vos Tests comme sur Éléa, faites écrire les questions par vos élèves avec le Test étudiant, illustrez vos Pages et vos Livres avec vos propres images, et présentez Caramel à vos collègues.**

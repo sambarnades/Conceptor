@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão e modelo. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.",
+            "Escolha **Um percurso** abaixo do formulário e depois a plataforma, modalidade, extensão, **Um mesmo caminho para todos** ou **Caminhos consoante os resultados**, e um modelo: são propostos três, e **Ver os outros modelos** mostra os seguintes. **Compor o plano** adapta o plano ao tema com IA. **Partir do modelo** abre imediatamente uma estrutura para completar sem chamar a IA. As atividades só são geradas após a sua aprovação do plano.",
             "Em **Plano**, edite o título, objetivo geral, conceitos-chave, etapas e atividades. Mova as atividades com as setas ou arrastando a miniatura. **Instruções e etapa** permite ajustar as instruções de geração. As orientações pedagógicas ajudam a rever sem impor um modelo. O máximo é de **12 atividades**.",
             "Na ficha de um **Vídeo interativo**, cole a ligação do vídeo. A transcrição é obtida durante a geração; também pode colá-la manualmente. Para **Imagem interativa**, **Encontrar a zona** ou **Encontrar as zonas**, anexe uma imagem à ficha: será analisada antes da geração. Também pode adicionar estes recursos na fase de geração. Uma atividade sem recurso aguarda enquanto as restantes avançam. O cenário conserva as imagens e ligações das atividades; os documentos do formulário inicial ficam separados. Para uma **Ligação web**, cole o endereço do recurso na ficha: a IA redige a instrução de leitura sem abrir a página.",
             "Aprove o plano para iniciar a geração. Pode parar, retomar atividades em falta ou gerar novamente uma atividade. O cadeado **Não gerar esta atividade** reserva o conteúdo para preenchimento manual: a IA não o preenche. Uma nova geração falhada conserva o conteúdo anterior. As atividades ausentes são identificadas antes da exportação.",
@@ -685,7 +685,7 @@
         },
         {
           "type": "warn",
-          "text": "O mapa de progressão é específico do Éléa. O mapa e o acesso progressivo são opcionais e ainda requerem verificações em utilização real. O modelo de diferenciação não cria ramificações automáticas segundo a nota. A colaboração acontece na plataforma."
+          "text": "O mapa de progressão é específico do Éléa. O mapa, o acesso progressivo e os caminhos consoante os resultados ainda requerem verificações em utilização real. A colaboração acontece na plataforma."
         },
         {
           "type": "h",
@@ -723,6 +723,37 @@
           "type": "shot",
           "src": "assets/images/wiki/parcours-miroir.webp",
           "alt": "O que este percurso trabalha: as sete famílias e as que faltam."
+        },
+        {
+          "type": "h",
+          "text": "Caminhos consoante os resultados"
+        },
+        {
+          "type": "p",
+          "text": "Na configuração, **Caminhos consoante os resultados** leva os seus alunos a fazer um teste: consoante a nota na primeira tentativa, cada um segue um dos 2 a 4 caminhos — **Retomar as bases**, **Reforçar**, **Consolidar**, **Aprofundar** — e depois todos se reencontram numa etapa comum. Cada aluno só vê o seu caminho. Há dois modelos pensados para isso: **Diferenciar desde o início** e **Remediar durante o percurso**."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-chemins.webp",
+          "alt": "Os caminhos no plano: a barra de pontuações, o intervalo de cada caminho e as suas atividades."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Em **Plano**, a barra de pontuações mostra que caminho se abre para cada número de respostas certas; os botões **−** e **+** antecipam ou adiam numa resposta certa o início de um caminho. **Adicionar um caminho**, **Retirar um caminho** e **Um só caminho para todos** alteram a bifurcação.",
+            "O teste que encaminha é um **Quiz de múltipla escolha**, um **Quiz Verdadeiro/Falso** ou um **Teste**, colocado no fim da etapa que antecede os caminhos. Cada pergunta vale um ponto e o teste não propõe nova tentativa.",
+            "**Ver como aluno** mostra a página do curso tal como o aluno a verá — antes do teste, durante o seu caminho, no fim — para a pontuação que escolher.",
+            "Para reencaminhar um aluno, altere a nota dele no teste no livro de notas da plataforma."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-eleve.webp",
+          "alt": "Ver como aluno: a página do curso durante o seu caminho, para a pontuação escolhida."
+        },
+        {
+          "type": "tip",
+          "text": "Importe um percurso com caminhos para um curso **vazio**: o Moodle arruma as secções do ficheiro nas do curso, e as suas secções existentes receberiam as restrições dos caminhos. Todos os percursos terminam agora com uma secção **Fim do percurso**, e a duração estimada aparece por baixo de cada atividade."
         }
       ]
     },

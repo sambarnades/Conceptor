@@ -113,13 +113,30 @@ try {
                 { ...plan, ...reglages, etapes: [plan.etapes[0]] }, { platformId: 'elea' }).meta,
         };
 
+        // Des chemins selon les résultats (D90) : l'en-tête dit ce que vit UN
+        // élève, et chaque chemin à quels élèves il s'ouvre.
+        const planChemins = {
+            titre: 'Les accords', objectifGeneral: 'Accorder le participe passé', conclusion: 'Tu sais accorder le participe passé.',
+            etapes: [
+                { id: 'a1', titre: 'Se positionner', objectif: 'Faire le point', cartes: [
+                    carte('QuizSetQCM', { titre: 'Le test', duree: 12, contenu: { title: 'Le test', questions: Array.from({ length: 8 }, () => ({})) } })] },
+                { id: 'a2', titre: 'Pas à pas', objectif: 'Revoir', chemin: { depuis: 0 },
+                  cartes: [carte('Page', { duree: 10 }), carte('DragTheWords', { duree: 10 })] },
+                { id: 'a3', titre: '', objectif: 'Aller plus loin', chemin: { depuis: 60 },
+                  cartes: [carte('FillInTheBlanks', { duree: 12 }), carte('Essay', { duree: 12 })] },
+                { id: 'a4', titre: 'Ensemble', objectif: 'Réinvestir', cartes: [carte('Essay', { duree: 15 })] },
+            ],
+        };
+        const ficheChemins = construireFiche(planChemins, { platformId: 'elea' });
+        const renduChemins = await formatContentForDocument('parcours_document', ficheChemins, { keepLatex: true });
+
         const vide = construireFiche({ etapes: [] }, {});
         let leve = null;
         try { construireFiche(null, {}); construireFiche(undefined); construireFiche('x'); }
         catch (e) { leve = String(e && e.message); }
 
         return {
-            fiche, cours, rendu, vide, leve, avecReglages,
+            fiche, cours, rendu, vide, leve, avecReglages, ficheChemins, renduChemins,
             formats: FORMATS.map(f => f.id),
             renduVide: await formatContentForDocument('parcours_document', vide, {}),
             // Le repli générique cracherait du JSON brut : on doit voir la
@@ -127,6 +144,25 @@ try {
             renduGenerique: await formatContentForDocument('module_qui_nexiste_pas', fiche, {}),
         };
     });
+
+    console.log('\n── Des chemins selon les résultats (D90) ───────────────────');
+    const fc = r.ficheChemins;
+    ok('l’en-tête dit le test, ce que fait UN élève et ce qui se fabrique, sa durée à lui',
+        JSON.stringify(fc.meta) === JSON.stringify(['Éléa', '2 chemins selon le test « Le test »',
+            '4 activités par élève, 6 à fabriquer', '47 min–51 min par élève']), JSON.stringify(fc.meta));
+    ok('les étapes communes sont numérotées, les chemins portent leur rôle',
+        JSON.stringify(fc.sections.map(x => x.titre)) === JSON.stringify(['Étape 1 : Se positionner',
+            'Chemin « Renforcer » : Pas à pas', 'Chemin « Approfondir »', 'Étape 2 : Ensemble', 'Fin du parcours']),
+        JSON.stringify(fc.sections.map(x => x.titre)));
+    ok('chaque chemin dit à quels élèves il s’ouvre, en bonnes réponses au test',
+        fc.sections[1].lignes[0] === 'Pour les élèves qui obtiennent de 0 à 4 sur 8 au test « Le test », à la première tentative.'
+        && fc.sections[2].lignes[0] === 'Pour les élèves qui obtiennent de 5 à 8 sur 8 au test « Le test », à la première tentative.',
+        JSON.stringify([fc.sections[1].lignes, fc.sections[2].lignes]));
+    ok('le mot de la fin clôt la fiche', fc.sections[4].lignes[0] === 'Tu sais accorder le participe passé.');
+    const texteRendu = JSON.stringify(r.renduChemins?.sections || []);
+    ok('le formateur partagé rend la fiche à chemins, sans repli JSON',
+        Array.isArray(r.renduChemins?.sections) && texteRendu.includes('Chemin « Renforcer »')
+        && !r.renduChemins.sections.some(x => x.style === 'code'), texteRendu.slice(0, 200));
 
     console.log('\n── La fiche dit le PLAN, pas le contenu ────────────────────');
     ok('elle porte le titre du parcours', r.fiche.title === 'Les états de la matière', r.fiche.title);

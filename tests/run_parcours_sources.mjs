@@ -27,11 +27,11 @@ try {
     await page.route('**/*', async r => {
         const u = new URL(r.request().url());
         if (u.hostname === '127.0.0.1') return r.continue();
-        if (u.pathname.endsWith('/caramel-vision-detect-bas')) {
+        if (/\/caramel-vision-detect-(?:bas|prod)$/.test(u.pathname)) {
             vision++; comptesVision.push(r.request().postDataJSON().count);
             return r.fulfill({ json: { imageDescription: 'Deux formes colorées', scale: 100, zones: [{ x: 25, y: 40, label: 'Étoile', description: 'Une forme jaune' }, { x: 70, y: 60, label: 'Cyprès', description: 'Une forme verte' }] } });
         }
-        if (u.pathname.endsWith('/caramel-video-transcript-bas')) return r.fulfill({ json: { hasAutoSubs: false } });
+        if (/\/caramel-video-transcript-(?:bas|prod)$/.test(u.pathname)) return r.fulfill({ json: { hasAutoSubs: false } });
         return r.abort();
     });
     await page.goto(`http://127.0.0.1:${port}/index.html`); await page.waitForSelector('#parcours-button');
@@ -114,7 +114,7 @@ try {
         return { exacts, isoles, distincts: binaires[0] !== binaires[1], conserve, hydrate: !!edition.image.dataURL,
             nettoye: !JSON.stringify(sauvegarde.contenu).includes('data:image'), rejecte,
             mbz: binaires.every(b => imagesFinales.includes(b)) && imagesFinales.length === 2,
-            activites: cours.activites.length, exclues: cours.exclues.length,
+            activites: cours.activites.length - cours.textes, exclues: cours.exclues.length,
             video: cartes[2].contenu.videoSource.url,
             documentaire: construireCoursDocumentaire(d.plan).activities[0].jsonData._backgroundImage?.startsWith('data:image/'),
             count: mediaFilesPour(cartes[0]).size };
@@ -161,7 +161,7 @@ try {
     ok('un faux fichier image est refusé', autres.illisible);
     await page.evaluate(async () => { window.brouillonSources = structuredClone((await import('/js/parcours/state.js')).brouillon()); });
     let detections = 0;
-    await page.route('**/caramel-video-transcript-bas', async r => {
+    await page.route(/\/caramel-video-transcript-(?:bas|prod)$/, async r => {
         detections++;
         const auto = r.request().postDataJSON().youtubeUrl?.includes('auto');
         await r.fulfill({ json: auto ? { hasAutoSubs: true, duration: 30, segments: [{ start: 0, end: 15, text: 'Le ciel est bleu.' }, { start: 15, end: 30, text: 'Un arbre au premier plan.' }] } : { hasAutoSubs: false } });
@@ -185,7 +185,7 @@ try {
     // Arrêter pendant la détection doit interrompre le réseau ET empêcher le modèle.
     let requeteDetectee;
     const detection = new Promise(r => { requeteDetectee = r; });
-    await page.route('**/caramel-video-transcript-bas', r => { requeteDetectee(); /* en vol jusqu’à AbortSignal */ });
+    await page.route(/\/caramel-video-transcript-(?:bas|prod)$/, r => { requeteDetectee(); /* en vol jusqu’à AbortSignal */ });
     await page.evaluate(async () => {
         const { creerFile } = await import('/js/parcours/parcours-runner.js');
         const { brouillon } = await import('/js/parcours/state.js');

@@ -10,7 +10,7 @@ const rag = resolve(root, '../rag/caramelia');
 const langs = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 const codes = ['parcours-creation', 'parcours-relecture-scenario', 'parcours-export-limites'];
 // Fiches GÉNÉRÉES par scripts/aide-parcours.mjs (D82) : ce que Caramelia sait des parcours à créer.
-const generees = ['parcours-trames', 'parcours-modules', 'parcours-conseils'];
+const generees = ['parcours-trames', 'parcours-modules', 'parcours-conseils', 'parcours-chemins'];
 const FAMILLES = ['decouvrir', 'memoriser', 'exercer', 'organiser', 'discuter', 'cooperer', 'produire'];
 let pass = 0;
 const ok = (nom, condition) => { assert.ok(condition, nom); pass++; };
@@ -51,6 +51,14 @@ for (const lang of langs) {
         && embarque.indexOf('<!-- parcours-trames -->') > embarque.indexOf('<!-- parcours-complet -->')
         && embarque.indexOf('<!-- /parcours-trames -->') < embarque.indexOf('<!-- /parcours-complet -->')
         && TRAMES.every(tr => embarque.includes(`**${locale[tr.nameKey]}**`)));
+    // Les chemins selon les résultats (D90) : la section du tutoriel, reprise une fois
+    // dans l'aide embarquée, et aucun tutoriel ne dit plus qu'il n'y a pas de branches.
+    ok(`${lang} : les chemins selon les résultats sont expliqués, une seule fois, dans la section du parcours`,
+        (embarque.match(/<!-- parcours-chemins -->/g) || []).length === 1
+        && embarque.indexOf('<!-- parcours-chemins -->') > embarque.indexOf('<!-- parcours-complet -->')
+        && embarque.indexOf('<!-- /parcours-chemins -->') < embarque.indexOf('<!-- /parcours-complet -->')
+        && [locale.parcours_structure_chemins, locale.parcours_aig_voir_eleve, locale.parcours_role_renforcer, locale.parcours_role_approfondir]
+            .every(l => texte.includes(l) && embarque.includes(l)));
     if (existsSync(rag)) {
         for (const code of codes) {
             const chunk = readFileSync(resolve(rag, `chunks/${lang}/${code}.md`), 'utf8');

@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang und Vorlage. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.",
+            "Wählen Sie **Ein Lernpfad** unter dem Formular, dann Plattform, Unterrichtsform, Umfang, **Ein Weg für alle** oder **Wege je nach Ergebnis** und eine Vorlage: Drei werden vorgeschlagen, über **Weitere Vorlagen anzeigen** erscheinen die übrigen. **Plan zusammenstellen** passt den Plan mit KI an Ihr Thema an. **Von der Vorlage ausgehen** öffnet sofort eine Struktur zum Ergänzen, ohne KI-Aufruf. Aktivitäten werden erst nach Ihrer Bestätigung des Plans erstellt.",
             "Unter **Plan** bearbeiten Sie Titel, Gesamtziel, Schlüsselbegriffe, Abschnitte und Aktivitäten. Verschieben Sie Aktivitäten mit den Pfeilen oder an ihrem Vorschaubild. **Arbeitsauftrag und Lernphase** erlaubt das Anpassen der Generierungsanweisungen. Pädagogische Hinweise unterstützen die Durchsicht, ohne ein Modell vorzuschreiben. Maximal **12 Aktivitäten** sind möglich.",
             "Fügen Sie den Videolink in die Karte eines **interaktiven Videos** ein. Das Transkript wird beim Erstellen abgerufen; Sie können es auch selbst einfügen. Hängen Sie für **interaktive Bilder** und die Aktivitäten zum Finden einer oder mehrerer Bildstellen ein Bild an die Karte an. Es wird vor der Erstellung analysiert. Sie können diese Medien auch während der Erstellungsphase ergänzen. Eine Aktivität ohne Medium wartet, während die anderen fortfahren. Die Szenariodatei enthält die Bilder und Links der Aktivitäten; die Dokumente des Startformulars bleiben davon getrennt. Fügen Sie bei einem **Weblink** die Adresse der Ressource in die Karte ein: Die KI verfasst die Leseanweisung, ohne die Seite zu öffnen.",
             "Bestätigen Sie den Plan, um die Erstellung zu starten. Sie können stoppen, fehlende Aktivitäten fortsetzen oder eine Aktivität neu erstellen. Das Schloss **Diese Aktivität nicht erzeugen** reserviert den Inhalt für manuelle Eingabe: Die KI füllt ihn nicht. Eine fehlgeschlagene Neuerstellung erhält den bisherigen Inhalt. Fehlende Aktivitäten werden vor dem Export benannt.",
@@ -685,7 +685,7 @@
         },
         {
           "type": "warn",
-          "text": "Die Fortschrittskarte gibt es nur für Éléa. Karte und schrittweiser Zugang sind optional und müssen noch im tatsächlichen Plattformbetrieb geprüft werden. Die Differenzierungsvorlage erzeugt keine automatischen Verzweigungen nach Note. Zusammenarbeit findet auf der Plattform statt."
+          "text": "Die Fortschrittskarte gibt es nur für Éléa. Karte, schrittweiser Zugang und Wege je nach Ergebnis müssen noch im tatsächlichen Plattformbetrieb geprüft werden. Zusammenarbeit findet auf der Plattform statt."
         },
         {
           "type": "h",
@@ -723,6 +723,37 @@
           "type": "shot",
           "src": "assets/images/wiki/parcours-miroir.webp",
           "alt": "Was dieser Lernpfad trainiert: die sieben Kategorien und die fehlenden."
+        },
+        {
+          "type": "h",
+          "text": "Wege je nach Ergebnis"
+        },
+        {
+          "type": "p",
+          "text": "Bei der Rahmenwahl lässt **Wege je nach Ergebnis** Ihre Lernenden einen Test machen: Je nach Note beim ersten Versuch folgen sie einem von 2 bis 4 Wegen – **Grundlagen wiederholen**, **Aufbauen**, **Festigen**, **Vertiefen** –, danach kommen alle in einem gemeinsamen Abschnitt wieder zusammen. Alle Lernenden sehen nur ihren eigenen Weg. Zwei Vorlagen sind dafür gedacht: **Von Anfang an differenzieren** und **Unterwegs nacharbeiten**."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-chemins.webp",
+          "alt": "Die Wege im Plan: die Punkteleiste, der Bereich jedes Wegs und seine Aktivitäten."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Unter **Plan** zeigt die Punkteleiste, welcher Weg sich bei welcher Zahl richtiger Antworten öffnet; die Schaltflächen **−** und **+** verschieben den Beginn eines Wegs um eine richtige Antwort nach vorn oder nach hinten. **Weg hinzufügen**, **Weg entfernen** und **Ein Weg für alle** ändern die Verzweigung.",
+            "Der Test, der die Lernenden leitet, ist ein **Multiple-Choice-Quiz**, ein **Wahr/Falsch-Quiz** oder ein **Test** am Ende des Abschnitts vor den Wegen. Jede Frage zählt einen Punkt, und der Test bietet keinen neuen Versuch an.",
+            "**Aus Sicht der Lernenden ansehen** zeigt die Kursseite so, wie die Lernenden sie sehen werden – vor dem Test, auf ihrem Weg, am Ende –, für die Punktzahl, die Sie wählen.",
+            "Um eine Person umzuleiten, ändern Sie ihre Note für den Test in den Bewertungen der Plattform."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-eleve.webp",
+          "alt": "Aus Sicht der Lernenden ansehen: die Kursseite während des Wegs, für die gewählte Punktzahl."
+        },
+        {
+          "type": "tip",
+          "text": "Importieren Sie einen Lernpfad mit Wegen in einen **leeren** Kurs: Moodle ordnet die Abschnitte der Datei den Abschnitten des Kurses zu, und Ihre bestehenden Abschnitte würden die Zugriffsbeschränkungen der Wege erhalten. Jeder Lernpfad endet jetzt mit einem Abschnitt **Ende des Lernpfads**, und die geschätzte Dauer steht unter jeder Aktivität."
         }
       ]
     },
