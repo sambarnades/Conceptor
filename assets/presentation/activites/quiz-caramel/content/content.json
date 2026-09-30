@@ -1,0 +1,116 @@
+{
+  "choices": [
+    {
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 1 sur 7</span>Que faut-il faire avant de diffuser une activité préparée avec Caramel ?",
+      "answers": [
+        "La relire, et la corriger si besoin",
+        "Rien : l'IA ne se trompe jamais",
+        "La convertir en PDF"
+      ],
+      "subContentId": "32d54ef3-49a5-4343-ad62-af912c2c6a0d"
+    },
+    {
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 2 sur 7</span>Combien coûte Caramel ?",
+      "answers": [
+        "Rien : il est gratuit, sans compte à créer",
+        "Un abonnement par établissement",
+        "Un paiement par activité générée"
+      ],
+      "subContentId": "ccccf8f6-c199-47f7-8b9b-99fc6141afaf"
+    },
+    {
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 3 sur 7</span>Sur quelles plateformes dépose-t-on une activité Caramel ?",
+      "answers": [
+        "Éléa, Magistère et Moodle",
+        "Uniquement sur Éléa",
+        "Sur aucune : il faut tout recopier à la main"
+      ],
+      "subContentId": "501ffdec-5a5e-4071-a49e-8391d47cf7a2"
+    },
+    {
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 4 sur 7</span>Quel fichier obtient-on pour une activité H5P ?",
+      "answers": [
+        "Un fichier .h5p",
+        "Un fichier .pdf",
+        "Une vidéo .mp4"
+      ],
+      "subContentId": "d3e0a869-a8aa-49ce-a74a-c09cadb2639c"
+    },
+    {
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 5 sur 7</span>Que fabrique le mode « Un parcours » ?",
+      "answers": [
+        "Un cours complet (.mbz) qui enchaîne plusieurs activités",
+        "Une seule question",
+        "Un diaporama PowerPoint"
+      ],
+      "subContentId": "87409f78-2dae-4b74-ad67-268dea3a1c33"
+    },
+    {
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 6 sur 7</span>Où partager ses activités avec des collègues ?",
+      "answers": [
+        "Sur la Sucrerie",
+        "Nulle part : elles restent sur mon ordinateur",
+        "Uniquement par clé USB"
+      ],
+      "subContentId": "d7104abe-a9a9-4754-9694-eeb317fbb8c7"
+    },
+    {
+      "question": "<span class=\"h5p-hidden-read\">Diapositive 7 sur 7</span>Sous quelle licence Caramel est-il publié ?",
+      "answers": [
+        "GNU AGPL v3.0 ou ultérieure : c'est un logiciel libre",
+        "Une licence propriétaire",
+        "Aucune licence"
+      ],
+      "subContentId": "db3d5e8c-cc78-4be1-8452-6ec55baf39cd"
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 40,
+      "feedback": "Caramel a encore des choses à vous apprendre : les cartes de vocabulaire ci-dessous sont un bon point de départ."
+    },
+    {
+      "from": 41,
+      "to": 80,
+      "feedback": "Vous connaissez déjà bien Caramel : il ne reste que quelques détails à découvrir."
+    },
+    {
+      "from": 81,
+      "to": 100,
+      "feedback": "Sans faute ! Vous êtes prêt à préparer vos propres activités."
+    }
+  ],
+  "behaviour": {
+    "timeoutCorrect": 2000,
+    "timeoutWrong": 3000,
+    "soundEffectsEnabled": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "passPercentage": 100,
+    "autoContinue": true
+  },
+  "l10n": {
+    "retryButtonLabel": "Recommencer",
+    "solutionViewTitle": "Solution",
+    "correctText": "Bonne réponse",
+    "incorrectText": "Mauvaise réponse",
+    "muteButtonLabel": "Désactiver le son",
+    "closeButtonLabel": "Fermer",
+    "slideOfTotal": "Diapositive :num sur :total",
+    "nextButtonLabel": "Suivant",
+    "scoreBarLabel": "Vous avez obtenu :num sur :total points",
+    "solutionListQuestionNumber": "Question :num",
+    "a11yShowSolution": "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    "a11yRetry": "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+    "shouldSelect": "Devrait sélectionner",
+    "shouldNotSelect": "Ne devrait pas sélectionner",
+    "nextButton": "Suivant",
+    "showResultsButtonLabel": "Montrer les résultats",
+    "resultHeader": "Votre résultat :",
+    "totalScore": ":score bonnes réponses sur :maxScore",
+    "resultTableHeader": "Question",
+    "resultScoreTableHeader": "Score",
+    "correctAnswerIntroduction": "Bonne réponse"
+  }
+}

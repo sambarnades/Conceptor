@@ -1,0 +1,68 @@
+[
+  {
+    "id": "quiz-caramel",
+    "titre": "Caramel en 7 questions",
+    "type": "Série de choix uniques",
+    "machineName": "H5P.SingleChoiceSet",
+    "version": "1.11",
+    "icone": "assets/images/activities/single-choice-set-icon_0.webp",
+    "description": "Sept questions pour faire le tour de Caramel, avec une seule bonne réponse à chaque fois.",
+    "h5p": "assets/presentation/activites/quiz-caramel.h5p",
+    "dossier": "assets/presentation/activites/quiz-caramel"
+  },
+  {
+    "id": "vocabulaire",
+    "titre": "Le vocabulaire de Caramel",
+    "type": "Cartes de dialogue",
+    "machineName": "H5P.Dialogcards",
+    "version": "1.9",
+    "icone": "assets/images/activities/dialog_cards_icon-color.webp",
+    "description": "Huit cartes à retourner pour apprivoiser les mots de Caramel, de H5P à la Sucrerie.",
+    "h5p": "assets/presentation/activites/vocabulaire.h5p",
+    "dossier": "assets/presentation/activites/vocabulaire"
+  },
+  {
+    "id": "en-une-phrase",
+    "titre": "Caramel en quelques phrases",
+    "type": "Glisser les mots",
+    "machineName": "H5P.DragText",
+    "version": "1.10",
+    "icone": "assets/images/activities/drag-the-words-icon.webp",
+    "description": "Un court texte à compléter en glissant chaque mot à sa place.",
+    "h5p": "assets/presentation/activites/en-une-phrase.h5p",
+    "dossier": "assets/presentation/activites/en-une-phrase"
+  },
+  {
+    "id": "mots-meles",
+    "titre": "Cherchez les mots de Caramel",
+    "type": "Mots mêlés",
+    "machineName": "H5P.FindTheWords",
+    "version": "1.4",
+    "icone": "assets/images/activities/word-search-h5porg.webp",
+    "description": "Huit mots de l'univers Caramel cachés dans une grille de lettres.",
+    "h5p": "assets/presentation/activites/mots-meles.h5p",
+    "dossier": "assets/presentation/activites/mots-meles"
+  },
+  {
+    "id": "video-caramel",
+    "titre": "Découvrez Caramel en vidéo",
+    "type": "Vidéo interactive",
+    "machineName": "H5P.InteractiveVideo",
+    "version": "1.28",
+    "icone": "assets/images/activities/interactive_video_icon-colors_0.webp",
+    "description": "La présentation de Caramel 7, avec quatre pauses-question pour vérifier les points essentiels. Vidéo d’Emmanuel Gaunard, publiée sur PodEduc sous CC BY 4.0.",
+    "h5p": "assets/presentation/activites/video-caramel.h5p",
+    "dossier": "assets/presentation/activites/video-caramel"
+  },
+  {
+    "id": "preparer-une-activite",
+    "titre": "De l’idée à la classe",
+    "type": "Ordonner les paragraphes",
+    "machineName": "H5P.SortParagraphs",
+    "version": "0.11",
+    "icone": "assets/images/activities/sort-paragraphs.webp",
+    "description": "Six étapes à remettre dans l’ordre pour préparer, relire et utiliser une activité avec vos élèves.",
+    "h5p": "assets/presentation/activites/preparer-une-activite.h5p",
+    "dossier": "assets/presentation/activites/preparer-une-activite"
+  }
+]

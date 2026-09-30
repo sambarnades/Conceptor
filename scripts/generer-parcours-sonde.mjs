@@ -317,6 +317,14 @@ const SONDE = [
               titre: 'Sonde — Choix de groupe',
               contenu: { title: 'Sonde — Choix de groupe', intro: 'Choisis ton équipe pour le projet.' },
               controle: 'Le choix de groupe existe, SANS option (aucun groupe dans le cours) : c’est attendu.' },
+            // D89 : Éléa seul (écarté ailleurs par le filtre de plateforme). Arrive VIDE ;
+            // achèvement « avoir créé une question », qui ne dépend que de l'élève.
+            { module: 'parcours_test_etudiant', fixture: null,
+              titre: 'Sonde — Test étudiant',
+              contenu: { title: 'Sonde — Test étudiant', intro: 'Crée une question sur le cycle de l’eau, puis réponds à celles de tes camarades, note-les et commente-les.' },
+              controle: 'Le Test étudiant s’ouvre VIDE, avec sa consigne. En élève : créer une question, y répondre, la noter, la commenter ; le classement s’affiche. '
+                      + 'Paramètres : points 10 / 5 / 3 / 2 / −1, achèvement « au moins 1 question créée » SANS condition de points. '
+                      + 'L’étape suivante ne s’ouvre qu’une fois la question créée. Ré-exporter et comparer studentquiz.xml (coursemodule = le module restauré).' },
         ],
     },
     {

@@ -79,7 +79,8 @@ export const FAMILLES = Object.freeze([
  *   autres — forum, sondage, nuage de mots, questionnaire, enquête, classe
  *   virtuelle ; COOPÉRER quand on y construit un résultat commun — wiki,
  *   document partagé, bloc-notes, tableau, mur de notes, glossaire et base à
- *   construire, et le choix de groupe qui forme les équipes. L'atelier et le
+ *   construire, le Test étudiant dont la classe écrit elle-même les questions,
+ *   et le choix de groupe qui forme les équipes. L'atelier et le
  *   dépôt de fichiers restent dans produire : on y remet un travail à soi. Le
  *   texte de liaison, le lien et la leçon se lisent : découvrir.
  */
@@ -154,6 +155,7 @@ export const FAMILLE_PAR_MODULE = Object.freeze({
     parcours_etherpad: 'cooperer',
     parcours_base: 'cooperer',
     parcours_choix_groupe: 'cooperer',
+    parcours_test_etudiant: 'cooperer',
 });
 
 /**

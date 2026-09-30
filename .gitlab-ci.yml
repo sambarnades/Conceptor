@@ -84,6 +84,13 @@ validate:
     - node tests/run_grid_canvas_utils_tests.mjs
     - node tests/run_legal_notices.mjs
     - node tests/run_module_hygiene.mjs
+    # Langue du contenu (D87) et jetons de Série de choix uniques.
+    - node tests/run_langue_contenu.mjs
+    # Page de présentation /decouvrir/ : données, liens, publication (le volet navigateur
+    # demande Playwright, absent du runner : à lancer en local sans l'option).
+    - node tests/run_decouvrir.mjs --sans-navigateur
+    # Studio de la vidéo de présentation : réglages du montage (fonctions pures).
+    - node tests/run_video_demo_montage.mjs
 
 # -----------------------------------------------------------------------------
 # JOB 2 — Minification + déploiement GitLab Pages
@@ -115,7 +122,7 @@ pages:
     # ------------------------------------------------------------------
     - mkdir -p .public
     - |
-      cp -r assets css js index.html .public/
+      cp -r assets css js decouvrir index.html .public/
       cp _headers .public/ 2>/dev/null || true   # headers de sécurité Pages (audit S07)
       rm -rf .public/tests .public/docs .public/scripts
 

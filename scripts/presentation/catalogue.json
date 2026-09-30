@@ -1,0 +1,38 @@
+[
+  {
+    "id": "quiz-caramel",
+    "module": "SingleChoiceSet",
+    "titre": "Caramel en 7 questions",
+    "description": "Sept questions pour faire le tour de Caramel, avec une seule bonne réponse à chaque fois."
+  },
+  {
+    "id": "vocabulaire",
+    "module": "DialogCards",
+    "titre": "Le vocabulaire de Caramel",
+    "description": "Huit cartes à retourner pour apprivoiser les mots de Caramel, de H5P à la Sucrerie."
+  },
+  {
+    "id": "en-une-phrase",
+    "module": "DragTheWords",
+    "titre": "Caramel en quelques phrases",
+    "description": "Un court texte à compléter en glissant chaque mot à sa place."
+  },
+  {
+    "id": "mots-meles",
+    "module": "FindTheWords",
+    "titre": "Cherchez les mots de Caramel",
+    "description": "Huit mots de l'univers Caramel cachés dans une grille de lettres."
+  },
+  {
+    "id": "video-caramel",
+    "module": "InteractiveVideo",
+    "titre": "Découvrez Caramel en vidéo",
+    "description": "La présentation de Caramel 7, avec quatre pauses-question pour vérifier les points essentiels. Vidéo d’Emmanuel Gaunard, publiée sur PodEduc sous CC BY 4.0."
+  },
+  {
+    "id": "preparer-une-activite",
+    "module": "SortParagraphs",
+    "titre": "De l’idée à la classe",
+    "description": "Six étapes à remettre dans l’ordre pour préparer, relire et utiliser une activité avec vos élèves."
+  }
+]

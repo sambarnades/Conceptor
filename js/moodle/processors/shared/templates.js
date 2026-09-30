@@ -172,8 +172,11 @@ export const TEMPLATES = {
      * Template pour grades.xml d'une activité.
      * Nécessite: GRADE_ITEM_ID, CATEGORY_ID, ACTIVITY_TITLE, ACTIVITY_ID, TIMESTAMP
      * @param {string} moduleName - Nom du module (epikmatch, simplequiz, etc.)
+     * @param {{ grademax?: number }} [options] - `grademax` : note maximale écrite au
+     *        carnet (100 par défaut). Le Test (mod_quiz) y met la note de son `<grade>`
+     *        (10), comme Éléa : le fichier ne doit pas se contredire.
      */
-    getActivityGradesXml: (moduleName) => `<?xml version="1.0" encoding="UTF-8"?>
+    getActivityGradesXml: (moduleName, { grademax = 100 } = {}) => `<?xml version="1.0" encoding="UTF-8"?>
 <activity_gradebook>
   <grade_items>
     <grade_item id="{{GRADE_ITEM_ID}}">
@@ -187,7 +190,7 @@ export const TEMPLATES = {
       <idnumber>$@NULL@$</idnumber>
       <calculation>$@NULL@$</calculation>
       <gradetype>1</gradetype>
-      <grademax>100.00000</grademax>
+      <grademax>${Number(grademax).toFixed(5)}</grademax>
       <grademin>0.00000</grademin>
       <scaleid>$@NULL@$</scaleid>
       <outcomeid>$@NULL@$</outcomeid>
@@ -219,8 +222,11 @@ export const TEMPLATES = {
      * Nécessite: MODULE_ID, SECTION_ID, TIMESTAMP
      * @param {string} moduleName - Nom du module (epikmatch, simplequiz, page, etc.)
      * @param {string} moduleVersion - Version du module (ex: 2023112300)
+     * @param {{ completionGradeItemNumber?: number|null }} [options] -
+     *        `completionGradeItemNumber` : 0 = achevé quand l'activité reçoit une note
+     *        (le Test d'Éléa) ; `null` (défaut) = aucune condition de note.
      */
-    getModuleXml: (moduleName, moduleVersion = '2023112300') => `<?xml version="1.0" encoding="UTF-8"?>
+    getModuleXml: (moduleName, moduleVersion = '2023112300', { completionGradeItemNumber = null } = {}) => `<?xml version="1.0" encoding="UTF-8"?>
 <module id="{{MODULE_ID}}" version="${moduleVersion}">
   <modulename>${moduleName}</modulename>
   <sectionid>{{SECTION_ID}}</sectionid>
@@ -235,7 +241,7 @@ export const TEMPLATES = {
   <groupmode>0</groupmode>
   <groupingid>0</groupingid>
   <completion>2</completion>
-  <completiongradeitemnumber>$@NULL@$</completiongradeitemnumber>
+  <completiongradeitemnumber>${completionGradeItemNumber === null ? '$@NULL@$' : completionGradeItemNumber}</completiongradeitemnumber>
   <completionpassgrade>0</completionpassgrade>
   <completionview>0</completionview>
   <completionexpected>0</completionexpected>

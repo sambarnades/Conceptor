@@ -277,7 +277,7 @@ De applicatie is ontworpen voor gebruik op een computer, met donkere/lichte modi
 
 ### Nuttige links
 
-- **Licentie**: GNU GPL v3.0 of hoger — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **Licentie**: GNU AGPL v3.0 of hoger — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **Bug melden**: https://forge.apps.education.fr/caramel/caramel/-/issues
 - **Broncode**: https://forge.apps.education.fr/caramel/caramel
 - **Changelog**: https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

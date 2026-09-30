@@ -1,0 +1,51 @@
+{
+ "_mode_emploi": [
+  "Chaque entrée de « ressources » devient une carte de la section « Ressources » de /decouvrir/, dans l'ordre du fichier.",
+  "type : video | tutoriel | presentation | article | communaute (« article » s'affiche sous « On parle de Caramel »).",
+  "titre, description : du texte simple. source : qui publie (Podeduc, une académie, un blog…). date : AAAA-MM-JJ ou AAAA-MM (facultatif). duree : « 4 min 44 » (facultatif).",
+  "lien : l'adresse à ouvrir.",
+  "integration (facultatif, vidéos) : l'adresse du lecteur à intégrer. Pour Podeduc : https://podeduc.apps.education.fr/video/<numéro>-<nom>/?is_iframe=true. La vidéo se regarde alors sur la page, et son code d'intégration est proposé aux formateurs.",
+  "Un filtre n'apparaît que s'il a au moins une entrée : le premier article ajouté fera apparaître « On parle de Caramel »."
+ ],
+ "ressources": [
+  {
+   "type": "video",
+   "titre": "Caramel 7 : la présentation",
+   "description": "Une démonstration filmée dans le vrai Caramel : une activité, un parcours, et les limites de l'outil, dites franchement.",
+   "source": "Podeduc",
+   "date": "2026-09",
+   "duree": "4 min 44",
+   "lien": "https://podeduc.apps.education.fr/video/161411-caramel-7/",
+   "integration": "https://podeduc.apps.education.fr/video/161411-caramel-7/?is_iframe=true"
+  },
+  {
+   "type": "video",
+   "titre": "Découvrez la Sucrerie",
+   "description": "La bibliothèque publique des activités créées avec Caramel : consulter, télécharger, partager, dans de nombreux formats.",
+   "source": "Podeduc",
+   "lien": "https://podeduc.apps.education.fr/caramel/video/158264-decouvrez-la-sucrerie/",
+   "integration": "https://podeduc.apps.education.fr/video/158264-decouvrez-la-sucrerie/?is_iframe=true"
+  },
+  {
+   "type": "tutoriel",
+   "titre": "Le wiki de Caramel",
+   "description": "Le guide complet pour enseignants : démarrer, choisir une activité, la relire dans l'éditeur, l'importer sur Éléa ou Magistère.",
+   "source": "Forge des communs numériques éducatifs",
+   "lien": "https://forge.apps.education.fr/caramel/caramel/-/wikis/home"
+  },
+  {
+   "type": "communaute",
+   "titre": "Le salon Tchap de Caramel",
+   "description": "Poser une question, partager une astuce, suivre les nouveautés avec les autres utilisateurs.",
+   "source": "Tchap",
+   "lien": "https://edurl.fr/caramel-tchap"
+  },
+  {
+   "type": "communaute",
+   "titre": "Le code et les tickets",
+   "description": "Signaler un problème, proposer une idée, lire le code : Caramel est un logiciel libre.",
+   "source": "Forge des communs numériques éducatifs",
+   "lien": "https://forge.apps.education.fr/caramel/caramel"
+  }
+ ]
+}

@@ -224,6 +224,8 @@ try {
             chemins: Object.keys(files).sort(),
             questionsXml: files['questions.xml'] || '',
             quizXml: Object.entries(files).find(([p]) => /activities\/quiz_\d+\/quiz\.xml$/.test(p))?.[1] || '',
+            quizModuleXml: Object.entries(files).find(([p]) => /activities\/quiz_\d+\/module\.xml$/.test(p))?.[1] || '',
+            quizGradesXml: Object.entries(files).find(([p]) => /activities\/quiz_\d+\/grades\.xml$/.test(p))?.[1] || '',
             palette: routeur.modulesDisponibles('elea').map(m => m.cle),
             palettes: Object.fromEntries(['elea', 'magistere', 'moodle'].map(p =>
                 [p, routeur.modulesDisponibles(p).map(m => m.cle)])),
@@ -408,6 +410,20 @@ try {
                 .filter(([, v]) => typeof v === 'string' && /sucrerie/i.test(v))
                 .map(([p]) => p),
         };
+    }, PLAN);
+
+    // Réglages du Test (D86) : posés sur la CARTE du parcours, ils doivent traverser
+    // `planVersActivites` (healLatex → canonicalizeTestModel) jusqu'au quiz.xml du cours.
+    const quizRegle = await page.evaluate(async (plan) => {
+        const { planVersActivites, IDENTITE_CARAMEL } = await import('/js/parcours/parcours-builder.js');
+        const { assembleCourseFiles } = await import('/js/moodle/mbz-course-builder.js');
+        const p = structuredClone(plan);
+        const carte = p.etapes.flatMap(e => e.cartes).find(c => c.module === 'test_elea');
+        carte.contenu.quiz_settings = { preferredbehaviour: 'interactive', attempts: 2, navmethod: 'sequential',
+            questionsperpage: 1, review: 'marks', overallfeedback: [{ from: 0, to: 59, feedback: 'Reprenez la leçon.' }, { from: 60, to: 100, feedback: 'Bien.' }] };
+        const { activities, sections } = await planVersActivites(p);
+        const { files } = assembleCourseFiles({ courseTitle: p.titre, timestamp: 1756000000, activities, sections, identite: IDENTITE_CARAMEL });
+        return Object.entries(files).find(([k]) => /activities\/quiz_\d+\/quiz\.xml$/.test(k))?.[1] || '';
     }, PLAN);
 
     console.log('\n── Les sept cartes du plan ─────────────────────────────────');
@@ -751,6 +767,34 @@ try {
         (r.quizXml.match(/<sumgrades>[^<]*<\/sumgrades>/) || [''])[0]);
     ok('les identifiants de banque tiennent dans la plage haute de ce Test',
         [...qbes].every(id => Number(id) >= r.quizBase && Number(id) < r.quizBase + 100000));
+
+    console.log('\n── Les réglages du Test (D86) ──────────────────────────────');
+    const val = (xml, tag) => (xml.match(new RegExp(`<${tag}>([^<]*)</${tag}>`)) || [])[1];
+    const pagesDe = (xml) => [...xml.matchAll(/<page>(\d+)<\/page>/g)].map(m => m[1]).join(',');
+    // Sans réglage : les valeurs d'un Test créé sur Éléa (relevé sept-2026).
+    const ELEA = { graceperiod: '86400', preferredbehaviour: 'deferredfeedback', attempts_number: '0', navmethod: 'free',
+        reviewattempt: '69904', reviewcorrectness: '69904', reviewmaxmarks: '69904', reviewmarks: '69904',
+        reviewspecificfeedback: '69904', reviewgeneralfeedback: '69904', reviewrightanswer: '69904',
+        reviewoverallfeedback: '4368', precreateattempts: '$@NULL@$', shuffleanswers: '1' };
+    ok('sans réglage, le Test du parcours porte les valeurs d’Éléa',
+        Object.entries(ELEA).every(([t, v]) => val(r.quizXml, t) === v),
+        Object.entries(ELEA).filter(([t, v]) => val(r.quizXml, t) !== v).map(([t]) => `${t}=${val(r.quizXml, t)}`).join(' '));
+    ok('sans réglage, toutes les questions sur une page (questionsperpage 0, slots en page 1)',
+        val(r.quizXml, 'questionsperpage') === '0' && pagesDe(r.quizXml) === '1,1,1');
+    // Réglé sur la carte : interactif, 2 tentatives, séquentiel, 1 par page, note seule.
+    const REGLE = { preferredbehaviour: 'interactive', attempts_number: '2', navmethod: 'sequential', questionsperpage: '1',
+        reviewattempt: '65536', reviewcorrectness: '65536', reviewmaxmarks: '69904', reviewmarks: '69904',
+        reviewspecificfeedback: '65536', reviewgeneralfeedback: '65536', reviewrightanswer: '0', reviewoverallfeedback: '4368' };
+    ok('les réglages posés sur la carte atteignent le quiz.xml du cours',
+        Object.entries(REGLE).every(([t, v]) => val(quizRegle, t) === v),
+        Object.entries(REGLE).filter(([t, v]) => val(quizRegle, t) !== v).map(([t]) => `${t}=${val(quizRegle, t)}`).join(' '));
+    ok('une question par page : les 3 slots en pages 1, 2, 3', pagesDe(quizRegle) === '1,2,3', pagesDe(quizRegle));
+    ok('le feedback global de la carte devient deux plages de note (0-6, 6-11)',
+        /<feedbacktext>&lt;p&gt;Bien\.&lt;\/p&gt;<\/feedbacktext>\s*<feedbacktextformat>1<\/feedbacktextformat>\s*<mingrade>6\.00000<\/mingrade>\s*<maxgrade>11\.00000<\/maxgrade>/.test(quizRegle)
+        && /<mingrade>0\.00000<\/mingrade>\s*<maxgrade>6\.00000<\/maxgrade>/.test(quizRegle));
+    ok('achèvement « note reçue » et carnet noté sur la note du Test, comme Éléa',
+        /<completion>2<\/completion>\s*<completiongradeitemnumber>0<\/completiongradeitemnumber>/.test(r.quizModuleXml)
+        && val(r.quizGradesXml, 'grademax') === val(r.quizXml, 'grade') && val(r.quizXml, 'grade') === '10.00000');
 
     console.log('\n── Le pool de fichiers (le .h5p embarqué) ──────────────────');
     const hash = r.voies[0]?.contenthash || '';

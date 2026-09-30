@@ -53,3 +53,7 @@ tests/.export-elea/
 # Copie DÉSARMÉE du handler YouTube, écrite et supprimée par
 # tests/qa-manuel/h-sous-titres-youtube.mjs (subsiste si le scénario est interrompu).
 tests/qa-manuel/.temoin-youtube.js
+
+# Vidéo de présentation (scripts/video-demo/tourner.mjs) : images, voix témoin et
+# montages, régénérables. Seules les réponses du modèle (tests/fixtures/video-demo/) sont versionnables.
+tests/.video-demo/

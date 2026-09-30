@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Table de montage · Caramel 7</title>
+<style>
+/* La table de montage : deux pistes (image, voix) sur une frise, un bloc à régler en dessous. */
+:root {
+  --fond: #eef1f5; --surface: #ffffff; --encre: #17212e; --doux: #5a6778; --filet: #d9e0e8;
+  --accent: #0b5cad; --accent-fond: #e5eef9; --rouge: #c62828; --rouge-fond: #fdecec; --ok: #1f7a3f; --caramel: #d97b1c;
+  --p0: #7b8da3; --p1: #2f7de1; --p2: #8a5cd6; --p3: #d97b1c;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --fond: #12171e; --surface: #1a212b; --encre: #e7ecf2; --doux: #9aa7b6; --filet: #2c3643;
+    --accent: #7db4ee; --accent-fond: #1c2e44; --rouge: #ff6b6b; --rouge-fond: #3a1d1f; --ok: #6fd08f; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fond); color: var(--encre); font-size: 15px; }
+button, a.bouton { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--filet); background: var(--surface); color: var(--encre); padding: 8px 14px; text-decoration: none; display: inline-block; }
+button:hover:not(:disabled), a.bouton:hover { border-color: var(--accent); }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, a.bouton:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.principal, a.bouton.principal { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+[hidden] { display: none !important; }
+button.rouge { color: var(--rouge); border-color: var(--rouge); background: var(--rouge-fond); font-weight: 600; }
+
+.barre { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 10px 18px; background: var(--surface); border-bottom: 1px solid var(--filet); }
+.barre h1 { font-size: 17px; margin: 0 12px 0 0; display: flex; align-items: center; gap: 10px; }
+.barre .droite { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.infos { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 12px 18px; }
+.infos b { font-variant-numeric: tabular-nums; }
+#coupes { color: var(--rouge); font-weight: 600; }
+#coupes.aucune { color: var(--ok); }
+.zoom { margin-left: auto; display: flex; gap: 6px; }
+.zoom button { padding: 4px 10px; }
+
+.frise { margin: 0 18px; background: var(--surface); border: 1px solid var(--filet); border-radius: 10px; overflow-x: auto; overflow-y: hidden; position: relative; }
+.contenu { position: relative; height: 196px; }
+.regle { position: absolute; top: 0; left: 0; right: 0; height: 24px; border-bottom: 1px solid var(--filet); font: 11px ui-monospace, Menlo, monospace; color: var(--doux); }
+.regle span { position: absolute; top: 5px; transform: translateX(-50%); }
+.regle i { position: absolute; bottom: 0; width: 1px; height: 6px; background: var(--filet); }
+.piste-nom { position: sticky; left: 0; z-index: 3; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--doux); background: var(--surface); padding: 2px 8px; width: max-content; border-radius: 0 6px 6px 0; }
+.clip { position: absolute; border-radius: 6px; overflow: hidden; cursor: pointer; }
+.clip.image { top: 46px; height: 52px; color: #fff; font-size: 12px; font-weight: 600; padding: 6px 8px; white-space: nowrap; }
+.clip.image .rallonge { position: absolute; top: 0; bottom: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(255,255,255,.35) 0 6px, rgba(255,255,255,.12) 6px 12px); border-left: 2px dashed rgba(255,255,255,.85); }
+.clip.image .poignee { position: absolute; top: 0; bottom: 0; right: 0; width: 10px; cursor: ew-resize; background: rgba(0,0,0,.18); }
+.clip.image .poignee::after { content: ""; position: absolute; left: 3px; top: 16px; bottom: 16px; width: 4px; border-left: 2px solid #fff; border-right: 2px solid #fff; opacity: .8; }
+.clip.voix { top: 128px; height: 58px; background: var(--accent-fond); border: 1px solid var(--filet); }
+.clip.voix canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.clip.voix .vide { position: absolute; top: 0; bottom: 0; right: 0; border-left: 2px dashed var(--doux); background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(90,103,120,.12) 6px 12px); }
+.clip.voix .ciseaux { position: absolute; top: -1px; bottom: -1px; width: 3px; background: var(--rouge); }
+.clip.voix .ciseaux::after { content: "coupé"; position: absolute; top: 2px; right: 5px; font: 700 10px/1 -apple-system, sans-serif; color: var(--rouge); background: var(--surface); padding: 2px 4px; border-radius: 3px; }
+.clip.choisi { outline: 3px solid var(--caramel); outline-offset: 1px; z-index: 2; }
+.clip.voix.absente { background: transparent; border-style: dashed; }
+#tete { position: absolute; top: 24px; bottom: 0; width: 2px; background: var(--rouge); pointer-events: none; z-index: 4; }
+
+.detail { margin: 16px 18px 24px; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+button.caramel { background: linear-gradient(180deg, #f0a24b, #d97b1c); color: #fff; border-color: #c96d12; font-weight: 700; }
+
+/* L'édition de la prise : la forme d'onde entière, la part gardée entre deux poignées. */
+.audio { border-top: 1px solid var(--filet); margin-top: 16px; padding-top: 14px; }
+.audio h3 { margin: 0 0 10px; font-size: 15px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.audio h3 small { font-weight: 400; color: var(--doux); }
+.onde { position: relative; height: 130px; border-radius: 8px; background: var(--fond); overflow: hidden; touch-action: none; user-select: none; }
+.onde canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.onde .ote { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--fond) 70%, transparent); backdrop-filter: grayscale(1); }
+.onde .bord { position: absolute; top: 0; bottom: 0; width: 14px; margin-left: -7px; cursor: ew-resize; z-index: 2; }
+.onde .bord::before { content: ""; position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: var(--caramel); }
+.onde .bord::after { content: ""; position: absolute; left: 1px; top: 50%; width: 12px; height: 28px; margin-top: -14px; border-radius: 4px; background: var(--caramel); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.onde .bord:focus-visible { outline: 2px solid var(--accent); }
+.onde .lecture { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--rouge); z-index: 3; pointer-events: none; }
+.onde .place { position: absolute; top: 0; bottom: 0; border-left: 2px dashed var(--doux); z-index: 1; pointer-events: none; }
+.onde .place::after { content: "fin du bloc"; position: absolute; top: 4px; left: 4px; font: 10px/1 -apple-system, sans-serif; color: var(--doux); white-space: nowrap; }
+.reglages { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 14px; align-items: center; margin: 12px 0; }
+.reglages label { color: var(--doux); }
+.reglages .ligne { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.reglages input[type=range] { width: min(260px, 100%); accent-color: var(--caramel); }
+.reglages output { min-width: 64px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.reglages button { padding: 4px 10px; }
+.carte { background: var(--surface); border: 1px solid var(--filet); border-radius: 10px; padding: 16px 18px; }
+.carte h2 { margin: 0 0 4px; font-size: 20px; }
+.carte .sous { color: var(--doux); margin: 0 0 14px; font-variant-numeric: tabular-nums; }
+.reglage { display: flex; align-items: center; gap: 10px; margin: 8px 0 14px; flex-wrap: wrap; }
+.reglage output { min-width: 70px; text-align: center; font: 700 20px/1 -apple-system, sans-serif; font-variant-numeric: tabular-nums; }
+.diag { padding: 10px 12px; border-radius: 8px; margin: 0 0 12px; line-height: 1.45; }
+.diag.coupe { background: var(--rouge-fond); color: var(--rouge); }
+.diag.ok { background: color-mix(in srgb, var(--ok) 12%, var(--surface)); color: var(--ok); }
+.diag.neutre { background: var(--fond); color: var(--doux); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.texte { color: var(--doux); line-height: 1.55; margin: 0; }
+.aide { color: var(--doux); font-size: 14px; line-height: 1.5; margin: 0; }
+.aide ol { margin: 6px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
+
+@media (max-width: 900px) { .detail { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<header class="barre">
+  <h1><img src="/logo.svg" alt="" width="26" height="26">Table de montage · Caramel 7</h1>
+  <a class="bouton" href="/" id="vers-studio">← Studio</a>
+  <div class="droite">
+    <button id="apercu" type="button" title="Les voix posées sur l’image, sans habillage (une minute environ)">Aperçu rapide</button>
+    <button id="generer" class="caramel" type="button" title="Montage des voix, caméra, cartons animés, musique sous la voix, copie sur le Bureau (6 minutes environ)">▶ Générer la vidéo</button>
+  </div>
+</header>
+
+<div class="infos">
+  <span>Durée : <b id="duree"></b></span>
+  <span>Rallonges : <b id="total-rallonges"></b></span>
+  <span id="coupes"></span>
+  <button id="proposer" type="button" class="rouge" hidden>Donner +2 s aux blocs coupés</button>
+  <div class="zoom"><button id="dezoom" type="button" aria-label="Dézoomer">−</button><button id="zoom" type="button" aria-label="Zoomer">+</button></div>
+</div>
+
+<div class="frise" id="frise">
+  <div class="contenu" id="contenu">
+    <div class="regle" id="regle"></div>
+    <div class="piste-nom" style="position:absolute; top: 28px">Image</div>
+    <div class="piste-nom" style="position:absolute; top: 110px">Voix</div>
+    <div id="tete" hidden></div>
+  </div>
+</div>
+
+<section class="detail">
+  <div class="carte" id="detail"></div>
+  <div class="carte">
+    <p class="aide"><b>Une voix coupée ne se récupère pas</b> : ce qui dépassait la place du bloc n’a pas été enregistré. Pour la sauver :</p>
+    <div class="aide"><ol>
+      <li>donner une <b>rallonge</b> au bloc : tirer le bord droit de son image, ou − / + ci-contre ; l’image reste figée pendant la rallonge ;</li>
+      <li><b>réenregistrer</b> ce bloc dans le studio : le micro continue pendant la rallonge ;</li>
+      <li><b>Générer la vidéo</b> : le pourcentage s’affiche, la vidéo finale est recopiée dans « Caramel 7 - vidéos » sur le Bureau.</li>
+    </ol></div>
+    <p class="aide" style="margin-top:14px"><b>Retoucher une prise</b> sans la réenregistrer : tirer les poignées caramel pour couper un bruit au début ou à la fin, régler le volume, avancer ou retarder la voix de quelques centièmes. La prise d’origine reste intacte sur le disque ; « Rétablir » revient en arrière.</p>
+  </div>
+</section>
+
+<audio id="lecteur" hidden></audio>
+
+<script src="/travail.js"></script>
+
+<script>
+(async () => {
+  const $ = s => document.querySelector(s);
+  const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const sec = s => `${s.toFixed(1).replace('.', ',')} s`;
+  const COULEURS = ['var(--p0)', 'var(--p1)', 'var(--p2)', 'var(--p3)'];
+  const ORIGINE = 28;                               // marge à gauche de la frise (px)
+
+  const { duree: DUREE, marques } = await (await fetch('/marques.json', { cache: 'no-store' })).json();
+  let { rallonges, audio, textes } = await (await fetch('/montage', { cache: 'no-store' })).json();
+  rallonges = rallonges || {}; audio = audio || {}; textes = textes || {};
+  let partie = 0;
+  const blocs = marques.map((m, k) => {
+    if (m.id === 'saisie') partie = 1; else if (m.id === 'commutateur') partie = 2; else if (m.id === 'limites') partie = 3;
+    const coupe = k + 1 < marques.length ? marques[k + 1].debut : DUREE;
+    return { id: m.id, debut: m.debut, coupe, place: coupe - m.debut, partie, texte: m.phrases.map(p => p.texte).join(' ') };
+  });
+  const demande = new URLSearchParams(location.search).get('bloc');
+  let choisi = Math.max(0, blocs.findIndex(b => b.id === (demande || 'limites')));
+  let echelle = 1;                                  // px par seconde
+  const prises = new Map();                         // id → { duree, niveaux, coupee }
+
+  /* ---------------- Les prises : forme d'onde et diagnostic ---------------- */
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  async function chargerPrises() {
+    const r = await (await fetch('/prises', { cache: 'no-store' })).json();
+    prises.clear();
+    await Promise.all(r.prises.map(async p => {
+      try {
+        const buf = await ctx.decodeAudioData(await (await fetch(`/prises/${p.id}.wav?${p.le}`)).arrayBuffer());
+        const x = buf.getChannelData(0), pas = Math.round(buf.sampleRate * 0.05), niveaux = [];
+        for (let i = 0; i + pas <= x.length; i += pas) { let s = 0; for (let j = i; j < i + pas; j++) s += x[j] * x[j]; niveaux.push(Math.sqrt(s / pas)); }
+        // Coupée : la voix se fait encore entendre dans les 100 dernières ms, nettement au-dessus du
+        // bruit de fond de la pièce (+5 dB) et pas loin du niveau de la voix (−12 dB). Mesuré sur
+        // les vraies prises : seules celles qu'on entend tronquées passent ce seuil.
+        const tri = [...niveaux].sort((a, b) => a - b), voix = tri[Math.floor(tri.length * 0.9)] || 0, fond = tri[Math.floor(tri.length * 0.05)] || 0;
+        const seuil = Math.max(fond * Math.pow(10, 5 / 20), voix * Math.pow(10, -12 / 20)), fin = Math.max(...niveaux.slice(-2));
+        prises.set(p.id, { buf, duree: buf.duration, le: p.le, niveaux, crete: Math.max(...niveaux, 1e-4), seuil, finForte: voix > 0.004 && fin > seuil });
+      } catch { /* prise illisible : ignorée */ }
+    }));
+    // Une fin forte n'est pas une coupure quand le bloc suivant a été enregistré dans la même
+    // prise continue : la phrase s'y poursuit sans rupture.
+    blocs.forEach((b, k) => {
+      const p = prises.get(b.id), q = blocs[k + 1] && prises.get(blocs[k + 1].id);
+      if (p) p.coupee = p.finForte && !(q && Math.abs(q.le - p.le) < 3000);
+    });
+  }
+
+  /* ---------------- La chronologie montée ---------------- */
+  function chrono() {
+    let decalage = 0;
+    for (const b of blocs) { b.rallonge = Number(rallonges[b.id]) || 0; b.debutMonte = b.debut + decalage; decalage += b.rallonge; }
+    return { total: DUREE + decalage, rallonges: decalage };
+  }
+
+  function peindre() {
+    const { total, rallonges: r } = chrono();
+    $('#duree').textContent = mmss(total + 1.5);
+    $('#total-rallonges').textContent = r ? `+ ${sec(r)}` : 'aucune';
+    const coupes = blocs.filter(b => prises.get(b.id)?.coupee);
+    const aRallonger = coupes.filter(b => !b.rallonge);
+    $('#coupes').textContent = coupes.length ? `Voix coupée : ${coupes.map(b => b.id).join(', ')}` : 'Aucune voix coupée';
+    $('#coupes').className = coupes.length ? '' : 'aucune';
+    $('#proposer').hidden = !aRallonger.length;
+
+    const contenu = $('#contenu');
+    contenu.style.width = `${(total + 2) * echelle + ORIGINE + 10}px`;
+    contenu.querySelectorAll('.clip').forEach(c => c.remove());
+    const regle = $('#regle');
+    regle.replaceChildren();
+    const pasRegle = echelle > 12 ? 5 : echelle > 5 ? 10 : 30;
+    for (let t = 0; t <= total + 1; t += pasRegle) {
+      const x = ORIGINE + t * echelle;
+      regle.insertAdjacentHTML('beforeend', `<span style="left:${x}px">${mmss(t)}</span><i style="left:${x}px"></i>`);
+    }
+    blocs.forEach((b, i) => {
+      const x = ORIGINE + b.debutMonte * echelle, w = (b.place + b.rallonge) * echelle;
+      const img = document.createElement('div');
+      img.className = 'clip image' + (i === choisi ? ' choisi' : '');
+      img.style.cssText = `left:${x}px; width:${Math.max(4, w - 2)}px; background:${COULEURS[b.partie]}`;
+      img.title = `${b.id} · ${sec(b.place)}${b.rallonge ? ` + ${sec(b.rallonge)}` : ''}`;
+      img.innerHTML = `${w > 60 ? b.id : ''}${b.rallonge ? `<div class="rallonge" style="width:${b.rallonge * echelle}px"></div>` : ''}<div class="poignee" data-i="${i}" title="Tirer pour rallonger"></div>`;
+      img.dataset.i = i;
+      contenu.append(img);
+
+      const p = prises.get(b.id);
+      const voix = document.createElement('div');
+      voix.className = 'clip voix' + (p ? '' : ' absente') + (i === choisi ? ' choisi' : '');
+      voix.style.cssText = `left:${x}px; width:${Math.max(4, w - 2)}px`;
+      voix.dataset.i = i;
+      if (p) {
+        const c = document.createElement('canvas');
+        c.width = Math.max(4, Math.round(w - 2)) * 2; c.height = 116;
+        const g = c.getContext('2d'), n = p.niveaux.length, lp = (p.duree * echelle * 2) / n, r = reglage(b.id);
+        g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+        // La prise telle qu'elle sera montée : décalée, au gain réglé, ses parts coupées en grisé.
+        p.niveaux.forEach((v, k) => {
+          const tau = k * 0.05, h = Math.min(112, Math.max(2, (v / p.crete) * 104 * Math.pow(10, r.gain / 20)));
+          g.globalAlpha = tau >= r.debut && tau < r.fin ? 1 : 0.18;
+          g.fillRect(k * lp + r.decalage * echelle * 2, 58 - h / 2, Math.max(1, lp - 0.5), h);
+        });
+        voix.append(c);
+        // La prise plus courte que la place (rallonge ajoutée après l'enregistrement) : la part vide.
+        const vide = (b.place + b.rallonge) - p.duree;
+        if (vide > 0.15) voix.insertAdjacentHTML('beforeend', `<div class="vide" style="width:${vide * echelle}px" title="Place vide : à réenregistrer"></div>`);
+        if (p.coupee) voix.insertAdjacentHTML('beforeend', `<div class="ciseaux" style="left:${Math.min(w - 5, p.duree * echelle - 2)}px"></div>`);
+      }
+      contenu.append(voix);
+    });
+    peindreDetail();
+  }
+
+  function peindreDetail() {
+    const b = blocs[choisi], p = prises.get(b.id), place = b.place + b.rallonge;
+    let diag;
+    if (!p) diag = `<p class="diag neutre">Pas encore de prise pour ce bloc.</p>`;
+    else if (p.coupee && p.duree < place - 0.15) diag = `<p class="diag coupe">La prise actuelle (${sec(p.duree)}) a été coupée avant la rallonge : <b>réenregistre ce bloc</b>, tu disposes maintenant de ${sec(place)}.</p>`;
+    else if (p.coupee) diag = `<p class="diag coupe">La voix va jusqu’à la fin de la prise (${sec(p.duree)}) : elle est coupée. Donne une rallonge, puis réenregistre ce bloc.</p>`;
+    else diag = `<p class="diag ok">Prise complète : ${sec(p.duree)}, la voix s’arrête avant la fin.</p>`;
+    $('#detail').innerHTML = `
+      <h2>${b.id}</h2>
+      <p class="sous">${mmss(b.debutMonte)} → ${mmss(b.debutMonte + place)} · scène de ${sec(b.place)}</p>
+      <div class="reglage"><span>Rallonge</span>
+        <button type="button" id="moins" aria-label="Moins 0,5 seconde">−</button><output id="valeur">${sec(b.rallonge)}</output><button type="button" id="plus" aria-label="Plus 0,5 seconde">+</button>
+        <span class="texte">image figée à la fin du bloc</span></div>
+      ${diag}
+      <div class="actions">
+        ${p ? '<button type="button" id="ecouter">▶ Prise d’origine</button>' : ''}
+        <a class="bouton principal" href="/?bloc=${encodeURIComponent(b.id)}">● Réenregistrer dans le studio</a>
+      </div>
+      ${p ? `<div class="audio">
+        <h3>Retoucher la prise <small id="a-resume"></small></h3>
+        <div class="onde" id="onde"><canvas></canvas><div class="ote" id="ote-a"></div><div class="ote" id="ote-b"></div>
+          <div class="place" id="a-place"></div>
+          <div class="bord" id="bord-debut" tabindex="0" role="slider" aria-label="Début gardé"></div><div class="bord" id="bord-fin" tabindex="0" role="slider" aria-label="Fin gardée"></div>
+          <div class="lecture" id="a-lecture" hidden></div></div>
+        <div class="reglages">
+          <label for="a-gain">Volume</label>
+          <div class="ligne"><input type="range" id="a-gain" min="-12" max="12" step="0.5"><output id="a-gain-v"></output></div>
+          <label>Calage</label>
+          <div class="ligne"><button type="button" id="a-avancer" title="La voix arrive 0,05 s plus tôt">← plus tôt</button><output id="a-calage"></output><button type="button" id="a-retarder" title="La voix arrive 0,05 s plus tard">plus tard →</button></div>
+        </div>
+        <div class="actions">
+          <button type="button" id="a-ecouter">▶ Écouter la retouche</button>
+          <button type="button" id="a-rogner" title="Coupe ce qui précède la première syllabe et suit la dernière (souffle, clic, bruit de chaise)">Rogner les blancs</button>
+          <button type="button" id="a-retablir">Rétablir la prise d’origine</button>
+        </div></div>` : ''}
+      <p class="texte" style="margin-top:14px">${textes[b.id] ? `<b>Texte réécrit au prompteur :</b> ${textes[b.id]}` : b.texte}</p>`;
+    if (p) editerAudio(b, p);
+    $('#moins').onclick = () => regler(b.id, b.rallonge - 0.5);
+    $('#plus').onclick = () => regler(b.id, b.rallonge + 0.5);
+    const ec = $('#ecouter');
+    if (ec) ec.onclick = () => {
+      const a = $('#lecteur');
+      if (!a.paused && a.dataset.id === b.id) { a.pause(); return; }
+      a.src = `/prises/${b.id}.wav?${Date.now()}`; a.dataset.id = b.id; a.play();
+    };
+  }
+
+  /* ---------------- L'édition d'une prise ---------------- */
+  /** Même règle que le montage (montage.mjs, reglageAudio). */
+  function reglage(id) {
+    const a = audio[id] || {}, duree = prises.get(id)?.duree ?? 0;
+    const debut = Math.min(Number(a.debut) || 0, Math.max(0, duree - 0.1));
+    return { debut, fin: Math.max(debut + 0.05, Math.min(duree, a.fin ?? duree)), gain: Number(a.gain) || 0, decalage: Number(a.decalage) || 0 };
+  }
+  let sauvegardeAudio = null;
+  function reglerAudio(id, changement, repeindre = true) {
+    const r = { ...reglage(id), ...changement }, duree = prises.get(id).duree;
+    const propre = {};
+    if (r.debut > 0.005) propre.debut = Math.round(r.debut * 100) / 100;
+    if (r.fin < duree - 0.005) propre.fin = Math.round(r.fin * 100) / 100;
+    if (r.gain) propre.gain = r.gain;
+    if (Math.abs(r.decalage) > 0.001) propre.decalage = Math.round(r.decalage * 100) / 100;
+    if (Object.keys(propre).length) audio[id] = propre; else delete audio[id];
+    if (repeindre) peindre(); else { dessinerOnde(); }
+    clearTimeout(sauvegardeAudio);
+    sauvegardeAudio = setTimeout(() => fetch('/montage', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ audio }) }), 250);
+  }
+
+  let ondeCourante = null;
+  function dessinerOnde() {
+    const o = ondeCourante; if (!o) return;
+    const { b, p } = o, r = reglage(b.id), onde = $('#onde');
+    if (!onde) return;
+    const L = onde.clientWidth, H = onde.clientHeight, dpr = devicePixelRatio || 1;
+    const c = onde.querySelector('canvas');
+    c.width = L * dpr; c.height = H * dpr;
+    const g = c.getContext('2d');
+    g.scale(dpr, dpr);
+    // La vue couvre la prise entière, ou la place du bloc si elle est plus longue.
+    const vue = Math.max(p.duree, b.place + b.rallonge) + 0.2;
+    o.vue = vue;
+    const x = t => (t / vue) * L;
+    const x0 = p.buf.getChannelData(0), sr = p.buf.sampleRate, gain = Math.pow(10, r.gain / 20);
+    g.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+    for (let px = 0; px < L; px++) {
+      const a = Math.floor((px / L) * vue * sr), z = Math.min(x0.length, Math.floor(((px + 1) / L) * vue * sr));
+      if (a >= x0.length) break;
+      let m = 0; for (let i = a; i < z; i++) { const v = Math.abs(x0[i]); if (v > m) m = v; }
+      const h = Math.min(H - 6, Math.max(1, m * gain * (H - 6)));
+      g.fillRect(px, (H - h) / 2, 1, h);
+    }
+    // La part coupée, grisée ; les poignées ; la fin de la place du bloc (au-delà, la voix déborde).
+    $('#ote-a').style.cssText = `left:0; width:${x(r.debut)}px`;
+    $('#ote-b').style.cssText = `left:${x(r.fin)}px; right:0`;
+    $('#bord-debut').style.left = `${x(r.debut)}px`;
+    $('#bord-fin').style.left = `${x(r.fin)}px`;
+    $('#a-place').style.left = `${x(b.place + b.rallonge - r.decalage)}px`;
+    $('#a-gain').value = r.gain;
+    $('#a-gain-v').textContent = `${r.gain > 0 ? '+' : ''}${String(r.gain).replace('.', ',')} dB`;
+    $('#a-calage').textContent = `${r.decalage > 0 ? '+' : ''}${r.decalage.toFixed(2).replace('.', ',')} s`;
+    const retouches = [r.debut > 0.005 && `début coupé à ${sec(r.debut)}`, r.fin < p.duree - 0.005 && `fin coupée à ${sec(r.fin)}`].filter(Boolean);
+    $('#a-resume').textContent = retouches.length ? `· ${retouches.join(', ')}` : `· ${sec(p.duree)}, entière`;
+  }
+
+  function editerAudio(b, p) {
+    ondeCourante = { b, p, vue: 1 };
+    dessinerOnde();
+    const onde = $('#onde');
+    const temps = ev => { const r = onde.getBoundingClientRect(); return Math.max(0, Math.min(p.duree, ((ev.clientX - r.left) / r.width) * ondeCourante.vue)); };
+    for (const bord of ['debut', 'fin']) {
+      const el = $(`#bord-${bord}`);
+      el.addEventListener('pointerdown', e => {
+        e.preventDefault(); e.stopPropagation();
+        el.setPointerCapture(e.pointerId);
+        const bouger = ev => {
+          const r = reglage(b.id), t = temps(ev);
+          reglerAudio(b.id, bord === 'debut' ? { debut: Math.min(t, r.fin - 0.1) } : { fin: Math.max(t, r.debut + 0.1) }, false);
+        };
+        el.addEventListener('pointermove', bouger);
+        el.addEventListener('pointerup', () => { el.removeEventListener('pointermove', bouger); peindre(); }, { once: true });
+      });
+      el.addEventListener('keydown', e => {
+        const pas = e.shiftKey ? 0.5 : 0.05, r = reglage(b.id);
+        const d = e.key === 'ArrowLeft' ? -pas : e.key === 'ArrowRight' ? pas : 0;
+        if (!d) return;
+        e.preventDefault();
+        reglerAudio(b.id, bord === 'debut' ? { debut: Math.max(0, Math.min(r.debut + d, r.fin - 0.1)) } : { fin: Math.min(p.duree, Math.max(r.fin + d, r.debut + 0.1)) }, false);
+      });
+    }
+    // Un clic ailleurs dans l'onde : écouter à partir de là.
+    onde.addEventListener('pointerdown', e => { if (!e.target.closest('.bord')) ecouterRetouche(b, p, temps(e)); });
+    $('#a-gain').oninput = e => reglerAudio(b.id, { gain: Number(e.target.value) }, false);
+    $('#a-gain').onchange = () => peindre();
+    $('#a-avancer').onclick = () => reglerAudio(b.id, { decalage: Math.max(-2, reglage(b.id).decalage - 0.05) });
+    $('#a-retarder').onclick = () => reglerAudio(b.id, { decalage: Math.min(2, reglage(b.id).decalage + 0.05) });
+    $('#a-retablir').onclick = () => { delete audio[b.id]; reglerAudio(b.id, {}); };
+    $('#a-ecouter').onclick = () => ecouterRetouche(b, p);
+    $('#a-rogner').onclick = () => {
+      // La première et la dernière fenêtre de 50 ms nettement au-dessus du fond, avec un peu d'air.
+      const n = p.niveaux, k0 = n.findIndex(v => v > p.seuil), k1 = n.length - 1 - [...n].reverse().findIndex(v => v > p.seuil);
+      if (k0 < 0) return;
+      reglerAudio(b.id, { debut: Math.max(0, k0 * 0.05 - 0.15), fin: Math.min(p.duree, (k1 + 1) * 0.05 + 0.3) });
+    };
+  }
+
+  /** Écoute la prise retouchée (part gardée, gain), à partir de `depuis` secondes. */
+  let retouche = null;
+  function ecouterRetouche(b, p, depuis) {
+    if (retouche) { try { retouche.s.stop(); } catch { /* fini */ } const meme = depuis === undefined; retouche = null; $('#a-ecouter').textContent = '▶ Écouter la retouche'; if (meme) return; }
+    ctx.resume();
+    const r = reglage(b.id), a = Math.max(r.debut, depuis ?? r.debut);
+    if (a >= r.fin) return;
+    const s = ctx.createBufferSource(), g = ctx.createGain();
+    s.buffer = p.buf; g.gain.value = Math.pow(10, r.gain / 20);
+    s.connect(g).connect(ctx.destination);
+    s.start(0, a, r.fin - a);
+    retouche = { s, t0: ctx.currentTime - a, id: b.id };
+    $('#a-ecouter').textContent = '■ Arrêter';
+    s.onended = () => { if (retouche?.s === s) { retouche = null; const bt = $('#a-ecouter'); if (bt) bt.textContent = '▶ Écouter la retouche'; } };
+  }
+  (function suivreRetouche() {
+    const l = $('#a-lecture');
+    if (l) {
+      l.hidden = !retouche || retouche.id !== ondeCourante?.b.id;
+      if (!l.hidden) l.style.left = `${((ctx.currentTime - retouche.t0) / ondeCourante.vue) * $('#onde').clientWidth}px`;
+    }
+    requestAnimationFrame(suivreRetouche);
+  })();
+
+  /* ---------------- Réglages ---------------- */
+  let enregistrement = null;
+  function regler(id, valeur) {
+    const v = Math.round(Math.max(0, Math.min(10, valeur)) * 2) / 2;
+    if (v) rallonges[id] = v; else delete rallonges[id];
+    peindre();
+    clearTimeout(enregistrement);
+    enregistrement = setTimeout(() => fetch('/montage', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rallonges }) }), 250);
+  }
+  $('#proposer').onclick = () => { for (const b of blocs) if (prises.get(b.id)?.coupee && !b.rallonge) rallonges[b.id] = 2; regler(blocs[choisi].id, rallonges[blocs[choisi].id] || 0); };
+
+  $('#contenu').addEventListener('pointerdown', e => {
+    const poignee = e.target.closest('.poignee');
+    const clip = e.target.closest('.clip');
+    if (!clip) return;
+    choisi = Number(clip.dataset.i);
+    if (!poignee) { peindre(); return; }
+    // Tirer le bord droit d'une image : la rallonge suit la souris, au demi-seconde près.
+    e.preventDefault();
+    const b = blocs[choisi], x0 = e.clientX, r0 = b.rallonge;
+    const bouger = ev => regler(b.id, r0 + (ev.clientX - x0) / echelle);
+    const lacher = () => { window.removeEventListener('pointermove', bouger); window.removeEventListener('pointerup', lacher); };
+    window.addEventListener('pointermove', bouger);
+    window.addEventListener('pointerup', lacher);
+  });
+  const ajuster = () => { echelle = Math.max(2, ($('#frise').clientWidth - 40) / (chrono().total + 2)); };
+  $('#zoom').onclick = () => { echelle = Math.min(60, echelle * 1.6); peindre(); centrer(); };
+  $('#dezoom').onclick = () => { echelle = Math.max(2, echelle / 1.6); peindre(); centrer(); };
+  function centrer() { const b = blocs[choisi]; $('#frise').scrollLeft = ORIGINE + b.debutMonte * echelle - $('#frise').clientWidth / 3; }
+
+  // La lecture d'une prise fait avancer une tête de lecture sur la frise.
+  const lecteur = $('#lecteur');
+  (function tete() {
+    const t = $('#tete'), b = blocs.find(x => x.id === lecteur.dataset.id);
+    t.hidden = lecteur.paused || !b;
+    if (b && !lecteur.paused) t.style.left = `${ORIGINE + (b.debutMonte + lecteur.currentTime) * echelle}px`;
+    requestAnimationFrame(tete);
+  })();
+
+  /* ---------------- Génération ---------------- */
+  $('#apercu').onclick = () => Travail.lancer('apercu');
+  $('#generer').onclick = () => Travail.lancer('finale');
+
+  await chargerPrises();
+  ajuster();
+  peindre();
+  centrer();
+  addEventListener('resize', () => { ajuster(); peindre(); });
+  document.addEventListener('travail', e => { for (const id of ['#apercu', '#generer']) $(id).disabled = e.detail.etat === 'en-cours'; });
+  document.addEventListener('visibilitychange', async () => { if (document.visibilityState === 'visible') { await chargerPrises(); peindre(); } });
+})();
+</script>
+</body>
+</html>

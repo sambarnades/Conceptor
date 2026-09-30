@@ -1,9 +1,9 @@
 # Sonde de parcours — elea
 
-Fichier : `sonde-parcours-elea.mbz` (59.0 Ko)
+Fichier : `sonde-parcours-elea.mbz` (60.1 Ko)
 Généré par : `node scripts/generer-parcours-sonde.mjs --plateforme=elea`
 
-> **Une fois importé, le cours doit s'appeler « Sonde Caramel 28/09 08:31 — elea ».**
+> **Une fois importé, le cours doit s'appeler « Sonde Caramel 30/09 17:42 — elea ».**
 > Si le titre affiché diffère, c'est un ANCIEN fichier qui a été importé, et
 > tout ce qui suit ne vaut rien. Régénérez, réimportez.
 
@@ -38,7 +38,7 @@ changent — sans effet sur la restauration.
       - 5 — Modules natifs — faire le point, s’exercer (27 sept. 2026)
       - 6 — Modules natifs — échanger, coopérer (27 sept. 2026)
       - 7 — La banque de questions (Test natif)
-- [ ] Il compte **27 activités** au total, dans l'ordre ci-dessous,
+- [ ] Il compte **28 activités** au total, dans l'ordre ci-dessous,
       plus **9 textes** posés dans la page (D64).
 - [ ] Chaque section s'ouvre sur son **texte d'introduction**, AU-DESSUS de ses
       activités, lisible sans cliquer, sans lien ni case d'achèvement.
@@ -88,6 +88,7 @@ changent — sans effet sur la restauration.
 - [ ] **Sonde — Document collaboratif** (parcours_document) — Le document s’ouvre et contient le plan de départ (Compte rendu, 1. Hypothèse…).
 - [ ] **Sonde — Partage de fichiers** (parcours_depot) — Le dépôt s’ouvre et accepte un fichier ; aucune date limite.
 - [ ] **Sonde — Choix de groupe** (parcours_choix_groupe) — Le choix de groupe existe, SANS option (aucun groupe dans le cours) : c’est attendu.
+- [ ] **Sonde — Test étudiant** (parcours_test_etudiant) — Le Test étudiant s’ouvre VIDE, avec sa consigne. En élève : créer une question, y répondre, la noter, la commenter ; le classement s’affiche. Paramètres : points 10 / 5 / 3 / 2 / −1, achèvement « au moins 1 question créée » SANS condition de points. L’étape suivante ne s’ouvre qu’une fois la question créée. Ré-exporter et comparer studentquiz.xml (coursemodule = le module restauré).
 
 **7 — La banque de questions (Test natif)**
 

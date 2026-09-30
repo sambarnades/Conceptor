@@ -264,7 +264,7 @@ Caramel アプリケーションは、ワンクリック生成時のみ、ILaaS�
 
 ### 便利なリンク
 
-- **ライセンス**：GNU GPL v3.0 以降 — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **ライセンス**：GNU AGPL v3.0 以降 — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **バグを報告**：https://forge.apps.education.fr/caramel/caramel/-/issues
 - **ソースコード**：https://forge.apps.education.fr/caramel/caramel
 - **変更履歴**：https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

@@ -280,7 +280,7 @@ Die Anwendung ist für die Nutzung am Computer konzipiert, einschließlich Hell-
 
 ### Nützliche Links
 
-- **Lizenz**: GNU GPL v3.0 oder höher — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **Lizenz**: GNU AGPL v3.0 oder höher — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **Fehler melden**: https://forge.apps.education.fr/caramel/caramel/-/issues
 - **Quellcode**: https://forge.apps.education.fr/caramel/caramel
 - **Changelog**: https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

@@ -1,0 +1,38 @@
+{
+  "taskDescription": "Retrouvez dans la grille les huit mots de l'univers Caramel.",
+  "wordList": "CARAMEL,QUIZ,PARCOURS,SUCRERIE,MOODLE,ELEA,MAGISTERE,CARTES",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 100,
+      "feedback": ""
+    }
+  ],
+  "behaviour": {
+    "preferOverlap": true,
+    "showVocabulary": true,
+    "enableShowSolution": true,
+    "enableRetry": true,
+    "enableSolutionsButton": true,
+    "orientations": {
+      "horizontal": true,
+      "horizontalBack": true,
+      "vertical": true,
+      "verticalUp": true,
+      "diagonal": true,
+      "diagonalBack": true,
+      "diagonalUp": true,
+      "diagonalUpBack": true
+    },
+    "fillPool": "abcdefghijklmnopqrstuvwxyz"
+  },
+  "l10n": {
+    "check": "Vérifier",
+    "tryAgain": "Recommencer",
+    "showSolution": "Afficher la solution",
+    "found": "@found sur @totalWords mots trouvés",
+    "timeSpent": "Temps écoulé",
+    "score": "Vous avez obtenu @score sur @total points",
+    "wordListHeader": "Liste de mots"
+  }
+}

@@ -270,7 +270,7 @@ Caramel أداة ويب مفتوحة المصدر تساعد المعلمين ع
 
 ### روابط مفيدة
 
-- **الترخيص**: GNU GPL v3.0 أو أحدث — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **الترخيص**: GNU AGPL v3.0 أو أحدث — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
 - **الإبلاغ عن خطأ**: https://forge.apps.education.fr/caramel/caramel/-/issues
 - **الكود المصدري**: https://forge.apps.education.fr/caramel/caramel
 - **سجل التغييرات**: https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG

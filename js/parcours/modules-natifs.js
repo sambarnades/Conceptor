@@ -1190,7 +1190,7 @@ function construireChoixGroupe(d, ts) {
  * matières est la `structure` : le tableau que Moodle tire du manifeste au
  * dépôt, SÉRIALISÉ À LA PHP — la restauration la reprend telle quelle, sans
  * relire le manifeste. Les fichiers se posent après l'assemblage
- * (`fichiers-modules.js`), comme le texte du Document collaboratif.
+ * (`moodle/fichiers-modules.js`), comme le texte du Document collaboratif.
  *
  * Jamais proposé par le plan (`surDemande`) : sur Moodle, un Livre fait la même
  * chose en mieux intégré. Le paquetage sert à qui veut un contenu PORTABLE —
@@ -1295,6 +1295,104 @@ ${corps.join('\n')}
 </body>
 </html>
 `;
+}
+
+/** Types de question que le Test étudiant d'Éléa admet par défaut (relevé). */
+const TYPES_TEST_ETUDIANT = 'multichoice,truefalse,match,shortanswer,numerical,calculated,calculatedmulti,calculatedsimple,multianswer,ddwtos,ddimageortext,ddmarker,gapselect';
+
+/**
+ * **Test étudiant** (`mod_studentquiz`, Éléa seul). Les élèves y créent eux-mêmes
+ * des questions, répondent à celles des autres, les notent et les commentent ;
+ * des points, affichés dans un classement, les y encouragent. Questions,
+ * tentatives, notes et commentaires sont des données d'élèves : le module arrive
+ * VIDE, avec sa consigne, comme le wiki (D89, qui revient sur D70 pour ce module).
+ *
+ * Relevé sur l'export d'Éléa (Moodle 5.1.7, greffon 2026030600) : barème de
+ * points, types de questions admis, publication immédiate. Deux écarts voulus :
+ *   - `coursemodule` : la restauration le traduit par la table des modules de
+ *     cours (`get_mappingid('course_module', …)`) ; il doit donc porter
+ *     l'identifiant que le cours donne au module, connu seulement après
+ *     l'assemblage. On pose `ID`, que `recalerModulesDeCours()` remplace.
+ *   - Achèvement : « avoir créé une question » (`completionquestionpublished` 1)
+ *     plutôt que « avoir 1 point » (`completionpoint` 1, défaut d'Éléa). Les deux
+ *     ne dépendent que de l'élève, mais une série de réponses fausses (−1 chacune)
+ *     peut tenir son total sous le seuil ; une règle à 0 est inactive (D71).
+ * Pas de carnet de notes (le greffon n'en déclare pas, aucun `grades.xml` au
+ * relevé) ; la catégorie de questions se crée d'elle-même au premier affichage
+ * (`question_make_default_categories`) : aucun fichier à joindre.
+ */
+function construireTestEtudiant(d) {
+    return {
+        moduleName: 'studentquiz',
+        completionview: 0,
+        completionPropre: true,   // <completionquestionpublished>
+        xml: activiteXml('studentquiz', `  <studentquiz id="${ID}">
+    <coursemodule>${ID}</coursemodule>
+    <name>${nom(d.title)}</name>
+    <intro>${html(d.intro)}</intro>
+    <introformat>1</introformat>
+    <grade>100</grade>
+    <anonymrank>1</anonymrank>
+    <questionquantifier>10</questionquantifier>
+    <approvedquantifier>5</approvedquantifier>
+    <ratequantifier>3</ratequantifier>
+    <correctanswerquantifier>2</correctanswerquantifier>
+    <incorrectanswerquantifier>-1</incorrectanswerquantifier>
+    <allowedqtypes>${TYPES_TEST_ETUDIANT}</allowedqtypes>
+    <aggregated>1</aggregated>
+    <excluderoles></excluderoles>
+    <forcerating>0</forcerating>
+    <forcecommenting>0</forcecommenting>
+    <commentdeletionperiod>10</commentdeletionperiod>
+    <reportingemail>$@NULL@$</reportingemail>
+    <digesttype>0</digesttype>
+    <digestfirstday>1</digestfirstday>
+    <privatecommenting>0</privatecommenting>
+    <opensubmissionfrom>0</opensubmissionfrom>
+    <closesubmissionfrom>0</closesubmissionfrom>
+    <openansweringfrom>0</openansweringfrom>
+    <closeansweringfrom>0</closeansweringfrom>
+    <publishnewquestion>1</publishnewquestion>
+    <completionpoint>0</completionpoint>
+    <completionquestionpublished>1</completionquestionpublished>
+    <completionquestionapproved>0</completionquestionapproved>
+    <attempts>
+    </attempts>
+    <questions>
+    </questions>
+    <progresses>
+    </progresses>
+    <rates>
+    </rates>
+    <comments>
+    </comments>
+    <notifications>
+    </notifications>
+    <statehistories>
+    </statehistories>
+  </studentquiz>`),
+    };
+}
+
+/**
+ * Recale le `<coursemodule>` des Tests étudiants sur l'identifiant de module que
+ * l'assemblage leur a donné (`moduleid` de leur enveloppe `<activity>`). Sans lui,
+ * la restauration ne retrouve pas le module (`get_mappingid` rend 0) et le Test
+ * étudiant restauré ne s'ouvre pas. Posé APRÈS l'assemblage, comme les fichiers
+ * joints : le constructeur de cours, partagé avec la Sucrerie, ne renumérote que
+ * les identifiants communs à toutes les activités.
+ *
+ * @param {Object<string, string|Uint8Array>} files - Carte de fichiers du cours.
+ * @returns {Object<string, string|Uint8Array>} Une copie, recalée.
+ */
+export function recalerModulesDeCours(files) {
+    const sortie = { ...files };
+    for (const [chemin, contenu] of Object.entries(files)) {
+        if (typeof contenu !== 'string' || !/^activities\/studentquiz_\d+\/studentquiz\.xml$/.test(chemin)) continue;
+        const moduleid = contenu.match(/<activity\b[^>]*\bmoduleid="(\d+)"/)?.[1];
+        if (moduleid) sortie[chemin] = contenu.replace(/<coursemodule>\d*<\/coursemodule>/, `<coursemodule>${moduleid}</coursemodule>`);
+    }
+    return sortie;
 }
 
 const TOUTES = ['Éléa', 'Magistère', 'Moodle'];
@@ -1598,6 +1696,26 @@ export const MODULES_NATIFS = {
         },
         longs: ['intro'],
         construire: construireChoixGroupe,
+    },
+    parcours_test_etudiant: {
+        moduleName: 'studentquiz',
+        // Rien à générer : l'IA n'écrit que la consigne (pictogramme de la mosaïque).
+        rienAGenerer: true,
+        image: 'assets/images/activities/plateforme-studentquiz.webp',
+        nameKey: 'parcours_mod_test_etudiant_name',
+        descKey: 'parcours_mod_test_etudiant_desc',
+        // Éléa SEUL : absent des palettes de Magistère et d'un Moodle nu (palettes.json).
+        platforms: ['Éléa'],
+        niveau: 'amorce',
+        // Choisi par l'enseignant dans la mosaïque, jamais proposé par le plan (D89).
+        surDemande: true,
+        icone: 'fa-circle-question',
+        champs: {
+            title: 'titre court du test étudiant',
+            intro: "ce que chaque élève fait dans ce test que la classe construit : créer au moins une question sur les notions du parcours (combien, de quel type, avec une bonne réponse sûre et une explication), puis répondre aux questions des camarades, les noter et les commenter avec bienveillance. Le test arrive VIDE : ce sont les élèves qui écrivent les questions",
+        },
+        longs: ['intro'],
+        construire: construireTestEtudiant,
     },
 };
 

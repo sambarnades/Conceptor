@@ -272,12 +272,24 @@ export function canonicalizeTestModel(model) {
         // matching, cloze : inchangés
         return { ...q, type, content: c };
     });
+    // L'IA rédige le feedback global comme un contenu racine. Les paramètres
+    // techniques (`attempts`, navigation, relecture…) restent, eux, hors prompt.
+    // On replie seulement ce contenu dans la forme attendue par l'éditeur et les
+    // deux constructeurs de backup. `overallFeedback` tolère d'anciens essais au
+    // camelCase ; la sortie canonique ne conserve aucune des deux clés racine.
+    const feedbackGlobal = Array.isArray(src.overallfeedback) ? src.overallfeedback
+        : (Array.isArray(src.overallFeedback) ? src.overallFeedback : null);
+    const { overallfeedback: _feedbackMinuscule, overallFeedback: _feedbackCamel, ...sansFeedbackRacine } = src;
+    const reglages = feedbackGlobal
+        ? { ...(src.quiz_settings && typeof src.quiz_settings === 'object' ? src.quiz_settings : {}), overallfeedback: feedbackGlobal }
+        : src.quiz_settings;
     return {
-        ...src,
+        ...sansFeedbackRacine,
         bank_name: src.bank_name || '',
         bank_description: src.bank_description || '',
         options: src.options || {},
         questions: outQuestions,
+        ...(reglages ? { quiz_settings: reglages } : {}),
     };
 }
 

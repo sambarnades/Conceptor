@@ -1,33 +1,8 @@
+@import url("../components/module-label.css");
+
 /* =======================================================================
    1. ÉTIQUETTES DES TUILES (H5P/ÉLÉA) — hover badges
    ======================================================================= */
-.h5p-tile .module-label {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    background-color: white;
-    opacity: 0;
-    transition: none;
-}
-
-.h5p-tile:hover .module-label {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-.h5p-label {
-    border: 1.5px solid #0862C4;
-    color: #0862C4;
-}
-
-.h5p-label span {
-    color: #0862C4;
-}
-
 .elea-label {
     border: 1.5px solid #B9459B;
     color: #B9459B;
@@ -495,3 +470,6 @@ body.version-modal-open {
 }
 
 /* Formulaire vide : les filtres restent disponibles et gardent leurs couleurs. */
+
+/* L'étoile de « Découvrir Caramel » suit le même gris que les autres icônes du pied. */
+.footer .footer-discover i { color: inherit; }

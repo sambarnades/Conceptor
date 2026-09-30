@@ -2568,6 +2568,13 @@ async function handleEditorSave(result, notification, previewContainer, editBtn)
  * @returns {Promise<Object>} Copie hydratée (ou les données d'origine si rien à faire).
  */
 export async function hydrateImagesForExport(blob, data) {
+    // Page / Livre : une image envoyée depuis l'ordinateur prend la place de
+    // l'adresse de son bloc (le formateur de documents ne lit que `img_src`).
+    // Sur une COPIE, comme le reste : la dataURL ne doit pas fuir dans `img_src`.
+    if (data && typeof data === 'object') {
+        const { imagesEnvoyeesPourDocument } = await import('../moodle/page-images.js');
+        data = imagesEnvoyeesPourDocument(data);
+    }
     if (!blob || !data || typeof data !== 'object' || !window.JSZip) return data;
     // Collecte des nœuds image { path: "images/…" } sans dataURL.
     const clone = JSON.parse(JSON.stringify(data));
@@ -2771,10 +2778,15 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
         // aussi, et deux copies de la même mise en forme finissent toujours par
         // diverger — l'éditeur et le parcours produiraient alors deux Livres
         // différents à partir du même JSON.
-        const { construireFichiersActivite } = await import('../moodle/mono-activity-files.js');
-        const { files, previewHtml } = await construireFichiersActivite(moodleType, editedData, {
+        const { construireFichiersActivite, fichiersMonoActivite } = await import('../moodle/mono-activity-files.js');
+        const resultat = await construireFichiersActivite(moodleType, editedData, {
             titreParDefaut: notification.title || 'Activity',
         });
+        const { previewHtml } = resultat;
+        // Les images envoyées d'une Page ou d'un Livre rejoignent le backup
+        // (pool `files/`, `files.xml`, `inforef.xml`) ; le HTML les cite par
+        // `@@PLUGINFILE@@`, l'aperçu `previewHtml` les montre en dataURL.
+        const files = await fichiersMonoActivite(resultat);
         files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
 
         // Créer le nouveau MBZ avec createMbz (identique à moodle-creator.js)

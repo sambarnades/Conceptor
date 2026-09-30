@@ -1,0 +1,18 @@
+{
+  "title": "Caramel en quelques phrases",
+  "extraTitle": "Caramel en quelques phrases",
+  "language": "fr",
+  "mainLibrary": "H5P.DragText",
+  "embedTypes": [
+    "iframe"
+  ],
+  "license": "U",
+  "defaultLanguage": "fr",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.DragText",
+      "majorVersion": 1,
+      "minorVersion": 10
+    }
+  ]
+}

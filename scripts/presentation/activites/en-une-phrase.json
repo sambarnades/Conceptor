@@ -1,0 +1,21 @@
+{
+  "taskDescription": "Glissez chaque mot à sa place.",
+  "textField": "Caramel prépare des activités *interactives* pour Éléa, Magistère et *Moodle*. L'IA *propose*, l'enseignant *relit* et décide. Une fois prêtes, les activités se partagent sur la *Sucrerie*.",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 40,
+      "feedback": "Relisez les phrases à voix haute : le sens de chacune guide vers le bon mot."
+    },
+    {
+      "from": 41,
+      "to": 80,
+      "feedback": "Presque : un ou deux mots restent à déplacer."
+    },
+    {
+      "from": 81,
+      "to": 100,
+      "feedback": "Bravo : chaque mot est à sa place."
+    }
+  ]
+}

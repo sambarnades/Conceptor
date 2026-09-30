@@ -1,0 +1,43 @@
+{
+  "title": "Cherchez les mots de Caramel",
+  "extraTitle": "Cherchez les mots de Caramel",
+  "language": "fr",
+  "mainLibrary": "H5P.FindTheWords",
+  "embedTypes": [
+    "iframe"
+  ],
+  "license": "U",
+  "defaultLanguage": "fr",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.Timer",
+      "majorVersion": 0,
+      "minorVersion": 4
+    },
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": 4,
+      "minorVersion": 5
+    },
+    {
+      "machineName": "H5P.JoubelUI",
+      "majorVersion": 1,
+      "minorVersion": 3
+    },
+    {
+      "machineName": "H5P.Transition",
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    {
+      "machineName": "H5P.FontIcons",
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    {
+      "machineName": "H5P.FindTheWords",
+      "majorVersion": 1,
+      "minorVersion": 4
+    }
+  ]
+}

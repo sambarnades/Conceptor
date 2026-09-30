@@ -109,6 +109,11 @@ function analyseSource(rawSrc) {
     for (const m of src.matchAll(/(\w+)\s*:\s*(\w+)\s*(?=[,\n}])/g)) {
         if (varsTraduites.has(m[2])) translated.add(m[1]);
     }
+    // Propriété abrégée `{ variableTraduite, }`, seule sur sa ligne (ex. `slideOfTotal,`
+    // de SingleChoiceSet, dont la traduction sert aussi à l'annonce de chaque question).
+    for (const m of src.matchAll(/^[ \t]*(\w+)[ \t]*,?[ \t]*$/gm)) {
+        if (varsTraduites.has(m[1])) translated.add(m[1]);
+    }
     // `champ: 'littéral'` ou `champ: "littéral"` SANS translations
     for (const m of src.matchAll(/(\w+)\s*:\s*(['"])(?:(?!\2)[^\\]|\\.)*\2\s*(?=[,\n}])/g)) {
         if (!translated.has(m[1])) hardcoded.add(m[1]);

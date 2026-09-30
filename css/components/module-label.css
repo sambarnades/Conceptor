@@ -1,0 +1,27 @@
+/* Étiquette H5P commune à Caramel et à sa page de découverte. */
+.h5p-tile .module-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background-color: white;
+    opacity: 0;
+    transition: none;
+}
+
+.h5p-tile:hover .module-label {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.h5p-label {
+    border: 1.5px solid #0862C4;
+    color: #0862C4;
+}
+
+.h5p-label span {
+    color: #0862C4;
+}

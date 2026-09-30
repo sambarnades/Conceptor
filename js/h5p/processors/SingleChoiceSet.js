@@ -11,6 +11,13 @@
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml, generateUUID } from '../../core/utils.js';
 
+/** Les anciens jetons Caramel (@slide, @total, @question) → ceux de la bibliothèque (:num, :total). */
+const jetonsSingleChoice = texte => texte && texte.replaceAll('@slide', ':num').replaceAll('@total', ':total').replaceAll('@question', ':num');
+const echapperHtml = texte => String(texte).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+/** Retire l'annonce « Diapositive x sur y » posée par un passage précédent : un contenu déjà
+ *  traité, relu puis retraité, en recevait une de plus à chaque passage (banc T2 du harness). */
+const sansAnnonce = texte => String(texte).replace(/^\s*<span class="h5p-hidden-read">[^<]*<\/span>/, '');
+
 
 export default {
     process: (jsonObj) => {
@@ -18,11 +25,20 @@ export default {
         for (const choice of jsonObj.choices) {
             if (!Array.isArray(choice.answers) || choice.answers.length < 2 || choice.answers.length > 4) throw Error('SingleChoiceSet : chaque question exige deux à quatre réponses.');
         }
+        const slideOfTotal = jetonsSingleChoice(jsonObj.l10n?.slideOfTotal || translations.h5p_single_choice_slide_of_total)
+            || 'Diapositive :num sur :total';
+        const total = jsonObj.choices.length;
         return {
             ...jsonObj,
-            choices: (Array.isArray(jsonObj.choices) ? jsonObj.choices : []).map(choice => ({
+            choices: jsonObj.choices.map((choice, index) => ({
                 ...choice,
-                question: formatTextToHtml(choice.question || ''),
+                // Sur Éléa, la zone aria-live de la barre de progression reste vide
+                // avec certaines révisions de JoubelUI. Le groupe de réponses est déjà
+                // nommé par le texte de la question (`aria-labelledby`) : y inclure une
+                // annonce masquée garantit « Diapositive x sur y » au déplacement du
+                // focus, sans dépendre du lecteur installé par la plateforme.
+                question: `<span class="h5p-hidden-read">${echapperHtml(slideOfTotal
+                    .replace(':num', String(index + 1)).replace(':total', String(total)))}</span>${formatTextToHtml(sansAnnonce(choice.question || ''))}`,
                 answers: (Array.isArray(choice.answers) ? choice.answers : []).map(a =>
                     typeof a === 'string' ? formatTextToHtml(a) : a
                 ),
@@ -47,11 +63,13 @@ export default {
                 muteButtonLabel: translations.h5p_single_choice_mute_button_label || "Désactiver le son",
                 closeButtonLabel: translations.h5p_close || "Fermer",
                 // Jetons imposés par la lib : `:num` / `:total` (et non @slide/@total,
-                // qui s'affichaient en clair à l'élève).
-                slideOfTotal: translations.h5p_single_choice_slide_of_total || "Diapositive :num sur :total",
+                // qui s'affichaient en clair à l'élève). Réparés aussi sur la traduction :
+                // les 12 locales écrivaient @slide/@total, et le lecteur d'écran annonçait
+                // « Diapositive @slide sur @total » (zone aria-live).
+                slideOfTotal,
                 nextButtonLabel: translations.h5p_next || "Suivant",
                 scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
-                solutionListQuestionNumber: translations.h5p_single_choice_solution_list_question_number || "Question :num",
+                solutionListQuestionNumber: jetonsSingleChoice(translations.h5p_single_choice_solution_list_question_number) || "Question :num",
                 a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
                 a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
                 shouldSelect: translations.h5p_single_choice_should_select || "Devrait sélectionner",
@@ -68,8 +86,8 @@ export default {
                 correctAnswerIntroduction: translations.h5p_correct_answer_intro || "Bonne réponse",
                 ...(jsonObj.l10n || {}),
                 // Réparer les anciens jetons Caramel, tout en conservant les traductions personnalisées.
-                ...(jsonObj.l10n?.slideOfTotal ? {slideOfTotal: jsonObj.l10n.slideOfTotal.replaceAll('@slide', ':num').replaceAll('@total', ':total')} : {}),
-                ...(jsonObj.l10n?.solutionListQuestionNumber ? {solutionListQuestionNumber: jsonObj.l10n.solutionListQuestionNumber.replaceAll('@question', ':num')} : {})
+                ...(jsonObj.l10n?.slideOfTotal ? {slideOfTotal: jetonsSingleChoice(jsonObj.l10n.slideOfTotal)} : {}),
+                ...(jsonObj.l10n?.solutionListQuestionNumber ? {solutionListQuestionNumber: jetonsSingleChoice(jsonObj.l10n.solutionListQuestionNumber)} : {})
             }
         };
     }

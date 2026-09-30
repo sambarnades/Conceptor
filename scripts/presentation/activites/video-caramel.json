@@ -1,0 +1,96 @@
+{
+  "title": "Découvrez Caramel en vidéo",
+  "videoSource": {
+    "url": "https://podeduc.apps.education.fr/media/videos/6e63dbfe9e7a95ed23be0126e7de66ebb8fe160dc837c80743a0515b27cd963f/161411/720p.mp4",
+    "mime": "video/mp4"
+  },
+  "duration": 284,
+  "displayMode": "poster",
+  "interactions": [
+    {
+      "timestamp": 34,
+      "pause": true,
+      "type": "multichoice",
+      "question": "Quel rôle gardez-vous quand Caramel prépare une activité ?",
+      "answers": [
+        {
+          "text": "Relire, corriger et décider de son utilisation.",
+          "correct": true,
+          "feedback": "Oui. L’IA rédige un premier jet ; vous gardez la décision pédagogique."
+        },
+        {
+          "text": "Diffuser directement le résultat sans le vérifier.",
+          "correct": false,
+          "feedback": "Chaque question, réponse et explication doit être relue avant diffusion."
+        },
+        {
+          "text": "Laisser Caramel publier automatiquement dans votre cours.",
+          "correct": false,
+          "feedback": "C’est vous qui décidez d’utiliser le fichier et qui l’importez sur votre plateforme."
+        }
+      ]
+    },
+    {
+      "timestamp": 121,
+      "pause": true,
+      "type": "truefalse",
+      "question": "Une activité qui fonctionne dans l’aperçu peut encore contenir une erreur de contenu.",
+      "correct": true,
+      "feedbackOnCorrect": "Exact. La vidéo montre une explication historique à corriger dans l’éditeur.",
+      "feedbackOnWrong": "Le fonctionnement et l’exactitude sont deux vérifications complémentaires : l’exemple de la Bastille montre pourquoi il faut relire."
+    },
+    {
+      "timestamp": 191,
+      "pause": true,
+      "type": "multichoice",
+      "question": "À quel moment pouvez-vous modifier le plan d’un parcours ?",
+      "answers": [
+        {
+          "text": "Avant la fabrication des activités, pendant la relecture du plan.",
+          "correct": true,
+          "feedback": "Oui. Titres, objectifs, consignes, durées et ordre des activités se modifient avant la fabrication."
+        },
+        {
+          "text": "Uniquement après l’import du cours sur Éléa.",
+          "correct": false,
+          "feedback": "Le plan se relit et se modifie directement dans Caramel avant la fabrication."
+        },
+        {
+          "text": "Le plan proposé par l’IA ne peut pas être modifié.",
+          "correct": false,
+          "feedback": "Vous pouvez déplacer, retirer, ajouter une activité ou changer son type."
+        }
+      ]
+    },
+    {
+      "timestamp": 267,
+      "pause": true,
+      "type": "truefalse",
+      "question": "Le dépôt sur la Sucrerie est facultatif et rend l’activité publique.",
+      "correct": true,
+      "feedbackOnCorrect": "Exact. Vous pouvez utiliser votre fichier dans votre cours sans le déposer sur la Sucrerie.",
+      "feedbackOnWrong": "Partager sur la Sucrerie est un choix distinct : le dépôt est facultatif et la publication est publique."
+    }
+  ],
+  "bookmarks": [
+    {
+      "time": 0,
+      "label": "Découvrir Caramel"
+    },
+    {
+      "time": 35,
+      "label": "Une activité"
+    },
+    {
+      "time": 140,
+      "label": "Un parcours"
+    },
+    {
+      "time": 234,
+      "label": "Les points de vigilance"
+    }
+  ],
+  "startScreenOptions": {
+    "shortStartDescription": "Vidéo « Caramel 7 » — Emmanuel Gaunard, PodEduc, CC BY 4.0."
+  }
+}

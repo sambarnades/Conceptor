@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<!--
+  La page de présentation de Caramel (/decouvrir/), liée depuis le pied de page.
+
+  Ce qui change souvent ne se touche pas ici : les ressources officielles viennent de
+  decouvrir/ressources.json et le catalogue éditorial de decouvrir/on-parle-de-nous.json
+  (modes d'emploi en tête des fichiers).
+  Les activités à essayer sont de vrais .h5p produits par le pipeline de Caramel
+  (scripts/generer-demos-presentation.mjs → assets/presentation/activites/), joués par
+  le lecteur H5P déjà embarqué dans Caramel.
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Découvrir Caramel</title>
+    <meta name="description" content="Caramel prépare avec l'IA des activités interactives (H5P, Moodle) et des parcours complets pour Éléa, Magistère et Moodle. Démonstrations, ressources de formation et catalogue des articles et conférences consacrés au projet.">
+    <meta property="og:title" content="Découvrir Caramel">
+    <meta property="og:description" content="Des activités interactives pour Éléa, Magistère et Moodle, préparées avec l'IA et relues par vous. Gratuit, sans compte, logiciel libre.">
+    <meta name="theme-color" content="#f39438">
+    <link rel="icon" href="../assets/images/branding/logo_caramel.svg" type="image/svg+xml">
+    <link rel="icon" href="../assets/images/branding/logo_caramel.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/vendor/flag-icons/7.5.0/css/flag-icons.min.css">
+    <link rel="stylesheet" href="../css/vendor/fontawesome/7.3.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/components/app-header.css">
+    <link rel="stylesheet" href="../css/components/module-label.css">
+    <link rel="stylesheet" href="decouvrir.css?v=20260930-notes">
+
+    <!-- Début Matomo Code (le même que la page de Caramel) -->
+    <script>
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://wa.phm.education.gouv.fr/snp/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '17']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- Fin Matomo Code -->
+</head>
+
+<body>
+    <a href="#contenu" class="evitement">Aller au contenu</a>
+
+    <header class="app-bar barre" id="barre">
+        <div class="header-left barre__marque">
+            <a class="marque" href="../" aria-label="Ouvrir Caramel">
+                <img src="../assets/images/branding/logo_caramel.svg" class="logo" alt="" width="50" height="50">
+                <span><b class="app-title">Caramel</b><small class="subtitle" data-decouvrir-key="subtitle">Création Assistée de Ressources et d'Activités Magistère et Éléa</small></span>
+            </a>
+        </div>
+        <div class="barre__navigation">
+            <button type="button" class="navigation-bouton" aria-expanded="false" aria-controls="navigation-sections"><i class="fas fa-compass" aria-hidden="true"></i><span data-decouvrir-key="explore">Explorer</span><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
+        <nav id="navigation-sections" class="navigation" aria-label="Sections de la page">
+            <a href="#video" data-decouvrir-key="nav_video">La vidéo</a>
+            <a href="#diaporama" data-decouvrir-key="nav_slides">Diaporama</a>
+            <a href="#essayer" data-decouvrir-key="nav_try">Essayer</a>
+            <a href="#former" data-decouvrir-key="nav_trainers">Former</a>
+            <a href="#on-parle" data-decouvrir-key="nav_mentions">On parle de nous</a>
+            <a href="#ressources" data-decouvrir-key="nav_resources">Ressources</a>
+        </nav>
+        </div>
+        <div class="header-right barre__actions">
+            <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener" class="help-btn outil-entete" aria-label="Tchap"><img src="../assets/images/branding/tchap.svg" class="tchap-icon" alt="" width="20" height="20"><span>Tchap</span></a>
+            <a href="https://sucrerie.forge.apps.education.fr/" target="_blank" rel="noopener" class="help-btn outil-entete" aria-label="Sucrerie"><img src="../assets/images/branding/sucrerie.svg" class="sucrerie-icon" alt="" width="22" height="22"><span>Sucrerie</span></a>
+            <div class="language-switcher selecteur-langue">
+                <button type="button" class="language-btn bouton-langue" aria-expanded="false" aria-haspopup="true" data-decouvrir-aria="change_language">
+                    <span class="fi fi-fr" aria-hidden="true"></span><span data-decouvrir-key="language">Langue</span>
+                </button>
+                <ul class="language-dropdown menu-langues" hidden>
+                    <li><button type="button" data-lang="fr"><span class="fi fi-fr"></span>Français</button></li>
+                    <li><button type="button" data-lang="en"><span class="fi fi-gb"></span>English</button></li>
+                    <li><button type="button" data-lang="es"><span class="fi fi-es"></span>Español</button></li>
+                    <li><button type="button" data-lang="de"><span class="fi fi-de"></span>Deutsch</button></li>
+                    <li><button type="button" data-lang="it"><span class="fi fi-it"></span>Italiano</button></li>
+                    <li><button type="button" data-lang="nl"><span class="fi fi-nl"></span>Nederlands</button></li>
+                    <li><button type="button" data-lang="pt"><span class="fi fi-pt"></span>Português</button></li>
+                    <li><button type="button" data-lang="ar"><span class="fi fi-sa"></span>عربي</button></li>
+                    <li><button type="button" data-lang="zh"><span class="fi fi-cn"></span>中文</button></li>
+                    <li><button type="button" data-lang="jp"><span class="fi fi-jp"></span>日本語</button></li>
+                    <li><button type="button" data-lang="el"><span class="fi fi-gr"></span>Ελληνικά</button></li>
+                    <li><button type="button" data-lang="br"><span class="fi fi-bzh"></span>Brezhoneg</button></li>
+                </ul>
+            </div>
+            <a class="help-btn ouvrir-caramel" href="../" aria-label="Ouvrir Caramel" data-decouvrir-aria="open_caramel"><i class="fas fa-arrow-right" aria-hidden="true"></i><span data-decouvrir-key="open_caramel">Ouvrir Caramel</span></a>
+        </div>
+
+    </header>
+
+    <main id="contenu">
+        <!-- ============ Ouverture ============ -->
+        <section class="ouverture" aria-labelledby="titre-principal">
+            <div class="ouverture__texte">
+                <h1 id="titre-principal" data-decouvrir-key="hero_title" data-decouvrir-html>Des activités interactives pour vos élèves, <span class="sucre">prêtes en quelques minutes.</span></h1>
+                <p class="chapeau">Créez avec l’IA des activités et des parcours pour Éléa, Magistère et Moodle. Vous relisez, puis vous partagez.</p>
+                <div class="actions">
+                    <a class="bouton bouton--plein" href="../"><span data-decouvrir-key="open_caramel">Ouvrir Caramel</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    <a class="bouton bouton--clair" href="#video"><i class="fas fa-circle-play" aria-hidden="true"></i> <span data-decouvrir-key="watch">Voir la vidéo</span> <small>4 min 44</small></a>
+                </div>
+            </div>
+
+            <!-- Une capture de l'application, posée comme une carte de l'accueil. -->
+            <div class="ouverture__visuel">
+                <div class="capture">
+                    <img src="../assets/images/wiki/caramelia-assistant.png" alt="L’accueil de Caramel 7, ses tuiles d’activités, et Caramelia, l’assistante, qui propose son aide" width="1256" height="761">
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============ La vidéo ============ -->
+        <section class="section section--blanc" id="video" aria-labelledby="titre-video">
+            <div class="section__tete">
+                <h2 id="titre-video" data-decouvrir-key="section_video_title">Caramel 7 en moins de cinq minutes</h2>
+                <p>Une démonstration filmée dans le vrai Caramel, avec les vraies réponses de l'IA et ses temps d'attente, y compris une erreur corrigée à la main. Ce que l'outil fait bien, et ce qu'il faut vérifier.</p>
+            </div>
+            <div class="cinema">
+                <div class="lecteur" data-integration="https://podeduc.apps.education.fr/video/161411-caramel-7/?is_iframe=true" data-titre="Caramel 7" data-lien="https://podeduc.apps.education.fr/video/161411-caramel-7/">
+                    <button type="button" class="affiche affiche--caramel" aria-label="Lire la vidéo « Caramel 7 » (4 min 44, Podeduc)">
+                        <img src="../assets/images/branding/logo_caramel.svg" alt="" width="84" height="84">
+                        <strong>Caramel 7</strong>
+                        <span>Présentation · 4 min 44</span>
+                        <i class="lecture" aria-hidden="true"><i class="fas fa-play"></i></i>
+                    </button>
+                </div>
+                <ol class="programme" aria-label="Au programme de la vidéo">
+                    <li><b>Présentation</b><span>À qui s'adresse Caramel, ce qu'il prépare.</span></li>
+                    <li><b>Une activité</b><span>De la demande au fichier .h5p : saisie, génération, aperçu, correction.</span></li>
+                    <li><b>Un parcours</b><span>Cadrage, plan relu, fabrication, un seul .mbz de cours.</span></li>
+                    <li><b>À savoir</b><span>Les limites, dites franchement : tout se relit avant d'être donné aux élèves.</span></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============ Le diaporama ============ -->
+        <!-- Fabriqué par scripts/diaporama/generer-diaporama.mjs (à relancer à chaque version),
+             qui écrit aussi la visionneuse ci-dessous, en dur : rien ne s'y charge après coup. -->
+        <section class="section" id="diaporama" aria-labelledby="titre-diaporama">
+            <div class="section__tete">
+                <h2 id="titre-diaporama" data-decouvrir-key="section_slides_title">Le diaporama de présentation</h2>
+                <p>Pour présenter Caramel en formation, ou pour le découvrir seul, à votre rythme&nbsp;; le bouton «&nbsp;Notes&nbsp;» affiche ce que l'on peut dire sur chaque diapositive. À télécharger pour PowerPoint ou LibreOffice, sans animation, prêt à projeter.</p>
+            </div>
+            <!-- diaporama:debut — écrit par scripts/diaporama/generer-diaporama.mjs : ne pas modifier à la main, relancer le script -->
+            <div class="diaporama" id="visionneuse">
+                <div class="diaporama__cadre">
+                    <figure class="diaporama__scene" id="diapo-scene" tabindex="0">
+                        <img id="diapo-image" src="../assets/presentation/diaporama/diapositives/01.webp" alt="Diapositive 1 sur 24 : Caramel" width="1601" height="900">
+                    </figure>
+                    <div class="diaporama__commandes">
+                        <button type="button" class="diaporama__bouton" id="diapo-precedente" data-decouvrir-aria="slides_prev" aria-label="Diapositive précédente" disabled><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+                        <button type="button" class="diaporama__bouton" id="diapo-suivante" data-decouvrir-aria="slides_next" aria-label="Diapositive suivante"><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                        <select class="diaporama__choix" id="diapo-choix" data-decouvrir-aria="slides_goto" aria-label="Aller à la diapositive">
+                        <option value="0" data-image="diapositives/01.webp" selected>1. Caramel</option>
+                        <option value="1" data-image="diapositives/02.webp">2. Qui sommes-nous ?</option>
+                        <option value="2" data-image="diapositives/03.webp">3. D’où vient Caramel ?</option>
+                        <option value="3" data-image="diapositives/04.webp">4. Caramel en bref</option>
+                        <option value="4" data-image="diapositives/05.webp">5. Au programme</option>
+                        <option value="5" data-image="diapositives/06.webp">6. L’IA propose, vous décidez</option>
+                        <option value="6" data-image="diapositives/07.webp">7. Vos données sont protégées</option>
+                        <option value="7" data-image="diapositives/08.webp">8. Les programmes scolaires, intégrés quand c’est utile</option>
+                        <option value="8" data-image="diapositives/09.webp">9. 1. Décrivez votre besoin</option>
+                        <option value="9" data-image="diapositives/10.webp">10. 2. Ajoutez vos sources, si vous le souhaitez</option>
+                        <option value="10" data-image="diapositives/11.webp">11. 3. Choisissez l’activité</option>
+                        <option value="11" data-image="diapositives/12.webp">12. 4. Générez : le prompt reste entre vos mains</option>
+                        <option value="12" data-image="diapositives/13.webp">13. 5. Relisez et corrigez</option>
+                        <option value="13" data-image="diapositives/14.webp">14. 6. Téléchargez, imprimez, partagez</option>
+                        <option value="14" data-image="diapositives/15.webp">15. 7. Importez dans votre cours, et continuez à modifier</option>
+                        <option value="15" data-image="diapositives/16.webp">16. Un parcours complet, en quatre temps</option>
+                        <option value="16" data-image="diapositives/17.webp">17. Le plan : relu, modifiable, à vous</option>
+                        <option value="17" data-image="diapositives/18.webp">18. Fabrication et livraison : un seul fichier de cours</option>
+                        <option value="18" data-image="diapositives/19.webp">19. La Sucrerie : partager et piocher</option>
+                        <option value="19" data-image="diapositives/20.webp">20. Vous n’êtes jamais seul</option>
+                        <option value="20" data-image="diapositives/21.webp">21. Les bons réflexes</option>
+                        <option value="21" data-image="diapositives/22.webp">22. Proposer un atelier de 45 minutes</option>
+                        <option value="22" data-image="diapositives/23.webp">23. Liens utiles</option>
+                        <option value="23" data-image="diapositives/24.webp">24. À vous de jouer !</option>
+                        </select>
+                        <span class="diaporama__compteur" id="diapo-compteur">1 / 24</span>
+                        <button type="button" class="diaporama__bouton diaporama__bouton--texte" id="diapo-notes-bouton" aria-expanded="false" aria-controls="diapo-notes-zone"><i class="fas fa-align-left" aria-hidden="true"></i><span data-decouvrir-key="slides_notes_toggle">Notes</span></button>
+                        <button type="button" class="diaporama__bouton" id="diapo-plein-ecran" data-decouvrir-aria="slides_fullscreen" aria-label="Plein écran"><i class="fas fa-expand" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="diaporama__notes" id="diapo-notes-zone" hidden>
+                        <h3 data-decouvrir-key="slides_notes">Ce que l'on peut dire</h3>
+                        <div class="diaporama__pile" id="diapo-notes">
+                        <p class="actuelle">Caramel est une application web gratuite, sans compte, qui prépare avec l'IA des activités interactives et des parcours complets pour Éléa, Magistère et Moodle. Ce diaporama présente ce qu'elle fait, comment elle fonctionne et ce à quoi nous tenons : la main laissée à l'enseignant et la protection des données. Il correspond à Caramel 7.0.1 ; il est mis à jour à chaque version.</p>
+                        <p aria-hidden="true">Caramel est né de deux enseignants en poste, qui l’ont d’abord conçu pour leurs propres classes. Emmanuel Gaunard enseigne les mathématiques et est chargé de mission à la DRANE de Grenoble ; Gauthier Remande enseigne les lettres et l’histoire en lycée professionnel, dans l’académie de Nantes. Le projet est un logiciel libre, développé en ouvert sur la Forge des communs numériques éducatifs : chacun peut en lire le code, signaler un problème ou proposer une idée.</p>
+                        <p aria-hidden="true">Au départ, en 2025, il y a deux enseignants et deux outils, pour un même besoin : gagner du temps grâce à l’IA. Gauthier voulait accélérer la création d’activités H5P pour Éléa ; sa première interface a été présentée au MoodleMoot de juin 2025. Emmanuel voulait refaire plus vite ses parcours Magistère, avec un site qui générait des activités H5P. Leur rencontre, grâce à Bertrand Chartier, a fait converger les deux projets en un seul outil commun, sur la Forge des communs numériques éducatifs. Le projet est bénévole ; il est soutenu par la Direction du numérique pour l’éducation et son incubateur, qui fournissent l’accès à des modèles d’IA hébergés en France. Les chiffres datent de septembre 2026.</p>
+                        <p aria-hidden="true">Caramel prépare des activités prêtes à importer dans la plateforme de l’établissement. Trente-cinq types d’activités sont proposés : vingt-sept au format H5P, le format libre d’activités interactives que lisent Éléa, Magistère et Moodle, et huit modules propres à Moodle, comme la Page, le Livre ou le Test. Tout se passe dans le navigateur, sans compte. On peut aussi obtenir une version papier de chaque activité, en Word, LibreOffice ou PDF.</p>
+                        <p aria-hidden="true">La présentation suit quatre temps. D’abord ce qui nous tient à cœur, parce que c’est ce qui distingue Caramel : la main laissée à l’enseignant, la protection des données, les programmes intégrés à bon escient. Ensuite la création d’une activité, étape par étape. Puis la création d’un parcours complet. Enfin le partage sur la Sucrerie et les appuis pour se faire aider.</p>
+                        <p aria-hidden="true">C’est le principe fondateur de Caramel : l’intelligence artificielle est une assistante, l’enseignant pilote. Avant la génération, c’est vous qui posez le cadre, et le prompt envoyé à l’IA n’est pas une boîte noire : on peut le lire et le modifier. Pendant, vous choisissez la voie — l’IA intégrée ou celle de votre choix — et vous relisez tout dans l’aperçu et l’éditeur. Après, rien n’est figé : le fichier se retravaille dans la plateforme ou dans un traitement de texte.</p>
+                        <p aria-hidden="true">Caramel ne demande aucun compte et ne collecte aucune donnée personnelle. Les documents que vous déposez sont lus dans votre navigateur : le fichier lui-même ne part sur aucun serveur. La génération en un clic s’appuie sur des modèles d’IA hébergés en France, sur des serveurs de l’Enseignement supérieur et de la recherche (le projet ILaaS), et non sur des IA grand public. La voix fait exception, et c’est dit dans l’application : elle est transcrite par Albert, le service souverain de la DINUM, sans être conservée. Rappel utile en formation : on ne saisit jamais de données personnelles d’élèves.</p>
+                        <p aria-hidden="true">Quand votre demande relève de l’école — un niveau de classe, un « professeur de 4e », une « seconde bac pro » — Caramel recherche dans les programmes officiels les passages utiles et les joint à la demande envoyée à l’IA : l’activité colle au programme de la classe. Quand la demande sort du scolaire — enseignement supérieur, formation d’adultes, thème imaginaire — il ne le fait pas, car les programmes n’apporteraient que du bruit. Et quand vous fournissez vos propres documents, ce sont eux la référence. Il n’y a aucun bouton : la décision se déduit de ce que vous avez saisi, dans les douze langues de l’interface.</p>
+                        <p aria-hidden="true">Tout commence par deux champs. Qui êtes-vous : une réponse courte suffit, « professeur de mathématiques », « formatrice académique ». Que souhaitez-vous aborder : c’est le cœur de la demande, et plus elle est précise, meilleure est l’activité — le thème, le niveau, les contraintes. Le mode avancé ajoute des champs structurés, dont le nombre de questions, et la zone des documents. Chaque champ peut aussi se dicter au micro.</p>
+                        <p aria-hidden="true">C’est facultatif, mais c’est souvent là que Caramel donne le meilleur. Dans le mode avancé, on colle un texte ou on dépose ses documents : un cours, un manuel en PDF, un diaporama, une photo de page, un enregistrement audio ou vidéo dont la bande-son est transcrite, ou encore une page web par son lien. L’IA travaille alors exclusivement à partir de ces sources : elles priment sur ses connaissances générales et sur les programmes. Sans document, l’IA s’appuie sur ses connaissances.</p>
+                        <p aria-hidden="true">Chaque tuile est un type d’activité. Les filtres aident à s’y retrouver : par famille — quiz et tests, manipulation de texte, mémorisation et découverte — et par plateforme. Les activités H5P fonctionnent sur Éléa, Magistère et Moodle ; les modules Moodle, comme la Page, le Livre ou le Test, deviennent des éléments natifs du cours. Un clic sur une tuile ouvre sa fenêtre de génération.</p>
+                        <p aria-hidden="true">La fenêtre d’une tuile offre deux usages. En mode Simple, un seul bouton, « Générer en un clic » : l’IA intégrée, hébergée en France, prépare l’activité en quelques dizaines de secondes, et plusieurs modèles sont au choix. En mode Guidé, le prompt apparaît : c’est l’ensemble des consignes envoyées à l’IA. On peut le lire, le modifier, le verrouiller, ou le copier vers l’IA de son choix puis coller sa réponse dans le panneau de droite. Rien n’est caché : ce que l’IA reçoit, vous pouvez le lire.</p>
+                        <p aria-hidden="true">Une fois l’activité générée, l’aperçu la montre telle que les élèves la verront, et on peut la jouer. L’éditeur visuel, derrière le bouton « Éditer », reprend chaque élément : à gauche la liste des questions ou des cartes, à droite le détail. Texte enrichi, formules mathématiques avec un assistant, images, réglages : tout se corrige sans toucher au code. C’est l’étape à ne jamais sauter — l’IA peut se tromper.</p>
+                        <p aria-hidden="true">La barre du bas de l’aperçu rassemble les sorties. Pour la plateforme : le fichier H5P, ou selon l’activité un .mbz ou un .xml pour la banque de questions et le glossaire. Pour la classe : une version imprimable en Word, LibreOffice ou PDF, où les formules mathématiques restent éditables. Et pour les collègues : « Vers la Sucrerie » dépose l’activité dans la bibliothèque partagée.</p>
+                        <p aria-hidden="true">Chaque format a son chemin d’import, détaillé avec captures dans le tutoriel intégré. Le fichier H5P s’ajoute comme toute activité H5P ; sur Éléa, un simple glisser-déposer dans la section suffit aussi. Le .mbz s’importe sans écraser le contenu du cours. Le .xml alimente la banque de questions ou un glossaire. Et l’activité n’est jamais figée : elle se modifie dans l’éditeur H5P de la plateforme, ou hors ligne avec des logiciels comme Lumi ou Logiquiz ; Digiquiz permet de la diffuser sans plateforme.</p>
+                        <p aria-hidden="true">Au-delà d’une activité, Caramel prépare un parcours entier : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. Le commutateur « Un parcours », sous le formulaire, ouvre l’atelier. Le cadrage tient en trois questions : la plateforme, le déroulé — en classe, à distance ou les deux — et l’ampleur, d’une séance à une séquence entière. On peut aussi partir d’une trame toute faite.</p>
+                        <p aria-hidden="true">L’IA propose un plan : des étapes, des activités, leur durée et leurs consignes. Rien n’est imposé. On réordonne, on change le type d’une activité, on ajuste une durée, on ajoute ou on retire. Le cadenas réserve une place pour une activité dont on fournira soi-même le contenu. Une relecture didactique signale ce qui mérite attention, selon six repères. C’est seulement quand le plan vous convient que la fabrication commence.</p>
+                        <p aria-hidden="true">La fabrication génère les activités une à une, sous vos yeux. Chacune peut être relue, essayée, modifiée ou générée à nouveau. À la livraison, un seul fichier .mbz contient tout le cours : sections, activités, consignes. Il se restaure dans un cours existant de la plateforme. S’y ajoutent la fiche de séquence et le détail des activités en Word, LibreOffice ou PDF, et un fichier de scénario qui permet de rouvrir le parcours dans Caramel pour le reprendre plus tard.</p>
+                        <p aria-hidden="true">La Sucrerie est la bibliothèque publique qui accompagne Caramel. On y consulte et on y essaie les activités des collègues, on les télécharge dans de nombreux formats, et on y dépose les siennes — directement depuis Caramel avec le bouton « Vers la Sucrerie ». Déposer est un choix volontaire qui vaut publication : l’activité est diffusée sous licence libre CC BY-SA, et l’adresse académique sert seulement d’identifiant. On certifie détenir les droits et qu’aucune donnée personnelle n’y figure.</p>
+                        <p aria-hidden="true">Plusieurs appuis accompagnent les collègues après la formation. Caramelia, l’assistante intégrée — la bulle en bas à droite — répond aux questions sur l’outil et peut préparer une activité ou un parcours avec vous. Le tutoriel, en haut de l’écran, reprend chaque étape pas à pas. Le wiki est le guide complet. Et le salon Tchap réunit la communauté : questions, idées, entraide.</p>
+                        <p aria-hidden="true">Cinq réflexes à transmettre. Relire avant de diffuser : l’IA peut se tromper sur un fait, une réponse, une consigne ; l’enseignant reste l’auteur de ce qu’il donne aux élèves. Protéger les élèves : aucune donnée personnelle. Respecter les droits des documents et des images utilisés. Tester l’activité sur un espace de test avant la classe. Et signaler les problèmes : c’est ainsi que Caramel s’améliore.</p>
+                        <p aria-hidden="true">Une proposition de déroulé pour une séance d’établissement. Cinq minutes de vidéo pour poser le décor, dix minutes de démonstration en direct sur une activité de la discipline du groupe, vingt minutes d’atelier où chacun prépare une activité pour sa classe, la relit et la corrige, puis dix minutes de retour collectif. Pour un format plus ludique, testé au MoodleMoot 2026 : chaque groupe prépare au moins trois activités sur un même thème et les rassemble dans une collection sur la Sucrerie, que les autres découvrent ensuite.</p>
+                        <p aria-hidden="true">Tous les liens utiles, cliquables dans le diaporama. Le premier QR code ouvre Caramel directement sur un téléphone ou une tablette ; le second mène à la page de présentation, où l’on retrouve ce diaporama, la vidéo et des activités à essayer. Le bac à sable permet aux curieux de tester les nouveautés avant tout le monde, et de les commenter sur Tchap.</p>
+                        <p aria-hidden="true">Pour conclure : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Invitez chacun à préparer une activité pour sa propre classe, à la relire dans l’éditeur, puis à la déposer sur un espace de test. Les contacts des deux co-créateurs figurent ici pour toute question. Ce support correspond à Caramel 7.0.1, dans sa version du 30 septembre 2026.</p>
+                        </div>
+                    </div>
+                </div>
+                <ul class="diaporama__fichiers" id="diapo-fichiers">
+                    <li><a href="../assets/presentation/diaporama/caramel-presentation.pptx" download="Caramel-v7.0.1-presentation.pptx" data-format="pptx"><i class="fas fa-file-powerpoint" aria-hidden="true"></i><span>PowerPoint <small>.pptx · 3,6 Mo</small></span><i class="fas fa-download" aria-hidden="true"></i></a></li>
+                    <li><a href="../assets/presentation/diaporama/caramel-presentation.odp" download="Caramel-v7.0.1-presentation.odp" data-format="odp"><i class="fas fa-file-lines" aria-hidden="true"></i><span>LibreOffice Impress <small>.odp · 3 Mo</small></span><i class="fas fa-download" aria-hidden="true"></i></a></li>
+                    <li><a href="../assets/presentation/diaporama/caramel-presentation.pdf" download="Caramel-v7.0.1-presentation.pdf" data-format="pdf"><i class="fas fa-file-pdf" aria-hidden="true"></i><span>PDF <small>à imprimer · 2,8 Mo</small></span><i class="fas fa-download" aria-hidden="true"></i></a></li>
+                </ul>
+                <p class="diaporama__version" id="diapo-version">Caramel v7.0.1 · diaporama mis à jour le 30 septembre 2026</p>
+            </div>
+            <!-- diaporama:fin -->
+        </section>
+
+        <!-- ============ Comment ça marche ============ -->
+        <section class="section section--blanc" aria-labelledby="titre-etapes">
+            <div class="section__tete">
+                <h2 id="titre-etapes" data-decouvrir-key="section_steps_title">Trois étapes, et c'est vous qui avez le dernier mot</h2>
+            </div>
+            <ol class="etapes">
+                <li class="etape">
+                    <span class="etape__numero">1</span>
+                    <h3>Décrivez</h3>
+                    <p>Choisissez une tuile, indiquez le niveau et le thème. Ajoutez un document si vous le souhaitez&nbsp;: un cours, un PDF, une page web.</p>
+                </li>
+                <li class="etape">
+                    <span class="etape__numero">2</span>
+                    <h3>Relisez</h3>
+                    <p>L'aperçu montre l'activité telle que les élèves la verront. L'éditeur permet de corriger chaque question, chaque réponse, chaque retour.</p>
+                </li>
+                <li class="etape">
+                    <span class="etape__numero">3</span>
+                    <h3>Déposez</h3>
+                    <p>Un fichier <code>.h5p</code> ou <code>.mbz</code> à importer sur Éléa, Magistère ou Moodle, ou un export Word, ODT, PDF pour la classe.</p>
+                </li>
+            </ol>
+            <div class="chiffres" role="group" aria-label="Caramel en chiffres">
+                <div class="chiffre"><b>35</b><span>types d'activités<br><small>27 H5P · 8 Moodle</small></span></div>
+                <div class="chiffre"><b><i class="fas fa-route" aria-hidden="true"></i></b><span>des parcours complets<br><small>plusieurs activités, un seul cours</small></span></div>
+                <div class="chiffre"><b>3</b><span>plateformes<br><small>Éléa · Magistère · Moodle</small></span></div>
+                <div class="chiffre"><b>12</b><span>langues d'interface<br><small>du breton au japonais</small></span></div>
+                <div class="chiffre"><b>0&nbsp;€</b><span>et aucun compte<br><small>tout se passe dans le navigateur</small></span></div>
+            </div>
+        </section>
+
+        <!-- ============ Essayer ============ -->
+        <section class="section" id="essayer" aria-labelledby="titre-essayer">
+            <div class="section__tete">
+                <h2 id="titre-essayer" data-decouvrir-key="section_try_title">De vraies activités fabriquées par Caramel</h2>
+                <p>Ce sont les fichiers H5P que produit Caramel, joués ici comme sur une plateforme. Choisissez une tuile, puis jouez. Chaque activité se télécharge pour votre propre cours.</p>
+            </div>
+            <div class="atelier">
+                <div class="tuiles" id="tuiles" role="tablist" aria-label="Activités à essayer"></div>
+                <div class="scene" id="scene" role="tabpanel" aria-live="polite">
+                    <div class="scene__tete">
+                        <div><h3 id="scene-titre">Choisissez une activité</h3><p id="scene-description"></p></div>
+                        <a class="bouton bouton--clair bouton--petit" id="scene-telecharger" href="#" download hidden><i class="fas fa-download" aria-hidden="true"></i> Télécharger le .h5p</a>
+                    </div>
+                    <div class="scene__jeu" id="scene-jeu"><p class="scene__attente">Les activités se chargent…</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ La Sucrerie ============ -->
+        <section class="section section--blanc" aria-labelledby="titre-sucrerie">
+            <div class="sucrerie">
+                <div class="sucrerie__texte">
+                    <h2 id="titre-sucrerie" data-decouvrir-key="section_sucrerie_title">Partager ses activités, piocher dans celles des autres</h2>
+                    <p>La Sucrerie est une bibliothèque publique d'activités pédagogiques, notamment créées avec Caramel&nbsp;: on y consulte, on y télécharge, on y dépose, dans de nombreux formats (H5P, MBZ, DOCX, ODT, PDF…). Depuis Caramel, un bouton y envoie directement l'activité que l'on vient de relire.</p>
+                    <div class="actions">
+                        <a class="bouton bouton--rose" href="https://sucrerie.forge.apps.education.fr/" target="_blank" rel="noopener">Visiter la Sucrerie <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="lecteur" data-integration="https://podeduc.apps.education.fr/video/158264-decouvrez-la-sucrerie/?is_iframe=true" data-titre="Découvrez la Sucrerie" data-lien="https://podeduc.apps.education.fr/caramel/video/158264-decouvrez-la-sucrerie/">
+                    <button type="button" class="affiche affiche--sucrerie" aria-label="Lire la vidéo « Découvrez la Sucrerie » (Podeduc)">
+                        <img src="../assets/images/branding/sucrerie.svg" class="sucrerie-icon" alt="" width="84" height="84">
+                        <strong>Découvrez la Sucrerie</strong>
+                        <span>Vidéo · Podeduc</span>
+                        <i class="lecture" aria-hidden="true"><i class="fas fa-play"></i></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ Former avec Caramel ============ -->
+        <section class="section" id="former" aria-labelledby="titre-former">
+            <div class="section__tete">
+                <h2 id="titre-former" data-decouvrir-key="section_trainers_title">Présenter Caramel dans vos formations</h2>
+                <p>Tout ce qu'il faut pour intégrer Caramel et la Sucrerie à votre propre parcours Éléa, Magistère ou Moodle, sans rien réécrire. Pour la séance elle-même, <a href="#diaporama">le diaporama</a> se projette tel quel.</p>
+            </div>
+            <div class="kit">
+                <article class="carte-kit">
+                    <span class="carte-kit__icone"><i class="fas fa-code" aria-hidden="true"></i></span>
+                    <h3>Intégrer les vidéos</h3>
+                    <p>Choisissez une vidéo et copiez son code dans votre Page ou Zone texte et média, en mode HTML <code>&lt;/&gt;</code>.</p>
+                    <div class="integrations" id="integrations"></div>
+                </article>
+                <article class="carte-kit">
+                    <span class="carte-kit__icone"><i class="fas fa-puzzle-piece" aria-hidden="true"></i></span>
+                    <h3>Déposer les activités de démonstration</h3>
+                    <p>Les activités de cette page, en fichiers <code>.h5p</code>, à ajouter à votre cours comme n'importe quelle activité H5P&nbsp;: les participants découvrent Caramel en jouant.</p>
+                    <ul class="telechargements" id="telechargements"></ul>
+                </article>
+                <article class="carte-kit">
+                    <span class="carte-kit__icone"><i class="fas fa-book-open" aria-hidden="true"></i></span>
+                    <h3>Les tutoriels</h3>
+                    <p>Trois appuis pour les participants, après la formation&nbsp;:</p>
+                    <ul class="appuis">
+                        <li><i class="fas fa-circle-question" aria-hidden="true"></i><div><b>Le tutoriel intégré</b>, bouton «&nbsp;Tutoriel&nbsp;» en haut de Caramel.</div></li>
+                        <li><img src="../assets/images/branding/logo_caramel_2.webp" alt="" width="22" height="22"><div><b>Caramelia</b>, l'assistante de l'application, répond aux questions sur l'outil.</div></li>
+                        <li><i class="fas fa-book" aria-hidden="true"></i><div><b>Le wiki</b>, guide complet avec captures pas à pas.</div></li>
+                    </ul>
+                    <a class="lien-fleche" href="https://forge.apps.education.fr/caramel/caramel/-/wikis/home" target="_blank" rel="noopener">Ouvrir le wiki <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+                <article class="carte-kit carte-kit--large">
+                    <span class="carte-kit__icone"><i class="fas fa-route" aria-hidden="true"></i></span>
+                    <h3>Un déroulé pour une séance de 45 minutes</h3>
+                    <ol class="deroule">
+                        <li><time>5 min</time><div><b>La vidéo de présentation</b>, pour poser le décor&nbsp;: ce que Caramel prépare, et ses limites.</div></li>
+                        <li><time>10 min</time><div><b>Une démonstration en direct</b>&nbsp;: une activité de la discipline du groupe, de la demande à l'aperçu.</div></li>
+                        <li><time>20 min</time><div><b>Un atelier</b>&nbsp;: chacun prépare une activité pour sa classe, la relit dans l'éditeur, corrige ce qui doit l'être, puis la dépose sur un espace de test.</div></li>
+                        <li><time>10 min</time><div><b>Un retour collectif</b>&nbsp;: ce que l'IA a bien fait, ce qu'il a fallu reprendre, et la place de la Sucrerie pour partager.</div></li>
+                    </ol>
+                </article>
+            </div>
+        </section>
+
+        <!-- ============ On parle de Caramel ============ -->
+        <section class="section section--blanc" id="on-parle" aria-labelledby="titre-on-parle">
+            <div class="section__tete">
+                <h2 id="titre-on-parle" data-decouvrir-key="section_mentions_title">On parle de Caramel</h2>
+                <p>Conférences, retours d'usage, tutoriels et publications institutionnelles&nbsp;: une sélection vérifiée, classée de la plus récente à la plus ancienne.</p>
+            </div>
+            <div class="catalogue-intro" id="catalogue-intro" aria-live="polite"></div>
+            <div class="filtres" id="filtres-mentions" role="toolbar" aria-label="Filtrer les publications qui parlent de Caramel"></div>
+            <div class="ressources" id="liste-mentions"></div>
+            <div class="plus"><button type="button" class="plus__bouton" id="plus-mentions" aria-controls="liste-mentions" aria-expanded="false" hidden></button></div>
+            <p class="signaler">Une publication manque&nbsp;? Envoyez-nous son lien sur <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener">Tchap</a> ou dans un <a href="https://forge.apps.education.fr/caramel/caramel/-/issues" target="_blank" rel="noopener">ticket</a>. La sélection est relue avant publication.</p>
+        </section>
+
+        <!-- ============ Ressources ============ -->
+        <section class="section" id="ressources" aria-labelledby="titre-ressources">
+            <div class="section__tete">
+                <h2 id="titre-ressources" data-decouvrir-key="section_resources_title">Les ressources officielles</h2>
+                <p>Vidéos, tutoriels, documentation et espaces d'échange maintenus par l'équipe de Caramel.</p>
+            </div>
+            <div class="filtres" id="filtres" role="toolbar" aria-label="Filtrer les ressources"></div>
+            <div class="ressources" id="liste-ressources"></div>
+            <p class="signaler">Vous avez présenté Caramel, écrit ou filmé quelque chose à son sujet&nbsp;? Dites-le-nous sur <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener">Tchap</a> ou dans un <a href="https://forge.apps.education.fr/caramel/caramel/-/issues" target="_blank" rel="noopener">ticket</a>.</p>
+        </section>
+
+        <!-- ============ Les co-créateurs ============ -->
+        <section class="section section--blanc createurs" id="createurs" aria-labelledby="titre-createurs" lang="fr">
+            <div class="section__tete">
+                <h2 id="titre-createurs">Les co-créateurs de Caramel</h2>
+                <p>Deux enseignants, un projet commun pour préparer et partager des activités pédagogiques.</p>
+            </div>
+            <div class="createurs__liste">
+                <article class="createur" aria-labelledby="nom-emmanuel">
+                    <div class="createur__portrait">
+                        <img src="../assets/images/presentation/emmanuel-gaunard.jpg" alt="Portrait d’Emmanuel Gaunard" width="987" height="1326" loading="lazy" decoding="async">
+                    </div>
+                    <div class="createur__texte">
+                        <h3 id="nom-emmanuel">Emmanuel Gaunard</h3>
+                        <p class="createur__fonction">Professeur de mathématiques<br>Chargé de mission DRANE</p>
+                        <p class="createur__academie">Académie de Grenoble</p>
+                        <a class="createur__contact" href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope" aria-hidden="true"></i> Contacter Emmanuel</a>
+                    </div>
+                </article>
+                <article class="createur" aria-labelledby="nom-gauthier">
+                    <div class="createur__portrait">
+                        <img src="../assets/images/presentation/gauthier-remande.jpg" alt="Portrait de Gauthier Remande" width="1024" height="969" loading="lazy" decoding="async">
+                    </div>
+                    <div class="createur__texte">
+                        <h3 id="nom-gauthier">Gauthier Remande</h3>
+                        <p class="createur__fonction">Lettres-Histoire<br>Professeur de lycée professionnel</p>
+                        <p class="createur__academie">Académie de Nantes</p>
+                        <a class="createur__contact" href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope" aria-hidden="true"></i> Contacter Gauthier</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ============ Appel final ============ -->
+        <section class="appel" aria-labelledby="titre-appel">
+            <img src="../assets/images/branding/logo_caramel.svg" alt="" width="64" height="64">
+            <h2 id="titre-appel" data-decouvrir-key="cta_title">Prêt à préparer votre première activité&nbsp;?</h2>
+            <p data-decouvrir-key="cta_text">Gratuit, sans compte, directement dans votre navigateur.</p>
+            <a class="bouton bouton--plein" href="../"><span data-decouvrir-key="open_caramel">Ouvrir Caramel</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </section>
+    </main>
+
+    <footer class="pied" aria-label="Liens utiles">
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank" rel="noopener" class="pied__version"><i class="fas fa-info-circle" aria-hidden="true"></i><span>Caramel v7.0.1</span></a>
+        <a class="pied__auteur" href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope" aria-hidden="true"></i><span>Gauthier REMANDE</span></a>
+        <a class="pied__auteur" href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope" aria-hidden="true"></i><span>Emmanuel GAUNARD</span></a>
+        <a href="./" class="pied__presentation"><i class="fas fa-star" aria-hidden="true"></i><span data-decouvrir-key="footer_presentation">Découvrir Caramel</span></a>
+        <a aria-label="Forge" href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener"><i class="fas fa-code-branch" aria-hidden="true"></i><span>Forge</span></a>
+        <a data-decouvrir-aria="ticket" href="https://forge.apps.education.fr/caramel/caramel/-/issues" target="_blank" rel="noopener"><i class="fas fa-bug" aria-hidden="true"></i><span data-decouvrir-key="ticket">Ticket</span></a>
+        <a data-decouvrir-aria="license_info" href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE" target="_blank" rel="noopener"><i class="fas fa-scroll" aria-hidden="true"></i><span data-decouvrir-key="license_info">GNU AGPL v3.0 ou ultérieure</span></a>
+        <a data-decouvrir-aria="legal_mentions" href="../#mentions-legales"><i class="fas fa-gavel" aria-hidden="true"></i><span data-decouvrir-key="legal_mentions">Mentions légales</span></a>
+    </footer>
+
+    <script src="traductions.js?v=20260930-notes" defer></script>
+    <script src="../js/vendor/h5p-standalone/3.8.2/main.bundle.js" defer></script>
+    <script src="decouvrir.js?v=20260930-notes" defer></script>
+</body>
+</html>

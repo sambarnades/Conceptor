@@ -163,6 +163,32 @@ const CAPTURES = {
         console.log('  ✓ caramelia-assistant.png  (fenêtre 1256×761)');
         return page;
     },
+    // ── Pour le diaporama de présentation (scripts/diaporama/) : l'accueil entier, en-tête
+    // compris, et la fenêtre d'une tuile en mode Guidé, où le prompt se lit et se modifie.
+    'accueil-entier': async () => {
+        const page = await ouvrir({ largeur: 1440, hauteur: 900, cadrage: false });
+        await page.addStyleTag({ content: '#caramelia-fab,#notification-toast-container,#emergency-notification-container{display:none!important}' });
+        const png = join(temp, 'caramel-accueil.png');
+        await page.screenshot({ path: png, type: 'png' });
+        versWebp(png, join(DOSSIER, 'caramel-accueil.webp'));
+        console.log('  ✓ caramel-accueil.webp  (fenêtre 1440×900)');
+        return page;
+    },
+    'generation-guide': async () => {
+        const page = await ouvrir({ hauteur: 1000 });
+        await page.fill('#qui', QUI);
+        await page.fill('#quoi', 'Les fractions en 5e : égalité, simplification, comparaison');
+        await page.click('[data-module="QuizSetQCM"]');
+        await page.waitForSelector('#module-sidebar.open');
+        await page.locator('#module-sidebar .switch').click();
+        await page.waitForSelector('#quizSetQcmResultat', { state: 'visible' });
+        await page.waitForTimeout(800);
+        const png = join(temp, 'caramel-generation.png');
+        await page.locator('#module-sidebar').screenshot({ path: png });
+        versWebp(png, join(DOSSIER, 'caramel-generation.webp'));
+        console.log('  ✓ caramel-generation.webp');
+        return page;
+    },
     'tutoriel': async () => {
         const page = await ouvrir({ largeur: 1221, hauteur: 878, densite: 1, cadrage: false });
         await page.click('#help-button');

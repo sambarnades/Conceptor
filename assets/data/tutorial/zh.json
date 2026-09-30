@@ -708,7 +708,7 @@
             "**工作坊**：先完成作业，再依据评价标准表评价同学的作业。",
             "**看板**、**Wiki**、**协作文档**、**共建词汇表**和**数据库**：多人协作撰写和共建；导入时为空，附带任务说明。",
             "**虚拟教室**、**分组选择**、**文件共享**、**网页链接**：实时会面、组建小组、提交文件、查阅在线资源。",
-            "**视平台而定**：Magistère 上有 Etherpad 和词云，Éléa 和 Moodle 上有 Feedback。Capytale、GeoGebra、SCORM 包或文件仍需在导入 Éléa、Magistère 或 Moodle 后手动添加。"
+            "**视平台而定**：Magistère 上有 Etherpad 和词云，Éléa 和 Moodle 上有 Feedback。Éléa 的**学生出题测验（StudentQuiz）**由学生自己出题，需在图块中自行选择；计划不会推荐它。Capytale、GeoGebra、SCORM 包或文件仍需在导入 Éléa、Magistère 或 Moodle 后手动添加。"
           ]
         },
         {

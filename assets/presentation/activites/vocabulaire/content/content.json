@@ -1,0 +1,116 @@
+{
+  "title": "<p>Le vocabulaire de Caramel</p>",
+  "description": "Retournez chaque carte pour en découvrir la définition.",
+  "dialogs": [
+    {
+      "text": "H5P",
+      "answer": "Un format libre d'activités interactives (quiz, textes à trous, cartes…) que l'on dépose sur Éléa, Magistère ou Moodle.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    },
+    {
+      "text": ".mbz",
+      "answer": "Une sauvegarde de cours Moodle : on la restaure sur la plateforme pour y retrouver les activités.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    },
+    {
+      "text": "Éléa",
+      "answer": "La plateforme Moodle proposée aux enseignants de nombreuses académies.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    },
+    {
+      "text": "Magistère",
+      "answer": "La plateforme de formation des personnels de l'Éducation nationale, bâtie sur Moodle.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    },
+    {
+      "text": "Parcours",
+      "answer": "Plusieurs activités enchaînées dans un même cours, qui s'ouvrent au fil de la progression.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    },
+    {
+      "text": "Sucrerie",
+      "answer": "La bibliothèque partagée des activités créées avec Caramel : on y dépose, on y pioche.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    },
+    {
+      "text": "Caramelia",
+      "answer": "L'assistante intégrée à Caramel, qui répond aux questions sur l'outil.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    },
+    {
+      "text": "Relecture",
+      "answer": "L'IA propose, l'enseignant décide : chaque activité se relit et se corrige dans l'éditeur avant d'être diffusée.",
+      "tips": {
+        "front": "",
+        "back": ""
+      }
+    }
+  ],
+  "mode": "normal",
+  "behaviour": {
+    "enableRetry": true,
+    "disableBackwardsNavigation": false,
+    "scaleTextNotCard": true,
+    "randomCards": false,
+    "maxProficiency": 5,
+    "quickProgression": false
+  },
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 100,
+      "feedback": ""
+    }
+  ],
+  "answer": "Retourner",
+  "next": "Suivant",
+  "prev": "Précédent",
+  "retry": "Recommencer",
+  "progressText": "Carte @card sur @total",
+  "cardFrontLabel": "Recto de la carte",
+  "cardBackLabel": "Verso de la carte",
+  "tipButtonLabel": "Indice",
+  "audioNotSupported": "Votre navigateur ne supporte pas ce format audio",
+  "correctAnswer": "J'ai eu bon !",
+  "incorrectAnswer": "Je me suis trompé",
+  "round": "Manche @round",
+  "cardsLeft": "Cartes restantes : @number",
+  "nextRound": "Passer à la manche @round",
+  "startOver": "Recommencer",
+  "showSummary": "Suivant",
+  "summary": "Résumé",
+  "summaryCardsRight": "Cartes que vous avez réussies :",
+  "summaryCardsWrong": "Cartes que vous avez manquées :",
+  "summaryCardsNotShown": "Cartes non montrées :",
+  "summaryOverallScore": "Score global",
+  "summaryCardsCompleted": "Cartes que vous avez apprises :",
+  "summaryCompletedRounds": "Manches terminées :",
+  "summaryAllDone": "Bien joué ! Vous avez réussi toutes les @cards cartes @max fois de suite !",
+  "confirmStartingOver": {
+    "header": "Terminer ?",
+    "body": "Êtes-vous sûr de vouloir terminer ?",
+    "cancelLabel": "Annuler",
+    "confirmLabel": "Terminer"
+  }
+}

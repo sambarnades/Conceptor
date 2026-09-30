@@ -1451,6 +1451,275 @@ export function buildQuestionEntries(modelQ, { alloc, bankCatId, ts, hostname = 
   return { entries: [entry], slot: { qbeId, maxmark: Number(c.defaultgrade ?? 1) } };
 }
 
+// =========================================================================
+// Réglages d'un Test (mod_quiz) — clé racine `quiz_settings` du modèle (PURE)
+// =========================================================================
+//
+// Un Test seul (`buildQuizBackup`, test-backup-builder.js) et un Test de parcours
+// (`buildQuizActivityFiles`, plus bas) écrivent leurs réglages par CES fonctions :
+// un réglage ajouté à un seul des deux constructeurs ne se propagerait pas à
+// l'autre. La relecture d'un Test importé (`lireReglagesTest`, test-io.js) s'appuie
+// sur les mêmes tables, pour qu'un aller-retour ne perde rien.
+//
+// Clé absente = défauts, qui reproduisent un Test créé à la main sur Éléa (relevé
+// du 27 sept. 2026, tests/fixtures/moodle-reference/sept-2026/elea/quiz.xml), à une
+// exception près, voulue : `questionsperpage` vaut 0 (toutes les questions sur une
+// page), parce que c'est ce que l'élève voyait déjà — tous les slots étaient
+// écrits en page 1, et c'est la page des slots, pas `questionsperpage`, que la
+// restauration respecte.
+//
+// Noms de Moodle, sauf deux : `timelimit_minutes` (Moodle compte en secondes) et
+// `review`, un préréglage à trois valeurs qui calcule les huit masques de
+// relecture (Moodle en demande 32 cases à cocher). Aucun de ces réglages n'est
+// demandé à l'IA : ils viennent de l'éditeur, ou d'un Test importé. Deux clés ne
+// sont pas dans l'éditeur et ne servent qu'à l'aller-retour d'un Test importé :
+// `review_masks` (masques qu'aucun préréglage ne reproduit) et `grade` (note
+// maximale autre que 10, sur laquelle se calculent les plages du feedback global).
+
+/** Masques de relecture (mod_quiz\question\display_options) : un bit par moment. */
+export const REVUE_PENDANT         = 0x10000; // pendant la tentative
+export const REVUE_JUSTE_APRES     = 0x01000; // immédiatement après la tentative
+export const REVUE_PLUS_TARD       = 0x00100; // plus tard, le test étant encore ouvert
+export const REVUE_APRES_FERMETURE = 0x00010; // après la fermeture du test
+const REVUE_APRES = REVUE_JUSTE_APRES | REVUE_PLUS_TARD | REVUE_APRES_FERMETURE;
+
+/** Les huit colonnes de relecture, dans l'ordre des balises `review*` de quiz.xml. */
+export const CHAMPS_REVUE = Object.freeze(['attempt', 'correctness', 'maxmarks', 'marks',
+  'specificfeedback', 'generalfeedback', 'rightanswer', 'overallfeedback']);
+
+/** Ce que l'élève revoit APRÈS la tentative, par préréglage. */
+const REVUE_PRESETS = Object.freeze({
+  // Tout : ses réponses, la correction, les retours (= valeurs d'Éléa).
+  all: CHAMPS_REVUE,
+  // Sa note et les retours, sans la bonne réponse.
+  marks_feedback: CHAMPS_REVUE.filter(c => c !== 'rightanswer'),
+  // Sa note seulement — et le feedback global, qui commente la note et reste vide
+  // tant que l'enseignant n'en écrit pas. Sans `attempt`, la page de relecture
+  // n'est pas ouverte : ni réponses, ni correction.
+  marks: ['maxmarks', 'marks', 'overallfeedback'],
+});
+/** Les retours qu'un mode « interactif » ou « immédiat » montre PENDANT la tentative. */
+const RETOURS_PENDANT = ['correctness', 'marks', 'specificfeedback', 'generalfeedback'];
+
+export const COMPORTEMENTS_TEST = Object.freeze(['deferredfeedback', 'interactive', 'immediatefeedback']);
+export const PRESETS_REVUE_TEST = Object.freeze(Object.keys(REVUE_PRESETS));
+
+export const REGLAGES_TEST_DEFAUT = Object.freeze({
+  preferredbehaviour: 'deferredfeedback',
+  attempts: 0,              // 0 = illimitées
+  grademethod: 1,           // 1 note la plus haute, 2 moyenne, 3 première, 4 dernière
+  timelimit_minutes: 0,     // 0 = aucun temps limite
+  questionsperpage: 0,      // 0 = toutes les questions sur une page
+  navmethod: 'free',        // 'free' | 'sequential'
+  shuffleanswers: 1,
+  review: 'all',
+});
+
+/** Note maximale d'un Test (`<grade>` de quiz.xml, `grademax` du carnet de notes), par défaut. */
+export const QUIZ_GRADE = 10;
+/** Délai de grâce d'Éléa (s) — sans effet tant que `overduehandling` vaut autosubmit. */
+const QUIZ_GRACE_PERIOD = 86400;
+
+const entierBorne = (v, min, max, defaut) => {
+  const n = typeof v === 'string' && v.trim() === '' ? NaN : Number(v);
+  return Number.isInteger(n) && n >= min && n <= max ? n : defaut;
+};
+
+/** Masques relus d'un Test importé : les huit colonnes, entiers ≥ 0. Sinon `null`. */
+function masquesValides(m) {
+  if (!m || typeof m !== 'object') return null;
+  const out = {};
+  for (const champ of CHAMPS_REVUE) {
+    const v = entierBorne(m[champ], 0, 0xFFFFF, null);
+    if (v === null) return null;
+    out[champ] = v;
+  }
+  return out;
+}
+
+/**
+ * Tranches de feedback global, forme de l'éditeur (`feedbackRanges`, en %) :
+ * `[{ from, to, feedback }]`. Triées, bornes 0-100. Une liste dont aucun texte
+ * n'est rempli vaut « pas de feedback » (l'éditeur en propose deux vides). PURE.
+ */
+function tranchesFeedback(v) {
+  if (!Array.isArray(v)) return [];
+  const vues = new Set();
+  const tranches = v
+    .filter(t => t && typeof t === 'object' && Number.isFinite(Number(t.from)))
+    .map(t => ({
+      from: Math.min(100, Math.max(0, Number(t.from))),
+      to: Number.isFinite(Number(t.to)) ? Math.min(100, Math.max(0, Number(t.to))) : 100,
+      feedback: String(t.feedback ?? ''),
+    }))
+    .sort((a, b) => a.from - b.from)
+    .filter(t => (vues.has(t.from) ? false : (vues.add(t.from), true)));
+  if (!tranches.some(t => t.feedback.trim())) return [];
+  tranches[0].from = 0;
+  return tranches;
+}
+
+/**
+ * Réglages complets et bornés d'un Test, depuis `model.quiz_settings` (absent,
+ * partiel ou mal formé). Toute valeur hors domaine retombe sur son défaut. PURE.
+ * @param {Object} [settings]
+ */
+export function resoudreReglagesTest(settings) {
+  const s = settings && typeof settings === 'object' ? settings : {};
+  const d = REGLAGES_TEST_DEFAUT;
+  const minutes = Number(s.timelimit_minutes);
+  const note = Number(s.grade);
+  const masques = masquesValides(s.review_masks);
+  const review = REVUE_PRESETS[s.review] ? s.review
+    : (s.review === 'custom' && masques ? 'custom' : d.review);
+  return {
+    preferredbehaviour: COMPORTEMENTS_TEST.includes(s.preferredbehaviour) ? s.preferredbehaviour : d.preferredbehaviour,
+    attempts: entierBorne(s.attempts, 0, 1000, d.attempts),
+    grademethod: entierBorne(s.grademethod, 1, 4, d.grademethod),
+    timelimit_minutes: Number.isFinite(minutes) && minutes > 0 ? minutes : 0,
+    questionsperpage: entierBorne(s.questionsperpage, 0, 1000, d.questionsperpage),
+    navmethod: s.navmethod === 'sequential' ? 'sequential' : 'free',
+    shuffleanswers: [0, false, '0', 'false'].includes(s.shuffleanswers) ? 0 : 1,
+    review,
+    ...(review === 'custom' ? { review_masks: masques } : {}),
+    overallfeedback: tranchesFeedback(s.overallfeedback),
+    grade: Number.isFinite(note) && note > 0 ? note : QUIZ_GRADE,
+  };
+}
+
+/**
+ * Les huit masques `review*` d'un comportement et d'un préréglage. PURE.
+ *
+ * - APRÈS la tentative (immédiatement, plus tard, après fermeture) : ce que le
+ *   préréglage montre.
+ * - PENDANT : la tentative et la note maximale, toujours (comme Éléa) ; tout ce
+ *   que le préréglage montre après (convention d'Éléa, ignorée par Moodle en
+ *   feedback différé) ; et, en mode interactif ou immédiat, les retours
+ *   (correction, points, feedbacks), sans quoi « Vérifier » n'afficherait RIEN.
+ *   La bonne réponse n'y est ajoutée que si le préréglage la montre. Le feedback
+ *   global n'est jamais montré pendant (Moodle ne le permet pas).
+ *
+ * Défaut (feedback différé, « tout ») : 69904 partout, 4368 pour le feedback
+ * global — les valeurs d'un Test créé sur Éléa.
+ */
+export function masquesRevue(preferredbehaviour, review, reviewMasks) {
+  if (review === 'custom') {
+    const m = masquesValides(reviewMasks);
+    if (m) return m;
+    review = REGLAGES_TEST_DEFAUT.review;
+  }
+  const apres = new Set(REVUE_PRESETS[review] || REVUE_PRESETS[REGLAGES_TEST_DEFAUT.review]);
+  const retoursPendant = preferredbehaviour === 'interactive' || preferredbehaviour === 'immediatefeedback';
+  const masques = {};
+  for (const champ of CHAMPS_REVUE) {
+    let v = apres.has(champ) ? REVUE_APRES : 0;
+    const pendant = champ !== 'overallfeedback' && (
+      champ === 'attempt' || champ === 'maxmarks' || apres.has(champ)
+      || (retoursPendant && RETOURS_PENDANT.includes(champ)));
+    if (pendant) v |= REVUE_PENDANT;
+    masques[champ] = v;
+  }
+  return masques;
+}
+
+/**
+ * Masques qu'écrivaient les deux constructeurs avant les réglages (sept. 2026) :
+ * jamais « après la fermeture », jamais « pendant » pour les retours. Personne ne
+ * les a choisis ; un Test qui les porte est relu comme « tout », et sa réécriture
+ * prend les valeurs d'Éléa.
+ */
+const MASQUES_HERITES = Object.freeze({
+  attempt: 69888, correctness: 4352, maxmarks: 69888, marks: 4352,
+  specificfeedback: 4352, generalfeedback: 4352, rightanswer: 4352, overallfeedback: 4352,
+});
+
+/**
+ * Préréglage correspondant EXACTEMENT à des masques relus, ou 'custom'. Un Test
+ * réglé à la main sur Éléa garde ainsi ses masques (`review_masks`). PURE.
+ */
+export function presetDeRevue(preferredbehaviour, masques) {
+  if (CHAMPS_REVUE.every(c => Number(masques?.[c]) === MASQUES_HERITES[c])) return 'all';
+  for (const preset of PRESETS_REVUE_TEST) {
+    const attendu = masquesRevue(preferredbehaviour, preset);
+    if (CHAMPS_REVUE.every(c => Number(masques?.[c]) === attendu[c])) return preset;
+  }
+  return 'custom';
+}
+
+/** Numéro de page (1..n) du slot d'indice `indice` (0..n-1). 0 question par page = une seule page. PURE. */
+export function pageDuSlot(indice, questionsperpage) {
+  const q = entierBorne(questionsperpage, 0, 1000, 0);
+  return q > 0 ? Math.floor(indice / q) + 1 : 1;
+}
+
+/**
+ * Les balises de RÉGLAGE de `<quiz>`, de `<timeopen>` à `<precreateattempts>`, dans
+ * l'ordre de la référence Éléa (indentation 4 espaces, sans saut de ligne final).
+ * PURE.
+ * @param {Object} [settings] - `model.quiz_settings`
+ * @param {{ sumgrades:number, ts:number }} p
+ */
+export function quizSettingsXml(settings, { sumgrades, ts }) {
+  const r = resoudreReglagesTest(settings);
+  const m = masquesRevue(r.preferredbehaviour, r.review, r.review_masks);
+  return `    <timeopen>0</timeopen>
+    <timeclose>0</timeclose>
+    <timelimit>${Math.round(r.timelimit_minutes * 60)}</timelimit>
+    <overduehandling>autosubmit</overduehandling>
+    <graceperiod>${QUIZ_GRACE_PERIOD}</graceperiod>
+    <preferredbehaviour>${r.preferredbehaviour}</preferredbehaviour>
+    <canredoquestions>0</canredoquestions>
+    <attempts_number>${r.attempts}</attempts_number>
+    <attemptonlast>0</attemptonlast>
+    <grademethod>${r.grademethod}</grademethod>
+    <decimalpoints>2</decimalpoints>
+    <questiondecimalpoints>-1</questiondecimalpoints>
+${CHAMPS_REVUE.map(c => `    <review${c}>${m[c]}</review${c}>`).join('\n')}
+    <questionsperpage>${r.questionsperpage}</questionsperpage>
+    <navmethod>${r.navmethod}</navmethod>
+    <shuffleanswers>${r.shuffleanswers}</shuffleanswers>
+    <sumgrades>${Number(sumgrades || 0).toFixed(5)}</sumgrades>
+    <grade>${r.grade.toFixed(5)}</grade>
+    <timecreated>${ts}</timecreated>
+    <timemodified>${ts}</timemodified>
+    <password></password>
+    <subnet></subnet>
+    <browsersecurity>-</browsersecurity>
+    <delay1>0</delay1>
+    <delay2>0</delay2>
+    <showuserpicture>0</showuserpicture>
+    <showblocks>0</showblocks>
+    <completionattemptsexhausted>0</completionattemptsexhausted>
+    <completionminattempts>0</completionminattempts>
+    <allowofflineattempts>0</allowofflineattempts>
+    <precreateattempts>$@NULL@$</precreateattempts>`;
+}
+
+/**
+ * Le bloc `<feedbacks>` (feedback global par plage de note). Moodle range ses
+ * plages sur l'échelle de la note (0-10) : une plage vaut pour mingrade ≤ note <
+ * maxgrade, et la plus haute monte à note + 1 (d'où le 11 d'un Test d'Éléa).
+ * Sans texte, une plage unique et vide, comme Éléa. `alloc` fournit les ids. PURE.
+ */
+export function quizFeedbacksXml(settings, alloc) {
+  const { overallfeedback: tranches, grade } = resoudreReglagesTest(settings);
+  const liste = tranches.length ? tranches : [{ from: 0, feedback: '' }];
+  const note = (pct) => (grade * pct / 100).toFixed(5);
+  const blocs = liste.map((t, i) => ({
+    texte: t.feedback.trim() ? htmlField(t.feedback) : '',
+    min: i === 0 ? (0).toFixed(5) : note(t.from),
+    max: i === liste.length - 1 ? (grade + 1).toFixed(5) : note(liste[i + 1].from),
+  })).reverse(); // la plus haute plage d'abord, comme le formulaire de Moodle
+  return `    <feedbacks>
+${blocs.map(b => `      <feedback id="${alloc()}">
+        <feedbacktext>${b.texte}</feedbacktext>
+        <feedbacktextformat>1</feedbacktextformat>
+        <mingrade>${b.min}</mingrade>
+        <maxgrade>${b.max}</maxgrade>
+      </feedback>`).join('\n')}
+    </feedbacks>`;
+}
+
 /** Une `<question_category>` (base 2 espaces). `entries` = XML des qbe (ou ''). */
 function questionCategoryXml({ id, name, contextid, contextlevel, contextinstanceid, info, stamp, parent, sortorder, entries }) {
   const body = entries && entries.length
@@ -1500,7 +1769,8 @@ export function buildQuestionsBackupXml(courseShortname, quizCategoryBlocks, ts,
  * `questions.xml` racine. Le MODÈLE `extracted.model` = sortie PARSERS.quiz /
  * parseStandaloneXml. PURE.
  *
- * @param {{kind:'quiz', model:{bank_name?,bank_description?,questions:Array}, title?:string}} extracted
+ * @param {{kind:'quiz', model:{bank_name?,bank_description?,questions:Array,quiz_settings?:Object}, title?:string}} extracted
+ *        `quiz_settings` : réglages du Test (cf. `resoudreReglagesTest`) ; absent = défauts d'Éléa.
  * @param {{index:number, sectionId:number, timestamp:number}} pos
  * @returns {{ files:Object, questionCategories:string[], moduleId:number, moduleName:'quiz' }}
  */
@@ -1560,12 +1830,15 @@ export function buildQuizActivityFiles(extracted, { index, sectionId, timestamp,
     stamp: quizStamp(hostname, ts, moduleDefCatId), parent: moduleTopCatId, sortorder: 999, entries: '',
   });
 
-  // quiz.xml : wiring des slots (slot → questionbankentryid).
+  // quiz.xml : wiring des slots (slot → questionbankentryid). Les réglages
+  // (`model.quiz_settings`) passent par les MÊMES fonctions que le Test seul.
+  const settings = model.quiz_settings;
+  const { questionsperpage, grade } = resoudreReglagesTest(settings);
   const sumgrades = slots.reduce((s, sl) => s + sl.maxmark, 0);
   const instancesXml = slots.map((sl, i) => `      <question_instance id="${alloc()}">
         <quizid>${activityId}</quizid>
         <slot>${i + 1}</slot>
-        <page>1</page>
+        <page>${pageDuSlot(i, questionsperpage)}</page>
         <displaynumber>$@NULL@$</displaynumber>
         <requireprevious>0</requireprevious>
         <maxmark>${frac7(sl.maxmark)}</maxmark>
@@ -1585,43 +1858,7 @@ export function buildQuizActivityFiles(extracted, { index, sectionId, timestamp,
     <name>${escXmlText(title)}</name>
     <intro></intro>
     <introformat>1</introformat>
-    <timeopen>0</timeopen>
-    <timeclose>0</timeclose>
-    <timelimit>0</timelimit>
-    <overduehandling>autosubmit</overduehandling>
-    <graceperiod>0</graceperiod>
-    <preferredbehaviour>deferredfeedback</preferredbehaviour>
-    <canredoquestions>0</canredoquestions>
-    <attempts_number>0</attempts_number>
-    <attemptonlast>0</attemptonlast>
-    <grademethod>1</grademethod>
-    <decimalpoints>2</decimalpoints>
-    <questiondecimalpoints>-1</questiondecimalpoints>
-    <reviewattempt>69888</reviewattempt>
-    <reviewcorrectness>4352</reviewcorrectness>
-    <reviewmaxmarks>69888</reviewmaxmarks>
-    <reviewmarks>4352</reviewmarks>
-    <reviewspecificfeedback>4352</reviewspecificfeedback>
-    <reviewgeneralfeedback>4352</reviewgeneralfeedback>
-    <reviewrightanswer>4352</reviewrightanswer>
-    <reviewoverallfeedback>4352</reviewoverallfeedback>
-    <questionsperpage>1</questionsperpage>
-    <navmethod>free</navmethod>
-    <shuffleanswers>1</shuffleanswers>
-    <sumgrades>${sumgrades.toFixed(5)}</sumgrades>
-    <grade>10.00000</grade>
-    <timecreated>${ts}</timecreated>
-    <timemodified>${ts}</timemodified>
-    <password></password>
-    <subnet></subnet>
-    <browsersecurity>-</browsersecurity>
-    <delay1>0</delay1>
-    <delay2>0</delay2>
-    <showuserpicture>0</showuserpicture>
-    <showblocks>0</showblocks>
-    <completionattemptsexhausted>0</completionattemptsexhausted>
-    <completionminattempts>0</completionminattempts>
-    <allowofflineattempts>0</allowofflineattempts>
+${quizSettingsXml(settings, { sumgrades, ts })}
     <subplugin_quizaccess_seb_quiz>
     </subplugin_quizaccess_seb_quiz>
     <quiz_grade_items>
@@ -1636,14 +1873,7 @@ ${instancesXml}
         <shufflequestions>0</shufflequestions>
       </section>
     </sections>
-    <feedbacks>
-      <feedback id="${alloc()}">
-        <feedbacktext></feedbacktext>
-        <feedbacktextformat>1</feedbacktextformat>
-        <mingrade>0.00000</mingrade>
-        <maxgrade>11.00000</maxgrade>
-      </feedback>
-    </feedbacks>
+${quizFeedbacksXml(settings, alloc)}
     <overrides>
     </overrides>
     <grades>
@@ -1720,7 +1950,7 @@ ${instancesXml}
       <idnumber></idnumber>
       <calculation>$@NULL@$</calculation>
       <gradetype>1</gradetype>
-      <grademax>10.00000</grademax>
+      <grademax>${grade.toFixed(5)}</grademax>
       <grademin>0.00000</grademin>
       <scaleid>$@NULL@$</scaleid>
       <outcomeid>$@NULL@$</outcomeid>
