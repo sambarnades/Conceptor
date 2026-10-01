@@ -5,11 +5,14 @@
  * sous-titres, et texte de la voix off minuté.
  *
  *   node scripts/video-demo/tourner.mjs --enregistrer-ia   1. interroge le VRAI modèle et garde ses réponses
+ *   node scripts/video-demo/tourner.mjs --enregistrer-ia=plan-attente,fabrication
+ *                                                          (1 bis) ne réinterroge que ces scènes ; les autres
+ *                                                          rejouent leurs réponses gardées
  *   node scripts/video-demo/tourner.mjs                    2. tourne en rejouant ces réponses, puis monte
  *
  * Options : --voix=Thomas (voix `say` de macOS pour la voix témoin), --debit=160
  * (mots/minute : une voix humaine posée, un peu plus lente que la synthèse par
- * défaut), --sortie=<dossier> (défaut : tests/.video-demo/), --garder-images,
+ * défaut), --sortie=<dossier> (défaut : tests/.video-demo/7.1/), --garder-images,
  * --jusqua=<scène> (s'arrêter après une scène, sans caméra : mise au point).
  *
  *   node scripts/video-demo/studio.mjs                     3. enregistre les VRAIES voix, prompteur et micro, puis monte
@@ -50,15 +53,22 @@ const { chromium } = require('playwright');
 
 const argv = process.argv.slice(2);
 const option = (nom, defaut) => (argv.find(a => a.startsWith(`--${nom}=`)) || '').split('=').slice(1).join('=') || defaut;
-const ENREGISTRER = argv.includes('--enregistrer-ia');
-const SORTIE = resolve(option('sortie', join(ROOT, 'tests/.video-demo')));
+const ENREGISTRER = argv.some(a => a === '--enregistrer-ia' || a.startsWith('--enregistrer-ia='));
+/**
+ * Les scènes à réinterroger (`--enregistrer-ia=a,b`) ; vide : toutes. Les autres
+ * rejouent leurs réponses gardées : refaire la partie « parcours » ne doit pas
+ * changer le quiz, dont la scène « edition » corrige une erreur RÉELLE du modèle.
+ */
+const A_ENREGISTRER = new Set(option('enregistrer-ia', '').split(',').filter(Boolean));
+const enregistreScene = id => ENREGISTRER && (!A_ENREGISTRER.size || A_ENREGISTRER.has(id));
+const SORTIE = resolve(option('sortie', join(ROOT, 'tests/.video-demo/7.1')));
 const VOIX = option('voix', 'Thomas');
 const DEBIT = Number(option('debit', 160));
 /** Arrêter après cette scène, sans montage : pour mettre une scène au point. */
 const JUSQUA = option('jusqua', null);
 /**
  * Passe à blanc : rejoue le tournage aux mêmes minutages, sans caméra, et relève
- * seulement le journal des gestes (tests/.video-demo/journal.json), scène par scène.
+ * seulement le journal des gestes (tests/.video-demo/7.1/journal.json), scène par scène.
  * Les gestes étant calés sur les phrases de la voix, leurs instants relatifs à la
  * scène sont ceux de la vidéo déjà tournée : l'habillage s'en sert sans retourner.
  */
@@ -92,7 +102,7 @@ function ecrireTexte({ duree, marques }) {
         `Durée totale : **${mmss(duree)}**. Chaque bloc commence au minutage indiqué ; son texte tient dans le temps de la scène à un débit posé (${DEBIT} mots/min).`,
         'Les attentes raccourcies au montage sont signalées à l’écran avec leur durée réelle.', '',
         '**Pour enregistrer vos voix** : `node scripts/video-demo/studio.mjs` ouvre le studio (vidéo, prompteur, micro) ; '
-        + 'on lit au fil de la vidéo, chaque bloc est rangé dans `tests/.video-demo/voix-off/`, et « Monter la vidéo » produit le film. '
+        + 'on lit au fil de la vidéo, chaque bloc est rangé dans `tests/.video-demo/7.1/voix-off/`, et « Monter la vidéo » produit le film. '
         + 'Pour des voix enregistrées ailleurs : un fichier audio par bloc, nommé comme lui (`apercu.m4a`…), puis '
         + '`node scripts/video-demo/tourner.mjs --mixer=<dossier>`. Les sous-titres fournis ne valent que pour le texte lu tel quel.', ''];
     let chap = null;
@@ -210,6 +220,12 @@ if (!ENREGISTRER && !store.appels.length) {
     process.exit(1);
 }
 const sauverStore = () => writeFileSync(FIXTURE, JSON.stringify(store, null, 1) + '\n');
+// Les scènes réinterrogées perdent leurs anciennes réponses : on garde les nouvelles seules.
+if (ENREGISTRER && A_ENREGISTRER.size) {
+    const avant = store.appels.length;
+    store.appels = store.appels.filter(a => !A_ENREGISTRER.has(a.scene));
+    if (avant !== store.appels.length) console.log(`${avant - store.appels.length} réponse(s) gardée(s) retirée(s) : ${[...A_ENREGISTRER].join(', ')} seront réinterrogées.`);
+}
 
 /** Durée réelle d'une scène à IA : de la première demande à la dernière réponse. */
 function dureesReelles() {
@@ -302,7 +318,7 @@ let nRejeu = 0;
 function choisirAppel(prompt) {
     const k = cle(prompt);
     let i = store.appels.findIndex((a, j) => !utilises.has(j) && a.cle === k);
-    if (i < 0 && !ENREGISTRER) {
+    if (i < 0 && !enregistreScene(sceneCourante)) {
         // Le prompt a bougé depuis l'enregistrement (texte d'un gabarit retouché…) :
         // on rend la réponse suivante de la même scène, dans l'ordre, et on le dit.
         i = store.appels.findIndex((a, j) => !utilises.has(j) && a.scene === sceneCourante);
@@ -316,7 +332,7 @@ await page.route('**/webhook/caramel/llm/submit-*', async route => {
     const corps = JSON.parse(route.request().postData() || '{}');
     const i = choisirAppel(corps.prompt || '');
     if (i < 0) {
-        if (!ENREGISTRER) return route.fulfill({ status: 500, body: 'aucune réponse enregistrée pour cette demande' });
+        if (!enregistreScene(sceneCourante)) return route.fulfill({ status: 500, body: 'aucune réponse enregistrée pour cette demande' });
         return route.continue();                       // demande nouvelle : au vrai modèle
     }
     const appel = store.appels[i];

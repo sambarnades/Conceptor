@@ -4,7 +4,7 @@
  * de la place à une voix plus lente que prévu, sans retourner le film.
  *
  * Réglées dans la table de montage du studio, gardées dans
- * tests/.video-demo/montage.json ({ "rallonges": { "limites": 2, … } }), elles
+ * tests/.video-demo/7.1/montage.json ({ "rallonges": { "limites": 2, … } }), elles
  * valent pour tout ce qui suit : l'enregistrement et la réécoute au studio, le
  * montage des voix (`tourner.mjs --mixer`) et l'habillage de la version commentée.
  *
@@ -20,7 +20,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const RALLONGE_MAX = 10;
+/** Une rallonge fige la dernière image d'un bloc : de quoi finir une phrase réécrite plus longue. */
+export const RALLONGE_MAX = 30;
 export const GAIN_MAX = 12;
 export const DECALAGE_MAX = 2;
 const VIDE = () => ({ rallonges: {}, audio: {}, textes: {} });

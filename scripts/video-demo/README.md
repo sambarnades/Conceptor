@@ -3,6 +3,11 @@
 Des outils pour tourner la démonstration dans le vrai Caramel, y poser nos voix au
 prompteur, régler le montage et produire les versions finales (commentée et en musique).
 
+**Version 7.1 (octobre 2026)** : la partie « parcours » montre un parcours différencié
+(des chemins selon les résultats, l'aiguillage du plan, « Voir comme un élève », la fin
+du parcours et sa page de bilan). Tout se range dans `tests/.video-demo/7.1/` ; la
+première vidéo (septembre 2026) reste à la racine de `tests/.video-demo/`.
+
 Prérequis : Node, `ffmpeg`, et Playwright déjà installé pour les tests
 (`tests/roundtrip/node_modules`). Tout se lance depuis la racine du dépôt.
 
@@ -25,7 +30,13 @@ Prérequis : Node, `ffmpeg`, et Playwright déjà installé pour les tests
    - `Espace` enregistre à partir du bloc choisi, `B` refait un bloc seul, `E` réécoute,
      `F` met le prompteur en plein écran.
    - **✎ Texte** (dans le prompteur) réécrit ce qu'on lit sur un bloc ; la vidéo ne
-     change pas, le prompteur répartit le nouveau texte sur la durée du bloc.
+     change pas, le prompteur répartit le nouveau texte sur la durée du bloc. Pendant
+     l'écriture, la **lecture estimée** (au débit de la voix témoin) s'affiche face à la
+     place de la voix ; si le texte déborde, « Rallonger le bloc de … » pose d'un clic la
+     rallonge nécessaire.
+   - **Rallonge − / +** (en haut du prompteur) : la dernière image du bloc reste figée,
+     par demi-seconde, jusqu'à 30 s ; le micro continue pendant ce temps. Même réglage que
+     dans la table de montage, que le montage des voix et l'habillage respectent.
    - **Table de montage** : les blocs dont la voix est coupée y sont signalés ; une
      *rallonge* fige l'image en fin de bloc pour laisser de la place, puis on
      réenregistre le bloc. On y **retouche aussi une prise** sans la refaire : couper
@@ -41,7 +52,7 @@ Prérequis : Node, `ffmpeg`, et Playwright déjà installé pour les tests
 
 ## Ce qui reste sur l'ordinateur
 
-Tout ce qui est produit va dans `tests/.video-demo/`, exclu de git : les prises de voix,
+Tout ce qui est produit va dans `tests/.video-demo/7.1/` (`--sortie=` pour un autre dossier), exclu de git : les prises de voix,
 les vidéos, les images de travail, les réglages du montage (`montage.json` : rallonges,
 retouches des prises, textes réécrits). Ce dossier commence par un point :
 le Finder le masque (`Cmd + Maj + .` pour l'afficher).
@@ -60,4 +71,8 @@ le Finder le masque (`Cmd + Maj + .` pour l'afficher).
 | `musique.mjs` | La musique, composée par le script (aucun droit à régler) |
 
 Retourner avec de nouvelles réponses de l'IA (appelle le vrai modèle) :
-`node scripts/video-demo/tourner.mjs --enregistrer-ia`.
+`node scripts/video-demo/tourner.mjs --enregistrer-ia`. Pour ne réinterroger que certaines
+scènes, les autres rejouant leurs réponses gardées :
+`node scripts/video-demo/tourner.mjs --enregistrer-ia=plan-attente,fabrication` (c'est ainsi
+qu'a été refaite la partie « parcours » de la 7.1, sans toucher au quiz ni à son erreur réelle
+sur la Bastille que la scène « edition » corrige).

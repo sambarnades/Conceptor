@@ -40,9 +40,19 @@ kbd { font: 12px ui-monospace, Menlo, monospace; border: 1px solid var(--filet);
 #micro-etat { color: var(--doux); font-size: 13px; }
 #compte { color: var(--doux); font-size: 13px; font-variant-numeric: tabular-nums; }
 
-.studio { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(340px, 1fr); min-height: 0; }
-.gauche { display: grid; grid-template-rows: auto auto auto 1fr; gap: 12px; padding: 16px 18px; min-height: 0; min-width: 0; }
-.cadre { position: relative; }
+/* Deux réglages à la souris, gardés d'une séance à l'autre : la largeur de la colonne de
+   gauche (--gauche, poignée entre les colonnes) et la taille de la vidéo (--video, poignée
+   sous l'image), pour donner de la place à la liste des blocs. Double-clic : d'origine. */
+.studio { display: grid; grid-template-columns: minmax(0, var(--gauche, 1.15fr)) 10px minmax(340px, 1fr); min-height: 0; }
+.gauche { display: grid; grid-template-rows: auto auto auto auto 1fr; gap: 12px; padding: 16px 18px; min-height: 0; min-width: 0; }
+.cadre { position: relative; width: var(--video, 100%); max-width: 100%; margin: 0 auto; }
+.poignee { position: relative; touch-action: none; outline: none; }
+.poignee::after { content: ""; position: absolute; background: var(--filet); border-radius: 2px; transition: background .15s; }
+.poignee:hover::after, .poignee:focus-visible::after, .poignee.tire::after { background: var(--accent); }
+.poignee--colonnes { cursor: col-resize; }
+.poignee--colonnes::after { top: 0; bottom: 0; left: 4px; width: 2px; }
+.poignee--video { height: 10px; margin: -8px 0; cursor: row-resize; }
+.poignee--video::after { left: 35%; right: 35%; top: 3px; height: 4px; }
 video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 10px; display: block; }
 #decompte { position: absolute; inset: 0; display: grid; place-items: center; font: 700 140px/1 -apple-system, sans-serif; color: #fff; text-shadow: 0 4px 30px rgba(0,0,0,.6); pointer-events: none; }
 #rec { position: absolute; top: 12px; left: 12px; background: var(--rouge); color: #fff; font: 700 13px/1 -apple-system, sans-serif; padding: 6px 10px; border-radius: 6px; letter-spacing: .06em; }
@@ -86,11 +96,22 @@ video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 10px
 .p-jauge > div { height: 100%; width: 100%; background: var(--p-actif); transform-origin: left; transition: background .3s; }
 .p-jauge.presse > div { background: #ff6b6b; }
 #p-decompte { position: absolute; left: 0; right: 0; top: 30%; text-align: center; font: 800 120px/1 -apple-system, sans-serif; color: var(--p-actif); pointer-events: none; text-shadow: 0 6px 30px rgba(0,0,0,.5); }
-.p-edition { display: grid; grid-template-rows: 1fr auto; gap: 10px; padding: 18px 22px; min-height: 0; }
+.p-edition { display: grid; grid-template-rows: 1fr auto auto; gap: 10px; padding: 18px 22px; min-height: 0; }
 .p-edition textarea { width: 100%; min-height: 200px; resize: none; background: #141b24; color: var(--p-texte); border: 1px solid #2c3746; border-radius: 8px; padding: 14px 16px; font: 22px/1.5 -apple-system, sans-serif; }
 .p-edition div { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--p-doux); font-size: 13px; }
 .p-edition .enregistrer { background: var(--p-actif); color: #1a1300; border-color: var(--p-actif); font-weight: 700; }
 .p-modifie { color: var(--p-actif); font-size: 12px; margin-left: 6px; }
+/* La rallonge du bloc : sa dernière image reste figée, le micro continue. */
+.p-rallonge { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.p-rallonge button { background: #1b232e; color: var(--p-texte); border-color: #2c3746; padding: 1px 9px; }
+.p-rallonge button:disabled { opacity: .35; }
+.p-rallonge output { min-width: 3.4em; text-align: center; color: var(--p-texte); font-variant-numeric: tabular-nums; }
+.p-rallonge.active output { color: var(--p-actif); font-weight: 700; }
+/* Le temps de lecture d'un texte réécrit, face à la place de la voix dans le bloc. */
+.p-mesure { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; color: var(--p-doux); font-size: 14px; }
+.p-mesure b { color: var(--p-texte); font-variant-numeric: tabular-nums; }
+.p-mesure.trop b.estime { color: #ff6b6b; }
+.p-mesure.juste b.estime { color: #7ee2a8; }
 #p-temps { font-variant-numeric: tabular-nums; }
 #p-temps.presse { color: var(--p-actif); }
 .p-texte { overflow-y: auto; padding: 26px 30px 40vh; font-size: var(--taille-prompteur); line-height: 1.5; }
@@ -101,19 +122,24 @@ video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 10px
 .p-suivant { border-top: 1px solid #222b36; padding: 12px 22px; color: var(--p-doux); font-size: 15px; min-height: 48px; }
 .p-suivant b { color: var(--p-texte); font-weight: 600; }
 
-.message { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); max-width: min(720px, calc(100vw - 32px)); background: var(--surface); color: var(--encre); border: 1px solid var(--filet); border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.18); padding: 10px 16px; font-size: 14px; line-height: 1.45; }
+.message { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); max-width: min(720px, calc(100vw - 32px)); background: var(--surface); color: var(--encre); border: 1px solid var(--filet); border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.18); padding: 10px 16px; font-size: 14px; line-height: 1.45; transition: opacity .4s, transform .4s; }
 .message:empty { display: none; }
+/* La bulle s'efface seule, en glissant vers le bas : elle ne cache plus la liste des blocs. */
+.message.cache { opacity: 0; transform: translate(-50%, 24px); pointer-events: none; }
+.message .fermer { margin-left: 12px; padding: 0 6px; border: 0; background: none; color: var(--doux); font-size: 18px; line-height: 1; vertical-align: middle; }
 .message .ok { color: var(--ok); } .message .alerte { color: var(--alerte); }
 
 
 /* Plein écran : le prompteur prend la place, la vidéo et les commandes passent dans une colonne étroite. */
-body.plein .studio { grid-template-columns: minmax(280px, .5fr) minmax(0, 1.5fr); }
-body.plein .liste, body.plein .aide { display: none; }
+body.plein .studio { grid-template-columns: minmax(280px, .5fr) 10px minmax(0, 1.5fr); }
+body.plein .liste, body.plein .aide, body.plein .poignee--video { display: none; }
 body.plein .gauche { grid-template-rows: auto auto auto; align-content: start; }
+body.plein .cadre { width: 100%; }
 body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 30vh 8% 45vh; line-height: 1.55; }
 @media (max-width: 980px) {
   body { grid-template-rows: auto auto; }
   .studio { grid-template-columns: minmax(0, 1fr); }
+  .poignee--colonnes { display: none; }
   .prompteur { min-height: 60vh; }
 }
 @media (prefers-reduced-motion: reduce) { #rec::before { animation: none; } }
@@ -141,6 +167,8 @@ body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 3
       <div id="decompte" hidden></div>
       <div id="rec" hidden>REC</div>
     </div>
+    <div class="poignee poignee--video" id="poignee-video" role="separator" aria-orientation="horizontal" tabindex="0"
+      aria-label="Taille de la vidéo" title="Glisser vers le haut : vidéo plus petite, liste des blocs plus grande (double-clic : taille d’origine)"></div>
     <div class="frise" id="frise" aria-label="Frise des blocs"><div id="tete-lecture"></div></div>
     <div class="commandes">
       <button id="enr-suite" class="rouge" type="button">● Enregistrer à partir d’ici</button>
@@ -152,18 +180,23 @@ body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 3
     <ol class="liste" id="liste"></ol>
   </section>
 
+  <div class="poignee poignee--colonnes" id="poignee-colonnes" role="separator" aria-orientation="vertical" tabindex="0"
+    aria-label="Largeur de la colonne de gauche" title="Glisser pour élargir ou rétrécir la colonne de gauche (double-clic : largeur d’origine)"></div>
+
   <section class="prompteur" aria-label="Prompteur">
     <div class="p-tete">
       <span id="p-bloc"></span>
       <span id="p-temps"></span>
+      <span class="p-rallonge" id="p-rallonge" title="Rallonge : la dernière image du bloc reste figée le temps de finir de parler (− / + par demi-seconde)">Rallonge <button id="r-moins" type="button" aria-label="Rallonge plus courte d’une demi-seconde">−</button><output id="r-valeur">0 s</output><button id="r-plus" type="button" aria-label="Rallonge plus longue d’une demi-seconde">+</button></span>
       <span class="p-taille"><button id="p-modifier" type="button" title="Réécrire le texte de ce bloc (la vidéo ne change pas)">✎ Texte</button><button id="p-moins" type="button" aria-label="Texte plus petit">A−</button><button id="p-plus" type="button" aria-label="Texte plus grand">A+</button><button id="p-plein" type="button" aria-pressed="false" title="Prompteur plein écran (F)">⛶</button></span>
     </div>
     <div class="p-jauge" id="p-jauge"><div></div></div>
     <div class="p-texte" id="p-texte"></div>
     <div class="p-edition" id="p-edition" hidden>
       <textarea id="p-saisie" aria-label="Texte du bloc" spellcheck="true"></textarea>
+      <p class="p-mesure" id="p-mesure" aria-live="polite"></p>
       <div><button id="p-garder" class="enregistrer" type="button">Garder ce texte</button><button id="p-original" type="button">Revenir au texte d’origine</button><button id="p-annuler" type="button">Annuler</button>
-        <span>Le prompteur répartit le nouveau texte sur la durée du bloc.</span></div>
+        <span>Le prompteur répartit le nouveau texte sur la durée du bloc, rallonge comprise.</span></div>
     </div>
     <div id="p-decompte" hidden></div>
     <div class="p-suivant" id="p-suivant"></div>
@@ -190,10 +223,12 @@ body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 3
   let audio = {}, textes = {};
 
   /** Les rallonges de la table de montage : l'image se fige à la fin du bloc, le micro continue. */
+  let RALLONGE_MAX = 30;
   async function chargerMontage() {
     const m = await (await fetch('/montage', { cache: 'no-store' })).json();
     for (const b of blocs) { b.rallonge = Number(m.rallonges?.[b.id]) || 0; b.place = b.coupe - b.debut; }
     audio = m.audio || {}; textes = m.textes || {};
+    RALLONGE_MAX = Number(m.rallongeMax) || RALLONGE_MAX;
     pIndex = -1;
   }
 
@@ -295,11 +330,14 @@ body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 3
     const i = tenue ? tenue.k : capture && t < blocs[capture.depart].debut ? capture.depart : indexA(t);
     const b = blocs[i];
     const phrases = phrasesDe(b);
-    if (i !== pIndex) {
+    // Un texte qui change de nombre de phrases (réécrit, rétabli) refait aussi le prompteur :
+    // sinon la boucle cherchait une phrase sans élément, levait une erreur et s'arrêtait.
+    if (i !== pIndex || $('#p-texte').children.length !== phrases.length) {
       pIndex = i; pActive = -1;
       if (!$('#p-edition').hidden && !capture && !ecoute) fermerEdition();
       $('#p-texte').replaceChildren(...phrases.map(p => { const s = document.createElement('span'); s.textContent = p.texte; return s; }).flatMap(s => [s, document.createTextNode(' ')]));
       $('#p-bloc').innerHTML = `<b>${b.id}</b>${b.chapitre ? ' · ' + b.chapitre : ''}${textes[b.id] ? '<span class="p-modifie">texte réécrit</span>' : ''}`;
+      peindreRallonge();
       const s = blocs[i + 1];
       $('#p-suivant').innerHTML = s ? `Ensuite · <b>${s.id}</b> : ${phrasesDe(s)[0]?.texte ?? ''}` : 'Dernier bloc.';
       $('#p-texte').scrollTop = 0;
@@ -346,6 +384,82 @@ body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 3
   $('#p-plein').onclick = () => basculerPlein();
   document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && document.body.classList.contains('plein')) basculerPlein(false); });
 
+  /* ---------------- Rallonges ----------------
+   * Une rallonge fige la DERNIÈRE image d'un bloc le temps de finir de parler : la
+   * vidéo n'est pas retournée. Le montage des voix et l'habillage la respectent
+   * (montage.mjs, chronologie). On la règle ici comme dans la table de montage. */
+  const DEBIT = 160;   // mots par minute : le débit de la voix témoin (tourner.mjs)
+  const blocCourant = () => blocs[pIndex >= 0 ? pIndex : choisi];
+  const secondes = x => `${String(Math.round(x * 10) / 10).replace('.', ',')} s`;
+  const nbMots = t => (String(t).match(/[\p{L}\p{N}’']+/gu) || []).length;
+  /** Le temps que prend un texte, étalonné sur la voix témoin du même bloc (même débit, mêmes pauses). */
+  function lectureEstimee(b, texte) {
+    const brut = t => nbMots(t) * 60 / DEBIT + Math.max(0, (String(t).match(/[.!?…]+/g) || []).length - 1) * 0.35;
+    const origine = b.phrases.map(p => p.texte).join(' ');
+    const der = b.phrases.at(-1), d0 = b.phrases[0]?.offset ?? 0;
+    const temoin = der ? der.offset + der.duree - d0 : 0;
+    return brut(texte) * (temoin && brut(origine) ? temoin / brut(origine) : 1);
+  }
+  /** Le temps dont dispose la voix : du début de sa première phrase à la coupure, rallonge comprise. */
+  const placeVoix = b => Math.max(0, b.place + b.rallonge - (b.phrases[0]?.offset ?? 0.3) - 0.3);
+  function peindreRallonge() {
+    const b = blocCourant();
+    if (!b) return;
+    $('#r-valeur').textContent = b.rallonge ? `+${secondes(b.rallonge)}` : '0 s';
+    $('#p-rallonge').classList.toggle('active', b.rallonge > 0);
+    $('#r-moins').disabled = b.rallonge <= 0;
+    $('#r-plus').disabled = b.rallonge >= RALLONGE_MAX;
+  }
+  /** Les rallonges réglées ici, en attente d'écriture : l'écran suit tout de suite, le disque 300 ms après. */
+  const aEcrire = new Map();
+  let ecriture = null;
+  function reglerRallonge(id, valeur) {
+    if (capture || ecoute) return;
+    const b = blocs.find(x => x.id === id);
+    if (!b) return;
+    const v = Math.round(Math.max(0, Math.min(RALLONGE_MAX, valeur)) * 2) / 2;
+    b.rallonge = v;
+    aEcrire.set(id, v);
+    peindreListe();
+    peindreRallonge();
+    // Le prompteur répartit un texte réécrit sur la place, rallonge comprise : on le refait,
+    // sauf pendant l'édition, que le changement de bloc refermerait.
+    if (!$('#p-edition').hidden) peindreMesure(); else pIndex = -1;
+    dire(v ? `Bloc « ${id} » : la dernière image reste figée ${secondes(v)} de plus. Réenregistre-le (<kbd>B</kbd>) pour profiter du temps gagné.`
+      : `Bloc « ${id} » : plus de rallonge.`);
+    clearTimeout(ecriture);
+    ecriture = setTimeout(async () => {
+      // Relire d'abord : la table de montage, ouverte à côté, a pu régler d'autres blocs.
+      const m = await (await fetch('/montage', { cache: 'no-store' })).json();
+      const rallonges = { ...(m.rallonges || {}) };
+      for (const [k, x] of aEcrire) { if (x) rallonges[k] = x; else delete rallonges[k]; }
+      aEcrire.clear();
+      const r = await fetch('/montage', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rallonges }) });
+      if (!r.ok) dire('Rallonge non enregistrée : réessaie.', 'alerte');
+    }, 300);
+  }
+  $('#r-moins').onclick = () => { const b = blocCourant(); if (b) reglerRallonge(b.id, b.rallonge - 0.5); };
+  $('#r-plus').onclick = () => { const b = blocCourant(); if (b) reglerRallonge(b.id, b.rallonge + 0.5); };
+
+  /** Sous le texte en cours d'écriture : le temps qu'il demande, la place qu'il a. */
+  function peindreMesure() {
+    const b = blocs.find(x => x.id === $('#p-saisie').dataset.id);
+    if (!b) return;
+    const estime = lectureEstimee(b, $('#p-saisie').value), place = placeVoix(b), manque = estime - place;
+    const rallonger = Math.ceil(manque * 2) / 2;
+    const el = $('#p-mesure');
+    el.className = `p-mesure ${manque > 0 ? 'trop' : 'juste'}`;
+    el.innerHTML = `Lecture estimée : <b class="estime">${secondes(estime)}</b> · place de la voix : <b>${secondes(place)}</b>`
+      + (b.rallonge ? ` (dont ${secondes(b.rallonge)} de rallonge)` : '')
+      + (manque > 0
+        ? (b.rallonge + rallonger <= RALLONGE_MAX
+          ? `<button type="button" id="p-rallonger">Rallonger le bloc de ${secondes(rallonger)}</button>`
+          : ` · trop long, même rallongé au maximum (${secondes(RALLONGE_MAX)}) : raccourcis le texte`)
+        : ' · ça tient');
+    const bouton = $('#p-rallonger');
+    if (bouton) bouton.onclick = () => reglerRallonge(b.id, b.rallonge + rallonger);
+  }
+
   /* Réécrire le texte d'un bloc : pour dire autre chose que la voix témoin sur la même image. */
   function ouvrirEdition() {
     if (capture || ecoute) return;
@@ -353,18 +467,25 @@ body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 3
     $('#p-saisie').value = textes[b.id] || b.phrases.map(p => p.texte).join(' ');
     $('#p-saisie').dataset.id = b.id;
     $('#p-texte').hidden = true; $('#p-edition').hidden = false;
+    peindreMesure();
     $('#p-saisie').focus();
   }
+  $('#p-saisie').addEventListener('input', peindreMesure);
   function fermerEdition() { $('#p-edition').hidden = true; $('#p-texte').hidden = false; }
   async function sauverTextes(id, texte) {
     const origine = blocs.find(b => b.id === id).phrases.map(p => p.texte).join(' ');
     if (texte && texte.replace(/\s+/g, ' ').trim() !== origine) textes[id] = texte; else delete textes[id];
+    pIndex = -1;
     const r = await fetch('/montage', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ textes }) });
     if (r.ok) textes = (await r.json()).textes || {};
     pIndex = -1;
     fermerEdition();
     peindreListe();
-    dire(textes[id] ? `Texte de « ${id} » réécrit : le prompteur le suit. Réenregistre ce bloc (<kbd>B</kbd>).` : `Texte d’origine rétabli pour « ${id} ».`);
+    const b = blocs.find(x => x.id === id);
+    const manque = textes[id] ? lectureEstimee(b, textes[id]) - placeVoix(b) : 0;
+    dire(textes[id] ? `Texte de « ${id} » réécrit : le prompteur le suit.`
+      + (manque > 0 ? ` Il demande environ ${secondes(manque)} de plus que la place : donne une rallonge au bloc (« Rallonge + », en haut du prompteur).` : '')
+      + ` Réenregistre ce bloc (<kbd>B</kbd>).` : `Texte d’origine rétabli pour « ${id} ».`);
   }
   $('#p-modifier').onclick = () => ouvrirEdition();
   $('#p-garder').onclick = () => sauverTextes($('#p-saisie').dataset.id, $('#p-saisie').value);
@@ -614,7 +735,79 @@ body.plein .p-texte { font-size: calc(var(--taille-prompteur) * 1.3); padding: 3
     $('#arreter').hidden = !occupe;
     for (const id of ['#enr-suite', '#enr-bloc', '#ecouter', '#apercu', '#generer', '#p-modifier']) $(id).disabled = occupe;
   }
-  function dire(html, genre) { const m = $('#message'); m.innerHTML = genre ? `<span class="${genre}">${html}</span>` : html; }
+  /**
+   * La bulle de message, en bas : elle s'efface seule, le temps de la lire (5 à 15 s selon
+   * sa longueur, davantage pour une alerte), reste tant que la souris la survole, et se
+   * ferme d'un clic sur ×. Elle ne masque plus la liste des blocs.
+   */
+  let minuterieMessage = null;
+  const effacerPlusTard = ms => { clearTimeout(minuterieMessage); minuterieMessage = setTimeout(() => $('#message').classList.add('cache'), ms); };
+  function dire(html, genre) {
+    const m = $('#message');
+    clearTimeout(minuterieMessage);
+    m.classList.remove('cache');
+    if (!html) { m.replaceChildren(); return; }
+    m.innerHTML = (genre ? `<span class="${genre}">${html}</span>` : html)
+      + '<button type="button" class="fermer" aria-label="Fermer le message" title="Fermer">×</button>';
+    effacerPlusTard(Math.min(15000, 5000 + m.textContent.length * 45) * (genre === 'alerte' ? 1.5 : 1));
+  }
+  $('#message').addEventListener('mouseenter', () => clearTimeout(minuterieMessage));
+  $('#message').addEventListener('mouseleave', () => { if ($('#message').textContent && !$('#message').classList.contains('cache')) effacerPlusTard(2500); });
+  $('#message').addEventListener('click', e => { if (e.target.closest('.fermer')) { clearTimeout(minuterieMessage); $('#message').classList.add('cache'); } });
+
+  /* ---------------- Mise en page réglable ---------------- */
+  const studio = $('.studio'), gauche = $('.gauche');
+  const lireReglage = cle => { try { return Number(localStorage.getItem(cle)) || 0; } catch { return 0; } };
+  const garderReglage = (cle, v) => { try { if (v) localStorage.setItem(cle, String(v)); else localStorage.removeItem(cle); } catch { /* stockage indisponible */ } };
+  let largeurGauche = lireReglage('caramel_studio_gauche'), tailleVideo = lireReglage('caramel_studio_video');
+  const appliquerGauche = () => { if (largeurGauche) studio.style.setProperty('--gauche', `${largeurGauche}px`); else studio.style.removeProperty('--gauche'); };
+  const appliquerVideo = () => { if (tailleVideo && tailleVideo < 100) gauche.style.setProperty('--video', `${tailleVideo}%`); else gauche.style.removeProperty('--video'); };
+  appliquerGauche(); appliquerVideo();
+  /** Une poignée qu'on tire : `bouger` suit le pointeur, `fini` garde le réglage. */
+  function tirer(poignee, bouger, fini) {
+    poignee.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      poignee.setPointerCapture(e.pointerId);
+      poignee.classList.add('tire');
+      const lacher = () => {
+        poignee.classList.remove('tire');
+        poignee.removeEventListener('pointermove', bouger);
+        poignee.removeEventListener('pointerup', lacher);
+        poignee.removeEventListener('pointercancel', lacher);
+        fini();
+      };
+      poignee.addEventListener('pointermove', bouger);
+      poignee.addEventListener('pointerup', lacher);
+      poignee.addEventListener('pointercancel', lacher);
+    });
+  }
+  // La colonne de gauche : de 360 px à ce qui laisse 340 px au prompteur.
+  const bornerGauche = px => Math.round(Math.max(360, Math.min(studio.getBoundingClientRect().width - 350, px)));
+  const pColonnes = $('#poignee-colonnes');
+  tirer(pColonnes, e => { largeurGauche = bornerGauche(e.clientX - studio.getBoundingClientRect().left); appliquerGauche(); },
+    () => garderReglage('caramel_studio_gauche', largeurGauche));
+  pColonnes.addEventListener('dblclick', () => { largeurGauche = 0; appliquerGauche(); garderReglage('caramel_studio_gauche', 0); });
+  pColonnes.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault(); e.stopPropagation();
+    largeurGauche = bornerGauche(gauche.getBoundingClientRect().width + (e.key === 'ArrowRight' ? 24 : -24));
+    appliquerGauche(); garderReglage('caramel_studio_gauche', largeurGauche);
+  });
+  // La vidéo : sa largeur suit la hauteur voulue (16/9), de 30 % à toute la colonne.
+  const pVideo = $('#poignee-video');
+  const largeurUtile = () => gauche.clientWidth - 36;
+  tirer(pVideo, e => {
+    const hauteur = e.clientY - $('.cadre').getBoundingClientRect().top;
+    tailleVideo = Math.round(Math.max(30, Math.min(100, (hauteur * 16 / 9) / largeurUtile() * 100)));
+    appliquerVideo();
+  }, () => garderReglage('caramel_studio_video', tailleVideo < 100 ? tailleVideo : 0));
+  pVideo.addEventListener('dblclick', () => { tailleVideo = 0; appliquerVideo(); garderReglage('caramel_studio_video', 0); });
+  pVideo.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+    e.preventDefault(); e.stopPropagation();
+    tailleVideo = Math.max(30, Math.min(100, (tailleVideo || 100) + (e.key === 'ArrowDown' ? 5 : -5)));
+    appliquerVideo(); garderReglage('caramel_studio_video', tailleVideo < 100 ? tailleVideo : 0);
+  });
   // Un bouton cliqué à la souris garderait le focus, et la barre d'espace le recliquerait.
   document.addEventListener('click', e => { if (e.detail > 0) e.target.closest('button')?.blur(); });
   $('#enr-suite').onclick = () => enregistrer('suite');

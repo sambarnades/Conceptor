@@ -41,7 +41,7 @@ const { chromium } = require('playwright');
 
 const argv = process.argv.slice(2);
 const option = (nom, defaut) => (argv.find(a => a.startsWith(`--${nom}=`)) || '').split('=').slice(1).join('=') || defaut;
-const SORTIE = resolve(option('sortie', join(ROOT, 'tests/.video-demo')));
+const SORTIE = resolve(option('sortie', join(ROOT, 'tests/.video-demo/7.1')));
 const CADRES = join(SORTIE, 'cadres');
 const TRAVAIL = join(SORTIE, 'habillage');
 const IPS = 30;
@@ -71,7 +71,7 @@ const CARTES_SOURCE = new Set(['titre', 'limites', 'fin']);
 const PARTIES = [
     null,
     { debut: 'saisie', titre: 'Une activité', sous: 'Du formulaire au fichier H5P, en passant par la relecture' },
-    { debut: 'commutateur', titre: 'Un parcours', sous: 'Nouveau : un cours complet, de la trame au fichier .mbz' },
+    { debut: 'commutateur', titre: 'Un parcours différencié', sous: 'Nouveau : un test oriente chaque élève vers son chemin' },
     { debut: 'limites', titre: 'À savoir', sous: 'Ce que l’outil ne fait pas à votre place' },
 ];
 const partieDe = id => { let p = 0; for (const s of marques) { if (PARTIES.some(x => x?.debut === s.id)) p = PARTIES.findIndex(x => x?.debut === s.id); if (s.id === id) return p; } return 0; };
