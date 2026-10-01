@@ -18,7 +18,8 @@ Caramel est une application web **libre, gratuite et sans compte** qui génère 
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
-- [Nouveautés 7.0.0](#-nouveautés-700)
+- [Nouveautés 7.1.0](#-nouveautés-710)
+- [Nouveautés 7.0.0](#nouveautés-700)
 - [Fonctionnalités](#-fonctionnalités)
 - [Types d'activités](#-types-dactivités)
 - [Démarrage rapide](#-démarrage-rapide)
@@ -65,6 +66,8 @@ Le commutateur placé sous le formulaire propose **« Une activité »**, le fon
 - **Des chemins selon les résultats** : d’après sa note à la première tentative, chaque élève suit l’un de deux à quatre chemins (Reprendre les bases, Renforcer, Consolider, Approfondir) et ne voit que le sien ; le cours pose lui-même les restrictions d’accès de la plateforme.
 - **Deux trames pour différencier**, des seuils réglés en bonnes réponses dans le plan, et **Voir comme un élève** pour contrôler la page du cours avant de l’importer.
 - **Dans tous les parcours** : une section « Fin du parcours » et la durée estimée de chaque activité ; une vitrine de quatre trames — apprendre en autonomie, réviser, s’entraîner, évaluer —, les autres sous « Voir les autres modèles ».
+- **Une page « Bilan du parcours »** à la fin de chaque parcours : l’objectif, ce que chaque étape a fait travailler, les mots à retenir — composée à partir du plan, sans appel à l’IA.
+- **Pour se former et former** : la page [Découvrir Caramel](https://caramel.forge.apps.education.fr/decouvrir/) propose la vidéo de présentation, un tutoriel vidéo « Créer un parcours » et un kit de formation rapide (PowerPoint, LibreOffice, PDF), modifiables librement.
 
 ## Nouveautés 7.0.0
 

@@ -31,17 +31,14 @@
  * `pdftoppm` (Poppler). Les icônes sont celles de Font Awesome, déjà dans `css/vendor/`,
  * rendues en PNG par Playwright ; les QR codes, par la bibliothèque déjà dans `js/vendor/`.
  */
-import { spawnSync } from 'node:child_process';
-import { createRequire } from 'node:module';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync, copyFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync, copyFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-const require = createRequire(join(ROOT, 'tests/roundtrip/package.json'));
-const PptxGenJS = require('pptxgenjs');
-const { chromium } = require('playwright');
+import {
+    ROOT, PptxGenJS, versionEtDate, C, W, X0, XW, LIENS, sansProtocole,
+    preparerImages as preparerLesImages, rendreIconesEtQr as rendreLesIconesEtQr, outilsDeMiseEnPage,
+    convertir as convertirAvec, rendreImages as rendreLesImages,
+} from './commun.mjs';
 
 const argv = process.argv.slice(2);
 const option = nom => (argv.find(a => a.startsWith(`--${nom}=`)) || '').split('=')[1];
@@ -52,57 +49,18 @@ const NOM = 'caramel-presentation';
 const temp = mkdtempSync(join(tmpdir(), 'diaporama-'));
 process.on('exit', () => rmSync(temp, { recursive: true, force: true }));
 
-// ─────────────────────────────────────────────────────────────── Version et date
-const VERSION = readFileSync(join(ROOT, 'index.html'), 'utf8').match(/Caramel v(\d+\.\d+\.\d+)/)?.[1];
-if (!VERSION) throw new Error('version introuvable dans le pied de page d’index.html');
-const jour = option('date') ? new Date(`${option('date')}T12:00:00`) : new Date();
-// La date du jour en heure LOCALE : `toISOString()` passe en UTC et, après minuit à
-// Paris, donnait la veille (« 2026-09-30 » à côté de « 1er octobre 2026 »).
-const DATE_ISO = [jour.getFullYear(), String(jour.getMonth() + 1).padStart(2, '0'), String(jour.getDate()).padStart(2, '0')].join('-');
-// « 1er octobre », pas « 1 octobre » : l'ordinal du premier du mois, que `toLocaleDateString` n'écrit pas.
-const DATE = jour.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).replace(/^1 /, '1er ');
-const MOIS = jour.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-
-// ─────────────────────────────────────────────────────────────── Charte
-// Les couleurs de l'application (css/base/style.css) : fond gris clair, cartes blanches,
-// bleu pour les actions, caramel pour la marque. Aucune teinte inventée.
-const C = {
-    encre: '1D1D1F', encre2: '4A4A4F', encre3: '6E6E73',
-    fond: 'F5F5F7', surface: 'FFFFFF', trait: 'E5E5EA',
-    creme: 'FFF7EC', creme2: 'FFECD4',
-    caramel: 'F39438', caramelFonce: 'B4551A', caramelTexte: '8F4014',
-    bleu: '007AFF', bleuFonce: '0056B3', bleuDoux: 'EAF3FF',
-    h5p: '0862C4', elea: 'B9459B', magistere: '064CA4', moodle: '8F4800',
-    prune: '9A4F7E', roseClair: 'FFE8EE', vert: '1F7A3F', vertDoux: 'E8F5EC', grisDoux: 'EDEDF0',
-};
-const POLICE = 'Arial';
-const W = 13.333, H = 7.5, X0 = 0.6, XW = W - 2 * X0;
-
-const LIENS = {
-    caramel: 'https://caramel.forge.apps.education.fr/',
-    decouvrir: 'https://caramel.forge.apps.education.fr/decouvrir/',
-    sucrerie: 'https://sucrerie.forge.apps.education.fr/',
-    wiki: 'https://forge.apps.education.fr/caramel/caramel/-/wikis/home',
-    tchap: 'https://edurl.fr/caramel-tchap',
-    video: 'https://podeduc.apps.education.fr/video/161411-caramel-7/',
-    forge: 'https://forge.apps.education.fr/caramel/caramel',
-    tickets: 'https://forge.apps.education.fr/caramel/caramel/-/issues',
-    bas: 'https://caramel.forge.apps.education.fr/bas/',
-    sucrerieTchap: 'https://edurl.fr/sucrerie-tchap',
-};
+// Version et date, charte, liens et aides de mise en page : `commun.mjs`, partagé avec
+// le kit de formation (`generer-kit-formation.mjs`).
+const { VERSION, DATE_ISO, DATE, MOIS } = versionEtDate(option('date'));
 
 // Les chiffres de fréquentation ne se lisent nulle part dans le dépôt : ils viennent des
 // supports de formation de l'équipe. Les ACTUALISER ici (valeurs et date) quand l'équipe
 // en publie de nouveaux ; la date s'affiche en note sous les chiffres.
 const CHIFFRES = { generations: '159 000', tchap: '300+', date: 'septembre 2026' };
-const sansProtocole = url => url.replace(/^https:\/\//, '').replace(/\/$/, '');
 
 // ─────────────────────────────────────────────────────────────── Images
-/**
- * Les captures passent par PIL : recadrage éventuel, largeur plafonnée, JPEG 4:4:4
- * (le sous-échantillonnage des couleurs baverait sur le texte des interfaces).
- * PowerPoint et LibreOffice ne lisent pas tous le WebP : tout sort en JPEG ou PNG.
- */
+// Recadrage éventuel (`crop`, en pixels de la capture) et largeur plafonnée (`max`) :
+// `preparerImages()` de `commun.mjs` les passe en JPEG.
 const IMAGES = {
     accueil: { src: 'assets/images/wiki/caramel-accueil.webp', max: 2000 },
     rapide: { src: 'assets/images/wiki/caramel-mode-rapide.png', max: 2000 },
@@ -124,36 +82,10 @@ const IMAGES = {
     gauthier: { src: 'assets/images/presentation/gauthier-remande.jpg', crop: [37, 0, 1006, 969], max: 600 },
 };
 
-function preparerImages() {
-    const travaux = Object.entries(IMAGES).map(([cle, i]) => ({ cle, src: join(ROOT, i.src), crop: i.crop || null, max: i.max, out: join(temp, `${cle}.jpg`) }));
-    const script = `
-import json, sys
-from PIL import Image
-res = {}
-for t in json.load(open(sys.argv[1])):
-    im = Image.open(t['src']).convert('RGB')
-    if t['crop']: im = im.crop(tuple(t['crop']))
-    if im.width > t['max']:
-        im = im.resize((t['max'], round(im.height * t['max'] / im.width)), Image.LANCZOS)
-    im.save(t['out'], 'JPEG', quality=90, subsampling=0, optimize=True)
-    res[t['cle']] = [im.width, im.height]
-print(json.dumps(res))`;
-    const fichier = join(temp, 'travaux.json');
-    writeFileSync(fichier, JSON.stringify(travaux));
-    const r = spawnSync('python3', ['-c', script, fichier], { encoding: 'utf8' });
-    if (r.status !== 0) throw new Error(`préparation des images : ${r.stderr}`);
-    const tailles = JSON.parse(r.stdout);
-    for (const t of travaux) IMAGES[t.cle] = { ...IMAGES[t.cle], chemin: t.out, largeur: tailles[t.cle][0], hauteur: tailles[t.cle][1] };
-}
+const preparerImages = () => preparerLesImages(IMAGES, temp);
 
 // ─────────────────────────────────────────────────────────────── Icônes, logos, QR codes
 const ICONES = {}; // clé → chemin PNG
-/** Une icône demandée sans avoir été rendue dans cette couleur arrête tout : pptxgenjs, lui, poserait un cadre vide. */
-const icone = (nom, couleur) => {
-    const cle = `${nom}|${couleur}`;
-    if (Object.keys(ICONES).length && !ICONES[cle]) throw new Error(`icône non rendue : ${nom} en #${couleur} (l’ajouter à ICONES_A_RENDRE)`);
-    return cle;
-};
 const ICONES_A_RENDRE = [
     ['sliders', C.caramelFonce], ['eye', C.caramelFonce], ['file-pen', C.caramelFonce],
     ['user-shield', C.caramelFonce], ['laptop', C.caramelFonce], ['server', C.caramelFonce], ['microphone', C.caramelFonce],
@@ -166,131 +98,21 @@ const ICONES_A_RENDRE = [
     ['arrow-right', C.encre3], ['envelope', C.bleuFonce], ['lock', C.caramelFonce], ['route', C.caramelFonce], ['pen-to-square', C.caramelFonce],
 ];
 
-async function rendreIconesEtQr() {
-    const fa = pathToFileURL(join(ROOT, 'css/vendor/fontawesome/7.3.1/css/all.min.css')).href;
-    const qrLib = pathToFileURL(join(ROOT, 'js/vendor/qrcode/2.0.4/qrcode.js')).href;
-    const img = f => pathToFileURL(join(ROOT, f)).href;
-    const html = `<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="${fa}">
-<style>body{margin:0;background:transparent}.i{width:256px;height:256px;display:flex;align-items:center;justify-content:center;font-size:190px}
-.l{width:512px;height:512px;display:flex;align-items:center;justify-content:center}.l img{width:512px;height:512px;object-fit:contain}
-.q{width:600px;height:600px;background:#fff}.q svg{width:600px;height:600px;display:block}</style>
-${ICONES_A_RENDRE.map(([n, c], k) => `<div class="i" id="i${k}"><i class="fas fa-${n}" style="color:#${c}"></i></div>`).join('')}
-<div class="l" id="logo-caramel"><img src="${img('assets/images/branding/logo_caramel.svg')}"></div>
-<div class="l" id="logo-sucrerie"><img src="${img('assets/images/branding/sucrerie.svg')}"></div>
-<div class="l" id="logo-tchap"><img src="${img('assets/images/branding/tchap.svg')}"></div>
-<div class="l" id="logo-caramelia"><img src="${img('assets/images/branding/logo_caramel_2.png')}"></div>
-<div class="q" id="qr-caramel"></div><div class="q" id="qr-decouvrir"></div><div class="q" id="qr-sucrerie"></div>
-<script src="${qrLib}"></script>
-<script>
-for (const [id, url] of ${JSON.stringify([['qr-caramel', LIENS.caramel], ['qr-decouvrir', LIENS.decouvrir], ['qr-sucrerie', LIENS.sucrerie]])}) {
-    const q = qrcode(0, 'M'); q.addData(url); q.make();
-    document.getElementById(id).innerHTML = q.createSvgTag({ cellSize: 8, margin: 2, scalable: true });
-}
-</script>`;
-    const fichier = join(temp, 'icones.html');
-    writeFileSync(fichier, html);
-    const navigateur = await chromium.launch();
-    const page = await navigateur.newPage({ deviceScaleFactor: 1 });
-    await page.goto(pathToFileURL(fichier).href);
-    await page.evaluate(() => document.fonts.ready);
-    await page.waitForTimeout(400);
-    for (const [k, [n, c]] of ICONES_A_RENDRE.entries()) {
-        const out = join(temp, `icone-${k}.png`);
-        await page.locator(`#i${k}`).screenshot({ path: out, omitBackground: true });
-        ICONES[`${n}|${c}`] = out;
-    }
-    for (const id of ['logo-caramel', 'logo-sucrerie', 'logo-tchap', 'logo-caramelia', 'qr-caramel', 'qr-decouvrir', 'qr-sucrerie']) {
-        const out = join(temp, `${id}.png`);
-        await page.locator(`#${id}`).screenshot({ path: out, omitBackground: id.startsWith('logo') });
-        ICONES[id] = out;
-    }
-    await navigateur.close();
-}
+const rendreIconesEtQr = () => rendreLesIconesEtQr({
+    aRendre: ICONES_A_RENDRE, icones: ICONES, temp,
+    qr: [['qr-caramel', LIENS.caramel], ['qr-decouvrir', LIENS.decouvrir], ['qr-sucrerie', LIENS.sucrerie]],
+});
 
 // ─────────────────────────────────────────────────────────────── Aides de mise en page
 let pres;
-const ombre = () => ({ type: 'outer', blur: 9, offset: 2, angle: 90, color: '000000', opacity: 0.09 });
-
-function texte(s, contenu, opts) {
-    s.addText(contenu, { fontFace: POLICE, color: C.encre, margin: 0, valign: 'top', isTextBox: true, ...opts });
-}
-
-function carte(s, x, y, w, h, { fond = C.surface, bord = C.trait, avecOmbre = true, rayon = 0.16 } = {}) {
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
-        x, y, w, h, rectRadius: rayon, fill: { color: fond },
-        line: bord ? { color: bord, width: 0.75 } : { type: 'none' },
-        ...(avecOmbre ? { shadow: ombre() } : {}),
-    });
-}
-
-/** Une capture posée sur une carte blanche, comme les captures du tutoriel. Rend sa hauteur. */
-function capture(s, cle, x, y, { w, h, marge = 0.08 }) {
-    const i = IMAGES[cle];
-    const ratio = i.largeur / i.hauteur;
-    let lw = w ?? h * ratio, lh = h ?? w / ratio;
-    if (w && h) { if (w / h > ratio) { lw = h * ratio; lh = h; } else { lw = w; lh = w / ratio; } }
-    const cx = w && h ? x + (w - lw) / 2 : x;
-    carte(s, cx - marge, y - marge, lw + 2 * marge, lh + 2 * marge, { rayon: 0.12 });
-    s.addImage({ path: i.chemin, x: cx, y, w: lw, h: lh, altText: i.alt || '' });
-    return { x: cx, y, w: lw, h: lh };
-}
-
-/** Un pictogramme dans une pastille crème, le motif des cartes de la page de présentation. */
-function pastille(s, nom, x, y, { taille = 0.56, fond = C.creme2, couleur = C.caramelFonce, rond = false } = {}) {
-    s.addShape(rond ? pres.shapes.OVAL : pres.shapes.ROUNDED_RECTANGLE, {
-        x, y, w: taille, h: taille, fill: { color: fond }, line: { type: 'none' }, ...(rond ? {} : { rectRadius: taille * 0.28 }),
-    });
-    const p = taille * 0.24;
-    s.addImage({ path: ICONES[icone(nom, couleur)], x: x + p, y: y + p, w: taille - 2 * p, h: taille - 2 * p });
-}
-
-function numero(s, n, x, y, { taille = 0.46, fond = C.bleu, couleur = 'FFFFFF', corps = 15 } = {}) {
-    s.addShape(pres.shapes.OVAL, { x, y, w: taille, h: taille, fill: { color: fond }, line: { type: 'none' } });
-    texte(s, String(n), { x, y, w: taille, h: taille, align: 'center', valign: 'middle', fontSize: corps, bold: true, color: couleur });
-}
-
-/**
- * Paragraphes à puces ; chaque élément est une chaîne ou un tableau de segments.
- * La puce ne va QUE sur le premier segment : pptxgenjs ouvre un nouveau paragraphe à
- * chaque segment qui la porte (un « gras » suivi de son texte faisait deux puces).
- */
-function puces(s, elements, { x, y, w, h, corps = 15, couleur = C.encre2, espace = 8, puce = true }) {
-    const runs = [];
-    elements.forEach((el, k) => {
-        const segments = typeof el === 'string' ? [{ text: el }] : el;
-        segments.forEach((seg, j) => {
-            const dernier = j === segments.length - 1;
-            runs.push({
-                text: seg.text,
-                options: {
-                    ...(puce && j === 0 ? { bullet: { indent: corps * 1.05 } } : {}),
-                    paraSpaceAfter: espace, color: couleur, ...seg.options,
-                    ...(dernier && k < elements.length - 1 ? { breakLine: true } : {}),
-                },
-            });
-        });
-    });
-    texte(s, runs, { x, y, w, h, fontSize: corps, lineSpacingMultiple: 1.05 });
-}
-
-const gras = text => ({ text, options: { bold: true, color: C.encre } });
-const exposant = n => ({ text: String(n), options: { superscript: true } });
-const lien = (text, url, extra = {}) => ({ text, options: { hyperlink: { url, tooltip: url }, color: C.bleuFonce, ...extra } });
+const { icone, texte, carte, capture, pastille, numero, puces, gras, exposant, lien, entete, notesDeBas } =
+    outilsDeMiseEnPage({ presentation: () => pres, images: IMAGES, icones: ICONES });
 
 // ─────────────────────────────────────────────────────────────── Les diapositives
 // Chaque entrée : partie, titre, notes (dites au présentateur, et lues sous l'image
 // dans la visionneuse de la page) et la fonction qui dessine.
 const DIAPOSITIVES = [];
 const diapo = (d) => DIAPOSITIVES.push(d);
-
-function entete(s, partie, titre) {
-    if (partie) texte(s, partie, { x: X0, y: 0.42, w: XW, h: 0.3, fontSize: 12, bold: true, color: C.caramelTexte });
-    texte(s, titre, { x: X0, y: 0.72, w: XW, h: 0.72, fontSize: 30, bold: true, valign: 'middle' });
-}
-
-function notesDeBas(s, runs) {
-    texte(s, runs, { x: X0, y: 6.28, w: XW, h: 0.66, fontSize: 9.5, color: C.encre3, valign: 'bottom', lineSpacingMultiple: 1.05 });
-}
 
 const PARTIES = ['1 · Nos principes', '2 · Créer une activité', '3 · Créer un parcours', '4 · Partager et se faire aider'];
 
@@ -954,45 +776,8 @@ function construire() {
 }
 
 // ─────────────────────────────────────────────────────────────── Rendu (LibreOffice, Poppler)
-function soffice() {
-    for (const c of ['/Applications/LibreOffice.app/Contents/MacOS/soffice', 'soffice', 'libreoffice']) {
-        if (c.startsWith('/') ? existsSync(c) : spawnSync('which', [c]).status === 0) return c;
-    }
-    throw new Error('LibreOffice (soffice) introuvable : relancer avec --sans-rendu pour le .pptx seul');
-}
-
-function convertir(format) {
-    const profil = pathToFileURL(join(temp, 'profil-lo')).href;
-    const r = spawnSync(soffice(), [`-env:UserInstallation=${profil}`, '--headless', '--convert-to', format, '--outdir', temp, join(temp, `${NOM}.pptx`)], { encoding: 'utf8', timeout: 180000 });
-    const sortie = join(temp, `${NOM}.${format}`);
-    if (r.status !== 0 || !existsSync(sortie)) throw new Error(`conversion ${format} : ${r.stderr || r.stdout}`);
-    return sortie;
-}
-
-function rendreImages(pdf) {
-    const dossier = join(temp, 'pages');
-    mkdirSync(dossier);
-    // 120 ppp sur 13,33 pouces : 1600 pixels de large, assez pour un écran de page web.
-    const r = spawnSync('pdftoppm', ['-png', '-r', '120', pdf, join(dossier, 'p')], { encoding: 'utf8' });
-    if (r.status !== 0) throw new Error(`pdftoppm : ${r.stderr}`);
-    const cible = join(SORTIE, 'diapositives');
-    rmSync(cible, { recursive: true, force: true });
-    mkdirSync(cible, { recursive: true });
-    const script = `
-import sys, os, json
-from PIL import Image
-src, dst = sys.argv[1], sys.argv[2]
-res = []
-for i, f in enumerate(sorted(os.listdir(src))):
-    im = Image.open(os.path.join(src, f)).convert('RGB')
-    nom = f'{i + 1:02d}.webp'
-    im.save(os.path.join(dst, nom), 'WEBP', quality=84, method=6)
-    res.append([nom, im.width, im.height])
-print(json.dumps(res))`;
-    const p = spawnSync('python3', ['-c', script, dossier, cible], { encoding: 'utf8' });
-    if (p.status !== 0) throw new Error(`conversion WebP : ${p.stderr}`);
-    return JSON.parse(p.stdout);
-}
+const convertir = format => convertirAvec(temp, NOM, format);
+const rendreImages = pdf => rendreLesImages(pdf, temp, join(SORTIE, 'diapositives'));
 
 // ─────────────────────────────────────────────────────────────── Visionneuse de la page
 const html = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));

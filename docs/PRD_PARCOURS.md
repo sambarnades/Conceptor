@@ -2165,6 +2165,18 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       qu'une étape sans titre devenait la section « Plan 5 » : l'assemblage empruntait
       `parcours_step_plan`, le « Plan » du fil d'Ariane ; c'est désormais « Étape 5 »
       (`parcours_fiche_etape`).
+- [x] **D113 — Refermer des chemins garde un chemin ÉCRIT.** « Un seul chemin pour tous » gardait
+      « Consolider », le chemin médian (le plus juste pour tous quand les chemins ont été conçus
+      ensemble). Mais juste après « Ouvrir des chemins selon ce test », les chemins ajoutés sont des
+      COPIES VIDES (mêmes types, aucun texte) : sur trois chemins, « Consolider » en est une, et
+      refermer rendait l'étape d'origine vidée de ses activités. Relevé en préparant le tutoriel
+      vidéo et le kit de formation (2 oct. 2026), qui conseillaient ce bouton pour revenir en
+      arrière. `fermerChemins` garde désormais « Consolider » s'il est écrit (un titre ou un contenu
+      dans ses activités), sinon le premier chemin écrit. Banc `run_parcours_chemins.mjs` (Node, CI),
+      avec sa contre-épreuve : les deux cas (copie vide, tous écrits). Même jour, même écran :
+      « Annuler la modification » rendait le focus au PREMIER champ du plan, ce qui faisait remonter
+      la page tout en haut ; il revient sur l'activité ou l'étape rétablie, sans saut
+      (`run_parcours_relecture.mjs`).
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -3521,6 +3533,15 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
 
+- **2 octobre 2026 — Sortie de la 7.1.0 :** la vidéo de présentation est refaite (le parcours
+  différencié y figure), et un tutoriel vidéo « Créer un parcours » la complète, tourné dans le vrai
+  Caramel avec les vraies réponses du modèle (`scripts/video-demo/`, `--video=parcours` : un
+  parcours linéaire de révision en SVT, différencié ensuite par « Ouvrir des chemins selon ce
+  test »). Un kit de formation rapide (27 diapositives, `scripts/diaporama/generer-kit-formation.mjs`)
+  rejoint la page de présentation. Leur préparation a relevé D113 et le saut de page après
+  « Annuler la modification ». Reste ouvert : dans la consigne d'un texte à trous, le modèle écrit
+  parfois les deux caractères « \n » ; l'aperçu fait deux paragraphes, mais l'éditeur de
+  l'atelier les montre tels quels (relevé sur `revision-fractions.json` et sur la vidéo).
 - **1er octobre 2026, soir — La page de bilan (D112), et la vérification des parcours à chemins :**
   Gauthier « adore » et demande une page de fin qui fasse le bilan : posée dans la fin de tout
   parcours, composée du plan. Vérification demandée par Emmanuel avant un déploiement : « que les

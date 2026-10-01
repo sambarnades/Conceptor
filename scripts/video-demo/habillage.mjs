@@ -30,7 +30,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import { createReadStream, existsSync, readFileSync, readdirSync, rmSync, writeFileSync, mkdirSync } from 'node:fs';
-import { SCENES } from './scenario.mjs';
+import { VIDEO, SCENARIO } from './video.mjs';
 import { composer, ecrireWav } from './musique.mjs';
 import { chronologie, lireMontage } from './montage.mjs';
 
@@ -38,17 +38,19 @@ const ICI = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(ICI, '../..');
 const require = createRequire(join(ROOT, 'tests/roundtrip/package.json'));
 const { chromium } = require('playwright');
+const { SCENES, HABILLAGE: H } = SCENARIO;
 
 const argv = process.argv.slice(2);
 const option = (nom, defaut) => (argv.find(a => a.startsWith(`--${nom}=`)) || '').split('=').slice(1).join('=') || defaut;
-const SORTIE = resolve(option('sortie', join(ROOT, 'tests/.video-demo/7.1')));
+const SORTIE = resolve(option('sortie', VIDEO.sortie));
 const CADRES = join(SORTIE, 'cadres');
 const TRAVAIL = join(SORTIE, 'habillage');
 const IPS = 30;
 const BPM = 104, MESURE = 4 * 60 / BPM;
 const OUVRIERS = Number(option('ouvriers', 3));
 const PORT = 8260;
-const VERSIONS = option('version', 'voix,musique').split(',');
+const VERSIONS = option('version', H.musique ? 'voix,musique' : 'voix').split(',');
+if (VERSIONS.includes('musique') && !H.musique) { console.error('Cette vidéo n’a pas de version sans voix.'); process.exit(1); }
 const ESSAI = option('essai', null)?.split(':').map(Number);
 /** La progression lue par le studio : `@progression <0..1> <étape>`, seulement s'il la demande. */
 const progression = (f, etape) => { if (process.env.STUDIO_PROGRESSION) console.log(`@progression ${Math.min(1, f).toFixed(4)} ${etape}`); };
@@ -66,14 +68,11 @@ const journal = JSON.parse(readFileSync(join(SORTIE, 'journal.json'), 'utf8')).s
 const S = Object.fromEntries(marques.map(m => [m.id, m]));
 const NB = readdirSync(CADRES).filter(f => f.endsWith('.jpg')).length;
 const DUREE_SOURCE = NB / IPS;
-const CARTES_SOURCE = new Set(['titre', 'limites', 'fin']);
+const CARTES_SOURCE = new Set(H.cartesSource);
+const PREMIERE = SCENES[1].id, DERNIERE = SCENES.at(-1).id;
 
-const PARTIES = [
-    null,
-    { debut: 'saisie', titre: 'Une activité', sous: 'Du formulaire au fichier H5P, en passant par la relecture' },
-    { debut: 'commutateur', titre: 'Un parcours différencié', sous: 'Nouveau : un test oriente chaque élève vers son chemin' },
-    { debut: 'limites', titre: 'À savoir', sous: 'Ce que l’outil ne fait pas à votre place' },
-];
+const PARTIES = H.parties;
+const NUMEROS = PARTIES.map((_, n) => n).slice(1);
 const partieDe = id => { let p = 0; for (const s of marques) { if (PARTIES.some(x => x?.debut === s.id)) p = PARTIES.findIndex(x => x?.debut === s.id); if (s.id === id) return p; } return 0; };
 
 /* ------------------------------------------------------------------ *
@@ -202,23 +201,22 @@ function feuilleVoix() {
     while (cadres.length < N) cadres.push({ ...cadres.at(-1) });
     cadres.length = N;
     const R = Object.fromEntries(blocs.map(b => [b.id, b.rallonge]));
-    const cartes = [{ nom: 'titre', d: 0, f: M(S.accueil.debut) + 0.5 }];
-    for (const n of [1, 2, 3]) {
+    const cartes = [{ nom: 'titre', d: 0, f: M(S[PREMIERE].debut) + 0.5 }];
+    for (const n of NUMEROS) {
         const d = M(S[PARTIES[n].debut].debut);
         cartes.push({ nom: 'chapitre', n, titre: PARTIES[n].titre, sous: PARTIES[n].sous, d, f: d + 1.9 });
     }
-    const L = S.limites;
-    cartes.push({ nom: 'savoir', d: M(L.debut) + 1.9, f: M(S.fin.debut) + 0.3, puces: [1, 2, 3, 4, 6].map(i => M(L.debut + L.phrases[i].offset)) });
-    cartes.push({ nom: 'fin', d: M(S.fin.debut) + 0.3, f: N / IPS + 1 });
+    if (H.savoir) {
+        const L = S[H.savoir.scene];
+        cartes.push({ nom: 'savoir', d: M(L.debut) + 1.9, f: M(S[DERNIERE].debut) + 0.3, puces: H.savoir.phrases.map(i => M(L.debut + L.phrases[i].offset)) });
+    }
+    cartes.push({ nom: 'fin', d: M(S[DERNIERE].debut) + 0.3, f: N / IPS + 1 });
     // La dernière phrase clé d'une scène reste affichée pendant la rallonge de son bloc.
     const legendes = CLES.map(c => ({ d: M(c.a) + 0.1, f: M(c.b) - 0.15 + (c.derniere ? R[c.id] : 0), texte: c.texte, n: c.partie || 'i' }))
         .map(l => { const ch = cartes.find(x => x.nom === 'chapitre' && l.d >= x.d && l.d < x.f); if (ch) l.d = ch.f + 0.1; return l; })
         .filter(l => l.f - l.d > 1.2);
-    const chapitres = [{ d: 0, n: 0 }, ...[1, 2, 3].map(n => ({ d: M(S[PARTIES[n].debut].debut), n }))];
-    const sections = [
-        { debut: 0, style: 'intro' }, { debut: M(S.saisie.debut), style: 'couplet' }, { debut: M(S.commutateur.debut), style: 'plein' },
-        { debut: M(S.limites.debut), style: 'calme' }, { debut: M(S.fin.debut), style: 'final' },
-    ];
+    const chapitres = [{ d: 0, n: 0 }, ...NUMEROS.map(n => ({ d: M(S[PARTIES[n].debut].debut), n }))];
+    const sections = H.sections.map(([scene, style]) => ({ debut: scene ? M(S[scene].debut) : 0, style }));
     return { nom: 'voix', cadres, cartes, legendes: equilibrer(legendes, cartes), chapitres, sections, duree: N / IPS };
 }
 
@@ -254,14 +252,14 @@ function feuilleMusique() {
     const vers = []; // correspondance temps source → temps de sortie, pour les phrases clés
     carte({ nom: 'titre' }, 2 * MESURE);
     const debutAccueil = t();
-    jouer(S.accueil.debut + 0.7, S.accueil.fin);
+    jouer(S[PREMIERE].debut + 0.7, S[PREMIERE].fin);
     for (const n of [1, 2]) {
         tenirJusquaMesure();
         const d = t();
         carte({ nom: 'chapitre', n, titre: PARTIES[n].titre, sous: PARTIES[n].sous }, MESURE);
         chapitres.push({ d, n });
         sections.push({ debut: d, style: n === 1 ? 'couplet' : 'plein' });
-        const scenes = n === 1 ? ['saisie', 'telechargement'] : ['commutateur', 'livraison'];
+        const scenes = H.musique.parties[n - 1];
         jouer(S[scenes[0]].debut, S[scenes[1]].fin);
     }
     tenirJusquaMesure();
@@ -319,7 +317,8 @@ const navigateur = await chromium.launch();
 
 async function rendreVideo(feuille, fichier, [k0, k1]) {
     const tl = { ips: IPS, duree: feuille.duree, cadres: feuille.cadres.map(c => ({ s: c.s, cam: c.cam || LARGE })),
-        cartes: feuille.cartes, legendes: feuille.legendes, chapitres: feuille.chapitres };
+        cartes: feuille.cartes, legendes: feuille.legendes, chapitres: feuille.chapitres,
+        habillage: { fenetre: H.fenetre, etapes: H.etapes, titre: H.titre, savoir: H.savoir } };
     const tranches = [];
     const pas = Math.ceil((k1 - k0) / OUVRIERS);
     for (let w = 0; w < OUVRIERS; w++) { const a = k0 + w * pas, b = Math.min(k1, a + pas); if (a < b) tranches.push([a, b]); }

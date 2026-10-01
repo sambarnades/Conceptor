@@ -368,14 +368,21 @@ export function changerNombreDeChemins(plan, index, delta, nouvelId) {
 /**
  * Referme un aiguillage : un seul chemin reste, redevenu étape ordinaire — celui
  * de « Consolider » s'il existe, le premier sinon —, les autres disparaissent
- * (l'écran propose d'annuler).
+ * (l'écran propose d'annuler). Un chemin encore VIDE (copie tout juste ouverte,
+ * sans titre ni contenu) ne l'emporte jamais sur un chemin écrit : juste après
+ * « Ouvrir des chemins selon ce test », refermer rendait sinon l'étape d'origine
+ * vidée de ses activités (relevé en préparant le tutoriel vidéo, oct. 2026).
  * @param {Object} plan - Modifié en place.
  * @param {number} index - Une étape-chemin de l'aiguillage visé.
  */
 export function fermerChemins(plan, index) {
     const g = aiguillagesDuPlan(plan).find(x => index >= x.debut && index <= x.fin);
     if (!g) return;
-    const garde = (g.chemins.find(c => c.role === 'consolider') || g.chemins[0]).etape;
+    const ecrit = c => (c.etape.cartes || []).some(k => String(k.titre || '').trim() || k.contenu);
+    const garde = (g.chemins.find(c => c.role === 'consolider' && ecrit(c))
+        || g.chemins.find(ecrit)
+        || g.chemins.find(c => c.role === 'consolider')
+        || g.chemins[0]).etape;
     delete garde.chemin;
     plan.etapes.splice(g.debut, g.chemins.length, garde);
 }

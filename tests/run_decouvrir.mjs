@@ -404,9 +404,11 @@ if (NAVIGATEUR) {
         await p.locator('input[name="integration-video"][value="0"]').check();
         await p.locator('input[name="integration-video"][value="0"]').press('ArrowRight');
         await p.locator('#integrations .copier').click();
-        ok('navigateur : les flèches choisissent la Sucrerie et son code se copie',
+        // La vidéo qui suit la première dans ressources.json, quelle qu'elle soit.
+        const suivante = new URL([...ressources, ...mentions].filter(r => r.integration)[1].integration).pathname;
+        ok('navigateur : les flèches choisissent la vidéo suivante et son code se copie',
             await p.locator('input[name="integration-video"][value="1"]').isChecked()
-            && await p.evaluate(() => window.codeIntegrationCopie.includes('158264-decouvrez-la-sucrerie')));
+            && await p.evaluate(chemin => window.codeIntegrationCopie.includes(chemin), suivante), suivante);
 
         const premiere = p.locator('.lecteur').first();
         ok('navigateur : les deux vidéos de présentation ont leurs boutons externe et partage',

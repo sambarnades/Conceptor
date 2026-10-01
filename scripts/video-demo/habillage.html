@@ -125,7 +125,6 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--
 <script>
 const $ = s => document.querySelector(s);
 let TL = null;
-const ETAPES = ['Présentation', 'Une activité', 'Un parcours', 'À savoir'];
 const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const douce = x => { x = clamp(x); return x * x * (3 - 2 * x); };
 const sortie = x => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
@@ -140,7 +139,18 @@ function poser(el, { o = 1, x = 0, y = 0, s = 1 } = {}) {
 
 window.initialiser = tl => {
   TL = tl;
-  $('#etapes').innerHTML = ETAPES.map((e, i) => `<div class="etape"><i>${i || '•'}</i>${e}</div>`).join('');
+  // Les textes propres à chaque vidéo viennent de son scénario (HABILLAGE).
+  const h = tl.habillage;
+  $('#etapes').innerHTML = h.etapes.map((e, i) => `<div class="etape"><i>${i || '•'}</i>${e}</div>`).join('');
+  $('.barre-fenetre span').textContent = h.fenetre;
+  $('#carte-titre .surtitre').textContent = h.titre.surtitre;
+  $('#carte-titre h1').innerHTML = h.titre.h1;
+  $('#carte-titre p').innerHTML = h.titre.texte;
+  if (h.savoir) {
+    $('#carte-savoir .surtitre').textContent = h.savoir.surtitre;
+    $('#carte-savoir h2').textContent = h.savoir.titre;
+    $('#carte-savoir ol').innerHTML = h.savoir.puces.map((p, i) => `<li><i>${i + 1}</i><span>${p}</span></li>`).join('');
+  }
   const img = $('#img');
   return new Promise(r => { img.onload = r; img.src = '/cadres/00001.jpg'; });
 };

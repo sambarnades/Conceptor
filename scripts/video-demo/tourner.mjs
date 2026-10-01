@@ -10,9 +10,10 @@
  *                                                          rejouent leurs réponses gardées
  *   node scripts/video-demo/tourner.mjs                    2. tourne en rejouant ces réponses, puis monte
  *
- * Options : --voix=Thomas (voix `say` de macOS pour la voix témoin), --debit=160
+ * Options : --video=parcours (la vidéo « Créer un parcours » ; défaut : la présentation, cf.
+ * video.mjs), --voix=Thomas (voix `say` de macOS pour la voix témoin), --debit=160
  * (mots/minute : une voix humaine posée, un peu plus lente que la synthèse par
- * défaut), --sortie=<dossier> (défaut : tests/.video-demo/7.1/), --garder-images,
+ * défaut), --sortie=<dossier> (défaut : celui de la vidéo, cf. video.mjs), --garder-images,
  * --jusqua=<scène> (s'arrêter après une scène, sans caméra : mise au point).
  *
  *   node scripts/video-demo/studio.mjs                     3. enregistre les VRAIES voix, prompteur et micro, puis monte
@@ -44,10 +45,11 @@ import { dirname, join, resolve } from 'node:path';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { SCRIPT_PAGE, creerMain } from './plateau.mjs';
-import { SCENES, CARTON_TITRE, RETOUCHE } from './scenario.mjs';
+import { VIDEO, SCENARIO } from './video.mjs';
 import { chronologie, filtrePrise, lireMontage, poserPrise, reglageAudio } from './montage.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+const { SCENES, CARTON_TITRE, RETOUCHE } = SCENARIO;
 const require = createRequire(join(ROOT, 'tests/roundtrip/package.json'));
 const { chromium } = require('playwright');
 
@@ -61,7 +63,7 @@ const ENREGISTRER = argv.some(a => a === '--enregistrer-ia' || a.startsWith('--e
  */
 const A_ENREGISTRER = new Set(option('enregistrer-ia', '').split(',').filter(Boolean));
 const enregistreScene = id => ENREGISTRER && (!A_ENREGISTRER.size || A_ENREGISTRER.has(id));
-const SORTIE = resolve(option('sortie', join(ROOT, 'tests/.video-demo/7.1')));
+const SORTIE = resolve(option('sortie', VIDEO.sortie));
 const VOIX = option('voix', 'Thomas');
 const DEBIT = Number(option('debit', 160));
 /** Arrêter après cette scène, sans montage : pour mettre une scène au point. */
@@ -73,7 +75,7 @@ const JUSQUA = option('jusqua', null);
  * scène sont ceux de la vidéo déjà tournée : l'habillage s'en sert sans retourner.
  */
 const JOURNAL = argv.includes('--journal');
-const FIXTURE = join(ROOT, 'tests/fixtures/video-demo/reponses-ia.json');
+const FIXTURE = VIDEO.fixture;
 const PORT = 8241;
 const VUE = { width: 1440, height: 810 };
 const DENSITE = 1920 / 1440;          // 1440×810 CSS → 1920×1080 à l'image
@@ -98,11 +100,11 @@ const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2
 
 /** Le texte de la voix off, minuté, écrit depuis les marques du tournage (`--texte` le réécrit seul). */
 function ecrireTexte({ duree, marques }) {
-    const md = [`# Caramel 7 — texte de la voix off`, '',
+    const md = [`# ${VIDEO.titre} — texte de la voix off`, '',
         `Durée totale : **${mmss(duree)}**. Chaque bloc commence au minutage indiqué ; son texte tient dans le temps de la scène à un débit posé (${DEBIT} mots/min).`,
         'Les attentes raccourcies au montage sont signalées à l’écran avec leur durée réelle.', '',
-        '**Pour enregistrer vos voix** : `node scripts/video-demo/studio.mjs` ouvre le studio (vidéo, prompteur, micro) ; '
-        + 'on lit au fil de la vidéo, chaque bloc est rangé dans `tests/.video-demo/7.1/voix-off/`, et « Monter la vidéo » produit le film. '
+        `**Pour enregistrer vos voix** : \`node scripts/video-demo/studio.mjs${VIDEO.id === 'presentation' ? '' : ` --video=${VIDEO.id}`}\` ouvre le studio (vidéo, prompteur, micro) ; `
+        + `on lit au fil de la vidéo, chaque bloc est rangé dans \`${SORTIE.replace(ROOT + '/', '')}/voix-off/\`, et « Monter la vidéo » produit le film. `
         + 'Pour des voix enregistrées ailleurs : un fichier audio par bloc, nommé comme lui (`apercu.m4a`…), puis '
         + '`node scripts/video-demo/tourner.mjs --mixer=<dossier>`. Les sous-titres fournis ne valent que pour le texte lu tel quel.', ''];
     let chap = null;

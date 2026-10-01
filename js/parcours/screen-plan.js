@@ -857,6 +857,8 @@ export function construirePlan(draft, api) {
     const etapesNode = el('div', 'pc-etapes');
     blocEtapes.append(etapesNode);
     let avantSuppression = null;
+    /** L'activité ou l'étape touchée, où le focus revient après « Annuler la modification ». */
+    let rendreA = null;
     const annulation = el('div', 'pc-annulation');
     annulation.hidden = true;
     const messageAnnulation = el('span');
@@ -867,13 +869,21 @@ export function construirePlan(draft, api) {
         avantSuppression = null;
         annulation.hidden = true;
         persister(); dessiner();
-        etapesNode.querySelector('input')?.focus();
+        // Le focus revient sur ce qui a été rétabli, sans faire remonter la page en haut
+        // du plan : annuler une suppression en bas du plan y laissait l'enseignant.
+        const retabli = rendreA && [...etapesNode.querySelectorAll('[data-carte], [data-etape]')]
+            .find(n => rendreA.carte ? n.dataset.carte === rendreA.carte : n.dataset.etape === rendreA.etape);
+        rendreA = null;
+        (retabli || etapesNode).querySelector('input, textarea')?.focus({ preventScroll: true });
+        retabli?.scrollIntoView({ block: 'nearest' });
     });
     annulation.append(messageAnnulation, annuler);
     blocEtapes.prepend(annulation);
 
     function garderAvant(cle) {
         avantSuppression = structuredClone(plan);
+        const touche = document.activeElement?.closest?.('[data-carte], [data-etape]');
+        rendreA = touche ? { carte: touche.dataset.carte, etape: touche.dataset.etape } : null;
         messageAnnulation.textContent = t(cle);
         annulation.hidden = false;
     }

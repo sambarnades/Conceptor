@@ -68,7 +68,7 @@ js/parcours/     atelier de parcours : intention → plan → N générations �
                  **La fin de tout parcours porte une page « Bilan du parcours » (D112)** :
                  `bilan.js` (pur) la compose du plan, sans modèle ; texte de l'atelier
                  (`scenario`), hors durées et hors condition de la fin.
-                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D112 avec leur
+                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D113 avec leur
                  raison, pièges, et le journal des allers-retours réels sur plateforme.
                  Ne rien y rouvrir sans lire ce fichier ; y écrire toute décision nouvelle.
 js/locales/      12 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el, br (~2873 clés/fichier)
@@ -95,7 +95,8 @@ tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node
                  `run_parcours_reels.mjs` les rejoue sans modèle et LIT le cours comme la
                  plateforme l'affichera (texte creux, « … », jargon de prompt, `**`, tutoiement
                  d'adultes), avec sa contre-épreuve à défauts injectés (D80).
-                 `scripts/video-demo/` = la vidéo de présentation de Caramel 7 : tournage rejouant
+                 `scripts/video-demo/` = les vidéos de Caramel 7 (présentation ; tutoriel « Créer un
+                 parcours » avec `--video=parcours`, cf. `video.mjs`) : tournage rejouant
                  des réponses d'IA enregistrées, studio de voix off au prompteur, table de montage,
                  habillage (voir son README). Ses sorties (voix, vidéos) restent dans
                  `tests/.video-demo/`, exclu de git.
@@ -110,6 +111,8 @@ tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node
                  notes du présentateur, visionneuse dans la page) est fabriqué par
                  `node scripts/diaporama/generer-diaporama.mjs` (pptxgenjs + LibreOffice) : **à
                  relancer à chaque version** — la version et la date figurent sur chaque diapositive,
+                 comme sur le kit de formation rapide (`generer-kit-formation.mjs`, sortie
+                 `assets/presentation/kit-formation/`, captures par `captures-kit-formation.mjs`),
                  et le banc échoue tant que `diaporama.json` ne porte pas celle d'`index.html`.
                  `scripts/captures-interface.mjs` refait les captures d'écran du tutoriel et du
                  wiki (parcours réel du banc, réseau coupé) ; `scripts/aide-parcours.mjs` écrit ce

@@ -238,10 +238,18 @@ console.log('\n── 4. Édition du plan ────────────�
     ok('ni moins de deux, ni plus de quatre', !A.changerNombreDeChemins(plan, 1, -1, id)
         && A.changerNombreDeChemins(plan, 1, 1, id) && A.changerNombreDeChemins(plan, 1, 1, id) && !A.changerNombreDeChemins(plan, 1, 1, id));
     const avant = plan.etapes.length;
-    const idConsoliderFinal = A.aiguillagesDuPlan(plan)[0].chemins.find(c => c.role === 'consolider').etape.id;
+    const versionEcrite = structuredClone(plan);
+    const idRenforcer = A.aiguillagesDuPlan(plan)[0].chemins.find(c => c.role === 'renforcer').etape.id;
     A.fermerChemins(plan, 2);
-    ok('refermer : une étape ordinaire reste, celle de « Consolider »', !A.aDesChemins(plan) && plan.etapes.length === avant - 3
-        && plan.etapes[1].id === idConsoliderFinal && !('chemin' in plan.etapes[1]));
+    ok('refermer juste après l’ouverture : le chemin écrit reste, pas la copie vide de « Consolider »',
+        !A.aDesChemins(plan) && plan.etapes.length === avant - 3 && plan.etapes[1].id === idRenforcer
+        && plan.etapes[1].cartes[0].titre && !('chemin' in plan.etapes[1]));
+    const gEcrit = A.aiguillagesDuPlan(versionEcrite)[0];
+    gEcrit.chemins.forEach((c, j) => { c.etape.cartes.forEach(k => { k.titre = `Activité ${j}`; }); });
+    const idConsoliderFinal = gEcrit.chemins.find(c => c.role === 'consolider').etape.id;
+    A.fermerChemins(versionEcrite, 2);
+    ok('refermer des chemins tous écrits : une étape ordinaire reste, celle de « Consolider »', !A.aDesChemins(versionEcrite)
+        && versionEcrite.etapes[1].id === idConsoliderFinal && !('chemin' in versionEcrite.etapes[1]));
     const brut = { etapes: [
         { id: 'a', cartes: [carte('t')] },
         { id: 'b', chemin: { depuis: 0 }, cartes: [carte('1')] },

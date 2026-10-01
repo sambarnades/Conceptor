@@ -493,3 +493,41 @@ export const CARTON_TITRE = `<img class="demo-carton__logo" src="${LOGO}" alt=""
     <h1>Caramel 7</h1>
     <p class="demo-carton__sous">Préparer des activités et des parcours pour Éléa, Magistère (Réseau des concepteurs)<br>et Moodle, avec l’aide d’une IA — et en gardant la main</p>
     <p class="demo-carton__meta">Démonstration commentée · version 7.1 · octobre 2026</p>`;
+
+/**
+ * L'habillage (`habillage.mjs`) : les étapes en haut de l'image, les cartons de partie,
+ * le carton-titre, celui des limites (une puce par phrase de la scène `limites`, la
+ * Sucrerie, phrase 5, complétant la puce précédente) et les sections de la musique.
+ */
+export const HABILLAGE = {
+    fenetre: 'Caramel 7',
+    etapes: ['Présentation', 'Une activité', 'Un parcours', 'À savoir'],
+    titre: {
+        surtitre: 'Démonstration · octobre 2026',
+        h1: 'Caramel <b>7</b>',
+        texte: 'Préparer des activités et des parcours pour Éléa, Magistère (Réseau des concepteurs) et Moodle avec l’aide d’une IA, en gardant la main.',
+    },
+    parties: [
+        null,
+        { debut: 'saisie', titre: 'Une activité', sous: 'Du formulaire au fichier H5P, en passant par la relecture' },
+        { debut: 'commutateur', titre: 'Un parcours différencié', sous: 'Nouveau : un test oriente chaque élève vers son chemin' },
+        { debut: 'limites', titre: 'À savoir', sous: 'Ce que l’outil ne fait pas à votre place' },
+    ],
+    sections: [[null, 'intro'], ['saisie', 'couplet'], ['commutateur', 'plein'], ['limites', 'calme'], ['fin', 'final']],
+    cartesSource: ['titre', 'limites', 'fin'],
+    savoir: {
+        scene: 'limites',
+        phrases: [1, 2, 3, 4, 6],
+        surtitre: 'Avant de s’en servir',
+        titre: 'À savoir',
+        puces: [
+            'L’IA peut se tromper ou rester vague : <b>tout est à relire</b> avant d’être donné aux élèves.',
+            'Ce que vous saisissez ou joignez part au service d’IA : <b>aucune donnée personnelle d’élève</b>.',
+            'Le service peut être lent, ou momentanément indisponible.',
+            'Caramel ne publie rien : <b>vous importez</b> vous-même. Le dépôt sur La Sucrerie, facultatif, <b>rend l’activité publique</b>.',
+            'Un parcours généré est <b>un point de départ</b>, pas une séquence clé en main.',
+        ],
+    },
+    /** La version sans voix : ses deux parties filmées, de telle scène à telle scène. */
+    musique: { parties: [['saisie', 'telechargement'], ['commutateur', 'livraison']] },
+};

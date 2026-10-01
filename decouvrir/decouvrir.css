@@ -239,6 +239,8 @@ h1, h2, h3 { line-height: 1.2; margin: 0; letter-spacing: -.01em; }
 }
 .programme li { counter-increment: chapitre; display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; align-content: center; padding: 14px 0; border-bottom: 1px solid var(--trait); }
 .programme li:last-child { border-bottom: 0; }
+.video-suite { margin: 24px 0 0; text-align: center; color: var(--encre-2); }
+.video-suite i { color: var(--caramel-fonce); margin-right: 4px; }
 .programme li::before {
     content: counter(chapitre); grid-row: span 2;
     display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
@@ -293,6 +295,10 @@ h1, h2, h3 { line-height: 1.2; margin: 0; letter-spacing: -.01em; }
 .diaporama__fichiers small { display: block; margin-top: 2px; color: var(--encre-3); font-size: .8rem; font-weight: 400; }
 .diaporama__fichiers a > i:first-child { flex: none; width: 24px; text-align: center; color: var(--caramel-fonce); font-size: 1.25rem; }
 .diaporama__fichiers .fa-download { color: var(--bleu); }
+.diaporama__fichiers .fa-arrow-up-right-from-square { color: var(--bleu); }
+.kit-formation { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--trait, #e5e7eb); }
+.kit-formation h3 { margin: 0 0 6px; font-size: 1.25rem; }
+.kit-formation p { margin: 0; color: var(--encre-2, inherit); max-width: 70ch; }
 .diaporama__version { margin: 12px 0 0; text-align: center; color: var(--encre-3); font-size: .85rem; }
 
 /* ------------------------------------------------------------------ Étapes */

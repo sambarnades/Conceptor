@@ -8,6 +8,15 @@ prompteur, régler le montage et produire les versions finales (commentée et en
 du parcours et sa page de bilan). Tout se range dans `tests/.video-demo/7.1/` ; la
 première vidéo (septembre 2026) reste à la racine de `tests/.video-demo/`.
 
+**Deuxième vidéo : « Créer un parcours »** (tutoriel, octobre 2026). Mêmes outils, avec
+`--video=parcours` sur chaque commande (`tourner.mjs`, `studio.mjs`, `habillage.mjs`) :
+scénario `scenario-parcours.mjs`, réponses de l'IA dans
+`tests/fixtures/video-demo/reponses-ia-parcours.json`, sortie dans `tests/.video-demo/parcours/`,
+le cours joint dans `tests/fixtures/video-demo/Cours - La respiration.docx`. Chaque vidéo
+déclare dans `video.mjs` ses dossiers, et dans son scénario son habillage (`HABILLAGE` :
+parties, cartons, étapes) ; tourner l'une ne touche jamais aux fichiers de l'autre.
+Cette vidéo n'a qu'une version commentée (pas de version en musique).
+
 Prérequis : Node, `ffmpeg`, et Playwright déjà installé pour les tests
 (`tests/roundtrip/node_modules`). Tout se lance depuis la racine du dépôt.
 
@@ -62,6 +71,8 @@ le Finder le masque (`Cmd + Maj + .` pour l'afficher).
 | Fichier | Rôle |
 |---|---|
 | `scenario.mjs` | Le texte de la voix off, les gestes filmés, les phrases clés |
+| `scenario-parcours.mjs` | Le même, pour la vidéo « Créer un parcours » (`--video=parcours`) |
+| `video.mjs` | Les vidéos connues : scénario, dossier de sortie, réponses de l'IA, nom de la copie sur le Bureau |
 | `tourner.mjs` | Tournage, enregistrement des réponses de l'IA (`--enregistrer-ia`), montage des voix (`--mixer`) |
 | `plateau.mjs` | Curseur, cartons et gestes injectés dans la page filmée |
 | `studio.mjs`, `studio.html` | Le studio de voix off (serveur local, 127.0.0.1 seulement) |

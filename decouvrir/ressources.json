@@ -20,6 +20,16 @@
   },
   {
    "type": "video",
+   "titre": "Créer un parcours avec Caramel",
+   "description": "Le tutoriel pas à pas : joindre son cours, cadrer, relire et modifier le plan, ouvrir des chemins selon les résultats d'un test, fabriquer, livrer, puis reprendre le parcours plus tard.",
+   "source": "Podeduc",
+   "date": "2026-10",
+   "duree": "6 min 05",
+   "lien": "https://podeduc.apps.education.fr/video/161908-caramel-71-creer-un-parcours/",
+   "integration": "https://podeduc.apps.education.fr/video/161908-caramel-71-creer-un-parcours/?is_iframe=true"
+  },
+  {
+   "type": "video",
    "titre": "Découvrez la Sucrerie",
    "description": "La bibliothèque publique des activités créées avec Caramel : consulter, télécharger, partager, dans de nombreux formats.",
    "source": "Podeduc",
