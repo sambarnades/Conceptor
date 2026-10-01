@@ -360,6 +360,6 @@ Au cadrage, **Des chemins selon les résultats** fait passer un test à vos él�
 - **Voir comme un élève** montre la page du cours telle que l’élève la verra — avant le test, pendant son chemin, à la fin — pour le score que vous choisissez.
 - Pour réorienter un élève, modifiez sa note au test dans le carnet de notes de la plateforme.
 
-Importez un parcours à chemins dans un cours **vide** : Moodle range les sections du fichier dans celles du cours, et vos sections existantes recevraient les restrictions des chemins. Tous les parcours se terminent désormais par une section **Fin du parcours**, et la durée estimée s’affiche sous chaque activité.
+Importez un parcours à chemins dans un cours **vide** : Moodle range les sections du fichier dans celles du cours, et vos sections existantes recevraient les restrictions des chemins. Tous les parcours se terminent désormais par une section **Fin du parcours** : le mot de la fin, puis une page **Bilan du parcours** (l’objectif, ce que chaque étape a travaillé et où le revoir, les mots à retenir). La durée estimée s’affiche sous chaque activité.
 <!-- /parcours-chemins -->
 <!-- /parcours-complet -->

@@ -30,6 +30,7 @@ import { CONFIG } from './config.js';
 import { nomModule } from './activity-router.js';
 import { carteDisponible } from './carte-progression.js';
 import { formaterDuree } from './duree.js';
+import { contenuDuBilan } from './bilan.js';
 import { MODULES_PARCOURS } from './modules-parcours.js';
 import { contenuPourEdition } from './sources.js';
 import { imagesEnvoyeesPourDocument } from '../moodle/page-images.js';
@@ -169,9 +170,11 @@ export function construireFiche(plan, { platformId } = {}) {
         sections.push(bloc);
     });
 
-    // Le mot de la fin, lu par l'élève dans la dernière section du cours (D96).
+    // Le mot de la fin, lu par l'élève dans la dernière section du cours (D96),
+    // et la page de bilan posée dessous (D112).
     const conclusion = String(p.conclusion || '').trim();
-    if (conclusion) sections.push({ titre: tp('parcours_fin_titre'), lignes: [conclusion] });
+    const fin = [conclusion, contenuDuBilan(p, { texte: tp }) ? tp('parcours_fin_bilan_note') : ''].filter(Boolean);
+    if (fin.length) sections.push({ titre: tp('parcours_fin_titre'), lignes: fin });
 
     // Les consignes, à la fin : elles ne se lisent pas dans un tableau, mais
     // elles sont ce que l'élève aura sous les yeux. Un enseignant qui prépare

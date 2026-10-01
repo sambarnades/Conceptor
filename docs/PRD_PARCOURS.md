@@ -2141,6 +2141,30 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       génération « en un clic », qui redemandait jusque-là le même prompt. (4) Le cadre de la
       carte donne les contre-exemples. Bancs : `run_sources_prompt_tests.mjs`,
       `run_heal_rules_tests.mjs` (section 7), `run_parcours_reels.mjs`.
+- [x] **D112 — Une page « Bilan du parcours » dans la fin de TOUT parcours.** Demande de Gauthier
+      (1er oct. 2026) : « pour chaque parcours, une page de fin pour conclure le parcours, un peu
+      un bilan ». Sous l'étiquette « Bravo » (D96), qui reste : l'étiquette félicite, la page fait
+      le point. Elle se COMPOSE du plan (`bilan.js`, module pur), sans appel au modèle — rien qui
+      puisse échouer ni inventer : l'objectif du parcours ; « Faire le point », une ligne par étape
+      COMMUNE (ce qui a été travaillé, le nom de sa section pour y revenir) ; les notions pivots
+      (« Les mots à retenir ») ; « Pour consolider ». Les étapes d'un chemin n'y sont pas — chacun
+      n'en a suivi qu'un, et les autres lui restent fermés —, ni l'étape qui ne contient que le
+      test d'aiguillage, qui ne se repasse pas (D93) ; un encadré dit seulement que le parcours a
+      suivi le chemin adapté au résultat. Textes IMPERSONNELS : ni « tu » ni « vous », ni élève ni
+      stagiaire, une même phrase pour les trois plateformes (D105). C'est une Page de Caramel
+      (module dont l'aller-retour est fait), au thème des autres Pages du parcours ; marquée
+      `scenario` comme les étiquettes, elle ne compte pas parmi les activités, n'a pas de durée,
+      et la condition de la fin ne l'attend pas (elle ne porte que sur les sections du plan) —
+      elle s'ouvre avec sa section. Un échec de mise en forme la retire, jamais le parcours.
+      Visible dans l'écran du plan (note sous le mot de la fin), « Voir comme un élève » et la
+      fiche de séquence. Banc : `run_parcours_reels.mjs` (présente, dans la dernière section,
+      objectif et mots à retenir repris, sans condition propre, absente de la condition de la fin),
+      `run_parcours_course.mjs`, `run_parcours_aiguillage.mjs` (et « Voir comme un élève »),
+      `run_parcours_chemins.mjs` (Node, CI : composition pure). Une étape sans objectif (plan parti
+      du modèle) reprend ceux de ses activités, ou leurs titres. En l'écrivant, le banc a trouvé
+      qu'une étape sans titre devenait la section « Plan 5 » : l'assemblage empruntait
+      `parcours_step_plan`, le « Plan » du fil d'Ariane ; c'est désormais « Étape 5 »
+      (`parcours_fiche_etape`).
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -2916,6 +2940,8 @@ js/parcours/
                           « le cours vu par un élève » — module PUR
   aiguillage-cours.js     pose les conditions des chemins, de l'étape commune  [fait]
                           et de la fin dans le .mbz assemblé (D90, D96)
+  bilan.js                la page « Bilan du parcours », composée du plan      [fait]
+                          (D112) — module PUR
   achevement-h5p.js       les H5P jamais notés s'achèvent à la consultation    [fait]
                           (D100)
   durees-cours.js         « Durée estimée » en tête de chaque description (D97) [fait]
@@ -3495,6 +3521,26 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
 
+- **1er octobre 2026, soir — La page de bilan (D112), et la vérification des parcours à chemins :**
+  Gauthier « adore » et demande une page de fin qui fasse le bilan : posée dans la fin de tout
+  parcours, composée du plan. Vérification demandée par Emmanuel avant un déploiement : « que les
+  nouveaux parcours différenciés fonctionnent avec tout ce qu'on a fait aujourd'hui, que l'ajout
+  de la page fonctionne ». Le contrôle de la condition de la fin lisait d'abord le JSON échappé
+  du `section.xml` (`&quot;`) et passait à vide : corrigé avant de compter. Vérifié DANS
+  L'INTERFACE, par de vrais clics et avec le vrai modèle (Mistral Small 4, quelques replis
+  silencieux du Worker), du cadrage « Des chemins selon les résultats » au `.mbz` téléchargé :
+  Éléa à 3 chemins (Pythagore, 4e), Magistère à 2 chemins (évaluer par compétences, stagiaires),
+  Moodle à 4 chemins (statistiques, BUT). Plans composés en 12 à 16 s, sans retour au cadrage ni
+  problème d'aiguillage ; 34 activités fabriquées sur 34, aucune écartée ; dans chaque cours, les
+  chemins aux bons seuils, l'étape commune ouverte au bout de n'importe quel chemin, la fin qui
+  attend le tronc commun et un chemin, le bilan dessous, hors de sa condition ; chemins de durées
+  égales à 5 min près ; aucune image ; aucun trou défectueux ; élèves / stagiaires / étudiants
+  selon la plateforme. Le banc des parcours réels, rejoué sur ces trois cours
+  (`run_parcours_reels.mjs --dossier=…`), n'y voit qu'un écart : sur Magistère, les retours par
+  score d'un Quiz tutoyaient les stagiaires (« Tu as bien ciblé un critère… »). Limite connue
+  (D80, D82), non bloquante ; piste : une seconde demande quand les RETOURS d'une carte tutoient
+  un public adulte, comme pour les consignes et les trous. (Le même banc compte aussi, à tort, le
+  tutoiement d'une phrase citée entre guillemets dans une Page : « ton travail est insuffisant ».)
 - **1er octobre 2026, après-midi — Le parcours de maths d’Emmanuel (D109 à D111) :** « Découvrir
   les natures des angles » (Éléa, chemins) livré avec 11 activités sur 12 : la Rédaction « Défi :
   décrire un angle dans un objet » écartée (« erreur de mise en forme », `occurrences: 0`), deux

@@ -46,7 +46,9 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(join(ROOT, 'tests/roundtrip/package.json'));
 const { chromium } = require('playwright');
 const PORT = 8163;
-const DOSSIER = join(ROOT, 'tests/fixtures/parcours-reels');
+// `--dossier=<chemin>` : rejouer d'autres scénarios (un essai réel tout juste livré).
+const DOSSIER = (process.argv.find(a => a.startsWith('--dossier=')) || '').slice('--dossier='.length)
+    || join(ROOT, 'tests/fixtures/parcours-reels');
 
 const server = spawn('python3', ['tests/serveur-statique.py', String(PORT), '--bind', '127.0.0.1'],
     { cwd: ROOT, stdio: 'ignore' });
@@ -181,8 +183,12 @@ function ouvrir(page, texte) {
             const reglage = balise => (xml.match(new RegExp(`<${balise}>([^<]*)</${balise}>`)) || [])[1] ?? null;
             const test = a.moduleName === 'quiz' ? { tentatives: reglage('attempts_number'), duree: reglage('timelimit'),
                 comportement: reglage('preferredbehaviour') } : null;
+            const bilan = !!paquet.bilan && paquet.bilan.moduleId === a.moduleId && paquet.bilan.moduleName === a.moduleName;
             activites.push({
-                titre: a.title, moduleName: a.moduleName, visible, test,
+                titre: a.title, moduleName: a.moduleName, visible, test, bilan,
+                // D112 : sa section, et ce qui la conditionne (elle ne doit pas s'attendre elle-même).
+                section: Number((lire(`${dir}/module.xml`).match(/<sectionnumber>(\d+)<\/sectionnumber>/) || [])[1]),
+                conditionPropre: (lire(`${dir}/module.xml`).match(/<availability>([^<]*)<\/availability>/) || [])[1] || '',
                 lisible: champs.map(c => html(c).textContent).join(' ').replace(/\s+/g, ' ').trim(),
                 suspendus: champs.flatMap(suspendus),
             });
@@ -199,6 +205,15 @@ function ouvrir(page, texte) {
                 trous: c.contenu ? defautsSortieIA(c.module, JSON.stringify(c.contenu))
                     .filter(d => !['réponse trop longue', 'même réponse dans plusieurs trous'].includes(d)) : [] })),
             reparations, exclues: paquet.exclues, activites,
+            // La fin du parcours (D96) et sa condition, pour situer la page de bilan (D112).
+            fin: !!paquet.fin, objectifGeneral: String(repris.plan.objectifGeneral || '').trim(),
+            notions: (repris.plan.notionsPivots || []).map(n => String(n).trim()).filter(Boolean),
+            derniereSection: paquet.sections.length ? Math.max(...paquet.sections.map(s => s.number)) : -1,
+            conditionFin: (() => {
+                const der = paquet.sections.reduce((m, s) => (s.number > (m ? m.number : -1) ? s : m), null);
+                const brut = der ? (lire(`sections/section_${der.sectionId}/section.xml`).match(/<availabilityjson>([^<]*)<\/availabilityjson>/) || [])[1] || '' : '';
+                return brut.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+            })(),
         };
     }, texte);
 }
@@ -214,10 +229,30 @@ function constater(r, banc) {
     constat('reparation', 'chaque contenu passe la réparation de production', r.reparations.every(x => !x), r.reparations.filter(Boolean).join(' · '));
     constat('assemblage', 'aucune activité écartée à l’assemblage', !r.exclues.length, JSON.stringify(r.exclues));
     const activites = r.activites.filter(a => a.visible && a.moduleName !== 'label');
-    constat('contenu', `autant d’activités que de cartes (${r.cartes.length})`, activites.length === r.cartes.length, `${activites.length}`);
+    const duPlan = activites.filter(a => !a.bilan);
+    constat('contenu', `autant d’activités que de cartes (${r.cartes.length})`, duPlan.length === r.cartes.length, `${duPlan.length}`);
+    // D112 : la page « Bilan du parcours », sous le mot de la fin, dans TOUT parcours
+    // qui a une fin ; ouverte avec sa section, sans condition propre, et la condition
+    // de la fin ne l'attend pas (elle s'y attendrait elle-même).
+    const bilans = r.activites.filter(a => a.bilan);
+    if (r.fin) {
+        const b = bilans[0];
+        constat('bilan', 'une page « Bilan du parcours » dans la fin du parcours', bilans.length === 1 && b.moduleName === 'page'
+            && b.section === r.derniereSection, JSON.stringify(bilans.map(x => [x.moduleName, x.section])) + ` / fin = ${r.derniereSection}`);
+        if (b) {
+            constat('bilan', 'le bilan reprend l’objectif du parcours et ses mots à retenir',
+                (!r.objectifGeneral || b.lisible.includes(r.objectifGeneral.replace(/\s+/g, ' ')))
+                && r.notions.every(n => b.lisible.includes(n.replace(/\s+/g, ' '))),
+                b.lisible.slice(0, 200));
+            constat('bilan', 'le bilan n’a pas de condition propre et la fin ne l’attend pas',
+                !b.conditionPropre.replace(/\$@NULL@\$/, '') && /"cm":\d+/.test(r.conditionFin) && !r.conditionFin.includes(`"cm":${b.moduleId},`),
+                `propre=${b.conditionPropre.slice(0, 80)} fin=${r.conditionFin.slice(0, 120)}`);
+        }
+    } else constat('bilan', 'pas de bilan sans fin du parcours', !bilans.length, `${bilans.length}`);
     for (const a of activites) {
         const etiquette = `« ${a.titre} » (${a.moduleName})`;
-        const plancher = PLANCHER[a.moduleName] ?? 100;
+        // Le bilan est composé par l'atelier : court par nature (D112).
+        const plancher = a.bilan ? 200 : (PLANCHER[a.moduleName] ?? 100);
         constat('creux', `${etiquette} : texte substantiel (≥ ${plancher} car.)`, a.lisible.length >= plancher, `${a.lisible.length} car. : ${a.lisible.slice(0, 160)}`);
         constat('suspendu', `${etiquette} : aucun champ, paragraphe ni cellule laissé à « … »`, !a.suspendus.length, a.suspendus.slice(0, 5).map(s => JSON.stringify(s)).join(' · '));
         constat('jargon', `${etiquette} : pas de jargon des prompts`, !JARGON.test(a.lisible), (a.lisible.match(new RegExp(`.{0,60}(?:${JARGON.source}).{0,40}`)) || [''])[0]);

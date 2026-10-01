@@ -27,6 +27,7 @@ import * as A from '../js/parcours/aiguillage.js';
 import { CONFIG } from '../js/parcours/config.js';
 import { tramesCompatibles, nbActivites, nbActivitesParEleve, trameEnVitrine, VITRINE, reglagesDeTrame } from '../js/parcours/templates.js';
 import { calibrer } from '../js/parcours/calibrage.js';
+import { contenuDuBilan } from '../js/parcours/bilan.js';
 import { readFileSync, readdirSync } from 'fs';
 
 let pass = 0, fail = 0;
@@ -384,6 +385,47 @@ console.log('\n── 8. Le vocabulaire de la plateforme (D105) ─────�
     const nonTraduites = Object.entries(locales).filter(([l]) => l !== 'fr')
         .flatMap(([l, d]) => variantes.filter(k => d[k] === fr[k]).map(k => `${l}:${k}`));
     ok('les variantes sont traduites dans les 11 autres langues', !nonTraduites.length, `${nonTraduites.length} : ${nonTraduites.slice(0, 6).join(' ')}`);
+}
+
+// ─── La page « Bilan du parcours » (D112) ────────────────────────────────
+{
+    console.log('\n── La page « Bilan du parcours » (D112) ──');
+    const fr = JSON.parse(readFileSync(new URL('../js/locales/fr.json', import.meta.url), 'utf8'));
+    const texte = cle => fr[cle];
+    const test = { id: 't', titre: 'Le test', module: 'QuizSetQCM', duree: 12 };
+    const plan = {
+        titre: 'Les fractions', objectifGeneral: 'Comparer et additionner des fractions',
+        notionsPivots: ['le numérateur', 'le dénominateur'],
+        etapes: [
+            { id: 'e1', titre: 'Découvrir', objectif: 'Lire une fraction', cartes: [{ id: 'a', module: 'Page', duree: 10 }] },
+            { id: 'e2', titre: 'Se situer', objectif: 'Faire le point', cartes: [test] },
+            { id: 'e3', titre: 'Reprendre', objectif: 'Revoir les bases', chemin: { depuis: 0 }, cartes: [{ id: 'b', module: 'Page', duree: 10 }] },
+            { id: 'e4', titre: 'Approfondir', objectif: 'Aller plus loin', chemin: { depuis: 60 }, cartes: [{ id: 'c', module: 'Page', duree: 10 }] },
+            { id: 'e5', titre: '', objectif: '', cartes: [{ id: 'd', module: 'Essay', titre: 'Écrire une règle', objectif: 'Rédiger la règle d’addition', duree: 15 }] },
+        ],
+    };
+    const b = contenuDuBilan(plan, { texte });
+    const bloc = type => b && b.blocks.find(x => x.type === type);
+    const lignes = bloc('#10_table_comparison')?.data.rows || [];
+    ok('le bilan se compose du plan : objectif, encadré des chemins, mots à retenir',
+        b && b.title === 'Bilan du parcours' && bloc('#01_hero_header').data.subtitle === 'Les fractions'
+        && bloc('#04_callout_set').data.callouts.map(c => c.type).join() === 'objectif,savoir'
+        && bloc('#07_glossary_chips').data.chips.join() === 'le numérateur,le dénominateur', JSON.stringify(b));
+    ok('« Faire le point » : les étapes communes, pas les chemins, pas l’étape du seul test',
+        JSON.stringify(lignes) === JSON.stringify([['Lire une fraction', 'Découvrir'], ['Rédiger la règle d’addition', 'Étape 5']]),
+        JSON.stringify(lignes));
+    ok('une étape dont aucune carte n’est entrée dans le cours n’a pas de ligne',
+        !(contenuDuBilan(plan, { texte, retenue: c => c.id !== 'a' })?.blocks.find(x => x.type === '#10_table_comparison')?.data.rows
+            .some(r => r[1] === 'Découvrir')));
+    const sansChemins = contenuDuBilan({ ...plan, etapes: plan.etapes.filter(e => !e.chemin) }, { texte });
+    ok('sans chemins, pas d’encadré sur les chemins', sansChemins.blocks.find(x => x.type === '#04_callout_set').data.callouts.length === 1);
+    ok('un plan vide n’a pas de bilan', contenuDuBilan({ etapes: [{ id: 'e', cartes: [] }] }, { texte }) === null);
+    const lu = JSON.stringify(b);
+    ok('textes impersonnels : ni tu, ni vous, ni élève (une phrase pour les trois plateformes)',
+        !/\b(tu|te|ton|ta|tes|vous|votre|vos)\b|élève|stagiaire|étudiant/i.test(lu.replace(/"(text|subtitle)":"(Comparer|Les fractions)[^"]*"/g, '')), lu);
+    ok('les dix clés du bilan existent dans les 12 langues', ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br']
+        .every(l => { const d = JSON.parse(readFileSync(new URL(`../js/locales/${l}.json`, import.meta.url), 'utf8'));
+            return Object.keys(fr).filter(k => /^parcours_(bilan_|fin_bilan_note)/.test(k)).every(k => d[k] && (l === 'fr' || d[k] !== fr[k])); }));
 }
 
 console.log('\n========================================');

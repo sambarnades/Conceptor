@@ -234,6 +234,7 @@ try {
                 o += 512 + Math.ceil(taille / 512) * 512;
             }
             return { textes, chemins: paquet.chemins, fin: paquet.fin, durees: paquet.durees, tests: paquet.tests,
+                bilan: paquet.bilan ? { moduleId: paquet.bilan.moduleId, moduleName: paquet.bilan.moduleName } : null,
                 activites: paquet.activites.map(a => ({ moduleId: a.moduleId, moduleName: a.moduleName, title: a.title })) };
         };
 
@@ -345,12 +346,19 @@ try {
     // 6 + 12 min de tronc commun, trois chemins de 24 min, 12 min de bilan.
     ok('l’accueil dit la durée d’un élève (chemins de même durée : une seule valeur)', Boolean(accueilA)
         && /<p>Durée estimée du parcours : 54 min<\/p>/.test(accueilA), (accueilA || '').replace(/\s+/g, ' ').slice(0, 400));
-    const intros = Object.entries(r.h5p.textes).filter(([p]) => /activities\/(h5pactivity|page)_\d+\/(h5pactivity|page)\.xml$/.test(p));
+    // La page « Bilan du parcours » (D112) est un texte de l'atelier : ni durée, ni description.
+    const bilanA = r.h5p.bilan;
+    ok('la fin du parcours porte la page « Bilan du parcours », hors de sa propre condition (D112)',
+        bilanA && bilanA.moduleName === 'page' && finA.sequence.includes(bilanA.moduleId)
+        && !JSON.stringify(finA.dispo).includes(`"cm":${bilanA.moduleId},`) && /"cm":\d+/.test(JSON.stringify(finA.dispo)),
+        JSON.stringify({ bilanA, fin: finA.sequence }));
+    const intros = Object.entries(r.h5p.textes).filter(([p]) => /activities\/(h5pactivity|page)_\d+\/(h5pactivity|page)\.xml$/.test(p)
+        && !(bilanA && p.startsWith(`activities/page_${bilanA.moduleId}/`)));
     ok('chaque activité porte sa durée en tête de sa description', intros.length === 13 - 1
         && intros.every(([, x]) => /^<p>Durée estimée : \d+ min<\/p>/.test(deXml(deXml(balise(x, 'intro') || '')))),
         `${intros.length} activités : ${intros.map(([, x]) => deXml(deXml(balise(x, 'intro') || '')).slice(0, 40)).join(' | ')}`);
-    ok('et la description s’affiche dans la page du cours', [...coursA.modules.values()]
-        .filter(m => m.module !== 'label').every(m => m.showdescription));
+    ok('et la description s’affiche dans la page du cours', [...coursA.modules.entries()]
+        .filter(([cm, m]) => m.module !== 'label' && cm !== bilanA?.moduleId).every(([, m]) => m.showdescription));
     const cartesDialogue = [...coursA.modules.values()].filter(m => m.module === 'h5pactivity' && m.vue);
     ok('les Cartes de dialogue (jamais notées) s’achèvent à la consultation (D100)', cartesDialogue.length === 1 && !cartesDialogue[0].note);
     ok('aucune Carte de progression dans un parcours à chemins', ![...coursA.modules.values()].some(m => m.module === 'mapmodules'));
@@ -484,6 +492,8 @@ try {
     ok('« − » revient exactement au réglage d’avant (aucune dérive d’arrondi)',
         JSON.stringify((await lirePlan()).plages) === JSON.stringify(p1.plages));
 
+    // L'objectif du parcours, écrit au clavier : le bilan (D112) a de quoi se composer.
+    await ui.fill('.pc-plan-objectif', 'Accorder le participe passé employé avec être et avec avoir');
     await ui.click('.pc-aiguillage__voir');
     await ui.waitForSelector('.pc-eleve[open]');
     const texteDe = cle => ui.evaluate(async c => (await import('/js/core/translation.js')).t(c), cle);
@@ -498,12 +508,20 @@ try {
     const scoreMax = await vueEleve();
     await ui.locator('.pc-eleve .pc-segment__b', { hasText: await texteDe('parcours_eleve_moment_fin') }).click();
     const aLaFin = await vueEleve();
+    // D112 : sous le mot de la fin, la page « Bilan du parcours », comme dans le cours livré.
+    const bilanVu = await ui.evaluate(async () => {
+        const titre = (await import('/js/core/translation.js')).t('parcours_bilan_titre');
+        const fin = document.querySelector('.pc-eleve .pc-eleve__section[data-section="fin"]');
+        return { titre, vu: [...(fin?.querySelectorAll('.pc-eleve__nom') || [])].map(n => n.textContent) };
+    });
     ok('vu par un élève, avant le test : aucun chemin', !avantTest.some(x => x.startsWith('chemin')), JSON.stringify(avantTest));
     ok('0 bonne réponse : « Renforcer » seul ; toutes : « Approfondir » seul',
         scoreZero.filter(x => x.startsWith('chemin')).join() === 'chemin:renforcer'
         && scoreMax.filter(x => x.startsWith('chemin')).join() === 'chemin:approfondir', JSON.stringify({ scoreZero, scoreMax }));
     ok('parcours terminé : la fin du parcours apparaît, toujours un seul chemin',
         aLaFin.includes('fin') && aLaFin.filter(x => x.startsWith('chemin')).length === 1, JSON.stringify(aLaFin));
+    ok('et la fin montre la page « Bilan du parcours » (D112)', bilanVu.vu.includes(bilanVu.titre) && bilanVu.titre === 'Bilan du parcours',
+        JSON.stringify(bilanVu));
     await ui.locator('.pc-eleve .pc-segment__b', { hasText: await texteDe('parcours_eleve_enseignant') }).click();
     const prof = await vueEleve();
     ok('vu par l’enseignant : les deux chemins, avec leur condition écrite en clair',

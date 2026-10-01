@@ -931,7 +931,8 @@ export function construirePlan(draft, api) {
         texte.placeholder = t('parcours_fin_ph');
         texte.setAttribute('aria-labelledby', 'pc-fin-titre');
         texte.addEventListener('input', () => { plan.conclusion = texte.value; persister(); });
-        champs.append(intitule, bravo, texte, el('p', 'pc-block__hint', t('parcours_fin_note')));
+        champs.append(intitule, bravo, texte, el('p', 'pc-block__hint', t('parcours_fin_note')),
+            el('p', 'pc-block__hint', t('parcours_fin_bilan_note')));
         head.append(num, champs);
         node.append(head);
         return node;

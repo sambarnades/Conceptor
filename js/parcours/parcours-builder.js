@@ -55,6 +55,7 @@ import { poserAiguillages, cheminsIncomplets } from './aiguillage-cours.js';
 import { poserDurees } from './durees-cours.js';
 import { poserAchevementsH5P } from './achevement-h5p.js';
 import { formaterDuree } from './duree.js';
+import { contenuDuBilan } from './bilan.js';
 
 /**
  * Ce que le backup déclare de son origine. Les valeurs par défaut du
@@ -331,7 +332,9 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
 
         if (!retenues.length) continue;
         const index = sections.length;
-        const nomSection = String(etape.titre || '').trim() || `${translations.parcours_step_plan || 'Étape'} ${i + 1}`;
+        // « Étape 5 » pour une étape sans titre — et non `parcours_step_plan`, le
+        // « Plan » du fil d'Ariane, qui nommait la section « Plan 5 ».
+        const nomSection = String(etape.titre || '').trim() || jetons('parcours_fiche_etape', 'Étape @n', { n: i + 1 });
         sections.push({ index, name: nomSection });
         sectionsPlan.push({ index, etapeId: etape.id });
         // Un chemin s'ouvre par une étiquette que SEUL l'enseignant voit : Moodle
@@ -370,6 +373,11 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
         const bravo = translations.parcours_fin_bravo || 'Bravo ! Le parcours est terminé.';
         const conclusion = String(plan && plan.conclusion || '').trim();
         activities.push(etiquetteTexte(`**${bravo}**${conclusion ? `\n\n${conclusion}` : ''}`, nomFin, index));
+        // Sous le mot de la fin, la page « Bilan du parcours » (D112) : elle s'ouvre
+        // avec la section, et n'entre ni dans les conditions, ni dans les durées.
+        const retenues = new Set(activities.filter(a => a.carteId).map(a => a.carteId));
+        const bilan = await pageDeBilan(plan, index, carte => retenues.has(carte.id));
+        if (bilan) activities.push(bilan);
     }
 
     // La Carte de progression ferme la marche du calcul et ouvre celle du cours :
@@ -404,6 +412,27 @@ export async function planVersActivites(plan, { platformId, timestamp } = {}) {
 function carteDe(etapes, id) {
     for (const e of etapes) for (const c of (e.cartes || [])) if (c.id === id) return c;
     return null;
+}
+
+/**
+ * La page « Bilan du parcours » (D112), composée du plan par `contenuDuBilan` et
+ * mise en forme comme une Page de Caramel. Marquée `scenario` comme les
+ * étiquettes : posée par l'atelier, elle ne compte pas parmi les activités du
+ * plan. Un échec de mise en forme ne doit jamais coûter le parcours : la fin
+ * garde alors son étiquette seule.
+ * @returns {Promise<Object|null>}
+ */
+async function pageDeBilan(plan, sectionIndex, retenue) {
+    const contenu = contenuDuBilan(plan, { texte: cle => translations[cle], retenue });
+    if (!contenu) return null;
+    try {
+        const extracted = await activiteDepuisCarte({ module: 'Page', titre: contenu.title, contenu });
+        if (extracted.files && hasEmbeddedFiles(extracted.files)) return null;
+        return { extracted, title: contenu.title, sectionIndex, scenario: true, bilan: true };
+    } catch (e) {
+        console.warn('[parcours] page de bilan non posée :', e);
+        return null;
+    }
 }
 
 /** Une étiquette de texte posée par l'atelier (pas par le plan). */
@@ -605,6 +634,8 @@ export async function assemblerParcours(plan, { timestamp, platformId } = {}) {
         chemins: chemins.chemins,
         tests: chemins.tests,
         fin: chemins.fin,
+        /** La page « Bilan du parcours » posée dans la fin (D112), ou null. */
+        bilan: posees[activities.findIndex(a => a.bilan)] || null,
         /** Activités dont la description porte la durée (D97). */
         durees: durees.n,
         /** Étiquettes d'accueil et d'introduction, comprises dans `activites`. */

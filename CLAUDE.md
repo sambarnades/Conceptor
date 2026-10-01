@@ -38,7 +38,7 @@ js/export/       document-exporter, document-formatter, sanitizer, latex-parser,
 js/editor/       index, editor-core, content-detector, field-renderers, array-manager, validators, feedback-editor, json-utils, richtext-editor, formula-assistant
 js/caramelia/    chatbot flottant (13 modules) — voir ARCHITECTURE.md local
 js/parcours/     atelier de parcours : intention → plan → N générations → UN .mbz de COURS
-                 (50 modules ; un commutateur « Une activité | Un parcours » sous le
+                 (51 modules ; un commutateur « Une activité | Un parcours » sous le
                  formulaire commun — D63 — met l'atelier à la place des tuiles, sous le
                  formulaire de l'accueil qui reste en place — D39).
                  Les modules de la PLATEFORME (forum, questionnaire, leçon, atelier, wiki…)
@@ -65,7 +65,10 @@ js/parcours/     atelier de parcours : intention → plan → N générations �
                  seule une réponse sans aucune activité échoue. L'exemple complet du prompt de
                  plan (D108, `exemple-plan.js`) passe le contrôle pour les 600 cadrages : banc
                  `run_parcours_reparation.mjs` (Node, CI).
-                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D111 avec leur
+                 **La fin de tout parcours porte une page « Bilan du parcours » (D112)** :
+                 `bilan.js` (pur) la compose du plan, sans modèle ; texte de l'atelier
+                 (`scenario`), hors durées et hors condition de la fin.
+                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D112 avec leur
                  raison, pièges, et le journal des allers-retours réels sur plateforme.
                  Ne rien y rouvrir sans lire ce fichier ; y écrire toute décision nouvelle.
 js/locales/      12 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el, br (~2873 clés/fichier)

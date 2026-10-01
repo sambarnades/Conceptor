@@ -223,6 +223,7 @@ try {
             contenthash: a.extracted.contenthash || null,
             moduleId: moduleIdFor(i),
             scenario: Boolean(a.scenario),
+            bilan: Boolean(a.bilan),
         }));
         const labelXml = v => (v ? files[`activities/label_${v.moduleId}/label.xml`] || '' : '');
         return {
@@ -230,7 +231,9 @@ try {
             voies: toutes.filter(v => !v.scenario),
             toutes,
             accueilXml: labelXml(toutes[0]),
-            finXml: labelXml(toutes[toutes.length - 1]),
+            // Le mot de la fin, puis la page « Bilan du parcours » sous lui (D112).
+            finXml: labelXml(toutes.filter(v => !v.bilan).at(-1)),
+            bilanXml: (v => (v ? files[`activities/page_${v.moduleId}/page.xml`] || '' : ''))(toutes.find(v => v.bilan)),
             sections,
             chemins: Object.keys(files).sort(),
             questionsXml: files['questions.xml'] || '',
@@ -766,8 +769,9 @@ try {
     const premierModule = s => tx.modules[s.sequence.split(',')[0]];
     // L'accueil (il dit la durée) et la Fin sont déjà là sans texte rédigé :
     // les introductions d'étape s'y ajoutent, une par étape.
-    ok('une étiquette par étape, plus l’accueil et la Fin, et aucune activité perdue',
-        tx.textes === pr.nbEtapes + 2 && pr.active.textes === 2
+    // Plus la page de bilan (D112), comptée parmi les textes de l'atelier.
+    ok('une étiquette par étape, plus l’accueil, la Fin et son bilan, et aucune activité perdue',
+        tx.textes === pr.nbEtapes + 3 && pr.active.textes === 3
         && tx.etiquettes.length === pr.nbEtapes + pr.active.etiquettes.length,
         `${tx.textes} texte(s), ${tx.etiquettes.length} étiquette(s) pour ${pr.nbEtapes} étape(s)`);
     ok('chaque section s’ouvre sur son texte, l’accueil compris',
@@ -877,9 +881,14 @@ try {
         && /Durée estimée du parcours : 1 h 22</.test(enClair(r.accueilXml)),
         (enClair(r.accueilXml).match(/<intro>([^]{0,160})/) || [])[1]);
     ok('la Fin du parcours dit à l’élève qu’il a terminé (D96)',
-        r.toutes.at(-1)?.scenario && r.toutes.at(-1)?.sectionIndex === 4
+        r.toutes.at(-2)?.scenario && r.toutes.at(-2)?.sectionIndex === 4
         && /Bravo ! Le parcours est terminé\./.test(enClair(r.finXml)),
         (enClair(r.finXml).match(/<intro>([^]{0,160})/) || [])[1]);
+    ok('sous le mot de la fin, la page « Bilan du parcours » (D112) : une Page, hors des activités du plan',
+        r.toutes.at(-1)?.bilan && r.toutes.at(-1)?.scenario && r.toutes.at(-1)?.sectionIndex === 4
+        && r.toutes.at(-1)?.moduleName === 'page' && /<name>Bilan du parcours<\/name>/.test(enClair(r.bilanXml))
+        && !r.voies.some(v => v.bilan),
+        JSON.stringify(r.toutes.at(-1)));
     ok('les numéros de section sont contigus',
         r.sections.every((s, i) => s.index === i));
     for (const id of r.sectionIds) {

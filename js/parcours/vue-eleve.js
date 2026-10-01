@@ -25,6 +25,7 @@ import { nomModule } from './activity-router.js';
 import { vignetteModule } from './choix-module.js';
 import { moduleSAcheve } from './modules-parcours.js';
 import { formaterDuree } from './duree.js';
+import { contenuDuBilan } from './bilan.js';
 import {
     coursDuPlan, visibilitePourEleve, nombreQuestions, dureeParEleve, bornesEnReponses, plagesEnReponses,
 } from './aiguillage.js';
@@ -255,6 +256,10 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
                 bravo.append(el('strong', null, tp('parcours_fin_bravo')));
                 if (String(plan.conclusion || '').trim()) bravo.append(el('p', null, plan.conclusion));
                 section.append(bravo);
+                // La page « Bilan du parcours » que l'assemblage pose sous le mot de la fin (D112).
+                if (contenuDuBilan(plan, { texte: tp })) {
+                    section.append(activite({ module: 'Page', titre: tp('parcours_bilan_titre') }, false));
+                }
             } else {
                 if (String(s.etape.introduction || '').trim()) section.append(el('p', 'pc-eleve__texte', s.etape.introduction));
                 for (const carte of (s.etape.cartes || [])) {
