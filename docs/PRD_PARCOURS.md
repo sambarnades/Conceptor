@@ -3425,8 +3425,10 @@ dans la CSS de Caramel pour qu'elle tienne (détail en D38).
   cadrage Moodle (« Tous vos élèves… »), Emmanuel demande « étudiants » sur Moodle et
   « stagiaires » sur Magistère, choix des chemins compris. 125 variantes rédigées en français
   puis traduites dans les 11 autres langues ; règle de rédaction des prompts définie par la
-  plateforme ; tutoriel et fiche RAG `parcours-creation` (1.5.0) d’une phrase — la fiche
-  n’est pas encore réingérée.
+  plateforme ; tutoriel et fiche RAG `parcours-creation` (1.5.0) d’une phrase. Fiche
+  réingérée dans les 12 langues le 1er oct. à 5 h 35, à la demande d’Emmanuel : 12 remplacées,
+  60 inchangées, 864 documents avant et après, aucun autre touché
+  (`rag/caramelia/reports/2026-10-01-parcours-chemins-05h35.json`).
 
 - **1er octobre 2026 — Retours de Gauthier sur un parcours réel (D102 à D104) :** un parcours
   de mécanique des fluides généré en production (7.0.1). Trois exercices d’un Quiz mixte sans
