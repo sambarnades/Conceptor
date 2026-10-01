@@ -810,57 +810,53 @@ async function composerPlan(modele = modeleParcours()) {
     const mesures = { modelDemande: modele, essais: 0, promptTokens: 0, completionTokens: 0 };
 
     try {
-        const { construirePromptPlan } = await import('./scenario-prompt.js');
-        const { controlerCalibrage, remarquesComposition } = await import('./calibrage.js');
+        const { construirePromptPlan, reparationDuPlan } = await import('./scenario-prompt.js');
+        const { composerAvecReprise, planUtilisable } = await import('./composition-plan.js');
         if (tour !== generationPlan) return;
         const { prompt, calibrage, modules } = construirePromptPlan(draft);
-        let demande = prompt;
-        let brut;
-        // Un seul rattrapage, en série, sur le même modèle. Aucun contenu généré
-        // n'est découpé pour faire rentrer artificiellement le plan dans la borne.
-        for (let essai = 0; essai < 2; essai++) {
-            jalonVoile(1);
-            const res = await generateRawWithLLM(demande, modele, {
-                activityMeta: { moduleKey: 'parcours-plan', category: 'parcours' },
-                stats: 'skip',
-            });
-            mesures.essais += 1;
-            mesures.promptTokens += res.promptTokens || 0;
-            mesures.completionTokens += res.completionTokens || 0;
-            mesures.model = res.model || modele;
-            mesures.fallbackLevel = res.fallbackLevel || 0;
-            if (tour !== generationPlan || !atelier) return;
-            // La réponse est là : reste à en tirer le JSON et à le contrôler.
-            jalonVoile(2);
-            brut = await extraireJson(res.content);
-            if (tour !== generationPlan || !atelier) return;
-            if (isCancelRequested()) throw Object.assign(new Error('Composition annulée.'), { code: 'GENERATION_CANCELLED' });
-            const erreurs = controlerCalibrage(brut, calibrage, modules);
-            // Les remarques de composition ne comptent qu'à la première réponse :
-            // elles demandent la reprise, jamais l'échec (D81).
-            const remarques = essai === 0 ? remarquesComposition(brut) : [];
-            if (!erreurs.length && !remarques.length) break;
-            debugLog('parcours', `calibrage du plan, tentative ${essai + 1}`, erreurs, remarques);
-            if (essai === 1) {
-                const erreur = new Error('Plan hors du cadrage après deux tentatives.');
-                erreur.code = 'PARCOURS_CALIBRAGE';
-                throw erreur;
-            }
-            const sous = atelier.querySelector('.pc-veil__sub');
-            if (sous) sous.textContent = t('parcours_plan_recalibrage');
-            jalonVoile(1);
-            // Repartir du sujet et de son corpus : recopier le plan trop long
-            // dans la reprise incitait le modèle à conserver sa structure fautive.
-            demande = `${prompt}\n\n## NOUVELLE COMPOSITION APRÈS CONTRÔLE\n` +
-                `La proposition précédente n’a pas respecté le contrat :\n${[...erreurs, ...remarques].slice(0, 16).join('\n')}\n` +
-                `Recompose le plan COMPLET à partir du sujet et des documents ci-dessus, avec EXACTEMENT ${calibrage.exemple.reduce((a, b) => a + b, 0)} activités : ` +
-                `${calibrage.exemple.length} étapes de respectivement ${calibrage.exemple.join(', ')} activité(s). ` +
-                'Conserve les objectifs essentiels et la conclusion, regroupe les sous-tâches dans les consignes. ' +
-                'Compte les cartes avant de répondre. Retourne uniquement le JSON complet.';
+        // Le plan reçu est RÉPARÉ avant d'être jugé ; la reprise unique, en série sur le
+        // même modèle, ne porte que sur ce qui reste ; après elle, le meilleur plan
+        // réparé est retenu (D107). Seule une réponse sans aucun plan échoue encore.
+        const resultat = await composerAvecReprise({
+            prompt, calibrage, modules,
+            lireJson: extraireJson,
+            reparation: reparationDuPlan(draft),
+            appeler: async demande => {
+                jalonVoile(1);
+                const res = await generateRawWithLLM(demande, modele, {
+                    activityMeta: { moduleKey: 'parcours-plan', category: 'parcours' },
+                    stats: 'skip',
+                });
+                mesures.essais += 1;
+                mesures.promptTokens += res.promptTokens || 0;
+                mesures.completionTokens += res.completionTokens || 0;
+                mesures.model = res.model || modele;
+                mesures.fallbackLevel = res.fallbackLevel || 0;
+                // La réponse est là : reste à en tirer le JSON, à le réparer et à le contrôler.
+                if (tour === generationPlan && atelier) jalonVoile(2);
+                return res.content;
+            },
+            continuer: () => {
+                if (tour !== generationPlan || !atelier) return false;
+                if (isCancelRequested()) throw Object.assign(new Error('Composition annulée.'), { code: 'GENERATION_CANCELLED' });
+                return true;
+            },
+            surReprise: () => {
+                const sous = atelier.querySelector('.pc-veil__sub');
+                if (sous) sous.textContent = t('parcours_plan_recalibrage');
+                jalonVoile(1);
+            },
+        });
+        if (!resultat || tour !== generationPlan || !atelier) return;
+        if (resultat.corrections.length) debugLog('parcours', 'plan réparé', resultat.corrections);
+        if (resultat.erreurs.length) debugLog('parcours', 'écarts acceptés après la reprise', resultat.erreurs);
+        if (!resultat.plan) throw new Error('parcours_reponse_sans_json');
+        const plan = normaliserPlan(resultat.plan, draft.platform);
+        if (!planUtilisable(plan)) {
+            const erreur = new Error('Plan vide.');
+            erreur.code = 'PARCOURS_CALIBRAGE';
+            throw erreur;
         }
-        const plan = normaliserPlan(brut, draft.platform);
-        if (tour !== generationPlan || !atelier) return;
-        if (!plan.etapes.length) throw new Error('Plan vide.');
         majBrouillon({ plan, statsId: releverParcours(draft, plan, { origine: ORIGINES_PLAN.ia, debut, mesures }) });
         enCours = false;
         voile(false);

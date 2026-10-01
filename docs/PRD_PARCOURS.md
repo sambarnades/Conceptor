@@ -751,7 +751,8 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       les textes nécessaires et les durées. Un écart provoque une recomposition
       ciblée, en série sur le même modèle, avec une répartition explicite. Le
       prompt ne recopie pas la structure erronée, qui incitait à la conserver.
-      Après un second écart, message traduit et brouillon conservé. L’annulation
+      Après un second écart, message traduit et brouillon conservé — *remplacé par D107 :
+      le plan est réparé puis retenu ; seule une réponse sans aucun plan échoue encore*. L’annulation
       reste active entre les appels. Les accents sur un palier connu sont
       normalisés sans changer son sens. Le contrôle porte sur la composition IA,
       jamais sur les retouches ou les scénarios importés par l’enseignant.
@@ -2057,6 +2058,47 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       équivalentes. Banc :
       `run_sources_prompt_tests.mjs` (CI), `run_parcours_atelier.mjs`, et
       `run_parcours_reels.mjs` (constat « trous », avec contre-épreuve).
+- [x] **D107 — Le plan reçu se répare avant d’être jugé ; un plan utilisable n’est jamais refusé.**
+      Retour d’Emmanuel (1er oct. 2026, matin) : avec « Des chemins selon les résultats »,
+      « Composer le plan » tournait, puis revenait à l’étape 1 du cadrage — « il faut absolument
+      un healing de génération, […] la génération doit TOUJOURS fonctionner ». Relevé sur 16
+      cadrages réels (Mistral Small 4, prompt d’avant D108) : 7 retours au cadrage, tous à
+      chemins (7 sur 11), dont 5 pour la SEULE durée des chemins (10, 15 et 15 min : 10 est sous
+      les 75 % de 15). D58 renvoyait au cadrage après deux écarts. `reparation-plan.js` (pur,
+      comme `json-healer.js` pour une activité) répare désormais chaque réponse AVANT le
+      contrôle : cartes sans texte retirées, textes manquants repris d’un voisin, palier ramené
+      (synonymes, puis la place de l’étape), module inventé remplacé par le plus proche
+      (`resoudreModule`, carte marquée `moduleReplie`), durées entières, étapes-chemins
+      regroupées et rôles remis dans l’ordre, test posé avant les chemins (un quiz de l’étape
+      converti, sinon un « Test de positionnement » ajouté, textes traduits), durées des chemins
+      égalisées. La reprise unique de D58 ne porte plus que sur ce qui reste. Après elle, le
+      DERNIER RECOURS ramène le meilleur des deux plans à la forme demandée — chemins en trop
+      retirés, chemins manquants copiés du voisin (ce que fait « Ajouter un chemin »), forme
+      visée calculée (longueur des chemins, activités communes) pour tenir sous le plafond de
+      douze et dans les bornes « par élève », jamais le test retiré ni une étape vidée, étapes
+      en trop fusionnées avec leur voisine — et le plan est RETENU, écarts restants compris.
+      Seule une réponse sans aucun plan échoue encore : deux réponses illisibles (une réponse
+      illisible est désormais redemandée une fois, au lieu d’échouer aussitôt), ou aucune
+      activité. La réponse collée d’une IA externe passe par la même réparation. La boucle
+      (`composition-plan.js`) est partagée par l’atelier et le relevé sur le vrai modèle.
+      Bancs : `run_parcours_reparation.mjs` (Node, CI) — les 25 plans réels du relevé (les 18
+      refusés deviennent tous conformes, les 7 conformes ne bougent pas), 300 plans réels abîmés
+      au hasard (15 000 essayés sur trois graines), idempotence, contre-épreuve ;
+      `run_parcours_calibrage.mjs` (modes « echec » : plan ramené à l’ampleur et retenu,
+      « illisible », « relance »).
+- [x] **D108 — Le prompt du plan montre un exemple complet, de la forme demandée.**
+      « Peut-être que le prompt n’est pas assez cadré, avec un exemple en plus du modèle, comme
+      on le fait pour chaque activité » (Emmanuel, même matin). Le format de sortie n’était qu’un
+      squelette de « … » dont toutes les cartes duraient 10 minutes : il ne montrait ni la
+      longueur des textes, ni des durées plausibles, ni des chemins qui durent autant, et la
+      règle ne disait que « durées proches ». `exemple-plan.js` produit un plan COMPLET sur un
+      AUTRE sujet (le cycle de l’eau), de la forme exacte demandée : mêmes étapes, mêmes nombres
+      d’activités, test et chemins à leur place, modules de la trame, paliers imposés, chemins
+      de même durée ; tutoyé sur Éléa, vouvoyé sur Magistère et Moodle (D105). Une phrase chiffre
+      la durée de chaque chemin, la règle exige « la MÊME durée totale à 5 minutes près », et
+      l’exemple reste la dernière chose du prompt. Le banc vérifie, pour les 600 cadrages
+      possibles (plateforme, modalité, ampleur, chemins, trame), que l’exemple passe lui-même
+      le contrôle, a la forme demandée et le registre de la plateforme.
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -2846,6 +2888,14 @@ js/parcours/
                           (30 thèmes : tracé, image, icônes, taille)
   stats-parcours.js       relevé d'usage : ligne Grist PARCOURS par plan,      [fait]
                           nom + version + parcoursId des activités (D69)
+  reparation-plan.js      le plan reçu se répare avant d'être jugé ; dernier   [fait]
+                          recours dans l'ampleur (D107) — module PUR
+  composition-plan.js     la boucle réparer → contrôler → reprendre → garder   [fait]
+                          le meilleur, partagée par l'atelier et le relevé (D107)
+  exemple-plan.js         l'exemple complet du prompt de plan, de la forme     [fait]
+                          demandée (D108) — module PUR
+  vocabulaire.js          le `t` de l'atelier : élèves, stagiaires, étudiants   [fait]
+                          selon la plateforme (D105)
 css/components/parcours.css                                                  [fait]
 
 js/moodle/
@@ -2899,6 +2949,8 @@ node tests/run_parcours_caramelia.mjs   # accès depuis Caramelia, reprise, conv
 node tests/run_parcours_harmonie.mjs    # continuité des quatre écrans, mobile et champs extensibles
 node tests/run_parcours_natifs.mjs      # modules natifs : forme relevée, achèvement, « À faire », palettes (D70–D74)
 node tests/run_parcours_chemins.mjs     # les chemins : tous les seuils, tous les scores (Node pur, CI)
+node tests/run_parcours_reparation.mjs  # le plan reçu réparé (D107) et l'exemple du prompt (D108) (Node pur, CI)
+node tests/run_parcours_calibrage.mjs   # composer le plan : réparer, reprendre, retenir ; réponse illisible
 node tests/run_parcours_aiguillage.mjs  # trois cours à chemins relus comme Moodle + l'interface
 node tests/run_parcours.mjs             # tous les bancs du parcours, en série
 node tests/run_module_hygiene.mjs        # imports résolvables (a vu le repli mbz-parser)
@@ -3400,6 +3452,40 @@ court « Parcours » ; la barre mesurée à dix largeurs avant et après, et deu
 dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
+
+- **1er octobre 2026, matin — Le plan ne revient plus au cadrage (D107, D108) :** Emmanuel,
+  en local : avec « Des chemins selon les résultats », « Composer le plan » tournait puis
+  revenait à l’étape 1. Reproduit sur Magistère : deux plans refusés pour la seule durée des
+  chemins (28, 32 et 39 min, puis 32, 36 et 44). Relevé sur 16 cadrages réels avec Mistral
+  Small 4 (chemins 2 à 4 sur les trois plateformes, trois ampleurs, sans chemins, deux
+  trames) : 7 retours au cadrage, tous à chemins, dont 5 pour la seule durée des chemins ; les
+  plans refusés sont gardés comme cas d’épreuve (`tests/fixtures/parcours-plans-reels/`).
+  Après D107 (réparation, dernier recours) et D108 (exemple complet dans le prompt), mêmes 16
+  cadrages : **16 plans retenus avec Mistral Small 4** (9 au premier appel, dont 2 réparés ;
+  7 après la reprise ; aucun problème d’aiguillage), **16 avec Qwen 3.8** (12 au premier
+  appel sans réparation ; un plan de séquence longue reste trop court, 8 activités au lieu de
+  11 ou 12 : retenu, la réparation n’invente pas d’activité). Une panne passagère du serveur
+  n8n (délai de 5 minutes, puis « Failed to fetch ») a interrompu le premier passage : relancé
+  une fois le serveur revenu. Au passage :
+  - les chemins côte à côte du plan partagent leurs rangées (sous-grille CSS : en-tête,
+    activités, pied) : une introduction plus longue ne décale plus les activités ni le pied
+    d’un chemin ; « Ajouter une activité » descend en bas de sa rangée ; « Consigne et
+    palier » tient sur une ligne, l’état de la carte dessous ; les introductions gardent leur
+    hauteur après un redessin (ajouter un chemin les repliait à une ligne) ;
+  - « Voir comme un élève » : la vignette H5P (4:3) n’est plus écrasée en carré — sa largeur
+    seule est imposée, comme dans le choix du type (`vignetteModule`) ;
+  - essai de modèles sur la carte de proportionnalité qui s’était trompée (Texte à trous
+    « Résoudre des énigmes », 8 trous demandés), 7 à 8 tirages par modèle, chaque trou
+    recalculé : Qwen 3.8, 2 trous faux sur 45, jamais inutilisable, mais 3 énoncés au lieu de
+    8 ; Gemma 4 (servi 4 fois sur 7, repli silencieux sur Qwen 3.6 sinon), 2 trous faux sur
+    26 et un énoncé insoluble ; Mistral Small 4, 5 tirages sur 7 inutilisables (`*x*`, une
+    unité seule, `*... €*`, le calcul entier, réponse et indice inversés), dont 3 que
+    `controle-sortie-ia.js` ne voit pas ;
+  - catalogue ILaaS du jour : `qwen-3.8-27b` est arrivé (servi lui-même, 5 à 10 s),
+    `mistral-small-4-119b` répond de nouveau lui-même ;
+  - `run_parcours_external_ai.mjs` échouait depuis D85 sur une vérification du pied qui
+    cherchait « Importer un modèle » dans toute la page (il est en tête de l’atelier) :
+    restreinte au pied. Ce banc ne figure pas dans `run_parcours.mjs`.
 
 - **1er octobre 2026, nuit — Vérification de génération réelle après D105 :** huit activités
   par la vraie interface (Surligner, Glisser les mots, Texte à trous, Rédaction, Quiz mixte,

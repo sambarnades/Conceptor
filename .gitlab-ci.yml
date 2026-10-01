@@ -48,6 +48,9 @@ validate:
     # Les chemins selon les résultats (D90-D101) : chaque score ouvre un chemin,
     # le sien, pour tous les nombres de questions et tous les seuils réglables.
     - node tests/run_parcours_chemins.mjs
+    # Le plan reçu se répare avant d'être jugé (D107) : 25 plans réels de Mistral,
+    # 300 plans abîmés au hasard, et l'exemple du prompt contrôlé sur 600 cadrages (D108).
+    - node tests/run_parcours_reparation.mjs
     - node tests/run_parcours_documentation.mjs
     # Ces bancs Node (sans navigateur) ne tournaient qu'à la main. Un champ texte
     # rendu en liste par le modèle faisait planter la mise en forme de 24 modules,

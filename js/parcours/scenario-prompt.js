@@ -25,12 +25,13 @@ import { t } from './vocabulaire.js';
 import { langueEnseignee } from '../core/content-language.js';
 import { CONFIG } from './config.js';
 import { calibrer } from './calibrage.js';
-import { modulesDisponibles, nomModule, moduleDeTrame } from './activity-router.js';
+import { modulesDisponibles, nomModule, moduleDeTrame, resoudreModule } from './activity-router.js';
+import { exemplePlan } from './exemple-plan.js';
 import { MODULES_PARCOURS, estModuleParcours } from './modules-parcours.js';
 import { retoursImpersonnels } from './retours-impersonnels.js';
 import {
     historiqueDeLaCarte, roleDuChemin, aiguillageDuTest, questionsVisees,
-    MODULES_AIGUILLEURS, MODULE_AIGUILLEUR_DEFAUT,
+    MODULES_AIGUILLEURS,
 } from './aiguillage.js';
 
 /** Longueur de corpus au-delà de laquelle on tronque avant envoi. */
@@ -220,7 +221,8 @@ function consignesChemins(calibrage, platform) {
     lignes.push(`Chaque étape-chemin porte le champ "chemin", dans cet ordre : ${a.roles.map(r => `"${r}"`).join(', ')}. Ne mets ce champ sur aucune autre étape.`);
     for (const role of a.roles) lignes.push(`- "${role}" : ${CONSIGNES_ROLES[role]}.`);
     lignes.push(`- ${REGLES_CHEMINS}`);
-    lignes.push('- Les chemins sont parallèles : même nombre d’activités, durées proches, les mêmes notions dans le même ordre ; seule change la façon de les travailler.');
+    lignes.push('- Les chemins sont parallèles : même nombre d’activités, la MÊME durée totale à 5 minutes près — additionne les durées des activités de chaque chemin avant de répondre —, ' +
+        'les mêmes notions dans le même ordre ; seule change la façon de les travailler.');
     lignes.push(`- Le test : ${CONSIGNE_TEST}`);
     lignes.push('- L’`introduction` d’un chemin dit à l’élève ce qu’il va faire et comment réussir, sans parler de sa note ni de son niveau.');
     return lignes;
@@ -390,45 +392,60 @@ export function construirePromptPlan(draft) {
         // bonne réponse, le stagiaire était noté faux sur sa propre pratique.
         '- Un test, un quiz ou tout exercice corrigé porte sur des connaissances qui ont une bonne réponse. Pour faire le point sur des pratiques, des habitudes, des besoins ou des opinions, choisis un questionnaire, une enquête ou un sondage, qui ne notent pas.',
         calibrage.aiguillage
-            ? `- CONTRÔLE FINAL : ${fourchette([calibrage.min, calibrage.max])} activités à fabriquer, tous chemins compris${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''} ; ${fourchette(calibrage.parEleve)} par élève. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`
+            ? `- CONTRÔLE FINAL : ${fourchette([calibrage.min, calibrage.max])} activités à fabriquer, tous chemins compris${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''} ; ${fourchette(calibrage.parEleve)} par élève ; des chemins de même durée ; le test qui oriente en dernière activité de l’étape qui précède les chemins. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`
             : `- CONTRÔLE FINAL : ${calibrage.min} à ${calibrage.max} activités pour TOUT le parcours${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''}. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`,
     ].join('\n'));
 
     lignes.push('\n## FORMAT DE SORTIE');
+    lignes.push('Réponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown.');
+    // Un exemple COMPLET, de la forme exacte demandée, sur un autre sujet (D108) : le
+    // squelette de « … » ne montrait ni des textes de cette longueur, ni des durées
+    // plausibles, ni des chemins qui durent autant.
+    const { exemple, dureeChemin, partsChemin } = exemplePlan(calibrage, modules, {
+        vouvoyer: Boolean(PUBLIC_ADULTE[draft.platform]),
+        moduleDeTrame: m => moduleDeTrame(m, draft.platform),
+    });
+    lignes.push('\n## EXEMPLE DE RENDU');
     lignes.push(
-        'Réponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, ' +
-        'sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :'
+        'Exemple sur un AUTRE sujet (le cycle de l’eau) : il montre la forme attendue — le même nombre d’étapes et d’activités par étape, ' +
+        'des textes de cette longueur, des durées réalistes' + (calibrage.aiguillage ? ', le test et les chemins à leur place' : '') + '. ' +
+        'N’en reprends ni le thème, ni les titres, ni les phrases ; choisis les modules d’après TON sujet, dans la liste autorisée.'
     );
-    // Où tombent les chemins dans l'exemple : ceux de la trame, sinon juste après
-    // la première étape (la structure libre à chemins).
-    const debutChemins = calibrage.aiguillage ? (calibrage.aiguillage.debut ?? 1) : -1;
-    lignes.push(JSON.stringify({
-        titre: '…',
-        objectifGeneral: '…',
-        introduction: '…',
-        conclusion: '…',
-        notionsPivots: Array.from({ length: calibrage.notions[0] }, () => '…'),
-        etapes: calibrage.exemple.map((n, i) => ({
-            titre: '…',
-            objectif: '…',
-            introduction: '…',
-            ...(calibrage.aiguillage && i >= debutChemins && i < debutChemins + calibrage.aiguillage.nombre
-                ? { chemin: calibrage.aiguillage.roles[i - debutChemins] } : {}),
-            cartes: Array.from({ length: n }, (_, j) => ({
-                titre: '…',
-                objectif: '…',
-                // L'étape qui précède les chemins se termine par le test qui aiguille.
-                module: calibrage.aiguillage && i === debutChemins - 1 && j === n - 1
-                    && modules.some(m => m.cle === MODULE_AIGUILLEUR_DEFAUT)
-                    ? MODULE_AIGUILLEUR_DEFAUT : (modules[0] ? modules[0].cle : 'Page'),
-                palier: calibrage.trame?.paliers?.[i] || 'entrainement',
-                duree: calibrage.trame?.id === 'rituel' ? [2, 4, 4][i] : 10,
-                consigne: '…',
-            })),
-        })),
-    }, null, 2));
+    if (dureeChemin) {
+        lignes.push(`Dans cet exemple, chaque chemin dure ${dureeChemin} minutes (${partsChemin.join(' + ')}) : tes chemins aussi durent autant les uns que les autres, à 5 minutes près.`);
+    }
+    // L'exemple reste la DERNIÈRE chose du prompt : rien après lui ne le contredit.
+    lignes.push(JSON.stringify(exemple, null, 2));
 
-    return { prompt: lignes.join('\n'), calibrage, modules };
+    return { prompt: lignes.join('\n'), calibrage, modules, exemple };
+}
+
+/**
+ * Ce que le réparateur du plan (`reparation-plan.js`, D107) ne peut pas savoir seul :
+ * le module disponible le plus proche d'un identifiant inventé, et les textes,
+ * traduits dans le registre de la plateforme, du test ou de l'étape qu'il ajoute.
+ *
+ * @param {Object} draft
+ * @returns {Object} Les options de `reparerPlan`.
+ */
+export function reparationDuPlan(draft) {
+    const p = draft.platform;
+    return {
+        sujet: (draft.contexte && draft.contexte.quoi) || '',
+        resoudre: (module, palier) => resoudreModule(module, p, palier).cle,
+        textes: {
+            test: {
+                titre: t('parcours_reparation_test_titre', p),
+                objectif: t('parcours_reparation_test_objectif', p),
+                consigne: t('parcours_reparation_test_consigne', p),
+            },
+            etape: {
+                titre: t('parcours_reparation_etape_titre', p),
+                objectif: t('parcours_reparation_etape_objectif', p),
+                introduction: t('parcours_reparation_etape_intro', p),
+            },
+        },
+    };
 }
 
 /* ------------------------------------------------------------------ *

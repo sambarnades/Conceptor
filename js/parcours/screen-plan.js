@@ -244,8 +244,9 @@ export function normaliserPlan(brut, platformId) {
                 consigne: phrase(c && c.consigne),
                 module: cle,
                 // `moduleReplie` signale un identifiant que le modèle a inventé :
-                // la carte le montre, l'enseignant tranche.
-                moduleReplie: !exact,
+                // la carte le montre, l'enseignant tranche. Le réparateur du plan
+                // (D107) le pose aussi quand il a remplacé le module.
+                moduleReplie: !exact || (c && c.moduleReplie === true),
                 palier,
                 duree: Number.isFinite(duree) && duree > 0 ? Math.min(duree, 180) : 10,
                 verrouillee: false,
@@ -1106,6 +1107,9 @@ export function construirePlan(draft, api) {
         etapesNode.append(construireFin());
         majSynthese();
         majFondPersonnel();
+        // Les champs redessinés reprennent la hauteur de leur texte : sans cela, ajouter
+        // un chemin ou déplacer une carte repliait les introductions à une ligne.
+        ajusterChamps();
         if (nom && id) {
             const parent = [...etapesNode.querySelectorAll('[data-carte], [data-etape]')]
                 .find(n => id.carte ? n.dataset.carte === id.carte : n.dataset.etape === id.etape);

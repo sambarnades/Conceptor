@@ -3192,16 +3192,26 @@ button.pc-vue__activite:focus-visible { outline: 2px solid var(--pc-blue); outli
     .pc-chemins--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (min-width: 1060px) { .pc-chemins--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* Les chemins partagent leurs rangées — en-tête, activités, pied — par une
+   sous-grille : une introduction plus longue dans un chemin ne décale plus ses
+   activités ni son pied face aux chemins voisins (retour d'Emmanuel du 1er oct.
+   2026). Sans sous-grille, le repli garde au moins le pied en bas de colonne. */
 .pc-chemin {
-    display: grid; align-content: start; min-width: 0; overflow: hidden;
+    display: grid; min-width: 0; overflow: hidden;
+    grid-row: span 3;
+    grid-template-rows: auto 1fr auto;
+    grid-template-rows: subgrid;
+    row-gap: 0;
     border: 1.5px solid color-mix(in srgb, var(--pc-role) 40%, var(--pc-line));
     border-radius: 14px; background: var(--pc-surface);
 }
-.pc-chemin__tete { display: grid; gap: 6px; padding: 10px; background: var(--pc-role-soft); }
+.pc-chemin__tete { display: grid; align-content: start; gap: 6px; padding: 10px; background: var(--pc-role-soft); }
 .pc-chemin__tete .pc-role { justify-self: start; background: var(--pc-surface); }
 .pc-chemin__plage { font-size: .82rem; font-weight: 600; color: var(--pc-role); font-variant-numeric: tabular-nums; }
 .pc-chemin__tete input, .pc-chemin__tete textarea { width: 100%; min-width: 0; text-overflow: ellipsis; }
 .pc-chemin .pc-cartes { padding: 8px; }
+/* « Ajouter une activité » en bas de la rangée : aligné d'un chemin à l'autre. */
+.pc-chemin .pc-add { margin-top: auto; }
 .pc-chemin__pied {
     display: flex; align-items: center; gap: 6px; margin: 0; padding: 8px 12px;
     border-top: 1px solid var(--pc-line); background: #fafafa; font-size: .85rem; color: var(--pc-ink-2);
@@ -3212,7 +3222,11 @@ button.pc-vue__activite:focus-visible { outline: 2px solid var(--pc-blue); outli
 .pc-chemin .pc-carte__reglages { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) 84px; }
 .pc-chemin .pc-carte__reglages .pc-palier { display: none; }
 .pc-chemin .pc-carte__actions { grid-column: 1 / -1; justify-content: flex-end; }
-.pc-chemin .pc-carte__complements { grid-column: 1 / -1; flex-wrap: wrap; }
+/* Dans une colonne étroite, « Consigne et palier » tient sur sa ligne ; l'état
+   de la carte et ses boutons passent dessous, à droite. */
+.pc-chemin .pc-carte__complements { grid-column: 1 / -1; flex-direction: column; align-items: stretch; gap: 0; }
+.pc-chemin .pc-carte__details { flex: none; }
+.pc-chemin .pc-carte__details summary { white-space: nowrap; }
 .pc-carte__aiguille {
     display: inline-flex; align-items: center; gap: 6px; width: fit-content;
     margin: 4px 0 0; padding: 2px 9px; border-radius: var(--pc-pill);
@@ -3253,6 +3267,9 @@ button.pc-vue__activite:focus-visible { outline: 2px solid var(--pc-blue); outli
 .pc-eleve__texte--suite { background: var(--pc-blue-soft); }
 .pc-eleve__activite { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 2px 12px; }
 .pc-eleve__vignette { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px; background: #f2f2f7; color: var(--pc-ink-2); overflow: hidden; }
+/* Vignette H5P (4:3) : sa largeur seule, sans case carrée autour. */
+.pc-eleve__vignette--h5p { height: auto; border-radius: 0; background: none; }
+.pc-eleve__vignette img.pc-vignette--h5p { display: block; width: 32px; height: auto; }
 .pc-eleve__corps { display: grid; min-width: 0; }
 .pc-eleve__nom { font-weight: 600; color: var(--pc-blue-dark); }
 .pc-eleve__duree { font-size: .8rem; color: var(--pc-ink-2); }

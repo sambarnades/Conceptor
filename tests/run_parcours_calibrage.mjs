@@ -132,7 +132,7 @@ try{
     ok('un plan reçu est refusé si les rôles sont intervertis, un chemin manque, le test manque, ou les chemins ne sont pas parallèles',rc.exempleValide&&rc.gardes.every(Boolean),JSON.stringify(rc.gardes));
     await page.close();
     // Rejouer le vrai bouton, le vrai service submit/poll et le vrai healer.
-    for(const mode of ['valide','corrige','echec','annule','reseau','doublon']){
+    for(const mode of ['valide','corrige','echec','annule','reseau','doublon','illisible','relance']){
         const pg=await browser.newPage();const demandes=[];const releves=[];let polls=0;const errors=[];
         pg.on('pageerror',e=>errors.push(e.message));
         const bon={titre:'Plan conforme',objectifGeneral:'Comprendre les fractions',notionsPivots:['fraction','numérateur','dénominateur'],etapes:[1,2,3,4].map(i=>({titre:`Étape ${i}`,objectif:'Comparer',cartes:[{titre:`Activité ${i}`,objectif:'Comparer',consigne:'Comparer les fractions',module:'TrueFalse',palier:'entrainement',duree:5}]}))};
@@ -142,7 +142,9 @@ try{
             const u=new URL(route.request().url());if(u.hostname==='127.0.0.1')return route.continue();
             if(/\/llm\/submit-(?:bas|prod)$/.test(u.pathname)){demandes.push(route.request().postDataJSON());return route.fulfill({status:mode==='reseau'?503:200,json:{taskId:`local-${demandes.length}`}});}
             if(/\/llm\/stats-(?:bas|prod)$/.test(u.pathname)){releves.push(route.request().postDataJSON());return route.fulfill({json:{status:'ok'}});}
-            if(/\/llm\/result-(?:bas|prod)$/.test(u.pathname)){polls++;return route.fulfill({json:mode==='annule'&&demandes.length===2?{status:'processing'}:{status:'done',content:JSON.stringify(mode==='doublon'?doublon:mode==='valide'||mode==='corrige'&&demandes.length===2?bon:ancien),model:'local-double'}});}
+            // « illisible » : deux réponses sans JSON ; « relance » : une sans JSON, puis le bon plan.
+            const sansJson='Désolé, je ne peux pas produire ce plan.';
+            if(/\/llm\/result-(?:bas|prod)$/.test(u.pathname)){polls++;return route.fulfill({json:mode==='annule'&&demandes.length===2?{status:'processing'}:{status:'done',content:mode==='illisible'||mode==='relance'&&demandes.length===1?sansJson:JSON.stringify(mode==='doublon'?doublon:mode==='valide'||mode==='relance'||mode==='corrige'&&demandes.length===2?bon:ancien),model:'local-double'}});}
             return route.abort();
         });
         await pg.goto(`http://127.0.0.1:${port}/index.html`);await pg.waitForSelector('#parcours-button');await pg.fill('#qui','Enseignant');await pg.fill('#quoi','Les fractions');await pg.click('#parcours-button');
@@ -176,17 +178,24 @@ try{
         }
         await pg.waitForFunction(()=>!document.querySelector('.pc-veil'),null,{timeout:30000});
         const etat=await pg.evaluate(async ()=>({titre:(await import('/js/parcours/state.js')).brouillon().plan.titre,note:document.querySelector('#pc-action-note')?.textContent,edition:!!document.querySelector('.pc-title-input')}));
-        const succes=['valide','corrige','doublon'].includes(mode);
+        // D107 : un plan hors cadrage deux fois est réparé et RETENU ; seule une réponse sans plan échoue.
+        const titreAttendu={valide:'Plan conforme',corrige:'Plan conforme',doublon:'Plan conforme',relance:'Plan conforme',echec:ancien.titre}[mode]||'Brouillon à conserver';
+        const succes=titreAttendu!=='Brouillon à conserver';
         ok(`${mode} : nombre d’appels borné`,demandes.length===(['valide','reseau'].includes(mode)?1:2));
-        ok(`${mode} : plan accepté ou brouillon conservé`,etat.titre===(succes?'Plan conforme':'Brouillon à conserver'));
+        ok(`${mode} : plan accepté ou brouillon conservé`,etat.titre===titreAttendu,etat.titre);
         ok(`${mode} : interface rend la main au bon écran`,etat.edition===succes);
         if(mode==='corrige')ok('la reprise conserve le sujet, rappelle le compte et reprend le même modèle',demandes[1].prompt.includes('Les fractions')&&demandes[1].prompt.includes('Total reçu : 8')&&demandes[0].model===demandes[1].model);
         if(mode==='doublon')ok('un doublon d’espace commun demande UNE reprise, puis le plan passe même s’il le garde',demandes[1].prompt.includes('écriture commune')&&!demandes[0].prompt.includes('NOUVELLE COMPOSITION'));
-        if(mode==='echec')ok('l’échec explique le cadrage et propose le modèle sans IA',etat.note.includes('cadrage')&&etat.note.includes('modèle'));
+        if(mode==='echec'){
+            const forme=await pg.evaluate(async ()=>(await import('/js/parcours/state.js')).brouillon().plan.etapes.map(e=>e.cartes.length).join('+'));
+            ok('hors cadrage deux fois : ramené à l’ampleur (une activité par étape) et retenu, sans message d’échec (D107)',forme==='1+1+1+1'&&!etat.note.trim(),`${forme} « ${etat.note} »`);
+        }
+        if(mode==='illisible')ok('deux réponses sans JSON : brouillon conservé, message traduit, aucune clé brute',etat.note.trim().length>10&&!etat.note.includes('parcours_'),etat.note);
+        if(mode==='relance')ok('une réponse sans JSON est redemandée UNE fois, et le plan suivant est retenu',demandes[1].prompt.includes('objet JSON lisible')&&!demandes[0].prompt.includes('objet JSON lisible'));
         // D69 : le plan n'écrit plus de ligne DONNEES (`stats:'skip'`) ; il a SA ligne PARCOURS
         // dès que le modèle a répondu — succès, reprise ou hors cadrage — et aucune sinon.
         ok(`${mode} : chaque appel de plan part en stats:'skip'`,demandes.every(d=>d.stats==='skip'));
-        const attendu={valide:['ok',1],corrige:['ok',2],echec:['hors_cadrage',2],doublon:['ok',2]}[mode]||null;
+        const attendu={valide:['ok',1],corrige:['ok',2],echec:['ok',2],doublon:['ok',2],relance:['ok',2],illisible:['echec',2]}[mode]||null;
         for(let i=0;i<50&&attendu&&releves.length<1;i++)await new Promise(r=>setTimeout(r,20));
         const statsId=await pg.evaluate(async ()=>(await import('/js/parcours/state.js')).brouillon().statsId);
         if(attendu){

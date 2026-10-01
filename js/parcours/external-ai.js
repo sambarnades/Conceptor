@@ -2,8 +2,10 @@
 import { t } from './vocabulaire.js';
 import { allModules, h5pModules } from '../core/definitions.js';
 import { brouillon, majBrouillon } from './state.js';
-import { construirePromptPlan, construirePromptRemplissage, nbElementsCarte } from './scenario-prompt.js';
+import { construirePromptPlan, construirePromptRemplissage, nbElementsCarte, reparationDuPlan } from './scenario-prompt.js';
 import { controlerCalibrage } from './calibrage.js';
+import { reparerPlan } from './reparation-plan.js';
+import { planUtilisable } from './composition-plan.js';
 import { normaliserPlan } from './screen-plan.js';
 import { extraireJson, reparer } from './parcours-runner.js';
 import { sourceManquante, preparerSource, appliquerSource, purgerMedias, typeSource } from './sources.js';
@@ -20,11 +22,20 @@ function objet(value) {
     if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('parcours_reponse_sans_json');
     return value;
 }
+/**
+ * La réponse d'une IA externe passe par le même réparateur que celle de l'IA de
+ * Caramel (D107) : réparée, puis ramenée à la forme demandée s'il reste un écart.
+ * Seule une réponse sans aucune activité est refusée.
+ */
 export async function verifierPlanExterne(texte, contexte) {
     const brut = objet(await extraireJson(texte));
-    const erreurs = controlerCalibrage(brut, contexte.calibrage, contexte.modules);
-    if (erreurs.length) throw new Error(erreurs.slice(0, 12).join('\n'));
-    const plan = normaliserPlan(brut, contexte.platform);
+    const { calibrage, modules, reparation = {} } = contexte;
+    let { plan: repare } = reparerPlan(brut, calibrage, modules, reparation);
+    if (controlerCalibrage(repare, calibrage, modules).length) {
+        repare = reparerPlan(repare, calibrage, modules, { ...reparation, dernierRecours: true }).plan;
+    }
+    const plan = normaliserPlan(repare, contexte.platform);
+    if (!planUtilisable(plan)) throw new Error('parcours_plan_sans_activite');
     return { value: plan, preview: [plan.titre, ...plan.etapes.map(e => `${e.titre} (${e.cartes.length})`)] };
 }
 export function ouvrirPlanExterne(draft, apresApplication, { genererEnUnClic } = {}) {
@@ -32,7 +43,7 @@ export function ouvrirPlanExterne(draft, apresApplication, { genererEnUnClic } =
         owner: draft, title: t('parcours_cta_plan'), etiquette: t('parcours_step_plan'),
         description: draft.contexte?.quoi || '', iconeNom: 'fa-route',
         libelleUtiliser: t('parcours_cta_plan'), genererEnUnClic, scenario: true,
-        preparer: async () => ({ ...construirePromptPlan(draft), platform: draft.platform, planInitial: draft.plan }),
+        preparer: async () => ({ ...construirePromptPlan(draft), platform: draft.platform, planInitial: draft.plan, reparation: reparationDuPlan(draft) }),
         verifier: verifierPlanExterne,
         appliquer: async (plan, contexte, panneau) => {
             if (brouillon() !== draft || draft.plan !== contexte.planInitial) throw new Error(t('parcours_external_changed'));

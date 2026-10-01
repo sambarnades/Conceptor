@@ -1,0 +1,185 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "moodle",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "chemins",
+  "chemins": 2
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_lien",
+  "parcours_enquete",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_base"
+ ],
+ "erreursDOrigine": [],
+ "brut": {
+  "titre": "Statistiques descriptives : moyenne, médiane, quartiles et boîte à moustaches",
+  "objectifGeneral": "Interpréter et représenter des données statistiques à l'aide des indicateurs de tendance centrale et de dispersion.",
+  "introduction": "Vous allez découvrir comment résumer une série de données à l’aide de la moyenne, de la médiane, des quartiles et de la boîte à moustaches. Ce parcours en trois étapes vous propose des activités adaptées à votre niveau, suivies d’une synthèse commune. Vous avancerez à votre rythme, avec des retours immédiats pour progresser. Préparez un papier et un crayon pour noter les étapes clés.",
+  "conclusion": "Vous savez désormais calculer et interpréter les indicateurs statistiques fondamentaux pour analyser des données. Si vous souhaitez approfondir, explorez les ressources complémentaires en ligne ou préparez-vous à manipuler des données réelles lors de la prochaine séance.",
+  "notionsPivots": [
+   "la moyenne d'une série statistique",
+   "la médiane d'une série statistique",
+   "les quartiles d'une série statistique",
+   "l'écart interquartile",
+   "la boîte à moustaches",
+   "la dispersion des données",
+   "les indicateurs de tendance centrale",
+   "la représentation graphique des données",
+   "le rang d'une valeur",
+   "la série ordonnée"
+  ],
+  "etapes": [
+   {
+    "titre": "Test de positionnement",
+    "objectif": "Identifier vos acquis sur les statistiques descriptives pour adapter votre parcours.",
+    "introduction": "Ce test vous permet de situer votre maîtrise des notions clés. Répondez avec soin : les questions couvrent l’ensemble des thèmes du parcours. À la fin, une correction détaillée vous indiquera où renforcer vos apprentissages.",
+    "cartes": [
+     {
+      "titre": "Évaluation initiale",
+      "objectif": "Repérer vos forces et vos axes de progression",
+      "module": "test_elea",
+      "palier": "decouverte",
+      "duree": 20,
+      "consigne": "Répondez aux questions sans aide pour évaluer vos connaissances sur les statistiques descriptives. Une fois terminé, vous recevrez une analyse de vos réponses."
+     }
+    ]
+   },
+   {
+    "titre": "Revoir les fondamentaux",
+    "objectif": "Consolider les bases des indicateurs statistiques et leur interprétation.",
+    "introduction": "Vous avez rencontré des difficultés lors du test. Cette étape vous propose de repartir pas à pas avec des exemples concrets et des exercices guidés pour ancrer chaque notion.",
+    "chemin": "renforcer",
+    "cartes": [
+     {
+      "titre": "Calculer la moyenne pas à pas",
+      "objectif": "Appliquer la formule de la moyenne avec un exemple résolu",
+      "module": "DragAndDrop",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Replacez les étapes du calcul de la moyenne dans l’ordre, en vous aidant de l’exemple fourni. Une correction immédiate vous expliquera chaque étape."
+     },
+     {
+      "titre": "Trouver la médiane dans une série ordonnée",
+      "objectif": "Déterminer la médiane à partir d’une série triée",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 8,
+      "consigne": "Complétez les cases vides pour indiquer la position de la médiane dans chaque série proposée. Validez pour voir si votre réponse est correcte."
+     },
+     {
+      "titre": "Déterminer les quartiles Q1 et Q3",
+      "objectif": "Repérer les quartiles dans une série ordonnée",
+      "module": "DragTheWords",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Glissez les termes 'premier quartile', 'troisième quartile' et 'médiane' dans les cases correspondantes de la série fournie. Une explication s’affichera en cas d’erreur."
+     },
+     {
+      "titre": "Interpréter l’écart interquartile",
+      "objectif": "Comprendre l’intérêt de l’écart interquartile pour mesurer la dispersion",
+      "module": "QuizSetVF",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Répondez par vrai ou faux aux affirmations sur l’écart interquartile. Une correction détaillée vous sera proposée à la fin."
+     }
+    ]
+   },
+   {
+    "titre": "Explorer des cas complexes",
+    "objectif": "Manipuler des données plus élaborées et justifier vos choix",
+    "introduction": "Vous avez bien réussi le test initial. Cette étape vous propose des défis pour approfondir votre compréhension des statistiques et tester votre capacité à raisonner.",
+    "chemin": "approfondir",
+    "cartes": [
+     {
+      "titre": "Calculer la moyenne d’une série groupée",
+      "objectif": "Appliquer la formule de la moyenne pour des données groupées",
+      "module": "FillInTheBlanks",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "Calculez la moyenne d’une série de données présentées sous forme de classes. Justifiez vos calculs étape par étape."
+     },
+     {
+      "titre": "Distinguer moyenne et médiane sur des séries biaisées",
+      "objectif": "Comparer moyenne et médiane dans des contextes variés",
+      "module": "MultipleChoice",
+      "palier": "transfert",
+      "duree": 12,
+      "consigne": "Choisissez l’indicateur (moyenne ou médiane) le plus adapté pour décrire chaque série de données proposée. Justifiez votre choix."
+     },
+     {
+      "titre": "Construire une boîte à moustaches pas à pas",
+      "objectif": "Représenter une série de données à l’aide d’une boîte à moustaches",
+      "module": "Chart",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "À partir des valeurs minimale, maximale, médiane, Q1 et Q3 fournies, tracez une boîte à moustaches sur le graphique proposé. Une correction détaillée vous sera donnée à la fin."
+     }
+    ]
+   },
+   {
+    "titre": "Synthèse et application",
+    "objectif": "Réinvestir l’ensemble des notions dans un contexte commun",
+    "introduction": "Cette étape finale vous permet de récapituler et de tester vos connaissances sur l’ensemble du parcours. Vous serez amené à mobiliser les notions apprises dans des situations variées.",
+    "cartes": [
+     {
+      "titre": "Quiz final : statistiques descriptives",
+      "objectif": "Valider votre maîtrise des indicateurs statistiques",
+      "module": "QuizSetQCM",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Répondez aux questions en mobilisant l’ensemble des notions vues. Les distracteurs ciblent les erreurs fréquentes pour vous aider à progresser."
+     },
+     {
+      "titre": "Analyser un jeu de données réel",
+      "objectif": "Interpréter une boîte à moustaches et calculer les indicateurs",
+      "module": "Devoir",
+      "palier": "transfert",
+      "duree": 25,
+      "consigne": "À partir d’un jeu de données fourni, calculez la moyenne, la médiane, les quartiles et tracez une boîte à moustaches. Rédigez un commentaire justifiant vos choix et interprétant les résultats."
+     }
+    ]
+   }
+  ]
+ }
+}

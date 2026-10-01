@@ -21,7 +21,8 @@
 
 import { t } from './vocabulaire.js';
 import { el, icone, tr } from './dom.js';
-import { nomModule, imageModule, iconeModule } from './activity-router.js';
+import { nomModule } from './activity-router.js';
+import { vignetteModule } from './choix-module.js';
 import { moduleSAcheve } from './modules-parcours.js';
 import { formaterDuree } from './duree.js';
 import {
@@ -191,12 +192,12 @@ export function ouvrirVueEleve(plan, { platform } = {}) {
     function activite(carte, fait) {
         const ligne = el('div', 'pc-eleve__activite');
         const vignette = el('span', 'pc-eleve__vignette');
-        const src = imageModule(carte.module);
-        if (src) {
-            const img = el('img');
-            img.src = src; img.alt = ''; img.width = 28; img.height = 28; img.loading = 'lazy';
-            vignette.append(img);
-        } else vignette.append(icone(iconeModule(carte.module) || 'fa-puzzle-piece'));
+        // Une vignette H5P n'est pas carrée (4:3) : seule sa largeur est imposée, sa
+        // hauteur en découle — la règle du choix du type. Forcée en 28 × 28, elle
+        // s'écrasait (retour d'Emmanuel du 1er oct. 2026).
+        const image = vignetteModule(carte.module, 28);
+        if (image.classList.contains('pc-vignette--h5p')) vignette.classList.add('pc-eleve__vignette--h5p');
+        vignette.append(image);
         const corps = el('span', 'pc-eleve__corps');
         corps.append(el('span', 'pc-eleve__nom', titreDe(carte)));
         if (carte.duree) corps.append(el('span', 'pc-eleve__duree', trp('parcours_duree_activite', { d: formaterDuree(carte.duree) })));
