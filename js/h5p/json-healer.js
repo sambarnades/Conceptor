@@ -2341,10 +2341,25 @@ function _latexToUnicodeImpl(text) {
 }
 
 /**
+ * La virgule décimale de LaTeX (`37{,}5`) HORS d'une formule : dans un trou, l'élève qui
+ * tapait « 37,5 » était compté faux, et dans une phrase elle s'affichait telle quelle
+ * (Texte à trous d'un parcours réel, 1er oct. 2026). Dans `\(…\)` et `\[…\]`, c'est du
+ * LaTeX juste : on n'y touche pas.
+ * @param {string} texte
+ * @returns {string}
+ */
+function virguleDecimaleHorsFormules(texte) {
+    return String(texte).split(/(\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])/g)
+        .map((morceau, i) => (i % 2 ? morceau : morceau.replace(/(\d)\{,\}(\d)/g, '$1,$2')))
+        .join('');
+}
+
+/**
  * Nettoyage d'une question FillInTheBlanks (H5P.Blanks).
  * 1. Convertit **mot** (gras markdown) en *mot* (marqueur de trou)
  * 2. Supprime les marqueurs *…* à l'intérieur des formules LaTeX \(…\) et \[…\]
  *    (un trou à l'intérieur d'une formule maths n'est pas saisissable par l'élève)
+ * 3. Écrit `37,5` la virgule décimale LaTeX `37{,}5` hors des formules
  * @param {string} text
  * @returns {string}
  */
@@ -2363,7 +2378,8 @@ function cleanBlanksText(text) {
         return match.replace(/\*([^*]+)\*/g, '$1');
     });
 
-    return cleaned;
+    // 3. La virgule décimale LaTeX hors formule (« *37{,}5* » → « *37,5* »)
+    return virguleDecimaleHorsFormules(cleaned);
 }
 
 /**
@@ -2433,7 +2449,8 @@ function cleanDragTextText(text) {
         return latexToUnicode(inner).trim();
     });
 
-    return cleaned;
+    // 4. La virgule décimale LaTeX restée hors formule (« *12{,}50* » → « *12,50* »)
+    return virguleDecimaleHorsFormules(cleaned);
 }
 
 /** Clé de comparaison d'un mot glissable : sans l'indice `:…`, sans casse. */

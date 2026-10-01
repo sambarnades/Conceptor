@@ -1996,7 +1996,14 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       une page de 5 minutes et une de 25 » (Gauthier) : la durée fixait le nombre de blocs
       (3 à 6), pas leur longueur. Le prompt de la carte vise désormais environ 80 mots par
       minute de lecture attentive, prise de notes comprise (`motsVises` : 5 min → 400 mots,
-      25 min → 2 000).
+      25 min → 2 000). **Mesuré le 1er oct. 2026 sur le vrai modèle** (même sujet, la vraie
+      file) : glissée dans la commande en « environ N mots », la consigne se perdait face aux
+      « phrases courtes » du gabarit — 457 mots pour 5 min, 742 pour 25 (facteur 1,6). En
+      plancher (« au moins N »), la longue montait à 1 841, mais la courte débordait à 1 118.
+      Retenu : une FOURCHETTE (`fourchetteMots` : N à N + 30 %), répétée en ligne à part dans
+      le cadre de la carte — 480 / 1 146 / 1 390 mots pour 5 / 15 / 25 min (facteur 2,9). Le
+      modèle semble plafonner vers 1 400 mots par réponse : une lecture de 25 minutes reste à
+      environ 56 mots par minute, ce qui demeure une lecture attentive.
 - [x] **D105 — Le vocabulaire suit la plateforme : élèves, stagiaires, étudiants.** « Pour
       Moodle on parle d’étudiant, Magistère c’est pour les stagiaires, et Éléa pour les
       élèves ; dans les choix de bifurcation et tout, c’est important à respecter » (Emmanuel,
@@ -2022,6 +2029,34 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       laisser deviner au modèle depuis le seul « public visé ». Banc :
       `run_parcours_aiguillage.mjs` (section G, contre-épreuve : 10 contrôles au rouge si la
       variante n’est plus choisie) et `run_parcours_chemins.mjs` (section 8).
+- [x] **D106 — Un trou vidé de son sens est redemandé, dans la file comme en un clic.**
+      Vérification de génération réelle du 1er oct. 2026 (parcours Éléa à trois chemins) :
+      un Texte à trous du chemin « Approfondir » portait des NOMS DE VARIABLES à la place des
+      réponses — `*prix_réduit* €`, `*nombre_élèves* élèves`, `*prix_10cahiers*` —, que
+      l’élève n’aurait jamais pu taper. `controle-sortie-ia.js`, qui ne jugeait que Glisser
+      les mots, voit désormais cette panne (des mots liés par des tirets bas, sans espace),
+      aussi dans le Texte à trous et dans les exercices à trous d’un quiz ; et la file du
+      parcours, qui ne l’appelait pas, s’en sert : même seconde demande que pour une
+      consigne absente (D103), avec un rappel qui nomme la panne, puis le moins grave des
+      deux tirages (une consigne absente reste prioritaire : sans elle, seul un second tirage
+      complet sert). « Réponse trop longue » et « même réponse dans plusieurs trous » restent des
+      indices : ils déclenchent la seconde demande, mais le banc des parcours réels ne les
+      compte pas comme défauts — l'exercice se joue (trois « nombre » à glisser, Moodle,
+      1er oct. 2026). En amont, le cadre de la carte d'un Texte à trous, d'un Glisser les
+      mots ou d'un Quiz mixte exige la réponse elle-même dans chaque trou : un mot du texte
+      ou la valeur calculée, jamais un nom de variable, une lettre-symbole ni le nom de la
+      notion — la régénération du même parcours avait rendu `*x* g` et
+      `*coefficient* = 200 ÷ 3 = *coefficient*`, que le contrôle ne peut pas distinguer d'un
+      exercice d'homophones (« *a* » trois fois) sans fausses alertes. La régénération
+      suivante a montré une troisième panne : des variantes qui se contredisent —
+      `*situation de proportionnalité/ce n'est pas une situation de proportionnalité*` —,
+      alors que `/` sépare des réponses toutes justes : l'élève avait raison quoi qu'il
+      écrive. Le contrôle la voit (« réponses contradictoires » : une variante reprend tous
+      les mots porteurs d'une autre et y ajoute une négation, ou une paire oui/non,
+      vrai/faux), et le cadre rappelle que la barre oblique ne sépare que des variantes
+      équivalentes. Banc :
+      `run_sources_prompt_tests.mjs` (CI), `run_parcours_atelier.mjs`, et
+      `run_parcours_reels.mjs` (constat « trous », avec contre-épreuve).
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -3365,6 +3400,26 @@ court « Parcours » ; la barre mesurée à dix largeurs avant et après, et deu
 dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
+
+- **1er octobre 2026, nuit — Vérification de génération réelle après D105 :** huit activités
+  par la vraie interface (Surligner, Glisser les mots, Texte à trous, Rédaction, Quiz mixte,
+  QCM, Vrai/Faux, Cartes) et quatre parcours (Moodle « Évaluer », Éléa à trois chemins,
+  Magistère « S’entraîner », Moodle « Apprendre en autonomie »), puis relecture par
+  `run_parcours_reels.mjs`. Vocabulaire juste partout (vouvoiement et « vous » sur Moodle et
+  Magistère, aucun « élève » sur Moodle), Test d’« Évaluer » réglé en épreuve, trois chemins
+  posés. Trouvé et corrigé : un Texte à trous en noms de variables (D106) ; le gras Markdown
+  d’une question gardé dans le titre de l’exercice d’une Présentation (aussi Livre interactif
+  et Vidéo interactive : `titreExercice()`) ; le générateur de parcours réels qui ne rendait
+  pas la main. Un Quiz mixte « en un clic » a échoué une fois sur dix (le premier essai), sans cause captée ni reproduction.
+  Longueur des Pages remesurée et corrigée (D104 : fourchette en ligne à part, facteur 2,9
+  entre 5 et 25 minutes au lieu de 1,6) ; trous en symboles (« *x* g ») prévenus au cadre (D106).
+  Le parcours à chemins a été régénéré cinq fois : variantes contradictoires
+  (« proportionnelle/non proportionnelle » dans chaque trou, consigne « indique si… » confiée
+  par le plan à un Texte à trous), puis virgule LaTeX `37{,}5` dans les réponses, remise en
+  `37,5` par le réparateur hors formule. **Limite constatée, à dire aux enseignants** : le
+  dernier tirage portait trois erreurs de calcul sur huit énoncés (500 g de farine écrits
+  « 1000 », 75 min écrites « 37,5 ») — aucun contrôle ne voit la justesse d’un calcul ; les
+  activités de mathématiques générées se relisent avant d’être données.
 
 - **1er octobre 2026, soir — Le vocabulaire suit la plateforme (D105) :** sur une capture du
   cadrage Moodle (« Tous vos élèves… »), Emmanuel demande « étudiants » sur Moodle et

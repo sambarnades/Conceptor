@@ -446,6 +446,19 @@ const CONSIGNE_DES_EXERCICES = 'Chaque question Texte à trous, Glisser les mots
     'Sans elle, l’élève voit un texte sans savoir quoi y faire.';
 
 /**
+ * Un trou porte la RÉPONSE elle-même (D106). Vérification réelle du 1er oct. 2026 : des
+ * Textes à trous de mathématiques rendaient `*prix_réduit* €`, `*x* g`,
+ * `*coefficient* = 200 ÷ 3` — des symboles, pas les valeurs que l'élève devait trouver.
+ */
+const REPONSE_DANS_LE_TROU = 'Chaque trou (*…*) contient la RÉPONSE que l’élève doit écrire ou glisser : un mot du texte, ' +
+    'ou la valeur calculée (par exemple *600*) ; jamais un nom de variable, une lettre-symbole (x, y) ni le nom de la notion ' +
+    'à la place du résultat. Un trou n’a qu’UNE bonne réponse : la barre oblique ne sépare que des variantes ÉQUIVALENTES ' +
+    'de cette réponse (*36/trente-six*), jamais une bonne et une mauvaise — toutes seraient comptées justes. Si la consigne ' +
+    'fait choisir (proportionnelle ou non, vrai ou faux), écris dans chaque trou la SEULE réponse juste pour cette phrase ' +
+    '(*proportionnelle* ici, *non proportionnelle* là).';
+const MODULES_A_TROUS = new Set(['FillInTheBlanks', 'DragTheWords', 'QuizSet']);
+
+/**
  * Les modules qui se LISENT : leur longueur suit la durée. Une Page de 5 minutes et
  * une de 25 se ressemblaient (retour de Gauthier, 30 sept. 2026) : le nombre de blocs
  * suivait la durée, pas leur longueur. Environ 80 mots par minute de lecture
@@ -462,6 +475,19 @@ const MODULES_A_LIRE = new Set(['Page', 'Livre']);
 export function motsVises(carte) {
     if (!carte || !MODULES_A_LIRE.has(carte.module)) return null;
     return Math.max(150, Math.round(((Number(carte.duree) || 10) * MOTS_PAR_MINUTE) / 50) * 50);
+}
+
+/**
+ * La fourchette annoncée au modèle : la longueur visée, et 30 % de plus au plus. Un
+ * plancher seul faisait déborder les courtes (1 118 mots pour une Page de 5 minutes),
+ * un « environ » laissait les longues au tiers (742 pour 2 000) — mesures réelles du
+ * 1er oct. 2026.
+ * @param {Object} carte
+ * @returns {string} « entre 400 et 500 »
+ */
+export function fourchetteMots(carte) {
+    const vise = motsVises(carte);
+    return vise ? `entre ${vise} et ${Math.round(vise * 1.3 / 50) * 50}` : '';
 }
 
 /** Extrait de corpus joint envoyé avec chaque carte (plus court que pour le plan). */
@@ -604,7 +630,7 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
         // et l'enseignant corrigera sur l'écran de fabrication.
         carte.titre ? `Titre attendu de l'activité : « ${carte.titre} »` : '',
         `Durée visée : ${carte.duree || 10} minutes.`,
-        motsVises(carte) ? `Longueur visée : environ ${motsVises(carte)} mots de contenu à lire, pour ${carte.duree || 10} minutes ` +
+        motsVises(carte) ? `Longueur visée : ${fourchetteMots(carte)} mots de contenu à lire, pour ${carte.duree || 10} minutes ` +
             'de lecture attentive ; la longueur suit la durée, une activité de 25 minutes n’a pas celle d’une activité de 5.' : '',
     ].filter(Boolean).join(' — ');
 
@@ -651,6 +677,12 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
         'une activité de transfert ne récite pas.',
         CONTENU_SUIT_LA_COMMANDE,
         ...(carte.module === 'QuizSet' ? [CONSIGNE_DES_EXERCICES] : []),
+        ...(MODULES_A_TROUS.has(carte.module) ? [REPONSE_DANS_LE_TROU] : []),
+        // La longueur, en ligne à part : glissée dans la commande, elle se perdait face aux
+        // « phrases courtes » du gabarit (mesure réelle : 742 mots pour 2 000 visés, D104).
+        ...(motsVises(carte) ? [`LONGUEUR : ${fourchetteMots(carte)} mots de texte à lire, titres non compris, ` +
+            `pour ${carte.duree || 10} minutes de lecture attentive — ni moins, ni plus. Développe chaque bloc en plusieurs ` +
+            'paragraphes plutôt que de multiplier les blocs courts : des phrases claires, un contenu complet.'] : []),
     ].join('\n');
 
     return { prompt: base + '\n' + cadre, prefix, nbElements };

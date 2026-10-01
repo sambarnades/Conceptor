@@ -14,6 +14,27 @@ import { translations } from '../../core/translation.js';
 import { formatTextToHtml, generateUUID } from '../../core/utils.js';
 import { debugLog } from '../../core/utils.js';
 
+/**
+ * Le titre d'un exercice (métadonnée H5P) est du texte BRUT : la bibliothèque l'affiche tel
+ * quel, dans le tableau des résultats d'une présentation par exemple. Une question écrite en
+ * Markdown (« Comment calcule-t-on **la moyenne** ? », parcours réel du 1er oct. 2026) y
+ * montrait ses astérisques. Partagé avec le Livre interactif et la Vidéo interactive.
+ * @param {string} texte
+ * @param {string} repli - Si rien ne reste.
+ * @returns {string}
+ */
+export function titreExercice(texte, repli) {
+    const brut = String(texte || '')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .replace(/__([^_]+)__/g, '$1')
+        .replace(/(^|[\s(«"'’])\*([^*\n]+)\*(?=[\s).,;:!?»"'’]|$)/g, '$1$2')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    return brut || repli;
+}
+
 // === Constantes configurables (exposables dans l'éditeur) ===
 const DEFAULTS = {
     keywordListEnabled: false,
@@ -460,7 +481,7 @@ async function buildExerciseElement(exercise, layout, helpers) {
         subContentId: generateUUID(),
         library: fullLibrary,
         metadata: {
-            title: exercise.title || exercise.question || 'Exercice',
+            title: titreExercice(exercise.title || exercise.question, 'Exercice'),
             contentType: EXERCISE_TYPES.has(libraryKey) ? 'Exercise' : 'Text'
         },
         params: params

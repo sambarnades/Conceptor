@@ -41,6 +41,7 @@ import { modeleParcours } from './model-selector.js';
 import { metaActiviteParcours } from './stats-parcours.js';
 import { reglagesDeCarte } from './aiguillage.js';
 import { reglagesDeTrame } from './templates.js';
+import { defautsSortieIA, graviteSortieIA } from '../h5p/controle-sortie-ia.js';
 
 /** États possibles d'une carte pendant la fabrication. */
 export const ETATS = {
@@ -187,6 +188,22 @@ export function rappelConsignes(manques) {
 }
 
 /**
+ * La correction demandée quand des trous ont perdu leur réponse — un nom de variable
+ * (« *prix_réduit* € », parcours réel du 1er oct. 2026), un trou vide, un astérisque
+ * seul : l'élève ne pourrait jamais écrire ce qu'on attend de lui.
+ * @param {string[]} defauts - `defautsSortieIA()`.
+ * @returns {string}
+ */
+export function rappelTrous(defauts) {
+    return '\n\n# CORRECTION DEMANDÉE\n' +
+        `Dans ta réponse précédente, des trous ne portaient pas leur réponse (${defauts.join(', ')}). ` +
+        'Rends à nouveau le JSON COMPLET. Entre les astérisques, écris la RÉPONSE elle-même, telle que l’élève doit la ' +
+        'taper ou la glisser : un mot, ou la valeur calculée (par exemple *36*), jamais un nom de variable, une consigne ni un blanc. ' +
+        'Un trou n’a qu’une bonne réponse : pas de « bonne/mauvaise » séparées par une barre oblique ; si la consigne fait ' +
+        'choisir, écris dans chaque trou la seule réponse juste pour cette phrase.';
+}
+
+/**
  * Crée la file de fabrication d'un brouillon.
  *
  * @param {Object} draft - Le brouillon, `draft.plan` rempli.
@@ -264,17 +281,28 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
             // et l'élève voyait un texte sans savoir quoi y faire. On la redemande
             // UNE fois, en nommant les questions ; au second oubli, la carte échoue
             // et se refait d'un clic.
+            // Des trous vidés de leur sens (réponse en nom de variable, trou vide) :
+            // même seconde demande, et l'on garde le moins grave des deux tirages —
+            // comme la génération « en un clic » (`controle-sortie-ia.js`).
             const { consignesManquantes } = await import('../h5p/json-healer.js');
             const manques = consignesManquantes(contenu, carte.module);
-            if (manques.length && !arretDemande) {
-                const rappel = rappelConsignes(manques);
-                debugLog('parcours', `carte « ${carte.titre} » : consigne absente (${manques.map(m => m.numero).join(', ')}), seconde demande`);
+            const defauts = defautsSortieIA(carte.module, JSON.stringify(contenu));
+            if ((manques.length || defauts.length) && !arretDemande) {
+                const rappel = (manques.length ? rappelConsignes(manques) : '') + (defauts.length ? rappelTrous(defauts) : '');
+                debugLog('parcours', `carte « ${carte.titre} » : ${[manques.length ? `consigne absente (${manques.map(m => m.numero).join(', ')})` : '',
+                    defauts.join(', ')].filter(Boolean).join(' ; ')}, seconde demande`);
                 const reponse2 = appelModele
                     ? await appelModele(prompt + rappel, carte)
                     : await generateH5PWithLLM(prompt + rappel, modele, metaActiviteParcours(draft, carte.module));
-                contenu = await reparer(await appliquerSource(await extraireJson(reponse2), source, carte.module), carte.module);
-                const encore = consignesManquantes(contenu, carte.module);
-                if (encore.length) throw new Error(`parcours_consigne_manquante:${encore.map(m => m.numero).join(',')}`);
+                const second = await reparer(await appliquerSource(await extraireJson(reponse2), source, carte.module), carte.module);
+                const encore = consignesManquantes(second, carte.module);
+                if (manques.length) {
+                    // Sans consigne, seul le second tirage peut servir, et complet.
+                    if (encore.length) throw new Error(`parcours_consigne_manquante:${encore.map(m => m.numero).join(',')}`);
+                    contenu = second;
+                } else if (!encore.length && graviteSortieIA(carte.module, JSON.stringify(second)) < graviteSortieIA(carte.module, JSON.stringify(contenu))) {
+                    contenu = second;
+                }
             }
             if (arretDemande) { etat.statut = carte.contenu ? ETATS.faite : ETATS.annulee; return; }
             // Les réglages de son chemin, ou du test qui aiguille (D90, D93).

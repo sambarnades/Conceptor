@@ -284,3 +284,6 @@ for (const id of ids) {
     await page.close();
 }
 await browser.close();
+// Le serveur statique tient la boucle d'événements : sans cet arrêt explicite, le
+// script attendait indéfiniment après le dernier scénario (constaté le 1er oct. 2026).
+server.kill('SIGTERM');

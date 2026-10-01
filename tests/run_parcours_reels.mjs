@@ -25,6 +25,10 @@
  *      Texte à trous, Rédaction, seuls ou dans un quiz.
  *   7. Le vocabulaire de la plateforme (D105) : un cours Moodle s'adresse à des
  *      étudiants — le mot « élève » n'y a pas sa place, étiquettes comprises.
+ *   8. Chaque trou est jouable : ni nom de variable (« *prix_réduit* € »), ni trou
+ *      vide, ni astérisque seul, ni variantes qui se contredisent
+ *      (`controle-sortie-ia.js`) ; « Évaluer » règle son
+ *      Test en épreuve, et les chemins d'un plan sont posés dans le cours.
  *
  * CONTRE-ÉPREUVE, à chaque passage : le premier scénario est rejoué avec cinq
  * défauts injetés (jargon, tutoiement, champ « … », question à trous
@@ -103,6 +107,7 @@ function ouvrir(page, texte) {
         const { assemblerParcours } = await import('/js/parcours/parcours-builder.js');
         const { loadMoodleLibs } = await import('/js/core/lib-loader.js');
         const { consignesManquantes } = await import('/js/h5p/json-healer.js');
+        const { defautsSortieIA } = await import('/js/h5p/controle-sortie-ia.js');
         const TS = 1759000000;
 
         // 1. Le scénario se reprend, comme un fichier de reprise déposé à l'écran de cadrage.
@@ -184,9 +189,15 @@ function ouvrir(page, texte) {
         }
         return {
             titre: repris.plan.titre, platform: repris.platform, trame: repris.trame || null,
-            avecChemins: repris.plan.etapes.some(e => e.chemin), chemins: (paquet.chemins || []).length,
+            // `chemins` : le NOMBRE de chemins posés par `aiguillage-cours.js`.
+            avecChemins: repris.plan.etapes.some(e => e.chemin), chemins: Number(paquet.chemins) || 0,
             cartes: cartes.map(c => ({ titre: c.titre, module: c.module, contenu: !!c.contenu,
-                sansConsigne: c.contenu ? consignesManquantes(c.contenu, c.module).map(m => m.numero ? `question ${m.numero} (${m.module})` : c.module) : [] })),
+                sansConsigne: c.contenu ? consignesManquantes(c.contenu, c.module).map(m => m.numero ? `question ${m.numero} (${m.module})` : c.module) : [],
+                // Les pannes qui rendent un trou INJOUABLE. « Réponse trop longue » et « même
+                // réponse dans plusieurs trous » restent des indices : ils déclenchent une seconde
+                // demande à la fabrication, mais l'exercice se joue (trois « nombre » à glisser).
+                trous: c.contenu ? defautsSortieIA(c.module, JSON.stringify(c.contenu))
+                    .filter(d => !['réponse trop longue', 'même réponse dans plusieurs trous'].includes(d)) : [] })),
             reparations, exclues: paquet.exclues, activites,
         };
     }, texte);
@@ -220,6 +231,8 @@ function constater(r, banc) {
             JSON.stringify(tests.map(a => a.test)));
     }
     if (r.avecChemins) constat('chemins', 'les chemins du plan sont posés dans le cours', r.chemins >= 1, `${r.chemins} aiguillage(s)`);
+    const trousVides = r.cartes.filter(c => c.trous.length).map(c => `${c.titre} : ${c.trous.join(', ')}`);
+    constat('trous', 'chaque trou porte sa réponse (ni nom de variable, ni trou vide, ni astérisque seul, ni variantes contradictoires)', !trousVides.length, trousVides.join(' · '));
     const sansConsigne = r.cartes.filter(c => c.sansConsigne.length).map(c => `${c.titre} : ${c.sansConsigne.join(', ')}`);
     constat('consigne', 'chaque exercice porte sa consigne (Surligner, Glisser les mots, Texte à trous, Rédaction)', !sansConsigne.length, sansConsigne.join(' · '));
     if (r.platform === 'moodle') {
@@ -298,6 +311,18 @@ try {
         if (String(q.library).startsWith('H5P.Blanks')) delete q.params.text;
         const vusConsigne = constater(await ouvrir(page, JSON.stringify(sans)), sans.banc || {}).filter(c => !c.ok).map(c => c.cle);
         ok(`le défaut « consigne » injecté est vu (« ${quizTemoin.plan.titre} »)`, vusConsigne.includes('consigne'), vusConsigne.join(', '));
+    }
+
+    // Un trou en nom de variable (1er oct. 2026) doit se voir.
+    const trouTemoin = scenarios.map(f => JSON.parse(readFileSync(join(DOSSIER, f), 'utf8')))
+        .find(x => x.plan.etapes.some(e => e.cartes.some(c => c.module === 'FillInTheBlanks' && Array.isArray(c.contenu?.questions))));
+    ok('un scénario réel a un Texte à trous (témoin de la contre-épreuve)', Boolean(trouTemoin));
+    if (trouTemoin) {
+        const sali = structuredClone(trouTemoin);
+        const c = sali.plan.etapes.flatMap(e => e.cartes).find(x => x.module === 'FillInTheBlanks' && Array.isArray(x.contenu?.questions));
+        c.contenu.questions[0] = 'Le nouveau prix est de *prix_reduit* €.';
+        const vusTrous = constater(await ouvrir(page, JSON.stringify(sali)), sali.banc || {}).filter(x => !x.ok).map(x => x.cle);
+        ok(`le défaut « trous » injecté est vu (« ${trouTemoin.plan.titre} »)`, vusTrous.includes('trous'), vusTrous.join(', '));
     }
 
     // L'épreuve (D102) et les chemins (D90) : un Test resté réglé en entraînement,

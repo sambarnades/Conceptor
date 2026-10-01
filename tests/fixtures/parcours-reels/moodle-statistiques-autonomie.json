@@ -1,0 +1,971 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-10-01T00:32:07.469Z",
+  "cadrage": {
+    "platform": "moodle",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "autonomie",
+    "structure": "lineaire",
+    "chemins": 2
+  },
+  "plan": {
+    "titre": "Statistiques descriptives : moyenne, médiane et quartiles",
+    "objectifGeneral": "Construire et interpréter les indicateurs de position et de dispersion d'une série statistique.",
+    "introduction": "Vous allez découvrir par vous-même les notions de moyenne, médiane, quartiles et étendue à travers une présentation interactive. Ensuite, vous vous entraînerez sur des exercices corrigés immédiatement pour vérifier votre compréhension. Enfin, vous consoliderez vos acquis avec un quiz final sur l'ensemble des indicateurs. Travaillez à votre rythme, sans précipitation.",
+    "conclusion": "Vous êtes désormais capable de calculer et d'interpréter les indicateurs de position et de dispersion d'une série statistique. Pour aller plus loin, vous pouvez consulter le manuel de référence ou participer à la séance suivante sur les diagrammes en boîte.",
+    "notionsPivots": [
+      "la moyenne d'une série statistique",
+      "la médiane d'une série statistique",
+      "les quartiles d'une série statistique",
+      "l'étendue d'une série statistique",
+      "l'écart-type",
+      "la boîte à moustaches"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Découvrir les indicateurs de position",
+        "objectif": "Comprendre le calcul et l'interprétation de la moyenne et de la médiane",
+        "introduction": "Vous allez explorer comment calculer la moyenne et la médiane d'une série statistique à partir d'exemples concrets. Répondez aux questions posées dans la présentation pour vérifier votre compréhension au fur et à mesure.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Calculer la moyenne et la médiane",
+            "objectif": "Comprendre les définitions et méthodes de calcul",
+            "consigne": "Parcourez la présentation interactive qui pose des questions sur le calcul de la moyenne et de la médiane. Faites défiler les diapositives et répondez aux questions proposées pour valider votre compréhension.",
+            "module": "CoursePresentation",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Calculer la moyenne et la médiane",
+              "slides": [
+                {
+                  "type": "title",
+                  "title": "Calculer la moyenne et la médiane",
+                  "subtitle": "Première activité sur les indicateurs de position"
+                },
+                {
+                  "type": "content",
+                  "title": "Qu'est-ce que la moyenne d'une série statistique ?",
+                  "text": "La *moyenne* d'une série statistique est la somme de toutes les valeurs divisée par le nombre total de valeurs. On la note souvent \\( \\bar{x} \\).\n\nPar exemple, pour les notes suivantes : 12, 15, 18, 14, 16\n\\[ \\text{Moyenne} = \\frac{12 + 15 + 18 + 14 + 16}{5} = \\frac{75}{5} = 15 \\]"
+                },
+                {
+                  "type": "content-with-table",
+                  "title": "Exemple de calcul de moyenne",
+                  "text": "Voici les notes obtenues par un étudiant sur 5 devoirs :",
+                  "table": {
+                    "headers": [
+                      "Devoir",
+                      "Note"
+                    ],
+                    "rows": [
+                      [
+                        "Devoir 1",
+                        "12"
+                      ],
+                      [
+                        "Devoir 2",
+                        "15"
+                      ],
+                      [
+                        "Devoir 3",
+                        "18"
+                      ],
+                      [
+                        "Devoir 4",
+                        "14"
+                      ],
+                      [
+                        "Devoir 5",
+                        "16"
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "quiz",
+                  "title": "Calcul de la moyenne",
+                  "exercise": {
+                    "library": "blanks",
+                    "taskDescription": "Calculez la moyenne de cette série de notes.",
+                    "questions": [
+                      "Pour les notes : 10, 12, 14, 16, 18, la moyenne est *14*.",
+                      "Pour les notes : 8, 10, 12, la moyenne est *10*."
+                    ],
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revoyez la définition de la moyenne. C'est la somme des valeurs divisée par le nombre total de valeurs."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque ! Vérifiez vos calculs de somme ou de division."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bon travail sur la moyenne !"
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent ! Vous maîtrisez le calcul de la moyenne."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "content",
+                  "title": "Qu'est-ce que la médiane d'une série statistique ?",
+                  "text": "La *médiane* d'une série statistique est la valeur qui sépare la série en deux parties égales : 50 % des valeurs sont inférieures ou égales à la médiane et 50 % sont supérieures ou égales. On la note souvent \\( M_e \\).\n\nPour la trouver :\n1. Triez les valeurs par ordre croissant\n2. Si le nombre de valeurs est impair : la médiane est la valeur centrale\n3. Si le nombre de valeurs est pair : la médiane est la moyenne des deux valeurs centrales"
+                },
+                {
+                  "type": "content-with-table",
+                  "title": "Exemple de calcul de médiane",
+                  "text": "Voici les notes obtenues par un étudiant sur 6 devoirs :",
+                  "table": {
+                    "headers": [
+                      "Devoir",
+                      "Note"
+                    ],
+                    "rows": [
+                      [
+                        "Devoir 1",
+                        "10"
+                      ],
+                      [
+                        "Devoir 2",
+                        "12"
+                      ],
+                      [
+                        "Devoir 3",
+                        "14"
+                      ],
+                      [
+                        "Devoir 4",
+                        "16"
+                      ],
+                      [
+                        "Devoir 5",
+                        "18"
+                      ],
+                      [
+                        "Devoir 6",
+                        "20"
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "quiz",
+                  "title": "Calcul de la médiane",
+                  "exercise": {
+                    "library": "blanks",
+                    "taskDescription": "Calculez la médiane de cette série de notes.",
+                    "questions": [
+                      "Pour les notes : 10, 12, 14, 16, 18, la médiane est *14*.",
+                      "Pour les notes : 8, 10, 12, 14, la médiane est *11:Calculez la moyenne des deux valeurs centrales (10 et 12)*"
+                    ],
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revoyez la définition de la médiane. Il faut d'abord trier les valeurs."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque ! Vérifiez si le nombre de valeurs est pair ou impair."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bon travail sur la médiane !"
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent ! Vous maîtrisez le calcul de la médiane."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "content-quiz",
+                  "title": "Comparaison moyenne et médiane",
+                  "text": "La *moyenne* et la *médiane* sont deux indicateurs de position qui décrivent le centre d'une série statistique. Elles ne donnent pas toujours la même information.\n\nPar exemple :\n- Pour une série symétrique : moyenne = médiane\n- Pour une série avec des valeurs extrêmes élevées : moyenne > médiane\n- Pour une série avec des valeurs extrêmes faibles : moyenne < médiane",
+                  "exercise": {
+                    "library": "H5P.MultiChoice 1.16",
+                    "question": "Dans une série statistique, si la moyenne est supérieure à la médiane, que cela indique-t-il généralement ?",
+                    "answers": [
+                      {
+                        "text": "La série contient des valeurs extrêmes élevées",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact ! Les valeurs élevées augmentent la moyenne sans changer la médiane."
+                        }
+                      },
+                      {
+                        "text": "La série est parfaitement symétrique",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non, dans une série symétrique, moyenne et médiane sont égales."
+                        }
+                      },
+                      {
+                        "text": "La série contient des valeurs extrêmes faibles",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non, les valeurs faibles diminuent la moyenne et la rendent inférieure à la médiane."
+                        }
+                      },
+                      {
+                        "text": "La série est désordonnée",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Non, l'ordre n'influence pas directement la relation entre moyenne et médiane."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revoyez la relation entre moyenne et médiane selon la symétrie de la série."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "C'est un bon début, continuez à vous entraîner."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bon travail ! Vous comprenez la différence entre moyenne et médiane."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent ! Vous maîtrisez parfaitement la relation entre ces deux indicateurs."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "summary",
+                  "title": "Synthèse",
+                  "exercise": {
+                    "library": "H5P.Summary 1.10",
+                    "intro": "Choisissez les affirmations correctes pour chaque groupe.",
+                    "summaries": [
+                      {
+                        "summary": [
+                          "La moyenne est la somme des valeurs divisée par leur nombre",
+                          "La moyenne est toujours égale à la médiane",
+                          "La moyenne est la valeur la plus fréquente"
+                        ],
+                        "tip": "Relisez la définition de la moyenne."
+                      },
+                      {
+                        "summary": [
+                          "La médiane est la valeur centrale après tri des données",
+                          "La médiane est influencée par les valeurs extrêmes",
+                          "La médiane se calcule uniquement pour des séries impaires"
+                        ],
+                        "tip": "Relisez la définition de la médiane."
+                      },
+                      {
+                        "summary": [
+                          "Dans une série symétrique, moyenne = médiane",
+                          "Si moyenne > médiane, la série contient des valeurs extrêmes élevées",
+                          "Si moyenne < médiane, la série contient des valeurs extrêmes faibles"
+                        ],
+                        "tip": "Pensez à la position des valeurs extrêmes."
+                      }
+                    ],
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revoyez les définitions de base de la moyenne et de la médiane."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "C'est un bon début, mais certaines notions résistent encore."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bon travail ! Vous avez bien compris les bases."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait ! Vous maîtrisez les concepts de moyenne et médiane."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              }
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e3",
+        "titre": "S'entraîner sur les indicateurs de position",
+        "objectif": "Appliquer les méthodes de calcul sur des exemples variés",
+        "introduction": "Vous allez maintenant vous entraîner sur des exercices corrigés immédiatement pour consolider vos acquis. Prenez le temps de comprendre vos erreurs si elles surviennent.",
+        "cartes": [
+          {
+            "id": "c4",
+            "titre": "Exercices d'application",
+            "objectif": "Calculer moyenne et médiane sur des séries données",
+            "consigne": "Complétez les phrases en glissant les bons mots dans les emplacements prévus pour calculer la moyenne et la médiane de séries statistiques fournies. Validez chaque réponse pour obtenir une correction immédiate.",
+            "module": "DragTheWords",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Complétez les phrases suivantes en glissant les mots adaptés pour calculer la moyenne et la médiane d'une série statistique. Validez chaque réponse pour obtenir une correction immédiate.",
+              "textField": "Pour calculer la *moyenne* d'une série, on effectue la *somme* des valeurs, puis on divise par le *nombre* total de données. La *médiane* est la valeur qui sépare la série en deux *groupes* d'effectifs égaux. Si la série contient un *nombre* impair de données, la médiane est la valeur centrale. Pour un *nombre* pair, on calcule la moyenne des deux valeurs centrales.\n",
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Vous avez besoin de revoir les définitions de base de la moyenne et de la médiane. Consultez les méthodes de calcul et les exemples travaillés en cours pour bien distinguer ces deux indicateurs."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Certaines réponses sont justes, mais des confusions persistent entre la moyenne et la médiane. Relisez les explications sur leur calcul et leurs différences avant de poursuivre."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Vous maîtrisez l'essentiel, mais quelques ajustements sont nécessaires. Pensez à vérifier la parité du nombre de données pour la médiane et à bien appliquer la division pour la moyenne."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Félicitations, toutes les réponses sont correctes. Vous avez bien compris les méthodes de calcul de la moyenne et de la médiane. Vous pouvez maintenant passer à des exercices plus complexes."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Exercices d'application"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e5",
+        "titre": "Consolider avec les indicateurs de dispersion",
+        "objectif": "Connaître et interpréter l'étendue, les quartiles et l'écart-type",
+        "introduction": "Vous allez maintenant aborder les indicateurs de dispersion (étendue, quartiles, écart-type) et apprendre à les calculer. Puis vous consoliderez l'ensemble des notions avec un quiz final.",
+        "cartes": [
+          {
+            "id": "c6",
+            "titre": "Quiz final sur les statistiques descriptives",
+            "objectif": "Vérifier la maîtrise des indicateurs de position et de dispersion",
+            "consigne": "Répondez aux questions à choix multiples portant sur l'ensemble des indicateurs vus dans le parcours (moyenne, médiane, quartiles, étendue, écart-type, boîte à moustaches). Une correction immédiate vous indiquera vos erreurs éventuelles.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz final sur les statistiques descriptives",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "Prêt pour le quiz final ?",
+                "introduction": "Vous allez répondre à 8 questions à choix multiples sur les indicateurs de position et de dispersion. Prenez le temps de bien lire chaque question avant de répondre. La correction immédiate vous permettra d'identifier vos erreurs et de progresser.",
+                "startButtonText": "Commencer le quiz"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calcul de la moyenne"
+                  },
+                  "params": {
+                    "question": "On considère la série statistique suivante : 5, 7, 8, 10, 12. Quelle est sa moyenne ?",
+                    "answers": [
+                      {
+                        "text": "8",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la moyenne est calculée en faisant la somme des valeurs divisée par leur nombre. Ici, (5+7+8+10+12)/5 = 42/5 = 8."
+                        }
+                      },
+                      {
+                        "text": "8,4",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Vérifie bien la somme des valeurs avant de diviser.",
+                          "chosenFeedback": "Erreur de calcul : la somme est 42, pas 42. La division par 5 donne 8, pas 8,4."
+                        }
+                      },
+                      {
+                        "text": "9",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : la moyenne n'est pas la valeur centrale de la série. Ici, la médiane est 8, mais la moyenne est différente."
+                        }
+                      },
+                      {
+                        "text": "10",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour calculer la moyenne, additionnez toutes les valeurs puis divisez par le nombre total de données."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : revérifie le calcul de la somme des valeurs avant la division."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La moyenne est proche : attention à ne pas confondre avec la médiane ou la valeur maximale."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : la moyenne est bien 8 pour cette série."
+                      }
+                    ]
+                  },
+                  "subContentId": "d04482fa-f1a9-4adb-a008-7686ba69f2be"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Détermination de la médiane"
+                  },
+                  "params": {
+                    "question": "Pour la série : 3, 5, 7, 8, 9, 10, quelle est la médiane ?",
+                    "answers": [
+                      {
+                        "text": "7",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La médiane est la valeur qui sépare la série en deux parties de même effectif.",
+                          "chosenFeedback": "Erreur : la médiane n'est pas la 3e valeur. Ici, la série a 6 valeurs, donc la médiane est la moyenne des 3e et 4e valeurs."
+                        }
+                      },
+                      {
+                        "text": "7,5",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la médiane est la moyenne de 7 et 8, soit (7+8)/2 = 7,5."
+                        }
+                      },
+                      {
+                        "text": "8",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : la médiane n'est pas la 4e valeur. Ici, la médiane est la moyenne des 3e et 4e valeurs."
+                        }
+                      },
+                      {
+                        "text": "9",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La médiane sépare la série en deux parties de même effectif. Pour une série paire, calcule la moyenne des deux valeurs centrales."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : la médiane est la valeur centrale ou la moyenne des deux valeurs centrales."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La médiane est proche : attention à ne pas confondre avec la valeur maximale ou la moyenne."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : la médiane est bien 7,5 pour cette série."
+                      }
+                    ]
+                  },
+                  "subContentId": "807d5e73-1b14-4432-8b21-226002076557"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calcul des quartiles"
+                  },
+                  "params": {
+                    "question": "Pour la série : 2, 4, 6, 8, 10, 12, 14, quels sont les premier et troisième quartiles ?",
+                    "answers": [
+                      {
+                        "text": "Q1 = 4, Q3 = 12",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : Q1 est la médiane de la moitié inférieure (2,4,6) soit 4, et Q3 est la médiane de la moitié supérieure (10,12,14) soit 12."
+                        }
+                      },
+                      {
+                        "text": "Q1 = 5, Q3 = 11",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Les quartiles séparent la série en quatre parties de même effectif.",
+                          "chosenFeedback": "Erreur : les quartiles ne sont pas les moyennes des valeurs extrêmes. Q1 est la médiane de la première moitié, Q3 celle de la seconde moitié."
+                        }
+                      },
+                      {
+                        "text": "Q1 = 6, Q3 = 10",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : Q1 et Q3 ne sont pas les valeurs centrales de la série. Ils séparent la série en quatre parties égales."
+                        }
+                      },
+                      {
+                        "text": "Q1 = 3, Q3 = 13",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Les quartiles séparent la série en quatre parties de même effectif. Q1 est la médiane de la première moitié, Q3 celle de la seconde moitié."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : les quartiles ne sont pas les moyennes des extrémités."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La réponse est proche : revérifie la méthode de calcul des quartiles."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : Q1 = 4 et Q3 = 12 pour cette série."
+                      }
+                    ]
+                  },
+                  "subContentId": "2e4a835d-de33-44e1-810c-ee6fcf657fd3"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Lecture de l'étendue"
+                  },
+                  "params": {
+                    "question": "Quelle série a une étendue de 10 ?",
+                    "answers": [
+                      {
+                        "text": "5, 7, 9, 15",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : l'étendue est la différence entre la valeur maximale et la valeur minimale. Ici, 15 - 5 = 10."
+                        }
+                      },
+                      {
+                        "text": "3, 8, 12, 18",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "L'étendue est la différence entre la valeur maximale et la valeur minimale de la série.",
+                          "chosenFeedback": "Erreur : l'étendue de cette série est 18 - 3 = 15, pas 10."
+                        }
+                      },
+                      {
+                        "text": "10, 12, 14, 20",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : l'étendue de cette série est 20 - 10 = 10, mais la série proposée est incorrecte."
+                        }
+                      },
+                      {
+                        "text": "6, 9, 11, 16",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "L'étendue est la différence entre la valeur maximale et la valeur minimale de la série."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : l'étendue est bien la différence entre les valeurs extrêmes."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La réponse est proche : revérifie les valeurs extrêmes de chaque série."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : la série 5, 7, 9, 15 a une étendue de 10."
+                      }
+                    ]
+                  },
+                  "subContentId": "f5ed3a75-d322-4520-8bab-fc12fcd77019"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Interprétation de l'écart-type"
+                  },
+                  "params": {
+                    "question": "Si on ajoute 10 à chaque valeur d'une série, comment évolue son écart-type ?",
+                    "answers": [
+                      {
+                        "text": "Il augmente.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "L'écart-type mesure la dispersion des valeurs autour de la moyenne. Que se passe-t-il si on décale toutes les valeurs de la même quantité ?",
+                          "chosenFeedback": "Erreur : l'écart-type ne change pas quand on ajoute une constante à toutes les valeurs. Seule la moyenne est modifiée."
+                        }
+                      },
+                      {
+                        "text": "Il diminue.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : l'écart-type reste inchangé. L'ajout d'une constante ne modifie pas la dispersion relative des valeurs."
+                        }
+                      },
+                      {
+                        "text": "Il reste le même.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : l'écart-type mesure la dispersion des valeurs autour de la moyenne. L'ajout d'une constante décale toutes les valeurs, mais ne change pas leur dispersion relative."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "L'écart-type mesure la dispersion des valeurs autour de la moyenne. Que se passe-t-il si on décale toutes les valeurs de la même quantité ?"
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : l'écart-type ne dépend pas d'un décalage global des valeurs."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La réponse est proche : l'écart-type n'est pas modifié par une translation de la série."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : l'écart-type reste inchangé lorsque toutes les valeurs sont décalées de la même quantité."
+                      }
+                    ]
+                  },
+                  "subContentId": "6f5c1988-1391-4907-9bd8-7b3af593bbcd"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Lecture d'une boîte à moustaches"
+                  },
+                  "params": {
+                    "question": "Sur une boîte à moustaches, que représente la ligne centrale de la boîte ?",
+                    "answers": [
+                      {
+                        "text": "La moyenne",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Sur une boîte à moustaches, la ligne centrale de la boîte représente un indicateur de position particulier.",
+                          "chosenFeedback": "Erreur : la ligne centrale de la boîte représente la médiane, pas la moyenne."
+                        }
+                      },
+                      {
+                        "text": "La médiane",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la ligne centrale de la boîte à moustaches représente la médiane de la série."
+                        }
+                      },
+                      {
+                        "text": "Le premier quartile",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : le premier quartile est représenté par la limite inférieure de la boîte, pas par la ligne centrale."
+                        }
+                      },
+                      {
+                        "text": "Le troisième quartile",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Sur une boîte à moustaches, la ligne centrale de la boîte représente l'un des indicateurs de position. Lequel est-ce ?"
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : la ligne centrale de la boîte n'est ni un quartile ni la moyenne."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La réponse est proche : la ligne centrale de la boîte représente un indicateur central, mais pas un quartile."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : la ligne centrale de la boîte à moustaches représente bien la médiane."
+                      }
+                    ]
+                  },
+                  "subContentId": "40f367fd-9be7-468b-a8e6-3cb7251be636"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Comparaison de séries avec l'écart-type"
+                  },
+                  "params": {
+                    "question": "Deux séries ont la même moyenne mais des écarts-types différents. Que peut-on en déduire ?",
+                    "answers": [
+                      {
+                        "text": "Elles ont la même étendue.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "L'écart-type mesure la dispersion des valeurs autour de la moyenne. Que se passe-t-il si deux séries ont la même moyenne mais des écarts-types différents ?",
+                          "chosenFeedback": "Erreur : l'étendue et l'écart-type ne sont pas toujours liés. Deux séries peuvent avoir la même moyenne et le même écart-type sans avoir la même étendue."
+                        }
+                      },
+                      {
+                        "text": "La série avec le plus grand écart-type a des valeurs plus dispersées.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : l'écart-type mesure la dispersion des valeurs autour de la moyenne. Plus il est grand, plus les valeurs sont dispersées."
+                        }
+                      },
+                      {
+                        "text": "Les deux séries ont la même médiane.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : l'écart-type ne donne aucune information sur la médiane. Deux séries peuvent avoir la même moyenne et le même écart-type sans avoir la même médiane."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "L'écart-type mesure la dispersion des valeurs autour de la moyenne. Que se passe-t-il si deux séries ont la même moyenne mais des écarts-types différents ?"
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : l'écart-type renseigne sur la dispersion des valeurs, pas sur l'étendue ou la médiane."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La réponse est proche : l'écart-type est lié à la dispersion des valeurs autour de la moyenne."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : la série avec le plus grand écart-type a des valeurs plus dispersées autour de la moyenne."
+                      }
+                    ]
+                  },
+                  "subContentId": "c0355218-eddc-4de1-8b12-7efe4edfad5e"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Choix des indicateurs adaptés"
+                  },
+                  "params": {
+                    "question": "Quel indicateur est le plus adapté pour décrire la tendance centrale d'une série fortement asymétrique ?",
+                    "answers": [
+                      {
+                        "text": "La moyenne",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pour une série asymétrique, la moyenne peut être influencée par les valeurs extrêmes. Quel autre indicateur est moins sensible à ces valeurs ?",
+                          "chosenFeedback": "Erreur : la moyenne est sensible aux valeurs extrêmes, surtout dans une série asymétrique. La médiane est plus adaptée."
+                        }
+                      },
+                      {
+                        "text": "La médiane",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : la médiane est moins sensible aux valeurs extrêmes que la moyenne, ce qui la rend plus adaptée pour décrire la tendance centrale d'une série asymétrique."
+                        }
+                      },
+                      {
+                        "text": "L'écart-type",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : l'écart-type mesure la dispersion, pas la tendance centrale. Il n'est pas adapté pour décrire la tendance centrale d'une série."
+                        }
+                      },
+                      {
+                        "text": "L'étendue",
+                        "correct": false
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour une série asymétrique, la tendance centrale est mieux décrite par un indicateur peu sensible aux valeurs extrêmes."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : l'écart-type et l'étendue ne décrivent pas la tendance centrale."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "La réponse est proche : la médiane est l'indicateur adapté pour une série asymétrique."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : la médiane est l'indicateur le plus adapté pour décrire la tendance centrale d'une série fortement asymétrique."
+                      }
+                    ]
+                  },
+                  "subContentId": "666d6e64-4b38-4b7e-8626-d7bce09b2cc5"
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": true,
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Les notions de base sur les indicateurs de position et de dispersion sont à revoir. Relisez le cours et refaites des exercices pour progresser."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "Plusieurs notions résistent encore. Ciblez les indicateurs qui posent problème et entraînez-vous spécifiquement sur ceux-ci."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Plusieurs indicateurs sont bien maîtrisés. Repérez ceux qui ont fait hésiter pour consolider vos acquis."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "L'ensemble des notions est bien maîtrisé. Pour ancrer ces acquis, entraînez-vous encore sur des séries variées."
+                  }
+                ]
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "BUT 1re année",
+    "adultes": true
+  }
+}

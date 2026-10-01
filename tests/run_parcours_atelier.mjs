@@ -1577,15 +1577,36 @@ try {
         const complet = await essai([quiz(false)]);
         const page = mots => construirePromptRemplissage({ ...brouillon(), plan: { ...brouillon().plan } },
             { id: 'p', titre: 'La leçon', objectif: 'Lire', consigne: 'Lire', module: 'Page', palier: 'decouverte', duree: mots, verrouillee: false });
+        // Des trous vidés de leur sens (réponse en nom de variable, parcours réel du
+        // 1er oct. 2026) : même seconde demande, et l'on garde le moins grave.
+        const trous = reponses => JSON.stringify({ title: 'Les pourcentages', text: 'Complète avec la valeur calculée.',
+            questions: reponses.map((r, i) => `Calcul ${i + 1} : le résultat est *${r}*.`) });
+        const essaiTrous = async (reponses) => {
+            const d = brouillon();
+            d.plan.etapes[0].cartes[0] = { ...d.plan.etapes[0].cartes[0], module: 'FillInTheBlanks', titre: 'Les pourcentages' };
+            const prompts = [];
+            const file = creerFile(d, { appelModele: async (prompt) => { prompts.push(prompt); return reponses[prompts.length - 1]; } });
+            const etat = await file.demarrer();
+            return { appels: prompts.length, statut: etat.lignes[0].statut, rappel: prompts[1] || '',
+                questions: d.plan.etapes[0].cartes[0].contenu?.questions || [] };
+        };
+        const trousRattrapes = await essaiTrous([trous(['prix_reduit', 'nombre_eleves', '12']), trous(['36', '21', '12'])]);
+        const trousObstines = await essaiTrous([trous(['prix_reduit', '21', '12']), trous(['prix_reduit', 'nombre_eleves', '12'])]);
+        const trousSains = await essaiTrous([trous(['36', '21', '12'])]);
         const [p5, p25] = await Promise.all([page(5), page(25)]);
         const { prompt: pQuiz } = await construirePromptRemplissage(brouillon(), brouillon().plan.etapes[0].cartes[0]);
+        const { prompt: pTrous } = await construirePromptRemplissage(brouillon(),
+            { ...brouillon().plan.etapes[0].cartes[0], module: 'FillInTheBlanks', titre: 'Les pourcentages' });
         return {
             rattrape: { appels: rattrape.prompts.length, statut: rattrape.ligne.statut,
                 rappel: rattrape.prompts[1] || '', consigne: rattrape.contenu?.questions?.[1]?.params?.taskDescription || null },
             obstine: { appels: obstine.prompts.length, statut: obstine.ligne.statut, cle: obstine.ligne.erreurKey },
             complet: { appels: complet.prompts.length, statut: complet.ligne.statut },
-            p5: p5.prompt.match(/Longueur visée : environ (\d+) mots/)?.[1], p25: p25.prompt.match(/Longueur visée : environ (\d+) mots/)?.[1],
+            p5: p5.prompt.match(/Longueur visée : entre (\d+) et \d+ mots/)?.[1], p25: p25.prompt.match(/Longueur visée : entre (\d+) et \d+ mots/)?.[1],
             quizLongueur: /Longueur visée/.test(pQuiz), quizRegle: pQuiz.includes('porte `taskDescription`'),
+            trousRattrapes, trousObstines, trousSains,
+            regleTrous: { trous: pTrous.includes('la valeur calculée'), quiz: pQuiz.includes('la valeur calculée'),
+                page: p5.prompt.includes('la valeur calculée') },
         };
     });
     ok('un exercice revenu sans consigne est redemandé UNE fois, en nommant la question',
@@ -1597,6 +1618,17 @@ try {
         JSON.stringify(consignes.obstine));
     ok('un quiz complet ne coûte qu’un appel', consignes.complet.appels === 1 && consignes.complet.statut === 'faite', JSON.stringify(consignes.complet));
     ok('le prompt d’un quiz mixte rappelle la consigne de chaque exercice', consignes.quizRegle && !consignes.quizLongueur);
+    ok('des trous en nom de variable sont redemandés UNE fois, et la réponse calculée remplace le nom',
+        consignes.trousRattrapes.appels === 2 && consignes.trousRattrapes.statut === 'faite'
+        && /nom de variable/.test(consignes.trousRattrapes.rappel)
+        && consignes.trousRattrapes.questions.every(q => !/\*[\p{L}\p{N}]+_[\p{L}\p{N}_]+\*/u.test(q)), JSON.stringify(consignes.trousRattrapes));
+    ok('un second tirage pire ne remplace pas le premier, et la carte n’échoue pas',
+        consignes.trousObstines.appels === 2 && consignes.trousObstines.statut === 'faite'
+        && consignes.trousObstines.questions.filter(q => /_/.test(q)).length === 1, JSON.stringify(consignes.trousObstines));
+    ok('le cadre d’un Texte à trous et d’un quiz exige la réponse elle-même dans chaque trou, pas celui d’une Page',
+        consignes.regleTrous.trous && consignes.regleTrous.quiz && !consignes.regleTrous.page, JSON.stringify(consignes.regleTrous));
+    ok('un texte à trous sain ne coûte qu’un appel', consignes.trousSains.appels === 1 && consignes.trousSains.statut === 'faite',
+        JSON.stringify(consignes.trousSains));
     ok('une Page de 25 minutes vise cinq fois la longueur d’une Page de 5 (400 → 2 000 mots)',
         consignes.p5 === '400' && consignes.p25 === '2000', JSON.stringify({ p5: consignes.p5, p25: consignes.p25 }));
 

@@ -17,7 +17,7 @@
  * Lancement :  node tests/run_heal_rules_tests.mjs
  */
 import './roundtrip/bootstrap.mjs';
-const { healStructureForActivity, HEALED_MODULE_KEYS } = await import('../js/h5p/json-healer.js');
+const { healStructureForActivity, HEALED_MODULE_KEYS, healActivitySpecificFields } = await import('../js/h5p/json-healer.js');
 const { h5pModules, moodleModules, allModules } = await import('../js/core/definitions.js');
 
 let pass = 0, fail = 0;
@@ -195,6 +195,26 @@ const SANS_REGLE_DEDIEE = new Set([
             pass++; // le marqueur n'est pas posé sur entrée vide : sonde non applicable
         }
     }
+}
+
+// =======================================================================
+// 4. VIRGULE DÉCIMALE LaTeX DANS LES TROUS (parcours réel, 1er oct. 2026)
+// =======================================================================
+// `*37{,}5*` : l'élève qui tape « 37,5 » était compté faux. Hors formule, la virgule
+// LaTeX redevient une virgule ; dans \(…\), c'est du LaTeX juste, on n'y touche pas.
+{
+    const trous = healActivitySpecificFields({ text: 'Complète.', questions: [
+        'Il a parcouru 45 km en *37{,}5* min.',
+        'Cinq stylos coûtent *12{,}50* € ; trois coûtent 7{,}50 €.',
+        'La formule \\( v = 37{,}5 \\) reste du LaTeX, et *3* est un trou.',
+    ] }, 'FillInTheBlanks');
+    eq('trous : la virgule LaTeX redevient une virgule, dans le trou et dans la phrase', trous.questions.slice(0, 2),
+        ['Il a parcouru 45 km en *37,5* min.', 'Cinq stylos coûtent *12,50* € ; trois coûtent 7,50 €.']);
+    ok('trous : dans une formule, la virgule LaTeX reste', trous.questions[2].includes('\\( v = 37{,}5 \\)'), trous.questions[2]);
+    const glisser = healActivitySpecificFields({ taskDescription: 'Glisse.', textField: 'Le prix est de *12{,}50* €.' }, 'DragTheWords');
+    eq('glisser : la virgule LaTeX d’un mot à glisser redevient une virgule', glisser.textField, 'Le prix est de *12,50* €.');
+    const quiz = healActivitySpecificFields({ questions: [{ library: 'H5P.Blanks 1.14', params: { text: 'Complète.', questions: ['x = *2{,}5*'] } }] }, 'QuizSet');
+    eq('quiz : la virgule LaTeX d’un Texte à trous du quiz aussi', quiz.questions[0].params.questions, ['x = *2,5*']);
 }
 
 // =======================================================================

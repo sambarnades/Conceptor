@@ -1,0 +1,867 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-30T23:20:17.746Z",
+  "cadrage": {
+    "platform": "moodle",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "evaluation",
+    "structure": "lineaire",
+    "chemins": 2
+  },
+  "plan": {
+    "titre": "Évaluer la mécanique des fluides",
+    "objectifGeneral": "Valider vos connaissances sur les concepts de pression, principe fondamental de l’hydrostatique et poussée d’Archimède.",
+    "introduction": "Ce parcours vous prépare à une évaluation en ligne sur les bases de la mécanique des fluides. Vous y découvrirez les attentes exactes, vous vous entraînerez avec un quiz corrigé, puis passerez le test final chronométré. Travaillez dans l’ordre indiqué pour maximiser vos chances de réussite.",
+    "conclusion": "Vous avez maintenant consolidé vos acquis sur la pression, le principe fondamental de l’hydrostatique et la poussée d’Archimède. Pour approfondir, consultez les ressources complémentaires recommandées dans la section dédiée.",
+    "notionsPivots": [
+      "la pression hydrostatique",
+      "le principe fondamental de l’hydrostatique",
+      "la poussée d’Archimède",
+      "le débit volumique",
+      "l’équation de continuité"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Comprendre les attentes",
+        "objectif": "Repérer les critères de l’évaluation finale",
+        "introduction": "Vous allez découvrir les objectifs précis de l’évaluation, sa durée et son mode de notation. Ces informations vous permettront d’adapter votre préparation. Prenez le temps de bien les lire avant de passer à l’entraînement.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Présentation du format d’évaluation",
+            "objectif": "Identifier les exigences de l’épreuve",
+            "consigne": "Lisez attentivement la page qui détaille le format de l’évaluation : durée, types de questions, modalités de notation et conseils pour maximiser votre score. Notez les points qui vous semblent les plus importants.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Présentation du format d’évaluation",
+              "intro": "Bienvenue dans cette première étape de votre parcours. Avant d'aborder les concepts physiques, il est essentiel de comprendre les modalités de l'évaluation qui validera vos acquis.",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "Modalités de l'évaluation",
+                    "subtitle": "Mécanique des fluides : Pression, Hydrostatique, Archimède"
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Objectifs de cette séance",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Identifier les exigences de l'épreuve finale : durée, types de questions et modalités de notation."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Comprendre comment maximiser votre score en anticipant les pièges classiques."
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "Attention : cette évaluation porte spécifiquement sur la mécanique des fluides statiques et dynamiques de base."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Structure et Durée de l'Épreuve",
+                    "paragraphs": [
+                      "L'évaluation finale est conçue pour durer exactement soixante minutes. Ce temps est strict. Il est recommandé de consacrer environ dix minutes à la lecture attentive de l'énoncé complet avant de commencer tout calcul. Cette étape initiale vous permet de hiérarchiser les questions et d'anticiper la complexité de chaque exercice. Ne commencez pas à résoudre la première question sans avoir pris conscience de l'ensemble du travail demandé.",
+                      "Le format de l'épreuve combine des questions à choix multiples (QCM) pour tester votre compréhension conceptuelle rapide et des exercices de calcul détaillé pour évaluer votre rigueur méthodologique. Pour les QCM, une mauvaise réponse n'entraîne pas de pénalité, mais une réponse non justifiée dans la partie calcul peut être partiellement ou totalement sanctionnée. La présentation de vos raisonnements est donc aussi importante que le résultat final.",
+                      "La notation repose sur un barème progressif. Vous gagnerez des points non seulement pour la bonne réponse numérique, mais aussi pour le choix cohérent des unités, la justification des hypothèses (comme le caractère incompressible du fluide) et la clarté de votre démarche. Un résultat juste obtenu par une méthode erronée rapportera peu ou pas de points. À l'inverse, une erreur de calcul mineure sur un raisonnement solide sera largement compensée."
+                    ]
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Vocabulaire de l'évaluation",
+                    "caption": "Définitions des termes techniques liés au format de l'épreuve",
+                    "headers": [
+                      "Terme",
+                      "Définition dans ce contexte"
+                    ],
+                    "rows": [
+                      [
+                        "Modalités de notation",
+                        "Critères précis utilisés par les correcteurs pour attribuer les points (rigueur, unités, hypothèses)."
+                      ],
+                      [
+                        "Débit volumique",
+                        "Volume de fluide qui traverse une section donnée par unité de temps. Noté souvent Q_v."
+                      ],
+                      [
+                        "Équation de continuité",
+                        "Principe de conservation de la masse pour un fluide incompressible en écoulement permanent."
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Ressources pour préparer l'évaluation",
+                    "links": [
+                      {
+                        "href": "https://www.universite-mecanique.fr/ressources/physique-1",
+                        "text": "Cours complet de Mécanique des Fluides (L1)"
+                      },
+                      {
+                        "href": "https://www.physique-ingenierie.fr/exercices-corriges",
+                        "text": "Banque d'exercices corrigés sur l'hydrostatique et Archimède"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e3",
+        "titre": "S’entraîner au format de l’épreuve",
+        "objectif": "Appliquer les notions dans un contexte similaire à l’évaluation",
+        "introduction": "Vous allez maintenant réaliser un entraînement composé de questions variées, similaires à celles de l’évaluation finale. Les réponses vous seront données à la fin pour vous auto-corriger. Prenez ce temps pour repérer vos difficultés avant le test.",
+        "cartes": [
+          {
+            "id": "c4",
+            "titre": "Quiz d’entraînement",
+            "objectif": "Vérifier vos acquis sur l’ensemble des notions",
+            "consigne": "Répondez aux questions proposées dans le quiz. À la fin, vous recevrez les corrections détaillées pour chaque réponse. Analysez vos erreurs avant de passer à l’évaluation finale.",
+            "module": "QuizSet",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 25,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz d’entraînement",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "Préparation à l'évaluation finale",
+                "introduction": "Ce quiz d'entraînement vous permet de vérifier vos acquis sur la mécanique des fluides. Prenez le temps de réfléchir à chaque question avant de valider votre réponse. À la fin, vous recevrez des corrections détaillées pour analyser vos erreurs et progresser.",
+                "startButtonText": "Commencer le quiz"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Pression hydrostatique - QCM"
+                  },
+                  "params": {
+                    "question": "Parmi les propositions suivantes, laquelle décrit correctement la variation de la pression hydrostatique avec la profondeur dans un fluide incompressible au repos ?",
+                    "answers": [
+                      {
+                        "text": "La pression hydrostatique augmente linéairement avec la profondeur.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "Pensez à la relation entre la pression et la hauteur de la colonne de fluide au-dessus d'un point.",
+                          "chosenFeedback": "Oui, la pression hydrostatique est proportionnelle à la profondeur : \\[ P = P_0 + \\rho g h \\]"
+                        }
+                      },
+                      {
+                        "text": "La pression hydrostatique est indépendante de la profondeur.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La pression dépend-elle de la quantité de fluide au-dessus du point considéré ?",
+                          "chosenFeedback": "Non, la pression hydrostatique dépend bien de la profondeur : plus on descend, plus la pression augmente."
+                        }
+                      },
+                      {
+                        "text": "La pression hydrostatique diminue lorsque la profondeur augmente.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La pression hydrostatique augmente avec la profondeur, pas l'inverse."
+                        }
+                      },
+                      {
+                        "text": "La pression hydrostatique varie de manière exponentielle avec la profondeur.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La variation est linéaire, pas exponentielle, pour un fluide incompressible."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "enableCheckButton": true,
+                    "showSolutionsRequiresInput": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repassez en revue la définition de la pression hydrostatique et la relation fondamentale : \\[ P = P_0 + \\rho g h \\]."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : la pression dépend de la profondeur, mais de quelle manière ? Revoyez la proportionnalité."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la pression dépend de la profondeur. Vérifiez si l'augmentation est linéaire."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Exact : la pression hydrostatique augmente linéairement avec la profondeur, comme l'indique la formule."
+                      }
+                    ]
+                  },
+                  "subContentId": "0510103c-1f43-4e4f-99b1-5d9f25b5dd1f"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Principe fondamental de l’hydrostatique - Vrai/Faux"
+                  },
+                  "params": {
+                    "question": "Le principe fondamental de l’hydrostatique stipule que la différence de pression entre deux points d’un fluide au repos est proportionnelle à la différence de leurs profondeurs.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Exact : ce principe s’exprime par \\[ P_B - P_A = \\rho g (z_A - z_B) \\] où z est la profondeur.",
+                    "feedbackOnWrong": "En fait, le principe fondamental de l’hydrostatique relie bien la différence de pression à la différence de profondeur entre deux points d’un fluide au repos."
+                  },
+                  "subContentId": "bdc2d0a8-4369-445c-ba10-f374027a9c15"
+                },
+                {
+                  "library": "H5P.Blanks 1.14",
+                  "metadata": {
+                    "title": "Poussée d’Archimède - Mots à trous"
+                  },
+                  "params": {
+                    "taskDescription": "Complétez les phrases suivantes en utilisant les termes appropriés parmi : *poids*, *volume*, *fluide*, *densité*, *immersion*.",
+                    "questions": [
+                      "La poussée d’Archimède est une force *verticale* dirigée vers le haut, dont l’intensité est égale au *poids* du *fluide* déplacé par l’objet immergé.",
+                      "Si un corps est totalement en *immersion*, la poussée d’Archimède dépend uniquement du *volume* de ce corps et de la *densité* du *fluide*."
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "off"
+                    },
+                    "enableCheckButton": true,
+                    "showSolutionsRequiresInput": true,
+                    "allowRetryIfCorrect": false,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Relisez les définitions clés : poussée d’Archimède, poids, volume, fluide et immersion. Ces termes sont centraux."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon début : les mots *poids* et *fluide* sont bien placés. Vérifiez les deux autres termes."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : un ou deux termes manquent encore. Relisez les phrases en vous concentrant sur les concepts clés."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : les termes *poids*, *volume*, *fluide*, *densité* et *immersion* sont tous correctement utilisés."
+                      }
+                    ]
+                  },
+                  "subContentId": "a500bb68-068c-4298-bcd8-157b76d5b7ea"
+                },
+                {
+                  "library": "H5P.DragText 1.10",
+                  "metadata": {
+                    "title": "Débit volumique - Glisser les mots"
+                  },
+                  "params": {
+                    "taskDescription": "Complétez la phrase suivante avec les termes appropriés.",
+                    "textField": "Le débit volumique Q d’un fluide en écoulement est défini comme le *volume* de fluide traversant une section par unité de *temps*. Il s’exprime en mètres cubes par seconde (m³/s).",
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "off"
+                    },
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pensez à la définition physique du débit volumique : il s’agit d’un volume par unité de temps."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bien démarré : le terme *volume* est correct. Vérifiez le second terme."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : un terme reste à placer. Relisez la définition pour identifier le mot manquant."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Exact : les termes *volume* et *temps* complètent parfaitement la phrase."
+                      }
+                    ]
+                  },
+                  "subContentId": "e323643b-fe87-478d-82cc-c858308d1450"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Équation de continuité - QCM"
+                  },
+                  "params": {
+                    "question": "Dans un écoulement permanent d’un fluide incompressible, comment évolue la vitesse d’écoulement lorsque la section du tube diminue ?",
+                    "answers": [
+                      {
+                        "text": "La vitesse diminue.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Considérez la conservation du débit volumique : Q = S v, où S est la section et v la vitesse.",
+                          "chosenFeedback": "Non : si la section diminue, la vitesse doit augmenter pour conserver le débit (Q = S v)."
+                        }
+                      },
+                      {
+                        "text": "La vitesse reste constante.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La vitesse ne reste pas constante si la section change : elle s’ajuste pour garder le débit constant."
+                        }
+                      },
+                      {
+                        "text": "La vitesse augmente.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : selon l’équation de continuité, la vitesse augmente lorsque la section diminue."
+                        }
+                      },
+                      {
+                        "text": "La vitesse devient nulle.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La vitesse ne devient pas nulle : elle s’adapte à la section pour conserver le débit."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "on"
+                    },
+                    "enableCheckButton": true,
+                    "showSolutionsRequiresInput": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Reprenez l’équation de continuité : \\[ S_1 v_1 = S_2 v_2 \\]. Comment évolue v si S diminue ?"
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : la vitesse dépend de la section, mais comment ? Revoyez la relation de proportionnalité inverse."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la vitesse est liée à la section. Vérifiez si elle augmente ou diminue quand la section baisse."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Exact : l’équation de continuité impose que la vitesse augmente lorsque la section diminue."
+                      }
+                    ]
+                  },
+                  "subContentId": "66821cdc-3dea-405b-9842-287bf46160f8"
+                },
+                {
+                  "library": "H5P.MarkTheWords 1.11",
+                  "metadata": {
+                    "title": "Pression et altitude - Surligner les mots"
+                  },
+                  "params": {
+                    "taskDescription": "Surlignez les termes qui désignent des grandeurs physiques liées à la pression dans les phrases suivantes.",
+                    "textField": "La *pression* *atmosphérique* diminue avec l' *altitude* en raison de la diminution de la *masse* d’air au-dessus. À l’inverse, la *pression* *hydrostatique* augmente avec la *profondeur* dans un *fluide*.",
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "off"
+                    },
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Identifiez les grandeurs physiques : pression, altitude, masse, profondeur et fluide. Ces termes sont centraux."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Quelques termes sont trouvés : relisez les phrases en vous concentrant sur les concepts de pression et ses dépendances."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la plupart des termes sont repérés. Vérifiez s’il en manque."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : les termes *pression atmosphérique*, *altitude*, *masse*, *pression hydrostatique*, *profondeur* et *fluide* sont tous identifiés."
+                      }
+                    ]
+                  },
+                  "subContentId": "d77b36f9-aac8-4c26-8d81-ec5b3434d338"
+                },
+                {
+                  "library": "H5P.Essay 1.5",
+                  "metadata": {
+                    "title": "Application du principe fondamental de l’hydrostatique - Rédaction"
+                  },
+                  "params": {
+                    "taskDescription": "Expliquez comment le principe fondamental de l’hydrostatique permet de calculer la pression à une profondeur donnée dans un fluide au repos.",
+                    "keywords": [
+                      {
+                        "keyword": "pression",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "profondeur",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "fluide",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "densité",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "profondeur",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      }
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "off"
+                    },
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pensez à la relation fondamentale : la pression dépend de la profondeur, de la densité du fluide et de l’accélération de la pesanteur."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon départ : les termes *pression*, *profondeur* et *fluide* sont attendus. Ajoutez la dépendance à la densité et à la profondeur."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : il manque un ou deux éléments clés pour relier la pression à la profondeur et au fluide."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Très complet : la pression est bien expliquée comme dépendant de la profondeur, de la densité du fluide et de l’accélération de la pesanteur."
+                      }
+                    ]
+                  },
+                  "subContentId": "bcd66f24-25cc-4084-9ecb-76102a223899"
+                },
+                {
+                  "library": "H5P.DragQuestion 1.15",
+                  "metadata": {
+                    "title": "Mécanique des fluides - Glisser-déposer"
+                  },
+                  "params": {
+                    "title": "Associez chaque concept à sa définition ou à son expression mathématique.",
+                    "dropZones": [
+                      {
+                        "label": "Pression hydrostatique",
+                        "correctElements": [
+                          0,
+                          3
+                        ]
+                      },
+                      {
+                        "label": "Poussée d’Archimède",
+                        "correctElements": [
+                          1,
+                          4
+                        ]
+                      },
+                      {
+                        "label": "Équation de continuité",
+                        "correctElements": [
+                          2
+                        ]
+                      }
+                    ],
+                    "elements": [
+                      {
+                        "text": "F = ρ g V"
+                      },
+                      {
+                        "text": "F_A = ρ_f g V_immergé"
+                      },
+                      {
+                        "text": "S_1 v_1 = S_2 v_2"
+                      },
+                      {
+                        "text": "P = P_0 + ρ g h"
+                      },
+                      {
+                        "text": "Force verticale dirigée vers le haut"
+                      }
+                    ],
+                    "override": {
+                      "checkButton": true,
+                      "showSolutionButton": "on",
+                      "retryButton": "off"
+                    },
+                    "enableCheckButton": true,
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Piste : relisez les définitions et les formules clés de chaque concept. La pression hydrostatique inclut une expression avec h."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon début : quelques associations sont correctes. Vérifiez les formules et les descriptions pour les autres."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : une ou deux associations restent à ajuster. Relisez les définitions pour confirmer."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : chaque concept est correctement associé à sa définition ou à son expression mathématique."
+                      }
+                    ]
+                  },
+                  "subContentId": "917506a7-f830-4480-939d-bca58b6901b8"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les bases doivent être consolidées : relisez les définitions du cours et refaites ce quiz en vous concentrant sur les formules et les concepts clés."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Ces notions commencent à s'installer. Identifiez les questions qui ont posé problème et revoyez les points correspondants dans le cours."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Plusieurs notions sont acquises. Repérer les questions qui ont fait hésiter permettra de renforcer ces points précis."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "L'ensemble est bien maîtrisé. Pour ancrer ces acquis, entraînez-vous avec des exercices supplémentaires ou des applications concrètes."
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": "on"
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e5",
+        "titre": "Passer l’évaluation finale",
+        "objectif": "Valider vos connaissances sous contraintes de temps",
+        "introduction": "Vous allez maintenant réaliser l’évaluation finale, qui compte pour votre note. Une seule tentative est possible, et le chronomètre est lancé dès votre entrée dans l’activité. Concentrez-vous sur chaque question sans perdre de temps.",
+        "cartes": [
+          {
+            "id": "c6",
+            "titre": "Test chronométré",
+            "objectif": "Démontrer vos compétences sur l’ensemble du parcours",
+            "consigne": "Lancez le test et répondez aux questions dans le temps imparti. Vous ne pourrez pas revenir en arrière ni consulter de ressources. À la fin, votre note s’affichera sans correction détaillée.",
+            "module": "test_elea",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "bank_name": "Test chronométré - Mécanique des fluides",
+              "bank_description": "Ensemble de 6 questions variées pour évaluer vos compétences en mécanique des fluides : pression hydrostatique, principe fondamental de l’hydrostatique, poussée d’Archimède, débit et équation de continuité.",
+              "questions": [
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q01 - Pression hydrostatique",
+                    "questiontext": "Un plongeur se trouve à une profondeur de 15 mètres dans de l'eau douce (ρ = 1000 kg/m³). Quelle est la pression hydrostatique exercée sur lui ? On prendra g = 9.81 m/s². Arrondir au kPa près.",
+                    "feedback": "La pression hydrostatique se calcule avec la formule P = ρgh, où h est la profondeur.",
+                    "single": "true",
+                    "hints": [
+                      "Pensez à la formule de la pression hydrostatique : P = ρgh.",
+                      "La masse volumique de l'eau douce est de 1000 kg/m³."
+                    ],
+                    "answers": [
+                      {
+                        "text": "147 kPa",
+                        "fraction": 100,
+                        "feedback": "Exact ! P = 1000 × 9.81 × 15 = 147150 Pa soit 147.15 kPa."
+                      },
+                      {
+                        "text": "150 kPa",
+                        "fraction": 0,
+                        "feedback": "C'est proche, mais la valeur exacte est 147 kPa."
+                      },
+                      {
+                        "text": "140 kPa",
+                        "fraction": 0,
+                        "feedback": "Cette valeur est en dessous de la pression réelle."
+                      },
+                      {
+                        "text": "160 kPa",
+                        "fraction": 0,
+                        "feedback": "Cette valeur est au-dessus de la pression réelle."
+                      },
+                      {
+                        "text": "130 kPa",
+                        "fraction": 0,
+                        "feedback": "Cette valeur est trop basse pour une profondeur de 15 mètres."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q02 - Principe fondamental de l'hydrostatique",
+                    "questiontext": "Le principe fondamental de l'hydrostatique s'applique dans un fluide :",
+                    "feedback": "Ce principe relie les pressions en deux points d'un fluide au repos.",
+                    "single": "false",
+                    "hints": [
+                      "Pensez aux conditions d'application du principe fondamental de l'hydrostatique.",
+                      "Le fluide doit être au repos et de masse volumique uniforme."
+                    ],
+                    "answers": [
+                      {
+                        "text": "dans un fluide en mouvement",
+                        "fraction": 0,
+                        "feedback": "Le principe fondamental de l'hydrostatique s'applique uniquement aux fluides au repos."
+                      },
+                      {
+                        "text": "dans un fluide au repos",
+                        "fraction": 33.33333,
+                        "feedback": "Oui, c'est une condition nécessaire."
+                      },
+                      {
+                        "text": "si le fluide a une masse volumique uniforme",
+                        "fraction": 33.33333,
+                        "feedback": "Oui, c'est une autre condition nécessaire."
+                      },
+                      {
+                        "text": "si la pression est indépendante de la profondeur",
+                        "fraction": 0,
+                        "feedback": "Faux, la pression varie avec la profondeur."
+                      },
+                      {
+                        "text": "si le fluide est parfait",
+                        "fraction": 33.33334,
+                        "feedback": "Oui, un fluide parfait (sans viscosité) est une hypothèse classique."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "numerical",
+                  "content": {
+                    "name": "Q03 - Poussée d'Archimède",
+                    "questiontext": "Un cube de côté 10 cm est immergé dans l'eau (ρ = 1000 kg/m³). Quelle est la poussée d'Archimède exercée sur ce cube ? Prenez g = 9.81 m/s². Donnez le résultat en newtons.",
+                    "feedback": "La poussée d'Archimède se calcule avec F = ρVg, où V est le volume immergé.",
+                    "hints": [
+                      "Calculez d'abord le volume du cube.",
+                      "La poussée d'Archimède dépend du volume de fluide déplacé."
+                    ],
+                    "answer": {
+                      "number": 9.81,
+                      "tolerance": 0.1,
+                      "feedback": "Correct ! V = 0.1³ = 0.001 m³, F = 1000 × 0.001 × 9.81 = 9.81 N."
+                    }
+                  }
+                },
+                {
+                  "type": "matching",
+                  "content": {
+                    "name": "Q04 - Équation de continuité",
+                    "questiontext": "Associez chaque concept à sa définition ou formule correspondante.",
+                    "feedback": "Ces associations sont essentielles pour comprendre l'équation de continuité.",
+                    "single": "false",
+                    "hints": [
+                      "Rappelez-vous que l'équation de continuité exprime la conservation du débit.",
+                      "Pensez aux définitions des termes : débit, section, vitesse."
+                    ],
+                    "subquestions": [
+                      {
+                        "text": "Débit volumique",
+                        "answer": "Q = S × v"
+                      },
+                      {
+                        "text": "Équation de continuité",
+                        "answer": "Q₁ = Q₂"
+                      },
+                      {
+                        "text": "Conservation de la masse",
+                        "answer": "ρ₁S₁v₁ = ρ₂S₂v₂"
+                      },
+                      {
+                        "text": "Vitesse d'un fluide",
+                        "answer": "v = Q / S"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "truefalse",
+                  "content": {
+                    "name": "Q05 - Débit et équation de continuité",
+                    "questiontext": "Dans un tuyau horizontal, si la section diminue, la vitesse du fluide augmente.",
+                    "feedback": "C'est une conséquence directe de l'équation de continuité.",
+                    "answer": {
+                      "value": true,
+                      "feedback_true": "Exact, la vitesse augmente pour conserver le débit.",
+                      "feedback_false": "C'est faux : la vitesse augmente lorsque la section diminue."
+                    }
+                  }
+                },
+                {
+                  "type": "shortanswer",
+                  "content": {
+                    "name": "Q06 - Application du principe de Pascal",
+                    "questiontext": "Un fluide incompressible transmet intégralement la pression appliquée. Ce principe porte le nom de :",
+                    "feedback": "Ce principe est essentiel en mécanique des fluides et porte le nom de son découvreur.",
+                    "answers": [
+                      {
+                        "text": "Principe de Pascal",
+                        "fraction": 100,
+                        "feedback": "Correct !"
+                      },
+                      {
+                        "text": "Principe de Bernoulli",
+                        "fraction": 0,
+                        "feedback": "Non, ce principe est différent : il relie pression, vitesse et altitude."
+                      },
+                      {
+                        "text": "Théorème d'Archimède",
+                        "fraction": 0,
+                        "feedback": "Non, ce théorème concerne la poussée sur un corps immergé."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "overallfeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Votre score montre que les bases de la mécanique des fluides nécessitent un réinvestissement. Revoyez les formules de pression hydrostatique, de poussée d'Archimède et les principes de continuité. Utilisez les activités précédentes pour consolider ces notions."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Vous avez des acquis partiels, mais certaines notions résistent encore. Identifiez les questions qui ont posé problème et travaillez spécifiquement sur les points faibles : par exemple, vérifiez vos calculs de pression ou l'application de l'équation de continuité."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Votre maîtrise des concepts est satisfaisante, mais des détails restent à affiner. Passez en revue les questions où vous avez hésité pour comprendre ce qui a pu vous induire en erreur. Les notions de débit et de poussée d'Archimède sont souvent sources de confusions."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Félicitations ! Vous avez démontré une bonne compréhension des concepts de mécanique des fluides. Pour aller plus loin, explorez les applications pratiques de ces principes, comme les systèmes hydrauliques ou les phénomènes naturels."
+                }
+              ],
+              "quiz_settings": {
+                "attempts": 1,
+                "preferredbehaviour": "deferredfeedback",
+                "review": "marks",
+                "timelimit_minutes": 20
+              },
+              "title": "Test chronométré"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "Licence 1 de physique",
+    "adultes": true
+  }
+}
