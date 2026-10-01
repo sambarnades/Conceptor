@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "De inhoud bewerken",
   "parcours_fab_echec_carte": "Deze activiteit kon niet worden gemaakt. U kunt het opnieuw proberen.",
   "parcours_consigne_manquante": "Sommige oefeningen van deze activiteit hebben geen opdracht, zelfs na een tweede aanvraag: genereer de activiteit opnieuw.",
+  "parcours_mise_en_forme": "Deze activiteit kon zelfs na een tweede verzoek niet voor het platform worden opgemaakt: genereer haar opnieuw.",
   "parcours_fab_editeur_titre": "“@t” bewerken",
   "parcours_fab_editeur_fermer": "De editor sluiten",
   "parcours_cta_livrer": "Het leerpad samenstellen",

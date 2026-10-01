@@ -65,7 +65,7 @@ js/parcours/     atelier de parcours : intention → plan → N générations �
                  seule une réponse sans aucune activité échoue. L'exemple complet du prompt de
                  plan (D108, `exemple-plan.js`) passe le contrôle pour les 600 cadrages : banc
                  `run_parcours_reparation.mjs` (Node, CI).
-                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D108 avec leur
+                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D111 avec leur
                  raison, pièges, et le journal des allers-retours réels sur plateforme.
                  Ne rien y rouvrir sans lire ce fichier ; y écrire toute décision nouvelle.
 js/locales/      12 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el, br (~2873 clés/fichier)

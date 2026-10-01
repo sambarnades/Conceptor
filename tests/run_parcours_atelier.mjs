@@ -1632,6 +1632,68 @@ try {
     ok('une Page de 25 minutes vise cinq fois la longueur d’une Page de 5 (400 → 2 000 mots)',
         consignes.p5 === '400' && consignes.p25 === '2000', JSON.stringify({ p5: consignes.p5, p25: consignes.p25 }));
 
+    // D109 — une activité que sa mise en paquet refuse est redemandée à la FABRICATION,
+    // au lieu d'être écartée à la livraison (« erreur de mise en forme », parcours réel
+    // du 1er oct. 2026 : une Rédaction à `occurrences: 0`).
+    console.log('\n── Une activité refusée à la mise en forme est redemandée dès la fabrication ──');
+    const paquet = await page.evaluate(async () => {
+        const { creerFile } = await import('/js/parcours/parcours-runner.js');
+        const motCle = (k, occ) => ({ keyword: k, alternatives: [], options: { points: 1, occurrences: occ, caseSensitive: false, forgiveMistakes: false } });
+        const redaction = mots => JSON.stringify({ title: 'Décrire un angle', taskDescription: 'Décris un angle d’un objet de ta classe.',
+            placeholderText: 'Écris ici', solution: { introduction: '', sample: 'Le coin de la table forme un angle droit.' }, keywords: mots });
+        const essai = async (reponses) => {
+            const d = { platform: 'elea', format: 'distanciel', ampleur: 'courte', trame: 'libre',
+                contexte: { qui: 'un professeur', quoi: 'les angles', niveau: 'sixième', corpus: '' },
+                plan: { titre: 'Angles', objectifGeneral: 'Reconnaître', notionsPivots: [], etapes: [{ id: 'e1', titre: 'Défi', cartes: [
+                    { id: 'r1', titre: 'Décrire un angle', objectif: 'Décrire', consigne: 'Décrire un angle', module: 'Essay', palier: 'transfert', duree: 20, verrouillee: false }] }] } };
+            const prompts = [];
+            const file = creerFile(d, { appelModele: async (prompt) => { prompts.push(prompt); return reponses[prompts.length - 1]; } });
+            const etat = await file.demarrer();
+            const contenu = d.plan.etapes[0].cartes[0].contenu;
+            return { appels: prompts.length, statut: etat.lignes[0].statut, cle: etat.lignes[0].erreurKey, rappel: prompts[1] || '',
+                occurrences: contenu?.keywords?.map(k => k.options?.occurrences) || null };
+        };
+        return {
+            zero: await essai([redaction([motCle('angle droit', 1), motCle('mesure d’un angle', 0)])]),
+            rattrapee: await essai([redaction([]), redaction([motCle('angle droit', 1)])]),
+            obstinee: await essai([redaction([]), redaction([])]),
+        };
+    });
+    ok('une Rédaction à « occurrences: 0 » est réparée (une occurrence), sans second appel',
+        paquet.zero.appels === 1 && paquet.zero.statut === 'faite' && JSON.stringify(paquet.zero.occurrences) === '[1,1]', JSON.stringify(paquet.zero));
+    ok('une activité que la mise en forme refuse est redemandée UNE fois, avec la cause',
+        paquet.rattrapee.appels === 2 && paquet.rattrapee.statut === 'faite'
+        && /CORRECTION DEMANDÉE[\s\S]*mise en forme pour la plateforme[\s\S]*mot-clé/.test(paquet.rattrapee.rappel), JSON.stringify(paquet.rattrapee));
+    ok('au second refus, la carte échoue À LA FABRICATION avec un message clair (plus à la livraison)',
+        paquet.obstinee.appels === 2 && paquet.obstinee.statut === 'echouee' && paquet.obstinee.cle === 'parcours_mise_en_forme', JSON.stringify(paquet.obstinee));
+
+    // D110 — les images d'une Page : celles que l'IA de Caramel invente sont retirées ;
+    // celles d'une réponse collée depuis une IA grand public restent (sauf services factices).
+    const images = await page.evaluate(async () => {
+        const { creerFile } = await import('/js/parcours/parcours-runner.js');
+        const { verifierActiviteExterne } = await import('/js/parcours/external-ai.js');
+        const { construirePromptRemplissage } = await import('/js/parcours/scenario-prompt.js');
+        const reponse = JSON.stringify({ title: 'Les angles', intro: 'Observe les angles autour de toi.', blocks: [
+            { type: '#12_context_paragraphs', data: { title: 'Repérer', paragraphs: ['Un angle a un sommet et deux côtés.'] } },
+            { type: '#08_monuments_grid', data: { title: 'Des angles partout', cards: [
+                { img_src: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/Equerre.jpg', img_alt: 'Équerre', caption: 'Une équerre', title: 'L’équerre', text: 'Elle trace des angles droits.' }] } }] });
+        const carte = { id: 'p1', titre: 'Les angles', objectif: 'Observer', consigne: 'Lire', module: 'Page', palier: 'decouverte', duree: 10, verrouillee: false };
+        const d = { platform: 'elea', format: 'distanciel', ampleur: 'courte', trame: 'libre',
+            contexte: { qui: 'un professeur', quoi: 'les angles', niveau: 'sixième', corpus: '' },
+            plan: { titre: 'Angles', objectifGeneral: 'Reconnaître', notionsPivots: [], etapes: [{ id: 'e1', titre: 'Découvrir', cartes: [carte] }] } };
+        const file = creerFile(d, { appelModele: async () => reponse });
+        const etat = await file.demarrer();
+        const genere = d.plan.etapes[0].cartes[0].contenu;
+        const colle = (await verifierActiviteExterne(reponse, { carte: { ...carte }, source: null })).value;
+        const { prompt } = await construirePromptRemplissage(d, carte);
+        return { statut: etat.lignes[0].statut, genere: genere.blocks.map(b => b.type), colle: colle.blocks.map(b => b.type),
+            adresseCollee: colle.blocks[1]?.data?.cards?.[0]?.img_src || null, regle: /n’invente jamais l’adresse d’une image/.test(prompt) };
+    });
+    ok('Page de l’IA de Caramel : l’image inventée part, la grille devient un paragraphe, la carte est faite',
+        images.statut === 'faite' && JSON.stringify(images.genere) === '["#12_context_paragraphs","#12_context_paragraphs"]', JSON.stringify(images));
+    ok('Page collée depuis une IA grand public : sa vraie image reste', /wikimedia/.test(images.adresseCollee || '') && images.colle[1] === '#08_monuments_grid', JSON.stringify(images));
+    ok('le cadre d’une Page interdit d’inventer l’adresse d’une image, sans interdire les images', images.regle);
+
     await browser.close();
 } catch (e) {
     fail++;

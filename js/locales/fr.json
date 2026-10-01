@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "Modifier le contenu",
   "parcours_fab_echec_carte": "La génération de cette activité a échoué. Vous pouvez la refaire.",
   "parcours_consigne_manquante": "Des exercices de cette activité n’ont pas de consigne, même après une seconde demande : générez-la à nouveau.",
+  "parcours_mise_en_forme": "Cette activité n’a pas pu être mise en forme pour la plateforme, même après une seconde demande : générez-la à nouveau.",
   "parcours_fab_editeur_titre": "Modifier « @t »",
   "parcours_fab_editeur_fermer": "Fermer l'éditeur",
   "parcours_cta_livrer": "Assembler le parcours",

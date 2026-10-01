@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "编辑内容",
   "parcours_fab_echec_carte": "此活动生成失败。您可以重试。",
   "parcours_consigne_manquante": "此活动中有些练习即使在第二次请求后仍缺少任务说明：请重新生成该活动。",
+  "parcours_mise_en_forme": "即使再次请求，此活动仍无法为平台排版：请重新生成。",
   "parcours_fab_editeur_titre": "编辑“@t”",
   "parcours_fab_editeur_fermer": "关闭编辑器",
   "parcours_cta_livrer": "组装学习路径",

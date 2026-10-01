@@ -113,6 +113,18 @@ const SCENARIOS = {
             niveau: '5e',
         },
     },
+    // Le parcours d'Emmanuel du 1er oct. 2026 : une Rédaction écartée à la livraison
+    // (`occurrences: 0`, D109), deux images inventées dans la Page (D110).
+    'elea-angles-chemins': {
+        titre: 'Différencier — Les natures des angles (6e)',
+        platform: 'elea', format: 'distanciel', ampleur: 'longue', trame: 'auto',
+        structure: 'chemins', chemins: 3,
+        contexte: {
+            qui: 'Professeur de mathématiques',
+            quoi: 'Découvrir les natures des angles : angle droit, aigu, obtus, plat, saillant et rentrant ; repérer le sommet et les côtés ; estimer et comparer des mesures d’angles',
+            niveau: '6e',
+        },
+    },
     'magistere-laicite-entrainement': {
         adultes: true,
         titre: 'S’entraîner — Faire vivre la laïcité à l’école',
@@ -189,8 +201,6 @@ for (const id of ids) {
     for (let essai = 1; essai <= 2 && !r; essai++) {
       try {
         r = await page.evaluate(async ({ sc, lien }) => {
-        const { construirePromptPlan } = await import('/js/parcours/scenario-prompt.js');
-        const { controlerCalibrage, remarquesComposition } = await import('/js/parcours/calibrage.js');
         const { generateRawWithLLM, DEFAULT_MODEL } = await import('/js/services/llm.js');
         const { extraireJson, creerFile } = await import('/js/parcours/parcours-runner.js');
         const { normaliserPlan } = await import('/js/parcours/screen-plan.js');
@@ -203,20 +213,19 @@ for (const id of ids) {
             structure: sc.structure || 'lineaire', chemins: sc.chemins || 2,
             contexte: { ...sc.contexte, corpus: '' } };
 
-        // 1. Le plan, par le modèle — avec le même rattrapage unique que l'atelier.
+        // 1. Le plan, par le modèle — la boucle même de l'atelier (D107) : réparer,
+        // contrôler, reprendre une fois, garder le meilleur.
         const debutPlan = Date.now();
+        const { construirePromptPlan, reparationDuPlan } = await import('/js/parcours/scenario-prompt.js');
+        const { composerAvecReprise } = await import('/js/parcours/composition-plan.js');
         const { prompt, calibrage, modules } = construirePromptPlan(draft);
-        let brut = null, demande = prompt;
-        for (let essai = 0; essai < 2; essai++) {
-            const res = await generateRawWithLLM(demande, DEFAULT_MODEL, {
-                activityMeta: { moduleKey: 'parcours-plan', category: 'parcours' }, stats: 'skip' });
-            brut = await extraireJson(res.content);
-            const erreurs = controlerCalibrage(brut, calibrage, modules);
-            const remarques = essai === 0 ? remarquesComposition(brut) : [];
-            if (!erreurs.length && !remarques.length) break;
-            demande = `${prompt}\n\n## NOUVELLE COMPOSITION APRÈS CONTRÔLE\n${[...erreurs, ...remarques].slice(0, 16).join('\n')}\nRecompose le plan COMPLET. Retourne uniquement le JSON complet.`;
-        }
-        draft.plan = normaliserPlan(brut, draft.platform);
+        const compose = await composerAvecReprise({
+            prompt, calibrage, modules, lireJson: extraireJson, reparation: reparationDuPlan(draft),
+            appeler: async demande => (await generateRawWithLLM(demande, DEFAULT_MODEL, {
+                activityMeta: { moduleKey: 'parcours-plan', category: 'parcours' }, stats: 'skip' })).content,
+        });
+        if (!compose || !compose.plan) throw new Error('plan illisible');
+        draft.plan = normaliserPlan(compose.plan, draft.platform);
         const dureePlan = Math.round((Date.now() - debutPlan) / 1000);
 
         if (sc.imsAuLieuDe) {

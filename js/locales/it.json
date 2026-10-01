@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "Modificare il contenuto",
   "parcours_fab_echec_carte": "La generazione di questa attività non è riuscita. Potete rifarla.",
   "parcours_consigne_manquante": "Alcuni esercizi di questa attività non hanno consegna, anche dopo una seconda richiesta: generala di nuovo.",
+  "parcours_mise_en_forme": "Questa attività non è stata impaginata per la piattaforma, nemmeno dopo una seconda richiesta: la generi di nuovo.",
   "parcours_fab_editeur_titre": "Modificare « @t »",
   "parcours_fab_editeur_fermer": "Chiudere l'editor",
   "parcours_cta_livrer": "Assemblare il percorso",

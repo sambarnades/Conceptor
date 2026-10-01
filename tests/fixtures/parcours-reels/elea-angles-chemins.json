@@ -1,0 +1,2342 @@
+{
+  "format": 2,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-10-01T12:23:29.451Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "longue",
+    "trame": "auto",
+    "structure": "chemins",
+    "chemins": 3
+  },
+  "plan": {
+    "titre": "Découvrir les angles",
+    "objectifGeneral": "Identifier et caractériser les différents types d'angles",
+    "introduction": "Dans ce parcours, tu vas explorer les angles : comment les reconnaître, les nommer et les comparer. Chaque étape commence par une découverte, puis tu t’entraînes avec des exercices adaptés à tes réponses. Lis bien les corrections pour progresser.",
+    "conclusion": "Tu sais maintenant distinguer un angle aigu d’un angle obtus, repérer son sommet et ses côtés, et estimer ses mesures. Pour aller plus loin, observe des objets autour de toi et classe leurs angles.",
+    "notionsPivots": [
+      "l'angle droit",
+      "l'angle aigu",
+      "l'angle obtus",
+      "l'angle plat",
+      "l'angle saillant",
+      "l'angle rentrant",
+      "le sommet d'un angle",
+      "les côtés d'un angle",
+      "la mesure d'un angle",
+      "comparer des angles",
+      "estimer la mesure d'un angle"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Premières observations",
+        "objectif": "Observer et nommer les angles dans des situations variées",
+        "introduction": "Tu commences par découvrir ce qu’est un angle et comment le repérer. Repère bien le sommet et les côtés sur chaque exemple.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "À la découverte des angles",
+            "objectif": "Définir un angle et identifier ses éléments",
+            "consigne": "Lis le texte et observe les schémas pour comprendre ce qu’est un angle, son sommet et ses côtés.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "À la découverte des angles",
+              "intro": "Aujourd'hui, tu vas explorer un nouvel outil mathématique : l'angle. Grâce à des schémas et des exemples concrets, tu vas apprendre à le reconnaître, à identifier ses parties et à distinguer ses différentes formes. Prêt à tourner la page des figures géométriques ?",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "À la découverte des angles",
+                    "subtitle": "Apprends à reconnaître et à nommer les angles"
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Ce que tu vas découvrir",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Savoir ce qu'est un angle et identifier son sommet et ses côtés."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Reconnaître les angles selon leur apparence : droit, aigu, obtus, plat, saillant ou rentrant."
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "Attention à bien distinguer les côtés et le sommet : ce sont les éléments de base pour décrire un angle."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Qu’est-ce qu’un angle ?",
+                    "paragraphs": [
+                      "Imagine deux droites qui se croisent ou deux demi-droites qui partent du même point. L’espace qui se forme entre elles s’appelle un angle. C’est comme si tu ouvrais un livre : les deux pages forment un angle. En mathématiques, on utilise ce mot pour décrire l’écartement entre deux lignes.",
+                      "Un angle est toujours défini par trois éléments : le sommet et les deux côtés. Le sommet, c’est le point où les deux lignes se rencontrent. Les côtés, ce sont les deux demi-droites ou segments qui partent de ce sommet. Par exemple, si tu dessines deux traits qui se croisent à 45°, le point de croisement est le sommet, et les deux traits sont les côtés.",
+                      "Pour mieux visualiser, prends une feuille et trace deux traits qui se croisent. Le point où ils se touchent est le sommet. Les traits, eux, sont les côtés. Tu viens de créer un angle ! Maintenant, essaie de faire varier l’écartement entre tes deux traits : plus ils s’éloignent l’un de l’autre, plus l’angle devient grand. C’est cette grandeur que l’on mesure en degrés."
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Les éléments d’un angle",
+                    "paragraphs": [
+                      "Un angle formé par deux demi-droites partageant un sommet commun.",
+                      "Les côtés sont les demi-droites OA et OB, et O est le sommet.",
+                      "Sur ces schémas, tu vois clairement le sommet (le point O) et les deux côtés (les demi-droites OA et OB). Ces éléments sont essentiels pour décrire et nommer un angle. Quand tu écris un angle, tu dois toujours indiquer son sommet au milieu. Par exemple, l’angle formé par OA et OB s’écrit AOB ou BOA. Attention à ne pas confondre l’ordre des lettres : la lettre du milieu est toujours le sommet."
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Les différents types d’angles",
+                    "paragraphs": [
+                      "Tous les angles ne se ressemblent pas. Selon leur écartement, on les classe en plusieurs catégories. Voici les principaux types d’angles que tu vas rencontrer :",
+                      "- L’angle droit : c’est un angle qui mesure exactement 90°. Il ressemble à l’angle formé par le coin d’une feuille ou d’un livre. Pour le repérer, tu peux utiliser une équerre. Si les deux côtés de l’angle épousent parfaitement les bords de l’équerre, c’est un angle droit.",
+                      "- L’angle aigu : il est plus petit que l’angle droit, c’est-à-dire qu’il mesure moins de 90°. Imagine un angle très fermé, comme les aiguilles d’une horloge à 1 heure ou 2 heures.",
+                      "- L’angle obtus : à l’inverse, il est plus grand que l’angle droit et mesure entre 90° et 180°. Il ressemble à un angle très ouvert, comme les aiguilles d’une horloge à 4 heures.",
+                      "Ces trois types d’angles (droit, aigu, obtus) sont appelés angles saillants car ils sont toujours inférieurs à 180° et ne 'dépassent' pas la droite. Il existe aussi un angle qui mesure exactement 180° : c’est l’angle plat. Imagine une ligne droite : si tu la coupes en deux, tu obtiens deux angles plats.",
+                      "Enfin, il y a les angles rentrants, qui mesurent plus de 180° et moins de 360°. Ils 'rentrent' vers l’intérieur, comme un angle qui dépasse de l’autre côté d’une droite. Par exemple, l’angle formé par les deux branches d’un compas ouvert à plus de 180° est un angle rentrant."
+                    ]
+                  }
+                },
+                {
+                  "type": "#11_definition_box",
+                  "data": {
+                    "title": "Définitions à retenir",
+                    "text": "Un angle se définit par un sommet (point commun) et deux côtés (demi-droites ou segments). Selon leur mesure, on distingue l’angle droit (90°), l’angle aigu (<90°), l’angle obtus (90°<angle<180°), l’angle plat (180°) et l’angle rentrant (>180°)."
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Lexique des angles",
+                    "caption": "Les mots clés à connaître pour décrire un angle.",
+                    "headers": [
+                      "Terme",
+                      "Définition"
+                    ],
+                    "rows": [
+                      [
+                        "Sommet d'un angle",
+                        "Point où se rejoignent les deux côtés de l'angle."
+                      ],
+                      [
+                        "Côtés d'un angle",
+                        "Les deux demi-droites ou segments qui forment l'angle."
+                      ],
+                      [
+                        "Angle droit",
+                        "Angle qui mesure exactement 90°, comme un coin de papier."
+                      ],
+                      [
+                        "Angle aigu",
+                        "Angle plus petit que 90°, très 'fermé'."
+                      ],
+                      [
+                        "Angle obtus",
+                        "Angle plus grand que 90° mais inférieur à 180°, 'ouvert'."
+                      ],
+                      [
+                        "Angle plat",
+                        "Angle qui mesure 180°, comme une ligne droite."
+                      ],
+                      [
+                        "Angle saillant",
+                        "Angle dont la mesure est comprise entre 0° et 180°."
+                      ],
+                      [
+                        "Angle rentrant",
+                        "Angle dont la mesure est comprise entre 180° et 360°."
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Comment estimer ou comparer des angles ?",
+                    "paragraphs": [
+                      "Pour comparer deux angles, tu n’as pas toujours besoin d’une règle ou d’un rapporteur. Tu peux les comparer visuellement en observant leur écartement. Par exemple, si un angle te semble plus 'fermé' qu’un autre, c’est qu’il est plus petit. À l’inverse, s’il te semble très 'ouvert', c’est qu’il est plus grand.",
+                      "Pour t’entraîner, prends deux feuilles de papier et trace des angles différents. Puis, essaie de les classer du plus petit au plus grand. Tu peux aussi utiliser ton équerre : si un angle rentre dans l’équerre, c’est un angle aigu ; s’il épouse parfaitement le coin, c’est un angle droit ; s’il dépasse, c’est un angle obtus.",
+                      "Pour estimer la mesure d’un angle, compare-le à des angles de référence. Par exemple, l’angle droit sert de base : si un angle est deux fois plus grand que l’angle droit, c’est un angle plat (180°). Si tu as du mal à visualiser, dessine un cercle autour du sommet : l’angle qui couvre la moitié du cercle est un angle plat."
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Pour résumer",
+                    "callouts": [
+                      {
+                        "type": "savoir",
+                        "text": "Un angle est toujours défini par un sommet et deux côtés. Ces trois éléments sont indispensables pour le décrire."
+                      },
+                      {
+                        "type": "objectif",
+                        "text": "Tu dois maintenant être capable de reconnaître un angle droit, aigu, obtus, plat, saillant ou rentrant dans une figure géométrique."
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "N’oublie pas que la lettre du milieu dans le nom d’un angle correspond toujours au sommet. Par exemple, dans l’angle ABC, B est le sommet."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Pour aller plus loin",
+                    "links": [
+                      {
+                        "href": "https://www.assistancescolaire.com/eleve/6e/maths/reviser-une-notion/6mcpn03",
+                        "text": "Assistance Scolaire : Les angles en 6e"
+                      },
+                      {
+                        "href": "https://www.khanacademy.org/math/geometry/hs-geo-foundations/hs-geo-angles/v/angle-basics",
+                        "text": "Khan Academy : Les bases sur les angles (en anglais)"
+                      },
+                      {
+                        "href": "https://www.maths-et-tiques.fr/index.php/histoire-des-maths/nombres/le-degre",
+                        "text": "Maths et Tiques : L’histoire de la mesure des angles"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c3",
+            "titre": "Quiz : reconnaître les angles",
+            "objectif": "Identifier les angles dans des figures géométriques",
+            "consigne": "Réponds aux questions en choisissant la bonne réponse parmi les propositions.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz : reconnaître les angles",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "C'est parti pour le quiz !",
+                "introduction": "Voici 5 questions pour vérifier que tu maîtrises les différents types d'angles et leurs caractéristiques. Lis bien chaque question et choisis la ou les bonnes réponses. Tu peux revenir en arrière si besoin.",
+                "startButtonText": "Commencer le quiz"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Identifier un angle droit"
+                  },
+                  "params": {
+                    "question": "Parmi ces angles, lequel est un angle droit ?",
+                    "answers": [
+                      {
+                        "text": "Un angle qui mesure \\( 45^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pense à l'équerre : elle forme un angle droit.",
+                          "chosenFeedback": "Erreur : \\( 45^{\\circ} \\) est la moitié d'un angle droit. Un angle droit mesure \\( 90^{\\circ} \\)."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 90^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un angle droit mesure toujours \\( 90^{\\circ} \\)."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 180^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un angle de \\( 180^{\\circ} \\) est un angle plat, pas un angle droit."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour reconnaître un angle droit, pense à l'équerre ou à un coin de feuille : il forme toujours un angle de 90 degrés."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle droit mesure 90 degrés, pas moins."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : l'angle qui mesure 180 degrés est un angle plat, pas un angle droit."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle droit mesure toujours 90 degrés."
+                      }
+                    ]
+                  },
+                  "subContentId": "a548eb62-8cd2-4f7f-9b2b-9d1224ac1819"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Reconnaître un angle aigu"
+                  },
+                  "params": {
+                    "question": "Parmi ces angles, lequel est un angle aigu ?",
+                    "answers": [
+                      {
+                        "text": "Un angle qui mesure \\( 120^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Un angle aigu est plus petit qu'un angle droit.",
+                          "chosenFeedback": "Erreur : \\( 120^{\\circ} \\) est plus grand qu'un angle droit. Un angle aigu mesure entre 0 et 90 degrés."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 60^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( 60^{\\circ} \\) est compris entre 0 et 90 degrés, donc c'est un angle aigu."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 75^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( 75^{\\circ} \\) est aussi compris entre 0 et 90 degrés, donc c'est un angle aigu."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 100^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : \\( 100^{\\circ} \\) est plus grand qu'un angle droit. Un angle aigu mesure entre 0 et 90 degrés."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un angle aigu est plus petit qu'un angle droit. Vérifie bien la mesure : elle doit être entre 0 et 90 degrés."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle aigu mesure entre 0 et 90 degrés. Il peut y avoir deux bonnes réponses."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : un angle aigu mesure entre 0 et 90 degrés. Il y a deux bonnes réponses à cette question."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle aigu mesure toujours entre 0 et 90 degrés."
+                      }
+                    ]
+                  },
+                  "subContentId": "27c85a9a-b351-439c-91c3-367a45e4a7eb"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Reconnaître un angle obtus"
+                  },
+                  "params": {
+                    "question": "Parmi ces angles, lequel est un angle obtus ?",
+                    "answers": [
+                      {
+                        "text": "Un angle qui mesure \\( 30^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Un angle obtus est plus grand qu'un angle droit mais plus petit qu'un angle plat.",
+                          "chosenFeedback": "Erreur : \\( 30^{\\circ} \\) est plus petit qu'un angle droit. Un angle obtus mesure entre 90 et 180 degrés."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 100^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( 100^{\\circ} \\) est compris entre 90 et 180 degrés, donc c'est un angle obtus."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 180^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un angle de \\( 180^{\\circ} \\) est un angle plat, pas un angle obtus."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 150^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( 150^{\\circ} \\) est aussi compris entre 90 et 180 degrés, donc c'est un angle obtus."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un angle obtus est plus grand qu'un angle droit mais plus petit qu'un angle plat. Vérifie bien la mesure : elle doit être entre 90 et 180 degrés."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle obtus mesure entre 90 et 180 degrés. Il peut y avoir deux bonnes réponses."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : un angle obtus mesure entre 90 et 180 degrés. Il y a deux bonnes réponses à cette question."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle obtus mesure toujours entre 90 et 180 degrés."
+                      }
+                    ]
+                  },
+                  "subContentId": "a8224c89-05af-4409-93d0-5f593653caf2"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Identifier un angle plat"
+                  },
+                  "params": {
+                    "question": "Parmi ces angles, lequel est un angle plat ?",
+                    "answers": [
+                      {
+                        "text": "Un angle qui mesure \\( 90^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Un angle plat est un angle qui forme une ligne droite.",
+                          "chosenFeedback": "Erreur : un angle de \\( 90^{\\circ} \\) est un angle droit. Un angle plat mesure toujours \\( 180^{\\circ} \\)."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 180^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un angle plat mesure toujours \\( 180^{\\circ} \\)."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 270^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : un angle de \\( 270^{\\circ} \\) est un angle rentrant. Un angle plat mesure toujours \\( 180^{\\circ} \\)."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un angle plat est un angle qui forme une ligne droite. Pense à un segment de droite : l'angle qu'il forme avec lui-même est plat."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle plat mesure 180 degrés, comme une ligne droite."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : un angle de 270 degrés est un angle rentrant, pas un angle plat."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle plat mesure toujours 180 degrés."
+                      }
+                    ]
+                  },
+                  "subContentId": "cd1f6671-ab1b-439a-9381-d1bfc1d3d3f8"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Reconnaître un angle saillant ou rentrant"
+                  },
+                  "params": {
+                    "question": "Parmi ces angles, lequel est un angle rentrant ?",
+                    "answers": [
+                      {
+                        "text": "Un angle qui mesure \\( 120^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Un angle rentrant est plus grand qu'un angle plat.",
+                          "chosenFeedback": "Erreur : un angle de \\( 120^{\\circ} \\) est un angle obtus, car il est compris entre 90 et 180 degrés. Un angle rentrant mesure plus de 180 degrés."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 200^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un angle rentrant mesure plus de 180 degrés, comme \\( 200^{\\circ} \\)."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 45^{\\circ} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : \\( 45^{\\circ} \\) est un angle aigu, car il mesure moins de 90 degrés."
+                        }
+                      },
+                      {
+                        "text": "Un angle qui mesure \\( 350^{\\circ} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un angle de \\( 350^{\\circ} \\) est un angle rentrant, car il mesure plus de 180 degrés."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un angle rentrant est un angle qui mesure plus de 180 degrés. Cherche une mesure qui dépasse cette valeur."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle rentrant mesure plus de 180 degrés. Il peut y avoir deux bonnes réponses."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : un angle rentrant mesure plus de 180 degrés. Il peut y avoir deux bonnes réponses à cette question."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle rentrant mesure toujours plus de 180 degrés."
+                      }
+                    ]
+                  },
+                  "subContentId": "c68ed0fa-1b90-4c57-97bf-e83334b523fc"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les bases sont à revoir : relis le cours sur les angles et refais le quiz pour progresser. Pense à l'équerre pour l'angle droit et aux mesures pour les autres angles."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Ces notions s'installent. Cibler les angles droit, plat et obtus qui résistent pour t'entraîner encore un peu."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Plusieurs notions sont acquises. Repère les questions qui ont fait hésiter pour consolider tes acquis."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "L'ensemble est bien maîtrisé. Pour ancrer ces acquis, entraîne-toi encore avec des exemples concrets."
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": "on",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Les bases sont à reprendre : relis le cours, puis refais le quiz, pour progresser."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "Ces notions s'installent. Cibler ce qui résiste et s'entraîner encore un peu."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Plusieurs notions sont acquises. Repérer les questions qui ont fait hésiter permettra de consolider."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "L'ensemble est bien maîtrisé. S'entraîner encore ancrera ces acquis."
+                  }
+                ]
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c4",
+            "titre": "Associer les angles à leurs noms",
+            "objectif": "Relier chaque angle à sa nature",
+            "consigne": "Associe chaque angle dessiné à son nom : droit, aigu, obtus, plat, saillant ou rentrant.",
+            "module": "Appariement",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 8,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Associer les angles à leurs noms",
+              "intro": "Voici quatre angles dessiné. Associe chacun à sa nature parmi : angle droit, angle aigu, angle obtus ou angle plat. Regarde bien le sommet et l'ouverture entre les côtés pour faire ton choix.",
+              "pairs": [
+                {
+                  "question": "Angle 1 : \\[ \\widehat{ABC} \\) avec \\[ \\widehat{ABC} = 90° \\)",
+                  "answer": "angle droit"
+                },
+                {
+                  "question": "Angle 2 : \\[ \\widehat{DEF} \\) avec \\[ \\widehat{DEF} < 90° \\)",
+                  "answer": "angle aigu"
+                },
+                {
+                  "question": "Angle 3 : \\[ \\widehat{GHI} \\) avec \\[ 90° < \\widehat{GHI} < 180° \\)",
+                  "answer": "angle obtus"
+                },
+                {
+                  "question": "Angle 4 : \\[ \\widehat{JKL} \\) avec \\[ \\widehat{JKL} = 180° \\)",
+                  "answer": "angle plat"
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c5",
+            "titre": "Test : identifier les angles",
+            "objectif": "Faire le point sur les notions vues dans l’étape",
+            "consigne": "Réponds à chaque question pour évaluer tes acquis. La suite du parcours s’adaptera à tes résultats.",
+            "module": "test_elea",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "bank_name": "Test - Identifier les angles",
+              "bank_description": "Test diagnostique de 13 questions pour évaluer la maîtrise des notions d'angles (droit, aigu, obtus, plat, saillant, rentrant) et de leurs caractéristiques chez des élèves de 6e.",
+              "questions": [
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q01 - Nature de l'angle",
+                    "questiontext": "Voici un angle dessiné avec un petit carré dans le coin. Quelle est sa nature ?",
+                    "single": "true",
+                    "hints": [
+                      "Regarde bien le symbole au sommet de l'angle.",
+                      "Un angle droit a un symbole spécifique."
+                    ],
+                    "answers": [
+                      {
+                        "text": "angle droit",
+                        "fraction": 100,
+                        "feedback": "Exact ! Le petit carré indique que l'angle mesure exactement 90°."
+                      },
+                      {
+                        "text": "angle aigu",
+                        "fraction": 0,
+                        "feedback": "Non, un angle aigu est plus petit qu'un angle droit."
+                      },
+                      {
+                        "text": "angle obtus",
+                        "fraction": 0,
+                        "feedback": "Non, un angle obtus est plus grand qu'un angle droit."
+                      },
+                      {
+                        "text": "angle plat",
+                        "fraction": 0,
+                        "feedback": "Non, un angle plat mesure 180° et ressemble à une ligne droite."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q02 - Mesure d'un angle aigu",
+                    "questiontext": "Parmi ces mesures, laquelle correspond à un angle aigu ?",
+                    "single": "true",
+                    "hints": [
+                      "Un angle aigu est plus petit qu'un angle droit.",
+                      "Un angle droit mesure 90°."
+                    ],
+                    "answers": [
+                      {
+                        "text": "35°",
+                        "fraction": 100,
+                        "feedback": "Oui ! 35° est inférieur à 90°, donc c'est un angle aigu."
+                      },
+                      {
+                        "text": "90°",
+                        "fraction": 0,
+                        "feedback": "Non, 90° correspond à un angle droit."
+                      },
+                      {
+                        "text": "120°",
+                        "fraction": 0,
+                        "feedback": "Non, 120° est supérieur à 90°, donc c'est un angle obtus."
+                      },
+                      {
+                        "text": "180°",
+                        "fraction": 0,
+                        "feedback": "Non, 180° correspond à un angle plat."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q03 - Angle obtus",
+                    "questiontext": "Quelle affirmation est vraie pour un angle obtus ?",
+                    "single": "true",
+                    "hints": [
+                      "Un angle obtus est plus grand qu'un angle droit.",
+                      "Un angle droit mesure 90°."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Il mesure entre 90° et 180°",
+                        "fraction": 100,
+                        "feedback": "Exact ! Un angle obtus est strictement compris entre 90° et 180°."
+                      },
+                      {
+                        "text": "Il mesure exactement 90°",
+                        "fraction": 0,
+                        "feedback": "Non, 90° correspond à un angle droit."
+                      },
+                      {
+                        "text": "Il mesure moins de 90°",
+                        "fraction": 0,
+                        "feedback": "Non, un angle de moins de 90° est un angle aigu."
+                      },
+                      {
+                        "text": "Il mesure 360°",
+                        "fraction": 0,
+                        "feedback": "Non, 360° correspond à un tour complet."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q04 - Angle plat",
+                    "questiontext": "Comment reconnaît-on un angle plat ?",
+                    "single": "true",
+                    "hints": [
+                      "Un angle plat ressemble à une ligne droite.",
+                      "Sa mesure est de 180°."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Ses côtés forment une ligne droite",
+                        "fraction": 100,
+                        "feedback": "Exact ! Un angle plat est une ligne droite, sa mesure est de 180°."
+                      },
+                      {
+                        "text": "Il a un sommet pointu",
+                        "fraction": 0,
+                        "feedback": "Non, un angle plat est une ligne droite, pas un sommet pointu."
+                      },
+                      {
+                        "text": "Il mesure 90°",
+                        "fraction": 0,
+                        "feedback": "Non, 90° correspond à un angle droit."
+                      },
+                      {
+                        "text": "Il est plus petit qu'un angle droit",
+                        "fraction": 0,
+                        "feedback": "Non, un angle plus petit qu'un angle droit est un angle aigu."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q05 - Angle saillant",
+                    "questiontext": "Que signifie le terme 'angle saillant' ?",
+                    "single": "true",
+                    "hints": [
+                      "Un angle saillant est un angle qui n'est pas rentrant.",
+                      "Sa mesure est comprise entre 0° et 180°."
+                    ],
+                    "answers": [
+                      {
+                        "text": "C'est un angle dont la mesure est entre 0° et 180°",
+                        "fraction": 100,
+                        "feedback": "Oui ! Un angle saillant est un angle 'normal', plus petit qu'un angle plat."
+                      },
+                      {
+                        "text": "C'est un angle dont la mesure est supérieure à 180°",
+                        "fraction": 0,
+                        "feedback": "Non, un angle de plus de 180° est un angle rentrant."
+                      },
+                      {
+                        "text": "C'est un angle qui mesure exactement 0°",
+                        "fraction": 0,
+                        "feedback": "Non, un angle de 0° n'existe pas, les côtés sont superposés."
+                      },
+                      {
+                        "text": "C'est un angle qui mesure 360°",
+                        "fraction": 0,
+                        "feedback": "Non, 360° correspond à un tour complet."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q06 - Angle rentrant",
+                    "questiontext": "Parmi ces illustrations, laquelle représente un angle rentrant ?",
+                    "single": "true",
+                    "hints": [
+                      "Un angle rentrant 'rentre' à l'intérieur d'une figure.",
+                      "Sa mesure est comprise entre 180° et 360°."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Un angle qui dépasse 180° et 'rentre' vers l'intérieur",
+                        "fraction": 100,
+                        "feedback": "Exact ! Un angle rentrant est plus grand qu'un angle plat et 'rentre' dans la figure."
+                      },
+                      {
+                        "text": "Un angle qui mesure 90°",
+                        "fraction": 0,
+                        "feedback": "Non, 90° correspond à un angle droit."
+                      },
+                      {
+                        "text": "Un angle qui mesure 45°",
+                        "fraction": 0,
+                        "feedback": "Non, 45° est un angle aigu."
+                      },
+                      {
+                        "text": "Un angle qui mesure 180°",
+                        "fraction": 0,
+                        "feedback": "Non, 180° correspond à un angle plat."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "truefalse",
+                  "content": {
+                    "name": "Q07 - Identification du sommet",
+                    "questiontext": "Le sommet d'un angle est le point où ses deux côtés se rejoignent.",
+                    "feedback": "Le sommet est bien le point commun aux deux côtés d'un angle.",
+                    "answer": {
+                      "value": true,
+                      "feedback_true": "Exact ! Le sommet est le point où les deux côtés de l'angle se croisent.",
+                      "feedback_false": "Non, le sommet est bien le point de rencontre des deux côtés de l'angle."
+                    }
+                  }
+                },
+                {
+                  "type": "truefalse",
+                  "content": {
+                    "name": "Q08 - Mesure des côtés",
+                    "questiontext": "Les côtés d'un angle sont toujours de même longueur.",
+                    "feedback": "Les côtés d'un angle peuvent être de longueurs différentes, seul leur écartement compte.",
+                    "answer": {
+                      "value": false,
+                      "feedback_true": "Non, les côtés d'un angle n'ont pas besoin d'avoir la même longueur.",
+                      "feedback_false": "C'est vrai ! Seule la direction des côtés compte pour mesurer un angle."
+                    }
+                  }
+                },
+                {
+                  "type": "matching",
+                  "content": {
+                    "name": "Q09 - Associer angle et mesure",
+                    "questiontext": "Relie chaque type d'angle à sa mesure approximative.",
+                    "hints": [
+                      "Un angle droit mesure 90°, un angle plat 180°."
+                    ],
+                    "correctfeedback": "Toutes les associations sont correctes !",
+                    "partiallycorrectfeedback": "Certaines associations sont correctes, vérifie les autres.",
+                    "incorrectfeedback": "Aucune association correcte, relis les définitions des angles.",
+                    "subquestions": [
+                      {
+                        "text": "angle droit",
+                        "answer": "90°"
+                      },
+                      {
+                        "text": "angle aigu",
+                        "answer": "moins de 90°"
+                      },
+                      {
+                        "text": "angle obtus",
+                        "answer": "entre 90° et 180°"
+                      },
+                      {
+                        "text": "angle plat",
+                        "answer": "180°"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "numerical",
+                  "content": {
+                    "name": "Q10 - Comparaison d'angles",
+                    "questiontext": "Estime la mesure de cet angle en degrés. (L'angle est représenté comme un angle aigu dans un triangle rectangle)",
+                    "feedback": "Dans un triangle rectangle, l'angle non droit est aigu, généralement entre 30° et 60°.",
+                    "hints": [
+                      "Regarde bien la figure : l'angle semble faire environ un tiers de l'angle droit.",
+                      "Un angle droit fait 90°, donc un tiers fait environ 30°."
+                    ],
+                    "answer": {
+                      "number": 30,
+                      "tolerance": 5,
+                      "feedback": "Bonne estimation ! Cet angle mesure environ 30°."
+                    }
+                  }
+                },
+                {
+                  "type": "cloze",
+                  "content": {
+                    "name": "Q11 - Compléter la phrase",
+                    "questiontext": "Un angle dont la mesure est supérieure à 180° est appelé un angle {1:SHORTANSWER:=rentrant}. Un angle dont la mesure est inférieure à 90° est appelé un angle {1:SHORTANSWER:=aigu}.",
+                    "feedback": "Ces termes sont importants pour décrire les angles dans les figures géométriques."
+                  }
+                },
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q12 - Comparaison visuelle",
+                    "questiontext": "Parmi ces trois angles, lequel est le plus grand ? (Les angles sont représentés avec des mesures approximatives : 45°, 90°, 135°)",
+                    "single": "true",
+                    "hints": [
+                      "Compare les mesures des angles : plus le degré est grand, plus l'angle est grand.",
+                      "Un angle de 135° est plus grand qu'un angle de 90° ou 45°."
+                    ],
+                    "answers": [
+                      {
+                        "text": "L'angle de 135°",
+                        "fraction": 100,
+                        "feedback": "Exact ! 135° est la plus grande mesure parmi celles proposées."
+                      },
+                      {
+                        "text": "L'angle de 90°",
+                        "fraction": 0,
+                        "feedback": "Non, 90° est un angle droit, mais il est plus petit que 135°."
+                      },
+                      {
+                        "text": "L'angle de 45°",
+                        "fraction": 0,
+                        "feedback": "Non, 45° est un angle aigu, le plus petit des trois."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "shortanswer",
+                  "content": {
+                    "name": "Q13 - Vocabulaire",
+                    "questiontext": "Comment s'appelle le point où les deux côtés d'un angle se rencontrent ?",
+                    "feedback": "Ce point est appelé le sommet de l'angle.",
+                    "answers": [
+                      {
+                        "text": "sommet",
+                        "fraction": 100,
+                        "feedback": "Exact ! C'est bien le sommet de l'angle."
+                      },
+                      {
+                        "text": "milieu",
+                        "fraction": 0,
+                        "feedback": "Non, le milieu est un point sur un segment, pas là où les côtés se rejoignent."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "overallfeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Tu as obtenu entre 0 et 25 % de bonnes réponses. Cela montre que les notions de base sur les angles ne sont pas encore bien comprises. Revois attentivement les définitions des angles (droit, aigu, obtus, plat) et leurs caractéristiques. Travaille aussi sur l'identification du sommet et des côtés d'un angle. N'hésite pas à relire les activités précédentes ou à demander des explications."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as obtenu entre 26 et 50 % de bonnes réponses. Certaines notions sont comprises, mais d'autres restent floues. Concentre-toi sur les angles les moins bien maîtrisés (saillant, rentrant, mesure) et entraîne-toi à comparer des angles visuellement. Cherche à comprendre pourquoi certaines réponses étaient incorrectes pour progresser."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Tu as obtenu entre 51 et 75 % de bonnes réponses. La majorité des notions sont acquises, mais quelques points restent à consolider. Revois les angles qui posent encore problème (peut-être les angles saillants ou rentrants ?) et entraîne-toi à estimer des mesures d'angles. Avec un peu plus de pratique, tu atteindras une maîtrise complète."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Félicitations ! Tu as obtenu entre 76 et 100 % de bonnes réponses. Toutes les notions sur les angles sont bien comprises. Tu peux maintenant passer à l'étape suivante du parcours pour approfondir ou découvrir de nouvelles propriétés des angles. Continue comme ça !"
+                }
+              ],
+              "title": "Test : identifier les angles"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e6",
+        "titre": "Renforcer les bases",
+        "objectif": "Consolider la reconnaissance des angles",
+        "introduction": "Tu vas travailler pas à pas avec des exemples résolus pour bien comprendre. Relis chaque correction pour éviter les erreurs.",
+        "cartes": [
+          {
+            "id": "c7",
+            "titre": "Exemple résolu : repérer un angle droit",
+            "objectif": "Comprendre comment identifier un angle droit",
+            "consigne": "Lis l’exemple qui t’explique comment repérer un angle droit, puis réponds aux questions proposées.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Exemple résolu : repérer un angle droit",
+              "intro": "Tu vas découvrir comment identifier facilement un angle droit grâce à des exemples concrets et des méthodes simples. Prêt à devenir un expert en repérage d’angles ?",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "Repérer un angle droit, c’est simple !",
+                    "subtitle": "Méthode pas à pas pour ne plus jamais te tromper"
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Ce que tu vas savoir faire après cette activité",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Repérer un angle droit dans une figure géométrique ou dans la vie de tous les jours."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Utiliser correctement l’équerre pour vérifier un angle droit."
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "Attention à ne pas confondre angle droit et angle aigu ou obtus : leur forme est très différente !"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Pourquoi est-ce important ?",
+                    "paragraphs": [
+                      "Dans la vie quotidienne, les angles droits sont partout : les coins de ton cahier, les angles des tables, les bords des fenêtres… Les reconnaître te permet de mieux comprendre ton environnement. En géométrie, repérer un angle droit est essentiel pour construire des figures précises comme les carrés ou les rectangles. Une erreur peut changer complètement la forme d’une figure, comme dans un puzzle mal assemblé !",
+                      "Imagine que tu construis une étagère en bois. Si tes angles ne sont pas droits, l’étagère sera bancale et instable. En mathématiques, c’est la même logique : un angle droit garantit des proportions équilibrées. Cela te servira aussi plus tard pour calculer des aires ou des volumes. Alors, prêt à ne plus jamais douter ?",
+                      "Pour bien repérer un angle droit, il faut d’abord comprendre ce que c’est exactement. Un angle droit est un angle qui mesure exactement 90 degrés. Cela signifie que ses deux côtés forment un coin parfait, comme le coin d’un livre bien ouvert. À l’inverse, un angle aigu est plus pointu (moins de 90°), et un angle obtus est plus ouvert (plus de 90°)."
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Comment vérifier qu’un angle est droit ?",
+                    "paragraphs": [
+                      "Il existe deux méthodes principales pour vérifier qu’un angle est droit. La première, c’est d’utiliser une équerre. Place l’angle de ton équerre (le petit coin) contre le sommet de l’angle que tu veux tester. Si les côtés de l’angle longent parfaitement les bords de l’équerre, alors c’est un angle droit. Sinon, ce n’est pas un angle droit. Par exemple, si tu poses l’équerre sur le coin d’une feuille, les bords de la feuille doivent coïncider exactement avec ceux de l’équerre.",
+                      "La deuxième méthode, c’est de comparer avec un angle que tu sais déjà être droit. Par exemple, le coin d’une porte, d’une fenêtre ou d’un livre peut servir de référence. Si ton angle ressemble exactement à ce coin, alors il est droit. Cette méthode est utile quand tu n’as pas d’équerre sous la main. Tu peux aussi te souvenir que dans un carré ou un rectangle, tous les angles sont droits : c’est une propriété fondamentale de ces figures.",
+                      "Attention à ne pas te tromper avec les autres angles ! Un angle aigu est plus fermé qu’un angle droit : ses côtés se rapprochent comme les branches d’un ciseau fermé. Un angle obtus est plus ouvert : ses côtés s’écartent comme les branches d’un ciseau largement ouvert. Pour t’entraîner, observe les aiguilles d’une horloge : à 3 heures, l’angle formé par les deux aiguilles est un angle droit."
+                    ]
+                  }
+                },
+                {
+                  "type": "#11_definition_box",
+                  "data": {
+                    "title": "Définition de l’angle droit",
+                    "text": "Un angle droit est un angle dont la mesure est exactement de 90 degrés. Ses deux côtés sont perpendiculaires l’un à l’autre, ce qui signifie qu’ils forment un coin parfait. On le représente souvent avec un petit carré dessiné dans l’angle pour le signaler."
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Lexique : les termes à connaître",
+                    "caption": "Ces mots seront utiles pour parler des angles tout au long de ton parcours.",
+                    "headers": [
+                      "Terme",
+                      "Définition",
+                      "Exemple"
+                    ],
+                    "rows": [
+                      [
+                        "Sommet d’un angle",
+                        "Le point commun où se rejoignent les deux côtés de l’angle.",
+                        "Le coin d’une feuille est le sommet de l’angle droit formé par ses bords."
+                      ],
+                      [
+                        "Côtés d’un angle",
+                        "Les deux demi-droites qui partent du sommet pour former l’angle.",
+                        "Les bords d’une feuille forment les côtés d’un angle droit."
+                      ],
+                      [
+                        "Équerre",
+                        "Un outil en forme de triangle rectangle utilisé pour tracer ou vérifier des angles droits.",
+                        "Avec une équerre, tu peux vérifier si l’angle d’un meuble est droit."
+                      ],
+                      [
+                        "Perpendiculaire",
+                        "Deux droites ou deux côtés sont perpendiculaires s’ils forment un angle droit.",
+                        "Les bords d’un livre sont perpendiculaires l’un à l’autre."
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Exemple résolu : identifier un angle droit dans une figure",
+                    "paragraphs": [
+                      "Prenons la figure ci-dessous : un quadrilatère ABCD. Comment savoir si l’angle en A est un angle droit ?",
+                      "1. Place le sommet de l’angle A au coin de ton équerre. Les côtés [AB] et [AD] doivent longuer parfaitement les bords de l’équerre. Si c’est le cas, c’est un angle droit.",
+                      "2. Si les côtés ne coïncident pas avec les bords de l’équerre, alors l’angle n’est pas droit. Par exemple, si un côté dépasse ou ne touche pas, l’angle est soit aigu soit obtus selon sa forme.",
+                      "Dans notre exemple, si [AB] et [AD] suivent exactement les bords de l’équerre, alors l’angle en A est droit. On peut le noter avec un petit carré dans l’angle pour le signaler."
+                    ]
+                  }
+                },
+                {
+                  "type": "#10_table_comparison",
+                  "data": {
+                    "title": "Comparaison rapide : angle droit vs autres angles",
+                    "caption": "Observe les différences entre un angle droit et les autres types d’angles.",
+                    "headers": [
+                      "Type d’angle",
+                      "Mesure",
+                      "Forme",
+                      "Exemple"
+                    ],
+                    "rows": [
+                      [
+                        "Angle droit",
+                        "90°",
+                        "Coin parfait, comme un livre ouvert.",
+                        "Coin d’une feuille"
+                      ],
+                      [
+                        "Angle aigu",
+                        "Moins de 90°",
+                        "Pointu, les côtés se rapprochent.",
+                        "Pointe d’un crayon taillé"
+                      ],
+                      [
+                        "Angle obtus",
+                        "Entre 90° et 180°",
+                        "Ouvert, les côtés s’écartent.",
+                        "Ouverture d’un ciseau"
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "À retenir absolument",
+                    "callouts": [
+                      {
+                        "type": "savoir",
+                        "text": "Un angle droit mesure toujours 90°. Ses côtés sont perpendiculaires."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Utilise une équerre pour vérifier : si les côtés coïncident avec les bords de l’équerre, c’est un angle droit."
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "Ne confonds pas avec les autres angles : un angle aigu est plus fermé, un angle obtus est plus ouvert."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Pour aller plus loin",
+                    "links": [
+                      {
+                        "href": "https://www.assistancescolaire.com/eleve/6e/maths/reviser-une-notion/6mge01",
+                        "text": "Vidéos et exercices sur les angles droits (Assistance scolaire personnalisée)"
+                      },
+                      {
+                        "href": "https://www.maths-et-tiques.fr/telech/GEOPLAN_ANGLES.pdf",
+                        "text": "Fiche méthode : utiliser l’équerre pour repérer les angles droits (Maths et Tiques)"
+                      },
+                      {
+                        "href": "https://www.jeuxmaths.fr/jeu-de-math-6eme-angles.html",
+                        "text": "Jeu interactif pour t’entraîner à repérer les angles droits (JeuxMaths)"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ],
+        "chemin": {
+          "depuis": 0
+        }
+      },
+      {
+        "id": "e8",
+        "titre": "Défis d’angles",
+        "objectif": "Comparer et estimer des mesures d’angles",
+        "introduction": "Tu appliques ce que tu as appris à des exercices sans exemple résolu. La correction t’aide à vérifier tes réponses.",
+        "cartes": [
+          {
+            "id": "c9",
+            "titre": "Comparer des angles",
+            "objectif": "Estimer et classer des angles en fonction de leur taille",
+            "consigne": "Glisse les angles dans l’ordre croissant de leur mesure, du plus petit au plus grand.",
+            "module": "DragAndDrop",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Comparer des angles",
+              "dropZones": [
+                {
+                  "label": "le plus petit",
+                  "correctElements": [
+                    0
+                  ],
+                  "_native": {
+                    "showLabel": true,
+                    "single": false,
+                    "autoAlign": true,
+                    "backgroundOpacity": 100,
+                    "tipsAndFeedback": {
+                      "tip": "Un angle aigu mesure moins de \\( \\frac{1}{4} \\) de tour.",
+                      "feedbackOnCorrect": "Parfait ! Un angle aigu est bien le plus petit ici.",
+                      "feedbackOnIncorrect": "Erreur : un angle aigu est toujours plus petit qu'un angle droit. Revois la définition de l'angle aigu."
+                    }
+                  }
+                },
+                {
+                  "label": "plus petit",
+                  "correctElements": [
+                    1
+                  ],
+                  "_native": {
+                    "showLabel": true,
+                    "single": false,
+                    "autoAlign": true,
+                    "backgroundOpacity": 100,
+                    "tipsAndFeedback": {
+                      "tip": "Un angle droit mesure \\( \\frac{1}{4} \\) de tour.",
+                      "feedbackOnCorrect": "Bravo ! Un angle droit est plus grand qu'un angle aigu mais plus petit que les autres.",
+                      "feedbackOnIncorrect": "Attention : un angle droit mesure exactement \\( 90° \\). Compare avec l'angle aigu pour le placer correctement."
+                    }
+                  }
+                },
+                {
+                  "label": "moyen",
+                  "correctElements": [
+                    2
+                  ],
+                  "_native": {
+                    "showLabel": true,
+                    "single": false,
+                    "autoAlign": true,
+                    "backgroundOpacity": 100,
+                    "tipsAndFeedback": {
+                      "tip": "Un angle plat mesure \\( \\frac{1}{2} \\) tour.",
+                      "feedbackOnCorrect": "Exact ! Un angle plat est plus grand qu'un angle droit mais plus petit qu'un angle obtus.",
+                      "feedbackOnIncorrect": "Erreur : un angle plat mesure deux angles droits. Place-le après l'angle droit."
+                    }
+                  }
+                },
+                {
+                  "label": "plus grand",
+                  "correctElements": [
+                    3
+                  ],
+                  "_native": {
+                    "showLabel": true,
+                    "single": false,
+                    "autoAlign": true,
+                    "backgroundOpacity": 100,
+                    "tipsAndFeedback": {
+                      "tip": "Un angle obtus mesure entre \\( 90° \\) et \\( 180° \\).",
+                      "feedbackOnCorrect": "Bien joué ! Un angle obtus est plus grand qu'un angle plat mais plus petit qu'un angle saillant.",
+                      "feedbackOnIncorrect": "À revoir : un angle obtus est plus grand qu'un angle droit mais plus petit qu'un angle plat. Vérifie sa mesure."
+                    }
+                  }
+                },
+                {
+                  "label": "le plus grand",
+                  "correctElements": [
+                    4
+                  ],
+                  "_native": {
+                    "showLabel": true,
+                    "single": false,
+                    "autoAlign": true,
+                    "backgroundOpacity": 100,
+                    "tipsAndFeedback": {
+                      "tip": "Un angle saillant mesure moins de \\( 360° \\) mais plus de \\( 180° \\).",
+                      "feedbackOnCorrect": "Parfait ! Un angle saillant est bien le plus grand ici.",
+                      "feedbackOnIncorrect": "Erreur : un angle saillant est toujours plus grand qu'un angle plat. Revois sa définition."
+                    }
+                  }
+                }
+              ],
+              "elements": [
+                {
+                  "text": "aigu",
+                  "_native": {
+                    "multiple": false,
+                    "backgroundOpacity": 100
+                  }
+                },
+                {
+                  "text": "droit",
+                  "_native": {
+                    "multiple": false,
+                    "backgroundOpacity": 100
+                  }
+                },
+                {
+                  "text": "plat",
+                  "_native": {
+                    "multiple": false,
+                    "backgroundOpacity": 100
+                  }
+                },
+                {
+                  "text": "obtus",
+                  "_native": {
+                    "multiple": false,
+                    "backgroundOpacity": 100
+                  }
+                },
+                {
+                  "text": "saillant",
+                  "_native": {
+                    "multiple": false,
+                    "backgroundOpacity": 100
+                  }
+                }
+              ],
+              "_native": {
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableCheckButton": true,
+                  "singlePoint": false,
+                  "applyPenalties": true,
+                  "enableScoreExplanation": true,
+                  "dropZoneHighlighting": "dragging",
+                  "autoAlignSpacing": 2,
+                  "enableFullScreen": true,
+                  "showScorePoints": true,
+                  "showTitle": true,
+                  "dragHandleVisibility": true
+                }
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Pour bien démarrer : un angle aigu est plus petit qu'un angle droit. Un angle plat est le double d'un angle droit. Un angle obtus est plus grand qu'un angle droit mais plus petit qu'un angle plat. Compare les mesures pour retrouver l'ordre."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as déjà classé certains angles correctement. Revois les mesures des angles droits, plats et obtus pour affiner ton classement."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque parfait ! Vérifie si l'angle plat est bien placé entre les angles obtus et droits. Un angle saillant est toujours plus petit qu'un angle plat."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent ! Tu as bien compris l'ordre des angles selon leur mesure. Continue à t'entraîner pour gagner en rapidité."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              }
+            },
+            "sourceUtilisee": null
+          }
+        ],
+        "chemin": {
+          "depuis": 40
+        }
+      },
+      {
+        "id": "e10",
+        "titre": "Angles en situations",
+        "objectif": "Appliquer ses connaissances à des cas plus complexes",
+        "introduction": "Tu vas travailler sur des angles dans des contextes nouveaux. Écris tes justifications pour chaque réponse.",
+        "cartes": [
+          {
+            "id": "c11",
+            "titre": "Mesurer et justifier",
+            "objectif": "Écrire pourquoi un angle est aigu, obtus ou droit",
+            "consigne": "Pour chaque angle dessiné, écris une phrase qui explique sa nature et justifie ta réponse.",
+            "module": "Essay",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Voici trois angles dessinés. Pour chacun :\n\n1. Décris comment tu les reconnais.\n2. Écris une phrase pour justifier si c’est un *angle droit*, un *angle aigu* ou un *angle obtus*.\n\nN’oublie pas d’utiliser les mots *sommet* et *côtés* dans tes explications.\n\n*Exemple :* L’angle ABC est *droit* car son sommet est B et ses côtés [BA) et [BC) forment un angle de \\( \\frac{\\pi}{2} \\) radians (ou 90°).\n\nÀ toi de jouer !",
+              "keywords": [
+                {
+                  "keyword": "angle droit",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Tu as bien identifié un angle droit grâce à ses côtés perpendiculaires.",
+                    "feedbackMissed": "L’angle droit se reconnaît à ses côtés perpendiculaires qui forment un quart de tour (90°). Cherche un angle qui semble faire un coin parfait."
+                  }
+                },
+                {
+                  "keyword": "angle aigu",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Ton angle aigu est correctement repéré : ses côtés sont très proches et sa mesure est inférieure à 90°.",
+                    "feedbackMissed": "Un angle aigu est plus petit qu’un angle droit. Regarde si les côtés semblent se rapprocher sans former un coin."
+                  }
+                },
+                {
+                  "keyword": "angle obtus",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Tu as bien justifié que l’angle est obtus : ses côtés s’écartent plus qu’un angle droit.",
+                    "feedbackMissed": "Un angle obtus est plus grand qu’un angle droit mais moins qu’un angle plat. Cherche un angle dont les côtés semblent s’éloigner."
+                  }
+                },
+                {
+                  "keyword": "sommet",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Le sommet est bien cité : c’est le point commun aux deux côtés de l’angle.",
+                    "feedbackMissed": "Le sommet est le point où se rejoignent les deux côtés de l’angle. Vérifie que tu l’as bien identifié dans ton explication."
+                  }
+                },
+                {
+                  "keyword": "côtés",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Les côtés sont correctement mentionnés : ce sont les deux demi-droites qui partent du sommet.",
+                    "feedbackMissed": "Les côtés sont les deux lignes qui partent du sommet pour former l’angle. Assure-toi de les avoir bien nommés ou décrits."
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Tu as commencé à décrire les angles, mais il faut revoir comment les reconnaître. Relis la définition des angles droit, aigu et obtus en t’aidant de leur mesure et de leur forme. Le sommet et les côtés sont essentiels pour bien justifier."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu fais des efforts pour décrire les angles, mais certaines justifications manquent de précision. Vérifie que tu utilises bien les mots sommet et côtés et que tu compares la taille de l’angle à celle d’un angle droit."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Bonne progression ! Tu arrives à repérer les angles et à décrire leur nature. Pour aller plus loin, pense à préciser si l’angle est plus petit ou plus grand qu’un angle droit et à bien nommer le sommet et les côtés."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail ! Tu as correctement identifié et justifié la nature de chaque angle en utilisant les mots sommet et côtés. Continue ainsi à t’appuyer sur la mesure et la forme des angles pour affiner tes explications."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "solution": {
+                "introduction": "",
+                "sample": ""
+              },
+              "title": "Mesurer et justifier"
+            },
+            "sourceUtilisee": null
+          }
+        ],
+        "chemin": {
+          "depuis": 75
+        }
+      },
+      {
+        "id": "e12",
+        "titre": "Bilan et synthèse",
+        "objectif": "Vérifier ses acquis sur l’ensemble du parcours",
+        "introduction": "Tu révises toutes les notions vues depuis le début avec des exercices variés. Lis bien les corrections pour consolider tes connaissances.",
+        "cartes": [
+          {
+            "id": "c13",
+            "titre": "Quiz final : tous les angles",
+            "objectif": "Mélanger les notions pour vérifier sa compréhension",
+            "consigne": "Réponds aux questions sur les angles, leur nature et leur mesure. La correction te permet de vérifier tes réponses.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz final : tous les angles",
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Identifier le sommet d'un angle"
+                  },
+                  "params": {
+                    "question": "Où se trouve le sommet d'un angle ?",
+                    "answers": [
+                      {
+                        "text": "Sur les côtés de l'angle",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "L'erreur est de confondre sommet et côtés. Le sommet est le point commun où les deux côtés se rejoignent."
+                        }
+                      },
+                      {
+                        "text": "Au point d'intersection des deux côtés",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le sommet est le point où les deux côtés de l'angle se rencontrent."
+                        }
+                      },
+                      {
+                        "text": "Au milieu de l'angle plat",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Un angle plat est formé par deux demi-droites opposées, mais son sommet n'est pas forcément au milieu."
+                        }
+                      },
+                      {
+                        "text": "Sur la bissectrice de l'angle",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La bissectrice est une droite qui passe par le sommet, mais le sommet n'est pas sur la bissectrice."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Le sommet est le point de rencontre des deux côtés de l'angle. Relis la définition pour bien l'identifier."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : le sommet est là où les deux côtés se rejoignent, pas ailleurs."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié le point d'intersection des côtés. Vérifie que tu ne confonds pas avec d'autres éléments."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : le sommet est bien le point où les deux côtés de l'angle se rencontrent."
+                      }
+                    ]
+                  },
+                  "subContentId": "8f358419-6eab-479c-9d10-706f61c2b0b1"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Comparer des angles"
+                  },
+                  "params": {
+                    "question": "Comment comparer deux angles ?",
+                    "answers": [
+                      {
+                        "text": "En regardant leur couleur",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pense à la façon dont on mesure les angles.",
+                          "chosenFeedback": "La couleur ne permet pas de comparer des angles. On utilise leur mesure en degrés ou leur forme."
+                        }
+                      },
+                      {
+                        "text": "En mesurant leur ouverture avec un rapporteur",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : pour comparer, on mesure l'ouverture de chaque angle avec un rapporteur."
+                        }
+                      },
+                      {
+                        "text": "En comptant le nombre de côtés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Tous les angles ont exactement deux côtés. Ce n'est pas ce qui permet de les comparer."
+                        }
+                      },
+                      {
+                        "text": "En regardant leur position dans le plan",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La position dans le plan ne change pas l'ouverture de l'angle. Ce qui compte, c'est l'espace entre les côtés."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour comparer des angles, il faut regarder leur ouverture. Utilise un outil comme le rapporteur."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : ce qui permet de comparer, c'est la mesure de l'ouverture de chaque angle."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié l'outil de mesure. Vérifie que tu ne confonds pas avec d'autres critères."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : comparer des angles, c'est mesurer leur ouverture avec un rapporteur."
+                      }
+                    ]
+                  },
+                  "subContentId": "734f5a3b-7ef6-4f96-a44e-e370cae097f6"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Reconnaître un angle droit"
+                  },
+                  "params": {
+                    "question": "Quelle est la mesure d'un angle droit ?",
+                    "answers": [
+                      {
+                        "text": "30 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "30 degrés est la mesure d'un angle aigu. Un angle droit est plus grand."
+                        }
+                      },
+                      {
+                        "text": "90 degrés",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un angle droit mesure exactement 90 degrés."
+                        }
+                      },
+                      {
+                        "text": "180 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "180 degrés est la mesure d'un angle plat. Un angle droit est plus petit."
+                        }
+                      },
+                      {
+                        "text": "45 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "45 degrés est la mesure d'un angle aigu. Un angle droit est plus grand."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un angle droit mesure 90 degrés. Rappelle-toi que c'est l'angle de base pour les figures comme le carré."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle droit est plus grand qu'un angle aigu. Sa mesure est fixe."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié la bonne mesure. Vérifie que tu ne confonds pas avec d'autres types d'angles."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle droit mesure 90 degrés, ni plus ni moins."
+                      }
+                    ]
+                  },
+                  "subContentId": "8d1d1b8d-25cd-41d7-90f4-af3efd82ef0f"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Identifier un angle obtus"
+                  },
+                  "params": {
+                    "question": "Quel angle est un angle obtus ?",
+                    "answers": [
+                      {
+                        "text": "Un angle de 60 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "60 degrés est la mesure d'un angle aigu. Un angle obtus est plus grand qu'un angle droit."
+                        }
+                      },
+                      {
+                        "text": "Un angle de 120 degrés",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un angle obtus mesure entre 90 et 180 degrés. 120 degrés en est un exemple."
+                        }
+                      },
+                      {
+                        "text": "Un angle de 200 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "200 degrés est la mesure d'un angle rentrant. Un angle obtus est plus petit."
+                        }
+                      },
+                      {
+                        "text": "Un angle de 180 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "180 degrés est la mesure d'un angle plat. Un angle obtus est plus petit."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un angle obtus mesure entre 90 et 180 degrés. Cherche une mesure dans cet intervalle."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle obtus est plus grand qu'un angle droit. Sa mesure est comprise entre 90 et 180 degrés."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié une mesure dans le bon intervalle. Vérifie que tu ne confonds pas avec d'autres types d'angles."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle obtus mesure entre 90 et 180 degrés. 120 degrés en est un exemple."
+                      }
+                    ]
+                  },
+                  "subContentId": "3f7106cb-91de-4009-9c07-3c3c31361704"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Différencier angle saillant et angle rentrant"
+                  },
+                  "params": {
+                    "question": "Quelle phrase décrit un angle rentrant ?",
+                    "answers": [
+                      {
+                        "text": "Son ouverture est inférieure à 180 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Cette description correspond à un angle saillant. Un angle rentrant a une ouverture supérieure à 180 degrés."
+                        }
+                      },
+                      {
+                        "text": "Son ouverture est supérieure à 180 degrés",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : un angle rentrant a une ouverture supérieure à 180 degrés."
+                        }
+                      },
+                      {
+                        "text": "Son ouverture est égale à 180 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Une ouverture de 180 degrés correspond à un angle plat. Un angle rentrant est plus grand."
+                        }
+                      },
+                      {
+                        "text": "Son ouverture est égale à 90 degrés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "90 degrés est la mesure d'un angle droit. Un angle rentrant est plus grand."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Un angle rentrant a une ouverture supérieure à 180 degrés. Rappelle-toi que c'est l'opposé d'un angle saillant."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : un angle rentrant est plus grand qu'un angle plat. Sa mesure est supérieure à 180 degrés."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié la bonne caractéristique. Vérifie que tu ne confonds pas avec un angle saillant ou plat."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : un angle rentrant a une ouverture supérieure à 180 degrés."
+                      }
+                    ]
+                  },
+                  "subContentId": "21dae996-41a7-4db6-9ce0-3184f9bf8f94"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Estimer la mesure d'un angle"
+                  },
+                  "params": {
+                    "question": "Comment estimer la mesure d'un angle ?",
+                    "answers": [
+                      {
+                        "text": "En utilisant un compas",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pense à l'outil qui permet de mesurer les angles.",
+                          "chosenFeedback": "Un compas sert à tracer des cercles ou des arcs, pas à mesurer des angles."
+                        }
+                      },
+                      {
+                        "text": "En regardant l'ouverture par rapport à un angle droit",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : pour estimer, on compare l'ouverture de l'angle à celle d'un angle droit (90 degrés)."
+                        }
+                      },
+                      {
+                        "text": "En mesurant la longueur des côtés",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La longueur des côtés ne détermine pas la mesure de l'angle. Ce qui compte, c'est l'ouverture."
+                        }
+                      },
+                      {
+                        "text": "En comptant le nombre de côtés de la figure",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Tous les angles ont deux côtés. Leur nombre ne permet pas d'estimer la mesure."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour estimer un angle, compare son ouverture à celle d'un angle droit. Utilise ton œil et ton savoir sur les angles types."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : l'estimation se fait en comparant l'ouverture à un angle droit ou plat."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : tu as identifié la bonne méthode. Vérifie que tu ne confonds pas avec d'autres critères."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "C'est exact : pour estimer un angle, on compare son ouverture à celle d'un angle droit."
+                      }
+                    ]
+                  },
+                  "subContentId": "0a338c2c-a8ab-4411-8e3c-b3c22d902cce"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Revois bien les définitions des angles et leurs mesures. Fais des schémas pour t'entraîner à les reconnaître."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Ces notions s'installent. Repère les questions qui ont fait hésiter et revois les exemples correspondants."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Beaucoup de réponses sont justes. Cherche ce qui peut encore te tromper pour progresser."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Tu as bien maîtrisé les angles et leurs caractéristiques. Continue à t'entraîner pour ancrer ces acquis."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c14",
+            "titre": "Synthèse : le lexique des angles",
+            "objectif": "Reformuler les définitions des angles",
+            "consigne": "Complète le texte avec les mots qui conviennent pour résumer ce que tu as appris.",
+            "module": "FillInTheBlanks",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Complète le texte ci-dessous avec les mots manquants pour résumer les propriétés des angles.",
+              "questions": [
+                "Un angle est formé de deux *côtés* qui se rejoignent en un point appelé le *sommet*.",
+                "On classe les angles selon leur ouverture : un angle dont la mesure est inférieure à celle de l'angle droit est un *angle aigu*.",
+                "Un *angle obtus* a une mesure plus grande qu'un angle droit mais plus petite qu'un angle plat.",
+                "L'angle droit mesure 90 degrés, et l'angle plat mesure 180 degrés.",
+                "Pour comparer deux angles, on peut les superposer ou utiliser un rapporteur pour estimer leur *mesure*."
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Retrouve les éléments de base : les côtés se rejoignent au sommet. Pense à la différence entre angle aigu (petit) et angle obtus (grand)."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Certains termes techniques manquent. Rappelle-toi : aigu < droit < obtus < plat. Vérifie bien la définition de chaque nature d'angle."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque complet. Assure-toi de bien distinguer angle droit (90°) et angle plat (180°), et de nommer correctement l'élément central."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent. Tu maîtrises le vocabulaire des angles : côté, sommet, et les classifications selon la mesure."
+                }
+              ],
+              "behaviour": {
+                "enableCheckButton": true,
+                "showSolutionsRequiresInput": true,
+                "allowRetryIfCorrect": false
+              },
+              "title": "Synthèse : le lexique des angles"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c15",
+            "titre": "Trouver les angles autour de toi",
+            "objectif": "Repérer des angles dans des objets du quotidien",
+            "consigne": "Décris trois objets de ton environnement et indique la nature de leurs angles. Justifie tes réponses.",
+            "module": "Essay",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Regarde autour de toi et décris trois **objets** de ton environnement quotidien. Pour chacun, explique la nature de ses **angles** en précisant leur nom et leur position. N’oublie pas de justifier tes réponses.\n\nPar exemple, si tu observes une feuille de papier, tu peux dire : *La feuille a quatre **angles droits** car elle est rectangulaire et chaque coin forme un angle de \\( 90° \\) entre deux côtés perpendiculaires.*\n\nNomme les objets et décris leurs angles avec soin !",
+              "keywords": [
+                {
+                  "keyword": "angle droit",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Bonne identification d'un angle droit.",
+                    "feedbackMissed": "Attention, un angle droit se mesure à 90°. Cherche des angles qui forment un coin parfait."
+                  }
+                },
+                {
+                  "keyword": "angle aigu",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "alternatives": [
+                      "angle pointu"
+                    ],
+                    "feedbackIncluded": "Tu as repéré un angle aigu, qui est plus petit qu'un angle droit.",
+                    "feedbackMissed": "Un angle aigu est plus petit qu'un angle droit. Cherche un angle plus fermé qu'un coin."
+                  }
+                },
+                {
+                  "keyword": "angle obtus",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Bravo, tu as identifié un angle obtus, plus grand qu'un angle droit mais moins qu'un angle plat.",
+                    "feedbackMissed": "Un angle obtus est plus grand qu'un angle droit mais moins qu'un angle plat. Cherche un angle plus ouvert."
+                  }
+                },
+                {
+                  "keyword": "angle plat",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Tu as trouvé un angle plat, qui mesure exactement 180°.",
+                    "feedbackMissed": "Un angle plat est un angle qui forme une ligne droite. Cherche un angle qui semble tout droit."
+                  }
+                },
+                {
+                  "keyword": "angle saillant",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Un angle saillant est un angle qui est visible et moins grand qu'un angle plat.",
+                    "feedbackMissed": "Un angle saillant est un angle qui dépasse du reste de la figure. Cherche un angle qui s'ouvre vers l'extérieur."
+                  }
+                },
+                {
+                  "keyword": "angle rentrant",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Bonne identification d'un angle rentrant, qui est plus grand qu'un angle plat.",
+                    "feedbackMissed": "Un angle rentrant est un angle qui s'enfonce vers l'intérieur. Cherche un angle qui semble creusé."
+                  }
+                },
+                {
+                  "keyword": "sommet",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Tu as bien repéré le sommet de l'angle, qui est le point où les deux côtés se rejoignent.",
+                    "feedbackMissed": "Le sommet est le point commun aux deux côtés de l'angle. Cherche le point où les deux lignes se croisent."
+                  }
+                },
+                {
+                  "keyword": "côtés",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "occurrences": 1,
+                    "feedbackIncluded": "Tu as identifié les côtés de l'angle, qui sont les deux demi-droites qui partent du sommet.",
+                    "feedbackMissed": "Les côtés sont les deux lignes qui forment l'angle. Cherche les deux traits qui partent du point de rencontre."
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Tu as commencé à observer, c'est bien. Relis les définitions des angles et essaie de repérer au moins un angle droit et un angle aigu dans ton environnement. Cherche des objets qui ont des coins ou des parties qui s'ouvrent."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as identifié quelques angles, mais certains manquent de précision. Essaie de décrire plus clairement le lien entre l'objet et les angles qu'il contient. Par exemple, pour un livre, tu peux parler de ses coins ou de son ouverture."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Bonne progression ! Tu as repéré plusieurs types d'angles et tu as su les nommer. Pour aller plus loin, essaie de trouver des angles plus difficiles à identifier, comme un angle rentrant ou un angle plat. Pense à des objets avec des formes inhabituelles."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail ! Tu as su décrire précisément trois objets avec leurs angles, en justifiant chaque réponse. Tu as même repéré des angles moins courants. Continue à observer les angles autour de toi pour renforcer ta compréhension."
+                }
+              ],
+              "solution": {
+                "introduction": "Voici un exemple de réponse possible pour t'aider à vérifier ton travail :",
+                "sample": "1. Une *poubelle* a un couvercle qui forme un **angle obtus** quand il est ouvert. En effet, le couvercle dépasse \\( 90° \\) mais ne fait pas une ligne droite, donc il n'est pas plat.\n\n2. Une *aiguille de montre* forme un **angle aigu** entre 12h et 3h. Les deux côtés (l'aiguille et le cadran) se rejoignent au sommet (le centre de la montre) et l'angle est plus petit qu'un angle droit.\n\n3. Un *écran d'ordinateur* a des coins qui forment des **angles droits**. Chaque coin est un angle de \\( 90° \\) entre deux côtés perpendiculaires."
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Trouver les angles autour de toi"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c16",
+            "titre": "Quiz récapitulatif",
+            "objectif": "Vérifier l’ensemble des acquis du parcours",
+            "consigne": "Réponds à ce test qui couvre toutes les notions du parcours. La correction te permet de faire un bilan final.",
+            "module": "test_elea",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "bank_name": "Quiz récapitulatif - Les angles",
+              "bank_description": "Ensemble de 6 questions pour vérifier l'ensemble des acquis sur les natures des angles et leur identification dans des figures géométriques.",
+              "questions": [
+                {
+                  "type": "multichoice",
+                  "content": {
+                    "name": "Q01 - Identifier un angle plat",
+                    "questiontext": "Parmi ces angles, lequel est un angle plat ?",
+                    "single": "true",
+                    "correctfeedback": "Exact ! Un angle plat mesure exactement 180°.",
+                    "partiallycorrectfeedback": "Certaines réponses sont correctes, mais pas toutes.",
+                    "incorrectfeedback": "Revoyez la définition d'un angle plat : il mesure 180° et ses côtés forment une ligne droite.",
+                    "hints": [
+                      "Un angle plat est le plus grand des angles que tu as vus.",
+                      "Ses deux côtés sont alignés dans le prolongement l'un de l'autre."
+                    ],
+                    "answers": [
+                      {
+                        "text": "Un angle qui mesure 90°",
+                        "fraction": 0,
+                        "feedback": "C'est un angle droit, pas plat."
+                      },
+                      {
+                        "text": "Un angle qui mesure plus de 90° mais moins de 180°",
+                        "fraction": 0,
+                        "feedback": "C'est un angle obtus."
+                      },
+                      {
+                        "text": "Un angle qui mesure exactement 180°",
+                        "fraction": 100,
+                        "feedback": "Bravo !"
+                      },
+                      {
+                        "text": "Un angle qui mesure moins de 90°",
+                        "fraction": 0,
+                        "feedback": "C'est un angle aigu."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "matching",
+                  "content": {
+                    "name": "Q02 - Associer les angles à leurs mesures",
+                    "questiontext": "Relie chaque type d'angle à sa mesure caractéristique.",
+                    "single": "false",
+                    "correctfeedback": "Parfait ! Toutes les associations sont justes.",
+                    "partiallycorrectfeedback": "Certaines associations sont correctes, vérifie les autres.",
+                    "incorrectfeedback": "Aucune association correcte, relis la définition de chaque angle.",
+                    "hints": [
+                      "Pense à l'ordre des angles de la plus petite à la plus grande mesure."
+                    ],
+                    "subquestions": [
+                      {
+                        "text": "angle aigu",
+                        "answer": "moins de 90°"
+                      },
+                      {
+                        "text": "angle droit",
+                        "answer": "90°"
+                      },
+                      {
+                        "text": "angle obtus",
+                        "answer": "entre 90° et 180°"
+                      },
+                      {
+                        "text": "angle plat",
+                        "answer": "180°"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "truefalse",
+                  "content": {
+                    "name": "Q03 - Reconnaître un angle saillant",
+                    "questiontext": "Un angle saillant mesure toujours moins de 180°.",
+                    "feedback": "Un angle saillant est un angle dont la mesure est comprise entre 0° et 180°.",
+                    "answer": {
+                      "value": true,
+                      "feedback_true": "Exact ! Un angle saillant est toujours inférieur à 180°.",
+                      "feedback_false": "Ce n'est pas juste : un angle saillant est bien toujours inférieur à 180°."
+                    }
+                  }
+                },
+                {
+                  "type": "cloze",
+                  "content": {
+                    "name": "Q04 - Compléter les phrases sur les angles",
+                    "questiontext": "Un angle est formé par deux {1:SHORTANSWER:=côtés~demi-droites}. Le point où ces deux éléments se rejoignent s'appelle le {1:SHORTANSWER:=sommet}. Un angle qui mesure 95° est un angle {1:SHORTANSWER:=obtus~aigu~droit}.",
+                    "feedback": "Ces définitions sont essentielles pour bien identifier les angles."
+                  }
+                },
+                {
+                  "type": "numerical",
+                  "content": {
+                    "name": "Q05 - Estimer la mesure d'un angle",
+                    "questiontext": "Estime la mesure de cet angle en degrés.",
+                    "feedback": "Un angle aigu est toujours inférieur à 90°. Ici, il semble proche de 60°.",
+                    "hints": [
+                      "Compare cet angle à l'angle droit (90°) pour te guider."
+                    ],
+                    "answer": {
+                      "number": 60,
+                      "tolerance": 5,
+                      "feedback": "Bien estimé !"
+                    }
+                  }
+                },
+                {
+                  "type": "shortanswer",
+                  "content": {
+                    "name": "Q06 - Définir un angle rentrant",
+                    "questiontext": "Comment s'appelle un angle qui mesure plus de 180° mais moins de 360° ?",
+                    "feedback": "Un angle rentrant est effectivement un angle dont la mesure est comprise entre 180° et 360°.",
+                    "answers": [
+                      {
+                        "text": "angle rentrant",
+                        "fraction": 100,
+                        "feedback": "Correct !"
+                      },
+                      {
+                        "text": "angle saillant",
+                        "fraction": 0,
+                        "feedback": "Non, un angle saillant est inférieur à 180°."
+                      }
+                    ]
+                  }
+                }
+              ],
+              "overallfeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Tu as encore besoin de revoir les bases sur les angles. Relis bien les définitions des angles droit, aigu, obtus et plat. Entraîne-toi à les reconnaître dans des figures pour mieux les distinguer."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as compris certaines notions, mais quelques points résistent encore. Revois notamment la différence entre angle aigu et angle obtus, ainsi que la définition des angles saillant et rentrant."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Tu maîtrises l'essentiel ! Concentre-toi sur les cas particuliers comme les angles rentrants et les angles plats pour être encore plus à l'aise. Continue à t'entraîner avec des figures variées."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Félicitations ! Tu as bien intégré toutes les notions sur les angles. Tu es capable de les identifier, de les mesurer et de les comparer. Pour aller plus loin, essaie de les repérer dans des objets du quotidien ou dans des figures complexes."
+                }
+              ],
+              "title": "Quiz récapitulatif"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "6e",
+    "adultes": false
+  }
+}

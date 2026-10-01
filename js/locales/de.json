@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "Inhalt bearbeiten",
   "parcours_fab_echec_carte": "Diese Aktivität konnte nicht erzeugt werden. Sie können es erneut versuchen.",
   "parcours_consigne_manquante": "Einige Übungen dieser Aktivität haben auch nach einer zweiten Anfrage keine Aufgabenstellung: Generieren Sie sie neu.",
+  "parcours_mise_en_forme": "Diese Aktivität konnte auch nach einer zweiten Anfrage nicht für die Plattform aufbereitet werden: Generieren Sie sie erneut.",
   "parcours_fab_editeur_titre": "„@t“ bearbeiten",
   "parcours_fab_editeur_fermer": "Editor schließen",
   "parcours_cta_livrer": "Lernpfad zusammenstellen",

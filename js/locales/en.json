@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "Edit the content",
   "parcours_fab_echec_carte": "This activity could not be generated. You can try again.",
   "parcours_consigne_manquante": "Some exercises in this activity have no instructions, even after a second request: generate it again.",
+  "parcours_mise_en_forme": "This activity could not be formatted for the platform, even after a second request: generate it again.",
   "parcours_fab_editeur_titre": "Editing “@t”",
   "parcours_fab_editeur_fermer": "Close the editor",
   "parcours_cta_livrer": "Assemble the course",

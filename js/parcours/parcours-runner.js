@@ -39,9 +39,9 @@ import { sourceManquante, preparerSource, appliquerSource, purgerMedias } from '
 import { construirePromptRemplissage, nbElementsCarte } from './scenario-prompt.js';
 import { modeleParcours } from './model-selector.js';
 import { metaActiviteParcours } from './stats-parcours.js';
-import { reglagesDeCarte } from './aiguillage.js';
+import { reglagesDeCarte, aiguillagesDuPlan } from './aiguillage.js';
 import { reglagesDeTrame } from './templates.js';
-import { defautsSortieIA, graviteSortieIA } from '../h5p/controle-sortie-ia.js';
+import { defautsSortieIA, graviteSortieIA, correctionDesTrous } from '../h5p/controle-sortie-ia.js';
 
 /** États possibles d'une carte pendant la fabrication. */
 export const ETATS = {
@@ -142,6 +142,20 @@ export async function extraireJson(texte) {
  * @param {string} moduleKey
  * @returns {Promise<Object>}
  */
+/**
+ * Les images d'une Page ou d'un Livre écrits par l'IA de CARAMEL (D110). Le modèle
+ * d'ILaaS ne sait pas trouver de vraie image : toute adresse qu'il écrit est
+ * inventée, et s'afficherait cassée (`via.placeholder.com`, parcours réel du
+ * 1er oct. 2026). L'enseignant ajoute les siennes dans l'éditeur (D88). Ne vaut
+ * PAS pour la réponse collée d'une IA externe, qui peut connaître de vraies
+ * adresses : elle ne perd que les services d'images factices (`json-healer.js`).
+ */
+async function sansImagesInventees(contenu, moduleKey) {
+    if (moduleKey !== 'Page' && moduleKey !== 'Livre') return contenu;
+    const { retirerImagesInventees } = await import('../h5p/json-healer.js');
+    return retirerImagesInventees(contenu, { toutes: true });
+}
+
 export async function reparer(brut, moduleKey) {
     const { healJsonObject, healActivitySpecificFields, healStructureForActivity } =
         await import('../h5p/json-healer.js');
@@ -195,12 +209,42 @@ export function rappelConsignes(manques) {
  * @returns {string}
  */
 export function rappelTrous(defauts) {
+    return correctionDesTrous(defauts);
+}
+
+/**
+ * La correction demandée quand l'activité n'a pas pu être mise en paquet : la
+ * cause technique (« Essay: occurrences invalides. ») suffit au modèle.
+ * @param {string} cause
+ * @returns {string}
+ */
+export function rappelMiseEnForme(cause) {
     return '\n\n# CORRECTION DEMANDÉE\n' +
-        `Dans ta réponse précédente, des trous ne portaient pas leur réponse (${defauts.join(', ')}). ` +
-        'Rends à nouveau le JSON COMPLET. Entre les astérisques, écris la RÉPONSE elle-même, telle que l’élève doit la ' +
-        'taper ou la glisser : un mot, ou la valeur calculée (par exemple *36*), jamais un nom de variable, une consigne ni un blanc. ' +
-        'Un trou n’a qu’une bonne réponse : pas de « bonne/mauvaise » séparées par une barre oblique ; si la consigne fait ' +
-        'choisir, écris dans chaque trou la seule réponse juste pour cette phrase.';
+        `Ta réponse précédente n’a pas pu être mise en forme pour la plateforme (${cause}). ` +
+        'Rends à nouveau le JSON COMPLET, exactement dans la structure attendue : chaque champ à sa place, ' +
+        'chaque valeur dans ses bornes (nombres entiers positifs, pourcentages de 0 à 100, listes non vides).';
+}
+
+/**
+ * Essaie la mise en paquet que fera la livraison (`activiteDepuisCarte`) sur ce
+ * contenu. Rend la cause du refus, ou `null` s'il passe. Un module que la
+ * plateforme n'assemble pas n'est pas une affaire de contenu : il passe ici, la
+ * livraison le dit.
+ * @param {Object} carte
+ * @param {Object} contenu
+ * @returns {Promise<string|null>}
+ */
+export async function refusDuPaquet(carte, contenu, plan = null) {
+    try {
+        const { activiteDepuisCarte } = await import('./parcours-builder.js');
+        const aiguille = Boolean(plan && aiguillagesDuPlan(plan).some(g => g.test === carte));
+        await activiteDepuisCarte({ ...carte, contenu }, { aiguille });
+        return null;
+    } catch (e) {
+        const message = String((e && e.message) || e);
+        if (message.startsWith('parcours_module_non_gere')) return null;
+        return message.slice(0, 300);
+    }
 }
 
 /**
@@ -275,7 +319,7 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
                 : await generateH5PWithLLM(prompt, modele, metaActiviteParcours(draft, carte.module));
 
             const brut = await appliquerSource(await extraireJson(reponse), source, carte.module);
-            let contenu = await reparer(brut, carte.module);
+            let contenu = await sansImagesInventees(await reparer(brut, carte.module), carte.module);
             // Un exercice SANS consigne est injouable : dans le quiz de Gauthier
             // (30 sept. 2026), le modèle l'avait omise sur trois questions sur dix,
             // et l'élève voyait un texte sans savoir quoi y faire. On la redemande
@@ -294,7 +338,7 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
                 const reponse2 = appelModele
                     ? await appelModele(prompt + rappel, carte)
                     : await generateH5PWithLLM(prompt + rappel, modele, metaActiviteParcours(draft, carte.module));
-                const second = await reparer(await appliquerSource(await extraireJson(reponse2), source, carte.module), carte.module);
+                const second = await sansImagesInventees(await reparer(await appliquerSource(await extraireJson(reponse2), source, carte.module), carte.module), carte.module);
                 const encore = consignesManquantes(second, carte.module);
                 if (manques.length) {
                     // Sans consigne, seul le second tirage peut servir, et complet.
@@ -307,7 +351,26 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
             if (arretDemande) { etat.statut = carte.contenu ? ETATS.faite : ETATS.annulee; return; }
             // Les réglages de son chemin, ou du test qui aiguille (D90, D93).
             // …et ceux que sa trame impose au Test (« Évaluer », D102).
-            carte.contenu = reglagesDeTrame(draft.trame, carte, reglagesDeCarte(plan, carte, contenu));
+            let final = reglagesDeTrame(draft.trame, carte, reglagesDeCarte(plan, carte, contenu));
+            // La mise en paquet de la livraison, ESSAYÉE ICI (D109) : une activité que
+            // son processeur refuse était écartée à la livraison sous « erreur de mise
+            // en forme », trop tard pour la redemander (parcours réel du 1er oct. 2026 :
+            // une Rédaction à `occurrences: 0`). On la redemande une fois, avec la cause.
+            const refus = await refusDuPaquet(carte, final, plan);
+            if (refus && !arretDemande) {
+                debugLog('parcours', `carte « ${carte.titre} » : mise en forme refusée (${refus}), seconde demande`);
+                const rappel = rappelMiseEnForme(refus);
+                const reponse3 = appelModele
+                    ? await appelModele(prompt + rappel, carte)
+                    : await generateH5PWithLLM(prompt + rappel, modele, metaActiviteParcours(draft, carte.module));
+                const autre = await sansImagesInventees(await reparer(await appliquerSource(await extraireJson(reponse3), source, carte.module), carte.module), carte.module);
+                const autreFinal = reglagesDeTrame(draft.trame, carte, reglagesDeCarte(plan, carte, autre));
+                const encore = await refusDuPaquet(carte, autreFinal, plan);
+                if (encore) throw new Error(`parcours_mise_en_forme:${encore}`);
+                final = autreFinal;
+            }
+            if (arretDemande) { etat.statut = carte.contenu ? ETATS.faite : ETATS.annulee; return; }
+            carte.contenu = final;
             carte.sourceUtilisee = carte.source ? JSON.stringify(carte.source) : null;
             purgerMedias(carte);
             // Le titre du plan fait foi : c'est celui que l'enseignant a relu,
@@ -328,6 +391,7 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
                 etat.statut = carte.contenu ? ETATS.faite : ETATS.echouee;
                 etat.erreurKey = String(e.message || '').startsWith('parcours_source_') ? e.message
                     : String(e.message || '').startsWith('parcours_consigne_manquante') ? 'parcours_consigne_manquante'
+                    : String(e.message || '').startsWith('parcours_mise_en_forme') ? 'parcours_mise_en_forme'
                         : (info && info.userMessageKey) || 'parcours_fab_echec_carte';
                 etat.detail = String((e && e.message) || e);
                 console.error(`[parcours] carte « ${carte.titre} » (${carte.module}) échouée :`, e);

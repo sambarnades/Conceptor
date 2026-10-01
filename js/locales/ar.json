@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "تعديل المحتوى",
   "parcours_fab_echec_carte": "أخفق إنشاء هذا النشاط. يمكنك إعادة المحاولة.",
   "parcours_consigne_manquante": "بعض تمارين هذا النشاط بلا تعليمة، حتى بعد طلب ثانٍ: أعد إنشاء النشاط.",
+  "parcours_mise_en_forme": "تعذّر تنسيق هذا النشاط للمنصة حتى بعد طلب ثانٍ: أعد توليده.",
   "parcours_fab_editeur_titre": "تعديل «@t»",
   "parcours_fab_editeur_fermer": "إغلاق المحرر",
   "parcours_cta_livrer": "تجميع المسار",

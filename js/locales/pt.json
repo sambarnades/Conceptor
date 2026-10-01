@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "Alterar o conteúdo",
   "parcours_fab_echec_carte": "Não foi possível gerar esta atividade. Pode tentar de novo.",
   "parcours_consigne_manquante": "Alguns exercícios desta atividade não têm instrução, mesmo após um segundo pedido: gere-a novamente.",
+  "parcours_mise_en_forme": "Esta atividade não pôde ser formatada para a plataforma, mesmo após um segundo pedido: gere-a novamente.",
   "parcours_fab_editeur_titre": "Alterar «@t»",
   "parcours_fab_editeur_fermer": "Fechar o editor",
   "parcours_cta_livrer": "Montar o percurso",

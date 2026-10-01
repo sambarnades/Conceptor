@@ -7,6 +7,7 @@
 
 import { generateUUID, debugLog, DEBUG } from '../core/utils.js';
 import { registerConverters, getConstraints, getConverter, applyToPath, stripHtmlKeepLatex } from './field-constraints.js';
+import { CALCUL_DEDUCTIBLE, VALEUR_ET_UNITE, UNITE, FRACTION_ECRITE, contexteDeFractions } from './controle-sortie-ia.js';
 
 // =======================================================================
 // CONSTANTES PARTAGÉES
@@ -954,6 +955,12 @@ function healQuizSet(healed) {
                 if (!q.params.title) q.params.title = "";
             }
 
+            // Une rédaction du quiz reçoit la règle d'une rédaction seule : un réglage
+            // hors bornes (`occurrences: 0`) la ferait rejeter à la mise en paquet.
+            if (q.library && q.library.startsWith('H5P.Essay') && q.params && typeof q.params === 'object') {
+                healEssay(q.params);
+            }
+
             return q;
         });
     }
@@ -1555,6 +1562,31 @@ function healEssay(healed) {
         }
         return kw;
     });
+    // Un réglage hors bornes se ramène dans ses bornes, comme le fait le processeur
+    // (`reparerRedaction`) : `occurrences: 0` (parcours réel du 1er oct. 2026) faisait
+    // rejeter toute la rédaction, et le contenu enregistré gardait le 0 que l'éditeur
+    // et les documents affichaient.
+    const nombre = v => (v == null || v === '' || !Number.isFinite(Number(v)) ? null : Number(v));
+    const pointsLisibles = v => nombre(v) !== null && nombre(v) >= 0;
+    for (const kw of healed.keywords) {
+        if (!kw || typeof kw !== 'object') continue;
+        if (kw.points !== undefined && !pointsLisibles(kw.points)) kw.points = 1;
+        if (kw.options && typeof kw.options === 'object') {
+            if (kw.options.points != null && !pointsLisibles(kw.options.points)) kw.options.points = 1;
+            if (kw.options.occurrences != null) {
+                const n = nombre(kw.options.occurrences);
+                kw.options.occurrences = n === null ? 1 : Math.max(1, Math.round(n));
+            }
+        }
+    }
+    if (healed.behaviour && typeof healed.behaviour === 'object') {
+        for (const [cle, max] of [['minimumLength', Infinity], ['maximumLength', Infinity], ['percentagePassing', 100], ['percentageMastering', 100], ['pointsHost', Infinity]]) {
+            if (healed.behaviour[cle] == null || healed.behaviour[cle] === '') continue;
+            const n = nombre(healed.behaviour[cle]);
+            if (n === null || n < 0) delete healed.behaviour[cle];
+            else if (n > max) healed.behaviour[cle] = max;
+        }
+    }
     if (!healed.solution) healed.solution = { introduction: '', sample: '' };
 }
 
@@ -1708,6 +1740,67 @@ function healPage(healed) {
     }
 }
 
+/**
+ * Services d'images FACTICES : une adresse vers eux n'est jamais une vraie image.
+ * Parcours réel du 1er oct. 2026 : une Page portait deux
+ * `https://via.placeholder.com/300x200?text=…`, service arrêté — l'élève aurait vu
+ * deux cadres cassés sur Éléa.
+ */
+const IMAGES_FACTICES = /^https?:\/\/(?:[\w-]+\.)*(?:placeholder\.com|placehold\.(?:co|it|jp)|placekitten\.com|picsum\.photos|dummyimage\.com|fakeimg\.pl|lorempixel\.com|loremflickr\.com|placeimg\.com|example\.(?:com|org|net))(?:[/?#:]|$)/i;
+
+/**
+ * Retire d'une Page ou d'un Livre les images que le modèle a inventées.
+ *
+ * Les blocs `#08` (cartes) et `#09` (deux figures) affichent leur balise image même
+ * sans adresse : vidés, ils montreraient un cadre cassé. Ils deviennent donc des
+ * paragraphes (titre, texte, légendes) ; `#13` et `#16`, que les thèmes savent
+ * afficher sans figure, perdent seulement l'adresse. Les images envoyées par
+ * l'enseignant (`@@PLUGINFILE@@`, `data:`, D88) ne sont jamais touchées.
+ *
+ * @param {Object} contenu - Une Page (`blocks`) ou un Livre (`chapters[].blocks`), modifié en place.
+ * @param {Object} [o]
+ * @param {boolean} [o.toutes] - Toute adresse web est inventée (un parcours ne fournit
+ *        aucune image à une Page) ; sinon, les seuls services factices.
+ * @returns {Object} Le même contenu.
+ */
+export function retirerImagesInventees(contenu, { toutes = false } = {}) {
+    if (!contenu || typeof contenu !== 'object') return contenu;
+    const inventee = src => typeof src === 'string' && /^https?:\/\//i.test(src.trim())
+        && (toutes || IMAGES_FACTICES.test(src.trim()));
+    // Une figure sans image : ni adresse, ni fichier envoyé par l'enseignant (`img_file`, D88).
+    // Le modèle qui n'invente pas laisse `img_src` vide (parcours réel du 1er oct. 2026) — mais
+    // `#08` et `#09` affichent leur cadre d'image quand même, vide.
+    const sansImage = f => !f || typeof f !== 'object' || ((typeof f.img_src !== 'string' || !f.img_src.trim()) && !f.img_file) || inventee(f.img_src);
+    const texte = v => (typeof v === 'string' ? v.trim() : '');
+    const nettoyer = blocs => blocs.map(bloc => {
+        const d = bloc && typeof bloc === 'object' && bloc.data && typeof bloc.data === 'object' ? bloc.data : null;
+        if (!d) return bloc;
+        const type = String(bloc.type || '');
+        if (type.startsWith('#08') && Array.isArray(d.cards) && d.cards.some(c => c && sansImage(c))) {
+            const paragraphs = d.cards.filter(c => c && typeof c === 'object')
+                .map(c => [texte(c.title) ? `**${texte(c.title)}**` : '', texte(c.text) || texte(c.caption)].filter(Boolean).join(' — '))
+                .filter(Boolean);
+            return paragraphs.length ? { type: '#12_context_paragraphs', data: { title: texte(d.title), paragraphs } } : null;
+        }
+        if (type.startsWith('#09') && [d.left, d.right].some(f => sansImage(f))) {
+            const paragraphs = [d.left && d.left.caption, d.right && d.right.caption, d.text].map(texte).filter(Boolean);
+            return paragraphs.length ? { type: '#12_context_paragraphs', data: { title: texte(d.title), paragraphs } } : null;
+        }
+        if (inventee(d.img_src)) {
+            const { img_src, img_alt, ...reste } = d;
+            return { ...bloc, data: reste };
+        }
+        return bloc;
+    }).filter(Boolean);
+    if (Array.isArray(contenu.blocks)) contenu.blocks = nettoyer(contenu.blocks);
+    if (Array.isArray(contenu.chapters)) {
+        for (const chapitre of contenu.chapters) {
+            if (chapitre && Array.isArray(chapitre.blocks)) chapitre.blocks = nettoyer(chapitre.blocks);
+        }
+    }
+    return contenu;
+}
+
 // --- Livre (Moodle, module book) ---
 function healLivre(healed) {
     // 1. Defaults pour les réglages d'affichage (jamais générés par l'IA)
@@ -1850,8 +1943,8 @@ const HEAL_RULES = {
     Millionnaire: healMillionnaire,
     Appariement: healAppariement,
     QCM: healQCM,
-    Page: healPage,
-    Livre: healLivre,
+    Page: healed => { healPage(healed); retirerImagesInventees(healed); },
+    Livre: healed => { healLivre(healed); retirerImagesInventees(healed); },
     Devoir: healDevoir
 };
 
@@ -2355,6 +2448,58 @@ function virguleDecimaleHorsFormules(texte) {
 }
 
 /**
+ * `\\*` : l'astérisque « échappé » du Markdown. Le lecteur H5P ne connaît pas cet
+ * échappement : `\\*10 ÷ 4 = *2,5*\\*` y devenait un trou « 10 ÷ 4 = » sans réponse
+ * (parcours réel du 1er oct. 2026). Dans un trou, un astérisque n'est qu'un marqueur :
+ * ceux-là sont retirés.
+ * @param {string} texte
+ * @returns {string}
+ */
+function sansAsterisquesEchappes(texte) {
+    return String(texte).replace(/\\\*/g, '');
+}
+
+/**
+ * Les trous dont la réponse se DÉDUIT de ce que le modèle y a écrit à la place
+ * (Mistral Small 4, activité de proportionnalité, 1er oct. 2026) :
+ *  - le calcul entier, `*250 × 3 = 750* g` → `*750* g` : l'élève tape le résultat ;
+ *  - la réponse et l'indice inversés, `*distance:600 km*` → `*600* km` : le nom de la
+ *    grandeur en réponse, sa valeur et son unité en indice.
+ * Hors des formules. Ce qui ne se déduit pas (`*x*`, `*km*`, plusieurs valeurs en indice)
+ * est signalé par `controle-sortie-ia.js`, pour la seconde demande.
+ * @param {string} texte
+ * @returns {string}
+ */
+function reponsesDeduitesDesTrous(texte) {
+    return String(texte).split(/(\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])/g).map((morceau, i) => (i % 2 ? morceau
+        : morceau.replace(/\*([^*\n]+)\*/g, (tout, contenu, position, chaine) => {
+            const deux = contenu.indexOf(':');
+            const reponse = deux >= 0 ? contenu.slice(0, deux) : contenu;
+            const indice = deux >= 0 ? contenu.slice(deux + 1) : '';
+            const trouve = reponse.match(CALCUL_DEDUCTIBLE);
+            // Une barre oblique hors de l'unité (`km/h`) sépare des variantes : pas un calcul seul.
+            const calcul = trouve && !(trouve[2] ? reponse.slice(0, reponse.lastIndexOf(trouve[2])) : reponse).includes('/') && trouve;
+            if (calcul) return `*${calcul[1]}${indice ? `:${indice}` : ''}*${calcul[2] ? ` ${calcul[2]}` : ''}`;
+            const inverse = reponse.trim() && !/\d/.test(reponse) && indice.match(VALEUR_ET_UNITE);
+            if (inverse) return `*${inverse[1]}* ${inverse[2]}`;
+            // Une fraction, dans une phrase de fractions : le lecteur H5P lirait `*4/6*` comme
+            // « 4 » ou « 6 », et compterait faux l'élève qui tape 4/6. Deux trous : 4, puis 6.
+            const fraction = reponse.match(FRACTION_ECRITE);
+            if (fraction) {
+                const debut = chaine.lastIndexOf('\n', position) + 1;
+                const fin = chaine.indexOf('\n', position);
+                if (contexteDeFractions(chaine.slice(debut, fin < 0 ? chaine.length : fin))) {
+                    return `*${fraction[1]}${indice ? `:${indice}` : ''}*/*${fraction[2]}*`;
+                }
+            }
+            return tout;
+        })))
+        .join('')
+        // L'unité sortie du trou ne se répète pas si la phrase la donnait déjà.
+        .replace(new RegExp(String.raw`(\*[^*\n]+\*) (${UNITE}) \2(?![\p{L}\d])`, 'gu'), '$1 $2');
+}
+
+/**
  * Nettoyage d'une question FillInTheBlanks (H5P.Blanks).
  * 1. Convertit **mot** (gras markdown) en *mot* (marqueur de trou)
  * 2. Supprime les marqueurs *…* à l'intérieur des formules LaTeX \(…\) et \[…\]
@@ -2379,7 +2524,7 @@ function cleanBlanksText(text) {
     });
 
     // 3. La virgule décimale LaTeX hors formule (« *37{,}5* » → « *37,5* »)
-    return virguleDecimaleHorsFormules(cleaned);
+    return reponsesDeduitesDesTrous(virguleDecimaleHorsFormules(sansAsterisquesEchappes(cleaned)));
 }
 
 /**
@@ -2450,7 +2595,7 @@ function cleanDragTextText(text) {
     });
 
     // 4. La virgule décimale LaTeX restée hors formule (« *12{,}50* » → « *12,50* »)
-    return virguleDecimaleHorsFormules(cleaned);
+    return reponsesDeduitesDesTrous(virguleDecimaleHorsFormules(sansAsterisquesEchappes(cleaned)));
 }
 
 /** Clé de comparaison d'un mot glissable : sans l'indice `:…`, sans casse. */

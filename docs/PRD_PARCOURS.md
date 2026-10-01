@@ -2099,6 +2099,48 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       l’exemple reste la dernière chose du prompt. Le banc vérifie, pour les 600 cadrages
       possibles (plateforme, modalité, ampleur, chemins, trame), que l’exemple passe lui-même
       le contrôle, a la forme demandée et le registre de la plateforme.
+- [x] **D109 — Une activité se met en forme dès la fabrication.** Parcours réel d’Emmanuel
+      (1er oct. 2026, « Découvrir les natures des angles ») : la Rédaction « Défi : décrire un
+      angle dans un objet » écartée à la LIVRAISON, « erreur de mise en forme » — un mot-clé à
+      `occurrences: 0`, que `Essay.js` rejetait (« occurrences invalides »). Trop tard pour la
+      redemander. Deux corrections : (1) un réglage hors bornes se RÉPARE au lieu d’être rejeté
+      — `reparerRedaction` (processeur, pour un contenu déjà enregistré) et `healEssay`
+      (réparateur, y compris dans un quiz) ramènent occurrences et points à 1, un pourcentage
+      au-delà de 100 à 100, retirent une longueur négative ; seule une rédaction sans aucun
+      mot-clé reste refusée ; (2) `fabriquer` ESSAIE la mise en paquet de la livraison
+      (`refusDuPaquet` → `activiteDepuisCarte`) : refusée, l’activité est redemandée une fois avec
+      la cause (`rappelMiseEnForme`) ; refusée encore, la carte échoue À LA FABRICATION, avec un
+      message clair (`parcours_mise_en_forme`) et « Refaire ». Bancs : `run_heal_rules_tests.mjs`
+      (section 5), `run_parcours_atelier.mjs`.
+- [x] **D110 — Une image inventée ne s’affiche pas cassée.** Même parcours : la Page portait deux
+      `https://via.placeholder.com/300x200?text=…`, un service d’images factices arrêté. Les
+      blocs `#08` (cartes) et `#09` (deux figures) affichent leur balise image même vide : ils
+      deviennent des paragraphes (titre, texte, légendes) ; `#13` et `#16` perdent l’adresse.
+      Deux niveaux, pour ne rien casser (Emmanuel : « l’utilisateur pourrait en ajouter un à la
+      main ou utiliser le prompt avec l’IA grand public de son choix ») : PARTOUT, le réparateur
+      retire les seuls services factices (`retirerImagesInventees`, placeholder, placehold,
+      picsum…) ; dans un parcours, la file retire toute adresse que l’IA de CARAMEL écrit — le
+      modèle d’ILaaS ne sait pas trouver de vraie image —, mais pas celle d’une réponse collée
+      depuis une IA externe. L’image envoyée par l’enseignant (`@@PLUGINFILE@@`, D88) n’est
+      jamais touchée. Le cadre d’une Page ou d’un Livre interdit d’INVENTER une adresse, sans
+      interdire les images. Bancs : `run_heal_rules_tests.mjs` (section 6), `run_parcours_atelier.mjs`.
+- [x] **D111 — Un trou porte sa réponse : déduite, sinon redemandée.** Essai du 1er oct. 2026 sur
+      une carte de proportionnalité : Mistral Small 4 rendait 5 tirages sur 7 sans la réponse
+      dans les trous — `*x*` partout, une unité seule (`*km*`, `*g de farine*`), le calcul entier
+      (`*250 × 3 = 750*`), réponse et indice inversés (`*farine:325 g/500 g/625 g*`), deux
+      valeurs dont une fausse (`*500/300*`) ; et un Texte à trous réel de fractions écrivait
+      `*4/6*`, que le lecteur H5P lit « 4 » ou « 6 » (`parseSolution`) : l’élève qui tapait 4/6
+      était compté faux. (1) Ce qui se DÉDUIT est réparé (`reponsesDeduitesDesTrous`,
+      `json-healer.js`) : le résultat d’un calcul, `*750* g` ; une valeur et son unité mises à
+      l’envers, `*600* km` ; une fraction dans une phrase de fractions, deux trous `*4*` / `*6*`.
+      (2) Le reste est REPÉRÉ (`controle-sortie-ia.js`) : inconnue dans plusieurs trous, unité
+      sans valeur dans une phrase qui compte, plusieurs valeurs en indice, deux valeurs
+      différentes, calcul sans résultat — sans fausse alerte sur la grammaire (`*s*`, `*a*`/`*à*`),
+      une unité à trouver (`1 000 m = 1 *km*`) ou une durée (`20 *minutes*`). (3) La seconde
+      demande dit ce qui n’allait pas (`correctionDesTrous`), dans la file du parcours ET en
+      génération « en un clic », qui redemandait jusque-là le même prompt. (4) Le cadre de la
+      carte donne les contre-exemples. Bancs : `run_sources_prompt_tests.mjs`,
+      `run_heal_rules_tests.mjs` (section 7), `run_parcours_reels.mjs`.
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -3452,6 +3494,23 @@ court « Parcours » ; la barre mesurée à dix largeurs avant et après, et deu
 dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
+
+- **1er octobre 2026, après-midi — Le parcours de maths d’Emmanuel (D109 à D111) :** « Découvrir
+  les natures des angles » (Éléa, chemins) livré avec 11 activités sur 12 : la Rédaction « Défi :
+  décrire un angle dans un objet » écartée (« erreur de mise en forme », `occurrences: 0`), deux
+  images `via.placeholder.com` dans la Page. Le docx de la fiche semblait perdre les réponses d’un
+  quiz : fausse alerte, elles y sont en formules Word (OMML) — c’est l’outil d’extraction
+  (`textutil`) qui les omettait. Corrigé : D109, D110, D111, et la modale « Commencer un nouveau
+  parcours ? » (deux réponses en bloc insécable à droite, l’export à gauche ; rouge au survol ;
+  espace insécable avant « ? »). Le Texte à trous du parcours réel « Réviser les fractions »
+  écrivait `*4/6*` : injouable depuis sa génération (le lecteur lit « 4 » ou « 6 »), et faux par
+  endroits (« ⅘ - ¾ … 11/20 »). Régénérés avec le vrai modèle (Mistral Small 4) : un parcours
+  « Les natures des angles » (6e, 3 chemins, nouveau scénario `elea-angles-chemins`), « Réviser
+  les fractions » et « La proportionnalité » — toutes les cartes faites, aucune écartée, aucune
+  image ni bloc à image dans les Pages, aucun trou défectueux, fractions écrites ⅔ ; le banc des
+  parcours réels passe (412). Reste ce qu’aucun contrôle ne voit : une erreur de calcul (« 3 kg à
+  4,50 € → 5 kg à 6,75 € ») ou de notion (« l’angle saillant est plus grand qu’un angle droit »),
+  à faire relire.
 
 - **1er octobre 2026, matin — Le plan ne revient plus au cadrage (D107, D108) :** Emmanuel,
   en local : avec « Des chemins selon les résultats », « Composer le plan » tournait puis

@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "Modificar el contenido",
   "parcours_fab_echec_carte": "No se ha podido generar esta actividad. Puede volver a intentarlo.",
   "parcours_consigne_manquante": "Algunos ejercicios de esta actividad no tienen consigna, incluso después de una segunda solicitud: vuelva a generarla.",
+  "parcours_mise_en_forme": "Esta actividad no se ha podido formatear para la plataforma, ni siquiera tras una segunda solicitud: vuelva a generarla.",
   "parcours_fab_editeur_titre": "Modificar «@t»",
   "parcours_fab_editeur_fermer": "Cerrar el editor",
   "parcours_cta_livrer": "Ensamblar el itinerario",

@@ -102,7 +102,8 @@ try {
         focus: document.activeElement?.textContent.trim(),
     }));
     ok('la question dit d’exporter le scénario, plus de le « garder »',
-        question.texte === fr.parcours_nouveau_texte && /export/i.test(question.texte) && !/gardez/i.test(question.texte), JSON.stringify(question));
+        // La modale rend insécable l'espace d'avant « : » (le signe ne part pas seul à la ligne).
+        question.texte.replace(/\u202f/g, ' ') === fr.parcours_nouveau_texte && /export/i.test(question.texte) && !/gardez/i.test(question.texte), JSON.stringify(question));
     ok('la question offre « Exporter le scénario (.json) », « Garder ce parcours » et « Nouveau parcours », le focus sur Garder',
         question.boutons.length === 3 && question.boutons.includes(fr.parcours_liv_scenario_exporter)
         && question.boutons.includes(fr.parcours_nouveau_garder) && question.focus === fr.parcours_nouveau_garder, JSON.stringify(question));

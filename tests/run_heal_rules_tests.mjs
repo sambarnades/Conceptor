@@ -218,6 +218,100 @@ const SANS_REGLE_DEDIEE = new Set([
 }
 
 // =======================================================================
+// 5. RÉDACTION : RÉGLAGES RAMENÉS DANS LEURS BORNES (parcours réel, 1er oct. 2026)
+// =======================================================================
+// `occurrences: 0` sur un mot-clé faisait rejeter toute la rédaction à la livraison
+// (« erreur de mise en forme ») : un réglage se corrige, l'activité reste.
+{
+    const r = healStructureForActivity({ taskDescription: 'Décris un angle.', keywords: [
+        { keyword: 'angle droit', options: { points: 1, occurrences: 0 } },
+        { keyword: 'sommet', points: -2, options: { occurrences: 2.6, points: 'beaucoup' } },
+        { keyword: 'côtés', options: { occurrences: 3 } },
+    ], behaviour: { percentagePassing: 150, percentageMastering: -5, minimumLength: 'long', maximumLength: 400 } }, 'Essay');
+    eq('rédaction : 0 occurrence → 1, fraction arrondie, valeur juste gardée', r.keywords.map(k => k.options.occurrences), [1, 3, 3]);
+    eq('rédaction : points illisibles ou négatifs → 1', [r.keywords[1].points, r.keywords[1].options.points], [1, 1]);
+    eq('rédaction : pourcentage au-delà de 100 ramené, négatif ou illisible retiré, valeur juste gardée',
+        [r.behaviour.percentagePassing, 'percentageMastering' in r.behaviour, 'minimumLength' in r.behaviour, r.behaviour.maximumLength], [100, false, false, 400]);
+    const quiz = healStructureForActivity({ questions: [{ library: 'H5P.Essay 1.5', params: { taskDescription: 'Rédige.', keywords: [{ keyword: 'angle', options: { occurrences: 0 } }] } }] }, 'QuizSet');
+    eq('quiz : la rédaction d’un quiz aussi', quiz.questions[0].params.keywords[0].options.occurrences, 1);
+}
+
+// =======================================================================
+// 6. IMAGES INVENTÉES D'UNE PAGE OU D'UN LIVRE (parcours réel, 1er oct. 2026)
+// =======================================================================
+// Deux `https://via.placeholder.com/…` dans une Page : un service d'images factices,
+// arrêté — deux cadres cassés sur Éléa. Le réparateur retire les services factices
+// partout ; une vraie adresse (collée depuis une IA grand public) et une image
+// envoyée par l'enseignant restent.
+{
+    const { retirerImagesInventees } = await import('../js/h5p/json-healer.js');
+    const page = () => ({ title: 'Les angles', blocks: [
+        { type: '#08_monuments_grid', data: { title: 'Des angles partout', cards: [
+            { img_src: 'https://via.placeholder.com/300x200?text=Arbre', img_alt: 'Arbre', caption: 'Un arbre', title: 'Dans la nature', text: 'Les branches forment des angles aigus.' },
+            { img_src: 'https://via.placeholder.com/300x200?text=Livre', img_alt: 'Livre', title: 'Dans un livre', text: 'Le coin forme un angle droit.' }] } },
+        { type: '#09_figures_comparison', data: { title: 'Comparer', left: { img_src: 'https://upload.wikimedia.org/a.jpg', caption: 'Aigu' }, right: { img_src: 'https://upload.wikimedia.org/b.jpg', caption: 'Obtus' }, text: 'Deux angles.' } },
+        { type: '#13_monument_sheet_long', data: { title: 'Fiche', img_src: '@@PLUGINFILE@@/equerre.png', img_alt: 'Équerre', sections: [] } },
+        { type: '#16_method_image_desc', data: { title: 'Méthode', steps: ['Observer'], img_src: 'https://picsum.photos/400', img_alt: 'x' } },
+    ] });
+    const r = healStructureForActivity(page(), 'Page');
+    eq('page : la grille aux images factices devient des paragraphes, titre et texte gardés', [r.blocks[0].type, r.blocks[0].data.paragraphs],
+        ['#12_context_paragraphs', ['**Dans la nature** — Les branches forment des angles aigus.', '**Dans un livre** — Le coin forme un angle droit.']]);
+    eq('page : de vraies adresses (collées depuis une IA grand public) restent', r.blocks[1].data.left.img_src, 'https://upload.wikimedia.org/a.jpg');
+    eq('page : l’image envoyée par l’enseignant reste', r.blocks[2].data.img_src, '@@PLUGINFILE@@/equerre.png');
+    eq('page : un bloc qui sait vivre sans figure perd seulement l’adresse factice', ['img_src' in r.blocks[3].data, r.blocks[3].data.steps], [false, ['Observer']]);
+    const strict = retirerImagesInventees(page(), { toutes: true });
+    eq('parcours (IA de Caramel) : toute adresse web est retirée, l’image de l’enseignant reste',
+        [strict.blocks[1].type, strict.blocks[1].data.paragraphs, strict.blocks[2].data.img_src], ['#12_context_paragraphs', ['Aigu', 'Obtus', 'Deux angles.'], '@@PLUGINFILE@@/equerre.png']);
+    const livre = healStructureForActivity({ title: 'Livre', chapters: [{ title: 'Chap', subchapter: false, blocks: page().blocks }] }, 'Livre');
+    eq('livre : chaque chapitre est nettoyé de même', livre.chapters[0].blocks[0].type, '#12_context_paragraphs');
+    // Le modèle qui n'invente pas laisse `img_src` vide : le cadre s'affichait vide.
+    const vide = healStructureForActivity({ blocks: [
+        { type: '#09_figures_comparison', data: { title: 'Exemple visuel', left: { img_src: '', caption: 'Angle de sommet O' }, right: { img_src: '', caption: 'Plusieurs points' } } },
+        { type: '#08_monuments_grid', data: { title: 'T', cards: [{ img_src: '', img_file: { name: 'equerre.png' }, title: 'Équerre', text: 'Un angle droit.' }] } },
+    ] }, 'Page');
+    eq('page : une figure SANS image devient un paragraphe ; une image envoyée (img_file) garde son bloc',
+        vide.blocks.map(b => b.type), ['#12_context_paragraphs', '#08_monuments_grid']);
+}
+
+// =======================================================================
+// 7. TROUS DONT LA RÉPONSE SE DÉDUIT (Mistral Small 4, 1er oct. 2026)
+// =======================================================================
+// Le calcul entier dans un trou, ou la valeur rangée dans l'indice sous le nom de la
+// grandeur : la réponse se déduit, le réparateur la remet à sa place.
+{
+    const r = healActivitySpecificFields({ text: 'Complète.', questions: [
+        'Pour 36 crêpes, il faut *250 × 3 = 750* g de farine.',
+        'Sa vitesse est *45 ÷ 1,5 = 30 km/h* sur le trajet.',
+        'À cette vitesse, il parcourra *distance:600 km* en 5 heures.',
+        'Il faudra *peinture:9 L* L de peinture.',
+        'La Bastille est prise en *1789:Révolution* et la *Révolution:1789* commence.',
+        'Dans la formule \\( *a* = 2 \\times 3 \\) rien ne bouge.',
+        'Le résultat est *36*.',
+    ] }, 'FillInTheBlanks');
+    eq('trous : le calcul entier laisse son résultat, l’unité reste dehors', r.questions.slice(0, 2),
+        ['Pour 36 crêpes, il faut *750* g de farine.', 'Sa vitesse est *30* km/h sur le trajet.']);
+    eq('trous : la valeur rangée dans l’indice redevient la réponse, sans doubler l’unité', r.questions.slice(2, 4),
+        ['À cette vitesse, il parcourra *600* km en 5 heures.', 'Il faudra *9* L de peinture.']);
+    eq('trous : un indice légitime (une date sans unité) et une réponse juste ne bougent pas', [r.questions[4], r.questions[6]],
+        ['La Bastille est prise en *1789:Révolution* et la *Révolution:1789* commence.', 'Le résultat est *36*.']);
+    const glisser = healActivitySpecificFields({ taskDescription: 'Glisse.', textField: 'Il faut *250 × 3 = 750* g.' }, 'DragTheWords');
+    eq('glisser : le calcul entier d’un mot à glisser laisse son résultat', glisser.textField, 'Il faut *750* g.');
+    const quiz = healActivitySpecificFields({ questions: [{ library: 'H5P.Blanks 1.14', params: { text: 'Complète.', questions: ['Il parcourt *distance:600 km*.'] } }] }, 'QuizSet');
+    eq('quiz : un Texte à trous du quiz aussi', quiz.questions[0].params.questions, ['Il parcourt *600* km.']);
+    // Le lecteur H5P lit `*4/6*` comme « 4 » ou « 6 » (parseSolution) : l'élève qui tape 4/6
+    // était compté faux (parcours réel « Réviser les fractions »). Dans une phrase de
+    // fractions, deux trous ; ailleurs (`*7/8* œufs`), on ne devine pas : c'est signalé.
+    const fractions = healActivitySpecificFields({ text: 'Complète.', questions: [
+        'Pour ⅔ + ⅙, il faut un *dénominateur* commun : on obtient *5/6*.', '1/2 + 1/3 = *5/6:pense au dénominateur 6*',
+        'Pour 15 crêpes, il faut *7/8* œufs.' ] }, 'FillInTheBlanks');
+    const echappes = healActivitySpecificFields({ text: 'Complète.', questions: ['Le prix d’un stylo est \\*10 ÷ 4 = *2,5*\\* €.'] }, 'FillInTheBlanks');
+    eq('trous : l’astérisque « échappé » du Markdown (\\*) disparaît, le trou reste', echappes.questions, ['Le prix d’un stylo est 10 ÷ 4 = *2,5* €.']);
+    eq('fractions : deux trous dans une phrase de fractions, indice gardé ; ailleurs, rien n’est deviné', fractions.questions, [
+        'Pour ⅔ + ⅙, il faut un *dénominateur* commun : on obtient *5*/*6*.', '1/2 + 1/3 = *5:pense au dénominateur 6*/*6*',
+        'Pour 15 crêpes, il faut *7/8* œufs.']);
+}
+
+// =======================================================================
 // Bilan
 // =======================================================================
 console.log('');

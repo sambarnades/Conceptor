@@ -3304,6 +3304,7 @@
   "parcours_fab_editer": "内容を編集する",
   "parcours_fab_echec_carte": "この活動の生成に失敗しました。やり直せます。",
   "parcours_consigne_manquante": "この活動の一部の問題には、2 回目の依頼でも指示文がありません。もう一度生成してください。",
+  "parcours_mise_en_forme": "2回目の依頼でも、このアクティビティをプラットフォーム用に整形できませんでした。もう一度生成してください。",
   "parcours_fab_editeur_titre": "「@t」を編集",
   "parcours_fab_editeur_fermer": "エディターを閉じる",
   "parcours_cta_livrer": "学習コースをまとめる",

@@ -472,8 +472,22 @@ const REPONSE_DANS_LE_TROU = 'Chaque trou (*…*) contient la RÉPONSE que l’�
     'à la place du résultat. Un trou n’a qu’UNE bonne réponse : la barre oblique ne sépare que des variantes ÉQUIVALENTES ' +
     'de cette réponse (*36/trente-six*), jamais une bonne et une mauvaise — toutes seraient comptées justes. Si la consigne ' +
     'fait choisir (proportionnelle ou non, vrai ou faux), écris dans chaque trou la SEULE réponse juste pour cette phrase ' +
-    '(*proportionnelle* ici, *non proportionnelle* là).';
+    '(*proportionnelle* ici, *non proportionnelle* là). En calcul, l’élève tape le RÉSULTAT, l’unité reste dans la phrase : ' +
+    '« 5 stylos coûtent *12,5* € » — jamais *x* €, jamais *€*, jamais *2,5 × 5 = 12,5*, jamais *prix:12,5 €* ' +
+    '(après les deux-points vient un indice facultatif qui ne donne pas la réponse : *12,5:pense au prix d’un stylo*). ' +
+    'Vérifie chaque calcul avant de l’écrire.';
 const MODULES_A_TROUS = new Set(['FillInTheBlanks', 'DragTheWords', 'QuizSet']);
+
+/**
+ * Une Page, un Livre : aucune adresse d'image inventée (D110). Le cadre n'interdit pas
+ * les images — une IA grand public, à qui l'enseignant colle ce prompt, peut connaître
+ * une vraie adresse —, il interdit de l'inventer ; ce que l'IA de Caramel écrit malgré
+ * tout est retiré à la fabrication.
+ */
+const IMAGES_REELLES = 'IMAGES : n’invente jamais l’adresse d’une image (pas de service d’images factices, pas d’adresse supposée). ' +
+    'N’emploie un bloc à image (#08_monuments_grid, #09_figures_comparison, #13_monument_sheet_long, #16_method_image_desc) ' +
+    'que si tu connais l’adresse réelle d’une image libre de droits ; sinon, choisis des blocs sans image : l’enseignant ajoutera les siennes.';
+const MODULES_A_IMAGES = new Set(['Page', 'Livre']);
 
 /**
  * Les modules qui se LISENT : leur longueur suit la durée. Une Page de 5 minutes et
@@ -695,6 +709,7 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
         CONTENU_SUIT_LA_COMMANDE,
         ...(carte.module === 'QuizSet' ? [CONSIGNE_DES_EXERCICES] : []),
         ...(MODULES_A_TROUS.has(carte.module) ? [REPONSE_DANS_LE_TROU] : []),
+        ...(MODULES_A_IMAGES.has(carte.module) ? [IMAGES_REELLES] : []),
         // La longueur, en ligne à part : glissée dans la commande, elle se perdait face aux
         // « phrases courtes » du gabarit (mesure réelle : 742 mots pour 2 000 visés, D104).
         ...(motsVises(carte) ? [`LONGUEUR : ${fourchetteMots(carte)} mots de texte à lire, titres non compris, ` +
