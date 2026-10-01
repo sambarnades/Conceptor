@@ -1,5 +1,5 @@
 /** Confirmation propre à l'atelier, sans dialogue natif superposé. */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { el, action } from './dom.js';
 
 /**
@@ -19,6 +19,12 @@ import { el, action } from './dom.js';
  *   ne tranche pas (exporter avant de remplacer) : elle s'exécute, la question reste posée.
  * @returns {Promise<boolean>} Vrai si l'utilisateur choisit de quitter.
  */
+/**
+ * L'espace qui précède « ? ! : ; » devient insécable : sur un téléphone, le point
+ * d'interrogation du titre partait seul sur la ligne suivante.
+ */
+const insecable = texte => String(texte).replace(/ ([?!:;»])/g, '\u202f$1').replace(/« /g, '«\u202f');
+
 export function confirmer(panneau, { titre: cleTitre, texte: cleTexte, garder: cleGarder, garderIcone, quitter: cleQuitter, quitterIcone, annexe = null }) {
     const depart = document.activeElement;
     const voile = el('div', 'pc-confirmation');
@@ -27,9 +33,9 @@ export function confirmer(panneau, { titre: cleTitre, texte: cleTexte, garder: c
     voile.setAttribute('aria-labelledby', 'pc-confirmation-titre');
     voile.setAttribute('aria-describedby', 'pc-confirmation-texte');
     const boite = el('div', 'pc-confirmation__boite');
-    const titre = el('h2', null, t(cleTitre));
+    const titre = el('h2', null, insecable(t(cleTitre)));
     titre.id = 'pc-confirmation-titre';
-    const texte = el('p', null, t(cleTexte));
+    const texte = el('p', null, insecable(t(cleTexte)));
     texte.id = 'pc-confirmation-texte';
     const boutons = el('div', 'pc-confirmation__actions');
     return new Promise(resolve => {
@@ -56,7 +62,12 @@ export function confirmer(panneau, { titre: cleTitre, texte: cleTexte, garder: c
         }
         document.addEventListener('keydown', clavier, true);
         voile.addEventListener('click', e => { if (e.target === voile) finir(false); });
-        boutons.append(...ordre);
+        // Les deux réponses forment un bloc qui ne se coupe jamais, à droite ; l'action
+        // annexe se tient à gauche. Sans place pour les trois, le bloc passe entier à la
+        // ligne au lieu de laisser un bouton seul dessous.
+        const decision = el('div', 'pc-confirmation__decision');
+        decision.append(continuer, abandonner);
+        boutons.append(...[autre, decision].filter(Boolean));
         boite.append(titre, texte, boutons); voile.append(boite); document.body.append(voile);
         continuer.focus();
     });

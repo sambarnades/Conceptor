@@ -7,18 +7,18 @@
  *
  *   node scripts/video-demo/studio.mjs          ouvre http://127.0.0.1:8250/ dans le navigateur
  *
- * Options : --port=8250, --sortie=<dossier du tournage>, --prises=<dossier des voix>,
- * --sans-navigateur.
+ * Options : --video=parcours (la deuxième vidéo, cf. video.mjs), --port=8250,
+ * --sortie=<dossier du tournage>, --prises=<dossier des voix>, --sans-navigateur.
  *
  * Prérequis : un tournage (`node scripts/video-demo/tourner.mjs`), qui laisse la
- * vidéo muette et ses marques dans tests/.video-demo/.
+ * vidéo muette et ses marques dans tests/.video-demo/7.1/.
  *
  * **Pourquoi pas dans la page partagée.** Le cadre des artefacts refuse le micro
  * à tout le monde, sans même le demander. Ici la page est servie par l'ordinateur
  * lui-même (127.0.0.1), que les navigateurs traitent en contexte sûr : le micro
  * y est permis. Le serveur n'écoute QUE la boucle locale.
  *
- * **Où vont les prises.** tests/.video-demo/voix-off/<bloc>.wav, un fichier par
+ * **Où vont les prises.** tests/.video-demo/7.1/voix-off/<bloc>.wav, un fichier par
  * bloc, calé sur le début de sa scène : exactement ce qu'attend
  * `tourner.mjs --mixer`. Une prise refaite remplace la précédente ; recharger
  * la page ne perd rien.
@@ -29,13 +29,14 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import { copyFileSync, createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { ecrireMontage, lireMontage } from './montage.mjs';
+import { ecrireMontage, lireMontage, RALLONGE_MAX } from './montage.mjs';
+import { VIDEO } from './video.mjs';
 
 const ICI = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(ICI, '../..');
 const option = (nom, defaut) => (process.argv.find(a => a.startsWith(`--${nom}=`)) || '').split('=').slice(1).join('=') || defaut;
 /** --sortie : le dossier du tournage (marques, vidéo muette, vidéo finale) ; --prises : où ranger les voix. */
-const SORTIE = resolve(option('sortie', join(ROOT, 'tests/.video-demo')));
+const SORTIE = resolve(option('sortie', VIDEO.sortie));
 const PRISES = resolve(option('prises', join(SORTIE, 'voix-off')));
 const MARQUES = join(SORTIE, 'marques.json');
 const MUETTE = join(SORTIE, 'caramel-7-demo-muette.mp4');
@@ -45,7 +46,7 @@ const TAILLE_MAX = 60 * 1024 * 1024;
 /** Le dossier visible où l'on retrouve la vidéo finale (tests/.video-demo est masqué par le Finder). */
 const BUREAU = join(homedir(), 'Desktop', 'Caramel 7 - vidéos');
 const HABILLEE = join(SORTIE, 'caramel-7-demo-habillee.mp4');
-const COPIE_HABILLEE = join(BUREAU, 'Caramel 7 - démonstration commentée.mp4');   // une prise de bloc : quelques Mo ; au-delà, c'est une erreur
+const COPIE_HABILLEE = join(BUREAU, VIDEO.copie);   // une prise de bloc : quelques Mo ; au-delà, c'est une erreur
 
 if (!existsSync(MARQUES) || !existsSync(MUETTE)) {
     console.error('Pas de tournage : lancer d’abord  node scripts/video-demo/tourner.mjs');
@@ -95,10 +96,10 @@ const json = (res, code, corps) => { res.writeHead(code, { 'Content-Type': 'appl
  * du total, à peu près celle de sa durée (le montage ≈ 1 min, l'habillage ≈ 5 min).
  */
 const ETAPES = {
-    apercu: [{ nom: 'Montage des voix', script: 'tourner.mjs', args: () => [`--sortie=${SORTIE}`, `--mixer=${PRISES}`], poids: 1 }],
+    apercu: [{ nom: 'Montage des voix', script: 'tourner.mjs', args: () => [`--video=${VIDEO.id}`, `--sortie=${SORTIE}`, `--mixer=${PRISES}`], poids: 1 }],
     finale: [
-        { nom: 'Montage des voix', script: 'tourner.mjs', args: () => [`--sortie=${SORTIE}`, `--mixer=${PRISES}`], poids: 0.2 },
-        { nom: 'Habillage : caméra, cartons, musique', script: 'habillage.mjs', args: () => ['--version=voix', `--sortie=${SORTIE}`], poids: 0.78 },
+        { nom: 'Montage des voix', script: 'tourner.mjs', args: () => [`--video=${VIDEO.id}`, `--sortie=${SORTIE}`, `--mixer=${PRISES}`], poids: 0.2 },
+        { nom: 'Habillage : caméra, cartons, musique', script: 'habillage.mjs', args: () => [`--video=${VIDEO.id}`, '--version=voix', `--sortie=${SORTIE}`], poids: 0.78 },
         { nom: 'Copie sur le Bureau', poids: 0.02 },
     ],
 };
@@ -160,11 +161,16 @@ const serveur = createServer((req, res) => {
     const url = new URL(req.url, `http://127.0.0.1:${PORT}`);
     const p = decodeURIComponent(url.pathname);
 
-    if (req.method === 'GET' && (p === '/' || p === '/studio.html')) return servir(req, res, join(ICI, 'studio.html'), 'text/html; charset=utf-8');
-    if (req.method === 'GET' && p === '/table') return servir(req, res, join(ICI, 'table.html'), 'text/html; charset=utf-8');
+    // Les pages portent le nom de la vidéo ouverte : on ne confond pas deux studios.
+    if (req.method === 'GET' && (p === '/' || p === '/studio.html' || p === '/table')) {
+        const page = readFileSync(join(ICI, p === '/table' ? 'table.html' : 'studio.html'), 'utf8').replaceAll('Caramel 7</', `${VIDEO.titre}</`);
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+        return res.end(page);
+    }
     if (req.method === 'GET' && p === '/marques.json') return servir(req, res, MARQUES, 'application/json; charset=utf-8');
     // Les réglages de la table de montage (rallonges, audio) et les textes du prompteur.
-    if (req.method === 'GET' && p === '/montage') return json(res, 200, lireMontage(SORTIE));
+    // `rallongeMax` : la borne des rallonges, pour que le studio et la table règlent pareil.
+    if (req.method === 'GET' && p === '/montage') return json(res, 200, { ...lireMontage(SORTIE), rallongeMax: RALLONGE_MAX });
     if (req.method === 'PUT' && p === '/montage') {
         let corps = '';
         req.on('data', c => { corps += c; if (corps.length > 100000) req.destroy(); });

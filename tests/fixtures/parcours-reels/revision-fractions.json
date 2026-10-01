@@ -3,174 +3,175 @@
   "produit": "caramel-parcours",
   "version": "0.1.0",
   "langue": "fr",
-  "exporteLe": "2026-09-28T13:48:08.939Z",
+  "exporteLe": "2026-10-01T11:59:29.135Z",
   "cadrage": {
     "platform": "elea",
     "format": "distanciel",
     "ampleur": "moyenne",
-    "trame": "revision"
+    "trame": "revision",
+    "structure": "lineaire",
+    "chemins": 2
   },
   "plan": {
-    "titre": "Les fractions en 5e : révisions et entraînement",
-    "objectifGeneral": "Réviser les fractions en identifiant tes acquis et en comblant tes difficultés",
-    "introduction": "Tu vas revoir les fractions en t’évaluant d’abord, puis en relisant les points clés et en t’entraînant. Travaille à ton rythme, sans pression : tu pourras revenir en arrière autant que nécessaire. Prends des notes pour suivre tes progrès.",
+    "titre": "Réviser les fractions en 5e",
+    "objectifGeneral": "Reconnaître, simplifier, comparer, additionner et soustraire des fractions",
+    "introduction": "Ce parcours te permet de revoir les fractions : égalité, simplification, comparaison, addition et soustraction. Chaque étape commence par une activité pour faire le point sur ce que tu sais déjà. Tu avances à ton rythme et tu vérifies tes réponses tout de suite.",
+    "conclusion": "Tu sais maintenant reconnaître des fractions égales, les simplifier, les comparer et effectuer des calculs simples. Pour aller plus loin, exerce-toi sur des exercices variés dans ton cahier.",
     "notionsPivots": [
-      "l’égalité de fractions",
-      "la simplification de fractions",
+      "une fraction",
+      "un numérateur",
+      "un dénominateur",
+      "une fraction irréductible",
+      "une fraction égale à une autre",
       "la comparaison de fractions",
-      "l’addition de fractions",
-      "la soustraction de fractions",
-      "le dénominateur commun",
-      "la fraction irréductible",
-      "la fraction supérieure à l’unité",
-      "la fraction inférieure à l’unité",
-      "l’écriture fractionnaire"
+      "l'addition de fractions",
+      "la soustraction de fractions"
     ],
     "etapes": [
       {
         "id": "e1",
-        "titre": "Test initial : où en es-tu ?",
-        "objectif": "Identifier tes acquis et tes erreurs sur les fractions",
-        "introduction": "Commence par ce test pour savoir ce que tu maîtrises déjà et ce qui te pose problème. Note tes résultats pour y revenir ensuite. Pas de stress : c’est une photo de tes connaissances avant révision.",
+        "titre": "Tester tes connaissances",
+        "objectif": "Repérer ce que tu sais et ce que tu dois réviser sur les fractions",
+        "introduction": "Pour commencer, réponds à un quiz sans enjeu. Les questions te montrent où sont tes erreurs et ce qu’il faut revoir. Prends le temps de lire chaque correction avant de continuer.",
         "cartes": [
           {
             "id": "c2",
-            "titre": "Quiz diagnostic",
-            "objectif": "Repérer tes acquis et tes erreurs sur les fractions",
-            "consigne": "Réponds à ce quiz sans aide. Tu auras un retour détaillé à la fin pour comprendre tes erreurs.",
+            "titre": "Quiz sur les fractions",
+            "objectif": "Vérifier tes acquis sur les fractions",
+            "consigne": "Réponds aux affirmations par vrai ou faux. Après chaque réponse, la correction t’explique pourquoi c’est juste ou faux.",
             "module": "QuizSetVF",
             "moduleReplie": false,
             "palier": "entrainement",
             "duree": 15,
             "verrouillee": false,
             "contenu": {
-              "title": "Quiz diagnostic",
+              "title": "Quiz sur les fractions",
               "questions": [
                 {
                   "library": "H5P.TrueFalse 1.8",
                   "metadata": {
-                    "title": "Égalité de fractions - Cas simple"
+                    "title": "Fraction et égalité"
                   },
                   "params": {
-                    "question": "Les fractions \\( \\frac{2}{4} \\) et \\( \\frac{1}{2} \\) sont égales.",
+                    "question": "Une fraction est toujours égale à une autre si elle a le même numérateur.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Exact : deux fractions peuvent avoir le même numérateur sans être égales. Par exemple, \\( \\frac{2}{3} \\) et \\( \\frac{2}{5} \\) ont le même numérateur mais ne sont pas égales.",
+                    "feedbackOnWrong": "Attention : pour que deux fractions soient égales, il faut qu'elles représentent la même quantité. Avoir le même numérateur ne suffit pas, il faut aussi que le rapport entre le numérateur et le dénominateur soit identique. Par exemple, \\( \\frac{2}{3} \\) n'est pas égal à \\( \\frac{2}{5} \\)."
+                  },
+                  "subContentId": "be07dbc5-8886-4b30-b374-ed9d15e8aab9"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Simplification de fraction"
+                  },
+                  "params": {
+                    "question": "On peut simplifier une fraction en divisant le numérateur et le dénominateur par un même nombre non nul.",
                     "correct": "true",
-                    "feedbackOnCorrect": "Parfait ! Tu as reconnu que \\( \\frac{2}{4} \\) et \\( \\frac{1}{2} \\) représentent la même quantité car on peut simplifier \\( \\frac{2}{4} \\) en divisant le numérateur et le dénominateur par 2.",
-                    "feedbackOnWrong": "Ces deux fractions sont égales car \\( \\frac{2}{4} \\) se simplifie en divisant le numérateur et le dénominateur par 2, ce qui donne \\( \\frac{1}{2} \\)."
+                    "feedbackOnCorrect": "Bravo ! C'est la méthode correcte pour simplifier une fraction. Par exemple, \\( \\frac{6}{8} \\) peut être simplifié par 2 pour donner \\( \\frac{3}{4} \\).",
+                    "feedbackOnWrong": "Pas tout à fait : pour simplifier une fraction, il faut diviser à la fois le numérateur et le dénominateur par un même nombre non nul. Cela ne change pas la valeur de la fraction. Par exemple, \\( \\frac{6}{8} \\) devient \\( \\frac{3}{4} \\) après simplification par 2."
                   },
-                  "subContentId": "29652293-8b71-4ac7-bb16-580fd43520db"
+                  "subContentId": "5ae72b8d-c768-4aff-b9c4-2f920a6eb9e4"
                 },
                 {
                   "library": "H5P.TrueFalse 1.8",
                   "metadata": {
-                    "title": "Simplification de fractions - Résultat attendu"
+                    "title": "Comparaison de fractions"
                   },
                   "params": {
-                    "question": "La fraction \\( \\frac{10}{15} \\) est irréductible.",
-                    "correct": "false",
-                    "feedbackOnCorrect": "Exact ! \\( \\frac{10}{15} \\) n'est pas une fraction irréductible car on peut encore simplifier par 5, ce qui donne \\( \\frac{2}{3} \\).",
-                    "feedbackOnWrong": "La fraction \\( \\frac{10}{15} \\) n'est pas irréductible car on peut simplifier par 5. Une fraction irréductible est une fraction qu'on ne peut plus simplifier."
-                  },
-                  "subContentId": "2e60acef-ba59-4cab-93ba-07555e224c55"
-                },
-                {
-                  "library": "H5P.TrueFalse 1.8",
-                  "metadata": {
-                    "title": "Comparaison de fractions - Mêmes dénominateurs"
-                  },
-                  "params": {
-                    "question": "La fraction \\( \\frac{5}{8} \\) est plus petite que la fraction \\( \\frac{3}{8} \\).",
-                    "correct": "false",
-                    "feedbackOnCorrect": "Bien joué ! Comme les dénominateurs sont les mêmes, on compare juste les numérateurs : 5 est plus grand que 3, donc \\( \\frac{5}{8} \\) est plus grand que \\( \\frac{3}{8} \\).",
-                    "feedbackOnWrong": "Quand les dénominateurs sont identiques, c'est le numérateur qui décide : si le numérateur est plus grand, la fraction est plus grande. Ici, 5 > 3 donc \\( \\frac{5}{8} \\) > \\( \\frac{3}{8} \\)."
-                  },
-                  "subContentId": "4f11d287-2d4e-4517-9375-b2b3f4b59418"
-                },
-                {
-                  "library": "H5P.TrueFalse 1.8",
-                  "metadata": {
-                    "title": "Addition de fractions - Dénominateurs différents"
-                  },
-                  "params": {
-                    "question": "Pour additionner \\( \\frac{1}{3} \\) et \\( \\frac{1}{4} \\), on peut garder les dénominateurs et additionner les numérateurs.",
-                    "correct": "false",
-                    "feedbackOnCorrect": "Bravo ! On ne peut pas additionner directement des fractions avec des dénominateurs différents. Il faut d'abord trouver un dénominateur commun, par exemple 12, avant d'additionner.",
-                    "feedbackOnWrong": "Pour additionner \\( \\frac{1}{3} \\) et \\( \\frac{1}{4} \\), il faut d'abord trouver un dénominateur commun, comme 12, puis transformer chaque fraction avant d'additionner les numérateurs."
-                  },
-                  "subContentId": "921233a1-2592-4be5-9dc6-b79898bf3c3c"
-                },
-                {
-                  "library": "H5P.TrueFalse 1.8",
-                  "metadata": {
-                    "title": "Soustraction de fractions - Résultat entier"
-                  },
-                  "params": {
-                    "question": "Le résultat de \\( \\frac{7}{10} - \\frac{3}{10} \\) est un nombre entier.",
-                    "correct": "false",
-                    "feedbackOnCorrect": "Exact ! \\( \\frac{7}{10} - \\frac{3}{10} = \\frac{4}{10} \\), qui n'est pas un nombre entier, mais une fraction que l'on peut simplifier en \\( \\frac{2}{5} \\).",
-                    "feedbackOnWrong": "Le résultat de \\( \\frac{7}{10} - \\frac{3}{10} \\) est \\( \\frac{4}{10} \\), une fraction qui s'écrit aussi \\( \\frac{2}{5} \\) après simplification. Ce n'est pas un nombre entier."
-                  },
-                  "subContentId": "ef7cc490-de0b-495b-afb8-fb2d85cc9dc0"
-                },
-                {
-                  "library": "H5P.TrueFalse 1.8",
-                  "metadata": {
-                    "title": "Fraction supérieure à l'unité - Exemple"
-                  },
-                  "params": {
-                    "question": "La fraction \\( \\frac{9}{5} \\) est une fraction inférieure à l'unité.",
-                    "correct": "false",
-                    "feedbackOnCorrect": "C'est juste ! \\( \\frac{9}{5} \\) est une fraction supérieure à l'unité car 9 est plus grand que 5. Elle vaut 1,8 en écriture décimale.",
-                    "feedbackOnWrong": "Une fraction est supérieure à l'unité quand le numérateur est plus grand que le dénominateur. Ici, 9 > 5 donc \\( \\frac{9}{5} \\) > 1."
-                  },
-                  "subContentId": "53286ede-a245-46b5-80c8-d0be8af40ae0"
-                },
-                {
-                  "library": "H5P.TrueFalse 1.8",
-                  "metadata": {
-                    "title": "Écriture fractionnaire - Lecture"
-                  },
-                  "params": {
-                    "question": "L'écriture \\( 2 + \\frac{3}{4} \\) peut s'écrire sous la forme d'une fraction.",
+                    "question": "Pour comparer deux fractions, il faut qu'elles aient le même dénominateur.",
                     "correct": "true",
-                    "feedbackOnCorrect": "Bravo ! On peut écrire \\( 2 + \\frac{3}{4} \\) comme \\( \\frac{11}{4} \\) en transformant 2 en \\( \\frac{8}{4} \\).",
-                    "feedbackOnWrong": "Pour écrire \\( 2 + \\frac{3}{4} \\) sous forme d'une seule fraction, on transforme 2 en \\( \\frac{8}{4} \\), ce qui donne \\( \\frac{11}{4} \\)."
+                    "feedbackOnCorrect": "Exact : comparer deux fractions est plus facile quand elles ont le même dénominateur. On peut alors comparer simplement leurs numérateurs. Par exemple, pour comparer \\( \\frac{3}{4} \\) et \\( \\frac{5}{6} \\), on peut les écrire avec un dénominateur commun comme \\( \\frac{9}{12} \\) et \\( \\frac{10}{12} \\).",
+                    "feedbackOnWrong": "Non : pour comparer deux fractions, il est utile de les mettre au même dénominateur. Cela permet de comparer directement leurs numérateurs. Sans dénominateur commun, la comparaison est moins évidente."
                   },
-                  "subContentId": "32a97c59-2761-4b8e-bd07-213c6caccbb0"
+                  "subContentId": "b4a4edf7-7197-4b59-a847-6795fd0834df"
                 },
                 {
                   "library": "H5P.TrueFalse 1.8",
                   "metadata": {
-                    "title": "Simplification et comparaison - Lien"
+                    "title": "Addition de fractions"
                   },
                   "params": {
-                    "question": "Si on simplifie une fraction, sa valeur ne change pas.",
-                    "correct": "true",
-                    "feedbackOnCorrect": "Exactement ! Simplifier une fraction ne change pas sa valeur, cela revient juste à écrire la même quantité sous une autre forme.",
-                    "feedbackOnWrong": "Simplifier une fraction consiste à diviser le numérateur et le dénominateur par un même nombre non nul. La valeur de la fraction reste donc la même, seule son apparence change."
+                    "question": "Pour additionner deux fractions, il suffit d'additionner les numérateurs et les dénominateurs.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Bonne réponse : on ne peut pas additionner directement les numérateurs et les dénominateurs. Il faut d'abord mettre les fractions au même dénominateur, puis additionner les numérateurs. Par exemple, \\( \\frac{1}{4} + \\frac{1}{2} = \\frac{1}{4} + \\frac{2}{4} = \\frac{3}{4} \\).",
+                    "feedbackOnWrong": "Erreur : pour additionner deux fractions, il faut les mettre au même dénominateur avant d'additionner les numérateurs. Additionner directement les numérateurs et les dénominateurs ne donne pas le bon résultat. Par exemple, \\( \\frac{1}{4} + \\frac{1}{2} \\) ne vaut pas \\( \\frac{2}{6} \\)."
                   },
-                  "subContentId": "35ed2428-700f-4fda-84cd-069b52d6d912"
+                  "subContentId": "31ce8292-d715-4754-8ac1-f40ec9b370e8"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Soustraction de fractions"
+                  },
+                  "params": {
+                    "question": "On peut soustraire deux fractions seulement si elles ont le même dénominateur.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Exact : pour soustraire deux fractions, il est nécessaire qu'elles aient le même dénominateur. Sinon, on ne peut pas soustraire directement les numérateurs. Par exemple, \\( \\frac{5}{6} - \\frac{1}{3} = \\frac{5}{6} - \\frac{2}{6} = \\frac{3}{6} = \\frac{1}{2} \\).",
+                    "feedbackOnWrong": "Non : pour soustraire deux fractions, il faut qu'elles aient le même dénominateur. Sans cela, la soustraction n'est pas possible directement. Il faut d'abord mettre les fractions au même dénominateur."
+                  },
+                  "subContentId": "d4a3cce3-a221-43df-81d1-a3102e4d316f"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Fraction irréductible"
+                  },
+                  "params": {
+                    "question": "Une fraction est irréductible si le numérateur et le dénominateur n'ont aucun diviseur commun autre que 1.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Bravo ! C'est la définition d'une fraction irréductible. Par exemple, \\( \\frac{3}{4} \\) est irréductible car 3 et 4 n'ont pas de diviseur commun autre que 1.",
+                    "feedbackOnWrong": "Pas exactement : une fraction est irréductible quand on ne peut plus la simplifier, c'est-à-dire quand le numérateur et le dénominateur n'ont aucun diviseur commun autre que 1. Par exemple, \\( \\frac{6}{8} \\) n'est pas irréductible car on peut la simplifier en \\( \\frac{3}{4} \\)."
+                  },
+                  "subContentId": "08247696-cf10-4afe-a152-71c8e25a1434"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Égalité de fractions"
+                  },
+                  "params": {
+                    "question": "Deux fractions sont égales si on peut passer de l'une à l'autre en multipliant ou en divisant le numérateur et le dénominateur par un même nombre non nul.",
+                    "correct": "true",
+                    "feedbackOnCorrect": "Exact : c'est la propriété fondamentale des fractions égales. Par exemple, \\( \\frac{2}{3} \\) est égale à \\( \\frac{4}{6} \\) car on a multiplié le numérateur et le dénominateur par 2.",
+                    "feedbackOnWrong": "Non : pour que deux fractions soient égales, il faut pouvoir passer de l'une à l'autre en multipliant ou en divisant le numérateur et le dénominateur par un même nombre non nul. C'est ce qui permet de vérifier l'égalité de deux fractions."
+                  },
+                  "subContentId": "2e78d121-96c2-4b24-a983-1ab0287cab1e"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Comparaison avec des fractions simples"
+                  },
+                  "params": {
+                    "question": "La fraction \\( \\frac{3}{5} \\) est supérieure à la fraction \\( \\frac{2}{3} \\).",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Bonne réponse : \\( \\frac{3}{5} = 0,6 \\) et \\( \\frac{2}{3} \\approx 0,666 \\), donc \\( \\frac{3}{5} \\) est inférieure à \\( \\frac{2}{3} \\).",
+                    "feedbackOnWrong": "Erreur : pour comparer \\( \\frac{3}{5} \\) et \\( \\frac{2}{3} \\), on peut les mettre au même dénominateur ou les convertir en nombres décimaux. \\( \\frac{3}{5} = 0,6 \\) et \\( \\frac{2}{3} \\approx 0,666 \\), donc \\( \\frac{3}{5} \\) est inférieure à \\( \\frac{2}{3} \\)."
+                  },
+                  "subContentId": "b1a09901-d7cd-4519-8050-fec4ac275bfb"
                 }
               ],
               "overallFeedback": [
                 {
                   "from": 0,
                   "to": 25,
-                  "feedback": "Tu as commencé à te familiariser avec les fractions. C'est le moment de relire attentivement le cours sur l'égalité, la simplification, la comparaison, l'addition et la soustraction des fractions. Refais ce quiz pour t'entraîner."
+                  "feedback": "Ces repères sur les fractions sont à reprendre : relis bien le cours sur les fractions, leurs parties, et comment les comparer ou les simplifier. Puis refais ce quiz pour vérifier ta compréhension."
                 },
                 {
                   "from": 26,
                   "to": 50,
-                  "feedback": "Certaines notions résistent encore. Repère les affirmations qui t'ont fait hésiter et revois les exemples donnés pour la simplification, la comparaison et les opérations avec les fractions."
+                  "feedback": "Ces repères s'installent : les affirmations qui ont fait douter sont à cibler. Concentre-toi sur les fractions égales, leur simplification et leur comparaison."
                 },
                 {
                   "from": 51,
                   "to": 75,
-                  "feedback": "Tu as une bonne base sur les fractions. Concentre-toi sur les cas où tu as douté pour bien les ancrer, notamment sur les additions et soustractions avec dénominateurs différents."
+                  "feedback": "Bonne base : repère les énoncés qui ont fait hésiter pour consolider tes connaissances sur les fractions. Relis les explications données après chaque question."
                 },
                 {
                   "from": 76,
                   "to": 100,
-                  "feedback": "Excellent travail ! Les fractions n'ont presque plus de secrets pour toi. Pour aller plus loin, essaie de résoudre des problèmes concrets utilisant ces opérations ou explore les fractions mixtes."
+                  "feedback": "Ces notions sont bien maîtrisées. Pour t'entraîner davantage, essaie de créer toi-même des exercices sur les fractions et vérifie tes réponses en utilisant les méthodes apprises."
                 }
               ],
               "behaviour": {
@@ -186,29 +187,29 @@
       },
       {
         "id": "e3",
-        "titre": "Les bases à consolider",
-        "objectif": "Rappeler les points essentiels sur les fractions",
-        "introduction": "Tu as identifié tes difficultés ? Cette étape te rappelle les règles de base sur les fractions. Relis-les attentivement avant de passer à l’entraînement. Utilise un brouillon pour refaire les exemples.",
+        "titre": "Rappeler l’essentiel",
+        "objectif": "Se souvenir des règles sur les fractions à partir des erreurs fréquentes",
+        "introduction": "Tu as vu où étaient tes erreurs. Voici maintenant l’essentiel à retenir, expliqué en partant des difficultés les plus courantes. Lis attentivement avant de passer à l’entraînement.",
         "cartes": [
           {
             "id": "c4",
-            "titre": "Règles d’égalité et simplification",
-            "objectif": "Comprendre comment vérifier l’égalité de fractions et les simplifier",
-            "consigne": "Lis la page qui explique comment vérifier si deux fractions sont égales et comment les simplifier. Note les exemples dans ton cahier.",
+            "titre": "Les règles des fractions",
+            "objectif": "Comprendre les notions clés sur les fractions",
+            "consigne": "Lis le texte et repère les explications sur l’égalité, la simplification et la comparaison.",
             "module": "Page",
             "moduleReplie": false,
             "palier": "decouverte",
             "duree": 10,
             "verrouillee": false,
             "contenu": {
-              "title": "Règles d’égalité et simplification",
-              "intro": "Aujourd’hui, tu vas découvrir comment vérifier si deux fractions sont égales et comment les simplifier. Prends ton cahier et note bien les exemples pour t’entraîner ensuite !",
+              "title": "Les règles des fractions",
+              "intro": "Tu vas découvrir comment comparer, simplifier et rendre égales des fractions. Ces règles te permettront de travailler plus vite et sans erreur. Prêt ? C'est parti !",
               "blocks": [
                 {
                   "type": "#01_hero_header",
                   "data": {
-                    "title": "Règles d’égalité et simplification",
-                    "subtitle": "Comment savoir si deux fractions sont égales ? Comment les simplifier ?"
+                    "title": "Les fractions, c'est comme une recette de cuisine",
+                    "subtitle": "Apprends à les ajuster pour qu'elles soient équivalentes ou comparables"
                   }
                 },
                 {
@@ -216,24 +217,20 @@
                   "data": {
                     "links": [
                       {
-                        "href": "#egalite",
-                        "text": "L’égalité de fractions"
+                        "href": "#egalite-fractions",
+                        "text": "L'égalité des fractions"
                       },
                       {
-                        "href": "#simplification",
-                        "text": "La simplification de fractions"
+                        "href": "#simplification-fractions",
+                        "text": "Simplifier une fraction"
                       },
                       {
-                        "href": "#exemples",
-                        "text": "Des exemples pour comprendre"
+                        "href": "#comparaison-fractions",
+                        "text": "Comparer des fractions"
                       },
                       {
                         "href": "#lexique",
-                        "text": "Lexique à retenir"
-                      },
-                      {
-                        "href": "#sitographie",
-                        "text": "Pour aller plus loin"
+                        "text": "Lexique des termes techniques"
                       }
                     ]
                   }
@@ -241,23 +238,19 @@
                 {
                   "type": "#04_callout_set",
                   "data": {
-                    "title": "Ce que tu vas apprendre",
+                    "title": "Ce que tu vas retenir",
                     "callouts": [
                       {
                         "type": "objectif",
-                        "text": "Savoir vérifier si deux fractions sont égales."
-                      },
-                      {
-                        "type": "objectif",
-                        "text": "Comprendre comment simplifier une fraction."
+                        "text": "Savoir quand deux fractions sont égales"
                       },
                       {
                         "type": "savoir",
-                        "text": "Une fraction simplifiée est plus facile à comparer ou à additionner."
+                        "text": "Connaître la méthode pour simplifier une fraction"
                       },
                       {
                         "type": "alerte",
-                        "text": "Attention : une fraction simplifiée ne change pas de valeur, elle reste égale à la fraction de départ."
+                        "text": "Attention aux erreurs de comparaison : compare toujours les numérateurs ET les dénominateurs"
                       }
                     ]
                   }
@@ -265,48 +258,65 @@
                 {
                   "type": "#12_context_paragraphs",
                   "data": {
-                    "title": "L’égalité de fractions",
+                    "title": "L'égalité des fractions : quand deux fractions représentent la même quantité",
                     "paragraphs": [
-                      "Deux fractions sont égales quand elles représentent la même quantité. Par exemple, \\[ \\frac{2}{4} = \\frac{1}{2} \\] car elles valent toutes les deux 0,5. Pour vérifier cette égalité, tu peux utiliser la méthode de la multiplication en croix : si \\[ a \\times d = b \\times c \\] alors \\[ \\frac{a}{b} = \\frac{c}{d} \\].",
-                      "Prenons \\[ \\frac{3}{6} \\] et \\[ \\frac{1}{2} \\]. En multipliant en croix : 3 × 2 = 6 et 6 × 1 = 6. Comme 6 = 6, les deux fractions sont égales. Cette méthode est utile pour vérifier rapidement une égalité sans calculer les valeurs décimales."
+                      "Imagine que tu as une pizza coupée en 4 parts égales. Si tu en manges 2 parts, tu as mangé \\(\\frac{2}{4}\\) de la pizza. Mais si la pizza est coupée en 2 parts et que tu en manges 1, tu as aussi mangé la moitié de la pizza ! Donc \\(\\frac{2}{4}\\) et \\(\\frac{1}{2}\\) représentent la même quantité. On dit que ces fractions sont égales.",
+                      "Pour vérifier si deux fractions sont égales, tu peux utiliser la méthode du produit en croix. Par exemple, pour \\(\\frac{3}{5}\\) et \\(\\frac{6}{10}\\), tu multiplies le numérateur de la première par le dénominateur de la seconde : 3 × 10 = 30. Puis le dénominateur de la première par le numérateur de la seconde : 5 × 6 = 30. Comme les deux résultats sont identiques, les fractions sont égales.",
+                      "Cette méthode fonctionne toujours, même avec des grands nombres. Par exemple, \\(\\frac{7}{8}\\) et \\(\\frac{21}{24}\\) : 7 × 24 = 168 et 8 × 21 = 168. Les fractions sont donc égales. En revanche, \\(\\frac{3}{4}\\) et \\(\\frac{5}{6}\\) ne sont pas égales car 3 × 6 = 18 et 4 × 5 = 20, ce qui donne deux résultats différents."
                     ]
                   }
                 },
                 {
                   "type": "#12_context_paragraphs",
                   "data": {
-                    "title": "La simplification de fractions",
+                    "title": "Simplifier une fraction : la rendre plus simple sans changer sa valeur",
                     "paragraphs": [
-                      "Simplifier une fraction, c’est trouver une fraction égale avec des nombres plus petits. Pour cela, tu divises le numérateur et le dénominateur par le même nombre. Par exemple, \\[ \\frac{4}{8} \\] peut être simplifiée en divisant par 4 : \\[ \\frac{4 \\div 4}{8 \\div 4} = \\frac{1}{2} \\].",
-                      "Une fraction est irréductible quand on ne peut plus la simplifier. Par exemple, \\[ \\frac{3}{5} \\] est déjà irréductible car 3 et 5 n’ont pas de diviseur commun autre que 1. Pour simplifier, cherche toujours le plus grand diviseur commun (PGCD) du numérateur et du dénominateur."
+                      "Simplifier une fraction, c'est trouver une fraction égale mais avec des nombres plus petits. Par exemple, \\(\\frac{6}{8}\\) peut être simplifiée en \\(\\frac{3}{4}\\) car 6 et 8 sont tous les deux divisibles par 2. On dit que \\(\\frac{3}{4}\\) est une fraction irréductible car on ne peut plus la simplifier.",
+                      "Pour simplifier une fraction, tu dois trouver le plus grand nombre qui divise à la fois le numérateur et le dénominateur. Ce nombre s'appelle le plus grand commun diviseur (PGCD). Par exemple, pour \\(\\frac{12}{18}\\), le PGCD de 12 et 18 est 6. Donc \\(\\frac{12}{18} = \\frac{12 ÷ 6}{18 ÷ 6} = \\frac{2}{3}\\).",
+                      "Attention, il ne faut jamais oublier de vérifier si la fraction est irréductible après simplification. Par exemple, \\(\\frac{10}{15}\\) se simplifie en \\(\\frac{2}{3}\\), mais si tu t'arrêtes à \\(\\frac{5}{7}\\), tu fais une erreur car 5 et 7 ne sont pas divisibles par le même nombre. Toujours vérifier que le numérateur et le dénominateur n'ont plus de diviseur commun."
                     ]
                   }
                 },
                 {
-                  "type": "#10_table_comparison",
+                  "type": "#12_context_paragraphs",
                   "data": {
-                    "title": "Exemples de simplification",
-                    "caption": "Compare les fractions avant et après simplification.",
+                    "title": "Comparer des fractions : déterminer laquelle est la plus grande",
+                    "paragraphs": [
+                      "Pour comparer deux fractions, il faut qu'elles aient le même dénominateur. Par exemple, pour comparer \\(\\frac{3}{4}\\) et \\(\\frac{5}{6}\\), tu dois d'abord les mettre sous un dénominateur commun. Le dénominateur commun est le plus petit multiple commun (PPCM) des dénominateurs, ici 12. Donc \\(\\frac{3}{4} = \\frac{9}{12}\\) et \\(\\frac{5}{6} = \\frac{10}{12}\\). Comme 10 > 9, \\(\\frac{5}{6}\\) est plus grande que \\(\\frac{3}{4}\\).",
+                      "Si les dénominateurs sont déjà les mêmes, il suffit de comparer les numérateurs. Par exemple, \\(\\frac{7}{8}\\) et \\(\\frac{5}{8}\\) : comme 7 > 5, \\(\\frac{7}{8}\\) est plus grande. Cette méthode est plus simple car elle évite de chercher un dénominateur commun.",
+                      "Attention aux pièges ! Si les dénominateurs sont différents et que les numérateurs sont proches, comme \\(\\frac{4}{5}\\) et \\(\\frac{3}{4}\\), il faut absolument les mettre sous le même dénominateur pour éviter les erreurs. Ici, \\(\\frac{4}{5} = \\frac{16}{20}\\) et \\(\\frac{3}{4} = \\frac{15}{20}\\), donc \\(\\frac{4}{5}\\) est plus grande."
+                    ]
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Lexique des termes techniques",
+                    "caption": "Les mots importants à retenir",
                     "headers": [
-                      "Fraction de départ",
-                      "Simplification",
-                      "Fraction irréductible"
+                      "Terme",
+                      "Définition"
                     ],
                     "rows": [
                       [
-                        "\\frac{6}{9}",
-                        "÷ 3",
-                        "\\frac{2}{3}"
+                        "une fraction égale à une autre",
+                        "Deux fractions qui représentent la même quantité, comme \\(\\frac{1}{2}\\) et \\(\\frac{2}{4}\\)."
                       ],
                       [
-                        "\\frac{10}{15}",
-                        "÷ 5",
-                        "\\frac{2}{3}"
+                        "une fraction irréductible",
+                        "Une fraction simplifiée au maximum, où le numérateur et le dénominateur n'ont plus de diviseur commun autre que 1, comme \\(\\frac{3}{4}\\)."
                       ],
                       [
-                        "\\frac{8}{12}",
-                        "÷ 4",
-                        "\\frac{2}{3}"
+                        "le numérateur",
+                        "Le nombre du haut dans une fraction, qui indique combien de parts on prend, comme le 3 dans \\(\\frac{3}{4}\\)."
+                      ],
+                      [
+                        "le dénominateur",
+                        "Le nombre du bas dans une fraction, qui indique en combien de parts on divise l'unité, comme le 4 dans \\(\\frac{3}{4}\\)."
+                      ],
+                      [
+                        "la comparaison de fractions",
+                        "Le fait de déterminer laquelle de deux fractions est la plus grande ou si elles sont égales."
                       ]
                     ]
                   }
@@ -314,11 +324,11 @@
                 {
                   "type": "#04_callout_set",
                   "data": {
-                    "title": "À retenir",
+                    "title": "En résumé",
                     "callouts": [
                       {
                         "type": "savoir",
-                        "text": "Pour vérifier l’égalité de fractions, utilise la multiplication en croix."
+                        "text": "Deux fractions sont égales si leurs produits en croix sont identiques."
                       },
                       {
                         "type": "savoir",
@@ -326,60 +336,23 @@
                       },
                       {
                         "type": "alerte",
-                        "text": "Ne divise jamais seulement le numérateur ou seulement le dénominateur : cela change la valeur de la fraction !"
+                        "text": "Pour comparer des fractions, mets-les toujours sous le même dénominateur avant de comparer les numérateurs."
                       }
-                    ]
-                  }
-                },
-                {
-                  "type": "#06_lexique_table",
-                  "data": {
-                    "title": "Lexique",
-                    "caption": "Les mots importants à connaître.",
-                    "headers": [
-                      "Terme",
-                      "Définition"
-                    ],
-                    "rows": [
-                      [
-                        "Fraction égale",
-                        "Deux fractions qui représentent la même quantité."
-                      ],
-                      [
-                        "Simplifier une fraction",
-                        "Trouver une fraction égale avec des nombres plus petits."
-                      ],
-                      [
-                        "Fraction irréductible",
-                        "Une fraction qu’on ne peut plus simplifier."
-                      ],
-                      [
-                        "Multiplication en croix",
-                        "Méthode pour vérifier l’égalité de deux fractions : a × d = b × c."
-                      ],
-                      [
-                        "PGCD",
-                        "Plus Grand Diviseur Commun entre deux nombres."
-                      ]
                     ]
                   }
                 },
                 {
                   "type": "#18_sito_graphy",
                   "data": {
-                    "title": "Pour t’entraîner",
+                    "title": "Pour aller plus loin",
                     "links": [
                       {
-                        "href": "https://www.jeuxmaths.fr/exercices-de-maths-5eme-fractions.html",
-                        "text": "Exercices interactifs sur les fractions (niveau 5e)"
+                        "href": "https://www.maths-et-tiques.fr/index.php/cours-maths/niveau-cinquieme/fractions",
+                        "text": "Maths et Tiques - Les fractions en 5e"
                       },
                       {
-                        "href": "https://www.matoumatheux.ac-rennes.fr/num/fractions/accueil5.htm",
-                        "text": "Simulateur pour simplifier des fractions"
-                      },
-                      {
-                        "href": "https://www.assistancescolaire.com/eleve/5e/maths/reviser-une-notion/5mce12",
-                        "text": "Fiches méthodes et vidéos explicatives"
+                        "href": "https://www.assistancescolaire.com/eleve/5e/maths/reviser-le-cours/5m02",
+                        "text": "Assistance scolaire personnalisée - Les fractions"
                       }
                     ]
                   }
@@ -390,58 +363,40 @@
           },
           {
             "id": "c5",
-            "titre": "Comparer des fractions",
-            "objectif": "Savoir comparer deux fractions entre elles",
-            "consigne": "Utilise les cartes pour mémoriser les méthodes de comparaison de fractions. Retourne chaque carte pour vérifier ta réponse.",
+            "titre": "Les fractions à connaître",
+            "objectif": "Mémoriser les fractions égales et irréductibles",
+            "consigne": "Retourne chaque carte pour vérifier que tu connais la fraction simplifiée ou égale.",
             "module": "Flashcards",
             "moduleReplie": false,
             "palier": "decouverte",
-            "duree": 10,
+            "duree": 5,
             "verrouillee": false,
             "contenu": {
-              "title": "Comparer des fractions",
+              "title": "Les fractions à connaître",
               "description": "Réponds à chaque question.",
               "cards": [
                 {
-                  "text": "Quelle est la plus grande fraction entre \\(\\frac{3}{4}\\) et \\(\\frac{5}{6}\\) ?",
-                  "answer": "5/6",
-                  "tip": "Calcule avec un **dénominateur commun** en choisissant 12.",
+                  "text": "Simplifie la fraction \\(\\frac{2}{4}\\) à sa forme irréductible.",
+                  "answer": "1sur2",
+                  "tip": "Divise le numérateur et le dénominateur par leur *plus grand commun diviseur*.",
                   "image": {
                     "path": "",
                     "alt": ""
                   }
                 },
                 {
-                  "text": "Par quelle fraction faut-il multiplier \\(\\frac{2}{5}\\) pour obtenir \\(\\frac{4}{10}\\) ?",
-                  "answer": "2/2",
-                  "tip": "Vérifie l'**égalité de fractions** en simplifiant \\(\\frac{4}{10}\\).",
+                  "text": "Donne la fraction égale à \\(\\frac{1}{3}\\) dont le dénominateur est 9.",
+                  "answer": "3sur9",
+                  "tip": "Multiplie le numérateur et le dénominateur par le même nombre.",
                   "image": {
                     "path": "",
                     "alt": ""
                   }
                 },
                 {
-                  "text": "Si une tarte est partagée en 8 parts égales et que tu en manges 3, quelle fraction as-tu mangée ?",
-                  "answer": "3/8",
-                  "tip": "L'écriture fractionnaire montre **numérateur/dénominateur**.",
-                  "image": {
-                    "path": "",
-                    "alt": ""
-                  }
-                },
-                {
-                  "text": "Quelle fraction est supérieure à 1 entre \\(\\frac{7}{5}\\) et \\(\\frac{5}{7}\\) ?",
-                  "answer": "7/5",
-                  "tip": "Une **fraction supérieure à l'unité** a un numérateur plus grand que son dénominateur.",
-                  "image": {
-                    "path": "",
-                    "alt": ""
-                  }
-                },
-                {
-                  "text": "Comment passes-tu de \\(\\frac{9}{12}\\) à sa **fraction irréductible** ?",
-                  "answer": "3/4",
-                  "tip": "Divise numérateur et dénominateur par leur **plus grand diviseur commun**.",
+                  "text": "Simplifie \\(\\frac{6}{8}\\) à sa forme irréductible.",
+                  "answer": "3sur4",
+                  "tip": "Cherche un nombre qui divise à la fois le numérateur et le dénominateur.",
                   "image": {
                     "path": "",
                     "alt": ""
@@ -467,52 +422,49 @@
       },
       {
         "id": "e6",
-        "titre": "Entraîne-toi sur les points difficiles",
-        "objectif": "Pratiquer les opérations et les comparaisons de fractions",
-        "introduction": "Maintenant que tu as revu les bases, entraîne-toi sur les points qui te posent problème. Fais les exercices sans regarder les réponses, puis vérifie tes résultats. Note tes erreurs pour y revenir plus tard.",
+        "titre": "S’entraîner sur les difficultés",
+        "objectif": "Pratiquer les opérations et la comparaison de fractions",
+        "introduction": "Tu sais maintenant ce qu’il faut retenir. Voici des exercices pour t’entraîner sur chaque difficulté. Les corrections t’aident à comprendre tes erreurs et à progresser.",
         "cartes": [
           {
             "id": "c7",
-            "titre": "Addition et soustraction de fractions",
-            "objectif": "Calculer des additions et soustractions de fractions",
-            "consigne": "Complète les calculs d’addition et de soustraction de fractions. Attention à bien trouver le dénominateur commun avant de calculer.",
+            "titre": "Simplifier des fractions",
+            "objectif": "Écrire une fraction sous forme irréductible",
+            "consigne": "Complète les fractions en écrivant leur forme simplifiée.",
             "module": "FillInTheBlanks",
             "moduleReplie": false,
             "palier": "entrainement",
-            "duree": 15,
+            "duree": 10,
             "verrouillee": false,
             "contenu": {
-              "taskDescription": "Complète les calculs suivants en trouvant le **dénominateur commun** avant d’additionner ou de soustraire les fractions.\nCalcule ensuite avec soin et écris le résultat sous forme de **fraction irréductible** si nécessaire.",
+              "taskDescription": "Complète les phrases suivantes pour simplifier des **fractions** jusqu’à obtenir leur forme **irréductible**.\\nRappelle-toi que deux fractions sont **égales** si on multiplie ou divise leur numérateur et leur dénominateur par le même nombre.",
               "questions": [
-                "Pour calculer ⅗ + ⅖, les dénominateurs sont déjà *identiques*. Le résultat est \\( ⅗ + ⅖ = \\) *1* ou 1.",
-                "Pour ⅔ + ⅙, il faut un *dénominateur* commun. On utilise *6* ici. Donc ⅔ + ⅙ = \\( ⅔ = \\) *4/6*; 4/6 + 1/6 = *5/6*.",
-                "Calcule ⅘ - ¾. Après avoir trouvé le *dénominateur commun* : 15, on obtient *11/20*.",
-                "Résous ½ + ⅙. Le *dénominateur* commun est *6*. ½ = 3/6, donc 3/6 + 1/6 = *4/6* (*2/3* simplifié).",
-                "Donne le résultat de ⅞ - ¼. Le *dénominateur* commun est *8*. ¼ = 2/8, donc ⅞ - 2/8 = *6/8* ou *3/4*.",
-                "Calcule ⅗ + ⅖ + ⅖. Après avoir additionné ⅗ + ⅖, on ajoute encore ⅖ : *7/5* ou 1 *2/5*.",
-                "Effectue ⅘ - ⅕ - ⅕. On peut soustraire d'abord les deux *cinquièmes* : ⅘ - ⅖ = 2/5, puis 2/5 - ⅕ = *1/5*.",
-                "Pour ⅚ + ⅓, le *dénominateur* commun est *6*. ⅓ = 2/6, donc ⅚ + 2/6 = *8/6* ou *4/3*."
+                "La fraction 12/18 est égale à ⅔ car on divise le numérateur et le dénominateur par *6*.",
+                "Pour simplifier 15/25, on cherche un diviseur commun à 15 et 25 : *5*.",
+                "La fraction 14/21 a pour forme irréductible *⅔* car 14 et 21 sont tous les deux divisibles par *7*.",
+                "On peut écrire 8/12 sous la forme *⅔* en divisant numérateur et dénominateur par *4*.",
+                "La fraction *⅖* est la forme irréductible de 10/25 car 10 et 25 sont divisibles par *5*."
               ],
               "overallFeedback": [
                 {
                   "from": 0,
                   "to": 25,
-                  "feedback": "Une fraction s’écrit avec un numérateur et un dénominateur. Quand les dénominateurs sont différents, il faut d’abord trouver un dénominateur commun avant d’additionner ou soustraire. Revois comment vérifier que des fractions sont égales grâce à l’égalité de fractions, c’est la base pour simplifier ou trouver un dénominateur commun."
+                  "feedback": "Pour simplifier une fraction, il faut trouver un diviseur commun au numérateur et au dénominateur. Revois comment diviser les deux termes par le même nombre pour obtenir une fraction égale mais plus simple."
                 },
                 {
                   "from": 26,
                   "to": 50,
-                  "feedback": "Tu as compris que les dénominateurs doivent être les mêmes, mais certains calculs te résistent encore. Relis bien la méthode pour trouver un dénominateur commun : il faut chercher un multiple commun aux deux dénominateurs, comme 6 pour 2 et 3. Quand deux fractions ont le même dénominateur, tu additionnes seulement les numérateurs. La simplification vient après si possible."
+                  "feedback": "Tu as compris le principe de simplification, mais certains diviseurs communs ne sont pas les plus grands possibles. Cherche le plus grand commun diviseur (PGCD) pour obtenir directement la forme irréductible."
                 },
                 {
                   "from": 51,
                   "to": 75,
-                  "feedback": "Tu as réussi beaucoup de calculs, bravo ! Continue à vérifier systématiquement que les dénominateurs sont identiques avant de calculer. N’oublie pas que si tu obtiens une fraction supérieure à l’unité, tu peux écrire un nombre entier suivi d’une fraction inférieure à l’unité (fraction irréductible)."
+                  "feedback": "Presque ! Une ou deux simplifications manquent de précision. Vérifie que tu as bien divisé numérateur et dénominateur par le même nombre à chaque étape."
                 },
                 {
                   "from": 76,
                   "to": 100,
-                  "feedback": "Excellent travail ! Tu as bien appliqué la règle du dénominateur commun et tu simplifies les résultats quand c’est possible. Pour aller plus loin, essaie d’anticiper le dénominateur commun avant même d’écrire les fractions : cela te fera gagner du temps et réduira les risques d’erreurs."
+                  "feedback": "Excellent travail ! Tu as simplifié chaque fraction jusqu’à sa forme irréductible en utilisant correctement le PGCD. Tu maîtrises bien la simplification des fractions."
                 }
               ],
               "behaviour": {
@@ -520,129 +472,70 @@
                 "showSolutionsRequiresInput": true,
                 "allowRetryIfCorrect": false
               },
-              "title": "Addition et soustraction de fractions"
+              "title": "Simplifier des fractions"
             },
             "sourceUtilisee": null
           },
           {
             "id": "c8",
-            "titre": "Mots croisés sur les fractions",
-            "objectif": "Réviser le vocabulaire et les méthodes sur les fractions",
-            "consigne": "Remplis la grille de mots croisés avec les termes liés aux fractions. Utilise les définitions pour t’aider.",
+            "titre": "Comparer et calculer des fractions",
+            "objectif": "Ordonner et additionner ou soustraire des fractions",
+            "consigne": "Remplis la grille en trouvant les bonnes réponses aux questions posées.",
             "module": "Crossword",
             "moduleReplie": false,
             "palier": "entrainement",
             "duree": 10,
             "verrouillee": false,
             "contenu": {
-              "title": "Mots croisés sur les fractions",
+              "title": "Comparer et calculer des fractions",
               "words": [
                 {
                   "answer": "numérateur",
-                  "clue": "Nombre placé au-dessus de la barre de fraction.",
-                  "extraClue": {
-                    "params": {
-                      "text": "Il indique combien de parts on prend dans l'unité divisée."
-                    }
-                  },
+                  "clue": "Nombre en haut d'une fraction qui indique combien de parts on prend.",
                   "fixWord": false
                 },
                 {
                   "answer": "dénominateur",
-                  "clue": "Nombre placé sous la barre de fraction.",
-                  "extraClue": {
-                    "params": {
-                      "text": "Il indique en combien de parts l'unité est divisée."
-                    }
-                  },
+                  "clue": "Nombre en bas d'une fraction qui indique en combien de parts on divise l'unité.",
                   "fixWord": false
                 },
                 {
-                  "answer": "simplification",
-                  "clue": "Action de réduire une fraction en divisant numérateur et dénominateur par un même nombre.",
+                  "answer": "égale",
+                  "clue": "Adjectif qui décrit deux fractions qui représentent la même quantité.",
                   "fixWord": false
                 },
                 {
-                  "answer": "irréductible",
-                  "clue": "Se dit d'une fraction qu'on ne peut plus simplifier.",
-                  "extraClue": {
-                    "params": {
-                      "text": "Son numérateur et son dénominateur n'ont pas de diviseur commun autre que 1."
-                    }
-                  },
+                  "answer": "simplifier",
+                  "clue": "Remplacer une fraction par une fraction équivalente avec des nombres plus petits.",
                   "fixWord": false
                 },
                 {
-                  "answer": "commun",
-                  "clue": "Se dit de deux fractions ayant le même dénominateur.",
-                  "extraClue": {
-                    "params": {
-                      "text": "On dit qu'elles ont un dénominateur **commun**."
-                    }
-                  },
+                  "answer": "comparer",
+                  "clue": "Déterminer laquelle de deux fractions est plus grande ou si elles sont égales.",
                   "fixWord": false
                 }
               ],
-              "taskDescription": "**Remplis** la grille avec les mots liés aux fractions.\nPour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés').",
-              "solutionWord": {
-                "solution": [
-                  {
-                    "answer": "numérateur",
-                    "fixWord": true,
-                    "row": 1,
-                    "column": 1,
-                    "orientation": "across"
-                  },
-                  {
-                    "answer": "dénominateur",
-                    "fixWord": true,
-                    "row": 3,
-                    "column": 1,
-                    "orientation": "across"
-                  },
-                  {
-                    "answer": "simplification",
-                    "fixWord": true,
-                    "row": 5,
-                    "column": 1,
-                    "orientation": "across"
-                  },
-                  {
-                    "answer": "irréductible",
-                    "fixWord": true,
-                    "row": 7,
-                    "column": 1,
-                    "orientation": "across"
-                  },
-                  {
-                    "answer": "commun",
-                    "fixWord": true,
-                    "row": 9,
-                    "column": 1,
-                    "orientation": "across"
-                  }
-                ]
-              },
+              "taskDescription": "Remplis la grille avec les mots qui correspondent aux définitions données.\nPour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés').",
               "overallFeedback": [
                 {
                   "from": 0,
                   "to": 25,
-                  "feedback": "Les fractions demandent de bien distinguer le numérateur et le dénominateur. Revois comment on écrit une fraction et ce que chaque nombre représente. Une fraction comme \\( \\frac{3}{4} \\) a 3 comme numérateur et 4 comme dénominateur."
+                  "feedback": "Relis bien les notions sur les fractions. Le numérateur et le dénominateur sont les bases à maîtriser pour comprendre les fractions."
                 },
                 {
                   "from": 26,
                   "to": 50,
-                  "feedback": "Tu as compris une partie du vocabulaire, mais certains mots comme simplification ou irréductible restent à clarifier. Rappelle-toi que simplifier une fraction, c'est la rendre plus simple sans changer sa valeur."
+                  "feedback": "Tu as réussi à placer quelques mots. Fais attention à ne pas confondre le numérateur et le dénominateur dans tes réponses."
                 },
                 {
                   "from": 51,
                   "to": 75,
-                  "feedback": "Tu maîtrises l'essentiel du vocabulaire des fractions. Pour aller plus loin, entraîne-toi à simplifier des fractions comme \\( \\frac{6}{8} \\) en trouvant le plus grand diviseur commun de 6 et 8."
+                  "feedback": "Bravo ! Tu as bien compris la plupart des termes. Vérifie que tu n'as pas inversé numérateur et dénominateur dans certaines réponses."
                 },
                 {
                   "from": 76,
                   "to": 100,
-                  "feedback": "Félicitations ! Tu as bien révisé le vocabulaire des fractions. Pour consolider, essaie de comparer des fractions ayant le même dénominateur ou de les additionner après les avoir mises sous le même dénominateur."
+                  "feedback": "Parfait ! Tu as bien retenu le vocabulaire essentiel sur les fractions. Ces mots seront utiles pour les calculs et comparaisons."
                 }
               ],
               "behaviour": {
@@ -656,15 +549,15 @@
       },
       {
         "id": "e9",
-        "titre": "Vérifie tes acquis",
-        "objectif": "Évaluer ta maîtrise globale des fractions",
-        "introduction": "Tu as terminé les révisions et les exercices. Ce test final mélange toutes les notions vues dans le parcours. Prends ton temps et relis-toi avant de valider. Note tes erreurs pour les retravailler ensuite.",
+        "titre": "Vérifier tes acquis",
+        "objectif": "Tester tes connaissances sur l’ensemble du parcours",
+        "introduction": "Pour finir, tu réponds à un test qui mélange toutes les notions vues depuis le début. Cela te permet de voir si tu as tout retenu et compris.",
         "cartes": [
           {
             "id": "c10",
             "titre": "Test final sur les fractions",
-            "objectif": "Vérifier ta maîtrise des fractions après révision",
-            "consigne": "Réponds à ce test qui reprend toutes les notions du parcours. Tu auras un retour global à la fin pour savoir si tu es prêt pour l’évaluation.",
+            "objectif": "Vérifier que tu maîtrises les fractions",
+            "consigne": "Réponds aux questions en choisissant la bonne réponse. À la fin, consulte la correction pour voir tes erreurs et tes réussites.",
             "module": "test_elea",
             "moduleReplie": false,
             "palier": "transfert",
@@ -672,41 +565,41 @@
             "verrouillee": false,
             "contenu": {
               "bank_name": "Test final sur les fractions",
-              "bank_description": "Ce test évalue la maîtrise des fractions pour des élèves de 5e, couvrant l'égalité, simplification, comparaison, addition et soustraction de fractions.",
+              "bank_description": "Vérification des acquis sur les fractions : égalité, simplification, comparaison, addition et soustraction en classe de 5e.",
               "questions": [
                 {
                   "type": "multichoice",
                   "content": {
-                    "name": "Q01 - Égalité et simplification",
-                    "questiontext": "Parmi les fractions suivantes, laquelle est égale à \\frac{6}{8} une fois simplifiée ?",
-                    "feedback": "Une fraction simplifiée est irréductible et conserve la même valeur.",
+                    "name": "Q01 - Égalité de fractions",
+                    "questiontext": "Parmi les fractions suivantes, laquelle est égale à \\( \\frac{3}{4} \\) ?",
+                    "feedback": "Compare les fractions en les simplifiant ou en les mettant au même dénominateur.",
                     "single": "true",
-                    "correctfeedback": "Exact ! \\[\\frac{6}{8} = \\frac{3}{4}\\] après simplification par 2.",
-                    "incorrectfeedback": "Attention à bien diviser numérateur et dénominateur par le même nombre : cherche le plus grand diviseur commun.",
+                    "correctfeedback": "Exact ! \\( \\frac{3}{4} \\) est bien égal à \\( \\frac{6}{8} \\).",
+                    "incorrectfeedback": "Ce n'est pas la bonne réponse : vérifie la simplification ou l'équivalence des fractions.",
                     "hints": [
-                      "Simplifie en cherchant un diviseur commun à 6 et 8.",
-                      "Le résultat doit être une fraction irréductible."
+                      "Pense à multiplier le numérateur et le dénominateur par le même nombre.",
+                      "Vérifie si les fractions sont irréductibles."
                     ],
                     "answers": [
                       {
-                        "text": "3/6",
-                        "fraction": 0,
-                        "feedback": "Non, \\[\\frac{3}{6} = \\frac{1}{2}\\], ce n'est pas égal à \\[\\frac{6}{8}\\]."
-                      },
-                      {
-                        "text": "2/4",
-                        "fraction": 0,
-                        "feedback": "Non, \\[\\frac{2}{4} = \\frac{1}{2}\\], ce n'est pas égal à \\[\\frac{6}{8}\\]."
-                      },
-                      {
-                        "text": "3/4",
+                        "text": "\\( \\frac{6}{8} \\)",
                         "fraction": 100,
-                        "feedback": "Parfait ! 6 ÷ 2 = 3 et 8 ÷ 2 = 4."
+                        "feedback": "Bravo ! Tu as multiplié numérateur et dénominateur par 2."
                       },
                       {
-                        "text": "4/6",
+                        "text": "\\( \\frac{9}{12} \\)",
                         "fraction": 0,
-                        "feedback": "Non, \\[\\frac{4}{6} = \\frac{2}{3}\\], ce n'est pas égal à \\[\\frac{6}{8}\\]."
+                        "feedback": "Non, \\( \\frac{9}{12} \\) est égal à \\( \\frac{3}{4} \\) mais ce n'est pas la réponse demandée."
+                      },
+                      {
+                        "text": "\\( \\frac{2}{3} \\)",
+                        "fraction": 0,
+                        "feedback": "Cette fraction n'est pas égale à \\( \\frac{3}{4} \\)."
+                      },
+                      {
+                        "text": "\\( \\frac{5}{6} \\)",
+                        "fraction": 0,
+                        "feedback": "Non, \\( \\frac{5}{6} \\) est supérieure à \\( \\frac{3}{4} \\)."
                       }
                     ]
                   }
@@ -714,36 +607,69 @@
                 {
                   "type": "multichoice",
                   "content": {
-                    "name": "Q02 - Comparaison de fractions",
-                    "questiontext": "Parmi ces fractions, laquelle est la plus grande ?",
-                    "feedback": "Pour comparer, il faut comparer les numérateurs une fois les dénominateurs égaux.",
+                    "name": "Q02 - Simplification de fractions",
+                    "questiontext": "Quelle fraction est simplifiée au maximum parmi les suivantes ?",
+                    "feedback": "Une fraction est irréductible si le numérateur et le dénominateur n'ont pas de diviseur commun autre que 1.",
                     "single": "true",
-                    "correctfeedback": "Bravo ! \\[\\frac{5}{6} > \\frac{3}{4} > \\frac{2}{3} > \\frac{1}{2}\\] quand on les met au même dénominateur.",
-                    "incorrectfeedback": "Revois comment comparer des fractions : méthode des produits en croix ou mise au même dénominateur.",
+                    "correctfeedback": "Parfait ! \\( \\frac{7}{11} \\) est bien une fraction irréductible.",
+                    "incorrectfeedback": "Ce n'est pas la bonne réponse : vérifie les diviseurs communs entre le numérateur et le dénominateur.",
                     "hints": [
-                      "Essaie de trouver un dénominateur commun pour toutes les fractions.",
-                      "Compare alors les numérateurs."
+                      "Cherche les diviseurs communs pour chaque fraction.",
+                      "Une fraction est irréductible si PGCD(numé, dén) = 1."
                     ],
                     "answers": [
                       {
-                        "text": "1/2",
-                        "fraction": 0,
-                        "feedback": "Non, \\[\\frac{1}{2} = \\frac{3}{6}\\], ce qui est moins grand que les autres."
-                      },
-                      {
-                        "text": "2/3",
-                        "fraction": 0,
-                        "feedback": "Non, \\[\\frac{2}{3} = \\frac{8}{12}\\], ce qui est moins grand que \\[\\frac{5}{6}\\]."
-                      },
-                      {
-                        "text": "3/4",
-                        "fraction": 0,
-                        "feedback": "Non, \\[\\frac{3}{4} = \\frac{9}{12}\\], ce qui est moins grand que \\[\\frac{5}{6} = \\frac{10}{12}\\]."
-                      },
-                      {
-                        "text": "5/6",
+                        "text": "\\( \\frac{7}{11} \\)",
                         "fraction": 100,
-                        "feedback": "Exact ! C'est la plus grande des quatre fractions proposées."
+                        "feedback": "Correct ! 7 et 11 sont premiers entre eux."
+                      },
+                      {
+                        "text": "\\( \\frac{6}{9} \\)",
+                        "fraction": 0,
+                        "feedback": "Non, \\( \\frac{6}{9} \\) peut être simplifiée par 3."
+                      },
+                      {
+                        "text": "\\( \\frac{8}{12} \\)",
+                        "fraction": 0,
+                        "feedback": "Non, \\( \\frac{8}{12} \\) peut être simplifiée par 4."
+                      },
+                      {
+                        "text": "\\( \\frac{10}{15} \\)",
+                        "fraction": 0,
+                        "feedback": "Non, \\( \\frac{10}{15} \\) peut être simplifiée par 5."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "matching",
+                  "content": {
+                    "name": "Q03 - Comparaison de fractions",
+                    "questiontext": "Associe chaque fraction à son rang dans l'ordre croissant : \\( \\frac{1}{2} \\), \\( \\frac{2}{3} \\), \\( \\frac{3}{4} \\), \\( \\frac{5}{6} \\).",
+                    "feedback": "Compare les fractions en les mettant au même dénominateur ou en les convertissant en nombres décimaux.",
+                    "correctfeedback": "Toutes les associations sont correctes !",
+                    "partiallycorrectfeedback": "Certaines associations sont justes, vérifie les autres.",
+                    "incorrectfeedback": "Aucune association correcte : revois la comparaison des fractions.",
+                    "hints": [
+                      "Convertis les fractions en nombres décimaux pour les comparer.",
+                      "Pense à mettre les fractions au même dénominateur."
+                    ],
+                    "subquestions": [
+                      {
+                        "text": "\\( \\frac{1}{2} \\)",
+                        "answer": "1er"
+                      },
+                      {
+                        "text": "\\( \\frac{2}{3} \\)",
+                        "answer": "2e"
+                      },
+                      {
+                        "text": "\\( \\frac{3}{4} \\)",
+                        "answer": "3e"
+                      },
+                      {
+                        "text": "\\( \\frac{5}{6} \\)",
+                        "answer": "4e"
                       }
                     ]
                   }
@@ -751,88 +677,71 @@
                 {
                   "type": "numerical",
                   "content": {
-                    "name": "Q03 - Addition de fractions",
-                    "questiontext": "Calcule \\[\\frac{3}{5} + \\frac{1}{10}\\] et donne le résultat sous forme de fraction irréductible.",
-                    "feedback": "Pour additionner, il faut un dénominateur commun. Ici, le dénominateur commun est 10.",
+                    "name": "Q04 - Addition de fractions",
+                    "questiontext": "Calcule \\( \\frac{2}{5} + \\frac{3}{10} \\). Donne le résultat sous forme de fraction irréductible.",
+                    "feedback": "Pour additionner des fractions, mets-les d'abord au même dénominateur.",
                     "hints": [
-                      "Trouve un dénominateur commun à 5 et 10.",
-                      "Transforme \\[\\frac{3}{5}\\] pour avoir ce dénominateur."
+                      "Trouve un dénominateur commun pour les deux fractions.",
+                      "Simplifie le résultat si possible."
                     ],
                     "answer": {
-                      "number": 0.7,
+                      "number": 0.5,
                       "tolerance": 0.01,
-                      "feedback": "Correct ! \\[\\frac{6}{10} + \\frac{1}{10} = \\frac{7}{10}\\]."
+                      "feedback": "Exact ! \\( \\frac{2}{5} + \\frac{3}{10} = \\frac{7}{10} \\)."
                     }
                   }
                 },
                 {
-                  "type": "multichoice",
+                  "type": "numerical",
                   "content": {
-                    "name": "Q04 - Soustraction avec dénominateurs différents",
-                    "questiontext": " Parmi les résultats suivants, lequel est égal à \\[\\frac{4}{3} - \\frac{5}{6}\\] ?",
-                    "feedback": "Pour soustraire, mets les fractions au même dénominateur et soustrais les numérateurs.",
-                    "single": "true",
-                    "correctfeedback": "Exact ! \\[\\frac{4}{3} - \\frac{5}{6} = \\frac{8}{6} - \\frac{5}{6} = \\frac{3}{6} = \\frac{1}{2}\\]",
-                    "incorrectfeedback": "Revois la méthode de soustraction : dénominateur commun puis soustraction des numérateurs.",
+                    "name": "Q05 - Soustraction de fractions",
+                    "questiontext": "Calcule \\( \\frac{7}{8} - \\frac{1}{4} \\). Donne le résultat sous forme de fraction irréductible.",
+                    "feedback": "Pour soustraire des fractions, mets-les d'abord au même dénominateur.",
                     "hints": [
-                      "Trouve un dénominateur commun à 3 et 6.",
-                      "Soustrais les numérateurs une fois les fractions égales."
+                      "Trouve un dénominateur commun pour les deux fractions.",
+                      "Simplifie le résultat si nécessaire."
                     ],
-                    "answers": [
-                      {
-                        "text": "1/3",
-                        "fraction": 0,
-                        "feedback": "Non, le résultat est plus grand. \\[1/3 ≠ \\frac{3}{6}\\]."
-                      },
-                      {
-                        "text": "2/6",
-                        "fraction": 0,
-                        "feedback": "Non, \\[\\frac{2}{6} = \\frac{1}{3}\\] et ce n'est pas le bon résultat."
-                      },
-                      {
-                        "text": "3/6",
-                        "fraction": 0,
-                        "feedback": "C'est presque le bon résultat, mais on peut encore simplifier."
-                      },
-                      {
-                        "text": "1/2",
-                        "fraction": 100,
-                        "feedback": "Oui, \\[\\frac{3}{6} = \\frac{1}{2}\\]."
-                      }
-                    ]
+                    "answer": {
+                      "number": 0.625,
+                      "tolerance": 0.01,
+                      "feedback": "Correct ! \\( \\frac{7}{8} - \\frac{1}{4} = \\frac{5}{8} \\)."
+                    }
                   }
                 },
                 {
-                  "type": "cloze",
+                  "type": "truefalse",
                   "content": {
-                    "name": "Q05 - Mise en pratique globale",
-                    "questiontext": "Complète les phrases suivantes avec les mots ou expressions proposés :\n{1:SHORTANSWER:=dénominateur commun~=simplification~=comparaison~=irréductible}\na) Pour additionner \\( \\frac{1}{2} \\) et \\( \\frac{1}{3} \\), il faut d'abord trouver leur {1}.\n{1:SHORTANSWER:=inférieure à l’unité~=supérieure à l’unité}\nb) La fraction \\( \\frac{3}{4} \\) est {1}.\n{1:SHORTANSWER:=fraction irréductible~=écrire fractionnaire}\nc) Après simplification, \\( \\frac{6}{9} \\) devient {1}.",
-                    "feedback": "Ces phrases résument les notions clés à retenir : le dénominateur commun pour les opérations, la nature d'une fraction, et la simplification."
+                    "name": "Q06 - Vrai ou Faux",
+                    "questiontext": "Pour additionner deux fractions, il faut toujours les mettre au même dénominateur.",
+                    "feedback": "C'est une règle fondamentale pour additionner ou soustraire des fractions.",
+                    "answer": {
+                      "value": true,
+                      "feedback_true": "C'est vrai ! Le dénominateur commun est nécessaire pour additionner ou soustraire des fractions.",
+                      "feedback_false": "C'est faux : sans dénominateur commun, on ne peut pas additionner ou soustraire des fractions directement."
+                    }
                   }
+                }
+              ],
+              "overallfeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Tu as bien commencé, mais il faut revoir les bases sur les fractions. Concentre-toi sur la simplification et l'égalité des fractions. N'hésite pas à relire les activités précédentes pour consolider tes acquis."
                 },
                 {
-                  "type": "shortanswer",
-                  "content": {
-                    "name": "Q06 - Problème contextualisé",
-                    "questiontext": "Dans une classe de 5e, les \\frac{2}{5} des élèves font du sport en extérieur et les \\frac{1}{4} des élèves font du sport en intérieur. Quelle fraction de la classe fait du sport (extérieur ou intérieur) ? Donne le résultat sous forme de fraction irréductible.",
-                    "feedback": "Pour trouver la fraction totale, il faut additionner les deux fractions en trouvant un dénominateur commun.",
-                    "hints": [
-                      "Trouve un dénominateur commun à 5 et 4.",
-                      "Additionne les deux fractions une fois qu'elles ont le même dénominateur."
-                    ],
-                    "answers": [
-                      {
-                        "text": "13/20",
-                        "fraction": 100,
-                        "feedback": "Exact ! \\( \\frac{2}{5} + \\frac{1}{4} = \\frac{8}{20} + \\frac{5}{20} = \\frac{13}{20} \\)"
-                      },
-                      {
-                        "text": "13/20",
-                        "fraction": 100,
-                        "feedback": "Oui, c'est le bon résultat."
-                      }
-                    ]
-                  }
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as des connaissances, mais certaines erreurs montrent que des points restent à travailler. Revois particulièrement la simplification des fractions et leur addition ou soustraction. Travaille ces notions avec des exemples concrets."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Tu maîtrises bien plusieurs aspects, mais quelques erreurs subsistent. Concentre-toi sur les fractions qui te posent encore problème, notamment la comparaison et les opérations. Essaie de comprendre où se situent tes erreurs pour progresser."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Félicitations ! Tu as bien compris les fractions et leurs opérations. Pour aller plus loin, tu peux t'entraîner avec des exercices plus complexes ou explorer des applications concrètes des fractions dans la vie quotidienne."
                 }
               ],
               "title": "Test final sur les fractions"

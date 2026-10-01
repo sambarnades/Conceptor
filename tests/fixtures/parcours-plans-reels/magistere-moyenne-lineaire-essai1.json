@@ -1,0 +1,159 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "magistere",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "lineaire",
+  "chemins": 2
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_nuage_mots",
+  "parcours_mur_notes",
+  "parcours_lien",
+  "parcours_questionnaire",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_tableau",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_document",
+  "parcours_etherpad",
+  "parcours_depot",
+  "parcours_classe_virtuelle",
+  "parcours_base",
+  "parcours_choix_groupe"
+ ],
+ "erreursDOrigine": [],
+ "brut": {
+  "titre": "La laïcité à l'école : enjeux et pratiques",
+  "objectifGeneral": "Analyser les situations de classe et les enjeux de la laïcité à l'école pour construire des réponses adaptées.",
+  "introduction": "Vous débutez votre parcours en tant que professeur néo-titulaire. Ce parcours en ligne vous propose de comprendre les fondements de la laïcité à l'école, d'analyser des situations concrètes et d'expérimenter des outils pour faire vivre ce principe républicain en classe. Vous travaillerez à votre rythme, avec des activités variées et des retours immédiats. Prêt à commencer ?",
+  "conclusion": "Vous avez maintenant exploré les notions clés de la laïcité à l'école et identifié des pistes pour y répondre en classe. Ce parcours vous a permis de croiser textes officiels, analyses de situations et outils concrets. Pour approfondir, vous pourrez consulter le vademecum sur la laïcité à l'école ou participer à une session complémentaire en présentiel.",
+  "notionsPivots": [
+   "la laïcité à l'école",
+   "la charte de la laïcité à l'école",
+   "la neutralité de l'enseignant",
+   "les situations conflictuelles en classe",
+   "les principes républicains",
+   "la liberté de conscience",
+   "la loi de 1905",
+   "les symboles républicains",
+   "les adaptations pédagogiques",
+   "les limites de la laïcité"
+  ],
+  "etapes": [
+   {
+    "titre": "Découvrir les fondements de la laïcité à l'école",
+    "objectif": "Identifier les textes et principes qui encadrent la laïcité à l'école",
+    "introduction": "Avant d'aborder des situations concrètes, il est essentiel de comprendre les textes qui fondent la laïcité à l'école. Vous allez explorer la Charte de la laïcité ainsi que les principes républicains qui la sous-tendent. Ces éléments vous serviront de base pour analyser les situations de classe que vous rencontrerez ensuite.",
+    "cartes": [
+     {
+      "titre": "Lire et analyser la Charte de la laïcité à l'école",
+      "objectif": "Repérer les principes clés de la Charte",
+      "module": "Glossary",
+      "palier": "decouverte",
+      "duree": 15,
+      "consigne": "Consultez le glossaire présentant la Charte de la laïcité à l'école. Repérez les 5 principes les plus importants selon vous et note-les pour les réutiliser dans les étapes suivantes."
+     }
+    ]
+   },
+   {
+    "titre": "Comprendre les enjeux de la neutralité de l'enseignant",
+    "objectif": "Distinguer les obligations et les limites de la neutralité",
+    "introduction": "La neutralité de l'enseignant est un pilier de la laïcité à l'école. Cette étape vous invite à distinguer ce qui relève de l'obligation professionnelle de ce qui relève des choix personnels. Vous allez confronter vos représentations à des situations réelles pour affiner votre compréhension.",
+    "cartes": [
+     {
+      "titre": "Quiz sur la neutralité de l'enseignant",
+      "objectif": "Vérifier la compréhension des obligations de neutralité",
+      "module": "QuizSetVF",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Répondez aux affirmations proposées en indiquant si elles relèvent de l'obligation de neutralité ou non. Un retour vous indiquera vos erreurs éventuelles."
+     }
+    ]
+   },
+   {
+    "titre": "Analyser des situations de classe",
+    "objectif": "Repérer les enjeux laïques dans des cas concrets",
+    "introduction": "La laïcité se vit au quotidien dans les classes. À travers des situations variées, vous allez identifier les enjeux laïques, les risques de conflit et les pistes pour y répondre. Ces exercices vous prépareront à construire vos propres réponses pédagogiques.",
+    "cartes": [
+     {
+      "titre": "Étude de cas : identifier les enjeux laïques",
+      "objectif": "Repérer les principes en jeu dans une situation de classe",
+      "module": "DragAndDrop",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "À partir d'un cas présenté, associez chaque élément de la situation aux principes de la laïcité ou à des enjeux connexes (liberté de conscience, neutralité, etc.)."
+     },
+     {
+      "titre": "Ordonner les étapes d'une réponse pédagogique",
+      "objectif": "Construire une démarche adaptée face à un conflit",
+      "module": "SortParagraphs",
+      "palier": "transfert",
+      "duree": 10,
+      "consigne": "Remettez dans l'ordre les étapes d'une réponse pédagogique adaptée à une situation de classe impliquant des questions de laïcité."
+     }
+    ]
+   },
+   {
+    "titre": "Évaluer ses acquis et approfondir",
+    "objectif": "Valider sa compréhension et compléter ses connaissances",
+    "introduction": "Cette étape vous permet de faire le point sur ce que vous avez appris et d'approfondir certains aspects. Vous allez évaluer vos acquis à travers un quiz et consulter des ressources complémentaires pour affiner votre analyse.",
+    "cartes": [
+     {
+      "titre": "Quiz de synthèse sur la laïcité à l'école",
+      "objectif": "Vérifier la maîtrise des notions clés",
+      "module": "QuizSet",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Répondez aux questions du quiz qui couvre l'ensemble des notions abordées dans le parcours. Un feedback vous indiquera vos réussites et les points à revoir."
+     },
+     {
+      "titre": "Consulter des ressources complémentaires",
+      "objectif": "Approfondir un aspect de la laïcité",
+      "module": "parcours_lien",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Explorez l'une des ressources proposées (circulaire, vademecum, analyse) pour approfondir un point que vous souhaitez mieux comprendre. Notez les éléments clés à retenir."
+     }
+    ]
+   }
+  ]
+ }
+}

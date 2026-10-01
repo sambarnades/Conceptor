@@ -1,0 +1,194 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "magistere",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "chemins",
+  "chemins": 2
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_nuage_mots",
+  "parcours_mur_notes",
+  "parcours_lien",
+  "parcours_questionnaire",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_tableau",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_document",
+  "parcours_etherpad",
+  "parcours_depot",
+  "parcours_classe_virtuelle",
+  "parcours_base",
+  "parcours_choix_groupe"
+ ],
+ "erreursDOrigine": [
+  "Les chemins durent à peu près autant (reçu : 40, 60 minutes)."
+ ],
+ "brut": {
+  "titre": "Faire vivre la laïcité à l'école : enjeux et pratiques",
+  "objectifGeneral": "Analyser les enjeux de la laïcité en milieu scolaire et concevoir des situations pédagogiques adaptées",
+  "introduction": "Ce parcours vous invite à explorer les fondements, les enjeux et les applications concrètes de la laïcité à l'école. À travers des activités variées et des ressources adaptées, vous identifierez comment incarner cette valeur républicaine dans votre pratique professionnelle. Le parcours commence par un test diagnostic qui orientera votre progression selon vos acquis initiaux.",
+  "conclusion": "Vous savez désormais identifier les fondements juridiques de la laïcité scolaire et concevoir des situations adaptées pour vos élèves. Pour aller plus loin, consultez la Charte de la laïcité à l'école disponible sur le site du ministère.",
+  "notionsPivots": [
+   "la définition de la laïcité",
+   "la neutralité de l'enseignant",
+   "la charte de la laïcité à l'école",
+   "les situations de classe",
+   "les croyances religieuses",
+   "l'espace public scolaire",
+   "les conflits liés aux convictions",
+   "les limites de la liberté d'expression",
+   "la laïcité comme principe républicain",
+   "les outils pour enseigner la laïcité"
+  ],
+  "etapes": [
+   {
+    "titre": "Test diagnostic",
+    "objectif": "Évaluer ses connaissances initiales sur la laïcité à l'école",
+    "introduction": "Ce test vous permet de faire un état des lieux de vos connaissances sur la laïcité. Selon votre score, vous suivrez un parcours adapté pour renforcer ou approfondir les notions essentielles.",
+    "cartes": [
+     {
+      "titre": "Test d'évaluation",
+      "objectif": "Tester ses acquis sur les notions clés de la laïcité",
+      "module": "test_elea",
+      "palier": "decouverte",
+      "duree": 15,
+      "consigne": "Répondez aux questions suivantes pour évaluer votre maîtrise des notions essentielles sur la laïcité à l'école."
+     }
+    ]
+   },
+   {
+    "titre": "Construire des repères juridiques et théoriques",
+    "chemin": "renforcer",
+    "objectif": "Consolider les bases juridiques et théoriques de la laïcité",
+    "introduction": "Vous allez travailler les notions fondamentales à travers des exemples concrets et des exercices progressifs. Ces activités vous permettront de mieux comprendre les enjeux avant d'aborder des situations plus complexes.",
+    "cartes": [
+     {
+      "titre": "Repères clés à connaître",
+      "objectif": "Identifier les éléments fondamentaux de la laïcité scolaire",
+      "module": "Summary",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Sélectionnez pour chaque affirmation la réponse correcte parmi les propositions proposées."
+     },
+     {
+      "titre": "Vérification des connaissances",
+      "objectif": "Valider sa compréhension des concepts de base",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Répondez à ces questions courtes pour vérifier votre assimilation des notions essentielles."
+     },
+     {
+      "titre": "Application immédiate",
+      "objectif": "Mobiliser ses connaissances dans des cas simples",
+      "module": "DragTheWords",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Associez chaque élément à sa définition ou à son contexte en glissant les mots proposés."
+     }
+    ]
+   },
+   {
+    "titre": "Construire des repères juridiques et théoriques",
+    "chemin": "approfondir",
+    "objectif": "Développer une analyse critique des enjeux de la laïcité",
+    "introduction": "Vous allez approfondir votre réflexion en analysant des situations complexes et en confrontant vos représentations aux textes officiels. Ces activités vous permettront d'affiner votre compréhension des enjeux actuels.",
+    "cartes": [
+     {
+      "titre": "Analyse de situations",
+      "objectif": "Examiner des cas concrets de mise en œuvre de la laïcité",
+      "module": "Essay",
+      "palier": "transfert",
+      "duree": 25,
+      "consigne": "Rédigez une analyse argumentée de la situation proposée en mobilisant les notions étudiées."
+     },
+     {
+      "titre": "Débat théorique",
+      "objectif": "Confronter ses représentations aux textes fondateurs",
+      "module": "parcours_questionnaire",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Répondez librement aux questions portant sur vos représentations et vos pratiques concernant la laïcité."
+     },
+     {
+      "titre": "Synthèse critique",
+      "objectif": "Structurer sa réflexion sur les enjeux actuels",
+      "module": "Summary",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "Construisez une synthèse des éléments clés en sélectionnant les affirmations correctes parmi les propositions."
+     }
+    ]
+   },
+   {
+    "titre": "Mettre en pratique : concevoir une situation de classe",
+    "objectif": "Élaborer une activité pédagogique mobilisant la laïcité",
+    "introduction": "Après avoir consolidé vos connaissances, vous allez concevoir une situation de classe adaptée à vos élèves. Cette activité vous permettra de transposer les notions théoriques dans votre pratique professionnelle.",
+    "cartes": [
+     {
+      "titre": "Création d'une activité",
+      "objectif": "Concevoir une situation pédagogique sur la laïcité",
+      "module": "Devoir",
+      "palier": "transfert",
+      "duree": 30,
+      "consigne": "Rédigez une activité pédagogique pour vos élèves en explicitant les objectifs, les consignes et les modalités d'évaluation."
+     }
+    ]
+   },
+   {
+    "titre": "Synthèse et perspectives",
+    "objectif": "Synthétiser les acquis et envisager des prolongements",
+    "introduction": "Cette étape vous permet de faire le point sur l'ensemble des notions abordées et d'envisager des pistes pour approfondir votre réflexion ou votre pratique.",
+    "cartes": [
+     {
+      "titre": "Bilan des connaissances",
+      "objectif": "Vérifier sa maîtrise des notions clés du parcours",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 20,
+      "consigne": "Répondez à ces questions qui portent sur l'ensemble du parcours pour valider votre compréhension globale des enjeux de la laïcité."
+     }
+    ]
+   }
+  ]
+ }
+}

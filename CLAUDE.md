@@ -8,7 +8,7 @@
 
 ## Identité
 
-**Caramel** v7.0.1 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
+**Caramel** v7.1.0 — webapp 100% client-side qui génère des activités H5P (`.h5p`), Moodle/Éléa (`.mbz`) et des parcours complets (`.mbz`) via IA. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
 
 Lancement local : `python3 tests/serveur-statique.py 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL. (Pas `python3 -m http.server` : sa file de 5 connexions fait refuser des modules par macOS au premier chargement, page inerte au hasard ; tous les bancs utilisent ce serveur.)
 
@@ -38,7 +38,7 @@ js/export/       document-exporter, document-formatter, sanitizer, latex-parser,
 js/editor/       index, editor-core, content-detector, field-renderers, array-manager, validators, feedback-editor, json-utils, richtext-editor, formula-assistant
 js/caramelia/    chatbot flottant (13 modules) — voir ARCHITECTURE.md local
 js/parcours/     atelier de parcours : intention → plan → N générations → UN .mbz de COURS
-                 (39 modules ; un commutateur « Une activité | Un parcours » sous le
+                 (51 modules ; un commutateur « Une activité | Un parcours » sous le
                  formulaire commun — D63 — met l'atelier à la place des tuiles, sous le
                  formulaire de l'accueil qui reste en place — D39).
                  Les modules de la PLATEFORME (forum, questionnaire, leçon, atelier, wiki…)
@@ -49,7 +49,26 @@ js/parcours/     atelier de parcours : intention → plan → N générations �
                  réutilise leur gabarit et lui AJOUTE son cadre ; ce qui lui est propre (retours
                  d'exemple impersonnels, `retours-impersonnels.js`) se substitue dans SON prompt (D82).
                  Branche `emmanuel` du dépôt `bas`.
-                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D84 avec leur
+                 **Les CHEMINS selon les résultats (7.1.0, D90–D101)** : la note d'un test
+                 ouvre à chaque élève un chemin parmi 2 à 4. Modèle : `etape.chemin =
+                 { depuis: <%> }`, le reste se DÉDUIT (`aiguillage.js`, pur) ; conditions
+                 posées APRÈS l'assemblage (`aiguillage-cours.js`), seuils à mi-point ;
+                 « Fin du parcours » et durées dans TOUS les parcours. Bancs
+                 `run_parcours_chemins.mjs` (Node, CI) et `run_parcours_aiguillage.mjs` ;
+                 sonde Éléa `scripts/generer-parcours-sonde-chemins.mjs`.
+                 **Le VOCABULAIRE suit la plateforme (D105)** : élèves (Éléa), stagiaires
+                 (Magistère), étudiants (Moodle). Un texte qui nomme le public a ses variantes
+                 `<clé>_magistere` / `<clé>_moodle` ; l'atelier prend `t` dans
+                 `./vocabulaire.js`, JAMAIS dans `core/translation.js` (banc des chemins).
+                 **Le plan reçu se RÉPARE avant d'être jugé (D107)** : `reparation-plan.js`
+                 (pur), boucle `composition-plan.js` ; un plan utilisable n'est jamais refusé,
+                 seule une réponse sans aucune activité échoue. L'exemple complet du prompt de
+                 plan (D108, `exemple-plan.js`) passe le contrôle pour les 600 cadrages : banc
+                 `run_parcours_reparation.mjs` (Node, CI).
+                 **La fin de tout parcours porte une page « Bilan du parcours » (D112)** :
+                 `bilan.js` (pur) la compose du plan, sans modèle ; texte de l'atelier
+                 (`scenario`), hors durées et hors condition de la fin.
+                 **Sa mémoire est `docs/PRD_PARCOURS.md`** — décisions D1 à D113 avec leur
                  raison, pièges, et le journal des allers-retours réels sur plateforme.
                  Ne rien y rouvrir sans lire ce fichier ; y écrire toute décision nouvelle.
 js/locales/      12 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el, br (~2873 clés/fichier)
@@ -76,7 +95,8 @@ tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node
                  `run_parcours_reels.mjs` les rejoue sans modèle et LIT le cours comme la
                  plateforme l'affichera (texte creux, « … », jargon de prompt, `**`, tutoiement
                  d'adultes), avec sa contre-épreuve à défauts injectés (D80).
-                 `scripts/video-demo/` = la vidéo de présentation de Caramel 7 : tournage rejouant
+                 `scripts/video-demo/` = les vidéos de Caramel 7 (présentation ; tutoriel « Créer un
+                 parcours » avec `--video=parcours`, cf. `video.mjs`) : tournage rejouant
                  des réponses d'IA enregistrées, studio de voix off au prompteur, table de montage,
                  habillage (voir son README). Ses sorties (voix, vidéos) restent dans
                  `tests/.video-demo/`, exclu de git.
@@ -91,6 +111,8 @@ tests/           `test-all.html` = 42 suites navigateur (pilote headless : `node
                  notes du présentateur, visionneuse dans la page) est fabriqué par
                  `node scripts/diaporama/generer-diaporama.mjs` (pptxgenjs + LibreOffice) : **à
                  relancer à chaque version** — la version et la date figurent sur chaque diapositive,
+                 comme sur le kit de formation rapide (`generer-kit-formation.mjs`, sortie
+                 `assets/presentation/kit-formation/`, captures par `captures-kit-formation.mjs`),
                  et le banc échoue tant que `diaporama.json` ne porte pas celle d'`index.html`.
                  `scripts/captures-interface.mjs` refait les captures d'écran du tutoriel et du
                  wiki (parcours réel du banc, réseau coupé) ; `scripts/aide-parcours.mjs` écrit ce
@@ -222,7 +244,7 @@ Pour ne pas oublier l'essentiel quand tu invoques pas le skill :
 
 **Featured (3 visibles UI)** : `gemma-4-31b` (Gemma 4, order 1), `qwen-3.8-27b` (Qwen 3.8, order 2), `mistral-small-4-119b` (Mistral Small 4, order 3, **défaut**).
 **Cachés (visibles en `?debug`)** : `qwen-3.6-35b-instruct`, `llama-3.1-8b`, `mistral-medium-latest`.
-**Cycle ILaaS de l'automne 2026 (28-09-2026)** : `gpt-oss-120b` et `mistral-small-3.2-24b` arrêtés le 30-09 ; `llama-3.3-70b` déjà hors catalogue. `qwen-3.8-27b` n'était **pas encore au catalogue** : le Worker retombe alors sur son 1er fallback `qwen-3.6-35b-instruct` (`fallback_level: 1`, mesuré) — voulu, « 3.8 sinon 3.6 ». Son id est **déduit** de la convention ILaaS : le confirmer dès son arrivée (`POST …/webhook/caramel/ia/sonde` `{"mode":"liste"}`), sinon Qwen reste en 3.6 sans rien dire.
+**Cycle ILaaS de l'automne 2026 (28-09-2026)** : `gpt-oss-120b` et `mistral-small-3.2-24b` arrêtés le 30-09 ; `llama-3.3-70b` déjà hors catalogue. `qwen-3.8-27b` n'était **pas encore au catalogue** le 28-09 (le Worker retombait sur `qwen-3.6-35b-instruct`, `fallback_level: 1`) ; **arrivé le 01-10-2026** : il répond lui-même, sous cet id, en 5 à 10 s (`fallback_level: 0`, relevé sur une trentaine d’appels). Le même jour, `mistral-small-4-119b` répondait de nouveau lui-même, et `gemma-4-31b` n'était servi que 4 fois sur 7 (repli silencieux sur Qwen 3.6).
 **Côté n8n** (`n8n-bas/_outillage/appliquer-ilaas-automne-2026.py`, appliqué à `n8n-bas/` et `n8n-prod/`) : cascade du Worker `qwen-3.6` → `mistral-small-4` → `gemma-4` (le modèle en échec est sauté) ; secours de Caramelia = `gemma-4-31b` ; Vision = modèle demandé (défaut `qwen-3.8-27b`, `DEFAULT_VISION_MODEL`) puis relances sur `qwen-3.6-35b-instruct`. **Qwen 3.8 raisonne par défaut** (niveau « medium » chez ILaaS) : le raisonnement est coupé (`chat_template_kwargs: {enable_thinking: false}`) pour lui SEUL dans les requêtes du Worker et de la Vision, sinon le mur des 59 s — non vérifiable avant son arrivée. **Ordre de déploiement** : l'ancien workflow Vision relançait trois fois le modèle demandé et échoue aussitôt sur `qwen-3.8-27b` (mesuré) → importer le workflow 12 AVANT de servir le front. Au retrait du 3.6 : remplacer `qwen-3.6-35b-instruct` par `qwen-3.8-27b` dans les deux « Déterminer fallback » du Worker et dans `REPLI_VISION`.
 
 Le cadencement du polling est exporté (`POLL_TIMINGS` : `initialDelayMs` 5 s, `intervalMs` 3 s, `timeoutMs` 5 min) **pour être surchargeable par les tests** — sans quoi le seul cas « délai dépassé » coûterait 5 minutes de suite. `tests/test-llm-service.js` l'abaisse à quelques millisecondes puis vérifie en fin de suite qu'il est revenu aux valeurs de prod. Ne pas le re-privatiser.

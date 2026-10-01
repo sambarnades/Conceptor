@@ -14,13 +14,13 @@
 
 import { construireSaisieSource } from './source-input.js';
 import { typeSource, sourceManquante, purgerMedias } from './sources.js';
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { dureeTotale, formaterDuree, expliquerEstimation } from './duree.js';
 // Réexportés : l'écran de livraison et les bancs les prennent ici.
 export { dureeTotale, formaterDuree };
 import { nomModule, imageModule, iconeModule, modulesDisponibles, resoudreModule, moduleDeTrame } from './activity-router.js';
 import { majBrouillon } from './state.js';
-import { palierEtape, trameParId } from './templates.js';
+import { palierEtape, trameParId, TRAMES } from './templates.js';
 import { normaliserPalier } from './calibrage.js';
 import { relirePlan, nbAttentions, ciblesSignalees } from './garde-fous.js';
 import { carteDisponible, carteParDefaut, normaliserCarte } from './carte-progression.js';
@@ -31,6 +31,14 @@ import { ouvrirActivite } from './activity-panel.js';
 import { action } from './dom.js';
 import { boutonChoixModule } from './choix-module.js';
 import { construireFondPersonnel } from './carte-image-input.js';
+import {
+    normaliserAiguillages, ouvrirChemins, problemesAiguillage, CHEMINS_DEFAUT, MODULE_AIGUILLEUR_DEFAUT,
+    aiguillagesDuPlan, estChemin, changerNombreDeChemins, fermerChemins, peutAiguiller, bornesEnReponses,
+    plagesEnReponses, pourcentageDeBorne, nombreQuestions, dureeParEleve, activitesParEleve, aDesChemins,
+    aiguillageDuTest, CHEMINS_MAX, CHEMINS_MIN,
+} from './aiguillage.js';
+import { moduleSAcheve } from './modules-parcours.js';
+import { ouvrirVueEleve, textePlage } from './vue-eleve.js';
 
 /* ------------------------------------------------------------------ *
  *  Fabrique de nœuds
@@ -93,6 +101,8 @@ const PICTOS = {
     etapes: [['path', { d: 'M9 6h11M9 12h11M9 18h11' }], ['circle', { cx: 4.5, cy: 6, r: 1.2 }], ['circle', { cx: 4.5, cy: 12, r: 1.2 }], ['circle', { cx: 4.5, cy: 18, r: 1.2 }]],
     activites: [[3.5, 3.5], [13.5, 3.5], [3.5, 13.5], [13.5, 13.5]].map(([x, y]) => ['rect', { x, y, width: 7, height: 7, rx: 1.6 }]),
     duree: [['circle', { cx: 12, cy: 12, r: 8.5 }], ['path', { d: 'M12 7.5V12l3 2' }]],
+    // Un tronc qui se sépare en trois : les chemins (D90).
+    chemins: [['path', { d: 'M12 21v-7.5M12 13.5 5.5 6.5M12 13.5l6.5-7M12 13.5V4.5' }], ['circle', { cx: 5, cy: 5.5, r: 1.6 }], ['circle', { cx: 12, cy: 3.6, r: 1.6 }], ['circle', { cx: 19, cy: 5.5, r: 1.6 }]],
 };
 
 function picto(nom) {
@@ -122,6 +132,36 @@ export function tuileChiffre(nom, valeur, libelle) {
         typeof libelle === 'string' ? el('span', 'pc-summary__lab', libelle) : libelle);
     bloc.append(picto(nom), texte);
     return bloc;
+}
+
+/**
+ * Les trois repères du bandeau, les MÊMES sur l'écran du plan et à la livraison.
+ *
+ * Avec des chemins, ce qui compte est ce que fait UN élève : son nombre
+ * d'activités et sa durée ; ce que Caramel fabrique vient en second (D90).
+ * Additionner tous les chemins annoncerait une durée qu'aucun élève ne vit.
+ *
+ * @param {Object} plan
+ * @returns {HTMLElement[]}
+ */
+export function tuilesSynthese(plan) {
+    const groupes = aiguillagesDuPlan(plan);
+    if (groupes.length) {
+        const a = activitesParEleve(plan);
+        const d = dureeParEleve(plan);
+        return [
+            tuileChiffre('chemins', groupes.reduce((s, g) => s + g.chemins.length, 0), t('parcours_plan_n_chemins')),
+            tuileChiffre('activites', a.min === a.max ? a.max : `${a.min}–${a.max}`,
+                tr('parcours_plan_par_eleve', { f: nbCartes(plan) })),
+            tuileChiffre('duree', d.min === d.max ? formaterDuree(d.max) : `${formaterDuree(d.min)}–${formaterDuree(d.max)}`,
+                t('parcours_plan_duree_eleve')),
+        ];
+    }
+    return [
+        tuileChiffre('etapes', plan.etapes.length, t('parcours_plan_n_etapes')),
+        tuileChiffre('activites', nbCartes(plan), t('parcours_plan_n_activites')),
+        tuileDuree(plan),
+    ];
 }
 
 /**
@@ -166,6 +206,8 @@ export function normaliserPlan(brut, platformId) {
         // introduction au début de chaque étape (D64). Ils scénarisent le
         // parcours sans consommer de place dans le budget des activités.
         introduction: phrase(brut && brut.introduction),
+        // Le mot de la fin, lu par l'élève dans la section « Fin du parcours » (D96).
+        conclusion: phrase(brut && brut.conclusion),
         notionsPivots: Array.isArray(brut && brut.notionsPivots)
             ? brut.notionsPivots.map(n => String(n).trim()).filter(Boolean)
             : [],
@@ -202,16 +244,20 @@ export function normaliserPlan(brut, platformId) {
                 consigne: phrase(c && c.consigne),
                 module: cle,
                 // `moduleReplie` signale un identifiant que le modèle a inventé :
-                // la carte le montre, l'enseignant tranche.
-                moduleReplie: !exact,
+                // la carte le montre, l'enseignant tranche. Le réparateur du plan
+                // (D107) le pose aussi quand il a remplacé le module.
+                moduleReplie: !exact || (c && c.moduleReplie === true),
                 palier,
                 duree: Number.isFinite(duree) && duree > 0 ? Math.min(duree, 180) : 10,
                 verrouillee: false,
             });
         }
+        // Le modèle marque un chemin par son rôle (`"chemin": "renforcer"`) :
+        // le rôle se déduit de la position, les seuils se posent ci-dessous.
+        if (e && e.chemin) etape.chemin = { depuis: Number(e.chemin && e.chemin.depuis) };
         plan.etapes.push(etape);
     }
-    return plan;
+    return normaliserAiguillages(plan);
 }
 
 /**
@@ -247,33 +293,55 @@ const ETAPES_LIBRE = { courte: 2, moyenne: 3, longue: 4 };
  *   trame — un bouton muet (retour d'Emmanuel, 6 sept. 2026).
  * @returns {Object|null} `null` si la trame n'existe pas.
  */
-export function planDepuisTrame(trameId, platformId, ampleur = 'moyenne') {
-    const trame = trameParId(trameId, ampleur);
+export function planDepuisTrame(trameId, platformId, ampleur = 'moyenne', { structure = 'lineaire', chemins = CHEMINS_DEFAUT } = {}) {
+    const trame = trameParId(trameId, ampleur, chemins);
     if (!trame) return null;
 
     if (!Array.isArray(trame.modules)) {
         const n = ETAPES_LIBRE[ampleur] || ETAPES_LIBRE.moyenne;
-        return {
+        const vides = Array.from({ length: n }, (_, i) => ({
+            id: `e${i + 1}`, titre: '', objectif: '', introduction: '', cartes: [],
+        }));
+        const plan = {
             titre: '',
             objectifGeneral: '',
             introduction: '',
+            conclusion: '',
             notionsPivots: [],
-            etapes: Array.from({ length: n }, (_, i) => ({
-                id: `e${i + 1}`, titre: '', objectif: '', introduction: '', cartes: [],
-            })),
+            etapes: vides,
             origine: trameId,
             personnalise: false,
             carte: carteParDefaut(),
             progression: progressionParDefaut(),
         };
+        // Des chemins sans modèle : une étape avec le test qui aiguille, les
+        // chemins à composer, une étape commune à la fin.
+        if (structure === 'chemins') {
+            const { cle } = resoudreModule(MODULE_AIGUILLEUR_DEFAUT, platformId, 'entrainement');
+            plan.etapes = [
+                { id: 'e1', titre: '', objectif: '', introduction: '', cartes: [{
+                    id: 'c1', titre: '', objectif: '', consigne: '', module: cle, moduleReplie: false,
+                    palier: 'entrainement', duree: 12, verrouillee: false,
+                }] },
+                { id: 'e2', titre: '', objectif: '', introduction: '', cartes: [] },
+                { id: 'e3', titre: '', objectif: '', introduction: '', cartes: [] },
+            ];
+            ouvrirChemins(plan, 1, chemins, prefixe => `${prefixe}_${crypto.randomUUID()}`);
+        }
+        return plan;
     }
 
     let compteur = 0;
+    const aig = trame.aiguillage;
     const etapes = trame.modules.map((modulesEtape, i) => ({
         id: `e${++compteur}`,
         titre: '',
         objectif: '',
         introduction: '',
+        // Une étape d'une trame à chemins est l'un des chemins : le premier
+        // part de 0, les suivants des seuils par défaut (D90).
+        ...(aig && i >= aig.debut && i < aig.debut + aig.nombre
+            ? { chemin: { depuis: i === aig.debut ? 0 : aig.seuils[i - aig.debut - 1] } } : {}),
         cartes: modulesEtape.map((propose, j) => {
             const { cle, exact } = resoudreModule(moduleDeTrame(propose, platformId), platformId, palierEtape(trame, i));
             return {
@@ -301,6 +369,7 @@ export function planDepuisTrame(trameId, platformId, ampleur = 'moyenne') {
         titre: '',
         objectifGeneral: '',
         introduction: '',
+        conclusion: '',
         notionsPivots: [],
         etapes,
         origine: trameId,
@@ -403,14 +472,7 @@ export function construirePlan(draft, api) {
 
     // --- Bandeau de synthèse : ce que le parcours pèse, en direct.
     const synthese = el('div', 'pc-summary');
-    const majSynthese = () => {
-        synthese.replaceChildren();
-        synthese.append(
-            tuileChiffre('etapes', plan.etapes.length, t('parcours_plan_n_etapes')),
-            tuileChiffre('activites', nbCartes(plan), t('parcours_plan_n_activites')),
-            tuileDuree(plan),
-        );
-    };
+    const majSynthese = () => synthese.replaceChildren(...tuilesSynthese(plan));
 
     // --- Relecture didactique : six repères passés sur le plan (§ 5 du PRD).
     //
@@ -457,9 +519,9 @@ export function construirePlan(draft, api) {
                 const li = el('li', `pc-relecture__item${c.ok ? ' pc-relecture__item--ok' : ''}`);
                 // Le constat de durée livre des minutes : on les écrit en heures
                 // et minutes, et l'infobulle dit d'où vient l'estimation.
-                const jetons = Number.isFinite(c.minutes)
-                    ? { ...(c.jetons || {}), d: formaterDuree(c.minutes) }
-                    : (c.jetons || {});
+                const jetons = { ...(c.jetons || {}) };
+                if (Number.isFinite(c.minutes)) jetons.d = formaterDuree(c.minutes);
+                for (const [k, v] of Object.entries(c.durees || {})) jetons[k] = formaterDuree(v);
                 const texte = el('span', null, tr(c.messageKey, jetons));
                 if (c.cle === 'duree_tenable') texte.title = expliquerEstimation();
                 li.append(icone(c.ok ? 'fa-check' : 'fa-circle-exclamation'), texte);
@@ -568,6 +630,7 @@ export function construirePlan(draft, api) {
     // NOMBRE d'étapes, qui change sous les doigts de l'enseignant.
     let majProgression = () => {};
     let majFondPersonnel = () => {};
+    let majCarteChemins = () => {};
 
     // --- La Carte de progression : la couverture du parcours (Éléa seul).
     //
@@ -628,8 +691,19 @@ export function construirePlan(draft, api) {
     if (carteDisponible(draft.platform)) {
         plan.carte = normaliserCarte(plan.carte);
 
-        const { ligne, bascule } = ligneReglage('pc-reglage-carte', 'parcours_carte_poser', 'parcours_carte_note');
+        const { ligne, bascule, note: noteCarte } = ligneReglage('pc-reglage-carte', 'parcours_carte_poser', 'parcours_carte_note');
         bascule.checked = Boolean(plan.carte.actif);
+        // Pas de Carte avec des chemins (D95) : le greffon montrerait à chaque
+        // élève les activités des AUTRES chemins, verrouillées pour toujours. Le
+        // choix de l'enseignant est gardé, et revient si les chemins disparaissent.
+        majCarteChemins = () => {
+            const avec = aDesChemins(plan);
+            bascule.disabled = avec;
+            bascule.checked = !avec && Boolean(plan.carte.actif);
+            ligne.classList.toggle('pc-reglage--off', avec);
+            noteCarte.textContent = t(avec ? 'parcours_carte_chemins' : 'parcours_carte_note');
+            majCarte();
+        };
 
         // Le choix du thème est une GALERIE horizontale des trente visuels, qui
         // n'apparaît que la case cochée : on choisit une image en la voyant,
@@ -722,6 +796,7 @@ export function construirePlan(draft, api) {
         });
         choisirTheme(plan.carte.theme, false);
         majCarte();
+        majCarteChemins();
 
         ligne.append(images);
         carteReglages.append(ligne);
@@ -750,8 +825,9 @@ export function construirePlan(draft, api) {
             const assez = plan.etapes.length >= 2;
             bascule.disabled = !assez;
             ligne.classList.toggle('pc-reglage--off', !assez);
-            raison.textContent = assez ? t('parcours_progression_note')
-                                       : t('parcours_progression_trop_court');
+            raison.textContent = assez
+                ? t(aDesChemins(plan) ? 'parcours_progression_note_chemins' : 'parcours_progression_note')
+                : t('parcours_progression_trop_court');
         };
         bascule.addEventListener('change', () => {
             plan.progression.actif = bascule.checked;
@@ -781,6 +857,8 @@ export function construirePlan(draft, api) {
     const etapesNode = el('div', 'pc-etapes');
     blocEtapes.append(etapesNode);
     let avantSuppression = null;
+    /** L'activité ou l'étape touchée, où le focus revient après « Annuler la modification ». */
+    let rendreA = null;
     const annulation = el('div', 'pc-annulation');
     annulation.hidden = true;
     const messageAnnulation = el('span');
@@ -791,13 +869,21 @@ export function construirePlan(draft, api) {
         avantSuppression = null;
         annulation.hidden = true;
         persister(); dessiner();
-        etapesNode.querySelector('input')?.focus();
+        // Le focus revient sur ce qui a été rétabli, sans faire remonter la page en haut
+        // du plan : annuler une suppression en bas du plan y laissait l'enseignant.
+        const retabli = rendreA && [...etapesNode.querySelectorAll('[data-carte], [data-etape]')]
+            .find(n => rendreA.carte ? n.dataset.carte === rendreA.carte : n.dataset.etape === rendreA.etape);
+        rendreA = null;
+        (retabli || etapesNode).querySelector('input, textarea')?.focus({ preventScroll: true });
+        retabli?.scrollIntoView({ block: 'nearest' });
     });
     annulation.append(messageAnnulation, annuler);
     blocEtapes.prepend(annulation);
 
     function garderAvant(cle) {
         avantSuppression = structuredClone(plan);
+        const touche = document.activeElement?.closest?.('[data-carte], [data-etape]');
+        rendreA = touche ? { carte: touche.dataset.carte, etape: touche.dataset.etape } : null;
         messageAnnulation.textContent = t(cle);
         annulation.hidden = false;
     }
@@ -810,6 +896,7 @@ export function construirePlan(draft, api) {
         majSynthese();
         majRelecture();
         majProgression();
+        majCarteChemins();
         dessinerMiroir();
         relire.hidden = !plan.etapes.some(e => e.cartes.some(c => c.contenu));
         api.rafraichirAction();
@@ -837,6 +924,176 @@ export function construirePlan(draft, api) {
         return node;
     }
 
+    /** La fin du parcours : ce que l'élève lit quand il a tout terminé (D96). */
+    function construireFin() {
+        const node = el('section', 'pc-etape pc-etape--fin');
+        node.dataset.etape = 'fin';
+        const head = el('header', 'pc-etape__head');
+        const num = el('span', 'pc-etape__num pc-etape__num--fin');
+        num.append(icone('fa-flag-checkered'));
+        const champs = el('div', 'pc-etape__champs');
+        const intitule = el('p', 'pc-etape__nom-fixe', t('parcours_fin_titre'));
+        intitule.id = 'pc-fin-titre';
+        const bravo = el('p', 'pc-fin__bravo', t('parcours_fin_bravo'));
+        const texte = el('textarea', 'pc-etape__intro');
+        texte.rows = 1;
+        texte.value = plan.conclusion || '';
+        texte.placeholder = t('parcours_fin_ph');
+        texte.setAttribute('aria-labelledby', 'pc-fin-titre');
+        texte.addEventListener('input', () => { plan.conclusion = texte.value; persister(); });
+        champs.append(intitule, bravo, texte, el('p', 'pc-block__hint', t('parcours_fin_note')),
+            el('p', 'pc-block__hint', t('parcours_fin_bilan_note')));
+        head.append(num, champs);
+        node.append(head);
+        return node;
+    }
+
+    /**
+     * L'aiguillage : le test, la barre des scores, les plages de chaque chemin
+     * (réglables, nommées par leur rôle, jamais par une lettre — retour
+     * d'Emmanuel, 30 sept. 2026), puis les chemins côte à côte.
+     */
+    function construireAiguillage(g) {
+        const node = el('section', 'pc-aiguillage');
+        node.dataset.etape = g.chemins[0].etape.id;
+        const k = g.chemins.length;
+        const n = g.test ? nombreQuestions(g.test, k) : 10;
+        const bornes = bornesEnReponses(g.chemins.slice(1).map(c => c.depuis), n);
+        const plages = plagesEnReponses(bornes, n);
+
+        const tete = el('header', 'pc-aiguillage__tete');
+        const titre = el('h4', 'pc-aiguillage__titre');
+        titre.append(icone('fa-code-fork'), document.createTextNode(g.test
+            ? tr('parcours_aig_titre', { t: g.test.titre || g.test.contenu?.title || nomModule(g.test.module) })
+            : t('parcours_aig_titre_sans_test')));
+        const voir = action('parcours_aig_voir_eleve', 'fa-eye', () => ouvrirVueEleve(plan, { platform: draft.platform }),
+            'pc-secondaire pc-aiguillage__voir');
+        tete.append(titre, voir);
+        node.append(tete, el('p', 'pc-aiguillage__aide', t('parcours_aig_aide')));
+
+        // La barre : un carré par score possible, de la couleur du chemin qu'il ouvre.
+        const barre = el('div', 'pc-aiguillage__barre');
+        barre.setAttribute('role', 'img');
+        barre.setAttribute('aria-label', g.chemins.map((c, j) =>
+            `${t(`parcours_role_${c.role}`)} : ${textePlage(plages[j], n)}`).join(' ; '));
+        const cases = el('div', 'pc-aiguillage__cases');
+        cases.style.gridTemplateColumns = `repeat(${n + 1}, minmax(0, 1fr))`;
+        for (let s = 0; s <= n; s++) {
+            const j = bornes.filter(b => s >= b).length;
+            cases.append(el('span', `pc-aiguillage__case pc-role--${g.chemins[j].role}`, String(s)));
+        }
+        const axe = el('div', 'pc-aiguillage__axe');
+        axe.append(el('span', null, t('parcours_aig_axe_debut')), el('span', null, tr('parcours_aig_axe_fin', { n })));
+        barre.append(cases, axe);
+        node.append(barre);
+
+        // Une ligne par chemin : son rôle, sa plage ; à partir du deuxième, deux
+        // boutons déplacent le début de sa plage d'une bonne réponse.
+        const lignes = el('ul', 'pc-aiguillage__plages');
+        g.chemins.forEach((c, j) => {
+            const li = el('li', 'pc-aiguillage__plage');
+            const role = el('span', `pc-role pc-role--${c.role}`, t(`parcours_role_${c.role}`));
+            role.title = t(`parcours_role_${c.role}_hint`);
+            li.append(role, el('span', 'pc-aiguillage__intervalle', textePlage(plages[j], n)));
+            if (j > 0) {
+                const bas = (j > 1 ? bornes[j - 2] : 0) + 1;
+                const haut = j < k - 1 ? bornes[j] - 1 : n;
+                const pas = el('span', 'pc-aiguillage__pas');
+                for (const [sens, image, cle] of [[-1, 'fa-minus', 'parcours_aig_plus_tot'], [1, 'fa-plus', 'parcours_aig_plus_tard']]) {
+                    const b = bouton(image, cle, () => {
+                        const nouveau = bornes[j - 1] + sens;
+                        if (nouveau < bas || nouveau > haut) return;
+                        c.etape.chemin.depuis = pourcentageDeBorne(nouveau, n);
+                        persister(); dessiner();
+                    });
+                    const libelle = tr(cle, { r: t(`parcours_role_${c.role}`) });
+                    b.title = libelle;
+                    b.setAttribute('aria-label', libelle);
+                    b.dataset.pas = `${c.etape.id}:${sens}`;
+                    b.disabled = bornes[j - 1] + sens < bas || bornes[j - 1] + sens > haut;
+                    pas.append(b);
+                }
+                li.append(pas);
+            }
+            lignes.append(li);
+        });
+        node.append(lignes);
+
+        const colonnes = el('div', `pc-chemins pc-chemins--${k}`);
+        g.chemins.forEach((c, j) => colonnes.append(construireChemin(c, plages[j], n)));
+        node.append(colonnes);
+
+        const actions = el('div', 'pc-aiguillage__actions');
+        const nouvelId = prefixe => `${prefixe}_${crypto.randomUUID()}`;
+        if (k < CHEMINS_MAX) actions.append(action('parcours_aig_ajouter', 'fa-plus', () => {
+            changerNombreDeChemins(plan, g.debut, 1, nouvelId); persister(); dessiner();
+        }, 'pc-secondaire'));
+        if (k > CHEMINS_MIN) actions.append(action('parcours_aig_retirer', 'fa-minus', () => {
+            garderAvant('parcours_aig_retire'); changerNombreDeChemins(plan, g.debut, -1, nouvelId); persister(); dessiner();
+        }, 'pc-secondaire'));
+        actions.append(action('parcours_aig_fermer', 'fa-arrow-right-long', () => {
+            garderAvant('parcours_aig_ferme'); fermerChemins(plan, g.debut); persister(); dessiner();
+        }, 'pc-secondaire'));
+        node.append(actions);
+        return node;
+    }
+
+    /** Un chemin : son rôle et sa plage, son titre lu par l'élève, ses activités. */
+    function construireChemin(c, plage, n) {
+        const etape = c.etape;
+        const iEtape = plan.etapes.indexOf(etape);
+        const node = el('section', `pc-chemin pc-chemin--${c.role}`);
+        node.dataset.etape = etape.id;
+        if (cibles.etapes.has(etape.id)) node.classList.add('pc-etape--attention');
+        const head = el('header', 'pc-chemin__tete');
+        const role = el('span', `pc-role pc-role--${c.role}`, t(`parcours_role_${c.role}`));
+        role.title = t(`parcours_role_${c.role}_hint`);
+        head.append(role, el('span', 'pc-chemin__plage', textePlage(plage, n)));
+        const nomRole = t(`parcours_role_${c.role}`);
+        const titreChemin = el('input', 'pc-etape__titre pc-chemin__titre');
+        titreChemin.type = 'text';
+        titreChemin.value = etape.titre;
+        titreChemin.placeholder = t('parcours_chemin_titre_ph');
+        titreChemin.setAttribute('aria-label', tr('parcours_chemin_titre_aria', { r: nomRole }));
+        titreChemin.addEventListener('input', () => { etape.titre = titreChemin.value; persister(); });
+        const objectif = el('input', 'pc-etape__objectif');
+        objectif.type = 'text';
+        objectif.value = etape.objectif;
+        objectif.placeholder = t('parcours_plan_etape_objectif_ph');
+        objectif.setAttribute('aria-label', tr('parcours_chemin_objectif_aria', { r: nomRole }));
+        objectif.addEventListener('input', () => { etape.objectif = objectif.value; persister(); });
+        const intro = el('textarea', 'pc-etape__intro');
+        intro.rows = 1;
+        intro.value = etape.introduction || '';
+        intro.placeholder = t('parcours_plan_intro_etape_ph');
+        intro.setAttribute('aria-label', tr('parcours_chemin_intro_aria', { r: nomRole }));
+        intro.addEventListener('input', () => { etape.introduction = intro.value; persister(); });
+        head.append(titreChemin, objectif, intro);
+        node.append(head);
+
+        const liste = el('div', 'pc-cartes');
+        etape.cartes.forEach((carte, iCarte) => liste.append(construireCarte(carte, etape, iEtape, iCarte)));
+        const ajouter = el('button', 'pc-add');
+        ajouter.type = 'button';
+        ajouter.disabled = nbCartes(plan) >= 12;
+        ajouter.append(icone('fa-plus'), document.createTextNode(t('parcours_plan_ajouter_activite')));
+        ajouter.addEventListener('click', () => {
+            etape.cartes.push({
+                id: `c_${crypto.randomUUID()}`, titre: '', objectif: '', consigne: '',
+                module: modules[0] ? modules[0].cle : 'Page', moduleReplie: false,
+                palier: 'entrainement', duree: 10, verrouillee: false,
+            });
+            persister(); dessiner();
+        });
+        liste.append(ajouter);
+        node.append(liste);
+        const d = etape.cartes.reduce((s, x) => s + (Number(x.duree) || 0), 0);
+        const pied = el('p', 'pc-chemin__pied');
+        pied.append(icone('fa-clock'), document.createTextNode(formaterDuree(d)));
+        node.append(pied);
+        return node;
+    }
+
     function dessiner() {
         const actif = document.activeElement;
         const id = actif?.closest('[data-carte], [data-etape]')?.dataset;
@@ -845,11 +1102,25 @@ export function construirePlan(draft, api) {
         // ensuite en consultant `cibles` pour se marquer elles-mêmes.
         majRelecture();
         etapesNode.replaceChildren(construireAccueil());
+        // Les étapes communes sont numérotées dans l'ordre où l'élève les
+        // rencontre ; un aiguillage n'a pas de numéro : ses chemins sont une
+        // seule étape pour chaque élève, vue par l'enseignant en colonnes.
+        const groupes = aiguillagesDuPlan(plan);
+        let numero = 0;
         plan.etapes.forEach((etape, iEtape) => {
-            etapesNode.append(construireEtape(etape, iEtape));
+            const g = groupes.find(x => iEtape >= x.debut && iEtape <= x.fin);
+            if (g) {
+                if (iEtape === g.debut) etapesNode.append(construireAiguillage(g));
+                return;
+            }
+            etapesNode.append(construireEtape(etape, iEtape, ++numero));
         });
+        etapesNode.append(construireFin());
         majSynthese();
         majFondPersonnel();
+        // Les champs redessinés reprennent la hauteur de leur texte : sans cela, ajouter
+        // un chemin ou déplacer une carte repliait les introductions à une ligne.
+        ajusterChamps();
         if (nom && id) {
             const parent = [...etapesNode.querySelectorAll('[data-carte], [data-etape]')]
                 .find(n => id.carte ? n.dataset.carte === id.carte : n.dataset.etape === id.etape);
@@ -904,7 +1175,22 @@ export function construirePlan(draft, api) {
         dessiner();
     }
 
-    function construireEtape(etape, iEtape) {
+    /**
+     * Déplace une étape commune d'un cran. Un aiguillage se franchit d'un bloc :
+     * l'étape passe de l'autre côté de tous ses chemins, sans jamais s'y glisser
+     * (elle séparerait les chemins en deux aiguillages).
+     */
+    function deplacerEtape(iEtape, sens) {
+        const cible = iEtape + sens;
+        if (cible < 0 || cible >= plan.etapes.length) return;
+        const g = aiguillagesDuPlan(plan).find(x => cible >= x.debut && cible <= x.fin);
+        const [etape] = plan.etapes.splice(iEtape, 1);
+        if (!g) plan.etapes.splice(cible, 0, etape);
+        else plan.etapes.splice(sens < 0 ? g.debut : g.fin, 0, etape);
+        persister(); dessiner();
+    }
+
+    function construireEtape(etape, iEtape, numero = iEtape + 1) {
         const node = el('section', 'pc-etape');
         node.dataset.etape = etape.id;
         // Une étape signalée par la relecture porte une marque discrète : sans
@@ -913,21 +1199,21 @@ export function construirePlan(draft, api) {
         if (cibles.etapes.has(etape.id)) node.classList.add('pc-etape--attention');
 
         const head = el('header', 'pc-etape__head');
-        const num = el('span', 'pc-etape__num', String(iEtape + 1));
+        const num = el('span', 'pc-etape__num', String(numero));
         const champs = el('div', 'pc-etape__champs');
 
         const titreEtape = el('input', 'pc-etape__titre');
         titreEtape.type = 'text';
         titreEtape.value = etape.titre;
         titreEtape.placeholder = t('parcours_plan_etape_titre_ph');
-        titreEtape.setAttribute('aria-label', tr('parcours_plan_etape_titre_aria', { n: iEtape + 1 }));
+        titreEtape.setAttribute('aria-label', tr('parcours_plan_etape_titre_aria', { n: numero }));
         titreEtape.addEventListener('input', () => { etape.titre = titreEtape.value; persister(); });
 
         const objEtape = el('input', 'pc-etape__objectif');
         objEtape.type = 'text';
         objEtape.value = etape.objectif;
         objEtape.placeholder = t('parcours_plan_etape_objectif_ph');
-        objEtape.setAttribute('aria-label', tr('parcours_plan_etape_objectif_aria', { n: iEtape + 1 }));
+        objEtape.setAttribute('aria-label', tr('parcours_plan_etape_objectif_aria', { n: numero }));
         objEtape.addEventListener('input', () => { etape.objectif = objEtape.value; persister(); });
 
         // Le texte que l'élève lit en arrivant sur l'étape, posé en tête de sa
@@ -936,23 +1222,15 @@ export function construirePlan(draft, api) {
         introEtape.rows = 1;
         introEtape.value = etape.introduction || '';
         introEtape.placeholder = t('parcours_plan_intro_etape_ph');
-        introEtape.setAttribute('aria-label', tr('parcours_plan_intro_aria', { n: iEtape + 1 }));
+        introEtape.setAttribute('aria-label', tr('parcours_plan_intro_aria', { n: numero }));
         introEtape.addEventListener('input', () => { etape.introduction = introEtape.value; persister(); });
 
         champs.append(titreEtape, objEtape, introEtape);
 
         const actions = el('div', 'pc-etape__actions');
         actions.append(
-            bouton('fa-arrow-up', 'parcours_plan_monter_etape', () => {
-                if (iEtape === 0) return;
-                plan.etapes.splice(iEtape - 1, 0, plan.etapes.splice(iEtape, 1)[0]);
-                persister(); dessiner();
-            }),
-            bouton('fa-arrow-down', 'parcours_plan_descendre_etape', () => {
-                if (iEtape === plan.etapes.length - 1) return;
-                plan.etapes.splice(iEtape + 1, 0, plan.etapes.splice(iEtape, 1)[0]);
-                persister(); dessiner();
-            }),
+            bouton('fa-arrow-up', 'parcours_plan_monter_etape', () => deplacerEtape(iEtape, -1)),
+            bouton('fa-arrow-down', 'parcours_plan_descendre_etape', () => deplacerEtape(iEtape, 1)),
             bouton('fa-trash-can', 'parcours_plan_supprimer_etape', () => {
                 garderAvant('parcours_etape_supprimee');
                 plan.etapes.splice(iEtape, 1);
@@ -1014,6 +1292,21 @@ export function construirePlan(draft, api) {
         listeCartes.append(ajouter);
 
         node.append(listeCartes);
+
+        // Une étape qui se termine par un test peut ouvrir des chemins : l'étape
+        // suivante se décline alors en autant de chemins, parallèles (D90). Un
+        // seul aiguillage par parcours dans cette version.
+        const dernierTest = [...etape.cartes].reverse().find(peutAiguiller);
+        if (dernierTest && !aDesChemins(plan)) {
+            const ouvrir = action('parcours_aig_ouvrir', 'fa-code-fork', () => {
+                const suivante = plan.etapes[iEtape + 1];
+                if (!suivante) plan.etapes.push({ id: `e_${crypto.randomUUID()}`, titre: '', objectif: '', introduction: '', cartes: [] });
+                ouvrirChemins(plan, iEtape + 1, draft.chemins || CHEMINS_DEFAUT, prefixe => `${prefixe}_${crypto.randomUUID()}`);
+                persister(); dessiner();
+            }, 'pc-secondaire pc-etape__chemins');
+            ouvrir.title = t('parcours_aig_ouvrir_hint');
+            node.append(ouvrir);
+        }
         return node;
     }
 
@@ -1151,6 +1444,20 @@ export function construirePlan(draft, api) {
 
         // Le modèle a proposé un type qui n'existe pas : on le dit, on ne le cache pas.
         corps.append(titreCarte, objCarte);
+        // Le test dont la note ouvre les chemins porte sa marque (D90).
+        if (aiguillageDuTest(plan, carte)) {
+            const marque = el('p', 'pc-carte__aiguille');
+            marque.append(icone('fa-code-fork'), document.createTextNode(t('parcours_aig_pivot')));
+            marque.title = t('parcours_aig_pivot_hint');
+            corps.append(marque);
+        }
+        // Le Test d'une trame « Évaluer » part réglé en épreuve (D102) : on le dit.
+        const trameDuParcours = TRAMES.find(tr => tr.id === draft.trame);
+        if (carte.module === 'test_elea' && trameDuParcours?.reglagesTest) {
+            const marque = el('p', 'pc-carte__aiguille pc-carte__epreuve');
+            marque.append(icone('fa-stopwatch'), document.createTextNode(tr('parcours_carte_epreuve', { d: formaterDuree(Number(carte.duree) || 20) })));
+            corps.append(marque);
+        }
         if (carte.moduleReplie) {
             const alerte = el('p', 'pc-carte__alerte');
             alerte.append(icone('fa-triangle-exclamation'), document.createTextNode(t('parcours_plan_module_replie')));
@@ -1162,9 +1469,13 @@ export function construirePlan(draft, api) {
             bouton(carte.verrouillee ? 'fa-lock' : 'fa-lock-open',
                    carte.verrouillee ? 'parcours_plan_deverrouiller' : 'parcours_plan_verrouiller',
                    () => { carte.verrouillee = !carte.verrouillee; persister(); dessiner(); }),
+            // Une activité passe d'une étape à l'autre par les flèches — jamais
+            // d'un chemin à une autre étape : les chemins se composent côte à
+            // côte, et une activité qui glisserait de l'un à l'autre changerait
+            // d'élèves sans qu'on le voie.
             bouton('fa-arrow-up', 'parcours_plan_monter_activite', () => {
                 if (iCarte === 0) {
-                    if (iEtape === 0) return;
+                    if (iEtape === 0 || estChemin(etape) || estChemin(plan.etapes[iEtape - 1])) return;
                     plan.etapes[iEtape - 1].cartes.push(etape.cartes.splice(iCarte, 1)[0]);
                 } else {
                     etape.cartes.splice(iCarte - 1, 0, etape.cartes.splice(iCarte, 1)[0]);
@@ -1173,7 +1484,7 @@ export function construirePlan(draft, api) {
             }),
             bouton('fa-arrow-down', 'parcours_plan_descendre_activite', () => {
                 if (iCarte === etape.cartes.length - 1) {
-                    if (iEtape === plan.etapes.length - 1) return;
+                    if (iEtape === plan.etapes.length - 1 || estChemin(etape) || estChemin(plan.etapes[iEtape + 1])) return;
                     plan.etapes[iEtape + 1].cartes.unshift(etape.cartes.splice(iCarte, 1)[0]);
                 } else {
                     etape.cartes.splice(iCarte + 1, 0, etape.cartes.splice(iCarte, 1)[0]);
@@ -1340,5 +1651,9 @@ export function validerPlan(draft) {
     if (plan.etapes.some(e => e.cartes.some(c => !Number.isFinite(c.duree) || c.duree < 1 || c.duree > 180))) {
         return { pret: false, raisonKey: 'parcours_plan_duree_invalide' };
     }
+    // Un aiguillage incomplet laisserait des élèves sans suite : ce n'est pas un
+    // conseil de relecture, c'est un cours qui ne marcherait pas (D94).
+    const probleme = problemesAiguillage(plan, { sansAchevement: cle => !moduleSAcheve(cle) })[0];
+    if (probleme) return { pret: false, raisonKey: `parcours_aiguillage_${probleme.code}` };
     return { pret: true, raisonKey: null };
 }

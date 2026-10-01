@@ -26,9 +26,17 @@ import { normaliserProgression } from './progression.js';
 import { currentLang } from '../core/translation.js';
 import { horodatageFichier } from '../core/utils.js';
 import { modulesDisponibles, resoudreModule } from './activity-router.js';
+import { aDesChemins, normaliserAiguillages } from './aiguillage.js';
 
 /** Version du FORMAT de scénario, indépendante de celle du brouillon. */
 export const FORMAT_SCENARIO = 1;
+/**
+ * Le format d'un scénario à CHEMINS (D90). Une version antérieure de Caramel
+ * le refuse (« version inconnue ») au lieu d'en faire un parcours à la suite,
+ * chemins mis bout à bout : un refus clair vaut mieux qu'un cours faux. Un
+ * scénario sans chemin reste au format 1, lisible partout.
+ */
+export const FORMAT_SCENARIO_CHEMINS = 2;
 
 /**
  * Sérialise le brouillon en scénario.
@@ -37,7 +45,7 @@ export const FORMAT_SCENARIO = 1;
  */
 export function versScenario(draft) {
     return {
-        format: FORMAT_SCENARIO,
+        format: aDesChemins(draft.plan) ? FORMAT_SCENARIO_CHEMINS : FORMAT_SCENARIO,
         produit: 'caramel-parcours',
         version: CONFIG.version,
         langue: currentLang,
@@ -47,6 +55,8 @@ export function versScenario(draft) {
             format: draft.format,
             ampleur: draft.ampleur,
             trame: draft.trame,
+            structure: draft.structure || CONFIG.defaults.structure,
+            chemins: draft.chemins || CONFIG.defaults.chemins,
         },
         plan: draft.plan || null,
     };
@@ -89,7 +99,7 @@ export function depuisScenario(texte) {
     if (!brut || typeof brut !== 'object' || brut.produit !== 'caramel-parcours') {
         throw new Error('parcours_scenario_illisible');
     }
-    if (brut.format !== FORMAT_SCENARIO) throw new Error('parcours_scenario_version');
+    if (brut.format !== FORMAT_SCENARIO && brut.format !== FORMAT_SCENARIO_CHEMINS) throw new Error('parcours_scenario_version');
 
     const plan = brut.plan;
     const etapes = plan && Array.isArray(plan.etapes) ? plan.etapes : null;
@@ -131,47 +141,57 @@ export function depuisScenario(texte) {
         return id;
     }
 
+    const planRelu = {
+        titre: String(plan.titre || ''),
+        objectifGeneral: String(plan.objectifGeneral || ''),
+        introduction: String(plan.introduction || ''),
+        conclusion: String(plan.conclusion || ''),
+        notionsPivots: Array.isArray(plan.notionsPivots) ? plan.notionsPivots.map(String) : [],
+        origine: plan.origine || 'ia',
+        personnalise: Boolean(plan.personnalise),
+        // `normaliserCarte` ramène au thème par défaut un nom de thème que
+        // le catalogue amont ne connaîtrait plus : un scénario rouvert des
+        // mois plus tard ne doit pas produire un `.mbz` dont l'import
+        // échoue chez le greffon (cf. `carte-progression.js`).
+        carte: normaliserCarte(plan.carte),
+        progression: normaliserProgression(plan.progression),
+        etapes: etapes.map((e, i) => ({
+            id: identifiant(e.id, 'e'),
+            titre: String(e.titre || ''),
+            objectif: String(e.objectif || ''),
+            introduction: String(e.introduction || ''),
+            // Une étape-chemin garde son seuil ; `normaliserAiguillages`
+            // remet d'aplomb un aiguillage que le fichier aurait abîmé.
+            ...(e.chemin && typeof e.chemin === 'object' ? { chemin: { depuis: Number(e.chemin.depuis) } } : {}),
+            cartes: (Array.isArray(e.cartes) ? e.cartes : []).map((c, j) => ({
+                ...relireSources(c),
+                id: identifiant(c.id, 'c'),
+                titre: String(c.titre || ''),
+                objectif: String(c.objectif || ''),
+                consigne: String(c.consigne || ''),
+                module: resoudreModule(c.module, platform, c.palier).cle,
+                moduleReplie: Boolean(c.moduleReplie) || !disponibles.has(c.module),
+                palier: ['decouverte', 'entrainement', 'transfert'].includes(c.palier)
+                    ? c.palier : 'entrainement',
+                duree: Number.isFinite(Number(c.duree)) && Number(c.duree) > 0
+                    ? Math.min(180, Math.round(Number(c.duree))) : 10,
+                verrouillee: Boolean(c.verrouillee),
+                // Le contenu revient tel qu'il a été fabriqué ; il repassera
+                // par `json-healer.js` à l'assemblage, comme tout le reste.
+                contenu: (c.contenu && typeof c.contenu === 'object') ? c.contenu : null,
+            })),
+        })),
+    };
+    normaliserAiguillages(planRelu);
+    const structure = aDesChemins(planRelu) ? 'chemins'
+        : choisir(CONFIG.structures, cadrage.structure, CONFIG.defaults.structure);
     return {
         platform,
         format: choisir(CONFIG.formats, cadrage.format, CONFIG.defaults.format),
         ampleur: choisir(CONFIG.ampleurs, cadrage.ampleur, CONFIG.defaults.ampleur),
         trame: cadrage.trame || CONFIG.defaults.trame,
-        plan: {
-            titre: String(plan.titre || ''),
-            objectifGeneral: String(plan.objectifGeneral || ''),
-            introduction: String(plan.introduction || ''),
-            notionsPivots: Array.isArray(plan.notionsPivots) ? plan.notionsPivots.map(String) : [],
-            origine: plan.origine || 'ia',
-            personnalise: Boolean(plan.personnalise),
-            // `normaliserCarte` ramène au thème par défaut un nom de thème que
-            // le catalogue amont ne connaîtrait plus : un scénario rouvert des
-            // mois plus tard ne doit pas produire un `.mbz` dont l'import
-            // échoue chez le greffon (cf. `carte-progression.js`).
-            carte: normaliserCarte(plan.carte),
-            progression: normaliserProgression(plan.progression),
-            etapes: etapes.map((e, i) => ({
-                id: identifiant(e.id, 'e'),
-                titre: String(e.titre || ''),
-                objectif: String(e.objectif || ''),
-                introduction: String(e.introduction || ''),
-                cartes: (Array.isArray(e.cartes) ? e.cartes : []).map((c, j) => ({
-                    ...relireSources(c),
-                    id: identifiant(c.id, 'c'),
-                    titre: String(c.titre || ''),
-                    objectif: String(c.objectif || ''),
-                    consigne: String(c.consigne || ''),
-                    module: resoudreModule(c.module, platform, c.palier).cle,
-                    moduleReplie: Boolean(c.moduleReplie) || !disponibles.has(c.module),
-                    palier: ['decouverte', 'entrainement', 'transfert'].includes(c.palier)
-                        ? c.palier : 'entrainement',
-                    duree: Number.isFinite(Number(c.duree)) && Number(c.duree) > 0
-                        ? Math.min(180, Math.round(Number(c.duree))) : 10,
-                    verrouillee: Boolean(c.verrouillee),
-                    // Le contenu revient tel qu'il a été fabriqué ; il repassera
-                    // par `json-healer.js` à l'assemblage, comme tout le reste.
-                    contenu: (c.contenu && typeof c.contenu === 'object') ? c.contenu : null,
-                })),
-            })),
-        },
+        structure,
+        chemins: CONFIG.nombresDeChemins.includes(cadrage.chemins) ? cadrage.chemins : CONFIG.defaults.chemins,
+        plan: planRelu,
     };
 }

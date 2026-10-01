@@ -20,6 +20,13 @@
  *
  * Les contenus montrés sont ceux qu'a réellement produits le modèle, enregistrés
  * une fois (`--enregistrer-ia`) puis rejoués au tournage.
+ *
+ * **Version 7.1 (octobre 2026).** La partie « parcours » montre un parcours
+ * DIFFÉRENCIÉ : des chemins selon les résultats d'un test, l'aiguillage du plan,
+ * « Voir comme un élève » et la fin du parcours avec sa page de bilan. Le quiz de
+ * la première partie garde les réponses enregistrées le 29-09-2026 (et son erreur
+ * réelle sur la Bastille) : seules `plan-attente` et `fabrication` ont été
+ * réinterrogées (`--enregistrer-ia=plan-attente,fabrication`).
  */
 
 export const QUI = 'Professeur d’histoire-géographie, classe de 4e';
@@ -58,11 +65,11 @@ export const SCENES = [
         id: 'accueil',
         cles: [
             [0, 'Gratuit, sans compte, conçu par Emmanuel GAUNARD et Gauthier REMANDE'],
-            [1, 'Il prépare des activités pour Éléa, Magistère (Réseau des concepteurs) et Moodle'],
+            [1, 'Des activités et des parcours pour Éléa, Magistère (Réseau des concepteurs) et Moodle'],
             [2, 'L’IA rédige un premier jet : vous relisez, corrigez, décidez'],
         ],
         voix: () => `Caramel est un site web gratuit et sans compte, conçu par deux enseignants et hébergé sur la Forge des communs numériques éducatifs. `
-            + `Il prépare des activités interactives, quiz, textes à trous, cartes mémoire ou pages de cours, à importer dans Éléa, Magistère ou Moodle. `
+            + `Il prépare des activités interactives, quiz, textes à trous, cartes mémoire ou pages de cours, et des parcours complets, à importer dans Éléa, Magistère ou Moodle. `
             + `Une intelligence artificielle en rédige un premier jet. Vous le relisez, vous le corrigez, et vous décidez de l’utiliser ou non.`,
         async jouer({ m, phrase }) {
             await m.carton(null);
@@ -206,7 +213,7 @@ export const SCENES = [
             [0, 'Exemple 2, nouveau en version 7 : le parcours'],
             [2, 'Un cours complet : cadrage, plan, fabrication, livraison'],
         ],
-        chapitre: '2 · Un parcours',
+        chapitre: '2 · Un parcours différencié',
         voix: () => `Deuxième exemple, nouveau dans la version 7 : le parcours. Avec la même saisie, on bascule sur « Un parcours ». `
             + `Caramel prépare alors un cours complet, en quatre étapes : cadrage, plan, fabrication et livraison.`,
         async jouer({ m, page, phrase }) {
@@ -222,22 +229,46 @@ export const SCENES = [
         id: 'cadrage',
         cles: [
             [0, 'Plateforme, déroulement, ampleur'],
-            [1, 'Une trame : « Réviser avant l’évaluation »'],
-            [2, 'On peut aussi partir de la trame, sans plan de l’IA'],
+            [1, 'Nouveau : tous les élèves suivent-ils le même chemin ?'],
+            [2, 'Un test oriente chaque élève ; il ne voit que ses activités'],
+            [3, 'Trois chemins : renforcer, consolider, approfondir'],
         ],
-        voix: () => `On indique la plateforme, le déroulement et l’ampleur. `
-            + `On choisit ensuite une trame, ici « Réviser avant l’évaluation » : situer ses acquis, revoir l’essentiel, s’entraîner, puis se tester. `
-            + `On peut aussi partir de la trame sans demander de plan à l’IA.`,
+        voix: () => `On indique la plateforme, le déroulement et l’ampleur : ici Éléa, à distance, en une séance. `
+            + `Vient ensuite une question nouvelle : tous vos élèves suivent-ils le même chemin ? `
+            + `Avec « Des chemins selon les résultats », un test oriente chaque élève vers les activités qui lui conviennent, et il ne voit que les siennes. `
+            + `On garde trois chemins : renforcer, consolider, approfondir.`,
         async jouer({ m, page, phrase }) {
             await m.defiler('#pc-atelier', { ms: 1100, position: 0.02 });
-            await m.survoler(page.locator('.pc-choice', { hasText: 'Éléa' }).first(), { ms: 600 });
-            await m.survoler(page.locator('.pc-choice', { hasText: 'À distance' }).first(), { ms: 600 });
-            await m.cliquer(page.locator('.pc-choice', { hasText: 'Une séance' }).first(), { apres: 500 });
+            await m.survoler(page.locator('.pc-choice[data-choix="elea"]'), { ms: 600 });
+            await m.survoler(page.locator('.pc-choice[data-choix="distanciel"]'), { ms: 600 });
+            await m.cliquer(page.locator('.pc-choice[data-choix="courte"]'), { apres: 500 });
             await phrase(1);
-            await m.defiler('.pc-trames', { ms: 1100, position: 0.25 });
-            await m.cliquer(page.locator('.pc-trames > *', { hasText: 'Réviser avant l' }).first(), { dy: 0.2, apres: 800 });
+            await m.survoler(page.locator('.pc-choice[data-choix="lineaire"]'), { dy: 0.3, ms: 700 });
             await phrase(2);
-            await m.survoler(page.locator('#pc-modele'), { ms: 800 });
+            await m.cliquer(page.locator('.pc-choice[data-choix="chemins"]'), { dy: 0.3, apres: 700 });
+            // La ligne « Combien de chemins ? » apparaît tout en bas, sous l'étiquette du chapitre.
+            await m.defiler('.pc-nb-chemins', { ms: 900, position: 0.5 });
+            await phrase(3);
+            await m.cliquer(page.locator('.pc-segment__b[data-chemins="3"]'), { apres: 500 });
+            await m.survoler(page.locator('.pc-nb-chemins__resume'), { dx: 0.3, ms: 800 });
+        },
+    },
+    {
+        id: 'trame',
+        cles: [
+            [0, 'Deux modèles de parcours pour différencier'],
+            [1, 'Un test de positionnement, un chemin par résultat, un écrit commun'],
+        ],
+        voix: () => `Deux modèles de parcours sont prévus pour différencier. `
+            + `On prend « Différencier dès le départ » : un test de positionnement, un chemin par groupe de résultats, puis un écrit court que tout le monde fait.`,
+        async jouer({ m, page, phrase }) {
+            const trames = page.locator('.pc-trame--chemins');
+            await m.defiler('.pc-trames', { ms: 1100, position: 0.2 });
+            await m.survoler(trames.nth(1), { dy: 0.25, ms: 700 });
+            await phrase(1);
+            const choisie = page.locator('.pc-trame--chemins', { hasText: 'Différencier dès le départ' });
+            await m.cliquer(choisie.locator('.pc-trame__select'), { apres: 700 });
+            await m.survoler(choisie, { dy: 0.7, ms: 900 });
         },
     },
     {
@@ -251,31 +282,101 @@ export const SCENES = [
         async jouer({ m, page, d }) {
             await m.cliquer(page.locator('#pc-cta'), { apres: 300 });
             if (d['plan-attente']) await m.note(noteAttente('Composition du plan', d['plan-attente']));
-            await page.locator('.pc-etape').first().waitFor({ state: 'visible', timeout: 900000 });
+            await page.locator('.pc-aiguillage').first().waitFor({ state: 'visible', timeout: 900000 });
             await m.pause(500);
             await m.note(null);
+        },
+    },
+    {
+        id: 'aiguillage',
+        cles: [
+            [0, 'Une case par score au test, de la couleur du chemin qu’elle ouvre'],
+            [1, 'Le début d’un chemin se règle d’une bonne réponse à la fois'],
+            [2, 'La première tentative décide ; on réoriente par le carnet de notes'],
+            [3, 'Les chemins côte à côte, de durée comparable'],
+        ],
+        voix: () => `Le plan montre l’aiguillage : une case par score possible au test, de la couleur du chemin qu’elle ouvre. `
+            + `Les boutons « moins » et « plus » avancent ou reculent le début d’un chemin, d’une bonne réponse à la fois. `
+            + `C’est la première tentative qui décide ; pour réorienter un élève, on modifie sa note dans le carnet de notes. `
+            + `En dessous, les trois chemins côte à côte, avec leurs activités et une durée comparable.`,
+        async jouer({ m, page, phrase }) {
+            await m.defiler('.pc-aiguillage', { ms: 1400, position: 0.13 });
+            const cases = page.locator('.pc-aiguillage__cases');
+            await m.survoler(cases, { dx: 0.08, ms: 700 });
+            await m.survoler(cases, { dx: 0.92, ms: 1600 });
+            await phrase(1);
+            // Un « + » actif, puis le « − » du même chemin : le plan revient à l'identique.
+            const plus = page.locator('.pc-aiguillage__pas button[data-pas$=":1"]:not([disabled])').last();
+            const pas = await plus.getAttribute('data-pas');
+            await m.cliquer(plus, { apres: 1100 });
+            await m.cliquer(page.locator(`.pc-aiguillage__pas button[data-pas="${pas.replace(/:1$/, ':-1')}"]`), { apres: 800 });
+            await phrase(2);
+            await m.survoler(page.locator('.pc-aiguillage__aide'), { dx: 0.4, ms: 900 });
+            await phrase(3);
+            await m.defiler('.pc-chemins', { ms: 1400, position: 0.13 });
+            await m.survoler(page.locator('.pc-chemin').first(), { dy: 0.35, ms: 700 });
+            await m.survoler(page.locator('.pc-chemin').last(), { dy: 0.35, ms: 1500 });
         },
     },
     {
         id: 'plan-relecture',
         cles: [
             [0, 'Rien n’est généré avant votre relecture'],
-            [1, 'Étapes, consignes, durées et types d’activité se modifient'],
+            [1, 'Titres, consignes, durées et types d’activité se modifient'],
         ],
-        voix: () => `Rien n’est encore généré : c’est le moment de relire. Titre, objectifs, consignes et durées se modifient. `
+        voix: () => `Rien n’est encore généré : c’est le moment de relire. Titres, consignes et durées se modifient. `
             + `On peut déplacer une activité, la retirer, en ajouter une, ou changer son type dans cette mosaïque.`,
         async jouer({ m, page, phrase }) {
-            await m.defiler('.pc-overview', { ms: 1200, position: 0.12 });
-            await m.pause(1200);
-            await m.defiler('.pc-etape', { ms: 1600, position: 0.12 });
-            const duree = page.locator('.pc-etape .pc-carte input[type="number"]').first();
-            if (await duree.count()) await m.retaper(duree, '10');
+            const chemin = page.locator('.pc-chemin').first();
+            const duree = chemin.locator('.pc-carte input[type="number"]').first();
+            if (await duree.count()) await m.retaper(duree, String(await duree.inputValue()));
             await phrase(1);
-            const choix = page.locator('.pc-etape .pc-select.pc-choix').first();
-            await m.cliquer(choix, { apres: 900 });
+            await m.cliquer(chemin.locator('.pc-select.pc-choix').first(), { apres: 900 });
             await m.pause(1800);
             await page.keyboard.press('Escape');
             await m.pause(500);
+        },
+    },
+    {
+        id: 'vue-eleve',
+        cles: [
+            [0, '« Voir comme un élève » : le cours selon le moment et le score'],
+            [1, 'Avant le test : aucun chemin'],
+            [2, 'Peu de bonnes réponses : « Renforcer » seul'],
+            [3, 'Toutes les bonnes réponses : « Approfondir »'],
+            [4, 'À la fin : « Fin du parcours » et une page de bilan'],
+        ],
+        voix: () => `« Voir comme un élève » montre la page du cours telle qu’un élève la verra, selon le moment et son score. `
+            + `Avant le test, aucun chemin n’apparaît. `
+            + `Avec peu de bonnes réponses, seul le chemin « Renforcer » s’ouvre. `
+            + `Avec toutes les bonnes réponses, c’est « Approfondir ». `
+            + `Une fois tout terminé, la section « Fin du parcours » le félicite, avec une page qui fait le bilan.`,
+        async jouer({ m, page, phrase }) {
+            await m.defiler('.pc-aiguillage', { ms: 1000, position: 0.13 });
+            await m.cliquer(page.locator('.pc-aiguillage__voir'), { apres: 900 });
+            const fenetre = page.locator('dialog.pc-eleve');
+            const moment = texte => fenetre.locator('.pc-segment__b', { hasText: texte });
+            const score = page.locator('#pc-eleve-score');
+            const chemin = fenetre.locator('.pc-eleve__section[data-section="chemin"]').first();
+            await phrase(1);
+            await m.cliquer(moment('Avant le test'), { apres: 900 });
+            await phrase(2);
+            await m.cliquer(moment('Pendant son chemin'), { apres: 500 });
+            await m.cliquer(score, { dx: 0.04, apres: 700 });
+            await m.survoler(chemin, { dx: 0.3, dy: 0.15, ms: 700 });
+            // La fenêtre défile sous son en-tête collant : on la remonte avant chaque réglage,
+            // sans quoi le clic tombe sur l'en-tête (constaté au premier enregistrement).
+            const enHaut = () => m.defiler(0, { conteneur: 'dialog.pc-eleve', ms: 700 });
+            await phrase(3);
+            await enHaut();
+            await m.cliquer(score, { dx: 0.98, apres: 700 });
+            await m.survoler(chemin, { dx: 0.3, dy: 0.15, ms: 700 });
+            await phrase(4);
+            await enHaut();
+            await m.cliquer(moment('Parcours terminé'), { apres: 600 });
+            await m.survoler(fenetre.locator('.pc-eleve__section[data-section="fin"]'), { dx: 0.3, dy: 0.6, ms: 900 });
+            await m.pause(1600);
+            await m.cliquer(fenetre.locator('.pc-eleve__fermer'), { apres: 600 });
         },
     },
     {
@@ -300,11 +401,12 @@ export const SCENES = [
     {
         id: 'livraison',
         cles: [
-            [0, 'Un seul fichier .mbz contient tout le cours'],
+            [0, 'Un seul fichier .mbz : tout le cours, conditions des chemins comprises'],
+            [1, 'Un parcours à chemins se restaure dans un cours vide'],
             [2, 'Fiche de séquence et documents en Word, ODT ou PDF'],
         ],
-        voix: () => `À la fin, un seul fichier contient tout le cours : sections, consignes et activités. `
-            + `Il se restaure dans un cours Éléa, en trois étapes rappelées à l’écran. `
+        voix: () => `À la fin, un seul fichier contient tout le cours : sections, consignes, activités, et les conditions qui ouvrent chaque chemin. `
+            + `Un parcours à chemins se restaure dans un cours vide, en trois étapes rappelées à l’écran. `
             + `La fiche de séquence et le détail des activités s’exportent aussi en Word, ODT ou PDF, et le scénario se garde pour reprendre plus tard.`,
         async jouer({ m, page, phrase }) {
             await m.cliquer(page.locator('#pc-cta'), { apres: 300 });
@@ -389,5 +491,43 @@ export async function RETOUCHE({ m, page, phrase }) {
 
 export const CARTON_TITRE = `<img class="demo-carton__logo" src="${LOGO}" alt="">
     <h1>Caramel 7</h1>
-    <p class="demo-carton__sous">Préparer des activités pour Éléa, Magistère (Réseau des concepteurs)<br>et Moodle, avec l’aide d’une IA — et en gardant la main</p>
-    <p class="demo-carton__meta">Démonstration commentée · septembre 2026</p>`;
+    <p class="demo-carton__sous">Préparer des activités et des parcours pour Éléa, Magistère (Réseau des concepteurs)<br>et Moodle, avec l’aide d’une IA — et en gardant la main</p>
+    <p class="demo-carton__meta">Démonstration commentée · version 7.1 · octobre 2026</p>`;
+
+/**
+ * L'habillage (`habillage.mjs`) : les étapes en haut de l'image, les cartons de partie,
+ * le carton-titre, celui des limites (une puce par phrase de la scène `limites`, la
+ * Sucrerie, phrase 5, complétant la puce précédente) et les sections de la musique.
+ */
+export const HABILLAGE = {
+    fenetre: 'Caramel 7',
+    etapes: ['Présentation', 'Une activité', 'Un parcours', 'À savoir'],
+    titre: {
+        surtitre: 'Démonstration · octobre 2026',
+        h1: 'Caramel <b>7</b>',
+        texte: 'Préparer des activités et des parcours pour Éléa, Magistère (Réseau des concepteurs) et Moodle avec l’aide d’une IA, en gardant la main.',
+    },
+    parties: [
+        null,
+        { debut: 'saisie', titre: 'Une activité', sous: 'Du formulaire au fichier H5P, en passant par la relecture' },
+        { debut: 'commutateur', titre: 'Un parcours différencié', sous: 'Nouveau : un test oriente chaque élève vers son chemin' },
+        { debut: 'limites', titre: 'À savoir', sous: 'Ce que l’outil ne fait pas à votre place' },
+    ],
+    sections: [[null, 'intro'], ['saisie', 'couplet'], ['commutateur', 'plein'], ['limites', 'calme'], ['fin', 'final']],
+    cartesSource: ['titre', 'limites', 'fin'],
+    savoir: {
+        scene: 'limites',
+        phrases: [1, 2, 3, 4, 6],
+        surtitre: 'Avant de s’en servir',
+        titre: 'À savoir',
+        puces: [
+            'L’IA peut se tromper ou rester vague : <b>tout est à relire</b> avant d’être donné aux élèves.',
+            'Ce que vous saisissez ou joignez part au service d’IA : <b>aucune donnée personnelle d’élève</b>.',
+            'Le service peut être lent, ou momentanément indisponible.',
+            'Caramel ne publie rien : <b>vous importez</b> vous-même. Le dépôt sur La Sucrerie, facultatif, <b>rend l’activité publique</b>.',
+            'Un parcours généré est <b>un point de départ</b>, pas une séquence clé en main.',
+        ],
+    },
+    /** La version sans voix : ses deux parties filmées, de telle scène à telle scène. */
+    musique: { parties: [['saisie', 'telechargement'], ['commutateur', 'livraison']] },
+};

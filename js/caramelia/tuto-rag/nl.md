@@ -301,11 +301,11 @@ De applicatie is ontworpen voor gebruik op een computer, met donkere/lichte modi
 <!-- parcours-complet -->
 ## Een volledige cursus maken en hervatten
 
-Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten.
+Met **Een leerpad** maakt Caramel een cursus voor Éléa, Magistère of Moodle: meerdere activiteiten in secties in één **.mbz**-bestand. Begin met het vertrouwde formulier: onderwerp, doelgroep en bijgevoegde documenten. Het atelier gebruikt de woordenschat van het gekozen platform: leerlingen op Éléa, cursisten op Magistère, studenten op Moodle — op het scherm, in de cursus en in de teksten die de AI schrijft.
 
 In het menu van Caramelia opent **Een cursus maken** direct de werkplaats, zonder AI-aanvraag. Als er een concept bestaat, opent **Mijn cursus hervatten** dit opnieuw. Bestaande velden en bronnen blijven behouden. Controleer de opzet en het plan in de werkplaats voordat je de generatie start.
 
-Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang en sjabloon. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.
+Kies **Een leerpad** onder het formulier en vervolgens platform, lesvorm, omvang, **Eén route voor iedereen** of **Routes volgens de resultaten**, en een sjabloon: de meest gebruikte komen eerst — nieuwe stof zelfstandig leren, herhalen, trainen, toetsen — en met **De andere sjablonen tonen** ziet u de volgende. **Het plan opstellen** past het plan met AI aan uw onderwerp aan. **Van het sjabloon vertrekken** opent meteen een structuur om aan te vullen, zonder AI-aanroep. Activiteiten worden pas gegenereerd nadat u het plan goedkeurt.
 
 In **Plan** bewerkt u titel, algemeen doel, kernbegrippen, stappen en activiteiten. Verplaats activiteiten met de pijlen of door hun miniatuur te slepen. Met **Instructie en leerfase** past u de generatie-instructies aan. Pedagogische aanwijzingen helpen bij het nakijken zonder een model op te leggen. Het maximum is **12 activiteiten**.
 
@@ -321,7 +321,7 @@ Download in **Oplevering** de **.mbz** en gebruik de cursusimport of herstelfunc
 
 Het plan biedt ook de modules van uw Éléa, Magistère of Moodle aan, gegroepeerd in het menu van elke activiteit onder **Modules van het platform**: forum, peiling, vragenlijst, enquête, les, workshop met peerbeoordeling, bord, wiki, samenwerkingsdocument, woordenlijst en database om samen op te bouwen, virtueel klaslokaal, groepskeuze, bestanden delen en weblink. De AI schrijft wat het platform bij het importeren bewaart; gezamenlijke ruimtes komen leeg aan, met hun opdracht. Als een module een instelling op het platform vereist (fasen van de workshop, tijdstip van het virtuele klaslokaal, groepen), schrijft Caramel die in een notitie **Te doen vóór het openen van de cursus**, verborgen voor de leerlingen, bovenaan de geïmporteerde cursus. Het **IMS-contentpakket** — pagina’s om te lezen met een inhoudsopgave, volledig door Caramel geschreven — kiest u in het mozaïek; het plan stelt het niet voor.
 
-De voortgangskaart is specifiek voor Éléa. De kaart en stapsgewijze toegang zijn optioneel en moeten nog in werkelijk platformgebruik worden gecontroleerd. Het differentiatiesjabloon maakt geen automatische vertakkingen op basis van cijfers. Samenwerking gebeurt op het platform. Een volledige cursus publiceren op Sucrerie is nog niet beschikbaar.
+De voortgangskaart is specifiek voor Éléa. De kaart, stapsgewijze toegang en routes volgens de resultaten moeten nog in werkelijk platformgebruik worden gecontroleerd. Samenwerking gebeurt op het platform. Een volledige cursus publiceren op Sucrerie is nog niet beschikbaar.
 
 Meer weten: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) helpt bij het nadenken over leeractiviteiten. De zeven categorieën van Caramel, waaronder **Bespreken** en **Samenwerken**, zijn vereenvoudigde richtlijnen op basis van tools, niet de zes ABC-leertypen of een beoordeling van uw onderwijs.
 Open in Éléa **Cursusinstellingen**, schakel de voortgangskaart in en kies met de tegel **+ Eigen afbeelding toevoegen** je eigen achtergrond. Je kunt de afbeelding vervangen of verwijderen en terugkeren naar de voorgestelde thema’s. De achtergrond wordt opgeslagen in het **.json**-scenario en opgenomen in de **.mbz**-cursus. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG of TIFF · Max. 12 MB. Automatische conversie, zonder bijsnijden.
@@ -331,8 +331,10 @@ Open in Éléa **Cursusinstellingen**, schakel de voortgangskaart in en kies met
 
 Na **Een leerpad** bepaalt het sjabloon het verloop dat de AI aan uw onderwerp aanpast. De getoonde lijst hangt af van de gekozen lesvorm en omvang; elke activiteit blijft aanpasbaar in het plan.
 
+- **Nieuwe stof zelfstandig leren** — Een nieuw begrip, zelfstandig geleerd: het stap voor stap ontdekken, oefenen met directe feedback, het wezenlijke onthouden, controleren. *(Eén les · Twee tot drie lessen · Een volledige lessenreeks)*
 - **Herhalen vóór de toets** — Nagaan wat al zit, het wezenlijke opnieuw voor ogen brengen, oefenen, jezelf testen. *(Eén les · Twee tot drie lessen)*
-- **Een toets voorbereiden en afleggen** — Oefenen in het toetsformaat, de beoordeelde toets, de verbetersleutel. Drie activiteiten, niet meer. *(Eén les)*
+- **Trainen** — Een korte herhaling om te activeren, oefeningen eerst met en dan zonder keuzemogelijkheden, een eindcontrole: de moeilijkheid stijgt, de les wordt niet overgedaan. *(Eén les · Twee tot drie lessen · Een volledige lessenreeks)*
+- **Toetsen** — Wat er verwacht wordt, oefenen in het toetsformaat, dan de toets: één poging, met tijdslimiet, zonder zichtbare verbetering; op het einde alleen het cijfer. *(Eén les)*
 - **Herstellen na de toets** — Je vertrekt van de vastgestelde fouten: benoemen, het precieze punt opnieuw uitleggen, overdoen, opnieuw nagaan. *(Eén les · Twee tot drie lessen · Op afstand · Allebei)*
 - **Kort ritueel** — Tien minuten, altijd dezelfde vorm. Het is de herhaling die het vastzet, niet de afwisseling. *(Eén les)*
 - **Een begrip ontdekken** — Een situatie die vragen oproept, documenten om te verkennen, dan de samenvatting en pas daarna de toepassing. *(Twee tot drie lessen · Een volledige lessenreeks)*
@@ -341,7 +343,8 @@ Na **Een leerpad** bepaalt het sjabloon het verloop dat de AI aan uw onderwerp a
 - **Een onderzoek voeren** — Een vraag, een hypothese, gegevens, een besluit: de wetenschappelijke werkwijze, op volgorde. *(Twee tot drie lessen · Een volledige lessenreeks · In de klas · Allebei)*
 - **Een bron doorlichten** — Waar de informatie vandaan komt, wie ze maakt, wat ze weglaat. De blik scherpen vóór het oordeel. *(Eén les · Twee tot drie lessen)*
 - **Onderbouwd debat** — Een stemming om te zeggen waar je begint, bronnen om je te informeren, een forum om te debatteren, een tekst om af te sluiten. *(Twee tot drie lessen · Een volledige lessenreeks)*
-- **Differentiatie op drie snelheden** — Een instaptoets, gevolgd door activiteiten om te versterken, verder te leren of te verdiepen. Instructies begeleiden de keuzes, zonder automatische vertakkingen op basis van de score. *(Twee tot drie lessen · Een volledige lessenreeks · Op afstand · Allebei)*
+- **Differentiëren vanaf het begin** — Een instaptoets opent voor elke leerling een route die past bij het resultaat; daarna komen alle leerlingen samen voor een gezamenlijke terugblik. *(Eén les · Twee tot drie lessen · Routes volgens de resultaten)*
+- **Onderweg bijsturen** — Ontdekken, de balans opmaken met een quiz: afhankelijk van de score herhalen of verder gaan, daarna samen toepassen. *(Eén les · Twee tot drie lessen · Routes volgens de resultaten)*
 - **Reeks moderne vreemde taal** — Eerst de woordenschat, dan het begrijpen, het spreken en schrijven het laatst. *(Twee tot drie lessen)*
 - **Een spreekbeurt voorbereiden** — Wat je gaat zeggen, in welke volgorde, en hoe je het zeggen oefent. *(Eén les · Twee tot drie lessen · In de klas · Allebei)*
 - **Leren leren** — Wat echt helpt om te onthouden, uitgeprobeerd op het onderwerp van de les: jezelf overhoren, spreiden, uitleggen. Daarna plant iedereen zijn eigen herhaling. *(Eén les · Twee tot drie lessen)*
@@ -352,4 +355,17 @@ Na **Een leerpad** bepaalt het sjabloon het verloop dat de AI aan uw onderwerp a
 - **Escape game** — Een missie, aanwijzingen, raadsels van oplopende moeilijkheid, een eindcode en de nabespreking. *(Eén les · Twee tot drie lessen · In de klas · Allebei)*
 - **Vrije structuur** — Geen opgelegd verloop: je stelt de stappen zelf samen en Caramel vult in wat je erin zet. *(Eén les · Twee tot drie lessen · Een volledige lessenreeks)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Routes volgens de resultaten
+
+In de instellingen laat **Routes volgens de resultaten** uw leerlingen een toets maken: afhankelijk van het cijfer bij de eerste poging volgt elke leerling een van de 2 tot 4 routes — **Terug naar de basis**, **Versterken**, **Inoefenen**, **Verdiepen** — en daarna komen alle leerlingen samen in een gemeenschappelijke stap. Elke leerling ziet alleen de eigen route. Twee sjablonen zijn hiervoor bedoeld: **Differentiëren vanaf het begin** en **Onderweg bijsturen**.
+
+- In **Plan** toont de scorebalk welke route opengaat bij elk aantal goede antwoorden; de knoppen **−** en **+** verschuiven het begin van een route met één goed antwoord naar voren of naar achteren. **Route toevoegen**, **Route verwijderen** en **Eén route voor iedereen** veranderen de splitsing.
+- De toets die de leerlingen stuurt, is een **Meerkeuze quiz**, een **Waar/Onwaar-quiz** of een **Toets**, aan het einde van de stap vóór de routes. Elke vraag is één punt waard en de toets biedt geen nieuwe poging aan.
+- **Bekijken als leerling** toont de cursuspagina zoals de leerling die zal zien — vóór de toets, tijdens de route, aan het einde — voor de score die u kiest.
+- Wilt u een leerling naar een andere route sturen, wijzig dan het cijfer voor de toets in het cijferoverzicht van het platform.
+
+Importeer een leerpad met routes in een **lege** cursus: Moodle plaatst de secties van het bestand in die van de cursus, en uw bestaande secties zouden de beperkingen van de routes krijgen. Elk leerpad eindigt nu met een sectie **Einde van het leerpad**, en de geschatte duur staat onder elke activiteit.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

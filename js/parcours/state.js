@@ -81,6 +81,9 @@ function nouveauBrouillon() {
         format: CONFIG.defaults.format,
         ampleur: CONFIG.defaults.ampleur,
         trame: CONFIG.defaults.trame,
+        /** Un chemin pour tous, ou des chemins selon les résultats (D91). */
+        structure: CONFIG.defaults.structure,
+        chemins: CONFIG.defaults.chemins,
         /** Rempli à l'étape suivante (appel de plan). */
         plan: null,
     };
@@ -126,6 +129,10 @@ export function ouvrirBrouillon() {
         sauvegarde = 'complet';
     }
     if (draft.contenusNonPersistes) sauvegarde = 'plan';
+    // Un brouillon d'avant les chemins (7.0) n'a ni structure ni nombre de
+    // chemins : il les reçoit par défaut, sans perdre son plan.
+    if (!CONFIG.structures.some(s => s.id === draft.structure)) draft.structure = CONFIG.defaults.structure;
+    if (!CONFIG.nombresDeChemins.includes(draft.chemins)) draft.chemins = CONFIG.defaults.chemins;
 
     // Le contexte est RELU à chaque ouverture, jamais mémorisé : compléter le
     // sujet ou joindre un document après coup profite ainsi au parcours, sans

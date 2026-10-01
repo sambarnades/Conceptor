@@ -1,0 +1,197 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "moodle",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "lineaire",
+  "chemins": 2
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_lien",
+  "parcours_enquete",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_base"
+ ],
+ "erreursDOrigine": [
+  "Total reçu : 11 activités ; attendu : 5 à 8, pour TOUT le parcours.",
+  "Étape 1, activité 3 : palier decouverte, entrainement ou transfert attendu.",
+  "Étape 2, activité 3 : palier decouverte, entrainement ou transfert attendu.",
+  "Étape 3, activité 3 : palier decouverte, entrainement ou transfert attendu.",
+  "Étape 4, activité 2 : palier decouverte, entrainement ou transfert attendu."
+ ],
+ "brut": {
+  "titre": "Découvrir et maîtriser les statistiques descriptives",
+  "objectifGeneral": "Apprendre à calculer et interpréter moyenne, médiane, quartiles et boîte à moustaches pour analyser des données",
+  "introduction": "Ce parcours vous guide pas à pas dans l’apprentissage des statistiques descriptives, essentielles pour traiter des données concrètes. Vous explorerez quatre notions clés, puis les appliquerez à travers des exercices variés. Prévoyez environ trois heures au total, à répartir selon vos disponibilités. Consultez régulièrement les retours pour progresser efficacement.",
+  "conclusion": "Vous savez désormais calculer et interpréter moyenne, médiane, quartiles et boîte à moustaches. Pour aller plus loin, explorez les séries temporelles ou les indicateurs de dispersion lors de la prochaine séance. Ces outils vous seront utiles en analyse de données comme en gestion de projet.",
+  "notionsPivots": [
+   "la moyenne arithmétique",
+   "la médiane",
+   "les quartiles",
+   "l’écart interquartile",
+   "la boîte à moustaches",
+   "la distribution des données",
+   "les paramètres de position",
+   "les paramètres de dispersion",
+   "les valeurs extrêmes",
+   "l’interprétation d’un graphique"
+  ],
+  "etapes": [
+   {
+    "titre": "Découvrir les indicateurs de position",
+    "objectif": "Identifier la moyenne et la médiane dans un ensemble de données",
+    "introduction": "Vous allez explorer deux indicateurs centraux : la moyenne et la médiane. Ces notions permettent de résumer une série de valeurs par un seul nombre. Après un rappel théorique, vous testerez votre compréhension à travers plusieurs exercices d’application.",
+    "cartes": [
+     {
+      "titre": "Définitions et exemples",
+      "objectif": "Repérer les définitions de la moyenne et de la médiane",
+      "module": "Glossary",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Consultez le lexique pour comprendre les différences entre moyenne et médiane, et notez dans votre brouillon un exemple concret pour chacune de ces notions."
+     },
+     {
+      "titre": "Calculer des moyennes",
+      "objectif": "Effectuer le calcul de la moyenne arithmétique",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Complétez cinq calculs de moyenne à partir de séries de notes fournies. Un feedback immédiat vous indiquera si votre réponse est exacte."
+     },
+     {
+      "titre": "Comparer moyenne et médiane",
+      "objectif": "Choisir le bon indicateur selon la distribution des données",
+      "module": "MultipleChoice",
+      "palier": "transfer",
+      "duree": 12,
+      "consigne": "Pour cinq situations proposées, sélectionnez si la moyenne ou la médiane est l’indicateur le plus adapté. Justifiez votre choix en une phrase dans le champ de commentaire."
+     }
+    ]
+   },
+   {
+    "titre": "Maîtriser les quartiles et l’écart interquartile",
+    "objectif": "Déterminer les quartiles et interpréter leur signification",
+    "introduction": "Les quartiles divisent une série en quatre parties équivalentes. Vous apprendrez à les calculer et à utiliser l’écart interquartile pour mesurer la dispersion. Des exercices progressifs vous permettront de vous approprier ces outils.",
+    "cartes": [
+     {
+      "titre": "Comprendre les quartiles",
+      "objectif": "Expliquer la notion de quartiles",
+      "module": "CoursePresentation",
+      "palier": "decouverte",
+      "duree": 20,
+      "consigne": "Parcourez les pages du diaporama qui présentent les quartiles Q1, Q2 et Q3 à travers des exemples concrets. Répondez aux questions intégrées pour valider votre compréhension de chaque étape."
+     },
+     {
+      "titre": "Calculer les quartiles",
+      "objectif": "Appliquer la méthode de calcul des quartiles",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 20,
+      "consigne": "Calculez Q1, Q2 et Q3 pour trois séries de données, puis vérifiez vos résultats grâce à un retour immédiat."
+     },
+     {
+      "titre": "Interpréter l’écart interquartile",
+      "objectif": "Relier écart interquartile et dispersion des données",
+      "module": "SingleChoiceSet",
+      "palier": "transfer",
+      "duree": 10,
+      "consigne": "Pour trois séries, choisissez l’écart interquartile correct parmi plusieurs valeurs proposées et expliquez brièvement ce que cet indicateur révèle sur la dispersion."
+     }
+    ]
+   },
+   {
+    "titre": "Construire et lire une boîte à moustaches",
+    "objectif": "Représenter et analyser une boîte à moustaches",
+    "introduction": "La boîte à moustaches est un outil graphique puissant pour visualiser la distribution des données. Vous apprendrez à la construire à partir de statistiques calculées, puis à l’interpréter. Une activité interactive vous guidera pas à pas.",
+    "cartes": [
+     {
+      "titre": "Repérer les éléments d’une boîte à moustaches",
+      "objectif": "Identifier les principales parties du graphique",
+      "module": "Chart",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Observez trois boîtes à moustaches préconstruites et associez chaque partie (médiane, quartiles, valeurs extrêmes) à sa description correcte."
+     },
+     {
+      "titre": "Construire une boîte à moustaches",
+      "objectif": "Générer un graphique à partir de données fournies",
+      "module": "DragTheWords",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "À partir des valeurs de médiane, Q1, Q3 et des extrêmes, reconstituez les éléments d’une boîte à moustaches en les plaçant dans les bonnes zones du schéma."
+     },
+     {
+      "titre": "Analyser des boîtes à moustaches",
+      "objectif": "Comparer deux distributions à partir de leurs boîtes",
+      "module": "DialogCards",
+      "palier": "transfer",
+      "duree": 15,
+      "consigne": "Comparez les boîtes à moustaches de deux séries de données en retournant les cartes : pour chacune, formulez une interprétation sur la position, la dispersion et les valeurs extrêmes."
+     }
+    ]
+   },
+   {
+    "titre": "S’entraîner avec des cas concrets",
+    "objectif": "Appliquer l’ensemble des notions à des problèmes réels",
+    "introduction": "Cette étape vous propose des exercices complets mêlant moyenne, médiane, quartiles et boîte à moustaches. Vous mobiliserez plusieurs compétences à la fois, comme en situation professionnelle. Un quiz final évaluera votre maîtrise globale.",
+    "cartes": [
+     {
+      "titre": "Résoudre des problèmes",
+      "objectif": "Appliquer les statistiques descriptives à des contextes variés",
+      "module": "QuizSet",
+      "palier": "entrainement",
+      "duree": 30,
+      "consigne": "Pour quatre situations concrètes (notes d’examen, salaires, températures…), calculez les indicateurs demandés, construisez une boîte à moustaches et interprétez les résultats."
+     },
+     {
+      "titre": "Évaluation finale",
+      "objectif": "Valider l’acquisition des notions abordées",
+      "module": "QuizSetQCM",
+      "palier": "transfer",
+      "duree": 20,
+      "consigne": "Répondez à 12 questions mélangeant QCM et questions courtes sur l’ensemble du parcours : calculs, définitions, interprétations et choix d’indicateurs."
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -10,7 +10,7 @@
  * forum et textes de liaison compris (D65). « Vue du parcours » y ramène.
  */
 import { recueillirMedias } from './sources.js';
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { nomModule } from './activity-router.js';
 import { majBrouillon } from './state.js';
 import { cartesAPlat } from './parcours-runner.js';

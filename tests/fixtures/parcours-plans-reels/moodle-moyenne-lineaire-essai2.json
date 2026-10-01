@@ -1,0 +1,151 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "moodle",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "lineaire",
+  "chemins": 2
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_lien",
+  "parcours_enquete",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_base"
+ ],
+ "erreursDOrigine": [],
+ "brut": {
+  "titre": "Statistiques descriptives : tendances et dispersion",
+  "objectifGeneral": "Déterminer les indicateurs de position et de dispersion adaptés à un jeu de données.",
+  "introduction": "Vous allez découvrir comment résumer un ensemble de données chiffrées à l’aide de la moyenne, de la médiane et des quartiles. Le parcours alterne lectures, exercices et quiz pour vous permettre de tester votre compréhension. Travaillez à votre rythme, mais soyez attentif aux retours automatiques qui vous guident.",
+  "conclusion": "Vous savez maintenant calculer les indicateurs de tendance centrale et de dispersion, et interpréter une boîte à moustaches. Pour aller plus loin, relisez vos notes sur un exemple concret ou consultez les ressources complémentaires proposées dans la section dédiée.",
+  "notionsPivots": [
+   "la moyenne",
+   "la médiane",
+   "les quartiles",
+   "l’étendue",
+   "la boîte à moustaches",
+   "l’intervalle interquartile",
+   "la position d’une valeur",
+   "la dispersion des données",
+   "les effectifs",
+   "l’ordre des données"
+  ],
+  "etapes": [
+   {
+    "titre": "Découvrir les indicateurs de tendance centrale",
+    "objectif": "Identifier les notions de moyenne et médiane dans un contexte simple",
+    "introduction": "Vous allez commencer par comprendre à quoi servent la moyenne et la médiane à travers des exemples concrets. Ces deux indicateurs vous permettront de résumer rapidement un ensemble de valeurs. Prenez le temps de lire les explications et de noter vos observations.",
+    "cartes": [
+     {
+      "titre": "Moyenne et médiane : définition et exemples",
+      "objectif": "Définir et distinguer moyenne et médiane",
+      "module": "CoursePresentation",
+      "palier": "decouverte",
+      "duree": 15,
+      "consigne": "Lisez la présentation qui compare moyenne et médiane sur deux exemples différents. Notez sur un papier les définitions et les cas où chaque indicateur est le plus pertinent."
+     }
+    ]
+   },
+   {
+    "titre": "S’entraîner sur les calculs de base",
+    "objectif": "Calculer des moyennes et des médianes à partir de données brutes",
+    "introduction": "Maintenant que vous connaissez les définitions, vous allez vous entraîner à calculer ces indicateurs sur des données simples. Ces exercices vous aideront à mémoriser les méthodes avant de passer à des cas plus complexes.",
+    "cartes": [
+     {
+      "titre": "Exercices de calcul de moyenne",
+      "objectif": "Appliquer la formule de la moyenne",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Complétez les phrases en calculant la moyenne des séries de nombres proposées. Vérifiez vos résultats à l’aide des indices fournis."
+     },
+     {
+      "titre": "Exercices de calcul de médiane",
+      "objectif": "Ordonner les données et déterminer la médiane",
+      "module": "SortParagraphs",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Pour chaque série de nombres, remettez les valeurs dans l’ordre croissant puis identifiez la médiane. Utilisez un brouillon pour éviter les erreurs d’ordonnancement."
+     }
+    ]
+   },
+   {
+    "titre": "Comprendre la dispersion et les quartiles",
+    "objectif": "Calculer des quartiles et interpréter l’étendue et l’intervalle interquartile",
+    "introduction": "Vous allez maintenant aborder les indicateurs de dispersion : quartiles, étendue et intervalle interquartile. Ces outils vous permettront de décrire comment les données sont réparties autour des indicateurs de tendance centrale.",
+    "cartes": [
+     {
+      "titre": "Définitions et calculs des quartiles",
+      "objectif": "Définir et calculer les quartiles Q1, Q2 et Q3",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Complétez les phrases en calculant les quartiles pour les séries de données proposées. Utilisez les méthodes expliquées dans la ressource précédente."
+     },
+     {
+      "titre": "Lire et interpréter une boîte à moustaches",
+      "objectif": "Interpréter les informations portées par une boîte à moustaches",
+      "module": "Chart",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Observez la boîte à moustaches tracée à partir d’un jeu de données. Identifiez la médiane, les quartiles, l’étendue et décrivez la dispersion des données à l’aide de phrases courtes."
+     }
+    ]
+   },
+   {
+    "titre": "Valider vos acquis et aller plus loin",
+    "objectif": "Mobiliser l’ensemble des indicateurs dans un quiz final",
+    "introduction": "Vous allez maintenant tester vos connaissances sur l’ensemble des notions abordées. Ce quiz final mélange des questions sur les moyennes, les médianes, les quartiles et les boîtes à moustaches. Utilisez vos notes pour vérifier vos réponses après validation.",
+    "cartes": [
+     {
+      "titre": "Quiz de synthèse",
+      "objectif": "Appliquer les indicateurs de statistiques descriptives",
+      "module": "QuizSetQCM",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Répondez aux questions du quiz en mobilisant les notions de moyenne, médiane, quartiles et boîte à moustaches. Chaque question est suivie d’une explication pour comprendre vos erreurs éventuelles."
+     }
+    ]
+   }
+  ]
+ }
+}

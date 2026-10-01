@@ -14,9 +14,11 @@
  *
  * Sorties :
  *   js/caramelia/tuto-rag/<lang>.md   la section « trames » entre
- *       <!-- parcours-trames --> et <!-- /parcours-trames -->, remplacée à
- *       chaque passage (jamais dupliquée) ; Caramelia la lit sans ingestion ;
- *   ../rag/caramelia/chunks/<lang>/parcours-{trames,modules,conseils}.md
+ *       <!-- parcours-trames --> et <!-- /parcours-trames -->, et celle des
+ *       chemins selon les résultats (D90), tirée du tutoriel, entre
+ *       <!-- parcours-chemins --> et <!-- /parcours-chemins --> — remplacées à
+ *       chaque passage (jamais dupliquées) ; Caramelia les lit sans ingestion ;
+ *   ../rag/caramelia/chunks/<lang>/parcours-{trames,modules,conseils,chemins}.md
  *       les fiches du RAG en ligne, si le dépôt `rag` est présent à côté.
  *       Leur INGESTION reste une décision à part : elle écrase la collection.
  *
@@ -33,6 +35,8 @@ const RAG = resolve(ROOT, '../rag/caramelia');
 const VERSION = '1.0.0';
 const DEBUT = '<!-- parcours-trames -->';
 const FIN = '<!-- /parcours-trames -->';
+const DEBUT_CHEMINS = '<!-- parcours-chemins -->';
+const FIN_CHEMINS = '<!-- /parcours-chemins -->';
 const FAMILLES = ['decouvrir', 'memoriser', 'exercer', 'organiser', 'discuter', 'cooperer', 'produire'];
 const TOUTES = ['presentiel', 'distanciel', 'hybride'];
 
@@ -256,6 +260,8 @@ function donnees(lang) {
     const trames = TRAMES.map(tr => {
         const reperes = tr.ampleurs.map(a => loc[`parcours_ampleur_${a}`]);
         if (TOUTES.some(f => !tr.formats.includes(f))) reperes.push(...tr.formats.map(f => loc[`parcours_format_${f}`]));
+        // Une trame à chemins ne se propose qu'avec « Des chemins selon les résultats » (D91).
+        if (tr.structure === 'chemins') reperes.push(loc.parcours_structure_chemins);
         return `- **${loc[tr.nameKey]}** — ${loc[tr.descKey]} *(${reperes.join(' · ')})*`;
     });
     const corpsTrames = [x.intro.replace('{P}', P), '', ...trames].join('\n');
@@ -265,8 +271,18 @@ function donnees(lang) {
     const debut = blocs.findIndex(b => b.type === 'h');
     const partie = blocs.slice(debut, blocs.findIndex((b, i) => i > debut && b.type === 'tip') + 1);
     const titreModules = partie[0].text;
-    const corpsModules = partie.slice(1).flatMap(b => b.type === 'list' ? [b.items.map(i => `- ${i}`).join('\n')]
+    const rendre = blocsRendus => blocsRendus.flatMap(b => b.type === 'list' ? [b.items.map(i => `- ${i}`).join('\n')]
         : b.type === 'shot' ? [] : [b.text]).join('\n\n');
+    const corpsModules = rendre(partie.slice(1));
+
+    // Les chemins selon les résultats (D90) : la section du tutoriel qui suit, du
+    // titre au titre suivant ou à la fin du chapitre.
+    const debutChemins = blocs.findIndex((b, i) => i > debut && b.type === 'h');
+    if (debutChemins < 0) throw new Error(`${lang} : section des chemins absente du tutoriel`);
+    const finChemins = blocs.findIndex((b, i) => i > debutChemins && b.type === 'h');
+    const partieChemins = blocs.slice(debutChemins, finChemins < 0 ? blocs.length : finChemins);
+    const titreChemins = partieChemins[0].text;
+    const corpsChemins = rendre(partieChemins.slice(1));
 
     const familles = FAMILLES.map(f => loc[`parcours_type_${f}`]).join(x.sep);
     const corpsConseils = [
@@ -277,9 +293,9 @@ function donnees(lang) {
         x.renvoi.replace('{A}', loc.parcours_t_apprendre_name).replace('{F}', loc.parcours_t_formation_name), '', x.regles,
     ].join('\n');
 
-    const texte = [corpsTrames, corpsModules, corpsConseils].join('\n');
+    const texte = [corpsTrames, corpsModules, corpsConseils, corpsChemins].join('\n');
     if (/undefined|\{[APFM]\}|\{MIROIR\}|\{FAMILLES\}|\*\*parcours_/.test(texte)) throw new Error(`${lang} : libellé manquant`);
-    return { x, corpsTrames, titreModules, corpsModules, corpsConseils };
+    return { x, corpsTrames, titreModules, corpsModules, corpsConseils, titreChemins, corpsChemins };
 }
 
 function fiche(lang, code, titre, corps) {
@@ -298,23 +314,24 @@ for (const lang of Object.keys(TEXTES)) {
     const d = donnees(lang);
     const chemin = join(ROOT, `js/caramelia/tuto-rag/${lang}.md`);
     const avant = readFileSync(chemin, 'utf8');
-    const bloc = `${DEBUT}\n### ${d.x.trames}\n\n${d.corpsTrames}\n${FIN}`;
-    let apres;
-    if (avant.includes(DEBUT)) {
-        apres = avant.slice(0, avant.indexOf(DEBUT)) + bloc + avant.slice(avant.indexOf(FIN) + FIN.length);
-    } else {
-        // Dans la section du parcours, juste avant sa fermeture.
-        const fin = avant.indexOf('<!-- /parcours-complet -->');
-        if (fin < 0) throw new Error(`${lang} : section du parcours introuvable`);
-        apres = avant.slice(0, fin).replace(/\n*$/, '\n\n') + bloc + '\n' + avant.slice(fin);
-    }
+    // Une section générée : remplacée si elle existe, sinon posée dans la section
+    // du parcours, juste avant sa fermeture.
+    const poser = (texte, debut, fin, bloc) => {
+        if (texte.includes(debut)) return texte.slice(0, texte.indexOf(debut)) + bloc + texte.slice(texte.indexOf(fin) + fin.length);
+        const fermeture = texte.indexOf('<!-- /parcours-complet -->');
+        if (fermeture < 0) throw new Error(`${lang} : section du parcours introuvable`);
+        return texte.slice(0, fermeture).replace(/\n*$/, '\n\n') + bloc + '\n' + texte.slice(fermeture);
+    };
+    let apres = poser(avant, DEBUT, FIN, `${DEBUT}\n### ${d.x.trames}\n\n${d.corpsTrames}\n${FIN}`);
+    apres = poser(apres, DEBUT_CHEMINS, FIN_CHEMINS, `${DEBUT_CHEMINS}\n### ${d.titreChemins}\n\n${d.corpsChemins}\n${FIN_CHEMINS}`);
     ecrire(chemin, apres);
     if (existsSync(RAG)) {
         ecrire(join(RAG, `chunks/${lang}/parcours-trames.md`), fiche(lang, 'parcours-trames', `${d.x.atelier} · ${d.x.trames}`, d.corpsTrames));
         ecrire(join(RAG, `chunks/${lang}/parcours-modules.md`), fiche(lang, 'parcours-modules', `${d.x.atelier} · ${d.titreModules}`, d.corpsModules));
         ecrire(join(RAG, `chunks/${lang}/parcours-conseils.md`), fiche(lang, 'parcours-conseils', `${d.x.atelier} · ${d.x.conseils}`, d.corpsConseils));
+        ecrire(join(RAG, `chunks/${lang}/parcours-chemins.md`), fiche(lang, 'parcours-chemins', `${d.x.atelier} · ${d.titreChemins}`, d.corpsChemins));
     }
 }
 if (verifier && ecarts.length) { console.error(`Pas à jour — relancer node scripts/aide-parcours.mjs :\n${ecarts.join('\n')}`); process.exit(1); }
 console.log(verifier ? 'Aide et fiches du parcours à jour.'
-    : `Aide du parcours écrite : ${TRAMES.length} trames, modules, conseils (12 langues${existsSync(RAG) ? ', aide et RAG' : ', aide seule'}).`);
+    : `Aide du parcours écrite : ${TRAMES.length} trames, modules, conseils, chemins (12 langues${existsSync(RAG) ? ', aide et RAG' : ', aide seule'}).`);

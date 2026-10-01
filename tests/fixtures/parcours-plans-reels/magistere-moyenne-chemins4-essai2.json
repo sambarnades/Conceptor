@@ -1,0 +1,226 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "magistere",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "chemins",
+  "chemins": 4
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_nuage_mots",
+  "parcours_mur_notes",
+  "parcours_lien",
+  "parcours_questionnaire",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_tableau",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_document",
+  "parcours_etherpad",
+  "parcours_depot",
+  "parcours_classe_virtuelle",
+  "parcours_base",
+  "parcours_choix_groupe"
+ ],
+ "erreursDOrigine": [
+  "Les chemins durent à peu près autant (reçu : 25, 35, 35, 45 minutes)."
+ ],
+ "brut": {
+  "titre": "La laïcité à l'école : enjeux et applications",
+  "objectifGeneral": "Apprendre à identifier les principes de la laïcité et à les appliquer dans des situations de classe.",
+  "introduction": "Ce parcours vous permettra de comprendre les fondements de la laïcité à l'école et d'en appréhender les enjeux concrets. Vous explorerez d'abord les bases légales et les notions clés, puis vous travaillerez à travers des situations variées pour renforcer vos compétences. À la fin, vous serez en mesure de mobiliser ces connaissances dans votre pratique professionnelle.",
+  "conclusion": "Vous savez désormais identifier les principes de la laïcité et les appliquer dans des contextes scolaires variés. Pour aller plus loin, vous pouvez consulter la charte de la laïcité à l'école ou échanger en équipe sur des cas concrets.",
+  "notionsPivots": [
+   "la laïcité à l'école",
+   "la neutralité de l'enseignant",
+   "la charte de la laïcité",
+   "les situations de classe",
+   "les valeurs républicaines",
+   "les droits et devoirs des élèves",
+   "la liberté de conscience",
+   "l'espace public scolaire",
+   "les symboles républicains",
+   "la gestion des conflits"
+  ],
+  "etapes": [
+   {
+    "titre": "Premières bases : la laïcité et ses principes",
+    "objectif": "Comprendre les fondements de la laïcité et ses enjeux à l'école",
+    "introduction": "Vous allez découvrir les principes fondamentaux de la laïcité et leur application dans le cadre scolaire. Cette première étape pose les bases nécessaires pour aborder les situations concrètes.",
+    "cartes": [
+     {
+      "titre": "La laïcité : définitions et cadre légal",
+      "objectif": "Identifier les sources juridiques et les principes de la laïcité",
+      "module": "InteractiveBook",
+      "palier": "decouverte",
+      "duree": 15,
+      "consigne": "Consultez le livret interactif présentant les textes fondateurs de la laïcité à l'école (loi de 1905, charte de la laïcité, code de l'éducation). Repérez les articles clés et notez les principes qui en découlent."
+     }
+    ]
+   },
+   {
+    "titre": "Test d'évaluation initiale",
+    "objectif": "Évaluer vos connaissances sur la laïcité et orienter votre parcours",
+    "introduction": "Ce test vous permet de faire le point sur vos acquis. Les questions couvrent l'ensemble des notions que vous allez travailler. À l'issue du test, vous serez orienté vers l'étape la plus adaptée à votre niveau.",
+    "cartes": [
+     {
+      "titre": "Test sur la laïcité à l'école",
+      "objectif": "Vérifier la maîtrise des principes de base de la laïcité",
+      "module": "test_elea",
+      "palier": "entrainement",
+      "duree": 20,
+      "consigne": "Répondez aux questions sur les principes de la laïcité, la neutralité de l'enseignant et les situations de classe. Prenez votre temps : les réponses vous seront expliquées après chaque question."
+     }
+    ]
+   },
+   {
+    "titre": "Reprendre les bases",
+    "objectif": "Consolider les notions essentielles de la laïcité",
+    "introduction": "Cette étape vous propose de revenir sur les principes fondamentaux de la laïcité à travers des exercices progressifs et des exemples concrets.",
+    "chemin": "reprendre",
+    "cartes": [
+     {
+      "titre": "Exercices pas à pas sur la laïcité",
+      "objectif": "Reconnaître les principes de la laïcité à travers des cas simples",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Pour chaque situation proposée, choisissez la bonne réponse parmi les propositions. Une correction immédiate vous expliquera chaque erreur."
+     },
+     {
+      "titre": "Quiz de validation des acquis",
+      "objectif": "Valider la maîtrise des principes de base",
+      "module": "QuizSetVF",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Répondez par vrai ou faux aux affirmations sur la laïcité. Vous verrez immédiatement si votre réponse est correcte et pourquoi."
+     }
+    ]
+   },
+   {
+    "titre": "Renforcer ses connaissances",
+    "objectif": "Approfondir les principes de la laïcité à travers des exemples résolus",
+    "introduction": "Cette étape vous permet de travailler sur des situations plus complexes en partant d'exemples résolus. Vous pourrez ainsi mieux comprendre les nuances et les applications pratiques.",
+    "chemin": "renforcer",
+    "cartes": [
+     {
+      "titre": "Situations de classe : exemples et analyse",
+      "objectif": "Analyser des cas concrets de laïcité en classe",
+      "module": "DialogCards",
+      "palier": "entrainement",
+      "duree": 20,
+      "consigne": "Parcourez les cartes présentant des situations de classe. Pour chaque cas, identifiez les principes de la laïcité en jeu et les solutions possibles."
+     },
+     {
+      "titre": "Quiz progressif sur la neutralité",
+      "objectif": "Renforcer la compréhension des règles de neutralité",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Répondez aux questions sur la neutralité de l'enseignant. Les distracteurs sont conçus pour vous faire réfléchir aux nuances des situations."
+     }
+    ]
+   },
+   {
+    "titre": "Consolider ses compétences",
+    "objectif": "Appliquer les principes de la laïcité dans des situations variées",
+    "introduction": "Cette étape vous invite à vous exercer sur des situations plus complexes sans modèle à recopier. Vous devrez retrouver et justifier vos réponses.",
+    "chemin": "consolider",
+    "cartes": [
+     {
+      "titre": "Études de cas : la laïcité en action",
+      "objectif": "Appliquer les principes de la laïcité à des situations concrètes",
+      "module": "SingleChoiceSet",
+      "palier": "entrainement",
+      "duree": 20,
+      "consigne": "Pour chaque situation proposée, choisissez la réponse qui vous semble la plus adaptée selon les principes de la laïcité. Justifiez brièvement votre choix."
+     },
+     {
+      "titre": "Quiz de synthèse",
+      "objectif": "Valider la maîtrise des concepts clés",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Répondez aux questions sur l'ensemble des notions abordées. Les distracteurs sont plausibles pour vous aider à distinguer les nuances."
+     }
+    ]
+   },
+   {
+    "titre": "Approfondir sa maîtrise",
+    "objectif": "Travailler sur des situations complexes et justifier ses choix",
+    "introduction": "Cette étape vous propose des cas plus complexes pour approfondir votre réflexion. Vous devrez justifier vos réponses et les appliquer à des situations nouvelles.",
+    "chemin": "approfondir",
+    "cartes": [
+     {
+      "titre": "Défis laïcité : situations complexes",
+      "objectif": "Résoudre des cas ambigus en justifiant ses choix",
+      "module": "Essay",
+      "palier": "transfert",
+      "duree": 25,
+      "consigne": "Analysez les situations proposées et proposez une solution en justifiant votre raisonnement. La correction viendra à la fin de l'étape."
+     },
+     {
+      "titre": "Quiz final : évaluation complète",
+      "objectif": "Évaluer la maîtrise globale des principes de la laïcité",
+      "module": "QuizSetQCM",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Répondez aux questions couvrant l'ensemble des notions du parcours. Les distracteurs sont proches des erreurs fréquentes pour vous aider à progresser."
+     }
+    ]
+   },
+   {
+    "titre": "Synthèse et mise en commun",
+    "objectif": "Faire le point sur les acquis et partager ses réflexions",
+    "introduction": "Vous avez exploré les principes de la laïcité à travers différents chemins. Cette étape vous permet de faire une synthèse collective et de partager vos réflexions avec le groupe.",
+    "cartes": [
+     {
+      "titre": "Synthèse des apprentissages",
+      "objectif": "Résumer les principes clés de la laïcité",
+      "module": "Summary",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "À partir des notions travaillées, choisissez les affirmations correctes pour construire une synthèse collective."
+     }
+    ]
+   }
+  ]
+ }
+}

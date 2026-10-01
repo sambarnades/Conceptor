@@ -1,0 +1,239 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "elea",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "chemins",
+  "chemins": 4
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Millionnaire",
+  "Appariement",
+  "QCM",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_mur_notes",
+  "parcours_lien",
+  "parcours_questionnaire",
+  "parcours_enquete",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_tableau",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_document",
+  "parcours_depot",
+  "parcours_base",
+  "parcours_choix_groupe"
+ ],
+ "erreursDOrigine": [],
+ "brut": {
+  "titre": "Maîtriser la proportionnalité",
+  "objectifGeneral": "Résoudre des problèmes de proportionnalité en calculant des coefficients, des quatrièmes proportionnelles et des pourcentages simples.",
+  "introduction": "Tu vas découvrir et t’entraîner sur la proportionnalité : reconnaître un tableau de proportionnalité, calculer le coefficient de proportionnalité, trouver une quatrième proportionnelle et appliquer des pourcentages simples. Le parcours est organisé en étapes courtes avec des exercices et des quiz pour vérifier tes acquis. Prends ton temps et relis-toi avant de valider tes réponses.",
+  "conclusion": "Tu sais maintenant reconnaître une situation de proportionnalité, calculer un coefficient, trouver une quatrième proportionnelle et appliquer des pourcentages simples. Si tu veux t’entraîner davantage, cherche des exemples dans la vie courante : recettes de cuisine, promotions en magasin ou comparaisons de quantités.",
+  "notionsPivots": [
+   "le tableau de proportionnalité",
+   "le coefficient de proportionnalité",
+   "la quatrième proportionnelle",
+   "les pourcentages simples",
+   "le produit en croix",
+   "la règle de trois",
+   "l’échelle",
+   "le pourcentage d’une quantité",
+   "la représentation graphique d’une situation de proportionnalité"
+  ],
+  "etapes": [
+   {
+    "titre": "Découvrir la proportionnalité",
+    "objectif": "Reconnaître un tableau de proportionnalité",
+    "introduction": "Tu commences par observer des tableaux pour repérer ceux qui représentent une situation de proportionnalité. Prends ton temps pour comparer les valeurs et comprendre ce qui change entre les lignes.",
+    "cartes": [
+     {
+      "titre": "Tableaux de nombres",
+      "objectif": "Identifier les tableaux de proportionnalité",
+      "module": "QuizSetQCM",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Pour chaque tableau, indique s’il s’agit d’un tableau de proportionnalité ou non en justifiant ton choix."
+     }
+    ]
+   },
+   {
+    "titre": "Calculer le coefficient de proportionnalité",
+    "objectif": "Calculer le coefficient de proportionnalité",
+    "introduction": "Maintenant que tu as repéré les tableaux de proportionnalité, apprends à calculer le coefficient qui relie les deux grandeurs. Suis l’exemple pas à pas avant de t’entraîner.",
+    "cartes": [
+     {
+      "titre": "Trouver le coefficient",
+      "objectif": "Calculer le coefficient de proportionnalité",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Calcule le coefficient de proportionnalité pour chaque tableau en choisissant la bonne réponse parmi les propositions."
+     }
+    ]
+   },
+   {
+    "titre": "Test : Évaluer tes acquis",
+    "objectif": "Vérifier tes connaissances sur la proportionnalité",
+    "introduction": "Ce test te permet de savoir sur quelles notions tu dois encore t’entraîner. Réponds à toutes les questions sans aide extérieure.",
+    "cartes": [
+     {
+      "titre": "Test de positionnement",
+      "objectif": "Évaluer ses connaissances sur la proportionnalité",
+      "module": "test_elea",
+      "palier": "decouverte",
+      "duree": 15,
+      "consigne": "Réponds aux questions sans calculatrice. Chaque réponse t’orientera vers une étape adaptée à ton niveau."
+     }
+    ]
+   },
+   {
+    "titre": "Reprendre les bases",
+    "objectif": "Retravailler les notions essentielles",
+    "introduction": "Tu vas te replonger sur les notions de base de la proportionnalité. Suis les explications pas à pas, fais des choix plutôt que d’écrire, et vérifie chaque réponse pour comprendre tes erreurs.",
+    "chemin": "reprendre",
+    "cartes": [
+     {
+      "titre": "Repérer et calculer le coefficient",
+      "objectif": "Reconnaître et calculer le coefficient de proportionnalité",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Remplis les trous dans les phrases pour retrouver la définition du coefficient de proportionnalité et calcule-le pour chaque exemple."
+     },
+     {
+      "titre": "Trouver la quatrième proportionnelle",
+      "objectif": "Calculer une quatrième proportionnelle",
+      "module": "MultipleChoice",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Pour chaque calcul, choisis la bonne valeur de la quatrième proportionnelle parmi les propositions."
+     }
+    ]
+   },
+   {
+    "titre": "Renforcer tes connaissances",
+    "objectif": "Approfondir les notions avec des exercices guidés",
+    "introduction": "Tu vas travailler sur des situations plus variées en suivant des exemples résolus. Fais les choix proposés et vérifie tes réponses pour progresser.",
+    "chemin": "renforcer",
+    "cartes": [
+     {
+      "titre": "Calculer avec le produit en croix",
+      "objectif": "Utiliser le produit en croix pour trouver une quatrième proportionnelle",
+      "module": "DragTheWords",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Relie les étapes pour reconstruire le calcul de la quatrième proportionnelle à l’aide du produit en croix."
+     },
+     {
+      "titre": "Appliquer à des situations concrètes",
+      "objectif": "Résoudre des problèmes de proportionnalité simples",
+      "module": "QuizSetVF",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Pour chaque problème, indique si la situation est de proportionnalité ou non en justifiant ta réponse."
+     }
+    ]
+   },
+   {
+    "titre": "Consolider tes acquis",
+    "objectif": "Appliquer les notions sans aide",
+    "introduction": "Tu vas maintenant résoudre des exercices sans modèle à recopier. Écris tes réponses et vérifie-les immédiatement pour corriger tes erreurs.",
+    "chemin": "consolider",
+    "cartes": [
+     {
+      "titre": "Exercices variés",
+      "objectif": "Appliquer le coefficient et la quatrième proportionnelle",
+      "module": "QuizSetQCM",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "Calcule le coefficient ou la quatrième proportionnelle pour chaque problème et choisis la bonne réponse."
+     },
+     {
+      "titre": "Pourcentages simples",
+      "objectif": "Calculer un pourcentage d’une quantité",
+      "module": "DragAndDrop",
+      "palier": "transfert",
+      "duree": 10,
+      "consigne": "Associe chaque calcul de pourcentage à sa valeur correcte en glissant les étiquettes."
+     }
+    ]
+   },
+   {
+    "titre": "Approfondir tes compétences",
+    "objectif": "Résoudre des problèmes complexes",
+    "introduction": "Tu vas maintenant appliquer tes connaissances à des situations plus complexes ou nouvelles. Écris tes réponses en justifiant et vérifie-les à la fin du parcours.",
+    "chemin": "approfondir",
+    "cartes": [
+     {
+      "titre": "Problèmes complexes",
+      "objectif": "Résoudre des problèmes de proportionnalité avancés",
+      "module": "Essay",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "Résous un problème de proportionnalité en détaillant tes calculs. Tu vérifieras ta réponse à la fin du parcours."
+     },
+     {
+      "titre": "Pourcentages et situations réelles",
+      "objectif": "Appliquer les pourcentages à des situations concrètes",
+      "module": "DragTheWords",
+      "palier": "transfert",
+      "duree": 10,
+      "consigne": "Retrouve les étapes pour calculer un pourcentage dans une situation donnée en replaçant les mots dans l’ordre."
+     }
+    ]
+   },
+   {
+    "titre": "Synthèse et évaluation finale",
+    "objectif": "Faire le point sur l’ensemble des notions",
+    "introduction": "Tu vas maintenant vérifier que tu maîtrises toutes les notions vues dans le parcours. Réponds à toutes les questions sans aide.",
+    "cartes": [
+     {
+      "titre": "Bilan final",
+      "objectif": "Vérifier la maîtrise des notions de proportionnalité",
+      "module": "test_elea",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Réponds à toutes les questions pour faire le point sur tes acquis. Tu pourras revenir sur certaines étapes si besoin."
+     }
+    ]
+   }
+  ]
+ }
+}

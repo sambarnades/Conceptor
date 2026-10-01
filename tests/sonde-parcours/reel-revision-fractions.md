@@ -1,16 +1,16 @@
-# Parcours réel — Les fractions en 5e : révisions et entraînement
+# Parcours réel — Réviser les fractions en 5e
 
 Scénario `revision-fractions` : elea, distanciel, ampleur moyenne, trame revision.
-Plan : 6 s · fabrication : 54 s · activités assemblées : 6.
+Plan : 9 s · fabrication : 78 s · activités assemblées : 6.
 
 | Étape | Activité | Type | Statut | Taille du contenu |
 |---|---|---|---|---|
-| 1 | Quiz diagnostic | Quiz Vrai/Faux | faite | 6182 car. |
-| 2 | Règles d’égalité et simplification | Page | faite | 4295 car. |
-| 2 | Comparer des fractions | Cartes mémoires | faite | 1332 car. |
-| 3 | Addition et soustraction de fractions | Texte à trous | faite | 2663 car. |
-| 3 | Mots croisés sur les fractions | Mots croisés | faite | 2634 car. |
-| 4 | Test final sur les fractions | Test | faite | 5603 car. |
+| 1 | Quiz sur les fractions | Quiz Vrai/Faux | faite | 7278 car. |
+| 2 | Les règles des fractions | Page | faite | 6260 car. |
+| 2 | Les fractions à connaître | Cartes mémoires | faite | 837 car. |
+| 3 | Simplifier des fractions | Texte à trous | faite | 1747 car. |
+| 3 | Comparer et calculer des fractions | Mots croisés | faite | 1595 car. |
+| 4 | Test final sur les fractions | Test | faite | 5938 car. |
 
 Aucune activité écartée à l’assemblage.
 

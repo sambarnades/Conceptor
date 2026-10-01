@@ -39,6 +39,9 @@ import { sourceManquante, preparerSource, appliquerSource, purgerMedias } from '
 import { construirePromptRemplissage, nbElementsCarte } from './scenario-prompt.js';
 import { modeleParcours } from './model-selector.js';
 import { metaActiviteParcours } from './stats-parcours.js';
+import { reglagesDeCarte, aiguillagesDuPlan } from './aiguillage.js';
+import { reglagesDeTrame } from './templates.js';
+import { defautsSortieIA, graviteSortieIA, correctionDesTrous } from '../h5p/controle-sortie-ia.js';
 
 /** États possibles d'une carte pendant la fabrication. */
 export const ETATS = {
@@ -139,6 +142,20 @@ export async function extraireJson(texte) {
  * @param {string} moduleKey
  * @returns {Promise<Object>}
  */
+/**
+ * Les images d'une Page ou d'un Livre écrits par l'IA de CARAMEL (D110). Le modèle
+ * d'ILaaS ne sait pas trouver de vraie image : toute adresse qu'il écrit est
+ * inventée, et s'afficherait cassée (`via.placeholder.com`, parcours réel du
+ * 1er oct. 2026). L'enseignant ajoute les siennes dans l'éditeur (D88). Ne vaut
+ * PAS pour la réponse collée d'une IA externe, qui peut connaître de vraies
+ * adresses : elle ne perd que les services d'images factices (`json-healer.js`).
+ */
+async function sansImagesInventees(contenu, moduleKey) {
+    if (moduleKey !== 'Page' && moduleKey !== 'Livre') return contenu;
+    const { retirerImagesInventees } = await import('../h5p/json-healer.js');
+    return retirerImagesInventees(contenu, { toutes: true });
+}
+
 export async function reparer(brut, moduleKey) {
     const { healJsonObject, healActivitySpecificFields, healStructureForActivity } =
         await import('../h5p/json-healer.js');
@@ -159,6 +176,75 @@ export async function reparer(brut, moduleKey) {
         verifierTrousCloze(obj);
     }
     return obj;
+}
+
+/** Les exercices à consigne, nommés comme dans le prompt du quiz. */
+const NOMS_EXERCICES = {
+    MarkTheWords: 'Surligner les mots', DragTheWords: 'Glisser les mots',
+    FillInTheBlanks: 'Texte à trous', Essay: 'Rédaction',
+};
+
+/**
+ * La correction demandée au modèle quand des exercices sont revenus SANS consigne :
+ * elle nomme les questions en cause, et redit ce qu'est une consigne.
+ * @param {Array<{numero:number, module:string}>} manques - `consignesManquantes()`.
+ * @returns {string}
+ */
+export function rappelConsignes(manques) {
+    const lesquelles = manques.map(m => (m.numero
+        ? `la question ${m.numero} (${NOMS_EXERCICES[m.module] || m.module})`
+        : `l'activité (${NOMS_EXERCICES[m.module] || m.module})`)).join(', ');
+    return '\n\n# CORRECTION DEMANDÉE\n' +
+        `Dans ta réponse précédente, ${lesquelles} ${manques.length > 1 ? 'n’avaient' : 'n’avait'} pas de consigne : ` +
+        'l’élève voyait un texte sans savoir quoi y faire. Rends à nouveau le JSON COMPLET. ' +
+        'Chaque exercice Texte à trous, Glisser les mots, Surligner les mots ou Rédaction porte `taskDescription` : ' +
+        'une consigne adressée à l’élève, qui dit quoi faire et selon quel critère (par exemple « Surligne les mots qui décrivent… »).';
+}
+
+/**
+ * La correction demandée quand des trous ont perdu leur réponse — un nom de variable
+ * (« *prix_réduit* € », parcours réel du 1er oct. 2026), un trou vide, un astérisque
+ * seul : l'élève ne pourrait jamais écrire ce qu'on attend de lui.
+ * @param {string[]} defauts - `defautsSortieIA()`.
+ * @returns {string}
+ */
+export function rappelTrous(defauts) {
+    return correctionDesTrous(defauts);
+}
+
+/**
+ * La correction demandée quand l'activité n'a pas pu être mise en paquet : la
+ * cause technique (« Essay: occurrences invalides. ») suffit au modèle.
+ * @param {string} cause
+ * @returns {string}
+ */
+export function rappelMiseEnForme(cause) {
+    return '\n\n# CORRECTION DEMANDÉE\n' +
+        `Ta réponse précédente n’a pas pu être mise en forme pour la plateforme (${cause}). ` +
+        'Rends à nouveau le JSON COMPLET, exactement dans la structure attendue : chaque champ à sa place, ' +
+        'chaque valeur dans ses bornes (nombres entiers positifs, pourcentages de 0 à 100, listes non vides).';
+}
+
+/**
+ * Essaie la mise en paquet que fera la livraison (`activiteDepuisCarte`) sur ce
+ * contenu. Rend la cause du refus, ou `null` s'il passe. Un module que la
+ * plateforme n'assemble pas n'est pas une affaire de contenu : il passe ici, la
+ * livraison le dit.
+ * @param {Object} carte
+ * @param {Object} contenu
+ * @returns {Promise<string|null>}
+ */
+export async function refusDuPaquet(carte, contenu, plan = null) {
+    try {
+        const { activiteDepuisCarte } = await import('./parcours-builder.js');
+        const aiguille = Boolean(plan && aiguillagesDuPlan(plan).some(g => g.test === carte));
+        await activiteDepuisCarte({ ...carte, contenu }, { aiguille });
+        return null;
+    } catch (e) {
+        const message = String((e && e.message) || e);
+        if (message.startsWith('parcours_module_non_gere')) return null;
+        return message.slice(0, 300);
+    }
 }
 
 /**
@@ -233,9 +319,58 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
                 : await generateH5PWithLLM(prompt, modele, metaActiviteParcours(draft, carte.module));
 
             const brut = await appliquerSource(await extraireJson(reponse), source, carte.module);
-            const contenu = await reparer(brut, carte.module);
+            let contenu = await sansImagesInventees(await reparer(brut, carte.module), carte.module);
+            // Un exercice SANS consigne est injouable : dans le quiz de Gauthier
+            // (30 sept. 2026), le modèle l'avait omise sur trois questions sur dix,
+            // et l'élève voyait un texte sans savoir quoi y faire. On la redemande
+            // UNE fois, en nommant les questions ; au second oubli, la carte échoue
+            // et se refait d'un clic.
+            // Des trous vidés de leur sens (réponse en nom de variable, trou vide) :
+            // même seconde demande, et l'on garde le moins grave des deux tirages —
+            // comme la génération « en un clic » (`controle-sortie-ia.js`).
+            const { consignesManquantes } = await import('../h5p/json-healer.js');
+            const manques = consignesManquantes(contenu, carte.module);
+            const defauts = defautsSortieIA(carte.module, JSON.stringify(contenu));
+            if ((manques.length || defauts.length) && !arretDemande) {
+                const rappel = (manques.length ? rappelConsignes(manques) : '') + (defauts.length ? rappelTrous(defauts) : '');
+                debugLog('parcours', `carte « ${carte.titre} » : ${[manques.length ? `consigne absente (${manques.map(m => m.numero).join(', ')})` : '',
+                    defauts.join(', ')].filter(Boolean).join(' ; ')}, seconde demande`);
+                const reponse2 = appelModele
+                    ? await appelModele(prompt + rappel, carte)
+                    : await generateH5PWithLLM(prompt + rappel, modele, metaActiviteParcours(draft, carte.module));
+                const second = await sansImagesInventees(await reparer(await appliquerSource(await extraireJson(reponse2), source, carte.module), carte.module), carte.module);
+                const encore = consignesManquantes(second, carte.module);
+                if (manques.length) {
+                    // Sans consigne, seul le second tirage peut servir, et complet.
+                    if (encore.length) throw new Error(`parcours_consigne_manquante:${encore.map(m => m.numero).join(',')}`);
+                    contenu = second;
+                } else if (!encore.length && graviteSortieIA(carte.module, JSON.stringify(second)) < graviteSortieIA(carte.module, JSON.stringify(contenu))) {
+                    contenu = second;
+                }
+            }
             if (arretDemande) { etat.statut = carte.contenu ? ETATS.faite : ETATS.annulee; return; }
-            carte.contenu = contenu;
+            // Les réglages de son chemin, ou du test qui aiguille (D90, D93).
+            // …et ceux que sa trame impose au Test (« Évaluer », D102).
+            let final = reglagesDeTrame(draft.trame, carte, reglagesDeCarte(plan, carte, contenu));
+            // La mise en paquet de la livraison, ESSAYÉE ICI (D109) : une activité que
+            // son processeur refuse était écartée à la livraison sous « erreur de mise
+            // en forme », trop tard pour la redemander (parcours réel du 1er oct. 2026 :
+            // une Rédaction à `occurrences: 0`). On la redemande une fois, avec la cause.
+            const refus = await refusDuPaquet(carte, final, plan);
+            if (refus && !arretDemande) {
+                debugLog('parcours', `carte « ${carte.titre} » : mise en forme refusée (${refus}), seconde demande`);
+                const rappel = rappelMiseEnForme(refus);
+                const reponse3 = appelModele
+                    ? await appelModele(prompt + rappel, carte)
+                    : await generateH5PWithLLM(prompt + rappel, modele, metaActiviteParcours(draft, carte.module));
+                const autre = await sansImagesInventees(await reparer(await appliquerSource(await extraireJson(reponse3), source, carte.module), carte.module), carte.module);
+                const autreFinal = reglagesDeTrame(draft.trame, carte, reglagesDeCarte(plan, carte, autre));
+                const encore = await refusDuPaquet(carte, autreFinal, plan);
+                if (encore) throw new Error(`parcours_mise_en_forme:${encore}`);
+                final = autreFinal;
+            }
+            if (arretDemande) { etat.statut = carte.contenu ? ETATS.faite : ETATS.annulee; return; }
+            carte.contenu = final;
             carte.sourceUtilisee = carte.source ? JSON.stringify(carte.source) : null;
             purgerMedias(carte);
             // Le titre du plan fait foi : c'est celui que l'enseignant a relu,
@@ -255,7 +390,9 @@ export function creerFile(draft, { surChangement = () => {}, appelModele = null 
                 // Une tentative ratée ne retire pas un contenu déjà relu.
                 etat.statut = carte.contenu ? ETATS.faite : ETATS.echouee;
                 etat.erreurKey = String(e.message || '').startsWith('parcours_source_') ? e.message
-                    : (info && info.userMessageKey) || 'parcours_fab_echec_carte';
+                    : String(e.message || '').startsWith('parcours_consigne_manquante') ? 'parcours_consigne_manquante'
+                    : String(e.message || '').startsWith('parcours_mise_en_forme') ? 'parcours_mise_en_forme'
+                        : (info && info.userMessageKey) || 'parcours_fab_echec_carte';
                 etat.detail = String((e && e.message) || e);
                 console.error(`[parcours] carte « ${carte.titre} » (${carte.module}) échouée :`, e);
             }

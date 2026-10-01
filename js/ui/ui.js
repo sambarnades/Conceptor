@@ -11,7 +11,7 @@ import { snapInteractions } from '../h5p/processors/interactive-video-snap.js';
 import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility, safeSession, horodatageFichier, classifyError } from '../core/utils.js';
 import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM, beginGeneration, requestCancelGeneration, isCancellation } from '../services/llm.js';
 import { generateInBatches, shouldChunk, BATCH_CONFIG } from '../services/llm-batch.js';
-import { defautsSortieIA, graviteSortieIA } from '../h5p/controle-sortie-ia.js';
+import { defautsSortieIA, graviteSortieIA, correctionDesTrous } from '../h5p/controle-sortie-ia.js';
 import { addNotification, getNotificationById, getLastDebugNotification, showToastForNotification, revealNotification, hydrateImagesForExport } from './notifications.js';
 import { visionContextSig, alignVideoHelpButton, snapVideoTimestamps } from './media-helpers.js';
 import { initBackgroundImageSection } from './background-image-section.js';
@@ -673,7 +673,9 @@ async function generateActivityContent(moduleKey, module, prompt, selectedModel,
     debugLog('llm', `Sortie IA inutilisable pour ${moduleKey} (${defauts.join(', ')}) : second essai`);
     let second;
     try {
-        second = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
+        // La seconde demande dit ce qui n'allait pas : redemander le même prompt ne faisait
+        // que retirer au sort (Mistral, 5 tirages sur 7 sans réponse dans les trous).
+        second = await generateH5PWithLLM(prompt + correctionDesTrous(defauts), selectedModel, activityMeta);
     } catch (e) {
         // « Arrêter » reste un arrêt ; une panne du second essai ne fait pas perdre le premier.
         if (isCancellation(e)) throw e;

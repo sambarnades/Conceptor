@@ -25,18 +25,25 @@
  * @module parcours/fiche-sequence
  */
 
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { CONFIG } from './config.js';
 import { nomModule } from './activity-router.js';
 import { carteDisponible } from './carte-progression.js';
 import { formaterDuree } from './duree.js';
+import { contenuDuBilan } from './bilan.js';
 import { MODULES_PARCOURS } from './modules-parcours.js';
 import { contenuPourEdition } from './sources.js';
 import { imagesEnvoyeesPourDocument } from '../moodle/page-images.js';
+import {
+    aiguillagesDuPlan, nombreQuestions, bornesEnReponses, plagesEnReponses, dureeParEleve, activitesParEleve,
+} from './aiguillage.js';
 
-/** Substitution de jetons, à l'identique des écrans de l'atelier. */
-function tr(cle, jetons) {
-    let s = t(cle);
+/**
+ * Substitution de jetons, à l'identique des écrans de l'atelier. La plateforme
+ * nomme le public (D105) : celle du brouillon par défaut.
+ */
+function tr(cle, jetons, plateforme) {
+    let s = t(cle, plateforme);
     if (jetons) for (const [k, v] of Object.entries(jetons)) s = s.split(`@${k}`).join(String(v));
     return s;
 }
@@ -67,6 +74,11 @@ function nomPlateforme(platformId) {
  * @returns {Object} L'objet attendu par le formateur `parcours_document`.
  */
 export function construireFiche(plan, { platformId } = {}) {
+    // Le vocabulaire de la plateforme VISÉE, pas celle du brouillon ouvert (D105) :
+    // des stagiaires sur Magistère, des étudiants sur Moodle.
+    const plateforme = platformId ?? null;
+    const tp = cle => t(cle, plateforme);
+    const trp = (cle, jetons) => tr(cle, jetons, plateforme);
     const p = plan && typeof plan === 'object' ? plan : {};
     const etapes = Array.isArray(p.etapes) ? p.etapes : [];
     const cartes = etapes.flatMap(e => (Array.isArray(e.cartes) ? e.cartes : []));
@@ -79,14 +91,26 @@ export function construireFiche(plan, { platformId } = {}) {
     const carteActive = Boolean(p.carte && p.carte.actif) && carteDisponible(platformId);
     const progressionActive = Boolean(p.progression && p.progression.actif) && etapes.length >= 2;
 
-    const meta = [
+    // Avec des chemins, l'en-tête dit ce que vit UN élève — ses activités, sa
+    // durée — et selon quel test (D90) : additionner les chemins annoncerait une
+    // séquence que personne ne suit. Pas de Carte de progression avec des chemins (D95).
+    const groupes = aiguillagesDuPlan(p);
+    const fourchette = ({ min, max }, f = String) => (min === max ? f(max) : `${f(min)}–${f(max)}`);
+    const titreTest = g => (g.test ? String(g.test.titre || '').trim() || nomModule(g.test.module) : '');
+    const meta = (groupes.length ? [
         platformId ? nomPlateforme(platformId) : '',
-        tr('parcours_fiche_meta_etapes', { n: String(etapes.length) }),
-        tr('parcours_fiche_meta_activites', { n: String(cartes.length) }),
+        ...groupes.map(g => trp('parcours_fiche_meta_chemins', { k: String(g.chemins.length), t: titreTest(g) })),
+        trp('parcours_fiche_meta_par_eleve', { e: fourchette(activitesParEleve(p)), f: String(cartes.length) }),
+        trp('parcours_fiche_meta_duree_eleve', { d: fourchette(dureeParEleve(p), duree) }),
+        progressionActive ? tp('parcours_fiche_meta_progression') : '',
+    ] : [
+        platformId ? nomPlateforme(platformId) : '',
+        trp('parcours_fiche_meta_etapes', { n: String(etapes.length) }),
+        trp('parcours_fiche_meta_activites', { n: String(cartes.length) }),
         duree(total),
-        carteActive ? t('parcours_fiche_meta_carte') : '',
-        progressionActive ? t('parcours_fiche_meta_progression') : '',
-    ].filter(Boolean);
+        carteActive ? tp('parcours_fiche_meta_carte') : '',
+        progressionActive ? tp('parcours_fiche_meta_progression') : '',
+    ]).filter(Boolean);
 
     const sections = [];
 
@@ -94,40 +118,63 @@ export function construireFiche(plan, { platformId } = {}) {
     // été injecté dans chaque génération. C'est le premier repère qu'on relit.
     const notions = Array.isArray(p.notionsPivots) ? p.notionsPivots.filter(Boolean) : [];
     if (notions.length) {
-        sections.push({ titre: t('parcours_fiche_notions'), puces: notions });
+        sections.push({ titre: tp('parcours_fiche_notions'), puces: notions });
     }
 
     const enTetes = [
-        t('parcours_fiche_col_activite'),
-        t('parcours_fiche_col_type'),
-        t('parcours_fiche_col_palier'),
-        t('parcours_fiche_col_duree'),
+        tp('parcours_fiche_col_activite'),
+        tp('parcours_fiche_col_type'),
+        tp('parcours_fiche_col_palier'),
+        tp('parcours_fiche_col_duree'),
     ];
 
-    etapes.forEach((etape, i) => {
+    // Les étapes communes sont numérotées comme à l'écran du plan ; un chemin
+    // porte le nom de son rôle et dit à quels élèves il s'ouvre, en bonnes
+    // réponses au test — jamais en pourcentage.
+    let numero = 0;
+    etapes.forEach((etape) => {
         const titreEtape = String(etape.titre || '').trim();
-        const bloc = {
-            titre: titreEtape
-                ? tr('parcours_fiche_etape_titree', { n: String(i + 1), t: titreEtape })
-                : tr('parcours_fiche_etape', { n: String(i + 1) }),
-            lignes: [],
-        };
+        const g = groupes.find(x => x.chemins.some(c => c.etape === etape));
+        const chemin = g && g.chemins.find(c => c.etape === etape);
+        let titreBloc;
+        if (chemin) {
+            const role = tp(`parcours_role_${chemin.role}`);
+            titreBloc = titreEtape ? trp('parcours_fiche_chemin', { r: role, t: titreEtape }) : trp('parcours_fiche_chemin_seul', { r: role });
+        } else {
+            numero += 1;
+            titreBloc = titreEtape
+                ? trp('parcours_fiche_etape_titree', { n: String(numero), t: titreEtape })
+                : trp('parcours_fiche_etape', { n: String(numero) });
+        }
+        const bloc = { titre: titreBloc, lignes: [] };
+        if (chemin && g.test) {
+            const n = nombreQuestions(g.test, g.chemins.length);
+            const [de, a] = plagesEnReponses(bornesEnReponses(g.chemins.slice(1).map(c => c.depuis), n), n)[g.chemins.indexOf(chemin)];
+            const plage = de === a ? trp('parcours_plage_une', { de, n }) : trp('parcours_plage', { de, a, n });
+            bloc.lignes.push(trp('parcours_fiche_chemin_pour', { p: plage, t: titreTest(g) }));
+        }
         const objectif = String(etape.objectif || '').trim();
-        if (objectif) bloc.lignes.push(tr('parcours_fiche_objectif', { t: objectif }));
+        if (objectif) bloc.lignes.push(trp('parcours_fiche_objectif', { t: objectif }));
 
         const lignes = (Array.isArray(etape.cartes) ? etape.cartes : []).map(c => ([
             String(c.titre || '').trim() || nomModule(c.module),
             nomModule(c.module),
-            t(`parcours_palier_${c.palier}`) || String(c.palier || ''),
+            tp(`parcours_palier_${c.palier}`) || String(c.palier || ''),
             duree(c.duree),
         ]));
         if (lignes.length) bloc.table = { headers: enTetes, rows: lignes };
         // Une étape sans activité se dit : c'est un trou dans la séquence, et
         // l'enseignant doit le voir sur le papier comme il le voit à l'écran.
-        else bloc.lignes.push(t('parcours_fiche_etape_vide'));
+        else bloc.lignes.push(tp('parcours_fiche_etape_vide'));
 
         sections.push(bloc);
     });
+
+    // Le mot de la fin, lu par l'élève dans la dernière section du cours (D96),
+    // et la page de bilan posée dessous (D112).
+    const conclusion = String(p.conclusion || '').trim();
+    const fin = [conclusion, contenuDuBilan(p, { texte: tp }) ? tp('parcours_fin_bilan_note') : ''].filter(Boolean);
+    if (fin.length) sections.push({ titre: tp('parcours_fin_titre'), lignes: fin });
 
     // Les consignes, à la fin : elles ne se lisent pas dans un tableau, mais
     // elles sont ce que l'élève aura sous les yeux. Un enseignant qui prépare
@@ -137,13 +184,13 @@ export function construireFiche(plan, { platformId } = {}) {
         .filter(x => x.texte);
     if (consignes.length) {
         sections.push({
-            titre: t('parcours_fiche_consignes'),
+            titre: tp('parcours_fiche_consignes'),
             puces: consignes.map(x => (x.titre ? `${x.titre} — ${x.texte}` : x.texte)),
         });
     }
 
     return {
-        title: String(p.titre || '').trim() || t('parcours_fiche_sans_titre'),
+        title: String(p.titre || '').trim() || tp('parcours_fiche_sans_titre'),
         intro: String(p.objectifGeneral || '').trim(),
         meta,
         sections,

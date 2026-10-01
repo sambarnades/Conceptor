@@ -633,7 +633,7 @@
       "blocks": [
         {
           "type": "p",
-          "text": "Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ."
+          "text": "Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ. L’atelier parle le vocabulaire de la plateforme choisie : des élèves sur Éléa, des stagiaires sur Magistère, des étudiants sur Moodle — à l’écran, dans le cours et dans les textes que rédige l’IA."
         },
         {
           "type": "shot",
@@ -652,7 +652,7 @@
         {
           "type": "steps",
           "items": [
-            "Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur et une trame. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.",
+            "Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur, **Un même chemin pour tous** ou **Des chemins selon les résultats**, et une trame : les plus courantes sont proposées d’abord — apprendre en autonomie, réviser, s’entraîner, évaluer —, **Voir les autres modèles** affiche les suivantes. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.",
             "Dans **Plan**, modifiez le titre, l’objectif général, les notions du parcours, les étapes et les activités. Déplacez les activités avec les flèches ou leur vignette. **Consigne et palier** permet d’ajuster les indications de génération. Les repères pédagogiques vous aident à relire sans imposer un modèle. Le maximum est de **12 activités**.",
             "Dans la carte d’une **Vidéo interactive**, collez le lien de la vidéo. La transcription est récupérée pendant la fabrication ; vous pouvez aussi la coller manuellement. Pour **Image interactive**, **Trouver la zone** ou **Trouver les zones**, joignez une image dans la carte : elle sera analysée avant la génération. Ces supports peuvent aussi être complétés dans **Fabrication**. Sans support, l’activité attend et les autres avancent. Le scénario conserve les images et les liens propres aux activités ; les documents du formulaire d’accueil restent à part. Pour un **Lien web**, collez l’adresse de la ressource dans la carte : l’IA rédige la consigne de lecture sans ouvrir la page.",
             "Validez le plan pour lancer la fabrication. Vous pouvez arrêter, reprendre les activités manquantes ou refaire une activité. Le cadenas **Ne pas générer cette activité** réserve son contenu à une saisie manuelle : l’IA ne la remplit pas. Une tentative de régénération ratée conserve le contenu précédent. Les activités absentes sont nommées avant l’export.",
@@ -685,7 +685,7 @@
         },
         {
           "type": "warn",
-          "text": "La carte de progression est propre à Éléa. La carte et l’ouverture progressive sont facultatives et demandent encore une vérification en situation sur la plateforme. La trame de différenciation ne crée pas de branches automatiques selon une note. Les échanges collaboratifs ont lieu sur la plateforme."
+          "text": "La carte de progression est propre à Éléa. La carte, l’ouverture progressive et les chemins selon les résultats demandent encore une vérification en situation sur la plateforme. Les échanges collaboratifs ont lieu sur la plateforme."
         },
         {
           "type": "h",
@@ -723,6 +723,37 @@
           "type": "shot",
           "src": "assets/images/wiki/parcours-miroir.webp",
           "alt": "Ce que ce parcours fait travailler : les sept familles, et celles qui sont absentes."
+        },
+        {
+          "type": "h",
+          "text": "Des chemins selon les résultats"
+        },
+        {
+          "type": "p",
+          "text": "Au cadrage, **Des chemins selon les résultats** fait passer un test à vos élèves : selon sa note à la première tentative, chacun suit l’un des 2 à 4 chemins — **Reprendre les bases**, **Renforcer**, **Consolider**, **Approfondir** —, puis tous se retrouvent pour une étape commune. Chaque élève ne voit que son chemin. Deux trames sont pensées pour cela : **Différencier dès le départ** et **Remédier en cours de route**."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-chemins.webp",
+          "alt": "Les chemins dans le plan : la barre des scores, la plage de chaque chemin et ses activités."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Dans **Plan**, la barre des scores montre quel chemin s’ouvre pour chaque nombre de bonnes réponses ; les boutons **−** et **+** avancent ou reculent le début d’un chemin d’une bonne réponse. **Ajouter un chemin**, **Retirer un chemin** et **Un seul chemin pour tous** changent l’aiguillage.",
+            "Le test qui oriente est un **Quiz QCM**, un **Quiz Vrai/Faux** ou un **Test**, placé à la fin de l’étape qui précède les chemins. Chaque question vaut un point, et le test ne propose pas de recommencer.",
+            "**Voir comme un élève** montre la page du cours telle que l’élève la verra — avant le test, pendant son chemin, à la fin — pour le score que vous choisissez.",
+            "Pour réorienter un élève, modifiez sa note au test dans le carnet de notes de la plateforme."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/parcours-eleve.webp",
+          "alt": "Voir comme un élève : la page du cours pendant son chemin, pour le score choisi."
+        },
+        {
+          "type": "tip",
+          "text": "Importez un parcours à chemins dans un cours **vide** : Moodle range les sections du fichier dans celles du cours, et vos sections existantes recevraient les restrictions des chemins. Tous les parcours se terminent désormais par une section **Fin du parcours** : le mot de la fin, puis une page **Bilan du parcours** (l’objectif, ce que chaque étape a travaillé et où le revoir, les mots à retenir). La durée estimée s’affiche sous chaque activité."
         }
       ]
     },

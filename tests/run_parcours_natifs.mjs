@@ -697,8 +697,11 @@ try {
 
     console.log('\n── 9. Ce que lit le participant ────────────────────────────');
     for (const [nom, prompt] of [['plan', r.promptPlan], ['module de la plateforme', r.promptNatif], ['activité H5P', r.promptH5p]]) {
-        ok(`prompt ${nom} : registre déduit du public, le même pour tout le parcours`,
-            prompt.includes('vouvoiement pour des adultes') && prompt.includes('public visé : Enseignants en formation continue'));
+        // Sur Magistère, le public est celui de la plateforme — des stagiaires, au
+        // vouvoiement (D105) — et le « public visé » saisi le précise.
+        ok(`prompt ${nom} : public et registre donnés par la plateforme, les mêmes pour tout le parcours`,
+            prompt.includes('des STAGIAIRES en formation (public visé : Enseignants en formation continue)')
+            && prompt.includes('Registre : vouvoiement, pour des adultes') && prompt.includes('écris « le groupe »'));
         ok(`prompt ${nom} : le jargon des instructions est interdit dans les textes`, prompt.includes('jamais « notions pivots »'));
     }
     ok('le vocabulaire imposé ne s’appelle plus « notions pivots … MOT POUR MOT »',

@@ -1,5 +1,5 @@
 /** Le scénario est disponible dès le cadrage, sa sauvegarde dès le plan. */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { brouillon, majBrouillon, etatSauvegarde, reinitialiser } from './state.js';
 import { depuisScenario, versScenario, nomFichierScenario } from './scenario-io.js';
 import { el, action, iconeTutoriel } from './dom.js';

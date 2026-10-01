@@ -1,0 +1,265 @@
+{
+  "//": "Écrit par scripts/diaporama/generer-kit-formation.mjs — ne pas modifier à la main, relancer le script.",
+  "version": "7.1.0",
+  "date": "2026-10-01",
+  "dateLisible": "1er octobre 2026",
+  "fichiers": {
+    "pptx": {
+      "chemin": "caramel-kit-formation.pptx",
+      "octets": 5424032
+    },
+    "odp": {
+      "chemin": "caramel-kit-formation.odp",
+      "octets": 4858724
+    },
+    "pdf": {
+      "chemin": "caramel-kit-formation.pdf",
+      "octets": 4261246
+    }
+  },
+  "diapositives": [
+    {
+      "numero": 1,
+      "partie": null,
+      "titre": "Prendre en main Caramel",
+      "image": "diapositives/01.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Ce kit sert à prendre en main Caramel en une séance courte. Caramel est une application web gratuite, sans compte, qui prépare avec l'IA des activités interactives et des parcours complets pour Éléa, Magistère et Moodle. Le déroulé suit deux parties : générer une activité, puis concevoir un parcours. Chaque diapositive porte une idée et montre l'écran réel ; les libellés cités entre guillemets sont ceux des boutons. Support conforme à Caramel 7.1.0, mis à jour le 1er octobre 2026."
+    },
+    {
+      "numero": 2,
+      "partie": null,
+      "titre": "Au programme",
+      "image": "diapositives/02.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Deux parties. D’abord une activité seule : on décrit son besoin, on choisit un type d’activité, on génère, on relit, on télécharge et on importe dans sa plateforme. Ensuite un parcours complet : un cours entier, organisé en étapes, livré dans un seul fichier — le même pour tous les élèves, ou différencié selon les résultats d’un test. On termine par quelques points à savoir et par les ressources pour continuer seul."
+    },
+    {
+      "numero": 3,
+      "partie": "Générer une activité",
+      "titre": "Décrivez votre besoin en deux champs",
+      "image": "diapositives/03.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Tout commence sur la page d’accueil, par deux champs. « Qui êtes-vous ? » : une réponse courte suffit, par exemple « Professeur de mathématiques » ou « Formatrice académique ». « Que souhaitez-vous aborder ? » : c’est le cœur de la demande ; plus elle est précise — thème, niveau, contraintes —, meilleure est l’activité. C’est le mode Rapide, celui qui s’ouvre par défaut. Chaque champ se dicte aussi au micro. Tant que les deux champs sont vides, les tuiles d’activités restent grisées."
+    },
+    {
+      "numero": 4,
+      "partie": "Générer une activité",
+      "titre": "Le mode Avancé : préciser, et joindre votre cours",
+      "image": "diapositives/04.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "L’onglet « Mode Avancé » ajoute deux précisions — le niveau, et le nombre de questions ou d’éléments — et surtout la zone « Joindre des documents (facultatif) ». On y colle un texte ou on y dépose son propre cours : PDF, Word, LibreOffice, diaporama, image, audio ou vidéo, ou encore une page web par son lien. L’IA travaille alors exclusivement à partir de ces documents : ils deviennent la référence. Sans document, l’IA s’appuie sur ses connaissances. Le texte est extrait dans le navigateur ; rappel utile : aucune donnée personnelle d’élève dans les documents."
+    },
+    {
+      "numero": 5,
+      "partie": "Générer une activité",
+      "titre": "Choisissez le type d’activité",
+      "image": "diapositives/05.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Sous le formulaire, chaque tuile est un type d’activité : trente-cinq en tout, vingt-sept au format H5P — quiz, texte à trous, glisser-déposer, mots croisés, vidéo interactive… — et huit modules de la plateforme, comme la Page, le Livre ou le Test. Deux rangées de filtres aident à s’y retrouver : par famille, et par plateforme ou format. Les activités H5P fonctionnent sur Éléa, Magistère et Moodle. Un clic sur une tuile ouvre sa fenêtre de génération."
+    },
+    {
+      "numero": 6,
+      "partie": "Générer une activité",
+      "titre": "Générer en un clic, et choisir le modèle d’IA",
+      "image": "diapositives/06.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La fenêtre d’une tuile s’ouvre en mode Simple : un seul bouton, « Générer en un clic ». L’IA de Caramel, hébergée en France, prépare l’activité en quelques dizaines de secondes. La petite flèche à droite du bouton ouvre le choix du modèle : Gemma 4, rapide et léger ; Qwen 3.8, plus nuancé ; Mistral Small 4, le plus puissant, choisi par défaut, et plus lent. Si une génération échoue ou tarde, on relance, ou on essaie un autre modèle."
+    },
+    {
+      "numero": 7,
+      "partie": "Générer une activité",
+      "titre": "Ou passer par l’IA de votre choix : le mode Guidé",
+      "image": "diapositives/07.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "L’interrupteur « Simple » / « Guidé », en haut de la fenêtre, affiche deux panneaux. À gauche, « 1/2 Obtenir le prompt à copier » : c’est l’ensemble des consignes que Caramel envoie à l’IA ; on peut le lire, le déverrouiller pour le modifier, et le copier. On le colle dans l’IA de son choix, puis on recopie sa réponse — un bloc de texte au format JSON — dans le panneau de droite, « 2/2 Créer le fichier à partir du JSON ». Le bouton devient alors « Générer l’activité ». Attention : avec une IA externe, ce sont ses conditions d’utilisation qui s’appliquent. On n’y met jamais de nom ni d’information personnelle d’élève."
+    },
+    {
+      "numero": 8,
+      "partie": "Générer une activité",
+      "titre": "L’activité est prête : télécharger ou visualiser",
+      "image": "diapositives/08.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Une fois l’activité générée, une fenêtre annonce « Votre sucrerie est prête ! ». Le grand bouton télécharge le fichier pour la plateforme : un .h5p pour une activité H5P, un .mbz ou un .xml pour un module de la plateforme. La flèche propose aussi une version papier, en Word, LibreOffice ou PDF. Mais le bon réflexe est l’autre bouton, « Visualiser et éditer » : on regarde l’activité avant de la télécharger."
+    },
+    {
+      "numero": 9,
+      "partie": "Générer une activité",
+      "titre": "Visualisez : l’activité comme vos élèves la verront",
+      "image": "diapositives/09.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "L’aperçu montre l’activité telle que les élèves la verront sur la plateforme, et on peut la jouer : répondre, vérifier, recommencer. En haut, les plateformes compatibles. En bas, la barre de l’aperçu rassemble tout : « Télécharger » et un bouton par format, le point d’interrogation qui explique l’import, « Vers la Sucrerie » pour partager, et « Éditer » pour corriger."
+    },
+    {
+      "numero": 10,
+      "partie": "Générer une activité",
+      "titre": "Corrigez dans l’éditeur visuel",
+      "image": "diapositives/10.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Le bouton « Éditer » ouvre l’éditeur visuel, sans code. À gauche, la liste des éléments — ici les phrases du texte à trous — qu’on ajoute, supprime ou réordonne par glisser-déposer. À droite, le détail de l’élément choisi : texte enrichi, formules mathématiques avec un assistant, images, retours, réglages. « Enregistrer » met à jour l’aperçu et les fichiers à télécharger ; « Aide » rappelle la syntaxe propre à chaque activité. C’est l’étape à ne jamais sauter : l’IA peut se tromper."
+    },
+    {
+      "numero": 11,
+      "partie": "Générer une activité",
+      "titre": "Exportez : pour la plateforme, et pour la classe",
+      "image": "diapositives/11.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Chaque activité sort sous deux formes. Pour la plateforme : le fichier .h5p d’une activité interactive ; pour un module de la plateforme, un .mbz, la sauvegarde Moodle d’une activité ; pour une banque de questions ou un glossaire, un .xml. Pour la classe : une version imprimable en Word, LibreOffice ou PDF, avec l’énoncé et le corrigé ; dans Word et LibreOffice, les formules mathématiques restent modifiables."
+    },
+    {
+      "numero": 12,
+      "partie": "Générer une activité",
+      "titre": "Importez dans votre plateforme : le « ? » vous guide",
+      "image": "diapositives/12.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Dans la barre de l’aperçu, à droite du bouton du format, un petit point d’interrogation : « Aide pour importer ce fichier ». Il ouvre « Comment utiliser ce fichier ? », avec les étapes et des captures. Pour un .h5p, deux méthodes : la méthode simple — glisser-déposer le fichier dans une section du cours en mode édition — et la méthode recommandée, par « Ajouter une activité ou une ressource », puis « Contenu interactif (H5P) ». Un .mbz s’importe sans écraser le contenu du cours. Les captures montrent Éléa ; la démarche est très proche sur Magistère et Moodle. Le « Tutoriel », en haut de Caramel, reprend tout pas à pas, dans son chapitre « Intégrer dans Éléa / Magistère / Moodle »."
+    },
+    {
+      "numero": 13,
+      "partie": "Générer une activité",
+      "titre": "La Sucrerie : partager, si vous le souhaitez",
+      "image": "diapositives/13.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "La Sucrerie est la bibliothèque publique d’activités qui accompagne Caramel. Le bouton « Vers la Sucrerie », dans l’aperçu, ouvre « Publier sur La Sucrerie ». C’est facultatif, et c’est une publication : l’activité devient publique, visible de tous les enseignants, sous licence libre CC BY-SA 4.0. On s’identifie avec son adresse académique, qui sert aussi à recevoir un lien de gestion pour la retirer. On atteste en être l’auteur, l’avoir vérifiée, et qu’elle ne contient aucune donnée personnelle. Sans ce choix, rien n’est publié : l’activité reste sur votre ordinateur."
+    },
+    {
+      "numero": 14,
+      "partie": "Concevoir un parcours",
+      "titre": "Un parcours : un cours entier, en quatre temps",
+      "image": "diapositives/14.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Au-delà d’une activité, Caramel prépare un parcours complet : plusieurs activités organisées en étapes, livrées dans un seul fichier de cours. On garde le même formulaire d’accueil, puis le commutateur « Une activité | Un parcours », juste en dessous, ouvre l’atelier de parcours à la place des tuiles. L’atelier avance en quatre temps : le cadrage, le plan, la fabrication et la livraison. Point important : rien n’est généré avant que vous ayez relu le plan."
+    },
+    {
+      "numero": 15,
+      "partie": "Concevoir un parcours",
+      "titre": "Le cadrage : quatre questions",
+      "image": "diapositives/15.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Le cadrage tient en quatre questions, sous le formulaire déjà rempli. « Pour quelle plateforme ? » : Éléa, Magistère ou Moodle — le vocabulaire suit : élèves sur Éléa, stagiaires sur Magistère, étudiants sur Moodle. « Comment se déroule-t-il ? » : en classe, à distance, ou les deux. « Quelle ampleur ? » : d’une séance de trois ou quatre activités à une séquence entière de neuf à douze. Enfin : « Tous vos élèves suivent-ils le même chemin ? » — un même chemin pour tous, ou des chemins selon les résultats ; on y revient dans un instant."
+    },
+    {
+      "numero": 16,
+      "partie": "Concevoir un parcours",
+      "titre": "Une trame, puis « Composer le plan »",
+      "image": "diapositives/16.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Sous les quatre questions, « Quelle trame ? » propose des modèles de déroulé : apprendre en autonomie, réviser avant l’évaluation, s’entraîner, évaluer… et d’autres derrière « Voir les autres modèles ». On peut aussi laisser Caramel choisir. Trois boutons pour la suite : « Composer le plan », le plus courant, demande le plan à l’IA — sa flèche choisit le modèle, comme pour une activité ; « Partir du modèle » reprend tel quel le plan de la trame choisie, sans l’IA ; « Personnaliser le plan » donne le prompt à copier vers l’IA de votre choix, puis « 2/2 Coller la réponse de l’IA ». Dans tous les cas, rien n’est encore généré."
+    },
+    {
+      "numero": 17,
+      "partie": "Concevoir un parcours",
+      "titre": "Relisez et modifiez le plan",
+      "image": "diapositives/17.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Le plan est une proposition, entièrement modifiable. Le titre et l’objectif se réécrivent. La « Relecture du plan » signale ce qui mérite attention, selon plusieurs repères. Chaque étape devient une section du cours : on la réordonne avec les flèches, on la supprime avec la corbeille, on en ajoute avec « Ajouter une étape ». Dans chaque étape, « Ajouter une activité ». Le volet « Consigne et palier » précise ce que l’IA doit produire. Le cadenas réserve une activité dont vous fournirez vous-même le contenu : elle ne sera pas générée. Chaque activité a sa durée en minutes, et la durée totale se recalcule."
+    },
+    {
+      "numero": 18,
+      "partie": "Concevoir un parcours",
+      "titre": "Changez le type d’une activité : la mosaïque",
+      "image": "diapositives/18.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Un clic sur le type d’une activité ouvre la mosaïque « Choisir le type d’activité ». En haut, les activités générées par Caramel ; en bas, les modules de la plateforme — forum, atelier, wiki, choix de groupe… — pour lesquels l’IA rédige la consigne, et dont le contenu viendra de la classe. Si on change d’avis, le bandeau « Annuler la modification » récupère l’ancien contenu : il apparaît après un changement de type ou une suppression."
+    },
+    {
+      "numero": 19,
+      "partie": "Concevoir un parcours",
+      "titre": "La fabrication : les activités, une à une",
+      "image": "diapositives/19.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Quand le plan vous convient, « Fabriquer le parcours » lance la génération des activités, une à une, sous vos yeux. Chacune passe d’« En attente » à « En cours… » puis à « Prête ». Une activité prête se relit avec « Aperçu », se corrige avec « Modifier le contenu », ou se génère à nouveau. La fabrication prend quelques minutes : le service peut être lent, et une activité en échec se relance simplement. Quand tout est prêt, « Assembler le parcours » mène à la livraison."
+    },
+    {
+      "numero": 20,
+      "partie": "Concevoir un parcours",
+      "titre": "La livraison : un seul fichier de cours",
+      "image": "diapositives/20.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "À la livraison, « Télécharger le parcours (.mbz) » donne un seul fichier qui contient tout le cours : sections, activités et consignes. L’import se fait par restauration, en trois étapes : dans la plateforme, créer un cours vide ou ouvrir celui à compléter ; ouvrir « Restauration » et déposer le fichier .mbz ; choisir « Fusionner avec ce cours », puis valider. S’y ajoutent la fiche de séquence et le détail des activités en Word, LibreOffice ou PDF. Enfin, « Exporter le scénario (.json) » garde le parcours pour le rouvrir plus tard dans Caramel, par « Importer un modèle » en haut de l’atelier — sans refaire les générations. Ce fichier-là ne s’importe pas dans la plateforme."
+    },
+    {
+      "numero": 21,
+      "partie": "Concevoir un parcours",
+      "titre": "Un parcours différencié : des chemins selon les résultats",
+      "image": "diapositives/21.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Au cadrage, « Des chemins selon les résultats » fait du parcours un parcours différencié. Un test — un quiz ou un Test de la plateforme — oriente chaque élève, d’après sa note à la première tentative, vers l’un de deux à quatre chemins : reprendre les bases, renforcer, consolider, approfondir. On choisit leur nombre avec « Combien de chemins ? ». Chaque élève ne voit que son chemin, puis tous se retrouvent pour une étape commune, jusqu’à la fin du parcours. Les restrictions d’accès sont posées par le fichier lui-même : rien à régler à la main dans la plateforme."
+    },
+    {
+      "numero": 22,
+      "partie": "Concevoir un parcours",
+      "titre": "L’aiguillage : une couleur par chemin",
+      "image": "diapositives/22.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Dans le plan, sous le test, l’aiguillage montre qui va où. La barre va de zéro bonne réponse au maximum du test, et chaque case prend la couleur du chemin qu’elle ouvre. Les boutons moins et plus déplacent les seuils, une bonne réponse à la fois : les seuils se règlent en nombre de bonnes réponses, pas en pourcentage. « Ajouter un chemin », « Retirer un chemin » ou « Un seul chemin pour tous » changent la structure. Une fois en classe, pour réorienter un élève, il suffit de modifier sa note au test dans le carnet de notes."
+    },
+    {
+      "numero": 23,
+      "partie": "Concevoir un parcours",
+      "titre": "Différencier un parcours déjà composé",
+      "image": "diapositives/23.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Pas besoin de tout reprendre au cadrage. Dans un parcours linéaire, chaque étape qui contient un test propose « Ouvrir des chemins selon ce test ». Un clic, et l’étape suivante se scinde en chemins — trois par défaut, que « Retirer un chemin » ou « Ajouter un chemin » ajustent —, avec l’aiguillage de la diapositive précédente. L’étape d’origine devient le premier chemin ; les nouveaux reprennent ses types d’activité, sans texte : écrivez au moins leurs titres, puis le bouton de fabrication propose de « Générer les activités manquantes ». Pour revenir en arrière : « Un seul chemin pour tous » garde le chemin déjà écrit."
+    },
+    {
+      "numero": 24,
+      "partie": "Concevoir un parcours",
+      "titre": "« Voir comme un élève »",
+      "image": "diapositives/24.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Le bouton « Voir comme un élève », en haut de l’aiguillage, montre la page du cours telle qu’elle s’affichera sur la plateforme. On choisit qui regarde — un élève ou l’enseignant —, le moment — avant le test, pendant son chemin, chemin terminé, parcours terminé — et le nombre de bonnes réponses au test, avec le curseur. On vérifie ainsi, avant tout import, qu’un élève qui a eu quatre sur huit voit bien le chemin « Consolider », et lui seul."
+    },
+    {
+      "numero": 25,
+      "partie": "Concevoir un parcours",
+      "titre": "Un cours vide, et une page « Bilan du parcours »",
+      "image": "diapositives/25.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Deux points pour finir le parcours. Un parcours à chemins s’importe dans un cours vide : la plateforme range les sections du fichier dans celles du cours, et des sections existantes recevraient les restrictions des chemins. Et tout parcours, linéaire ou différencié, se termine par une section « Fin du parcours », masquée jusqu’à ce que l’élève ait terminé ses activités ; elle porte une page « Bilan du parcours », composée sans IA à partir du plan : l’objectif, ce que chaque étape a travaillé et où le revoir, les mots à retenir."
+    },
+    {
+      "numero": 26,
+      "partie": null,
+      "titre": "À savoir",
+      "image": "diapositives/26.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Cinq points à retenir. Tout relire : l’IA peut se tromper sur un fait, une réponse ou une consigne ; l’enseignant reste l’auteur de ce qu’il donne aux élèves. Aucune donnée personnelle d’élève, ni dans les champs, ni dans les documents, ni dans un prompt envoyé à une IA externe. Le service peut être lent, surtout aux heures chargées : on patiente, ou on recommence, éventuellement avec un autre modèle. Caramel ne publie rien à votre place : c’est vous qui importez le fichier dans votre cours, et le dépôt sur la Sucrerie reste un choix. Enfin, un parcours généré est un point de départ, à adapter à votre classe."
+    },
+    {
+      "numero": 27,
+      "partie": null,
+      "titre": "Pour continuer",
+      "image": "diapositives/27.webp",
+      "largeur": 1601,
+      "hauteur": 900,
+      "notes": "Pour continuer seul : Caramel s’ouvre à l’adresse caramel.forge.apps.education.fr, gratuitement et sans compte. Le bouton « Tutoriel », en haut de l’écran, reprend chaque étape pas à pas, imports compris. Caramelia, l’assistante intégrée — la bulle en bas à droite —, répond aux questions sur l’outil et peut préparer une activité ou un parcours avec vous. Et la page « Découvrir Caramel », liée en pied de page, rassemble les vidéos, les tutoriels et des activités à essayer. Ce kit correspond à Caramel 7.1.0, dans sa version du 1er octobre 2026."
+    }
+  ]
+}

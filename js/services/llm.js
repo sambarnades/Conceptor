@@ -18,12 +18,10 @@ import { decideRagContextFromDom } from './rag-orchestrator.js';
 
 // Cycle ILaaS de l'automne 2026 : `gpt-oss-120b` et `mistral-small-3.2-24b` sont arrêtés le
 // 30-09-2026, `llama-3.3-70b` avait déjà quitté le catalogue ; retirés d'ici.
-// `qwen-3.8-27b` remplace progressivement `qwen-3.6-35b-instruct`. Au 28-09-2026 il n'est PAS
-// encore au catalogue : le Worker n8n échoue alors en ~2 s et retombe sur son premier fallback,
-// `qwen-3.6-35b-instruct` (mesuré : `fallback_level: 1`, 6 s en tout). C'est voulu — « 3.8 sinon
-// 3.6 » sans toucher n8n. L'id est déduit de la convention ILaaS (`qwen-3.6-35b-instruct`) :
-// le vérifier au catalogue dès son arrivée (sonde n8n, mode `liste`), faute de quoi Qwen
-// resterait en 3.6 à vie, sans rien dire.
+// `qwen-3.8-27b` remplace progressivement `qwen-3.6-35b-instruct`. Au 28-09-2026 il n'était PAS
+// encore au catalogue (le Worker retombait sur `qwen-3.6-35b-instruct`, `fallback_level: 1`) ;
+// le 01-10-2026, il répond lui-même sous cet id déduit de la convention ILaaS (`fallback_level: 0`,
+// 5 à 10 s par appel, relevé sur une trentaine d'appels).
 export const AVAILABLE_MODELS = [
     { id: 'gemma-4-31b', displayName: 'Gemma 4', param: '31', owned_by: 'Google', type: 'text-generation', featured: true, order: 1, sizeTag: 'small' },
     { id: 'qwen-3.8-27b', displayName: 'Qwen 3.8', param: '27', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },

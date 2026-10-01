@@ -28,7 +28,8 @@ try {
     // D64 : l'action primaire génère en un clic ; « Personnaliser les instructions » ouvre la fenêtre
     // de génération d'une activité (prompt à copier, réponse à coller).
     check(await page.locator('#pc-mode').count() === 0 && await page.locator('.pc-actionbar #pc-guide-open').isVisible()
-        && await page.locator('#pc-scenario-importer').count() === 0
+        // « Importer un modèle » vit en tête de l'atelier depuis D85, plus dans le pied.
+        && await page.locator('.pc-actionbar #pc-scenario-importer').count() === 0
         && (await page.locator('#pc-guide-open').innerText()).trim() === 'Personnaliser le plan'
         && await page.locator('#pc-guide-open > .fa-sliders').count() === 1
         && await page.locator('#pc-guide-open > .fa-copy').count() === 0,
@@ -77,10 +78,11 @@ try {
     await bouton.click();
     await page.waitForFunction(() => document.querySelector('.pc-guide__etat')?.textContent.includes('corrigée'));
     check(!(await page.locator('.pc-guide__etat').textContent()).includes('parcours_'), 'Réponse sans JSON : message traduit, aucune clé brute');
+    // Un plan sans aucune activité est le seul que la réparation (D107) ne sauve pas.
     await response.fill('{"titre":"incomplet"}');
     await bouton.click();
-    await page.waitForFunction(() => document.querySelector('.pc-guide__etat')?.textContent.includes('Total reçu'));
-    check(await page.evaluate(async () => !(await import('/js/parcours/state.js')).brouillon().plan), 'Plan invalide non appliqué');
+    await page.waitForFunction(() => document.querySelector('.pc-guide__etat')?.textContent.includes('aucune activité'));
+    check(await page.evaluate(async () => !(await import('/js/parcours/state.js')).brouillon().plan), 'Plan sans activité non appliqué, message traduit');
     const plan = { titre: 'Capitales RELU', objectifGeneral: 'Associer pays et capitales', notionsPivots: ['France', 'Italie', 'Espagne'], etapes: Array.from({length: 4}, (_, i) => ({ titre: 'Étape '+(i+1), objectif: 'Identifier une capitale', cartes: [{ module: 'MultipleChoice', titre: 'Question '+(i+1), objectif: 'Identifier Paris', consigne: 'Choisir la capitale', palier: 'entrainement', duree: 5 }] })) };
     // Une réponse telle qu'une IA grand public la rend : phrase, bloc ```json, conclusion.
     await response.fill(`Voici le plan demandé :\n\n\`\`\`json\n${JSON.stringify(plan, null, 2)}\n\`\`\`\n\nN'hésitez pas à me demander des ajustements.`);
@@ -184,6 +186,13 @@ try {
         results.push({module:'Alternative de l’image conservée',ok:imageResult.value.backgroundImageAltText === imageExample.backgroundImageAltText});
         try { await verifierActiviteExterne('{}', {carte:{module:'MultipleChoice'},source:null}); results.push({module: 'Réponse vide refusée',ok:false}); }
         catch { results.push({module:'Réponse vide refusée',ok:true}); }
+        // Un exercice collé sans consigne est refusé, en nommant la question (D103) :
+        // le schéma de l'éditeur tient la consigne pour obligatoire.
+        const quiz = await fetch('/assets/data/examples/quiz_mixte_1.json').then(r => r.json());
+        const rang = quiz.questions.findIndex(q => String(q.library).startsWith('H5P.MarkTheWords'));
+        delete quiz.questions[rang].params.taskDescription;
+        try { await verifierActiviteExterne(JSON.stringify(quiz), {carte:{module:'QuizSet',titre:'Essai'},source:null}); results.push({module:'Consigne manquante refusée',ok:false}); }
+        catch (e) { const nommee = new RegExp(`Question ${rang + 1} .*Consigne`).test(e.message); results.push({module:'Consigne manquante refusée, question nommée',ok:nommee,...(nommee ? {} : {error:e.message})}); }
         return results;
     }, examples);
     for (const result of contracts) check(result.ok, 'Réponse exemple ' + result.module + (result.error ? ': ' + result.error : ''));

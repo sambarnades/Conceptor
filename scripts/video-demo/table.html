@@ -149,7 +149,8 @@ button.caramel { background: linear-gradient(180deg, #f0a24b, #d97b1c); color: #
   const ORIGINE = 28;                               // marge à gauche de la frise (px)
 
   const { duree: DUREE, marques } = await (await fetch('/marques.json', { cache: 'no-store' })).json();
-  let { rallonges, audio, textes } = await (await fetch('/montage', { cache: 'no-store' })).json();
+  let { rallonges, audio, textes, rallongeMax } = await (await fetch('/montage', { cache: 'no-store' })).json();
+  const RALLONGE_MAX = Number(rallongeMax) || 30;
   rallonges = rallonges || {}; audio = audio || {}; textes = textes || {};
   let partie = 0;
   const blocs = marques.map((m, k) => {
@@ -424,7 +425,7 @@ button.caramel { background: linear-gradient(180deg, #f0a24b, #d97b1c); color: #
   /* ---------------- Réglages ---------------- */
   let enregistrement = null;
   function regler(id, valeur) {
-    const v = Math.round(Math.max(0, Math.min(10, valeur)) * 2) / 2;
+    const v = Math.round(Math.max(0, Math.min(RALLONGE_MAX, valeur)) * 2) / 2;
     if (v) rallonges[id] = v; else delete rallonges[id];
     peindre();
     clearTimeout(enregistrement);

@@ -299,11 +299,11 @@ La aplicación está diseñada para ser compatible con un uso en ordenador, incl
 <!-- parcours-complet -->
 ## Crear y retomar un curso completo
 
-En Caramel, **Un itinerario** crea un curso para Éléa, Magistère o Moodle: varias actividades organizadas en secciones dentro de un solo archivo **.mbz**. El punto de partida es el formulario habitual: tema, público y documentos adjuntos.
+En Caramel, **Un itinerario** crea un curso para Éléa, Magistère o Moodle: varias actividades organizadas en secciones dentro de un solo archivo **.mbz**. El punto de partida es el formulario habitual: tema, público y documentos adjuntos. El taller usa el vocabulario de la plataforma elegida: alumnos en Éléa, personas en formación en Magistère, estudiantes en Moodle, tanto en pantalla como en el curso y en los textos que redacta la IA.
 
 En el menú de Caramelia, **Crear un curso** abre directamente el taller sin llamar a la IA. Si existe un borrador, **Retomar mi curso** lo recupera. Se conservan los campos y las fuentes existentes. Revisa la configuración y el plan en el taller antes de iniciar la generación.
 
-Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión y plantilla. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.
+Elija **Un itinerario** debajo del formulario, después la plataforma, modalidad, extensión, **Un mismo camino para todos** o **Caminos según los resultados**, y una plantilla: las más habituales se proponen primero —aprender de forma autónoma, repasar, entrenarse, evaluar— y **Ver las demás plantillas** muestra las siguientes. **Componer el plan** adapta un plan al tema con IA. **Partir de la plantilla** abre inmediatamente una estructura por completar, sin llamar a la IA. Las actividades solo se generan después de validar el plan.
 
 En **Plan**, edite el título, objetivo general, conceptos clave, etapas y actividades. Mueva actividades con las flechas o arrastrando su miniatura. **Instrucciones y etapa** permite ajustar las instrucciones de generación. Las orientaciones pedagógicas ayudan a revisar sin imponer un modelo. El máximo es de **12 actividades**.
 
@@ -319,7 +319,7 @@ En **Entrega**, descargue el **.mbz** y utilice la importación o restauración 
 
 El plan también propone los módulos de su Éléa, Magistère o Moodle, agrupados en el menú de cada actividad bajo **Módulos de la plataforma**: foro, consulta, cuestionario, encuesta, lección, taller de evaluación entre pares, tablero, wiki, documento colaborativo, glosario y base de datos por construir, aula virtual, elección de grupo, intercambio de archivos y enlace web. La IA redacta lo que la plataforma conserva al importar; los espacios colectivos llegan vacíos, con su consigna. Cuando un módulo requiere un ajuste en la plataforma (fases del taller, hora del aula virtual, grupos), Caramel lo indica en una nota **Por hacer antes de abrir el curso**, oculta para los alumnos, al principio del curso importado. El **paquete de contenido IMS** —páginas para leer con su índice, escritas íntegramente por Caramel— se elige en el mosaico; el plan no lo propone.
 
-El mapa de progreso es exclusivo de Éléa. El mapa y el acceso progresivo son opcionales y aún requieren comprobaciones en uso real. La plantilla de diferenciación no crea ramas automáticas según la nota. La colaboración ocurre en la plataforma. La publicación del curso completo en Sucrerie aún no está disponible.
+El mapa de progreso es exclusivo de Éléa. El mapa, el acceso progresivo y los caminos según los resultados aún requieren comprobaciones en uso real. La colaboración ocurre en la plataforma. La publicación del curso completo en Sucrerie aún no está disponible.
 
 Para saber más: [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) ayuda a reflexionar sobre las actividades de aprendizaje. Las siete familias de Caramel, entre ellas **Debatir** y **Colaborar**, son orientaciones simplificadas según las herramientas, no los seis tipos ABC ni una evaluación de su enseñanza.
 En Éléa, abre **Ajustes del curso**, activa el mapa de progreso y utiliza la tarjeta **+ Añadir mi imagen** para elegir tu propio fondo. Puedes cambiar o quitar la imagen y volver a los temas propuestos. El fondo se conserva en el escenario **.json** y se incluye en el curso **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG o TIFF · Máx. 12 MB. Conversión automática, sin recortar.
@@ -329,8 +329,10 @@ En Éléa, abre **Ajustes del curso**, activa el mapa de progreso y utiliza la t
 
 Tras **Un itinerario**, la plantilla da el desarrollo que la IA adapta al tema. La lista mostrada depende de la modalidad y la extensión elegidas; cada actividad sigue siendo modificable en el plan.
 
+- **Aprender de forma autónoma** — Un concepto nuevo, aprendido en solitario: descubrirlo paso a paso, practicar con corrección inmediata, retener lo esencial y comprobar. *(Una sesión · De dos a tres sesiones · Una secuencia completa)*
 - **Repasar antes de la evaluación** — Se sitúa lo adquirido, se vuelve a poner lo esencial a la vista, se practica y se hace una autoevaluación. *(Una sesión · De dos a tres sesiones)*
-- **Preparar y hacer una evaluación** — Un entrenamiento con el formato de la prueba, la evaluación calificada y la corrección. Tres actividades, nada más. *(Una sesión)*
+- **Entrenarse** — Un repaso para reactivar, ejercicios con opciones y después sin ellas, una comprobación final: la dificultad aumenta y no se repite la lección. *(Una sesión · De dos a tres sesiones · Una secuencia completa)*
+- **Evaluar** — Lo que se espera, un entrenamiento con el formato y después la evaluación: un solo intento, cronometrado, sin corrección visible; al final, solo la calificación. *(Una sesión)*
 - **Remediar tras la evaluación** — Se parte de los errores constatados: se nombran, se reexplica el punto exacto, se rehace y se vuelve a comprobar. *(Una sesión · De dos a tres sesiones · A distancia · Ambas)*
 - **Ritual corto** — Diez minutos, siempre con la misma forma. Es la repetición la que fija, no la variedad. *(Una sesión)*
 - **Descubrir un concepto** — Una situación que interroga, documentos que explorar, luego la síntesis, y solo después la aplicación. *(De dos a tres sesiones · Una secuencia completa)*
@@ -339,7 +341,8 @@ Tras **Un itinerario**, la plantilla da el desarrollo que la IA adapta al tema. 
 - **Llevar a cabo una investigación** — Una pregunta, una hipótesis, unos datos, una conclusión: el método científico, en orden. *(De dos a tres sesiones · Una secuencia completa · En clase · Ambas)*
 - **Analizar una fuente** — De dónde viene la información, quién la produce, qué omite. Equipar la mirada antes de juzgar. *(Una sesión · De dos a tres sesiones)*
 - **Debate argumentado** — Una votación para saber de dónde se parte, fuentes para informarse, un foro para debatir y un texto para concluir. *(De dos a tres sesiones · Una secuencia completa)*
-- **Diferenciación a tres velocidades** — Una prueba inicial y actividades para consolidar, continuar o profundizar. Las instrucciones orientan las elecciones, sin ramificaciones automáticas según la nota. *(De dos a tres sesiones · Una secuencia completa · A distancia · Ambas)*
+- **Diferenciar desde el principio** — Una prueba inicial abre a cada alumno un camino adaptado a su resultado; todos se reúnen para un balance común. *(Una sesión · De dos a tres sesiones · Caminos según los resultados)*
+- **Remediar sobre la marcha** — Se descubre y se hace balance con un quiz: según la puntuación, se repasa o se va más allá; después, todos aplican juntos lo aprendido. *(Una sesión · De dos a tres sesiones · Caminos según los resultados)*
 - **Secuencia de lengua extranjera** — Primero el léxico, después la comprensión, la producción al final. *(De dos a tres sesiones)*
 - **Preparar una intervención oral** — Qué se va a decir, en qué orden y cómo se ensaya decirlo. *(Una sesión · De dos a tres sesiones · En clase · Ambas)*
 - **Aprender a aprender** — Lo que de verdad ayuda a recordar, probado con el tema del curso: ponerse a prueba, espaciar, explicar. Después, cada uno planifica sus repasos. *(Una sesión · De dos a tres sesiones)*
@@ -350,4 +353,17 @@ Tras **Un itinerario**, la plantilla da el desarrollo que la IA adapta al tema. 
 - **Juego de escape** — Una misión, pistas, enigmas de dificultad creciente, un código final y el debate posterior. *(Una sesión · De dos a tres sesiones · En clase · Ambas)*
 - **Estructura libre** — Ningún desarrollo impuesto: compones tú las etapas y Caramel rellena lo que coloques en ellas. *(Una sesión · De dos a tres sesiones · Una secuencia completa)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Caminos según los resultados
+
+En la configuración, **Caminos según los resultados** hace que sus alumnos pasen una prueba: según su calificación en el primer intento, cada uno sigue uno de los 2 a 4 caminos —**Repasar las bases**, **Reforzar**, **Consolidar**, **Profundizar**— y después todos se reúnen en una etapa común. Cada alumno solo ve su camino. Hay dos plantillas pensadas para ello: **Diferenciar desde el principio** y **Remediar sobre la marcha**.
+
+- En **Plan**, la barra de puntuaciones muestra qué camino se abre con cada número de respuestas correctas; los botones **−** y **+** adelantan o retrasan en una respuesta correcta el inicio de un camino. **Añadir un camino**, **Quitar un camino** y **Un solo camino para todos** modifican la bifurcación.
+- La prueba que orienta es un **Quiz de opción múltiple**, un **Quiz Verdadero/Falso** o un **Cuestionario**, situado al final de la etapa que precede a los caminos. Cada pregunta vale un punto y la prueba no permite volver a intentarlo.
+- **Ver como alumno** muestra la página del curso tal como la verá el alumno —antes de la prueba, durante su camino, al final— para la puntuación que usted elija.
+- Para reorientar a un alumno, modifique su calificación de la prueba en el libro de calificaciones de la plataforma.
+
+Importe un itinerario con caminos en un curso **vacío**: Moodle coloca las secciones del archivo en las del curso, y sus secciones existentes recibirían las restricciones de los caminos. Ahora todos los itinerarios terminan con una sección **Fin del itinerario**, y la duración estimada aparece debajo de cada actividad.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

@@ -14,7 +14,7 @@
  * @module parcours/duree
  */
 
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 
 /** Traduction avec jetons `@x`. */
 function tr(cle, jetons) {

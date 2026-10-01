@@ -1,0 +1,160 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "elea",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "lineaire",
+  "chemins": 2
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Millionnaire",
+  "Appariement",
+  "QCM",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_mur_notes",
+  "parcours_lien",
+  "parcours_questionnaire",
+  "parcours_enquete",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_tableau",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_document",
+  "parcours_depot",
+  "parcours_base",
+  "parcours_choix_groupe"
+ ],
+ "erreursDOrigine": [],
+ "brut": {
+  "titre": "Maîtriser la proportionnalité en 5e",
+  "objectifGeneral": "Résoudre des problèmes de proportionnalité en utilisant le coefficient ou la quatrième proportionnelle et calculer des pourcentages simples.",
+  "introduction": "Dans ce parcours, tu vas découvrir comment utiliser la proportionnalité pour résoudre des problèmes concrets. Tu vas apprendre à calculer un coefficient, trouver une quatrième proportionnelle et appliquer des pourcentages simples. Le parcours est organisé en étapes progressives : tu commenceras par comprendre les bases, puis tu t’entraîneras avant de vérifier ce que tu as retenu. Prends le temps de lire attentivement les consignes et de relire tes réponses pour progresser.",
+  "notionsPivots": [
+   "la proportionnalité",
+   "le coefficient de proportionnalité",
+   "la quatrième proportionnelle",
+   "le pourcentage simple",
+   "la règle de trois",
+   "le tableau de proportionnalité",
+   "le produit en croix",
+   "la relation entre grandeurs proportionnelles",
+   "le calcul d’une valeur partielle",
+   "le calcul d’une valeur totale"
+  ],
+  "etapes": [
+   {
+    "titre": "Découvrir la proportionnalité",
+    "objectif": "Identifier des grandeurs proportionnelles",
+    "introduction": "Tu vas commencer par observer des situations où deux grandeurs varient ensemble de manière proportionnelle. Cela te permettra de comprendre ce que signifie 'être proportionnel' et de repérer les cas où cette propriété s’applique. Ces exemples te serviront ensuite pour calculer des coefficients et résoudre des problèmes.",
+    "cartes": [
+     {
+      "titre": "Reconnaître la proportionnalité",
+      "objectif": "Repérer des grandeurs proportionnelles",
+      "module": "QuizSetVF",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Lis attentivement chaque situation proposée et indique si les grandeurs mentionnées sont proportionnelles ou non."
+     }
+    ]
+   },
+   {
+    "titre": "Comprendre le coefficient de proportionnalité",
+    "objectif": "Calculer et utiliser un coefficient de proportionnalité",
+    "introduction": "Maintenant que tu sais reconnaître des situations de proportionnalité, tu vas apprendre à calculer le coefficient qui lie deux grandeurs. Ce coefficient te servira ensuite à résoudre des problèmes concrets. Prends ton temps pour bien comprendre comment il est obtenu et comment l’utiliser.",
+    "cartes": [
+     {
+      "titre": "Calculer un coefficient",
+      "objectif": "Déterminer le coefficient de proportionnalité",
+      "module": "FillInTheBlanks",
+      "palier": "decouverte",
+      "duree": 8,
+      "consigne": "À partir d’un tableau de valeurs proportionnelles, complète les cases vides pour retrouver le coefficient de proportionnalité."
+     },
+     {
+      "titre": "Utiliser un coefficient",
+      "objectif": "Appliquer un coefficient à une situation",
+      "module": "DragTheWords",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Remets dans l’ordre les étapes pour calculer une valeur inconnue à partir d’un coefficient de proportionnalité donné."
+     }
+    ]
+   },
+   {
+    "titre": "Trouver la quatrième proportionnelle",
+    "objectif": "Résoudre des problèmes avec la règle de trois",
+    "introduction": "Tu vas maintenant apprendre à trouver une valeur manquante dans une situation de proportionnalité. Cette méthode, appelée règle de trois, est très utile pour résoudre des problèmes concrets. Tu vas t’entraîner à l’appliquer dans différents contextes pour bien la maîtriser.",
+    "cartes": [
+     {
+      "titre": "Appliquer la règle de trois",
+      "objectif": "Trouver une quatrième proportionnelle",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 12,
+      "consigne": "Complète les calculs pour trouver la valeur manquante dans des tableaux de proportionnalité."
+     },
+     {
+      "titre": "Résoudre un problème concret",
+      "objectif": "Utiliser la proportionnalité dans un contexte réel",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Réponds à des questions à choix multiples en utilisant la règle de trois pour résoudre des problèmes de la vie courante."
+     }
+    ]
+   },
+   {
+    "titre": "Maîtriser les pourcentages simples",
+    "objectif": "Calculer et appliquer des pourcentages",
+    "introduction": "Les pourcentages sont des cas particuliers de proportionnalité. Tu vas apprendre à calculer une valeur partielle ou totale à partir d’un pourcentage, et à utiliser cette méthode dans des situations variées. Cette étape te permettra de consolider ce que tu as appris sur la proportionnalité.",
+    "cartes": [
+     {
+      "titre": "Calculer un pourcentage",
+      "objectif": "Déterminer une valeur à partir d’un pourcentage",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Complète les calculs pour trouver une valeur lorsque tu connais un pourcentage donné."
+     }
+    ]
+   }
+  ],
+  "conclusion": "Tu as maintenant toutes les clés pour résoudre des problèmes de proportionnalité, calculer des coefficients, trouver des quatrième proportionnelles et appliquer des pourcentages simples. Si tu veux aller plus loin, tu peux t’entraîner avec des exercices supplémentaires dans ton manuel ou consulter des vidéos en ligne pour approfondir ces notions."
+ }
+}

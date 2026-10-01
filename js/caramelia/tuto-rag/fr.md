@@ -295,11 +295,11 @@ L'application est conçue pour être compatible avec une utilisation sur ordinat
 <!-- parcours-complet -->
 ## Créer et reprendre un parcours complet
 
-Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ.
+Dans Caramel, **Un parcours** crée un cours pour Éléa, Magistère ou Moodle : plusieurs activités, rangées en sections, dans un seul fichier **.mbz**. Le formulaire habituel (sujet, public, documents joints) reste le point de départ. L’atelier parle le vocabulaire de la plateforme choisie : des élèves sur Éléa, des stagiaires sur Magistère, des étudiants sur Moodle — à l’écran, dans le cours et dans les textes que rédige l’IA.
 
 Depuis le menu de Caramelia, **Créer un parcours** ouvre directement l’atelier, sans appel à l’IA. Si un brouillon existe, **Reprendre mon parcours** le retrouve. Les champs et les sources déjà présents sont conservés. Le cadrage et le plan se relisent dans l’atelier avant de lancer la génération.
 
-Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur et une trame. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.
+Choisissez **Un parcours** sous le formulaire, puis la plateforme, la modalité, l’ampleur, **Un même chemin pour tous** ou **Des chemins selon les résultats**, et une trame : les plus courantes sont proposées d’abord — apprendre en autonomie, réviser, s’entraîner, évaluer —, **Voir les autres modèles** affiche les suivantes. **Composer le plan** adapte le plan à votre sujet avec l’IA. **Partir du modèle** ouvre immédiatement une structure à compléter, sans appel à l’IA. Les activités ne sont générées qu’après votre validation du plan.
 
 Dans **Plan**, modifiez le titre, l’objectif général, les notions du parcours, les étapes et les activités. Déplacez les activités avec les flèches ou leur vignette. **Consigne et palier** permet d’ajuster les indications de génération. Les repères pédagogiques vous aident à relire sans imposer un modèle. Le maximum est de **12 activités**.
 
@@ -315,7 +315,7 @@ Dans **Livraison**, téléchargez le **.mbz**, puis utilisez l’import de parco
 
 Le plan propose aussi les modules de votre Éléa, Magistère ou Moodle, rangés dans le menu de chaque activité sous **Modules de la plateforme** : forum, sondage, questionnaire, enquête, leçon, atelier d’évaluation par les pairs, tableau, wiki, document collaboratif, glossaire et base de données à construire, classe virtuelle, choix de groupe, partage de fichiers et lien web. L’IA en écrit ce que la plateforme conserve à l’import ; les espaces collectifs arrivent vides, avec leur consigne. Quand un module demande un réglage sur la plateforme (phases de l’atelier, heure de la classe virtuelle, groupes), Caramel l’écrit dans une note **À faire avant d’ouvrir le cours**, cachée aux élèves, en tête du cours importé. Le **Paquetage IMS** — des pages à lire avec leur table des matières, entièrement écrites par Caramel — se choisit dans la mosaïque ; le plan ne le propose pas.
 
-La carte de progression est propre à Éléa. La carte et l’ouverture progressive sont facultatives et demandent encore une vérification en situation sur la plateforme. La trame de différenciation ne crée pas de branches automatiques selon une note. Les échanges collaboratifs ont lieu sur la plateforme. Le dépôt d’un parcours complet dans Sucrerie n’est pas encore disponible.
+La carte de progression est propre à Éléa. La carte, l’ouverture progressive et les chemins selon les résultats demandent encore une vérification en situation sur la plateforme. Les échanges collaboratifs ont lieu sur la plateforme. Le dépôt d’un parcours complet dans Sucrerie n’est pas encore disponible.
 
 Pour aller plus loin : [ABC Learning Design (UCL)](https://www.ucl.ac.uk/short-courses/staff-resources/course-design/designing-learning-activities) aide à réfléchir aux activités d’apprentissage. Les sept familles affichées dans Caramel, dont **Discuter** et **Coopérer**, sont des repères simplifiés liés aux outils, pas les six types ABC ni une évaluation de votre pédagogie.
 Sur Éléa, dans **Réglages du cours**, activez la carte de progression puis utilisez la tuile **+ Ajouter mon image** pour choisir votre propre fond. Vous pouvez changer ou retirer l’image et revenir aux thèmes proposés. Le fond est conservé dans le scénario **.json** et intégré au parcours **.mbz**. JPEG, PNG, HEIC, WebP, GIF, BMP, AVIF, SVG ou TIFF · 12 Mo max. Conversion automatique, sans recadrage.
@@ -325,8 +325,10 @@ Sur Éléa, dans **Réglages du cours**, activez la carte de progression puis ut
 
 Après **Un parcours**, la trame donne le déroulé que l’IA adapte au sujet. La liste affichée dépend de la modalité et de l’ampleur choisies ; chaque activité reste modifiable dans le plan.
 
+- **Apprendre en autonomie** — Une notion nouvelle, apprise seul : la découvrir pas à pas, s’exercer avec une correction immédiate, retenir l’essentiel, vérifier. *(Une séance · Deux à trois séances · Une séquence entière)*
 - **Réviser avant l'évaluation** — On situe ce qui est acquis, on remet l'essentiel sous les yeux, on s'entraîne, on se teste. *(Une séance · Deux à trois séances)*
-- **Préparer et passer une évaluation** — Un entraînement au format de l'épreuve, l'évaluation notée, le corrigé. Trois activités, rien de plus. *(Une séance)*
+- **S’entraîner** — Un rappel pour réactiver, des exercices avec propositions puis sans, une vérification finale : la difficulté monte, le cours n’est pas refait. *(Une séance · Deux à trois séances · Une séquence entière)*
+- **Évaluer** — Les attendus, un entraînement au format, puis l’évaluation : une seule tentative, chronométrée, sans correction affichée ; la note seule à la fin. *(Une séance)*
 - **Remédier après l'évaluation** — On repart des erreurs constatées : on les nomme, on réexplique le point précis, on refait, on revérifie. *(Une séance · Deux à trois séances · À distance · Les deux)*
 - **Rituel court** — Dix minutes, toujours la même forme. C'est la répétition qui installe, pas la variété. *(Une séance)*
 - **Découvrir une notion** — Une situation qui interroge, des documents à explorer, puis la synthèse, et seulement ensuite l'application. *(Deux à trois séances · Une séquence entière)*
@@ -335,7 +337,8 @@ Après **Un parcours**, la trame donne le déroulé que l’IA adapte au sujet. 
 - **Mener une investigation** — Une question, une hypothèse, des données, une conclusion : la démarche scientifique dans l'ordre. *(Deux à trois séances · Une séquence entière · En classe · Les deux)*
 - **Analyser une source** — D'où vient l'information, qui la produit, ce qu'elle omet. Outiller le regard avant de juger. *(Une séance · Deux à trois séances)*
 - **Débat argumenté** — Un vote pour dire d'où l'on part, des sources pour s'informer, un forum pour débattre, un texte pour conclure. *(Deux à trois séances · Une séquence entière)*
-- **Différenciation à trois vitesses** — Un test de positionnement, puis des activités pour consolider, poursuivre ou approfondir. Les consignes guident les choix, sans branches automatiques selon la note. *(Deux à trois séances · Une séquence entière · À distance · Les deux)*
+- **Différencier dès le départ** — Un test de positionnement ouvre à chaque élève un chemin adapté à son résultat ; tous se retrouvent pour un bilan commun. *(Une séance · Deux à trois séances · Des chemins selon les résultats)*
+- **Remédier en cours de route** — On découvre, on fait le point par un quiz : selon le score, on revoit ou on va plus loin, puis on réinvestit ensemble. *(Une séance · Deux à trois séances · Des chemins selon les résultats)*
 - **Séquence de langue vivante** — Le lexique d'abord, la compréhension ensuite, la production en dernier. *(Deux à trois séances)*
 - **Préparer une prise de parole** — Ce qu'on va dire, dans quel ordre on va le dire, et comment on s'entraîne à le dire. *(Une séance · Deux à trois séances · En classe · Les deux)*
 - **Apprendre à apprendre** — Ce qui aide vraiment à retenir, essayé sur le sujet du cours : se tester, espacer, expliquer. Puis chacun planifie ses révisions. *(Une séance · Deux à trois séances)*
@@ -346,4 +349,17 @@ Après **Un parcours**, la trame donne le déroulé que l’IA adapte au sujet. 
 - **Jeu d'évasion** — Une mission, des indices, des énigmes de difficulté croissante, un code final, et le débriefing. *(Une séance · Deux à trois séances · En classe · Les deux)*
 - **Structure libre** — Aucun déroulé imposé : vous composez les étapes vous-même et Caramel remplit ce que vous y posez. *(Une séance · Deux à trois séances · Une séquence entière)*
 <!-- /parcours-trames -->
+
+<!-- parcours-chemins -->
+### Des chemins selon les résultats
+
+Au cadrage, **Des chemins selon les résultats** fait passer un test à vos élèves : selon sa note à la première tentative, chacun suit l’un des 2 à 4 chemins — **Reprendre les bases**, **Renforcer**, **Consolider**, **Approfondir** —, puis tous se retrouvent pour une étape commune. Chaque élève ne voit que son chemin. Deux trames sont pensées pour cela : **Différencier dès le départ** et **Remédier en cours de route**.
+
+- Dans **Plan**, la barre des scores montre quel chemin s’ouvre pour chaque nombre de bonnes réponses ; les boutons **−** et **+** avancent ou reculent le début d’un chemin d’une bonne réponse. **Ajouter un chemin**, **Retirer un chemin** et **Un seul chemin pour tous** changent l’aiguillage.
+- Le test qui oriente est un **Quiz QCM**, un **Quiz Vrai/Faux** ou un **Test**, placé à la fin de l’étape qui précède les chemins. Chaque question vaut un point, et le test ne propose pas de recommencer.
+- **Voir comme un élève** montre la page du cours telle que l’élève la verra — avant le test, pendant son chemin, à la fin — pour le score que vous choisissez.
+- Pour réorienter un élève, modifiez sa note au test dans le carnet de notes de la plateforme.
+
+Importez un parcours à chemins dans un cours **vide** : Moodle range les sections du fichier dans celles du cours, et vos sections existantes recevraient les restrictions des chemins. Tous les parcours se terminent désormais par une section **Fin du parcours** : le mot de la fin, puis une page **Bilan du parcours** (l’objectif, ce que chaque étape a travaillé et où le revoir, les mots à retenir). La durée estimée s’affiche sous chaque activité.
+<!-- /parcours-chemins -->
 <!-- /parcours-complet -->

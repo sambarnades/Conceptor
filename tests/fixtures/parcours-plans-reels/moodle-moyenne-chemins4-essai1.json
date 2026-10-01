@@ -1,0 +1,347 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "moodle",
+  "format": "distanciel",
+  "ampleur": "moyenne",
+  "trame": "auto",
+  "structure": "chemins",
+  "chemins": 4
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_lien",
+  "parcours_enquete",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_base"
+ ],
+ "erreursDOrigine": [
+  "Total reçu : 25 activités ; attendu : 8 à 12, pour TOUT le parcours.",
+  "Prévoir 6 à 8 étapes non vides.",
+  "Les chemins durent à peu près autant (reçu : 52, 51, 65, 80 minutes).",
+  "Chaque élève fait les étapes communes et UN chemin : 5 à 8 activités par élève attendues (reçu : 9 communes + 4 dans un chemin)."
+ ],
+ "brut": {
+  "titre": "Statistiques descriptives : moyenne, médiane et représentations graphiques",
+  "objectifGeneral": "Calculer et interpréter des indicateurs de tendance centrale et de dispersion à partir de séries statistiques",
+  "introduction": "Vous allez découvrir les outils de base des statistiques descriptives pour analyser des séries de données. Ce parcours alterne apports théoriques et exercices guidés. Après un test diagnostique, quatre chemins adaptés à votre niveau vous permettront de progresser à votre rythme. Travaillez chaque étape dans l’ordre proposé sans sauter d’activité.",
+  "conclusion": "Vous savez désormais calculer moyenne, médiane et quartiles, et représenter une série par une boîte à moustaches. Pour aller plus loin, explorez des jeux de données réels sur des sites comme data.gouv.fr ou consultez un manuel de statistique appliquée.",
+  "notionsPivots": [
+   "la moyenne arithmétique",
+   "la médiane d’une série statistique",
+   "les quartiles d’une série",
+   "l’écart interquartile",
+   "la boîte à moustaches",
+   "les données brutes",
+   "la série ordonnée",
+   "la fréquence",
+   "la représentation graphique",
+   "l’interprétation des indicateurs"
+  ],
+  "etapes": [
+   {
+    "titre": "Test diagnostique",
+    "objectif": "Identifier vos acquis sur les statistiques descriptives",
+    "introduction": "Ce test vous permet de situer votre niveau sur les notions clés de ce parcours. Prenez le temps de répondre précisément à chaque question. Les explications des réponses vous seront utiles pour choisir la suite.",
+    "cartes": [
+     {
+      "titre": "Test initial sur les statistiques descriptives",
+      "objectif": "Évaluer ses connaissances de base",
+      "module": "test_elea",
+      "palier": "decouverte",
+      "duree": 15,
+      "consigne": "Répondez à toutes les questions sans aide. Les explications des réponses seront disponibles après validation."
+     }
+    ]
+   },
+   {
+    "titre": "Comprendre les indicateurs de tendance centrale",
+    "objectif": "Distinguer moyenne et médiane sur des exemples simples",
+    "introduction": "Vous allez travailler sur les deux principaux indicateurs de tendance centrale. Cette étape commune permet de vous familiariser avec leur calcul sur des séries courtes.",
+    "cartes": [
+     {
+      "titre": "Lire une définition : moyenne et médiane",
+      "objectif": "Comprendre les deux notions",
+      "module": "Glossary",
+      "palier": "decouverte",
+      "duree": 8,
+      "consigne": "Consultez les définitions de la moyenne et de la médiane dans le lexique. Repérez les mots-clés pour les distinguer."
+     },
+     {
+      "titre": "Associer indicateurs et séries",
+      "objectif": "Relier les indicateurs à leurs contextes d'utilisation",
+      "module": "DragAndDrop",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Glissez les étiquettes 'moyenne' ou 'médiane' sur les séries où chaque indicateur est le plus pertinent."
+     }
+    ]
+   },
+   {
+    "titre": "Représenter une série par une boîte à moustaches",
+    "objectif": "Construire et lire une boîte à moustaches à partir de données",
+    "introduction": "Cette étape vous fait découvrir un outil graphique essentiel pour visualiser la dispersion et les valeurs atypiques d’une série. Calculez d’abord les indicateurs nécessaires avant de dessiner.",
+    "cartes": [
+     {
+      "titre": "Calculer les quartiles d’une série",
+      "objectif": "Déterminer les quartiles d’une série statistique",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 12,
+      "consigne": "Complétez les valeurs manquantes pour calculer Q1, Q2 et Q3 sur une série proposée. Utilisez les définitions du lexique."
+     },
+     {
+      "titre": "Lire une boîte à moustaches",
+      "objectif": "Interpréter les éléments d’un diagramme en boîte",
+      "module": "Chart",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Observez une boîte à moustaches et répondez aux questions sur les quartiles, l’étendue et les valeurs extrêmes."
+     }
+    ]
+   },
+   {
+    "titre": "Calculer et interpréter les indicateurs",
+    "objectif": "Appliquer les formules de calcul et interpréter les résultats",
+    "introduction": "Vous passerez du calcul à l’interprétation des indicateurs. Cette étape commune vous prépare à analyser des séries plus complexes dans les chemins différenciés.",
+    "cartes": [
+     {
+      "titre": "Calculs pas à pas",
+      "objectif": "Calculer moyenne et médiane sur une série guidée",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Suivez les étapes indiquées pour calculer la moyenne et la médiane d’une série donnée. Les cases vous guident pas à pas."
+     },
+     {
+      "titre": "Vrai ou Faux : indicateurs et séries",
+      "objectif": "Vérifier ses connaissances sur les indicateurs",
+      "module": "QuizSetVF",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Pour chaque affirmation, choisissez Vrai ou Faux. Les corrections détaillées vous expliqueront les erreurs."
+     }
+    ]
+   },
+   {
+    "titre": "Chemin Reprendre : Revoir les bases",
+    "objectif": "Reprendre les notions fondamentales avec des exemples détaillés",
+    "introduction": "Ce chemin vous propose de revoir les bases avec des exemples résolus pas à pas. Vous serez guidé à chaque étape et recevrez des explications immédiates sur vos erreurs.",
+    "chemin": "reprendre",
+    "cartes": [
+     {
+      "titre": "Exemple résolu : calculer moyenne et médiane",
+      "objectif": "Observer la méthode de calcul sur un exemple",
+      "module": "CoursePresentation",
+      "palier": "decouverte",
+      "duree": 12,
+      "consigne": "Suivez la présentation pas à pas pour calculer moyenne et médiane sur une série de notes. Les étapes sont détaillées et illustrées."
+     },
+     {
+      "titre": "S’entraîner avec des séries guidées",
+      "objectif": "Appliquer les méthodes vues sur des séries simples",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Remplissez les trous pour calculer moyenne et médiane sur trois séries différentes. Les indices vous aident si nécessaire."
+     },
+     {
+      "titre": "Reconnaître les étapes du calcul",
+      "objectif": "Ordonner les étapes d’un calcul",
+      "module": "SortParagraphs",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Remettez dans l’ordre les étapes nécessaires pour calculer la moyenne d’une série statistique."
+     },
+     {
+      "titre": "Quiz de validation",
+      "objectif": "Vérifier sa compréhension des bases",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Répondez aux questions en choisissant la bonne réponse parmi trois propositions. Les corrections détaillées vous expliquent chaque erreur."
+     }
+    ]
+   },
+   {
+    "titre": "Chemin Renforcer : Approfondir avec des exemples",
+    "objectif": "Consolider les méthodes avec des exemples et des exercices progressifs",
+    "introduction": "Ce chemin approfondit les méthodes en partant d’exemples concrets. Les exercices sont courts et progressifs, avec des indices pour vous guider.",
+    "chemin": "renforcer",
+    "cartes": [
+     {
+      "titre": "Exemple résolu : série avec effectifs",
+      "objectif": "Calculer indicateurs sur une série pondérée",
+      "module": "CoursePresentation",
+      "palier": "entrainement",
+      "duree": 14,
+      "consigne": "Observez le calcul de moyenne et médiane sur une série avec des effectifs. Notez les étapes clés pour les réutiliser."
+     },
+     {
+      "titre": "Exercices progressifs sur les indicateurs",
+      "objectif": "Appliquer les méthodes sur des séries variées",
+      "module": "MultipleChoice",
+      "palier": "entrainement",
+      "duree": 12,
+      "consigne": "Répondez à chaque question en choisissant la bonne méthode parmi trois propositions. Les distracteurs ciblent les erreurs fréquentes."
+     },
+     {
+      "titre": "Associer indicateurs et situations",
+      "objectif": "Relier les indicateurs à des contextes concrets",
+      "module": "DragAndDrop",
+      "palier": "entrainement",
+      "duree": 10,
+      "consigne": "Glissez les étiquettes 'moyenne' ou 'médiane' sur les situations où elles sont le plus adaptées."
+     },
+     {
+      "titre": "Quiz avec feedback détaillé",
+      "objectif": "Valider ses acquis avec des corrections immédiates",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Répondez aux questions en justifiant vos choix. Les corrections détaillées vous expliquent pourquoi chaque réponse est bonne ou fausse."
+     }
+    ]
+   },
+   {
+    "titre": "Chemin Consolider : S’exercer sans aide",
+    "objectif": "Appliquer les méthodes sans modèle pour gagner en autonomie",
+    "introduction": "Ce chemin vous permet de vous entraîner sans filet. Les exercices demandent de retrouver et d’écrire les réponses, comme en évaluation.",
+    "chemin": "consolider",
+    "cartes": [
+     {
+      "titre": "Calculer moyenne et médiane sur des séries",
+      "objectif": "Déterminer les indicateurs sans guidage",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 18,
+      "consigne": "Calculez la moyenne et la médiane pour chaque série proposée. Les distracteurs sont plausibles pour vous faire réfléchir."
+     },
+     {
+      "titre": "Déterminer les quartiles d’une série",
+      "objectif": "Calculer Q1, Q2 et Q3 sans aide",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Complétez les valeurs des quartiles pour les séries proposées. Les corrections détaillées vous permettent de vérifier vos calculs."
+     },
+     {
+      "titre": "Construire une boîte à moustaches",
+      "objectif": "Représenter une série par un diagramme en boîte",
+      "module": "DragAndDrop",
+      "palier": "entrainement",
+      "duree": 12,
+      "consigne": "Glissez les éléments pour construire la boîte à moustaches correspondante à une série donnée. Les étiquettes à placer sont : Q1, médiane, Q3, valeurs extrêmes."
+     },
+     {
+      "titre": "Quiz de synthèse",
+      "objectif": "Valider ses acquis sur l’ensemble des notions",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 20,
+      "consigne": "Répondez aux questions en mobilisant l’ensemble des notions du parcours. Les corrections détaillées vous aident à comprendre vos erreurs."
+     }
+    ]
+   },
+   {
+    "titre": "Chemin Approfondir : Explorer des cas complexes",
+    "objectif": "Étudier des séries plus complexes et justifier ses choix",
+    "introduction": "Ce chemin vous propose des séries plus complexes ou des contextes originaux. Les exercices demandent d’écrire et de justifier vos réponses, sans modèle.",
+    "chemin": "approfondir",
+    "cartes": [
+     {
+      "titre": "Analyser une série avec valeurs atypiques",
+      "objectif": "Interpréter l’impact des valeurs extrêmes sur les indicateurs",
+      "module": "Essay",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Rédigez un paragraphe expliquant comment la présence d’une valeur atypique modifie la moyenne et la médiane d’une série. Illustrez avec un exemple."
+     },
+     {
+      "titre": "Comparer deux séries avec des boîtes à moustaches",
+      "objectif": "Analyser et comparer des diagrammes en boîte",
+      "module": "Summary",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "Choisissez les affirmations correctes pour décrire les différences entre deux boîtes à moustaches. Justifiez vos choix dans les cases prévues."
+     },
+     {
+      "titre": "Étude de cas : interpréter des indicateurs dans un contexte",
+      "objectif": "Appliquer les notions à un cas réel",
+      "module": "Essay",
+      "palier": "transfert",
+      "duree": 25,
+      "consigne": "Rédigez une analyse de trois paragraphes : présentation des indicateurs calculés, interprétation des résultats, et limites des indicateurs choisis pour le contexte donné."
+     },
+     {
+      "titre": "Quiz avancé avec justification",
+      "objectif": "Valider sa maîtrise des notions complexes",
+      "module": "QuizSetQCM",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Répondez aux questions en mobilisant vos connaissances. La correction détaillée n’apparaît qu’à la fin : relisez vos réponses avant de valider."
+     }
+    ]
+   },
+   {
+    "titre": "Synthèse et auto-évaluation",
+    "objectif": "Faire le point sur ses acquis et identifier ses besoins",
+    "introduction": "Vous allez maintenant vérifier que vous maîtrisez l’ensemble des notions du parcours. Prenez le temps de relire vos réponses aux activités précédentes avant de commencer.",
+    "cartes": [
+     {
+      "titre": "Quiz final",
+      "objectif": "Évaluer ses acquis sur l’ensemble du parcours",
+      "module": "test_elea",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Répondez à toutes les questions sans aide. Ce quiz reprend l’ensemble des notions du parcours, avec des séries variées."
+     },
+     {
+      "titre": "Auto-évaluation",
+      "objectif": "Faire le bilan de ses apprentissages",
+      "module": "parcours_enquete",
+      "palier": "transfert",
+      "duree": 10,
+      "consigne": "Répondez à trois questions sur vos difficultés, vos réussites et ce que vous retenez de ce parcours."
+     }
+    ]
+   }
+  ]
+ }
+}

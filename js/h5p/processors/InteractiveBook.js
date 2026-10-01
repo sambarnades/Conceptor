@@ -19,7 +19,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml, generateUUID, debugLog } from '../../core/utils.js';
-import { buildTableParams, healSlidesLatex } from './CoursePresentation.js';
+import { buildTableParams, healSlidesLatex, titreExercice } from './CoursePresentation.js';
 
 // === Constantes configurables ===
 const DEFAULTS = {
@@ -162,7 +162,7 @@ async function buildExerciseBlock(exercise, helpers) {
         subContentId: generateUUID(),
         library: fullLibrary,
         metadata: {
-            title: exercise.title || exercise.question || 'Exercice',
+            title: titreExercice(exercise.title || exercise.question, 'Exercice'),
             contentType: 'Exercise',
             license: 'U'
         },

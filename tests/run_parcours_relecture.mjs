@@ -149,6 +149,8 @@ try {
     await page.locator('[data-carte="flash"] .pc-icon-btn--danger').click();
     await page.locator('.pc-annulation button').click();
     ok('une suppression se récupère sans régénérer', await page.locator('[data-carte="flash"]').count() === 1);
+    ok('après l’annulation, le focus revient dans l’activité rétablie (la page ne remonte pas en haut du plan)',
+        await page.evaluate(() => document.activeElement?.closest('[data-carte]')?.dataset.carte === 'flash'));
     await page.click('#pc-cta');
     await page.waitForSelector('.pc-liv__etat', { state: 'attached' });
     ok('un parcours déjà prêt rejoint la livraison en un clic depuis le plan', await page.locator('.pc-body [data-liv="mbz"]').isVisible());

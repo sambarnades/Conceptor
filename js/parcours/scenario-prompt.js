@@ -20,13 +20,19 @@
  * @module parcours/scenario-prompt
  */
 
-import { t, currentLang } from '../core/translation.js';
+import { currentLang } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { langueEnseignee } from '../core/content-language.js';
 import { CONFIG } from './config.js';
 import { calibrer } from './calibrage.js';
-import { modulesDisponibles, nomModule, moduleDeTrame } from './activity-router.js';
+import { modulesDisponibles, nomModule, moduleDeTrame, resoudreModule } from './activity-router.js';
+import { exemplePlan } from './exemple-plan.js';
 import { MODULES_PARCOURS, estModuleParcours } from './modules-parcours.js';
 import { retoursImpersonnels } from './retours-impersonnels.js';
+import {
+    historiqueDeLaCarte, roleDuChemin, aiguillageDuTest, questionsVisees,
+    MODULES_AIGUILLEURS,
+} from './aiguillage.js';
 
 /** Longueur de corpus au-delà de laquelle on tronque avant envoi. */
 const CORPUS_MAX = 12000;
@@ -53,6 +59,23 @@ const LANGUES = {
 };
 
 /**
+ * Le public que la plateforme désigne (D105) : des élèves sur Éléa, des STAGIAIRES
+ * sur Magistère, des ÉTUDIANTS sur Moodle. Hors d'Éléa, le modèle ne le déduit
+ * plus du seul « public visé » : la plateforme le dit, et l'interface parle de même.
+ */
+const PUBLIC_ADULTE = {
+    magistere: {
+        qui: 'des STAGIAIRES en formation',
+        appel: '« vous », « les stagiaires » ou « les participants »',
+        concepteur: 'le formateur qui conçoit la formation',
+    },
+    moodle: {
+        qui: 'des ÉTUDIANTS',
+        appel: '« vous » ou « les étudiants »',
+    },
+};
+
+/**
  * Règles de rédaction communes au plan et à chaque activité.
  *
  * Nées d'un parcours réel de formation d'enseignants (28 sept. 2026) : le
@@ -65,14 +88,24 @@ const LANGUES = {
  * @param {Object} ctx - Le contexte du brouillon.
  * @returns {string[]}
  */
-export function reglesDeRedaction(ctx = {}) {
+export function reglesDeRedaction(ctx = {}, plateforme = null) {
+    const publicVise = ctx.niveau ? ` (public visé : ${ctx.niveau})` : '';
+    const adultes = PUBLIC_ADULTE[plateforme];
+    const memeRegistre = 'Le MÊME registre dans tous les textes du parcours, retours et commentaires par tranche de score compris : ' +
+        'les exemples de ces instructions tutoient, adapte-les au registre choisi.';
     return [
-        `- Dans ces instructions, « l'élève » désigne la personne qui suit le parcours${ctx.niveau ? ` (public visé : ${ctx.niveau})` : ''}. ` +
-        'Si ce sont des adultes en formation, ne les appelle jamais « élèves » : écris « vous », « les participants » ou « les collègues » ' +
-        '(les élèves dont ils parlent restent des élèves).',
-        '- Registre : tutoiement pour des élèves, vouvoiement pour des adultes (formation d’enseignants, formation continue, études supérieures). ' +
-        'Le MÊME registre dans tous les textes du parcours, retours et commentaires par tranche de score compris : ' +
-        'les exemples de ces instructions tutoient, adapte-les au registre choisi.',
+        adultes
+            ? `- Dans ces instructions, « l'élève » désigne la personne qui suit le parcours : sur cette plateforme, ${adultes.qui}${publicVise}. ` +
+              `Dans les textes qu'ils liront, ne les appelle jamais « élèves » : écris ${adultes.appel} ` +
+              '(les élèves dont ils parlent restent des élèves) ; leur groupe n’est pas « la classe » : écris « le groupe ».' +
+              (adultes.concepteur ? ` « L'enseignant » y désigne ${adultes.concepteur}.` : '')
+            : `- Dans ces instructions, « l'élève » désigne la personne qui suit le parcours${publicVise}. ` +
+              'Si ce sont des adultes en formation, ne les appelle jamais « élèves » : écris « vous », « les participants » ou « les collègues » ' +
+              '(les élèves dont ils parlent restent des élèves).',
+        adultes
+            ? `- Registre : vouvoiement, pour des adultes. ${memeRegistre}`
+            : '- Registre : tutoiement pour des élèves, vouvoiement pour des adultes (formation d’enseignants, formation continue, études supérieures). ' +
+              memeRegistre,
         '- Aucun texte lu par les participants ne reprend le vocabulaire de ces instructions : jamais « notions pivots », « mot pour mot », ' +
         '« palier », « carte », « trame », « socle » ni « version longue ».',
     ];
@@ -135,6 +168,67 @@ function libelle(liste, id) {
 }
 
 /**
+ * Ce que change chaque chemin : l'AIDE, jamais l'objectif (D90, table de
+ * gradation). Consignes internes, décrites en GESTES : le modèle recopie le
+ * vocabulaire de ses instructions dans les textes lus par l'élève (D80, D81) —
+ * d'où l'absence de « étayage », « niveau » ou « remédiation ».
+ */
+const CONSIGNES_ROLES = {
+    reprendre: 'pour les élèves qui ont eu le moins de réussite au test : reprendre les bases indispensables, en phrases courtes, avec un exemple résolu pas à pas avant de faire faire ; faire reconnaître ou choisir plutôt qu’écrire ; des indices, et une correction immédiate qui explique chaque erreur',
+    renforcer: 'pour les élèves qui ont eu des difficultés au test : commencer par un exemple résolu ; des questions courtes et progressives ; faire choisir, relier ou glisser des propositions plutôt qu’écrire de mémoire ; des distracteurs nettement différents ; une correction immédiate qui explique l’erreur',
+    consolider: 'pour les élèves qui ont en partie réussi le test : des exercices d’application sans modèle à recopier ; faire retrouver et écrire les réponses ; des distracteurs plausibles ; une correction immédiate',
+    approfondir: 'pour les élèves qui ont bien réussi le test : pas d’exemple résolu ; des cas plus complexes ou nouveaux ; des distracteurs proches qui reprennent les erreurs fréquentes ; faire écrire, justifier, appliquer à une situation nouvelle ; la correction vient à la fin',
+};
+
+/** Règles communes à tous les chemins, au plan comme à chaque activité. */
+const REGLES_CHEMINS = 'Tous les chemins visent le même objectif sur les mêmes notions : on ne réduit pas l’ambition, on change l’aide. ' +
+    'Aucun texte lu par l’élève ne dit à quel niveau ou dans quel groupe il se trouve, ni qu’il existe d’autres chemins : ' +
+    'un titre dit la tâche (« Pas à pas… », « Défis… »), jamais le niveau (« débutant », « faible », « niveau 1 », « avancé »).';
+
+/** Le cadre du test qui aiguille (plan et activité). */
+const CONSIGNE_TEST = 'Ce test oriente chaque élève vers la suite du parcours d’après sa note : il couvre TOUTES les notions du parcours, une notion par question ; ' +
+    'la difficulté varie (environ un tiers de questions simples, un tiers intermédiaires, un tiers exigeantes) ; aucune question ne donne la réponse d’une autre ; ' +
+    'les retours expliquent la bonne réponse. Il n’annonce ni note à atteindre, ni groupes.';
+
+/** « 5 » ou « 5 à 8 ». */
+function fourchette([de, a]) {
+    return de === a ? String(de) : `${de} à ${a}`;
+}
+
+/** Ce que fait UN élève dans l'exemple : les étapes communes et le plus long chemin. */
+function parEleveExemple(calibrage) {
+    const a = calibrage.aiguillage;
+    const debut = a.debut ?? 1;
+    const chemins = calibrage.exemple.slice(debut, debut + a.nombre);
+    return calibrage.exemple.reduce((s, n, i) => s + (i >= debut && i < debut + a.nombre ? 0 : n), 0) + Math.max(...chemins);
+}
+
+/**
+ * La section du prompt de plan propre aux CHEMINS.
+ * @param {Object} calibrage
+ * @param {string} platform
+ * @returns {string[]}
+ */
+function consignesChemins(calibrage, platform) {
+    const a = calibrage.aiguillage;
+    const lignes = ['\n## CHEMINS SELON LE RÉSULTAT DU TEST'];
+    if (a.debut !== null && a.debut !== undefined) {
+        lignes.push(`Les étapes ${a.debut + 1} à ${a.debut + a.nombre} sont des CHEMINS : chaque élève n’en suit qu’UN, ouvert par sa note au test qui termine l’étape ${a.debut} ; les autres lui restent invisibles. L’étape suivante, commune, réunit tout le monde.`);
+    } else {
+        const tests = [...MODULES_AIGUILLEURS].filter(m => modulesDisponibles(platform).some(x => x.cle === m));
+        lignes.push(`Place UN aiguillage : une première étape qui se termine par le test qui oriente les élèves (module parmi ${tests.join(', ')}), puis ${a.nombre} étapes-CHEMINS consécutives (chaque élève n’en suit qu’une, ouverte par sa note au test), puis au moins une étape commune qui réunit tout le monde.`);
+    }
+    lignes.push(`Chaque étape-chemin porte le champ "chemin", dans cet ordre : ${a.roles.map(r => `"${r}"`).join(', ')}. Ne mets ce champ sur aucune autre étape.`);
+    for (const role of a.roles) lignes.push(`- "${role}" : ${CONSIGNES_ROLES[role]}.`);
+    lignes.push(`- ${REGLES_CHEMINS}`);
+    lignes.push('- Les chemins sont parallèles : même nombre d’activités, la MÊME durée totale à 5 minutes près — additionne les durées des activités de chaque chemin avant de répondre —, ' +
+        'les mêmes notions dans le même ordre ; seule change la façon de les travailler.');
+    lignes.push(`- Le test : ${CONSIGNE_TEST}`);
+    lignes.push('- L’`introduction` d’un chemin dit à l’élève ce qu’il va faire et comment réussir, sans parler de sa note ni de son niveau.');
+    return lignes;
+}
+
+/**
  * Construit le prompt de plan.
  *
  * @param {Object} draft - Le brouillon de `state.js` (contexte déjà lu).
@@ -179,7 +273,7 @@ export function construirePromptPlan(draft) {
 
     if (calibrage.trame) {
         lignes.push(
-            `\nTrame imposée : « ${t(calibrage.trame.nameKey)} » — ${t(calibrage.trame.descKey)}`
+            `\nTrame imposée : « ${t(calibrage.trame.nameKey, draft.platform)} » — ${t(calibrage.trame.descKey, draft.platform)}`
         );
         lignes.push(
             `Elle compte EXACTEMENT ${calibrage.etapesMin} étapes, contenant respectivement ` +
@@ -198,6 +292,13 @@ export function construirePromptPlan(draft) {
             calibrage.trame.modules.map((e, i) => `étape ${i + 1} → ${e.map(m => moduleDeTrame(m, draft.platform)).join(', ')}`).join(' ; ') +
             '. Suis-les sauf si le sujet appelle clairement autre chose.'
         );
+    } else if (calibrage.aiguillage) {
+        // Avec des chemins, l'ampleur mesure ce que fait UN élève ; le plafond
+        // borne ce qui se fabrique, tous chemins compris.
+        lignes.push(
+            `\nAucune trame imposée : choisis le déroulé le mieux adapté. Chaque élève fait ${fourchette(calibrage.parEleve)} activités : les étapes communes et UN chemin. ` +
+            `À fabriquer en tout, tous chemins compris : ${fourchette([calibrage.min, calibrage.max])} activités, réparties en ${calibrage.etapesMin} à ${calibrage.etapesMax} étapes non vides.`
+        );
     } else {
         lignes.push(
             `\nAucune trame imposée : choisis le déroulé le mieux adapté, entre ` +
@@ -205,7 +306,12 @@ export function construirePromptPlan(draft) {
         );
     }
 
-    lignes.push(`\nBUDGET : ${calibrage.exemple.reduce((a, b) => a + b, 0)} activités prévues, dans la limite de ${calibrage.min} à ${calibrage.max} pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.`);
+    if (calibrage.aiguillage) lignes.push(...consignesChemins(calibrage, draft.platform));
+
+    const prevues = calibrage.exemple.reduce((a, b) => a + b, 0);
+    lignes.push(calibrage.aiguillage
+        ? `\nBUDGET : ${prevues} activités à fabriquer, tous chemins compris${calibrage.min === calibrage.max ? '' : ` (de ${calibrage.min} à ${calibrage.max})`} ; chaque élève en fait ${parEleveExemple(calibrage)} : les étapes communes et UN chemin. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.`
+        : `\nBUDGET : ${prevues} activités prévues, dans la limite de ${calibrage.min} à ${calibrage.max} pour TOUT le parcours. Chaque carte consomme une place, y compris accueil, synthèse et évaluation. Une étape peut contenir UNE SEULE activité. Ne transforme pas les sous-tâches d’une activité en cartes supplémentaires.`);
     if (draft.ampleur === 'courte') lignes.push('Sauf durée explicite dans la demande ou la trame, viser une séance de 30 à 55 minutes de travail. Alléger les tâches plutôt que multiplier les exercices.');
     lignes.push('\n## MODULES AUTORISÉS');
     lignes.push(
@@ -251,6 +357,9 @@ export function construirePromptPlan(draft) {
         '   `module` (un identifiant de la liste), `palier` (decouverte | entrainement |',
         '   transfert), `duree` (minutes, entier), et `consigne` (une à deux phrases',
         '   disant ce que l\'élève aura à faire).',
+        '6. `conclusion` : le texte que l\'élève lit à la toute fin, une fois tout terminé (2 ou 3 phrases) :',
+        '   ce qu\'il sait faire désormais, et une suite possible (une lecture, une prochaine séance). Sans « bravo » en tête :',
+        '   la plateforme l\'affiche déjà.',
     ].join('\n'));
 
     lignes.push('\n## RÈGLES');
@@ -263,7 +372,7 @@ export function construirePromptPlan(draft) {
         '- Une activité qui vérifie les acquis en fin de parcours porte sur l’ensemble du parcours, notions mélangées, et pas seulement sur la dernière étape : rappeler plus tard ce qu’on a vu au début aide à le retenir.',
         '- Respecte la logique pédagogique de la trame : un diagnostic peut précéder une explication, et une correction peut suivre une évaluation. Sans trame, construis une progression adaptée à l’objectif, sans imposer trois paliers à un simple rituel.',
         '- Les durées sont celles d\'un élève moyen, sans les gonfler pour remplir les séances. Repères : texte court à lire 5 à 10 min ; exercice auto-corrigé (vrai/faux, texte à trous, association) 3 à 8 min ; quiz de plusieurs questions ou test 10 à 20 min ; production écrite, projet ou échange 15 à 30 min.',
-        ...reglesDeRedaction(ctx),
+        ...reglesDeRedaction(ctx, draft.platform),
         regleLangue(langue, ctx),
         '- Les clés JSON, identifiants de modules et valeurs de `palier` restent EXACTEMENT tels que définis, sans traduction ni accent ajouté. Seuls les textes pédagogiques sont traduits.',
         '- La consigne doit correspondre au geste réellement permis par le module décrit dans le catalogue. Pour faire ORDONNER des événements, utiliser SortParagraphs ; Timeline sert à les CONSULTER.',
@@ -282,40 +391,135 @@ export function construirePromptPlan(draft) {
         // (« lesquels de ces outils utilisez-vous ? ») — une habitude n'a pas de
         // bonne réponse, le stagiaire était noté faux sur sa propre pratique.
         '- Un test, un quiz ou tout exercice corrigé porte sur des connaissances qui ont une bonne réponse. Pour faire le point sur des pratiques, des habitudes, des besoins ou des opinions, choisis un questionnaire, une enquête ou un sondage, qui ne notent pas.',
-        `- CONTRÔLE FINAL : ${calibrage.min} à ${calibrage.max} activités pour TOUT le parcours${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''}. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`,
+        calibrage.aiguillage
+            ? `- CONTRÔLE FINAL : ${fourchette([calibrage.min, calibrage.max])} activités à fabriquer, tous chemins compris${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''} ; ${fourchette(calibrage.parEleve)} par élève ; des chemins de même durée ; le test qui oriente en dernière activité de l’étape qui précède les chemins. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`
+            : `- CONTRÔLE FINAL : ${calibrage.min} à ${calibrage.max} activités pour TOUT le parcours${calibrage.rythme ? ', répartition ' + calibrage.rythme.join(' + ') : ''}. N’ajoute pas une activité d’accueil ou de bilan hors de ce total.`,
     ].join('\n'));
 
     lignes.push('\n## FORMAT DE SORTIE');
+    lignes.push('Réponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, sans bloc de code markdown.');
+    // Un exemple COMPLET, de la forme exacte demandée, sur un autre sujet (D108) : le
+    // squelette de « … » ne montrait ni des textes de cette longueur, ni des durées
+    // plausibles, ni des chemins qui durent autant.
+    const { exemple, dureeChemin, partsChemin } = exemplePlan(calibrage, modules, {
+        vouvoyer: Boolean(PUBLIC_ADULTE[draft.platform]),
+        moduleDeTrame: m => moduleDeTrame(m, draft.platform),
+    });
+    lignes.push('\n## EXEMPLE DE RENDU');
     lignes.push(
-        'Réponds UNIQUEMENT par un objet JSON valide, sans texte avant ni après, ' +
-        'sans bloc de code markdown. Exemple de structure à adapter au sujet ; remplace tous les points de suspension :'
+        'Exemple sur un AUTRE sujet (le cycle de l’eau) : il montre la forme attendue — le même nombre d’étapes et d’activités par étape, ' +
+        'des textes de cette longueur, des durées réalistes' + (calibrage.aiguillage ? ', le test et les chemins à leur place' : '') + '. ' +
+        'N’en reprends ni le thème, ni les titres, ni les phrases ; choisis les modules d’après TON sujet, dans la liste autorisée.'
     );
-    lignes.push(JSON.stringify({
-        titre: '…',
-        objectifGeneral: '…',
-        introduction: '…',
-        notionsPivots: Array.from({ length: calibrage.notions[0] }, () => '…'),
-        etapes: calibrage.exemple.map((n, i) => ({
-            titre: '…',
-            objectif: '…',
-            introduction: '…',
-            cartes: Array.from({ length: n }, () => ({
-                titre: '…',
-                objectif: '…',
-                module: modules[0] ? modules[0].cle : 'Page',
-                palier: calibrage.trame?.paliers?.[i] || 'entrainement',
-                duree: calibrage.trame?.id === 'rituel' ? [2, 4, 4][i] : 10,
-                consigne: '…',
-            })),
-        })),
-    }, null, 2));
+    if (dureeChemin) {
+        lignes.push(`Dans cet exemple, chaque chemin dure ${dureeChemin} minutes (${partsChemin.join(' + ')}) : tes chemins aussi durent autant les uns que les autres, à 5 minutes près.`);
+    }
+    // L'exemple reste la DERNIÈRE chose du prompt : rien après lui ne le contredit.
+    lignes.push(JSON.stringify(exemple, null, 2));
 
-    return { prompt: lignes.join('\n'), calibrage, modules };
+    return { prompt: lignes.join('\n'), calibrage, modules, exemple };
+}
+
+/**
+ * Ce que le réparateur du plan (`reparation-plan.js`, D107) ne peut pas savoir seul :
+ * le module disponible le plus proche d'un identifiant inventé, et les textes,
+ * traduits dans le registre de la plateforme, du test ou de l'étape qu'il ajoute.
+ *
+ * @param {Object} draft
+ * @returns {Object} Les options de `reparerPlan`.
+ */
+export function reparationDuPlan(draft) {
+    const p = draft.platform;
+    return {
+        sujet: (draft.contexte && draft.contexte.quoi) || '',
+        resoudre: (module, palier) => resoudreModule(module, p, palier).cle,
+        textes: {
+            test: {
+                titre: t('parcours_reparation_test_titre', p),
+                objectif: t('parcours_reparation_test_objectif', p),
+                consigne: t('parcours_reparation_test_consigne', p),
+            },
+            etape: {
+                titre: t('parcours_reparation_etape_titre', p),
+                objectif: t('parcours_reparation_etape_objectif', p),
+                introduction: t('parcours_reparation_etape_intro', p),
+            },
+        },
+    };
 }
 
 /* ------------------------------------------------------------------ *
  *  Remplissage : le prompt d'UNE carte du plan
  * ------------------------------------------------------------------ */
+
+/**
+ * Un quiz mixte : chaque exercice porte SA consigne. Le prompt du quiz la demande
+ * déjà ; sur un long quiz, le modèle l'omettait (trois questions sur dix dans le
+ * parcours de Gauthier, 30 sept. 2026), et l'élève voyait un texte sans savoir quoi
+ * y faire. La file la redemande de toute façon si elle manque (`rappelConsignes`).
+ */
+const CONSIGNE_DES_EXERCICES = 'Chaque question Texte à trous, Glisser les mots, Surligner les mots ou Rédaction ' +
+    'porte `taskDescription` : une consigne adressée à l’élève, qui dit quoi faire et selon quel critère. ' +
+    'Sans elle, l’élève voit un texte sans savoir quoi y faire.';
+
+/**
+ * Un trou porte la RÉPONSE elle-même (D106). Vérification réelle du 1er oct. 2026 : des
+ * Textes à trous de mathématiques rendaient `*prix_réduit* €`, `*x* g`,
+ * `*coefficient* = 200 ÷ 3` — des symboles, pas les valeurs que l'élève devait trouver.
+ */
+const REPONSE_DANS_LE_TROU = 'Chaque trou (*…*) contient la RÉPONSE que l’élève doit écrire ou glisser : un mot du texte, ' +
+    'ou la valeur calculée (par exemple *600*) ; jamais un nom de variable, une lettre-symbole (x, y) ni le nom de la notion ' +
+    'à la place du résultat. Un trou n’a qu’UNE bonne réponse : la barre oblique ne sépare que des variantes ÉQUIVALENTES ' +
+    'de cette réponse (*36/trente-six*), jamais une bonne et une mauvaise — toutes seraient comptées justes. Si la consigne ' +
+    'fait choisir (proportionnelle ou non, vrai ou faux), écris dans chaque trou la SEULE réponse juste pour cette phrase ' +
+    '(*proportionnelle* ici, *non proportionnelle* là). En calcul, l’élève tape le RÉSULTAT, l’unité reste dans la phrase : ' +
+    '« 5 stylos coûtent *12,5* € » — jamais *x* €, jamais *€*, jamais *2,5 × 5 = 12,5*, jamais *prix:12,5 €* ' +
+    '(après les deux-points vient un indice facultatif qui ne donne pas la réponse : *12,5:pense au prix d’un stylo*). ' +
+    'Vérifie chaque calcul avant de l’écrire.';
+const MODULES_A_TROUS = new Set(['FillInTheBlanks', 'DragTheWords', 'QuizSet']);
+
+/**
+ * Une Page, un Livre : aucune adresse d'image inventée (D110). Le cadre n'interdit pas
+ * les images — une IA grand public, à qui l'enseignant colle ce prompt, peut connaître
+ * une vraie adresse —, il interdit de l'inventer ; ce que l'IA de Caramel écrit malgré
+ * tout est retiré à la fabrication.
+ */
+const IMAGES_REELLES = 'IMAGES : n’invente jamais l’adresse d’une image (pas de service d’images factices, pas d’adresse supposée). ' +
+    'N’emploie un bloc à image (#08_monuments_grid, #09_figures_comparison, #13_monument_sheet_long, #16_method_image_desc) ' +
+    'que si tu connais l’adresse réelle d’une image libre de droits ; sinon, choisis des blocs sans image : l’enseignant ajoutera les siennes.';
+const MODULES_A_IMAGES = new Set(['Page', 'Livre']);
+
+/**
+ * Les modules qui se LISENT : leur longueur suit la durée. Une Page de 5 minutes et
+ * une de 25 se ressemblaient (retour de Gauthier, 30 sept. 2026) : le nombre de blocs
+ * suivait la durée, pas leur longueur. Environ 80 mots par minute de lecture
+ * attentive d'un contenu nouveau, prise de notes comprise.
+ */
+const MOTS_PAR_MINUTE = 80;
+const MODULES_A_LIRE = new Set(['Page', 'Livre']);
+
+/**
+ * La longueur visée d'une carte à lire, en mots ; `null` pour les autres modules.
+ * @param {Object} carte
+ * @returns {number|null}
+ */
+export function motsVises(carte) {
+    if (!carte || !MODULES_A_LIRE.has(carte.module)) return null;
+    return Math.max(150, Math.round(((Number(carte.duree) || 10) * MOTS_PAR_MINUTE) / 50) * 50);
+}
+
+/**
+ * La fourchette annoncée au modèle : la longueur visée, et 30 % de plus au plus. Un
+ * plancher seul faisait déborder les courtes (1 118 mots pour une Page de 5 minutes),
+ * un « environ » laissait les longues au tiers (742 pour 2 000) — mesures réelles du
+ * 1er oct. 2026.
+ * @param {Object} carte
+ * @returns {string} « entre 400 et 500 »
+ */
+export function fourchetteMots(carte) {
+    const vise = motsVises(carte);
+    return vise ? `entre ${vise} et ${Math.round(vise * 1.3 / 50) * 50}` : '';
+}
 
 /** Extrait de corpus joint envoyé avec chaque carte (plus court que pour le plan). */
 const CORPUS_MAX_CARTE = 6000;
@@ -360,7 +564,7 @@ export function nbElementsCarte(carte) {
  * @param {Object} carte - La carte à remplir (exclue de l'historique).
  * @returns {string}
  */
-export function construireSocleCommun(plan, carte, ctx = {}) {
+export function construireSocleCommun(plan, carte, ctx = {}, plateforme = null) {
     const lignes = [];
 
     lignes.push(`Cette activité fait partie d'un parcours intitulé « ${plan.titre || '(sans titre)'} ».`);
@@ -377,23 +581,17 @@ export function construireSocleCommun(plan, carte, ctx = {}) {
     }
 
     // L'historique s'arrête à la carte courante : une activité ne peut pas
-    // « réinvestir » ce qui viendra après elle.
-    const avant = [];
-    let atteinte = false;
-    for (const etape of (plan.etapes || [])) {
-        for (const c of (etape.cartes || [])) {
-            if (c === carte || c.id === carte.id) { atteinte = true; break; }
-            avant.push({ etape: etape.titre || '', c });
-        }
-        if (atteinte) break;
-    }
+    // « réinvestir » ce qui viendra après elle. Et il suit le CHEMIN de l'élève :
+    // les autres chemins d'un aiguillage, il ne les a jamais vus (D90).
+    const avant = historiqueDeLaCarte(plan, carte);
 
     if (avant.length) {
         lignes.push('');
         lignes.push('DÉJÀ TRAVAILLÉ par l\'élève dans les activités précédentes :');
-        lignes.push(avant.map(({ etape, c }) =>
-            `- ${etape ? `[${etape}] ` : ''}${c.titre || (c.contenu && c.contenu.title) || nomModule(c.module)}` +
-            `${c.objectif ? ` — ${c.objectif}` : ''}`).join('\n'));
+        lignes.push(avant.map(({ etape, carte: c, chemins }) => (chemins
+            ? `- Un entraînement adapté à son résultat au test, parmi : ${chemins.filter(Boolean).map(x => `« ${x} »`).join(' / ') || '(plusieurs chemins)'} — les mêmes notions, avec plus ou moins d'aide.`
+            : `- ${etape ? `[${etape}] ` : ''}${c.titre || (c.contenu && c.contenu.title) || nomModule(c.module)}` +
+            `${c.objectif ? ` — ${c.objectif}` : ''}`)).join('\n'));
         lignes.push('');
         lignes.push('RÉINVESTIS ces acquis, ne les RÉINTRODUIS pas : ne redonne pas les mêmes ' +
             'définitions, ne repose pas les mêmes questions, ne reprends pas les mêmes exemples. ' +
@@ -404,9 +602,21 @@ export function construireSocleCommun(plan, carte, ctx = {}) {
             'sans supposer aucun acquis préalable sur le sujet.');
     }
 
+    // Le chemin de la carte, ou le test qui aiguille : ce qui change la manière,
+    // jamais l'objectif (D90).
+    const etapeDeLaCarte = (plan.etapes || []).find(e => (e.cartes || []).some(c => c === carte || c.id === carte.id));
+    const role = etapeDeLaCarte ? roleDuChemin(plan, etapeDeLaCarte) : null;
+    if (role) {
+        lignes.push('');
+        lignes.push(`CHEMIN : cette activité fait partie d'un chemin ${CONSIGNES_ROLES[role]}. ${REGLES_CHEMINS}`);
+    } else if (aiguillageDuTest(plan, carte)) {
+        lignes.push('');
+        lignes.push(`TEST QUI ORIENTE : ${CONSIGNE_TEST}`);
+    }
+
     lignes.push('');
     lignes.push('RÉDACTION :');
-    lignes.push(...reglesDeRedaction(ctx));
+    lignes.push(...reglesDeRedaction(ctx, plateforme));
 
     return lignes.join('\n');
 }
@@ -437,7 +647,10 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
 
     const plan = draft.plan || {};
     const ctx = draft.contexte || {};
-    const nbElements = nbElementsCarte(carte);
+    // Le test qui aiguille compte assez de questions pour trier en autant de
+    // chemins (D93) ; les autres cartes suivent leur durée (D19).
+    const groupe = aiguillageDuTest(plan, carte);
+    const nbElements = groupe ? questionsVisees(carte, groupe.chemins.length) : nbElementsCarte(carte);
 
     // `quoi` porte la commande PRÉCISE de cette carte : c'est ce que le gabarit
     // commun insère derrière « Ton objectif pédagogique ».
@@ -448,6 +661,8 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
         // et l'enseignant corrigera sur l'écran de fabrication.
         carte.titre ? `Titre attendu de l'activité : « ${carte.titre} »` : '',
         `Durée visée : ${carte.duree || 10} minutes.`,
+        motsVises(carte) ? `Longueur visée : ${fourchetteMots(carte)} mots de contenu à lire, pour ${carte.duree || 10} minutes ` +
+            'de lecture attentive ; la longueur suit la durée, une activité de 25 minutes n’a pas celle d’une activité de 5.' : '',
     ].filter(Boolean).join(' — ');
 
     const corpus = String(ctx.corpus || '').trim();
@@ -486,12 +701,20 @@ export async function construirePromptRemplissage(draft, carte, source = null) {
     const cadre = [
         '',
         `# ${t('parcours_prompt_cadre') || 'CADRE DU PARCOURS'}`,
-        construireSocleCommun(plan, carte, ctx),
+        construireSocleCommun(plan, carte, ctx, draft.platform),
         '',
         `Palier de cette activité : ${t(`parcours_palier_${carte.palier}`)}.`,
         'Respecte ce palier : une activité de découverte ne piège pas, ' +
         'une activité de transfert ne récite pas.',
         CONTENU_SUIT_LA_COMMANDE,
+        ...(carte.module === 'QuizSet' ? [CONSIGNE_DES_EXERCICES] : []),
+        ...(MODULES_A_TROUS.has(carte.module) ? [REPONSE_DANS_LE_TROU] : []),
+        ...(MODULES_A_IMAGES.has(carte.module) ? [IMAGES_REELLES] : []),
+        // La longueur, en ligne à part : glissée dans la commande, elle se perdait face aux
+        // « phrases courtes » du gabarit (mesure réelle : 742 mots pour 2 000 visés, D104).
+        ...(motsVises(carte) ? [`LONGUEUR : ${fourchetteMots(carte)} mots de texte à lire, titres non compris, ` +
+            `pour ${carte.duree || 10} minutes de lecture attentive — ni moins, ni plus. Développe chaque bloc en plusieurs ` +
+            'paragraphes plutôt que de multiplier les blocs courts : des phrases claires, un contenu complet.'] : []),
     ].join('\n');
 
     return { prompt: base + '\n' + cadre, prefix, nbElements };
@@ -522,8 +745,10 @@ export function construirePromptModuleParcours(draft, carte) {
 
     const lignes = [];
     lignes.push(
-        `Tu es un enseignant qui prépare une pièce de son cours en ligne : ` +
-        `« ${t(def.nameKey)} » — ${t(def.descKey)}`
+        (draft.platform === 'magistere'
+            ? 'Tu es un formateur qui prépare une pièce de sa formation en ligne : '
+            : 'Tu es un enseignant qui prépare une pièce de son cours en ligne : ') +
+        `« ${t(def.nameKey, draft.platform)} » — ${t(def.descKey, draft.platform)}`
     );
 
     lignes.push('\n## CONTEXTE');
@@ -538,7 +763,7 @@ export function construirePromptModuleParcours(draft, carte) {
     if (def.source === 'lien' && carte.source?.url) lignes.push(`Adresse de la ressource (fournie par l'enseignant) : ${carte.source.url}`);
 
     lignes.push(`\n## ${t('parcours_prompt_cadre') || 'CADRE DU PARCOURS'}`);
-    lignes.push(construireSocleCommun(plan, carte, ctx));
+    lignes.push(construireSocleCommun(plan, carte, ctx, draft.platform));
 
     // Un second sondage mesure le plus souvent ce qui a bougé depuis le
     // premier : il n'y parvient que s'il propose les MÊMES réponses. Constaté

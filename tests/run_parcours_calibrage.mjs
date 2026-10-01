@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const {chromium}=createRequire(resolve(root,'tests/roundtrip/package.json'))('playwright');
 const port=8145; const server=spawn('python3',['tests/serveur-statique.py',String(port),'--bind','127.0.0.1'],{cwd:root,stdio:'ignore'});
-let browser;let pass=0;const ok=(nom,v)=>{assert.ok(v,nom);pass++;console.log('✓',nom);};
+let browser;let pass=0;const ok=(nom,v,detail='')=>{assert.ok(v,detail?`${nom} — ${detail}`:nom);pass++;console.log('✓',nom);};
 try{
     for(let i=0;i<60;i++){try{if((await fetch(`http://127.0.0.1:${port}/index.html`)).ok)break;}catch{}await new Promise(r=>setTimeout(r,100));}
     browser=await chromium.launch();const page=await browser.newPage();
@@ -79,9 +79,60 @@ try{
     ok('l’intention suit l’ampleur : le wiki du débat n’est annoncé qu’en version longue',r.intentions.every(Boolean),JSON.stringify(r.intentions));
     ok('les plans humains importés ne sont pas tronqués par le calibrage',r.humain);
     ok('une trame devenue incompatible ne supplante pas l’ampleur',r.obsolete);
+    // Des chemins selon les résultats (D90–D93) : chaque trame à chemins, pour 2, 3
+    // et 4 chemins, sur chaque plateforme — le plan local, le calibrage et
+    // l’exemple du prompt disent la même chose, et ce que fait UN élève tient
+    // dans l’ampleur choisie.
+    const rc=await page.evaluate(async()=>{
+        const {CONFIG}=await import('/js/parcours/config.js');
+        const {tramesCompatibles,nbActivites,nbActivitesParEleve}=await import('/js/parcours/templates.js');
+        const {controlerCalibrage}=await import('/js/parcours/calibrage.js');const {construirePromptPlan}=await import('/js/parcours/scenario-prompt.js');
+        const {planDepuisTrame}=await import('/js/parcours/screen-plan.js');
+        const {aiguillagesDuPlan,problemesAiguillage}=await import('/js/parcours/aiguillage.js');
+        const ecarts=[];const vues=new Set();let total=0;let reference=null;
+        for(const a of CONFIG.ampleurs)for(const f of CONFIG.formats)for(const p of CONFIG.platforms)for(const k of CONFIG.nombresDeChemins){
+            const trames=tramesCompatibles(f.id,a.id,{structure:'chemins',chemins:k});
+            if(trames.some(tr=>tr.id!=='libre'&&tr.structure!=='chemins'))ecarts.push(`${a.id}/${f.id} : une trame linéaire parmi les chemins`);
+            for(const tr of trames){
+                total++;vues.add(tr.id);const lieu=`${tr.id}/${a.id}/${f.id}/${p.id}/${k}`;
+                const draft={platform:p.id,format:f.id,ampleur:a.id,trame:tr.id,structure:'chemins',chemins:k,contexte:{qui:'Enseignant',quoi:'Fractions'}};
+                const plan=planDepuisTrame(tr.id,p.id,a.id,{structure:'chemins',chemins:k});
+                const groupes=aiguillagesDuPlan(plan);
+                if(groupes.length!==1||groupes[0].chemins.length!==k)ecarts.push(`${lieu} : ${groupes.length} aiguillage(s)`);
+                else if(!groupes[0].test||Boolean(groupes[0].commune)!==(tr.modules?tr.aiguillage.debut+tr.aiguillage.nombre<tr.modules.length:true))ecarts.push(`${lieu} : test ou étape commune absents`);
+                const {prompt,calibrage,modules}=construirePromptPlan(draft);
+                if(calibrage.aiguillage?.nombre!==k)ecarts.push(`${lieu} : calibrage sans chemins`);
+                if(tr.modules){
+                    const n=plan.etapes.flatMap(e=>e.cartes).length;const parEleve=nbActivitesParEleve(tr);
+                    if(n!==nbActivites(tr)||n>12)ecarts.push(`${lieu} : ${n} activités à fabriquer`);
+                    if(parEleve<a.activites[0]||parEleve>a.activites[1])ecarts.push(`${lieu} : ${parEleve} activités par élève`);
+                    if(JSON.stringify(plan.etapes.map(e=>e.cartes.length))!==JSON.stringify(calibrage.rythme))ecarts.push(`${lieu} : rythme divergent`);
+                    const pb=problemesAiguillage(plan);if(pb.length)ecarts.push(`${lieu} : ${pb.map(x=>x.code).join(', ')}`);
+                }
+                const exemple=JSON.parse(prompt.slice(prompt.indexOf('{\n')));
+                const erreurs=controlerCalibrage(exemple,calibrage,modules);
+                if(erreurs.length)ecarts.push(`${lieu} : exemple invalide — ${erreurs[0]}`);
+                if(tr.id==='point_controle'&&a.id==='moyenne'&&p.id==='elea'&&k===3&&!reference)reference={exemple,calibrage,modules};
+            }
+        }
+        // Un plan reçu qui trahit l’aiguillage est renvoyé au modèle.
+        const refuse=fn=>{const p=structuredClone(reference.exemple);fn(p);return controlerCalibrage(p,reference.calibrage,reference.modules).length>0;};
+        const debut=reference.calibrage.aiguillage.debut;
+        const gardes=[
+            refuse(p=>{const [x,y]=[p.etapes[debut].chemin,p.etapes[debut+1].chemin];p.etapes[debut].chemin=y;p.etapes[debut+1].chemin=x;}),
+            refuse(p=>{p.etapes.splice(debut+1,1);}),
+            refuse(p=>{for(const c of p.etapes[debut-1].cartes)c.module='TrueFalse';}),
+            refuse(p=>{for(const c of p.etapes[debut].cartes)c.duree=1;}),
+            refuse(p=>{p.etapes[debut].cartes.push(...structuredClone(p.etapes[debut].cartes),...structuredClone(p.etapes[debut].cartes));}),
+        ];
+        return {ecarts,total,vues:[...vues].sort(),gardes,exempleValide:!controlerCalibrage(reference.exemple,reference.calibrage,reference.modules).length};
+    });
+    ok(`${rc.total} combinaisons à chemins : plan local, calibrage et prompt s’accordent, ce que fait un élève tient dans l’ampleur`,rc.ecarts.length===0,rc.ecarts.slice(0,5).join(' · '));
+    ok('les deux trames à chemins et la structure libre sont proposées en mode chemins',JSON.stringify(rc.vues)===JSON.stringify(['differenciation','libre','point_controle']),rc.vues.join(', '));
+    ok('un plan reçu est refusé si les rôles sont intervertis, un chemin manque, le test manque, ou les chemins ne sont pas parallèles',rc.exempleValide&&rc.gardes.every(Boolean),JSON.stringify(rc.gardes));
     await page.close();
     // Rejouer le vrai bouton, le vrai service submit/poll et le vrai healer.
-    for(const mode of ['valide','corrige','echec','annule','reseau','doublon']){
+    for(const mode of ['valide','corrige','echec','annule','reseau','doublon','illisible','relance']){
         const pg=await browser.newPage();const demandes=[];const releves=[];let polls=0;const errors=[];
         pg.on('pageerror',e=>errors.push(e.message));
         const bon={titre:'Plan conforme',objectifGeneral:'Comprendre les fractions',notionsPivots:['fraction','numérateur','dénominateur'],etapes:[1,2,3,4].map(i=>({titre:`Étape ${i}`,objectif:'Comparer',cartes:[{titre:`Activité ${i}`,objectif:'Comparer',consigne:'Comparer les fractions',module:'TrueFalse',palier:'entrainement',duree:5}]}))};
@@ -89,9 +140,11 @@ try{
         const doublon={...bon,etapes:bon.etapes.map((e,i)=>i<2?e:{...e,cartes:[{...e.cartes[0],module:'parcours_wiki',titre:i===2?'Écrire le texte':'Améliorer le texte'}]})};
         await pg.route('**/*',async route=>{
             const u=new URL(route.request().url());if(u.hostname==='127.0.0.1')return route.continue();
-            if(u.pathname.endsWith('/llm/submit-bas')){demandes.push(route.request().postDataJSON());return route.fulfill({status:mode==='reseau'?503:200,json:{taskId:`local-${demandes.length}`}});}
-            if(u.pathname.endsWith('/llm/stats-bas')){releves.push(route.request().postDataJSON());return route.fulfill({json:{status:'ok'}});}
-            if(u.pathname.endsWith('/llm/result-bas')){polls++;return route.fulfill({json:mode==='annule'&&demandes.length===2?{status:'processing'}:{status:'done',content:JSON.stringify(mode==='doublon'?doublon:mode==='valide'||mode==='corrige'&&demandes.length===2?bon:ancien),model:'local-double'}});}
+            if(/\/llm\/submit-(?:bas|prod)$/.test(u.pathname)){demandes.push(route.request().postDataJSON());return route.fulfill({status:mode==='reseau'?503:200,json:{taskId:`local-${demandes.length}`}});}
+            if(/\/llm\/stats-(?:bas|prod)$/.test(u.pathname)){releves.push(route.request().postDataJSON());return route.fulfill({json:{status:'ok'}});}
+            // « illisible » : deux réponses sans JSON ; « relance » : une sans JSON, puis le bon plan.
+            const sansJson='Désolé, je ne peux pas produire ce plan.';
+            if(/\/llm\/result-(?:bas|prod)$/.test(u.pathname)){polls++;return route.fulfill({json:mode==='annule'&&demandes.length===2?{status:'processing'}:{status:'done',content:mode==='illisible'||mode==='relance'&&demandes.length===1?sansJson:JSON.stringify(mode==='doublon'?doublon:mode==='valide'||mode==='relance'||mode==='corrige'&&demandes.length===2?bon:ancien),model:'local-double'}});}
             return route.abort();
         });
         await pg.goto(`http://127.0.0.1:${port}/index.html`);await pg.waitForSelector('#parcours-button');await pg.fill('#qui','Enseignant');await pg.fill('#quoi','Les fractions');await pg.click('#parcours-button');
@@ -125,17 +178,24 @@ try{
         }
         await pg.waitForFunction(()=>!document.querySelector('.pc-veil'),null,{timeout:30000});
         const etat=await pg.evaluate(async ()=>({titre:(await import('/js/parcours/state.js')).brouillon().plan.titre,note:document.querySelector('#pc-action-note')?.textContent,edition:!!document.querySelector('.pc-title-input')}));
-        const succes=['valide','corrige','doublon'].includes(mode);
+        // D107 : un plan hors cadrage deux fois est réparé et RETENU ; seule une réponse sans plan échoue.
+        const titreAttendu={valide:'Plan conforme',corrige:'Plan conforme',doublon:'Plan conforme',relance:'Plan conforme',echec:ancien.titre}[mode]||'Brouillon à conserver';
+        const succes=titreAttendu!=='Brouillon à conserver';
         ok(`${mode} : nombre d’appels borné`,demandes.length===(['valide','reseau'].includes(mode)?1:2));
-        ok(`${mode} : plan accepté ou brouillon conservé`,etat.titre===(succes?'Plan conforme':'Brouillon à conserver'));
+        ok(`${mode} : plan accepté ou brouillon conservé`,etat.titre===titreAttendu,etat.titre);
         ok(`${mode} : interface rend la main au bon écran`,etat.edition===succes);
         if(mode==='corrige')ok('la reprise conserve le sujet, rappelle le compte et reprend le même modèle',demandes[1].prompt.includes('Les fractions')&&demandes[1].prompt.includes('Total reçu : 8')&&demandes[0].model===demandes[1].model);
         if(mode==='doublon')ok('un doublon d’espace commun demande UNE reprise, puis le plan passe même s’il le garde',demandes[1].prompt.includes('écriture commune')&&!demandes[0].prompt.includes('NOUVELLE COMPOSITION'));
-        if(mode==='echec')ok('l’échec explique le cadrage et propose le modèle sans IA',etat.note.includes('cadrage')&&etat.note.includes('modèle'));
+        if(mode==='echec'){
+            const forme=await pg.evaluate(async ()=>(await import('/js/parcours/state.js')).brouillon().plan.etapes.map(e=>e.cartes.length).join('+'));
+            ok('hors cadrage deux fois : ramené à l’ampleur (une activité par étape) et retenu, sans message d’échec (D107)',forme==='1+1+1+1'&&!etat.note.trim(),`${forme} « ${etat.note} »`);
+        }
+        if(mode==='illisible')ok('deux réponses sans JSON : brouillon conservé, message traduit, aucune clé brute',etat.note.trim().length>10&&!etat.note.includes('parcours_'),etat.note);
+        if(mode==='relance')ok('une réponse sans JSON est redemandée UNE fois, et le plan suivant est retenu',demandes[1].prompt.includes('objet JSON lisible')&&!demandes[0].prompt.includes('objet JSON lisible'));
         // D69 : le plan n'écrit plus de ligne DONNEES (`stats:'skip'`) ; il a SA ligne PARCOURS
         // dès que le modèle a répondu — succès, reprise ou hors cadrage — et aucune sinon.
         ok(`${mode} : chaque appel de plan part en stats:'skip'`,demandes.every(d=>d.stats==='skip'));
-        const attendu={valide:['ok',1],corrige:['ok',2],echec:['hors_cadrage',2],doublon:['ok',2]}[mode]||null;
+        const attendu={valide:['ok',1],corrige:['ok',2],echec:['ok',2],doublon:['ok',2],relance:['ok',2],illisible:['echec',2]}[mode]||null;
         for(let i=0;i<50&&attendu&&releves.length<1;i++)await new Promise(r=>setTimeout(r,20));
         const statsId=await pg.evaluate(async ()=>(await import('/js/parcours/state.js')).brouillon().statsId);
         if(attendu){
@@ -156,8 +216,8 @@ try{
         const pg=await browser.newPage();const errors=[];pg.on('pageerror',e=>errors.push(e.message));
         await pg.route('**/*',async route=>{const u=new URL(route.request().url());
             if(u.hostname==='127.0.0.1')return route.continue();
-            if(u.pathname.endsWith('/llm/submit-bas'))return route.fulfill({json:{taskId:'lent'}});
-            if(u.pathname.endsWith('/llm/result-bas'))return route.fulfill({json:{status:'processing'}});
+            if(/\/llm\/submit-(?:bas|prod)$/.test(u.pathname))return route.fulfill({json:{taskId:'lent'}});
+            if(/\/llm\/result-(?:bas|prod)$/.test(u.pathname))return route.fulfill({json:{status:'processing'}});
             return route.abort();});
         await pg.goto(`http://127.0.0.1:${port}/index.html`);await pg.waitForSelector('#parcours-button');
         await pg.fill('#qui','Enseignant');await pg.fill('#quoi','Les fractions');await pg.click('#parcours-button');
@@ -214,9 +274,9 @@ try{
         const vf=readFileSync(resolve(root,'assets/data/examples/true_false_1.json'),'utf8');
         await pg.route('**/*',async route=>{const u=new URL(route.request().url());
             if(u.hostname==='127.0.0.1')return route.continue();
-            if(u.pathname.endsWith('/llm/submit-bas')){demandes.push(route.request().postDataJSON());return route.fulfill({json:{taskId:`carte-${demandes.length}`}});}
-            if(u.pathname.endsWith('/llm/result-bas'))return route.fulfill({json:{status:'done',content:vf,model:'local-carte'}});
-            if(u.pathname.endsWith('/llm/stats-bas')){releves.push(route.request().postDataJSON());return route.fulfill({json:{status:'ok'}});}
+            if(/\/llm\/submit-(?:bas|prod)$/.test(u.pathname)){demandes.push(route.request().postDataJSON());return route.fulfill({json:{taskId:`carte-${demandes.length}`}});}
+            if(/\/llm\/result-(?:bas|prod)$/.test(u.pathname))return route.fulfill({json:{status:'done',content:vf,model:'local-carte'}});
+            if(/\/llm\/stats-(?:bas|prod)$/.test(u.pathname)){releves.push(route.request().postDataJSON());return route.fulfill({json:{status:'ok'}});}
             return route.abort();});
         await pg.goto(`http://127.0.0.1:${port}/index.html`);await pg.waitForSelector('#parcours-button');
         await pg.fill('#qui','Enseignant');await pg.fill('#quoi','Les fractions');await pg.click('#parcours-button');

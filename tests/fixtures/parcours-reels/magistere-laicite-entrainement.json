@@ -1,0 +1,1239 @@
+{
+  "format": 1,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-09-30T23:34:15.642Z",
+  "cadrage": {
+    "platform": "magistere",
+    "format": "distanciel",
+    "ampleur": "moyenne",
+    "trame": "entrainement",
+    "structure": "lineaire",
+    "chemins": 2
+  },
+  "plan": {
+    "titre": "Appliquer la laïcité à l'école",
+    "objectifGeneral": "Vous serez capable d'analyser des situations de classe en mobilisant les principes de laïcité.",
+    "introduction": "Ce parcours vous guide pour réagir avec précision aux situations de classe qui questionnent la laïcité. Vous y réactiverez vos connaissances sur les lois de 1905 et 2004, la charte de la laïcité, la neutralité des personnels et la liberté de conscience des élèves. Organisé en quatre étapes progressives, il vous propose des exercices variés pour vous entraîner, puis valider vos acquis.",
+    "conclusion": "À l’issue de ce parcours, vous disposez des clés pour identifier les principes de laïcité en jeu et adapter votre posture professionnelle. Pour approfondir, vous pouvez consulter la circulaire de référence ou participer à un atelier d’échange entre pairs.",
+    "notionsPivots": [
+      "la loi de 1905 de séparation des Églises et de l’État",
+      "la loi de 2004 encadrant le port de signes religieux à l’école",
+      "la charte de la laïcité à l’école",
+      "la neutralité des personnels de l’éducation nationale",
+      "la liberté de conscience des élèves",
+      "les principes républicains",
+      "les obligations de l’enseignant",
+      "les droits des familles",
+      "les situations de classe sensibles au regard de la laïcité",
+      "les réponses éducatives adaptées"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Réactiver vos connaissances",
+        "objectif": "Vous serez capable de restituer les grands principes de la laïcité à l’école.",
+        "introduction": "Vous débutez par un exercice de rappel pour mobiliser ce que vous savez déjà des lois et de la charte. Ce travail vous prépare aux exercices qui suivront. Prenez le temps de bien vous remémorer chaque notion avant de commencer.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Quiz de réactivation",
+            "objectif": "Rappeler les notions essentielles de laïcité.",
+            "consigne": "Retrouvez les définitions correspondantes pour chacun des termes proposés, en vous appuyant uniquement sur vos connaissances. Les réponses correctes s’afficheront après validation.",
+            "module": "Flashcards",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 8,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz de réactivation",
+              "description": "Répondez à chaque question.",
+              "cards": [
+                {
+                  "text": "Quel texte de 1905 organise la séparation entre les Églises et l’État en France ?",
+                  "answer": "loi1905",
+                  "tip": "Cherchez la date **1905** dans le titre officiel.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                },
+                {
+                  "text": "Quelle loi de 2004 encadre le port de signes religieux à l’école ?",
+                  "answer": "loi2004",
+                  "tip": "Elle concerne les **signes religieux** dans les établissements scolaires.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                },
+                {
+                  "text": "Quel document officiel rappelle les principes de la laïcité à l’école publique ?",
+                  "answer": "chartelaique",
+                  "tip": "Il s’agit d’un texte affiché dans tous les établissements scolaires.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                },
+                {
+                  "text": "Quel principe garantit à chaque élève le droit de croire ou de ne pas croire ?",
+                  "answer": "libertéconscience",
+                  "tip": "C’est un droit fondamental lié à la **pensée** de chacun.",
+                  "image": {
+                    "path": "",
+                    "alt": ""
+                  }
+                }
+              ],
+              "behaviour": {
+                "showSolutionsRequiresInput": true,
+                "randomCards": false,
+                "caseSensitive": false
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100,
+                  "feedback": ""
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e3",
+        "titre": "Identifier les principes en jeu",
+        "objectif": "Vous serez capable de repérer les lois et la charte applicables dans une situation donnée.",
+        "introduction": "Vous allez maintenant travailler sur des cas concrets pour affiner votre capacité à reconnaître les principes de laïcité. Ces exercices vous aideront à distinguer ce qui relève de la loi de 1905, de la loi de 2004 ou de la charte. Travaillez avec rigueur pour consolider votre analyse.",
+        "cartes": [
+          {
+            "id": "c4",
+            "titre": "Associer les situations aux principes",
+            "objectif": "Relier des situations concrètes aux lois ou à la charte.",
+            "consigne": "Glissez chaque situation dans la colonne correspondant à la loi ou à la charte qu’elle illustre. La correction s’affichera dès la validation de votre réponse.",
+            "module": "DragTheWords",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Associez chaque situation décrite à la loi ou à la charte qu'elle illustre en glissant le mot approprié. Chaque mot ne peut être utilisé qu'une seule fois.\n\nLes principes de laïcité à l'école s'appuient sur la loi de 1905, la loi de 2004, la charte de la laïcité à l'école, la neutralité des personnels ou la liberté de conscience des élèves.",
+              "textField": "Un élève refuse de participer à un cours d'éducation physique pour des raisons religieuses. *liberté de conscience des élèves*\n\nUn enseignant affiche un signe religieux dans sa salle de classe. *neutralité des personnels*\n\nUn parent d'élève demande à ce que sa fille ne suive pas un cours de sciences pour des motifs religieux. *charte de la laïcité à l'école*\n\nUn élève porte un voile islamique en classe. *loi de 2004 encadrant le port de signes religieux à l'école*\n\nUn professeur organise une activité pédagogique sur les fêtes religieuses pour en expliquer les origines. *loi de 1905 de séparation des Églises et de l’État*",
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Reprenez les principes fondamentaux : la liberté de conscience des élèves permet aux élèves de refuser une activité pour des motifs religieux, mais l'enseignant doit veiller à ce que cela ne perturbe pas le bon fonctionnement de la classe. La neutralité des personnels interdit tout signe religieux visible pour les enseignants. La charte de la laïcité rappelle les droits et devoirs de chacun dans l'établissement."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Certains mots restent mal placés. Pensez à la distinction entre ce qui relève des obligations des enseignants (neutralité) et des droits des élèves (liberté de conscience). La loi de 2004 encadre spécifiquement le port de signes religieux à l'école."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque ! Vous avez bien identifié les situations liées à la liberté de conscience et à la neutralité. Vérifiez les cas qui concernent l'organisation des activités pédagogiques ou les demandes des familles."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail : vous avez correctement associé chaque situation au principe ou à la loi qu'elle illustre. Ces distinctions sont essentielles pour appliquer la laïcité au quotidien dans votre pratique professionnelle."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Associer les situations aux principes"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c5",
+            "titre": "Repérer les obligations de neutralité",
+            "objectif": "Repérer les obligations liées à la neutralité des personnels.",
+            "consigne": "Surlignez dans le texte les éléments qui relèvent de l’obligation de neutralité pour un enseignant. La réponse correcte apparaîtra après validation.",
+            "module": "MarkTheWords",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 8,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Soulignez dans le texte les 4 mots qui relèvent de l’**obligation de neutralité** pour un enseignant, en lien avec le principe de *neutralité des personnels de l’éducation nationale*.",
+              "textField": "Un enseignant doit *s’abstenir* de toute *manifestation* politique ou religieuse en classe. Il veille à *respecter* les règles de *neutralité* dans ses propos et ses actes.",
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "La neutralité des personnels impose de ne pas afficher d’opinions personnelles. Les mots à repérer désignent cette absence d’engagement visible. Relisez les principes liés à la neutralité des personnels de l’éducation nationale."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Certains mots ont été repérés, mais d’autres manquent encore. La neutralité implique une attitude passive face aux opinions, sans les promouvoir ni les rejeter."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "La plupart des éléments sont identifiés. Vérifiez que les mots choisis renvoient bien à une absence d’expression d’opinions ou de préférences personnelles."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellente identification : les quatre mots désignent des obligations liées à la neutralité des personnels, comme l’absence de manifestation et le respect des règles de neutralité."
+                }
+              ],
+              "behaviour": {
+                "enableCheckButton": true,
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "showScorePoints": true
+              },
+              "title": "Repérer les obligations de neutralité"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e6",
+        "titre": "Traiter des cas pratiques sans aide",
+        "objectif": "Vous serez capable de produire une analyse autonome de situations de classe.",
+        "introduction": "Vous passez à une phase d’entraînement plus exigeante : vous devrez cette fois répondre sans propositions. Ces exercices vous préparent à la vérification finale et renforcent votre maîtrise des notions clés. Prenez soin de justifier vos réponses avec précision.",
+        "cartes": [
+          {
+            "id": "c7",
+            "titre": "Compléter un texte sur la liberté de conscience",
+            "objectif": "Rédiger des réponses précises sur la liberté de conscience.",
+            "consigne": "Complétez les phrases en choisissant le terme approprié pour chaque blanc. La correction vous indiquera les bonnes réponses après validation.",
+            "module": "FillInTheBlanks",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Complétez les lacunes du texte ci-dessous concernant la **liberté de conscience**.\n\nPour aller plus loin : la **liberté de conscience** est indissociable du respect des **principes républicains** et des *obligations de l’enseignant* en matière de laïcité.",
+              "questions": [
+                "La *liberté de conscience* est un droit reconnu par les *principes* fondamentaux de la République.",
+                "Elle autorise chacun à *choisir* sa conviction ou à ne pas en avoir, sans subir de pression.",
+                "À l’école, ce droit s’exerce dans le respect des *lois* et de la *charte de la laïcité*.",
+                "Les *élèves* bénéficient de cette liberté, mais elle doit être conciliée avec les *règles* communes.",
+                "Les personnels de l’Éducation nationale ont une *obligation* de neutralité pour garantir cette liberté."
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "La liberté de conscience est un concept central des principes républicains. Relisez sa définition dans la charte de la laïcité à l’école et les obligations qui en découlent pour les personnels. Pensez aux limites posées par les lois de 1905 et 2004."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Vous avez partiellement saisi les enjeux. La liberté de conscience implique un choix individuel, mais elle s’exerce dans un cadre collectif. Consultez les éléments clés : droits des élèves, neutralité des personnels et règles communes."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque complet : quelques mots-clés manquent pour préciser les conditions d’exercice de la liberté de conscience. Vérifiez comment les lois et la charte encadrent ce droit à l’école."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent : le texte est correctement complété. La liberté de conscience est bien comprise comme un droit encadré, à la fois pour les élèves et les personnels. Vous pouvez maintenant approfondir son articulation avec les situations concrètes de classe."
+                }
+              ],
+              "behaviour": {
+                "enableCheckButton": true,
+                "showSolutionsRequiresInput": true,
+                "allowRetryIfCorrect": false
+              },
+              "title": "Compléter un texte sur la liberté de conscience"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c8",
+            "titre": "Quiz final d’entraînement",
+            "objectif": "Valider votre compréhension des principes de laïcité.",
+            "consigne": "Répondez à une série de questions sur l’ensemble des notions vues. Votre score s’affichera à la fin, avec les corrections détaillées pour chaque question.",
+            "module": "QuizSet",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz final d’entraînement",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "Laïcité à l'école : quiz final d'entraînement",
+                "introduction": "Ce quiz vous permet de vérifier votre maîtrise des principes de laïcité à l'école. Répondez à ces 8 questions en 15 minutes. Vos réponses seront analysées à la fin pour vous aider à progresser. Prenez le temps de réfléchir avant de valider chaque proposition.",
+                "startButtonText": "Commencer le quiz"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Loi de 1905 - QCM"
+                  },
+                  "params": {
+                    "question": "Parmi ces affirmations, lesquelles concernent la loi de 1905 de séparation des Églises et de l’État ?",
+                    "answers": [
+                      {
+                        "text": "Elle garantit la liberté de conscience et le libre exercice des cultes.",
+                        "correct": true
+                      },
+                      {
+                        "text": "Elle interdit aux personnels de l’éducation nationale de manifester leurs convictions religieuses.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Cette interdiction relève d’un autre texte, postérieur à 1905.",
+                          "chosenFeedback": "Cette obligation concerne la neutralité des personnels, encadrée bien plus tard par le statut de la fonction publique."
+                        }
+                      },
+                      {
+                        "text": "Elle sépare les Églises de l’État mais maintient un lien entre eux.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Le terme 'séparation' est central dans le titre même de la loi.",
+                          "chosenFeedback": "La loi de 1905 instaure une séparation stricte, sans maintien de lien institutionnel."
+                        }
+                      },
+                      {
+                        "text": "Elle s’applique à tous les services publics, y compris l’école.",
+                        "correct": true
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Relisez le texte de la loi de 1905 : la séparation entre les institutions religieuses et l’État est totale."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : revoyez les deux principes fondateurs de cette loi : liberté de conscience et séparation des Églises de l’État."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : il reste une affirmation à identifier parmi les deux correctes."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : les deux affirmations sur la loi de 1905 sont justes."
+                      }
+                    ]
+                  },
+                  "subContentId": "bf5a14cd-7fb6-491e-9dbf-8074275884db"
+                },
+                {
+                  "library": "H5P.TrueFalse 1.8",
+                  "metadata": {
+                    "title": "Loi de 2004 - Vrai/Faux"
+                  },
+                  "params": {
+                    "question": "La loi de 2004 interdit le port de tout signe religieux visible à l’école, y compris les signes discrets.",
+                    "correct": "false",
+                    "feedbackOnCorrect": "Exact : la loi de 2004 encadre le port de signes religieux visibles, mais n’interdit pas les signes discrets comme une petite croix ou une étoile de David discrète.",
+                    "feedbackOnWrong": "Non : la loi de 2004 vise spécifiquement les signes religieux visibles, pas les signes discrets qui ne perturbent pas le fonctionnement du service public."
+                  },
+                  "subContentId": "1d70bb50-b10f-44a5-8bc7-58e802fa1efd"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Charte de la laïcité - QCM"
+                  },
+                  "params": {
+                    "question": "Parmi ces principes, lesquels sont explicitement mentionnés dans la charte de la laïcité à l’école ?",
+                    "answers": [
+                      {
+                        "text": "La neutralité des agents du service public.",
+                        "correct": true
+                      },
+                      {
+                        "text": "Le droit des familles à choisir les programmes scolaires.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La charte insiste sur les droits des familles, mais pas sur le choix des programmes.",
+                          "chosenFeedback": "Les programmes sont fixés par l’institution scolaire : les familles n’ont pas ce droit."
+                        }
+                      },
+                      {
+                        "text": "Le respect des convictions de chacun dans le cadre de l’espace scolaire.",
+                        "correct": true
+                      },
+                      {
+                        "text": "L’obligation pour les élèves de participer aux cérémonies républicaines.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La charte rappelle les valeurs républicaines, mais ne crée pas d’obligation de participation à des cérémonies.",
+                          "chosenFeedback": "La participation aux cérémonies est encouragée, mais n’est pas une obligation légale dans la charte."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Relisez la charte : elle lie neutralité des agents et liberté de conscience des élèves."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : deux principes sont justes parmi les quatre proposés."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : il reste un principe à identifier parmi les deux corrects."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : les deux principes de la charte sont repérés."
+                      }
+                    ]
+                  },
+                  "subContentId": "a2f7994b-d2a7-498e-a5e0-527d42d78fc3"
+                },
+                {
+                  "library": "H5P.Blanks 1.14",
+                  "metadata": {
+                    "title": "Neutralité des personnels - Mots à trous"
+                  },
+                  "params": {
+                    "taskDescription": "Complétez le texte avec les mots manquants.",
+                    "questions": [
+                      "Les personnels de l’éducation nationale ont l’obligation de *neutralité* dans l’exercice de leurs fonctions.",
+                      "Cette neutralité s’applique à leur *comportement* et à leur *expression* publique."
+                    ],
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Relisez le statut de la fonction publique : la neutralité est une obligation centrale pour les agents publics."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon départ : les mots manquants renvoient aux obligations de neutralité dans l’espace professionnel."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : il reste un mot à placer parmi les deux attendus."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : les deux mots sont correctement placés."
+                      }
+                    ]
+                  },
+                  "subContentId": "70b65eca-05a3-4cdc-9dbb-e081d8cda3a0"
+                },
+                {
+                  "library": "H5P.DragText 1.10",
+                  "metadata": {
+                    "title": "Liberté de conscience - Glisser les mots"
+                  },
+                  "params": {
+                    "taskDescription": "Complétez les phrases avec les termes adaptés.",
+                    "textField": "La liberté de *conscience* permet à chaque élève de choisir ses convictions, sous réserve du respect des *règles* de vie collective. Cette liberté s’exerce dans le cadre de l’ *école* publique.",
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Chaque mot manquant renvoie à un concept clé du cours sur la liberté de conscience."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon début : les mots placés avec hésitation sont à revoir."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : un ou deux mots restent à ajuster."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tous les mots sont correctement placés."
+                      }
+                    ]
+                  },
+                  "subContentId": "62cecedb-a873-41ce-9719-9af35ab1d706"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Situations sensibles - QCM"
+                  },
+                  "params": {
+                    "question": "Un élève refuse de participer à un cours d’éducation physique et sportive au motif que sa religion interdit les activités sportives. Quelle est votre première réaction ?",
+                    "answers": [
+                      {
+                        "text": "Lui proposer un aménagement individuel pour une autre activité.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La laïcité ne permet pas d’exempter un élève d’une activité obligatoire, sauf motif médical.",
+                          "chosenFeedback": "L’EPS est une activité obligatoire : une dispense pour motif religieux n’est pas possible."
+                        }
+                      },
+                      {
+                        "text": "Lui rappeler que l’école publique est laïque et que l’EPS est une activité obligatoire.",
+                        "correct": true
+                      },
+                      {
+                        "text": "Contacter ses parents pour trouver une solution alternative.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La solution doit venir de l’élève, pas d’une négociation avec les parents.",
+                          "chosenFeedback": "L’école ne transige pas sur les obligations scolaires : l’élève doit participer."
+                        }
+                      },
+                      {
+                        "text": "Lui expliquer que sa liberté de conscience est respectée, mais que l’obligation de suivre les cours s’applique.",
+                        "correct": true
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "L’obligation de suivre les cours relève du cadre républicain : la liberté de conscience ne peut servir de prétexte pour éviter une activité."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : deux réponses sont justes parmi les quatre proposées."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : il reste une réaction à identifier parmi les deux correctes."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : les deux réactions adaptées sont identifiées."
+                      }
+                    ]
+                  },
+                  "subContentId": "c2f5dfe3-fd5d-4e55-af06-db4860dfb621"
+                },
+                {
+                  "library": "H5P.Essay 1.5",
+                  "metadata": {
+                    "title": "Réponses éducatives - Rédaction"
+                  },
+                  "params": {
+                    "taskDescription": "Décrivez brièvement la démarche à suivre si un élève porte un signe religieux visible en classe, en mobilisant les principes de laïcité.",
+                    "keywords": [
+                      {
+                        "keyword": "dialogue",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "rappel",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      },
+                      {
+                        "keyword": "principes",
+                        "options": {
+                          "points": 1,
+                          "caseSensitive": false
+                        }
+                      }
+                    ],
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La démarche commence par un échange avec l’élève pour comprendre son intention."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon départ : le dialogue est essentiel, mais la suite de la démarche doit être précisée."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : il manque encore un élément clé de la démarche (rappel des principes ou signalement)."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Très complet : la démarche est décrite en mobilisant dialogue, rappel des principes et cadre légal."
+                      }
+                    ]
+                  },
+                  "subContentId": "475cd208-9794-451d-92da-5b42cc900665"
+                },
+                {
+                  "library": "H5P.DragQuestion 1.15",
+                  "metadata": {
+                    "title": "Obligations et droits - Glisser-déposer"
+                  },
+                  "params": {
+                    "title": "Associez chaque situation au principe ou à l’obligation qui s’applique.",
+                    "dropZones": [
+                      {
+                        "label": "Neutralité des personnels",
+                        "correctElements": [
+                          1,
+                          5
+                        ]
+                      },
+                      {
+                        "label": "Liberté de conscience des élèves",
+                        "correctElements": [
+                          0,
+                          3
+                        ]
+                      },
+                      {
+                        "label": "Obligations des familles",
+                        "correctElements": [
+                          2,
+                          4
+                        ]
+                      }
+                    ],
+                    "elements": [
+                      {
+                        "text": "Un élève refuse de saluer le drapeau par conviction personnelle"
+                      },
+                      {
+                        "text": "Un enseignant porte une croix visible en classe"
+                      },
+                      {
+                        "text": "Les parents demandent une dispense pour un cours de sciences de la vie et de la Terre"
+                      },
+                      {
+                        "text": "Un élève prie dans un coin de la cour pendant la récréation"
+                      },
+                      {
+                        "text": "Les parents contestent le contenu d’un manuel scolaire"
+                      },
+                      {
+                        "text": "Un enseignant affiche un calendrier religieux sur le mur de sa salle de classe"
+                      }
+                    ],
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repérez d’abord la nature de chaque situation : personnel, élève ou famille."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Bon début : certaines associations sont justes, mais d’autres restent à revoir."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : une ou deux associations sont encore à ajuster."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Parfait : toutes les situations sont correctement associées."
+                      }
+                    ]
+                  },
+                  "subContentId": "f533c76b-1384-40eb-9963-01e3d7f474b9"
+                },
+                {
+                  "library": "H5P.MarkTheWords 1.11",
+                  "metadata": {
+                    "title": "Principe républicains - Surligner"
+                  },
+                  "params": {
+                    "taskDescription": "Dans le texte suivant, surlignez les *principes républicains* qui fondent la laïcité à l’école.",
+                    "textField": "La laïcité repose sur *l’égalité* de traitement de tous les élèves, *la* *liberté* de conscience et *le* *respect* des convictions de chacun. Elle garantit *la* *neutralité* des personnels et *la* *fraternité* entre les membres de la communauté éducative.",
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repérez d’abord les mots qui renvoient à des valeurs ou des principes."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Quelques-uns sont trouvés : chaque mot attendu est à vérifier."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : il reste un ou deux mots à repérer."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent : tous les principes républicains sont identifiés."
+                      }
+                    ]
+                  },
+                  "subContentId": "be4c41c4-bb39-4d23-9594-9f1d3a10dc29"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les bases sont à consolider : relisez les textes officiels et refaites ce quiz pour progresser."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Plusieurs notions sont identifiées, mais certaines résistent encore. Ciblez les points de difficulté pour les retravailler."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "La plupart des questions sont bien traitées. Repérez les situations qui ont fait hésiter pour ancrer ces acquis."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Félicitations : les principes de laïcité sont maîtrisés. Continuez à vous entraîner pour les appliquer en situation réelle."
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": "on",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Repassez en revue les principes de base : la loi de 1905 et la charte de la laïcité sont vos références."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "Ces acquis sont solides. Ciblez les questions qui ont posé problème pour les retravailler."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Vous êtes sur la bonne voie. Identifiez les situations complexes qui nécessitent encore de l’entraînement."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "Excellente maîtrise : vous pouvez maintenant aborder des cas plus complexes en classe."
+                  }
+                ]
+              },
+              "randomQuestions": false,
+              "disableBackwardsNavigation": false,
+              "override": {
+                "checkButton": "on",
+                "showSolutionButton": "on",
+                "retryButton": "on"
+              },
+              "poolSize": 0,
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e9",
+        "titre": "Mettre en œuvre les principes dans des situations complexes",
+        "objectif": "Vous serez capable de mobiliser vos connaissances pour résoudre des situations de classe variées.",
+        "introduction": "Cette dernière étape valide vos acquis en vous confrontant à des cas complexes qui mêlent plusieurs principes de laïcité. Vous devrez analyser une situation, identifier les enjeux et proposer une réponse adaptée. Prenez le temps de structurer votre analyse avant de valider.",
+        "cartes": [
+          {
+            "id": "c10",
+            "titre": "Étude de cas finale",
+            "objectif": "Analyser une situation et proposer une réponse éducative.",
+            "consigne": "Lisez une situation de classe impliquant plusieurs enjeux de laïcité, puis répondez à un questionnaire QCM et à des questions ouvertes. Votre analyse sera comparée à une réponse type à l’issue de l’activité.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Étude de cas finale",
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Analyse d'une situation de classe : port de signes religieux"
+                  },
+                  "params": {
+                    "question": "Lors d'une sortie scolaire, une élève de 4e porte un voile islamique ainsi qu'un long pantalon ample, en invoquant des raisons religieuses. Un autre élève signale que ce vêtement est interdit par la loi de 2004. Comment réagir en tant que professeur ?",
+                    "answers": [
+                      {
+                        "text": "Demander à l'élève de retirer immédiatement le voile pour respecter la loi de 2004, sans donner d'explication supplémentaire.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La loi de 2004 encadre strictement les signes religieux à l'école. Pensez à la distinction entre l'interdiction et l'application.",
+                          "chosenFeedback": "Erreur : la loi de 2004 interdit le port de signes religieux ostentatoires, mais son application doit s'accompagner d'une explication pédagogique et d'un dialogue avec l'élève."
+                        }
+                      },
+                      {
+                        "text": "Organiser un échange avec l'élève et sa famille pour comprendre les motivations du port du voile, tout en rappelant le cadre légal de la laïcité à l'école.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Réponse exacte : la loi de 2004 s'applique, mais elle doit être expliquée et discutée avec bienveillance pour préserver le dialogue éducatif."
+                        }
+                      },
+                      {
+                        "text": "Ignorer la situation en espérant que l'élève retirera le voile de sa propre initiative au fil de la sortie.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : la neutralité de l'école et le respect de la loi de 2004 doivent être appliqués en toutes circonstances, y compris lors des sorties."
+                        }
+                      },
+                      {
+                        "text": "Proposer à l'élève de discuter avec le CPE pour trouver une solution, en vous désengageant de la situation.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : c'est à vous, en tant que professeur, de gérer cette situation dans le cadre de vos obligations professionnelles."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Revoir l'application de la loi de 2004 : son respect passe par un dialogue éducatif, pas par une exclusion immédiate. Relire les modalités d'application de cette loi."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "La loi de 2004 est connue, mais son application doit s'accompagner d'un dialogue avec l'élève et sa famille. Repérer les points à renforcer dans votre gestion de classe."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : la bonne réponse inclut à la fois l'application de la loi et le dialogue. Identifier les éléments manquants dans la réponse choisie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "La loi de 2004 est appliquée avec justesse, tout en préservant le dialogue éducatif. Bravo : vous savez concilier respect de la loi et approche pédagogique."
+                      }
+                    ]
+                  },
+                  "subContentId": "6715d9dd-0b8f-40fc-baa7-55867d163489"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Respect de la neutralité des personnels"
+                  },
+                  "params": {
+                    "question": "Un parent d'élève demande à vous parler en portant un t-shirt avec un motif religieux很明显. Comment réagir en tant que professeur ?",
+                    "answers": [
+                      {
+                        "text": "Refuser de lui parler et lui demander de quitter l'établissement immédiatement.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La neutralité s'applique aux personnels de l'éducation nationale, pas aux familles. Pensez à la distinction entre les obligations des uns et des autres.",
+                          "chosenFeedback": "Erreur : la neutralité des personnels ne s'étend pas aux familles. Vous devez les accueillir dans le respect des principes républicains."
+                        }
+                      },
+                      {
+                        "text": "L'accueillir en respectant sa tenue, tout en rappelant discrètement que l'établissement est un lieu laïc.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Réponse exacte : la neutralité ne concerne pas les familles. Vous devez les accueillir avec respect tout en maintenant le cadre laïc de l'école."
+                        }
+                      },
+                      {
+                        "text": "Lui demander de retourner chez lui pour se changer avant de vous parler.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : vous n'avez pas le droit d'imposer une tenue à un parent. La laïcité garantit la liberté de conscience, y compris pour les familles."
+                        }
+                      },
+                      {
+                        "text": "Ignorer sa tenue et engager la conversation comme si de rien n'était.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : la laïcité implique de respecter les personnes tout en maintenant le cadre laïc. Votre attitude doit être active, pas passive."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La neutralité des personnels est une notion à bien distinguer de la liberté de conscience des familles. Relire les textes sur les droits des familles et les obligations des personnels."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "La nuance entre obligations des personnels et droits des familles est à mieux cerner. Repérer les situations où cette distinction est cruciale."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : l'accueil respectueux est nécessaire, mais il doit s'accompagner d'un maintien du cadre laïc. Identifier ce qui manque dans la réponse choisie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "La distinction entre neutralité des personnels et liberté de conscience des familles est parfaitement maîtrisée. Vous savez concilier respect et cadre laïc."
+                      }
+                    ]
+                  },
+                  "subContentId": "734c3842-a907-4b8a-aa48-49c71200f938"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Liberté de conscience et enseignement"
+                  },
+                  "params": {
+                    "question": "Lors d'un cours d'histoire sur les religions, un élève refuse de participer à une activité sur le christianisme au motif que sa religion interdit d'étudier d'autres cultes. Comment réagir ?",
+                    "answers": [
+                      {
+                        "text": "Exempter l'élève de cette activité et lui proposer un travail en autonomie sur un autre sujet.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La liberté de conscience ne doit pas être confondue avec l'obligation de neutralité dans l'enseignement. Pensez à la mission de transmission des savoirs.",
+                          "chosenFeedback": "Erreur : l'école doit transmettre des savoirs neutres et objectifs. La liberté de conscience ne permet pas d'échapper à l'enseignement."
+                        }
+                      },
+                      {
+                        "text": "Expliquer à l'élève que l'école garantit la liberté de conscience, mais que l'enseignement doit rester neutre et objectif sur les religions.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Réponse exacte : la liberté de conscience est garantie, mais l'enseignement doit rester neutre et objectif. L'élève doit participer à l'activité."
+                        }
+                      },
+                      {
+                        "text": "Modifier le contenu de l'activité pour éviter toute référence au christianisme, afin de ne pas froisser l'élève.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : l'enseignement doit rester objectif et complet. Modifier le contenu pour un élève serait une atteinte à la neutralité de l'enseignement."
+                        }
+                      },
+                      {
+                        "text": "Demander au CPE de régler la situation, en vous désengageant du contenu pédagogique.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : c'est à vous, en tant que professeur, de gérer cette situation dans le cadre de votre mission pédagogique."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La liberté de conscience est un droit, mais elle ne doit pas entraver la transmission des savoirs. Relire la charte de la laïcité à l'école sur ce point."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "La nuance entre liberté de conscience et neutralité de l'enseignement est à mieux cerner. Repérer les situations où cette distinction est cruciale."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : la bonne réponse inclut à la fois la liberté de conscience et la neutralité de l'enseignement. Identifier ce qui manque dans la réponse choisie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Vous savez concilier liberté de conscience des élèves et neutralité de l'enseignement. La gestion de cette situation est parfaitement maîtrisée."
+                      }
+                    ]
+                  },
+                  "subContentId": "91324775-11b3-447c-aec4-053f69dce534"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Gestion d'un conflit entre élèves sur des motifs religieux"
+                  },
+                  "params": {
+                    "question": "Deux élèves de 3e s'opposent violemment : l'un porte une croix chrétienne visible, l'autre lui reproche de violer la laïcité. Comment intervenir ?",
+                    "answers": [
+                      {
+                        "text": "Demander à l'élève portant la croix de la retirer immédiatement pour apaiser le conflit.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La loi de 2004 s'applique aux signes religieux ostentatoires, mais son application doit être progressive et pédagogique. Pensez à la gestion de conflit.",
+                          "chosenFeedback": "Erreur : la croix est un signe religieux visible, mais son retrait doit être expliqué dans le cadre d'un dialogue éducatif, pas imposé brutalement."
+                        }
+                      },
+                      {
+                        "text": "Organiser un temps de dialogue entre les deux élèves pour comprendre les motivations de leur conflit, tout en rappelant le cadre légal.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Réponse exacte : gérer un conflit passe par le dialogue et la pédagogie. Vous devez rappeler le cadre légal sans exclure la dimension éducative."
+                        }
+                      },
+                      {
+                        "text": "Ignorer le conflit en espérant qu'il se résorbe de lui-même.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : un conflit entre élèves doit être traité immédiatement pour éviter son escalade. La neutralité et la pédagogie sont essentielles."
+                        }
+                      },
+                      {
+                        "text": "Sanctionner les deux élèves pour avoir créé un trouble à l'ordre public.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : la sanction doit être proportionnée et éducative. Un dialogue est préférable pour résoudre ce conflit lié à la laïcité."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La gestion des conflits liés à la laïcité doit allier pédagogie et respect du cadre légal. Relire les modalités d'intervention en cas de conflit."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Le cadre légal est connu, mais son application doit s'accompagner d'une approche éducative. Repérer les points à renforcer dans votre gestion de classe."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : la bonne réponse inclut à la fois le dialogue et le rappel du cadre légal. Identifier les éléments manquants dans la réponse choisie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Vous savez concilier gestion de conflit, pédagogie et respect du cadre légal. Votre approche est parfaitement adaptée à cette situation sensible."
+                      }
+                    ]
+                  },
+                  "subContentId": "a7b32fc8-0cd2-461d-bc3e-14b4040edbc3"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Respect des principes républicains dans un projet interdisciplinaire"
+                  },
+                  "params": {
+                    "question": "Dans le cadre d'un projet sur les valeurs de la République, un groupe d'élèves propose d'inclure une prière dans la présentation finale, arguant que cela reflète la diversité des croyances. Comment réagir ?",
+                    "answers": [
+                      {
+                        "text": "Accepter leur proposition en expliquant que cela illustre la liberté de conscience.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La liberté de conscience ne doit pas être confondue avec l'expression collective dans un cadre scolaire. Pensez à la neutralité du service public.",
+                          "chosenFeedback": "Erreur : l'école doit rester neutre. Une prière collective, même proposée par des élèves, n'a pas sa place dans un projet sur les valeurs de la République."
+                        }
+                      },
+                      {
+                        "text": "Expliquer que l'école est un lieu laïc et que le projet doit rester neutre, tout en proposant d'aborder la diversité des croyances par d'autres moyens.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Réponse exacte : l'école doit rester neutre. La diversité des croyances peut être abordée par des activités pédagogiques adaptées, sans expression collective."
+                        }
+                      },
+                      {
+                        "text": "Laisser les élèves organiser la présentation comme ils le souhaitent, sans intervention.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : l'école doit garantir la neutralité. Votre rôle est d'encadrer le projet pour respecter ce principe."
+                        }
+                      },
+                      {
+                        "text": "Demander à un autre groupe de refaire le projet pour éviter tout conflit.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : cela reviendrait à sanctionner le groupe pour leur proposition, sans régler le problème de fond. Votre rôle est d'expliquer et d'orienter."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La neutralité de l'école est un principe à appliquer dans tous les projets. Relire les modalités d'application de ce principe dans un cadre pédagogique."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Le principe de neutralité est connu, mais son application dans un projet interdisciplinaire doit être mieux cernée. Repérer les points à renforcer."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : la bonne réponse inclut à la fois l'explication du principe et une alternative pédagogique. Identifier ce qui manque dans la réponse choisie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Vous savez appliquer le principe de neutralité dans un projet interdisciplinaire tout en proposant des alternatives pédagogiques. Votre approche est parfaitement adaptée."
+                      }
+                    ]
+                  },
+                  "subContentId": "cff58368-4cbc-41c1-97cf-a179ea1500d2"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Réponse éducative à une demande de dispense religieuse"
+                  },
+                  "params": {
+                    "question": "Un élève de 6e demande à être dispensé de sport pour des raisons religieuses, arguant que sa religion interdit la pratique sportive mixte. Comment réagir ?",
+                    "answers": [
+                      {
+                        "text": "Accorder systématiquement la dispense pour respecter sa liberté de conscience.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La liberté de conscience ne doit pas être confondue avec une exemption systématique des activités scolaires. Pensez aux principes d'égalité et de neutralité.",
+                          "chosenFeedback": "Erreur : la liberté de conscience ne justifie pas une exemption automatique. L'école doit rechercher des solutions éducatives et équitables."
+                        }
+                      },
+                      {
+                        "text": "Refuser la dispense et exiger sa participation aux activités sportives.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : l'école doit rechercher des solutions respectueuses de la liberté de conscience. Un refus catégorique n'est pas éducatif."
+                        }
+                      },
+                      {
+                        "text": "Proposer une solution adaptée, comme une pratique séparée ou un autre créneau sportif, tout en expliquant que la mixité est un principe républicain.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Réponse exacte : la liberté de conscience doit être conciliée avec les principes républicains. Une solution éducative et adaptée est à privilégier."
+                        }
+                      },
+                      {
+                        "text": "Ignorer la demande et laisser l'élève gérer la situation seul.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur : votre rôle est d'accompagner l'élève dans le respect des principes républicains. Une réponse éducative est nécessaire."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "La liberté de conscience doit être conciliée avec les principes républicains. Relire les modalités d'application de ces principes dans le cadre scolaire."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "La nuance entre liberté de conscience et principes républicains est à mieux cerner. Repérer les situations où cette distinction est cruciale."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : la bonne réponse inclut à la fois le respect de la liberté de conscience et l'application des principes républicains. Identifier ce qui manque dans la réponse choisie."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Vous savez concilier liberté de conscience et principes républicains en proposant des solutions éducatives adaptées. Votre approche est parfaitement maîtrisée."
+                      }
+                    ]
+                  },
+                  "subContentId": "9c20c49f-8e78-41f3-94c1-f928ccd44fc5"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les situations sensibles liées à la laïcité demandent une analyse fine des principes en jeu. Revoir les lois de 1905 et 2004, ainsi que la charte de la laïcité à l'école, pour progresser."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Vous commencez à distinguer les enjeux, mais des nuances résistent. Repérer les questions qui ont fait hésiter pour cibler les points à approfondir."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Plusieurs réponses sont bien analysées. Identifier les situations où la gestion de la laïcité reste délicate pour consolider vos acquis."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Vous maîtrisez les principes de laïcité et leur application dans des situations complexes. Continuer à vous appuyer sur ces acquis pour affiner votre pratique professionnelle."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "Professeurs néo-titulaires en formation continue",
+    "adultes": true
+  }
+}

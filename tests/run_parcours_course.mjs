@@ -205,21 +205,35 @@ try {
             dansArchive[nom] = tar.subarray(o + 512, o + 512 + taille);
             o += 512 + Math.ceil(taille / 512) * 512;
         }
-        const h5pAttendu = activities[0].extracted.h5pBytes;
-        const h5pRelu = dansArchive[`files/${activities[0].extracted.contenthash.slice(0, 2)}/${activities[0].extracted.contenthash}`];
+        // L'accueil ouvre désormais toujours le cours (D97) : le premier H5P du plan.
+        const premierH5p = activities.find(a => a.extracted.contenthash).extracted;
+        const h5pAttendu = premierH5p.h5pBytes;
+        const h5pRelu = dansArchive[`files/${premierH5p.contenthash.slice(0, 2)}/${premierH5p.contenthash}`];
         const h5pIdentique = !!h5pRelu && h5pRelu.length === h5pAttendu.length
             && h5pRelu.every((o2, i) => o2 === h5pAttendu[i]);
 
+        // Tout ce qui est posé, dans l'ordre du cours : l'accueil en tête, la Fin
+        // du parcours en dernier (D96, D97). Les contrôles de voie ne portent que
+        // sur les CARTES du plan, sans les textes de l'atelier.
+        const toutes = activities.map((a, i) => ({
+            titre: a.title,
+            sectionIndex: a.sectionIndex,
+            kind: a.extracted.kind || 'mbz',
+            moduleName: a.extracted.moduleName,
+            contenthash: a.extracted.contenthash || null,
+            moduleId: moduleIdFor(i),
+            scenario: Boolean(a.scenario),
+            bilan: Boolean(a.bilan),
+        }));
+        const labelXml = v => (v ? files[`activities/label_${v.moduleId}/label.xml`] || '' : '');
         return {
             exclues,
-            voies: activities.map((a, i) => ({
-                titre: a.title,
-                sectionIndex: a.sectionIndex,
-                kind: a.extracted.kind || 'mbz',
-                moduleName: a.extracted.moduleName,
-                contenthash: a.extracted.contenthash || null,
-                moduleId: moduleIdFor(i),
-            })),
+            voies: toutes.filter(v => !v.scenario),
+            toutes,
+            accueilXml: labelXml(toutes[0]),
+            // Le mot de la fin, puis la page « Bilan du parcours » sous lui (D112).
+            finXml: labelXml(toutes.filter(v => !v.bilan).at(-1)),
+            bilanXml: (v => (v ? files[`activities/page_${v.moduleId}/page.xml`] || '' : ''))(toutes.find(v => v.bilan)),
             sections,
             chemins: Object.keys(files).sort(),
             questionsXml: files['questions.xml'] || '',
@@ -232,7 +246,7 @@ try {
             nomsModules: ['parcours_etiquette', 'parcours_forum', 'parcours_sondage']
                 .map(c => routeur.nomModule(c)),
             autoPorteurs: [...SELF_CONTAINED_MODULES],
-            xmlLabel: Object.entries(files).find(([p]) => /label_\d+\/label\.xml$/.test(p))?.[1] || '',
+            xmlLabel: labelXml(toutes.find(v => !v.scenario && v.moduleName === 'label')),
             xmlForum: Object.entries(files).find(([p]) => /forum_\d+\/forum\.xml$/.test(p))?.[1] || '',
             xmlChoice: Object.entries(files).find(([p]) => /choice_\d+\/choice\.xml$/.test(p))?.[1] || '',
             // Les deux greffons tiers ne sont pas dans le plan ci-dessus (ils ne
@@ -351,6 +365,7 @@ try {
                             const x = new TextDecoder().decode(tar2.subarray(o + 512, o + 512 + taille));
                             sections.push({
                                 numero: Number((x.match(/<number>(\d+)<\/number>/) || [])[1]),
+                                fin: /<name>Fin du parcours<\/name>/.test(x),
                                 sequence: (x.match(/<sequence>([^<]*)<\/sequence>/) || [])[1] || '',
                                 dispo: (x.match(/<availabilityjson>([^<]*)<\/availabilityjson>/) || [])[1] || '',
                             });
@@ -400,7 +415,8 @@ try {
             journal: files['moodle_backup.log'] || '',
             filesXml: files['files.xml'] || '',
             sectionIds: sections.map(s => sectionIdFor(s.index)),
-            quizBase: quizIdBaseFor(6),
+            // Le Test n'est plus la 7e entrée : l'accueil passe devant (D97).
+            quizBase: quizIdBaseFor(toutes.findIndex(v => v.kind === 'quiz')),
             tailleMbz: paquet.bytes.length,
             nomFichier: paquet.filename,
             cheminsArchive: Object.keys(dansArchive).length,
@@ -424,6 +440,20 @@ try {
         const { activities, sections } = await planVersActivites(p);
         const { files } = assembleCourseFiles({ courseTitle: p.titre, timestamp: 1756000000, activities, sections, identite: IDENTITE_CARAMEL });
         return Object.entries(files).find(([k]) => /activities\/quiz_\d+\/quiz\.xml$/.test(k))?.[1] || '';
+    }, PLAN);
+
+    // « Évaluer » (D102) : le Test d'une trame d'épreuve reçoit ses réglages à la
+    // génération (`reglagesDeTrame`) ; ils doivent atteindre le quiz.xml du cours.
+    const quizEpreuve = await page.evaluate(async (plan) => {
+        const { planVersActivites, IDENTITE_CARAMEL } = await import('/js/parcours/parcours-builder.js');
+        const { assembleCourseFiles } = await import('/js/moodle/mbz-course-builder.js');
+        const { reglagesDeTrame } = await import('/js/parcours/templates.js');
+        const p = structuredClone(plan);
+        const carte = p.etapes.flatMap(e => e.cartes).find(c => c.module === 'test_elea');
+        carte.contenu = reglagesDeTrame('evaluation', carte, carte.contenu);
+        const { activities, sections } = await planVersActivites(p);
+        const { files } = assembleCourseFiles({ courseTitle: p.titre, timestamp: 1756000000, activities, sections, identite: IDENTITE_CARAMEL });
+        return { xml: Object.entries(files).find(([k]) => /activities\/quiz_\d+\/quiz\.xml$/.test(k))?.[1] || '', duree: carte.duree };
     }, PLAN);
 
     console.log('\n── Les sept cartes du plan ─────────────────────────────────');
@@ -644,10 +674,13 @@ try {
         champ(carte.xml, 'intro') === '' && /maploader/.test(r.carteRelue));
 
     const posee = r.posees.elea;
-    ok('posée par la vraie voie d’assemblage, elle ouvre la marche en section 0',
-        posee[0].moduleName === 'mapmodules' && posee[0].sectionIndex === 0);
-    ok('elle est la SEULE chose en section 0 (la zone « Généralités » reste sinon vide)',
-        posee.filter(a => a.sectionIndex === 0).length === 1);
+    // L'accueil, qui dit la durée du parcours, précède la carte (D97) : on lit
+    // d'abord où l'on va, puis on voit le chemin.
+    ok('posée par la vraie voie d’assemblage, elle ouvre la marche en section 0, juste après l’accueil',
+        posee[0].moduleName === 'label' && posee[1].moduleName === 'mapmodules' && posee[1].sectionIndex === 0,
+        posee.slice(0, 2).map(a => `${a.sectionIndex}:${a.moduleName}`).join(' · '));
+    ok('la section 0 ne porte que l’accueil et la carte',
+        posee.filter(a => a.sectionIndex === 0).length === 2);
     // D26 : `mapmodules` est dans la palette d'Éléa (35 tuiles) et absent de
     // celle de Magistère (29). Le proposer ailleurs ferait échouer l'import.
     for (const pid of ['magistere', 'moodle']) {
@@ -662,12 +695,24 @@ try {
     console.log('\n── L’ouverture progressive (restrictions d’accès) ──────────');
     const pr = r.progression;
     const decode = (x) => x.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
-    const etapes = pr.active.sections.filter(s => s.numero >= 1);
+    const etapes = pr.active.sections.filter(s => s.numero >= 1 && !s.fin);
 
-    ok('décochée, aucune section ne porte de restriction',
+    ok('décochée, aucune étape ne porte de restriction',
         pr.decochee.etapesContraintes === 0
-        && pr.decochee.sections.every(s => s.dispo === '$@NULL@$'),
+        && pr.decochee.sections.filter(s => !s.fin).every(s => s.dispo === '$@NULL@$'),
         pr.decochee.sections.map(s => `${s.numero}:${s.dispo}`).join(' · '));
+    // D96 : la Fin du parcours, dernière section, reste MASQUÉE jusqu'à ce que
+    // l'élève ait tout achevé — que l'ouverture progressive soit cochée ou non.
+    for (const [nom, cas] of [['décochée', pr.decochee], ['cochée', pr.active]]) {
+        const fin = cas.sections.find(s => s.fin);
+        let c = null;
+        try { c = fin && JSON.parse(decode(fin.dispo)); } catch { /* ligne en échec ci-dessous */ }
+        ok(`${nom}, la Fin du parcours ferme le cours, masquée jusqu’à l’achèvement de toutes les activités`,
+            Boolean(fin) && fin.numero === cas.sections.length - 1 && c?.op === '&'
+            && Array.isArray(c.showc) && c.showc.length === c.c.length && c.showc.every(v => v === false)
+            && c.c.length >= 1 && c.c.every(x => x.type === 'completion' && x.e === 1),
+            fin ? fin.dispo : 'aucune section « Fin du parcours »');
+    }
 
     ok('cochée, les étapes 2 et suivantes sont contraintes — mais PAS la première',
         pr.active.etapesContraintes === etapes.length - 1
@@ -703,7 +748,7 @@ try {
 
     ok('sur une seule étape, rien n’est posé (il n’y a rien à ouvrir après)',
         pr.uneSeule.etapesContraintes === 0
-        && pr.uneSeule.sections.every(s => s.dispo === '$@NULL@$'),
+        && pr.uneSeule.sections.filter(s => !s.fin).every(s => s.dispo === '$@NULL@$'),
         String(pr.uneSeule.etapesContraintes));
 
     // Le piège qui fermerait le parcours dès sa première page : la Carte de
@@ -722,8 +767,12 @@ try {
     console.log('\n── Textes d’accueil et d’introduction (D64) ────────────────');
     const tx = pr.avecTextes;
     const premierModule = s => tx.modules[s.sequence.split(',')[0]];
-    ok('une étiquette par étape, plus l’accueil, et aucune activité perdue',
-        tx.textes === pr.nbEtapes + 1 && tx.etiquettes.length === pr.nbEtapes + 1 + pr.active.etiquettes.length,
+    // L'accueil (il dit la durée) et la Fin sont déjà là sans texte rédigé :
+    // les introductions d'étape s'y ajoutent, une par étape.
+    // Plus la page de bilan (D112), comptée parmi les textes de l'atelier.
+    ok('une étiquette par étape, plus l’accueil, la Fin et son bilan, et aucune activité perdue',
+        tx.textes === pr.nbEtapes + 3 && pr.active.textes === 3
+        && tx.etiquettes.length === pr.nbEtapes + pr.active.etiquettes.length,
         `${tx.textes} texte(s), ${tx.etiquettes.length} étiquette(s) pour ${pr.nbEtapes} étape(s)`);
     ok('chaque section s’ouvre sur son texte, l’accueil compris',
         tx.sections.every(s => premierModule(s) === 'label'),
@@ -796,6 +845,19 @@ try {
         /<completion>2<\/completion>\s*<completiongradeitemnumber>0<\/completiongradeitemnumber>/.test(r.quizModuleXml)
         && val(r.quizGradesXml, 'grademax') === val(r.quizXml, 'grade') && val(r.quizXml, 'grade') === '10.00000');
 
+    const epreuve = quizEpreuve.xml;
+    ok('« Évaluer » : une seule tentative, chronométrée sur la durée de la carte, feedback différé',
+        val(epreuve, 'attempts_number') === '1' && val(epreuve, 'timelimit') === String(quizEpreuve.duree * 60)
+        && val(epreuve, 'preferredbehaviour') === 'deferredfeedback',
+        ['attempts_number', 'timelimit', 'preferredbehaviour'].map(t => `${t}=${val(epreuve, t)}`).join(' '));
+    // Relecture « note seule » : sans `attempt`, la page de relecture ne s'ouvre pas
+    // — ni réponses, ni correction, ni retours ; la note, elle, s'affiche.
+    ok('« Évaluer » : après la tentative, la note seule — ni réponses, ni correction, ni retours',
+        (Number(val(epreuve, 'reviewattempt')) & 0x01000) === 0 && (Number(val(epreuve, 'reviewcorrectness')) & 0x01000) === 0
+        && (Number(val(epreuve, 'reviewspecificfeedback')) & 0x01000) === 0 && (Number(val(epreuve, 'reviewrightanswer')) & 0x01000) === 0
+        && (Number(val(epreuve, 'reviewmarks')) & 0x01000) !== 0,
+        ['reviewattempt', 'reviewcorrectness', 'reviewmarks', 'reviewrightanswer'].map(t => `${t}=${val(epreuve, t)}`).join(' '));
+
     console.log('\n── Le pool de fichiers (le .h5p embarqué) ──────────────────');
     const hash = r.voies[0]?.contenthash || '';
     ok('l’empreinte sha1 du .h5p est bien formée', /^[0-9a-f]{40}$/.test(hash), hash);
@@ -807,10 +869,26 @@ try {
     console.log('\n── Sections ────────────────────────────────────────────────');
     ok('la section 0 (« Généralités ») existe et reste vide',
         r.sections[0]?.index === 0 && r.sections[0]?.name === '');
-    ok('les trois étapes du plan deviennent les sections 1 à 3',
-        r.sections.length === 4 && r.sections[1]?.name === 'Découvrir'
-        && r.sections[2]?.name === 'Échanger' && r.sections[3]?.name === "S'entraîner",
+    ok('les trois étapes du plan deviennent les sections 1 à 3, la Fin du parcours la 4',
+        r.sections.length === 5 && r.sections[1]?.name === 'Découvrir'
+        && r.sections[2]?.name === 'Échanger' && r.sections[3]?.name === "S'entraîner"
+        && r.sections[4]?.name === 'Fin du parcours',
         JSON.stringify(r.sections));
+    // Le HTML de Moodle porte les accents en entités numériques.
+    const enClair = x => x.replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)));
+    ok('l’accueil ouvre la section 0 et dit la durée du parcours (D97)',
+        r.toutes[0]?.scenario && r.toutes[0]?.sectionIndex === 0
+        && /Durée estimée du parcours : 1 h 22</.test(enClair(r.accueilXml)),
+        (enClair(r.accueilXml).match(/<intro>([^]{0,160})/) || [])[1]);
+    ok('la Fin du parcours dit à l’élève qu’il a terminé (D96)',
+        r.toutes.at(-2)?.scenario && r.toutes.at(-2)?.sectionIndex === 4
+        && /Bravo ! Le parcours est terminé\./.test(enClair(r.finXml)),
+        (enClair(r.finXml).match(/<intro>([^]{0,160})/) || [])[1]);
+    ok('sous le mot de la fin, la page « Bilan du parcours » (D112) : une Page, hors des activités du plan',
+        r.toutes.at(-1)?.bilan && r.toutes.at(-1)?.scenario && r.toutes.at(-1)?.sectionIndex === 4
+        && r.toutes.at(-1)?.moduleName === 'page' && /<name>Bilan du parcours<\/name>/.test(enClair(r.bilanXml))
+        && !r.voies.some(v => v.bilan),
+        JSON.stringify(r.toutes.at(-1)));
     ok('les numéros de section sont contigus',
         r.sections.every((s, i) => s.index === i));
     for (const id of r.sectionIds) {

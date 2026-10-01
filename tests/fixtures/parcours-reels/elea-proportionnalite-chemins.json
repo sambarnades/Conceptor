@@ -1,0 +1,1865 @@
+{
+  "format": 2,
+  "produit": "caramel-parcours",
+  "version": "0.1.0",
+  "langue": "fr",
+  "exporteLe": "2026-10-01T12:26:08.906Z",
+  "cadrage": {
+    "platform": "elea",
+    "format": "distanciel",
+    "ampleur": "courte",
+    "trame": "differenciation",
+    "structure": "chemins",
+    "chemins": 3
+  },
+  "plan": {
+    "titre": "Maîtriser la proportionnalité",
+    "objectifGeneral": "Résoudre des problèmes de proportionnalité en identifiant les situations concernées et en appliquant les méthodes adaptées",
+    "introduction": "Dans ce parcours, tu vas explorer la proportionnalité pas à pas. Un test en début de séance te permet de choisir ton chemin pour t’entraîner. Chaque étape alterne lecture, exercices et production. Prends le temps de lire les corrections pour progresser.",
+    "conclusion": "Tu sais maintenant reconnaître une situation de proportionnalité, trouver un coefficient ou une quatrième proportionnelle, et appliquer des pourcentages simples. Pour t’exercer davantage, cherche des exemples de proportionnalité dans ton quotidien.",
+    "notionsPivots": [
+      "la situation de proportionnalité",
+      "le coefficient de proportionnalité",
+      "la quatrième proportionnelle",
+      "les pourcentages simples"
+    ],
+    "etapes": [
+      {
+        "id": "e1",
+        "titre": "Test de positionnement",
+        "objectif": "Évaluer ses connaissances sur la proportionnalité",
+        "introduction": "Réponds à chaque question sans chercher à l’avance. Après chaque réponse, une correction détaillée t’explique où tu en es. Ton résultat te dirige vers la suite du parcours.",
+        "cartes": [
+          {
+            "id": "c2",
+            "titre": "Test : reconnaître et appliquer la proportionnalité",
+            "objectif": "Faire le point sur toutes les notions du parcours",
+            "consigne": "Réponds à chaque question, puis lis attentivement la correction proposée avant de passer à l’étape suivante.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "decouverte",
+            "duree": 15,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Test : reconnaître et appliquer la proportionnalité",
+              "introPage": {
+                "showIntroPage": true,
+                "title": "Test : reconnaître et appliquer la proportionnalité",
+                "introduction": "Ce test te permet de faire le point sur ce que tu sais déjà sur la proportionnalité. Réponds à chaque question, puis lis attentivement la correction proposée avant de passer à l’étape suivante. Prends ton temps pour réfléchir.",
+                "startButtonText": "Commencer le test"
+              },
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Reconnaître une situation de proportionnalité - Exemple 1"
+                  },
+                  "params": {
+                    "question": "Parmi ces situations, laquelle est une situation de proportionnalité ?",
+                    "answers": [
+                      {
+                        "text": "Le prix des pommes en fonction du nombre de kilogrammes achetés.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : si tu achètes 2 fois plus de pommes, tu paies 2 fois plus cher. C'est une situation de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "La taille d'un enfant en fonction de son âge.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Tous les enfants ne grandissent pas de la même façon. Est-ce que la taille augmente toujours de la même quantité chaque année ?",
+                          "chosenFeedback": "Attention : la croissance n'est pas régulière. Par exemple, un enfant peut grandir de 5 cm une année et de 7 cm l'année suivante."
+                        }
+                      },
+                      {
+                        "text": "Le temps de trajet en voiture en fonction de la distance parcourue à vitesse constante.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : si la vitesse est constante, le temps est proportionnel à la distance."
+                        }
+                      },
+                      {
+                        "text": "Le nombre de bonbons dans un paquet en fonction de la couleur du paquet.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La couleur du paquet n'a aucun lien avec le nombre de bonbons. Ce n'est pas une situation de proportionnalité."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Les situations de proportionnalité sont celles où une grandeur augmente ou diminue toujours de la même façon quand une autre grandeur varie. Relis le cours si besoin."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as repéré certaines situations correctement. Cherche ce qui relie les grandeurs dans une situation de proportionnalité."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : deux situations sur quatre sont des situations de proportionnalité. Repère ce qui les distingue des autres."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien identifié les situations où une grandeur est proportionnelle à une autre."
+                      }
+                    ]
+                  },
+                  "subContentId": "b465abe0-19ee-4f8e-b9d6-d87c1a65f398"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Reconnaître une situation de proportionnalité - Exemple 2"
+                  },
+                  "params": {
+                    "question": "Laquelle de ces situations n'est PAS une situation de proportionnalité ?",
+                    "answers": [
+                      {
+                        "text": "Le prix à payer pour un trajet en taxi en fonction de la distance parcourue.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le prix du taxi dépend directement de la distance, même s'il y a une prise en charge initiale. C'est une situation de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "Le nombre de carreaux nécessaires pour carreler un mur en fonction de la surface du mur.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Plus la surface est grande, plus tu utilises de carreaux. C'est une situation de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "Le temps nécessaire pour remplir une piscine en fonction du débit du robinet.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Si le débit est constant, plus le robinet est ouvert longtemps, plus la piscine se remplit. C'est une situation de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "Le montant de l'impôt sur le revenu en fonction du salaire.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "tip": "L'impôt ne dépend pas simplement du salaire, mais aussi d'autres critères comme la situation familiale. Est-ce que le montant de l'impôt augmente toujours de la même façon quand le salaire augmente ?",
+                          "chosenFeedback": "Attention : l'impôt sur le revenu n'est pas proportionnel au salaire. Par exemple, les premières tranches de salaire sont souvent exonérées."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Une situation de proportionnalité doit montrer que quand une grandeur augmente, l'autre augmente toujours de la même façon. Cherche l'exemple qui ne suit pas cette règle."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as repéré certaines situations correctement. Cherche ce qui rend une situation non proportionnelle."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : une seule situation n'est pas une situation de proportionnalité. Repère ce qui la distingue des autres."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien identifié la situation qui n'est pas proportionnelle."
+                      }
+                    ]
+                  },
+                  "subContentId": "e4c0e53e-49ae-4d27-95e9-f2278a871169"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Trouver le coefficient de proportionnalité - Exemple 1"
+                  },
+                  "params": {
+                    "question": "Si 3 kg de pommes coûtent 4,50 €, quel est le coefficient de proportionnalité entre le prix et la masse ?",
+                    "answers": [
+                      {
+                        "text": "\\( \\frac{3}{4,50} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Le coefficient de proportionnalité se calcule en divisant le prix par la masse. Vérifie bien les unités.",
+                          "chosenFeedback": "Attention : ici, on divise la masse par le prix, ce qui donne un résultat en kg par euro. Ce n'est pas le coefficient de proportionnalité recherché."
+                        }
+                      },
+                      {
+                        "text": "\\( \\frac{4,50}{3} \\)",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le coefficient de proportionnalité est le prix divisé par la masse. \\( \\frac{4,50}{3} = 1,50 \\) €/kg."
+                        }
+                      },
+                      {
+                        "text": "1,50",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "1,50 est le résultat du calcul, mais le coefficient de proportionnalité s'exprime avec des unités : ici, des euros par kilogramme."
+                        }
+                      },
+                      {
+                        "text": "\\( \\frac{3}{1,50} \\)",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Ce calcul donne le nombre de kilogrammes que tu peux acheter avec 1,50 €. Ce n'est pas le coefficient de proportionnalité."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Le coefficient de proportionnalité s'obtient en divisant le prix par la masse. Cherche bien les unités pour vérifier ton calcul."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. N'oublie pas de vérifier les unités du résultat."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le coefficient de proportionnalité est bien le prix divisé par la masse, mais attention aux unités."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien identifié le coefficient de proportionnalité entre le prix et la masse."
+                      }
+                    ]
+                  },
+                  "subContentId": "c09486e0-0366-4672-bd73-bbab9b6e6a4f"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Trouver le coefficient de proportionnalité - Exemple 2"
+                  },
+                  "params": {
+                    "question": "Dans un tableau de proportionnalité, si 5 kg de farine coûtent 6,25 €, quel est le coefficient de proportionnalité ?",
+                    "answers": [
+                      {
+                        "text": "1,25 €/kg",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( \\frac{6,25}{5} = 1,25 \\) €/kg. C'est le prix pour 1 kg de farine."
+                        }
+                      },
+                      {
+                        "text": "6,25 €/kg",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "6,25 € est le prix pour 5 kg, pas pour 1 kg. Ce n'est pas le coefficient de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "5 €/kg",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "5 est la masse en kg, pas le prix pour 1 kg. Ce n'est pas le coefficient de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "0,8 kg/€",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Ce résultat correspond à la masse de farine pour 1 €. Ce n'est pas le coefficient de proportionnalité recherché."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Le coefficient de proportionnalité est le prix pour 1 kg. Divise le prix total par la masse pour l'obtenir."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Rappelez-vous : le coefficient de proportionnalité est le prix pour une unité."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le coefficient de proportionnalité correspond au prix pour 1 kg. Vérifie bien ton calcul."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien identifié le coefficient de proportionnalité dans ce tableau."
+                      }
+                    ]
+                  },
+                  "subContentId": "14337d19-98cc-4e38-a650-085d5726aff0"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calculer une quatrième proportionnelle - Exemple 1"
+                  },
+                  "params": {
+                    "question": "Si 4 stylos coûtent 6 €, combien coûtent 7 stylos ?",
+                    "answers": [
+                      {
+                        "text": "9 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Pour trouver le prix de 7 stylos, calcule d'abord le prix d'un stylo : \\( \\frac{6}{4} = 1,50 \\) €. Puis multiplie par 7 : \\( 1,50 \\times 7 = 10,50 \\) €."
+                        }
+                      },
+                      {
+                        "text": "10,50 €",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( \\frac{6}{4} = 1,50 \\) € par stylo. \\( 1,50 \\times 7 = 10,50 \\) €."
+                        }
+                      },
+                      {
+                        "text": "8 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Ce résultat ne correspond pas au calcul. Le prix d'un stylo est 1,50 €, pas 2 €."
+                        }
+                      },
+                      {
+                        "text": "12 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Ce résultat correspond au prix de 8 stylos, pas de 7. Vérifie ton calcul."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour calculer une quatrième proportionnelle, trouve d'abord le prix d'un seul stylo, puis multiplie par le nombre de stylos souhaités."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Cherche d'abord le prix d'un seul stylo."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le prix d'un stylo est 1,50 €. Multiplie par 7 pour obtenir le prix total."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien calculé le prix de 7 stylos en utilisant la proportionnalité."
+                      }
+                    ]
+                  },
+                  "subContentId": "e7a445ac-0105-482e-a7e7-44b965386f9f"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calculer une quatrième proportionnelle - Exemple 2"
+                  },
+                  "params": {
+                    "question": "Dans une recette, pour 6 personnes, il faut 900 g de farine. Combien de farine faut-il pour 4 personnes ?",
+                    "answers": [
+                      {
+                        "text": "600 g",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : pour 1 personne, il faut \\( \\frac{900}{6} = 150 \\) g. Pour 4 personnes : \\( 150 \\times 4 = 600 \\) g."
+                        }
+                      },
+                      {
+                        "text": "450 g",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "450 g correspond à la moitié de la recette pour 6 personnes. Ce n'est pas la quantité pour 4 personnes."
+                        }
+                      },
+                      {
+                        "text": "750 g",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "750 g ne correspond à aucun calcul logique ici. Vérifie la division de 900 par 6."
+                        }
+                      },
+                      {
+                        "text": "300 g",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "300 g est la quantité pour 2 personnes, pas pour 4. Relis bien la question."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour adapter une recette, calcule d'abord la quantité pour une seule personne, puis multiplie par le nombre de personnes souhaitées."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Cherche d'abord la quantité pour une personne."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : la quantité pour une personne est 150 g. Multiplie par 4 pour obtenir la quantité totale."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien adapté la recette en utilisant la proportionnalité."
+                      }
+                    ]
+                  },
+                  "subContentId": "5e7a1dca-75e0-44cf-bb2a-ccfb083d3673"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calculer un pourcentage simple - Exemple 1"
+                  },
+                  "params": {
+                    "question": "Dans une classe de 25 élèves, 60 % sont des filles. Combien y a-t-il de filles ?",
+                    "answers": [
+                      {
+                        "text": "10 filles",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Pour calculer 60 % de 25, multiplie 25 par 60 et divise par 100.",
+                          "chosenFeedback": "Attention : \\( 25 \\times 60 = 1500 \\). \\( \\frac{1500}{100} = 15 \\) filles."
+                        }
+                      },
+                      {
+                        "text": "15 filles",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( 25 \\times 60 \\div 100 = 15 \\) filles."
+                        }
+                      },
+                      {
+                        "text": "20 filles",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "20 filles correspondent à 80 % de la classe, pas à 60 %. Vérifie ton calcul."
+                        }
+                      },
+                      {
+                        "text": "12 filles",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Ce résultat correspond à 48 % de la classe, pas à 60 %. Relis bien la question."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour calculer un pourcentage, multiplie le nombre total par le pourcentage et divise par 100."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Rappelez-vous : un pourcentage se calcule en multipliant et en divisant par 100."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : pour 60 %, calcule \\( 25 \\times 60 \\div 100 \\)."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien calculé 60 % de 25 élèves."
+                      }
+                    ]
+                  },
+                  "subContentId": "00daf845-b7e9-4ae1-ba1b-b24221d445a8"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calculer un pourcentage simple - Exemple 2"
+                  },
+                  "params": {
+                    "question": "Un pull coûtait 40 €. Il est soldé à -25 %. Quel est son nouveau prix ?",
+                    "answers": [
+                      {
+                        "text": "30 €",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : 25 % de 40 € est \\( 40 \\times 25 \\div 100 = 10 \\) €. Le nouveau prix est \\( 40 - 10 = 30 \\) €."
+                        }
+                      },
+                      {
+                        "text": "15 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "15 € correspond à une réduction de 62,5 %, pas à 25 %. Vérifie ton calcul."
+                        }
+                      },
+                      {
+                        "text": "20 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "20 € correspond à une réduction de 50 %, pas à 25 %. Relis bien la question."
+                        }
+                      },
+                      {
+                        "text": "10 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "10 € est la réduction, pas le nouveau prix. Soustrais la réduction au prix initial."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour calculer un prix soldé, calcule d'abord la réduction en euros, puis soustrais-la au prix initial."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Cherche d'abord la réduction en euros."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : calcule 25 % de 40 €, puis soustrais ce montant au prix initial."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien calculé le nouveau prix après une réduction de 25 %."
+                      }
+                    ]
+                  },
+                  "subContentId": "ad224fd9-e740-4a80-93ae-175eab95755d"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Reconnaître une situation de proportionnalité - Exemple 3"
+                  },
+                  "params": {
+                    "question": "Laquelle de ces situations est une situation de proportionnalité ?",
+                    "answers": [
+                      {
+                        "text": "Le nombre de pages lues en fonction du temps de lecture.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : si tu lis 10 pages en 20 minutes, tu liras 20 pages en 40 minutes. C'est une situation de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "La vitesse d'un coureur en fonction de la distance parcourue.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "La vitesse est une grandeur qui se calcule en divisant la distance par le temps. Est-ce que la distance est proportionnelle au temps ?",
+                          "chosenFeedback": "Attention : la vitesse peut varier pendant la course. Ce n'est pas une situation de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "Le prix d'un billet de train en fonction de la distance parcourue.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : si la distance double, le prix double aussi. C'est une situation de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "Le poids d'un objet en fonction de sa couleur.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "La couleur d'un objet n'a aucun lien avec son poids. Ce n'est pas une situation de proportionnalité."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Une situation de proportionnalité montre que quand une grandeur augmente, l'autre augmente toujours de la même façon. Cherche les exemples où c'est le cas."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as repéré certaines situations correctement. Cherche ce qui relie les grandeurs dans une situation de proportionnalité."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : deux situations sur quatre sont des situations de proportionnalité. Repère ce qui les distingue des autres."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien identifié les situations où une grandeur est proportionnelle à une autre."
+                      }
+                    ]
+                  },
+                  "subContentId": "9e043f92-cc58-4323-9a9c-891c67f90329"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calculer le coefficient de proportionnalité - Exemple 3"
+                  },
+                  "params": {
+                    "question": "Dans un tableau de proportionnalité, si 8 litres de peinture couvrent 16 m², quel est le coefficient de proportionnalité ?",
+                    "answers": [
+                      {
+                        "text": "2 L/m²",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "tip": "Le coefficient de proportionnalité se calcule en divisant la quantité de peinture par la surface couverte.",
+                          "chosenFeedback": "Attention : ici, on divise la surface par la quantité de peinture, ce qui donne \\( \\frac{16}{8} = 2 \\) m²/L. Ce n'est pas le coefficient de proportionnalité recherché."
+                        }
+                      },
+                      {
+                        "text": "0,5 L/m²",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( \\frac{8}{16} = 0,5 \\) L/m². C'est la quantité de peinture pour 1 m²."
+                        }
+                      },
+                      {
+                        "text": "16 L/m²",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "16 L est la quantité pour 16 m², pas pour 1 m². Ce n'est pas le coefficient de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "8 L/m²",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "8 L est la quantité pour 8 m², pas pour 1 m². Ce n'est pas le coefficient de proportionnalité."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Le coefficient de proportionnalité est la quantité de peinture pour 1 m². Divise la quantité de peinture par la surface pour l'obtenir."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Cherche la quantité pour 1 m²."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le coefficient de proportionnalité est \\( \\frac{8}{16} = 0,5 \\) L/m². Vérifie bien ton calcul."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien identifié le coefficient de proportionnalité dans ce tableau."
+                      }
+                    ]
+                  },
+                  "subContentId": "fef012f1-631a-4e1d-ba98-d12ebcf29778"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calculer une quatrième proportionnelle - Exemple 3"
+                  },
+                  "params": {
+                    "question": "Si 12 œufs coûtent 3,60 €, combien coûtent 18 œufs ?",
+                    "answers": [
+                      {
+                        "text": "5,40 €",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : le prix d'un œuf est \\( \\frac{3,60}{12} = 0,30 \\) €. Pour 18 œufs : \\( 0,30 \\times 18 = 5,40 \\) €."
+                        }
+                      },
+                      {
+                        "text": "4,80 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Ce résultat correspond au prix de 16 œufs, pas de 18. Vérifie ton calcul."
+                        }
+                      },
+                      {
+                        "text": "6 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "6 € correspond au prix de 20 œufs, pas de 18. Relis bien la question."
+                        }
+                      },
+                      {
+                        "text": "7,20 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "7,20 € est le double de 3,60 €, mais ce n'est pas la quantité pour 18 œufs. Vérifie le calcul du prix d'un œuf."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour calculer une quatrième proportionnelle, trouve d'abord le prix d'un seul œuf, puis multiplie par le nombre d'œufs souhaités."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Cherche d'abord le prix d'un seul œuf."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : le prix d'un œuf est 0,30 €. Multiplie par 18 pour obtenir le prix total."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien calculé le prix de 18 œufs en utilisant la proportionnalité."
+                      }
+                    ]
+                  },
+                  "subContentId": "b7361ced-91ba-4ce2-8881-f48a474949f3"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Calculer un pourcentage simple - Exemple 3"
+                  },
+                  "params": {
+                    "question": "Dans une école de 200 élèves, 15 % viennent en vélo. Combien d'élèves viennent en vélo ?",
+                    "answers": [
+                      {
+                        "text": "30 élèves",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Exact : \\( 200 \\times 15 \\div 100 = 30 \\) élèves viennent en vélo."
+                        }
+                      },
+                      {
+                        "text": "15 élèves",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "15 élèves correspondent à 7,5 % de l'école, pas à 15 %. Vérifie ton calcul."
+                        }
+                      },
+                      {
+                        "text": "25 élèves",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "25 élèves correspondent à 12,5 % de l'école, pas à 15 %. Relis bien la question."
+                        }
+                      },
+                      {
+                        "text": "40 élèves",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "40 élèves correspondent à 20 % de l'école, pas à 15 %. Vérifie ton calcul."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true,
+                      "singlePoint": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Pour calculer un pourcentage, multiplie le nombre total par le pourcentage et divise par 100."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Tu as presque trouvé le bon calcul. Rappelez-vous : un pourcentage se calcule en multipliant et en divisant par 100."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Presque : pour 15 %, calcule \\( 200 \\times 15 \\div 100 \\)."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Bravo : tu as bien calculé 15 % de 200 élèves."
+                      }
+                    ]
+                  },
+                  "subContentId": "124ef7c8-0272-485e-9369-6981e6480139"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les notions de base sur la proportionnalité sont à revoir. Relis le cours, puis refais ce test pour progresser. Identifie les situations de proportionnalité, calcule les coefficients et les pourcentages en prenant ton temps."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Ces notions commencent à s'installer. Cibler ce qui résiste et s'entraîner encore un peu : reconnaître une situation de proportionnalité, calculer un coefficient ou une quatrième proportionnelle, appliquer un pourcentage."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Plusieurs notions sont acquises. Repérer les questions qui ont fait hésiter permettra de consolider : relis les corrections pour bien comprendre les calculs et les raisonnements."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "L'ensemble est bien maîtrisé. S'entraîner encore sur des exemples variés ancrera ces acquis. La proportionnalité n'aura plus de secrets pour toi !"
+                }
+              ],
+              "endGame": {
+                "showResultPage": true,
+                "showSolutionButton": "on",
+                "showRetryButton": false,
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 25,
+                    "feedback": "Les notions de base sur la proportionnalité sont à revoir. Relis le cours, puis refais ce test pour progresser. Identifie les situations de proportionnalité, calcule les coefficients et les pourcentages en prenant ton temps."
+                  },
+                  {
+                    "from": 26,
+                    "to": 50,
+                    "feedback": "Ces notions commencent à s'installer. Cibler ce qui résiste et s'entraîner encore un peu : reconnaître une situation de proportionnalité, calculer un coefficient ou une quatrième proportionnelle, appliquer un pourcentage."
+                  },
+                  {
+                    "from": 51,
+                    "to": 75,
+                    "feedback": "Plusieurs notions sont acquises. Repérer les questions qui ont fait hésiter permettra de consolider : relis les corrections pour bien comprendre les calculs et les raisonnements."
+                  },
+                  {
+                    "from": 76,
+                    "to": 100,
+                    "feedback": "L'ensemble est bien maîtrisé. S'entraîner encore sur des exemples variés ancrera ces acquis. La proportionnalité n'aura plus de secrets pour toi !"
+                  }
+                ]
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      },
+      {
+        "id": "e3",
+        "titre": "Pas à pas…",
+        "objectif": "Manipuler les notions de base avec un exemple guidé",
+        "introduction": "Un exemple détaillé t’est proposé pour te guider. Tu vas compléter des phrases et glisser des mots dans des cases avant de vérifier tes réponses.",
+        "cartes": [
+          {
+            "id": "c4",
+            "titre": "Un exemple résolu : calculer un coefficient",
+            "objectif": "Appliquer la méthode sur un cas simple",
+            "consigne": "Suis l’exemple pas à pas pour comprendre comment trouver un coefficient de proportionnalité.",
+            "module": "Page",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Un exemple résolu : calculer un coefficient",
+              "intro": "Aujourd’hui, tu vas suivre pas à pas comment trouver un coefficient de proportionnalité. C’est une méthode simple et puissante pour résoudre des problèmes de proportionnalité. Prêt à commencer ?",
+              "blocks": [
+                {
+                  "type": "#01_hero_header",
+                  "data": {
+                    "title": "Un exemple résolu : calculer un coefficient",
+                    "subtitle": "Étape par étape pour comprendre la méthode"
+                  }
+                },
+                {
+                  "type": "#02_nav_summary",
+                  "data": {
+                    "links": [
+                      {
+                        "href": "#objectifs",
+                        "text": "Ce que tu vas apprendre"
+                      },
+                      {
+                        "href": "#exemple",
+                        "text": "L’exemple détaillé"
+                      },
+                      {
+                        "href": "#motscles",
+                        "text": "Les mots à retenir"
+                      },
+                      {
+                        "href": "#exercice",
+                        "text": "À toi de jouer"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Ce que tu vas savoir faire à la fin",
+                    "callouts": [
+                      {
+                        "type": "objectif",
+                        "text": "Reconnaître une situation où le coefficient de proportionnalité est utile"
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Calculer ce coefficient en utilisant les valeurs données"
+                      },
+                      {
+                        "type": "alerte",
+                        "text": "Attention à bien vérifier que les deux grandeurs sont bien proportionnelles avant de calculer !"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Pourquoi calculer un coefficient ?",
+                    "paragraphs": [
+                      "Quand tu as une situation de proportionnalité, toutes les valeurs d’une grandeur s’obtiennent en multipliant les valeurs de l’autre grandeur par un même nombre. Ce nombre, c’est le coefficient de proportionnalité. Par exemple, si tu achètes des pommes à 2 € le kilo, le prix est proportionnel à la masse achetée. Pour trouver le prix de 3 kg, tu multiplies 3 par 2. Ici, le coefficient de proportionnalité est 2.",
+                      "Ce coefficient te permet de calculer une valeur inconnue quand tu connais l’autre. C’est comme une recette de cuisine : si tu doubles les quantités d’ingrédients, le goût reste le même. Le coefficient de proportionnalité, c’est le facteur par lequel tu multiplies toutes les mesures pour garder le même résultat.",
+                      "Mais attention : avant de calculer, il faut vérifier que la situation est bien une situation de proportionnalité. Pour cela, tu peux utiliser la méthode du produit en croix ou vérifier que les rapports entre les valeurs sont toujours les mêmes. Si ce n’est pas le cas, tu ne peux pas utiliser de coefficient de proportionnalité."
+                    ]
+                  }
+                },
+                {
+                  "type": "#11_definition_box",
+                  "data": {
+                    "title": "Définition",
+                    "text": "Le coefficient de proportionnalité est le nombre qui permet de passer d’une grandeur à l’autre en multipliant. Il est toujours le même dans une situation de proportionnalité. Par exemple, si 2 kg de pommes coûtent 4 €, le coefficient de proportionnalité est 4 ÷ 2 = 2 €/kg."
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "Exemple pas à pas : le prix des stylos",
+                    "paragraphs": [
+                      "Voici un tableau qui donne le prix de stylos en fonction de leur nombre. On te demande de trouver le coefficient de proportionnalité qui permet de passer du nombre de stylos au prix total.",
+                      "| Nombre de stylos | Prix total (en €) |\n|------------------|-------------------|\n| 1                | 1,50              |\n| 2                | 3,00              |\n| 3                | 4,50              |\n| 5                | ?                 |",
+                      "Pour trouver le coefficient, tu choisis une ligne du tableau et tu divises le prix par le nombre de stylos. Par exemple, pour 1 stylo : 1,50 € ÷ 1 = 1,50 €. Tu vérifies avec une autre ligne : 3,00 € ÷ 2 = 1,50 €. Le coefficient est donc 1,50. Tu peux maintenant calculer le prix pour 5 stylos : 5 × 1,50 € = 7,50 €."
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Points d’attention",
+                    "callouts": [
+                      {
+                        "type": "alerte",
+                        "text": "Le coefficient doit être le même pour toutes les lignes du tableau. Si ce n’est pas le cas, la situation n’est pas proportionnelle."
+                      },
+                      {
+                        "type": "savoir",
+                        "text": "Tu peux aussi trouver le coefficient en divisant deux valeurs correspondantes dans l’ordre inverse : prix ÷ nombre de stylos ou nombre de stylos ÷ prix. Les deux méthodes donnent le même résultat."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#06_lexique_table",
+                  "data": {
+                    "title": "Les mots à retenir",
+                    "caption": "Vocabulaire essentiel pour cette activité",
+                    "headers": [
+                      "Terme",
+                      "Définition",
+                      "Exemple"
+                    ],
+                    "rows": [
+                      [
+                        "Coefficient de proportionnalité",
+                        "Nombre qui permet de multiplier une grandeur pour obtenir l’autre dans une situation de proportionnalité.",
+                        "Dans l’exemple des stylos, c’est 1,50 €."
+                      ],
+                      [
+                        "Situation de proportionnalité",
+                        "Quand deux grandeurs sont liées par un coefficient de proportionnalité constant.",
+                        "Le prix des stylos est proportionnel au nombre de stylos achetés."
+                      ],
+                      [
+                        "Quatrième proportionnelle",
+                        "Valeur manquante dans un tableau de proportionnalité.",
+                        "Ici, c’est le prix pour 5 stylos, soit 7,50 €."
+                      ]
+                    ]
+                  }
+                },
+                {
+                  "type": "#12_context_paragraphs",
+                  "data": {
+                    "title": "À toi de jouer !",
+                    "paragraphs": [
+                      "Voici un nouveau tableau. Vérifie d’abord que c’est une situation de proportionnalité. Puis trouve le coefficient de proportionnalité et calcule la valeur manquante.",
+                      "| Masse de farine (en g) | Nombre d’œufs |\n|---------------------------|--------------|\n| 200                       | 4            |\n| 300                       | 6            |\n| 500                       | ?            |",
+                      "Pour vérifier que c’est une situation de proportionnalité, tu peux diviser le nombre d’œufs par la masse de farine pour chaque ligne. Si tu obtiens toujours le même résultat, c’est proportionnel. Sinon, ce n’est pas le cas.",
+                      "Si c’est proportionnel, calcule le coefficient en utilisant une ligne du tableau. Puis utilise-le pour trouver le nombre d’œufs pour 500 g de farine. N’oublie pas de vérifier ta réponse en utilisant une autre ligne du tableau."
+                    ]
+                  }
+                },
+                {
+                  "type": "#04_callout_set",
+                  "data": {
+                    "title": "Astuce",
+                    "callouts": [
+                      {
+                        "type": "savoir",
+                        "text": "Pour vérifier ta réponse, tu peux utiliser la méthode du produit en croix. Par exemple, si 200 g correspondent à 4 œufs, alors 500 g correspondent à (4 × 500) ÷ 200 œufs. Cela te donne 10 œufs."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "#18_sito_graphy",
+                  "data": {
+                    "title": "Pour aller plus loin",
+                    "links": [
+                      {
+                        "href": "https://www.assistancescolaire.com/enseignant/maths/ressources/coefficient-proportionnalite",
+                        "text": "Méthode détaillée pour calculer un coefficient (Assistance scolaire personnalisée)"
+                      },
+                      {
+                        "href": "https://www.khanacademy.org/math/pre-algebra/pre-algebra-ratios-rates/pre-algebra-write-and-solve-proportions/v/find-an-unknown-in-a-proportion",
+                        "text": "Exercices interactifs sur les proportions (Khan Academy)"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c5",
+            "titre": "Trouver le bon mot",
+            "objectif": "Associer vocabulaire et définition",
+            "consigne": "Glisse chaque mot dans la phrase qui lui correspond parmi ceux proposés.",
+            "module": "DragTheWords",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Complète le texte en faisant glisser les mots proposés.",
+              "textField": "Pour savoir si une situation est *proportionnelle*, on vérifie que les grandeurs augmentent dans les mêmes proportions.\nSi c’est le cas, on peut calculer le *coefficient de proportionnalité* en divisant une grandeur par l’autre.\nDans un tableau de proportionnalité, si on connaît trois valeurs, on peut trouver la *quatrième proportionnelle*.\nPour exprimer une partie d’un tout, on utilise souvent des *pourcentages simples* comme 25 % ou 50 %.\nAttention à ne pas confondre *coefficient de proportionnalité* et *quatrième proportionnelle* : le premier relie deux grandeurs, la seconde est une valeur manquante.",
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Revois comment on reconnaît une situation de proportionnalité et comment on calcule un coefficient. Ces bases sont essentielles pour la suite."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as placé quelques mots correctement, mais certains termes restent à vérifier. Relis les définitions de la situation de proportionnalité et du coefficient."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque tout est juste ! Concentre-toi sur les mots qui te posent encore problème pour bien les distinguer."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail : tous les mots sont bien placés. Tu maîtrises bien le vocabulaire de la proportionnalité et ses applications."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "instantFeedback": true
+              },
+              "title": "Trouver le bon mot"
+            },
+            "sourceUtilisee": null
+          }
+        ],
+        "chemin": {
+          "depuis": 0
+        }
+      },
+      {
+        "id": "e6",
+        "titre": "À toi de jouer !",
+        "objectif": "S’entraîner à appliquer les méthodes sans aide visuelle",
+        "introduction": "Tu appliques les méthodes vues dans des contextes variés. Chaque réponse est suivie d’une correction immédiate qui t’explique ton erreur si besoin.",
+        "cartes": [
+          {
+            "id": "c7",
+            "titre": "Compléter avec les bons nombres",
+            "objectif": "Trouver une quatrième proportionnelle",
+            "consigne": "Remplis les trous avec les nombres qui conviennent, en utilisant la méthode apprise.",
+            "module": "FillInTheBlanks",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Complète chaque phrase avec le nombre ou le mot qui convient pour trouver la **quatrième proportionnelle**. Utilise les méthodes vues en cours : produit en croix ou recherche du **coefficient de proportionnalité**.\\n\\nExemple : Si 3 stylos coûtent 6 € alors 5 stylos coûtent *10* € (car 6 ÷ 3 = 2 € par stylo, puis 2 × 5 = 10).",
+              "questions": [
+                "Dans une recette de gâteau, il faut 200 g de farine pour 4 personnes. Pour 6 personnes, il faut *300* g de farine.",
+                "Un train parcourt 240 km en 2 heures. En 5 heures, il parcourt *600* km.",
+                "Pour 3 kg de pommes, on paie 4,50 €. Pour 7 kg de pommes, on paie *10,5* €.",
+                "Un magasin vend 5 stylos pour 12 €. Pour 8 stylos, le prix est de *19,2* €.",
+                "Si 7 cahiers coûtent 14 €, alors 10 cahiers coûtent *20* €."
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Revois comment trouver la quatrième proportionnelle avec un produit en croix ou un coefficient de proportionnalité. Pour une recette ou un prix au kilo, divise d’abord pour trouver le prix ou la quantité pour une unité, puis multiplie par le nouveau nombre."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Attention aux calculs : vérifie que tu as bien multiplié ou divisé dans le bon ordre. Pense à simplifier les fractions avant de calculer pour éviter les erreurs."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque ! Une erreur persiste dans un calcul. Revois la méthode : compare les rapports ou utilise le coefficient de proportionnalité (ex : 200 g ÷ 4 = 50 g par personne)."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent ! Tu as bien utilisé la proportionnalité : les rapports sont égaux et les calculs sont justes. Continue comme ça pour les problèmes plus complexes."
+                }
+              ],
+              "behaviour": {
+                "enableCheckButton": true,
+                "showSolutionsRequiresInput": true,
+                "allowRetryIfCorrect": false
+              },
+              "title": "Compléter avec les bons nombres"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c8",
+            "titre": "Quiz : proportionnalité et pourcentages",
+            "objectif": "Reconnaître et calculer des situations proportionnelles",
+            "consigne": "Réponds aux questions et vérifie chaque réponse avec la correction immédiate.",
+            "module": "QuizSetQCM",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "title": "Quiz : proportionnalité et pourcentages",
+              "questions": [
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Situation de proportionnalité"
+                  },
+                  "params": {
+                    "question": "Parmi les situations suivantes, laquelle est une situation de proportionnalité ?",
+                    "answers": [
+                      {
+                        "text": "Pour faire un gâteau, on utilise 150 g de sucre pour 3 œufs. Pour 6 œufs, il faut 300 g de sucre.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "C'est juste : on multiplie par 2 le nombre d'œufs, et on multiplie aussi par 2 la quantité de sucre. Les valeurs évoluent dans le même rapport."
+                        }
+                      },
+                      {
+                        "text": "Léa a 10 ans et son frère a 6 ans. Dans 4 ans, Léa aura 14 ans et son frère en aura 10.",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "L'erreur courante est de penser que l'écart constant (4 ans) implique une proportionnalité. Or, le rapport entre leurs âges change (10/6 n'est pas égal à 14/10)."
+                        }
+                      },
+                      {
+                        "text": "Un train roule à une vitesse moyenne de 100 km/h. Il parcourt 200 km en 2 heures et 300 km en 3 heures.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "C'est juste : le temps de parcours est proportionnel à la distance parcourue (on multiplie la distance par 1,5 pour obtenir le temps)."
+                        }
+                      },
+                      {
+                        "text": "Sur un plan, 1 cm représente 10 m. Sur ce plan, une pièce de 5 m de long fait 0,5 cm.",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "C'est juste : les dimensions réelles et les dimensions sur le plan sont liées par un coefficient de proportionnalité (0,1)."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": false
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repère : dans une situation de proportionnalité, si on multiplie les valeurs d'une colonne par un nombre, on doit multiplier celles de l'autre colonne par le même nombre."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : vérifie si les valeurs augmentent dans le même rapport. Par exemple, si on double les ingrédients, doit-on doubler le résultat ?"
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la plupart des situations sont bien identifiées. Pense à vérifier si le rapport entre les valeurs reste toujours le même."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent : tu sais repérer les situations où les grandeurs évoluent dans le même rapport."
+                      }
+                    ]
+                  },
+                  "subContentId": "8f3c5985-1a37-409b-ac0b-b48e4117ea56"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Coefficient de proportionnalité"
+                  },
+                  "params": {
+                    "question": "Un tableau est de proportionnalité. On connaît ces deux lignes : 3 pour 12 et 5 pour 20. Quel est le coefficient de proportionnalité ?",
+                    "answers": [
+                      {
+                        "text": "4",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "C'est juste : on passe de 3 à 12 en multipliant par 4, et de 5 à 20 en multipliant aussi par 4."
+                        }
+                      },
+                      {
+                        "text": "3",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Confusion fréquente : 3 est la première valeur de la ligne de départ, mais ce n'est pas le coefficient. Le coefficient est le nombre par lequel on multiplie."
+                        }
+                      },
+                      {
+                        "text": "9",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Calcul erroné : 9 est la différence entre 12 et 3. Le coefficient est un facteur multiplicatif, pas une différence."
+                        }
+                      },
+                      {
+                        "text": "15",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Hors-contexte : 15 correspond à 3 + 5 + 7, ce qui n'a pas de lien avec le coefficient multiplicatif."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repère : le coefficient de proportionnalité est le nombre par lequel on multiplie une valeur de la première ligne pour trouver la valeur correspondante dans la deuxième ligne."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : vérifie si tu as bien divisé la valeur du bas par celle du haut, ou multiplié la valeur du haut par un nombre pour obtenir celle du bas."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la plupart des calculs sont justes. Assure-toi d'avoir trouvé le facteur multiplicatif unique."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent : tu as bien identifié le nombre multiplicatif qui relie les deux lignes."
+                      }
+                    ]
+                  },
+                  "subContentId": "4f197a04-03c9-467c-96ac-6692f823e80a"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Quatrième proportionnelle"
+                  },
+                  "params": {
+                    "question": "On sait que 2 kg de pommes coûtent 3 €. Combien coûtent 5 kg de pommes ?",
+                    "answers": [
+                      {
+                        "text": "7,50 €",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "C'est juste : le prix est proportionnel à la masse. On peut calculer le prix du kg (1,50 €) puis le multiplier par 5, ou utiliser un tableau de proportionnalité."
+                        }
+                      },
+                      {
+                        "text": "6 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur de calcul : 6 € correspondrait à 4 kg (2 x 3). Pour 5 kg, il faut ajouter 1 kg de plus (1,50 €)."
+                        }
+                      },
+                      {
+                        "text": "10 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Confusion fréquente : 10 € est le prix de 6,66 kg environ. Pour 5 kg, le prix doit être inférieur à 10 € car 5 kg est moins de deux fois 2 kg."
+                        }
+                      },
+                      {
+                        "text": "5 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Hors-contexte : 5 € correspondrait à 3,33 kg. Le prix doit être proportionnel à la masse."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repère : pour trouver la quatrième proportionnelle, utilise la règle de trois ou calcule d'abord l'unité (le prix du kg)."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : vérifie tes calculs. Si 2 kg coûtent 3 €, 1 kg coûte moins cher, et 5 kg doivent coûter un peu plus que le double de 3 €."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la plupart des étapes sont justes. Assure-toi d'avoir bien multiplié le prix unitaire par la nouvelle quantité."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent : tu as bien calculé la valeur inconnue dans cette situation de proportionnalité."
+                      }
+                    ]
+                  },
+                  "subContentId": "e35f817c-11ca-4ddd-9011-e6d437fb3ea1"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Pourcentages simples"
+                  },
+                  "params": {
+                    "question": "Un livre coûte 20 €. Il est soldé à -20 %. Quel est le nouveau prix ?",
+                    "answers": [
+                      {
+                        "text": "16 €",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "C'est juste : 20 % de 20 €, c'est 4 €. Le prix final est 20 € - 4 € = 16 €."
+                        }
+                      },
+                      {
+                        "text": "18 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur de calcul : 18 € correspondrait à une réduction de 2 € (10 %). Ici, la réduction est de 20 %, soit 4 €."
+                        }
+                      },
+                      {
+                        "text": "4 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Confusion fréquente : 4 € est le montant de la réduction, pas le prix final. Il faut soustraire cette réduction au prix initial."
+                        }
+                      },
+                      {
+                        "text": "24 €",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Hors-contexte : 24 € correspondrait à une augmentation de 20 %. Ici, il s'agit d'une réduction."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repère : pour calculer un pourcentage, multiplie le montant initial par le pourcentage divisé par 100, puis soustrais-le si c'est une réduction."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : vérifie si tu as bien calculé le montant de la remise, puis soustrait ce montant au prix initial."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la plupart des étapes sont justes. Assure-toi d'avoir bien identifié si c'est une augmentation ou une réduction."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent : tu as bien calculé le nouveau prix après application du pourcentage."
+                      }
+                    ]
+                  },
+                  "subContentId": "f2eb5fc3-8356-48b0-8b20-946b0163dcbd"
+                },
+                {
+                  "library": "H5P.MultiChoice 1.16",
+                  "metadata": {
+                    "title": "Application de la proportionnalité"
+                  },
+                  "params": {
+                    "question": "Dans une classe de 30 élèves, 12 sont des filles. Quelle est la proportion de filles dans cette classe ?",
+                    "answers": [
+                      {
+                        "text": "40 %",
+                        "correct": true,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "C'est juste : 12 sur 30, c'est 12/30 = 0,4, ce qui correspond à 40 %."
+                        }
+                      },
+                      {
+                        "text": "60 %",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Confusion fréquente : 60 % correspond à la proportion de garçons (18 sur 30). Il faut bien regarder quelle proportion on demande."
+                        }
+                      },
+                      {
+                        "text": "12 %",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Erreur de calcul : 12 % serait 12 sur 100. Ici, le total est 30, donc la proportion est plus grande."
+                        }
+                      },
+                      {
+                        "text": "24 %",
+                        "correct": false,
+                        "tipsAndFeedback": {
+                          "chosenFeedback": "Hors-contexte : 24 % correspondrait à 7,2 élèves, ce qui n'est pas possible. Vérifie ton calcul de proportion."
+                        }
+                      }
+                    ],
+                    "behaviour": {
+                      "singleAnswer": true
+                    },
+                    "overallFeedback": [
+                      {
+                        "from": 0,
+                        "to": 25,
+                        "feedback": "Repère : pour trouver une proportion, divise le nombre de filles par le nombre total d'élèves, puis multiplie par 100 pour obtenir un pourcentage."
+                      },
+                      {
+                        "from": 26,
+                        "to": 50,
+                        "feedback": "Presque : vérifie si tu as bien divisé le nombre de filles par le total, et non l'inverse."
+                      },
+                      {
+                        "from": 51,
+                        "to": 75,
+                        "feedback": "Bien : la plupart des étapes sont justes. Assure-toi d'avoir bien converti la fraction en pourcentage."
+                      },
+                      {
+                        "from": 76,
+                        "to": 100,
+                        "feedback": "Excellent : tu as bien calculé la proportion de filles dans la classe."
+                      }
+                    ]
+                  },
+                  "subContentId": "9588b644-908e-49e2-ac91-5d61fbb6fd74"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Les notions de base sont à reprendre : relire le cours sur la proportionnalité et les pourcentages, puis refaire le quiz pour progresser."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Ces notions s'installent. Cibler les questions qui ont posé problème et s'entraîner encore un peu."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Plusieurs notions sont acquises. Repérer les questions qui ont fait hésiter permettra de consolider."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "L'ensemble est bien maîtrisé. S'entraîner encore ancrera ces acquis."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "progressType": "dots",
+              "passPercentage": 50
+            },
+            "sourceUtilisee": null
+          }
+        ],
+        "chemin": {
+          "depuis": 40
+        }
+      },
+      {
+        "id": "e9",
+        "titre": "Défis…",
+        "objectif": "Résoudre des problèmes plus complexes et justifier ses réponses",
+        "introduction": "Tu travailles sur des cas moins évidents et tu écris tes explications. Les corrections te sont données en fin de parcours pour comparer avec tes démarches.",
+        "cartes": [
+          {
+            "id": "c10",
+            "titre": "Résoudre un problème de proportionnalité",
+            "objectif": "Trouver et justifier une solution",
+            "consigne": "Complète les étapes du raisonnement sans modèle, puis note ta réponse finale.",
+            "module": "FillInTheBlanks",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Complète les étapes pour résoudre ce problème de **proportionnalité** en rédigeant ton raisonnement de manière autonome.\nUtilise les termes du cours : **situation de proportionnalité**, **coefficient de proportionnalité**, **quatrième proportionnelle**, **pourcentages simples**.",
+              "questions": [
+                "Le prix de 3 kg de pommes est de 4,50 €. Le prix de 5 kg de ces mêmes pommes est de *6,75* €. Ici, il s'agit d'une *proportionnalité* car les grandeurs sont liées par un *rapport* constant.",
+                "Le *coefficient* de proportionnalité entre la masse et le prix s'obtient en divisant le prix par la masse : 4,50 € ÷ 3 kg = *1,50* €/kg.",
+                "Pour trouver le prix de 7 kg, on multiplie la masse par le *coefficient* : 7 kg × 1,50 €/kg = *10,50* €.",
+                "Dans un collège de 480 élèves, 60 % des élèves sont des filles. Le nombre de filles est donc *288* élèves (calcul : 480 × 0,60).",
+                "Pour calculer une *quatrième proportionnelle*, on utilise l'égalité des rapports. Si 4 stylos coûtent 10 €, alors 7 stylos coûtent *17,5* € (calcul : (10 × 7) ÷ 4)."
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Revoyons les bases : que signifie une situation de proportionnalité ? Comment calcule-t-on un coefficient de proportionnalité ? Cherche dans ton cours les définitions et les méthodes pour multiplier ou diviser des grandeurs."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Les calculs de base sont là, mais vérifie chaque étape : as-tu bien identifié les grandeurs proportionnelles ? As-tu appliqué la bonne opération (multiplication ou division) pour trouver le coefficient ou la quatrième proportionnelle ?"
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Presque ! Les idées sont bonnes, mais un ou deux calculs manquent de précision. Relis attentivement les étapes : as-tu bien multiplié ou divisé au bon endroit ?"
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Bravo : les calculs sont justes et les termes du cours sont bien placés. Tu as compris comment utiliser le coefficient de proportionnalité et les pourcentages simples. Si tu veux aller plus loin, essaie de résoudre un problème où les grandeurs ne sont pas toutes directement proportionnelles."
+                }
+              ],
+              "behaviour": {
+                "enableCheckButton": true,
+                "showSolutionsRequiresInput": true,
+                "allowRetryIfCorrect": false,
+                "enableSolutionsButton": false
+              },
+              "title": "Résoudre un problème de proportionnalité"
+            },
+            "sourceUtilisee": null
+          },
+          {
+            "id": "c11",
+            "titre": "Rédiger une explication",
+            "objectif": "Justifier l’utilisation de la proportionnalité",
+            "consigne": "Explique pourquoi la situation proposée est proportionnelle ou non.",
+            "module": "Essay",
+            "moduleReplie": false,
+            "palier": "entrainement",
+            "duree": 10,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Lis attentivement la situation suivante et rédige un texte pour expliquer si elle relève de la *proportionnalité* ou non.\n\nSituation : *Un magasin propose une offre spéciale : « 3 paquets achetés, 1 paquet offert ».*\n\nTon texte doit répondre à ces questions :\n- Cette situation est-elle une *situation de proportionnalité* ? Justifie ta réponse en expliquant ce que cela signifie pour toi.\n- Si ce n’est pas le cas, décris ce qui ne correspond pas dans la règle de la proportionnalité.\n\nN’oublie pas d’utiliser des exemples pour appuyer ton explication.\n",
+              "keywords": [
+                {
+                  "keyword": "proportionnalité",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Tu as bien identifié le thème principal.",
+                    "feedbackMissed": "Tu n’as pas clairement expliqué si la situation est proportionnelle ou non."
+                  }
+                },
+                {
+                  "keyword": "multiplication",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Tu as mentionné l’importance des calculs multiplicatifs dans la proportionnalité.",
+                    "feedbackMissed": "Tu n’as pas évoqué le rôle des multiplications dans une situation proportionnelle."
+                  }
+                },
+                {
+                  "keyword": "linéarité",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Tu as expliqué que les grandeurs évoluent de manière régulière et prévisible.",
+                    "feedbackMissed": "Tu n’as pas précisé si les grandeurs augmentent de façon constante ou non."
+                  }
+                },
+                {
+                  "keyword": "coefficient de proportionnalité",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Tu as relié la situation à l’idée d’un coefficient de proportionnalité.",
+                    "feedbackMissed": "Tu n’as pas utilisé l’expression coefficient de proportionnalité pour justifier ta réponse."
+                  }
+                },
+                {
+                  "keyword": "offre commerciale",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Tu as décrit l’offre comme un exemple concret pour expliquer ta réponse.",
+                    "feedbackMissed": "Tu n’as pas relié ton explication à la situation donnée (offre commerciale)."
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Cette situation est nouvelle pour toi : relis attentivement la définition d’une situation de proportionnalité et cherche à comprendre comment les grandeurs évoluent ensemble. Un exemple simple peut t’aider à démarrer."
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as commencé à analyser la situation, mais il manque des éléments pour justifier clairement si c’est proportionnel ou non. Pense à comparer avec une situation où les grandeurs augmentent de façon régulière."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Ton explication montre une bonne compréhension de la proportionnalité, mais il reste des détails à préciser. Vérifie si les grandeurs augmentent de manière constante ou si une autre règle s’applique ici."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail ! Tu as correctement identifié que cette situation n’est pas proportionnelle et tu as expliqué pourquoi en utilisant les bons termes. Tu peux maintenant t’intéresser à d’autres exemples pour consolider ta compréhension."
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "solution": {
+                "introduction": "",
+                "sample": ""
+              },
+              "title": "Rédiger une explication"
+            },
+            "sourceUtilisee": null
+          }
+        ],
+        "chemin": {
+          "depuis": 75
+        }
+      },
+      {
+        "id": "e12",
+        "titre": "Pour conclure",
+        "objectif": "Réinvestir toutes les notions dans un écrit court",
+        "introduction": "Tu résumes ce que tu as appris en rédigeant un court texte. Appuie-toi sur des exemples concrets vus pendant le parcours.",
+        "cartes": [
+          {
+            "id": "c13",
+            "titre": "Écrire un paragraphe sur la proportionnalité",
+            "objectif": "Produire un texte mêlant vocabulaire et exemples",
+            "consigne": "Rédige un paragraphe expliquant ce qu’est une situation de proportionnalité et comment la reconnaître, avec un exemple.",
+            "module": "Essay",
+            "moduleReplie": false,
+            "palier": "transfert",
+            "duree": 20,
+            "verrouillee": false,
+            "contenu": {
+              "taskDescription": "Écris un paragraphe de 5 à 8 phrases pour expliquer ce qu’est **une situation de proportionnalité** et comment on la reconnaît. \n\nTon texte doit inclure : \n- la définition de ce qu’est une *proportionnalité* entre deux grandeurs ;\n- une méthode simple pour vérifier si une situation est proportionnelle ;\n- un *exemple concret* (choisis une situation de la vie courante, comme les courses, les recettes de cuisine, les distances en voiture, etc.). \n\nPense à utiliser des phrases courtes et à bien expliquer chaque idée.\n",
+              "keywords": [
+                {
+                  "keyword": "situation de proportionnalité",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Tu as bien identifié la notion centrale du paragraphe.",
+                    "feedbackMissed": "Oublie-t-on de définir ce qu’est une situation de proportionnalité ? Rappelle-toi : c’est quand deux grandeurs varient ensemble de la même façon."
+                  }
+                },
+                {
+                  "keyword": "deux grandeurs",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "La réponse montre que tu comprends que la proportionnalité lie toujours deux éléments qui changent ensemble."
+                  }
+                },
+                {
+                  "keyword": "coefficient de proportionnalité",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Tu as mentionné le coefficient de proportionnalité : c’est une bonne façon de prouver que tu maîtrises la notion.",
+                    "feedbackMissed": "Le coefficient de proportionnalité est un nombre qui permet de passer d’une grandeur à l’autre. N’hésite pas à l’utiliser pour montrer comment tu fais le lien entre les deux grandeurs."
+                  }
+                },
+                {
+                  "keyword": "multiplication",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "alternatives": [
+                      "fois",
+                      "×",
+                      "produit"
+                    ],
+                    "feedbackIncluded": "Tu as bien évoqué l’idée de multiplication pour relier les grandeurs."
+                  }
+                },
+                {
+                  "keyword": "exemple concret",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "feedbackIncluded": "Ton exemple est clair et montre que tu as compris comment appliquer la proportionnalité.",
+                    "feedbackMissed": "Un exemple concret aide à comprendre. Choisis une situation où on voit bien que quand une grandeur change, l’autre change aussi de la même façon."
+                  }
+                },
+                {
+                  "keyword": "vérifier",
+                  "options": {
+                    "points": 1,
+                    "caseSensitive": false,
+                    "alternatives": [
+                      "reconnaître",
+                      "savoir si"
+                    ],
+                    "feedbackIncluded": "Tu as expliqué comment on peut repérer que c’est une situation de proportionnalité."
+                  }
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 25,
+                  "feedback": "Ton paragraphe est très court ou ne parle pas vraiment de proportionnalité. Relis les mots-clés attendus et essaie de structurer ton texte avec au moins une définition, une méthode de vérification et un exemple. Demande-toi : 'Est-ce que je parle bien de deux grandeurs qui changent ensemble ?'"
+                },
+                {
+                  "from": 26,
+                  "to": 50,
+                  "feedback": "Tu as commencé à parler de proportionnalité, mais il manque des éléments importants. Par exemple, as-tu bien expliqué comment on peut vérifier si une situation est proportionnelle ? Pense à utiliser le coefficient de proportionnalité pour rendre ton explication plus précise."
+                },
+                {
+                  "from": 51,
+                  "to": 75,
+                  "feedback": "Ton paragraphe est bien engagé, mais il faudrait encore préciser comment on reconnaît une situation de proportionnalité. Par exemple, as-tu bien montré que les grandeurs varient toujours dans le même rapport ? Ajoute une phrase pour expliquer comment on fait le lien entre les deux grandeurs avec un calcul."
+                },
+                {
+                  "from": 76,
+                  "to": 100,
+                  "feedback": "Excellent travail ! Ton paragraphe explique clairement ce qu’est une situation de proportionnalité, comment on la reconnaît et tu as choisi un exemple concret qui illustre bien la notion. Tu as même utilisé le bon vocabulaire et les bons outils pour vérifier la proportionnalité. Continue comme ça !"
+                }
+              ],
+              "solution": {
+                "introduction": "Voici un exemple de réponse qui pourrait correspondre à ce qui est attendu :",
+                "sample": "Une situation de proportionnalité, c’est quand deux grandeurs augmentent ou diminuent ensemble de la même façon. Par exemple, si j’achète des pommes à 2 € le kilo, le prix total est proportionnel au poids des pommes : 1 kg coûte 2 €, 2 kg coûtent 4 €, 3 kg coûtent 6 €, etc. Pour vérifier si c’est une situation de proportionnalité, on peut utiliser le coefficient de proportionnalité. Ici, c’est 2, car pour passer du poids au prix, on multiplie toujours par 2. Si on fait le rapport prix/poids, on trouve toujours le même nombre (2 €/kg). Dans la vie de tous les jours, on rencontre souvent des situations de proportionnalité : quand on achète des légumes au marché, quand on calcule la distance parcourue en voiture en fonction du temps, ou quand on prépare une recette de cuisine en doublant les quantités."
+              },
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true
+              },
+              "title": "Écrire un paragraphe sur la proportionnalité"
+            },
+            "sourceUtilisee": null
+          }
+        ]
+      }
+    ],
+    "origine": "ia",
+    "personnalise": false,
+    "carte": {
+      "actif": false,
+      "theme": "paysage"
+    },
+    "progression": {
+      "actif": false
+    }
+  },
+  "banc": {
+    "public": "5e",
+    "adultes": false
+  }
+}

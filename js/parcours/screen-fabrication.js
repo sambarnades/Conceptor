@@ -20,12 +20,13 @@
  */
 
 import { construireSaisieSource } from './source-input.js';
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { nomModule, imageModule, iconeModule } from './activity-router.js';
 import { creerFile, cartesAPlat, ETATS } from './parcours-runner.js';
 import { ouvrirActivite, titreActivite } from './activity-panel.js';
 import { action, bonbon } from './dom.js';
 import { confirmerRegeneration } from './confirm-abandon.js';
+import { aiguillagesDuPlan } from './aiguillage.js';
 
 /* ------------------------------------------------------------------ *
  *  Fabrique de nœuds
@@ -128,11 +129,15 @@ export function construireFabrication(draft, api) {
     /** @type {Map<string, {ligne:HTMLElement, statut:HTMLElement, actions:HTMLElement}>} */
     const noeuds = new Map();
 
-    for (const etape of (plan.etapes || [])) {
+    const groupes = aiguillagesDuPlan(plan);
+    for (const [i, etape] of (plan.etapes || []).entries()) {
         if (!etape.cartes || !etape.cartes.length) continue;
         const bloc = el('section', 'pc-etape pc-etape--fab');
         const head = el('header', 'pc-etape__head');
         head.append(el('h3', 'pc-etape__nom', etape.titre || t('parcours_step_plan')));
+        // Un chemin se fabrique comme une étape ; son rôle dit pour qui (D90).
+        const g = groupes.find(x => i >= x.debut && i <= x.fin);
+        if (g) head.append(el('span', `pc-role pc-role--${g.chemins[i - g.debut].role}`, t(`parcours_role_${g.chemins[i - g.debut].role}`)));
         bloc.append(head);
 
         const cartes = el('div', 'pc-cartes');

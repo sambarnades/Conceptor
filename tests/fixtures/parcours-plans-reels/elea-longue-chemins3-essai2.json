@@ -1,0 +1,226 @@
+{
+ "source": "Mistral Small 4, relevé du 1er oct. 2026 (prompt du plan d’avant D108)",
+ "cadrage": {
+  "platform": "elea",
+  "format": "distanciel",
+  "ampleur": "longue",
+  "trame": "auto",
+  "structure": "chemins",
+  "chemins": 3
+ },
+ "modules": [
+  "Timeline",
+  "Flashcards",
+  "QuizSet",
+  "QuizSetQCM",
+  "QuizSetVF",
+  "Glossary",
+  "Crossword",
+  "Essay",
+  "Summary",
+  "DragTheWords",
+  "DragAndDrop",
+  "FillInTheBlanks",
+  "MarkTheWords",
+  "TrueFalse",
+  "MultipleChoice",
+  "FindTheWords",
+  "SortParagraphs",
+  "SingleChoiceSet",
+  "DialogCards",
+  "Dictation",
+  "Chart",
+  "CoursePresentation",
+  "InteractiveBook",
+  "InteractiveVideo",
+  "ImageHotspots",
+  "FindTheHotspot",
+  "FindMultipleHotspots",
+  "test_elea",
+  "Millionnaire",
+  "Appariement",
+  "QCM",
+  "Page",
+  "Livre",
+  "Devoir",
+  "parcours_etiquette",
+  "parcours_forum",
+  "parcours_sondage",
+  "parcours_mur_notes",
+  "parcours_lien",
+  "parcours_questionnaire",
+  "parcours_enquete",
+  "parcours_lecon",
+  "parcours_atelier",
+  "parcours_tableau",
+  "parcours_wiki",
+  "parcours_glossaire",
+  "parcours_document",
+  "parcours_depot",
+  "parcours_base",
+  "parcours_choix_groupe"
+ ],
+ "erreursDOrigine": [
+  "Les chemins durent à peu près autant (reçu : 10, 15, 15 minutes)."
+ ],
+ "brut": {
+  "titre": "Maîtriser la proportionnalité en 5e",
+  "objectifGeneral": "Résoudre des problèmes utilisant la proportionnalité, les pourcentages et la quatrième proportionnelle.",
+  "introduction": "Dans ce parcours, tu vas découvrir comment utiliser la proportionnalité pour résoudre des problèmes concrets. Tu commenceras par un test diagnostique pour savoir par où commencer. Ensuite, tu suivras un chemin adapté à tes résultats avec des activités variées : exemples résolus, exercices progressifs ou défis plus complexes. À la fin, tu pourras vérifier tes acquis et voir comment appliquer ces notions au quotidien.",
+  "notionsPivots": [
+   "le coefficient de proportionnalité",
+   "la quatrième proportionnelle",
+   "la situation de proportionnalité",
+   "le tableau de proportionnalité",
+   "le passage à l'unité",
+   "les pourcentages simples",
+   "le calcul de pourcentage",
+   "la règle de trois",
+   "l'échelle d'un schéma",
+   "le prix initial et le prix final"
+  ],
+  "etapes": [
+   {
+    "titre": "Test diagnostique",
+    "objectif": "Évaluer tes connaissances sur la proportionnalité pour t'orienter vers le bon chemin.",
+    "introduction": "Ce test va te permettre de savoir où en sont tes connaissances sur la proportionnalité. Réponds du mieux que tu peux sans aide extérieure. À la fin, tu découvriras le chemin qui te convient le mieux pour progresser.",
+    "cartes": [
+     {
+      "titre": "Test sur la proportionnalité",
+      "objectif": "Tester ses connaissances sur les notions clés de la proportionnalité.",
+      "module": "test_elea",
+      "palier": "decouverte",
+      "duree": 20,
+      "consigne": "Réponds aux questions sans aide pour te situer. Les corrections te guideront si tu as des erreurs."
+     }
+    ]
+   },
+   {
+    "titre": "Découvrir la proportionnalité",
+    "objectif": "Comprendre ce qu'est une situation de proportionnalité et identifier un tableau de proportionnalité.",
+    "introduction": "Maintenant que tu sais où tu en es, tu vas commencer par découvrir les bases de la proportionnalité. Tu vas apprendre à reconnaître une situation de proportionnalité et à utiliser un tableau pour la représenter.",
+    "chemin": "renforcer",
+    "cartes": [
+     {
+      "titre": "Exemple résolu : reconnaître une proportionnalité",
+      "objectif": "Identifier une situation de proportionnalité à partir d'un exemple détaillé.",
+      "module": "CoursePresentation",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Lis attentivement l'exemple résolu qui t'explique comment reconnaître une situation de proportionnalité. Réponds ensuite aux questions pour vérifier ta compréhension."
+     }
+    ]
+   },
+   {
+    "titre": "S'entraîner à reconnaître la proportionnalité",
+    "objectif": "Appliquer la méthode pour reconnaître une situation de proportionnalité.",
+    "introduction": "Tu vas maintenant t'entraîner à reconnaître les situations de proportionnalité. Fais de ton mieux pour appliquer la méthode vue dans l'exemple.",
+    "chemin": "consolider",
+    "cartes": [
+     {
+      "titre": "Exercices : reconnaître la proportionnalité",
+      "objectif": "Appliquer la méthode pour identifier des situations de proportionnalité.",
+      "module": "QuizSetVF",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Pour chaque situation proposée, indique si elle est proportionnelle ou non. Justifie rapidement ta réponse."
+     }
+    ]
+   },
+   {
+    "titre": "Défis sur la proportionnalité",
+    "objectif": "Approfondir la reconnaissance de la proportionnalité avec des cas plus complexes.",
+    "introduction": "Tu es prêt à relever des défis plus complexes sur la proportionnalité. Ces exercices te permettront de consolider tes connaissances et de mieux comprendre les situations variées.",
+    "chemin": "approfondir",
+    "cartes": [
+     {
+      "titre": "Situations complexes : proportionnalité ou non ?",
+      "objectif": "Analyser des situations plus complexes pour déterminer si elles sont proportionnelles.",
+      "module": "FillInTheBlanks",
+      "palier": "transfert",
+      "duree": 15,
+      "consigne": "Pour chaque situation, indique si elle est proportionnelle et explique pourquoi en complétant les phrases."
+     }
+    ]
+   },
+   {
+    "titre": "Utiliser le coefficient de proportionnalité",
+    "objectif": "Calculer et utiliser le coefficient de proportionnalité dans un tableau.",
+    "introduction": "Maintenant que tu sais reconnaître une situation de proportionnalité, tu vas apprendre à calculer et utiliser le coefficient de proportionnalité. C'est un outil essentiel pour résoudre des problèmes concrets.",
+    "cartes": [
+     {
+      "titre": "Découvrir le coefficient de proportionnalité",
+      "objectif": "Comprendre la notion de coefficient de proportionnalité et savoir le calculer.",
+      "module": "DialogCards",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Retourne les cartes pour découvrir la définition du coefficient de proportionnalité et comment le calculer. Note les étapes importantes dans ton cahier."
+     },
+     {
+      "titre": "Calculer le coefficient de proportionnalité",
+      "objectif": "S'entraîner à calculer le coefficient de proportionnalité dans différents tableaux.",
+      "module": "QuizSetQCM",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Pour chaque tableau, calcule le coefficient de proportionnalité et choisis la bonne réponse parmi les propositions."
+     },
+     {
+      "titre": "Utiliser le coefficient pour compléter un tableau",
+      "objectif": "Appliquer le coefficient de proportionnalité pour compléter un tableau de valeurs.",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Complète le tableau en utilisant le coefficient de proportionnalité donné. Vérifie tes réponses avant de valider."
+     },
+     {
+      "titre": "Problème : le coefficient et une situation concrète",
+      "objectif": "Résoudre un problème concret en utilisant le coefficient de proportionnalité.",
+      "module": "Essay",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Rédige la solution du problème en expliquant chaque étape. N'oublie pas de donner la réponse finale."
+     }
+    ]
+   },
+   {
+    "titre": "Trouver la quatrième proportionnelle",
+    "objectif": "Calculer la quatrième proportionnelle dans une situation donnée.",
+    "introduction": "Tu vas maintenant apprendre à trouver la quatrième proportionnelle, une compétence utile pour résoudre de nombreux problèmes de proportionnalité.",
+    "cartes": [
+     {
+      "titre": "Découvrir la quatrième proportionnelle",
+      "objectif": "Comprendre ce qu'est la quatrième proportionnelle et comment la calculer.",
+      "module": "CoursePresentation",
+      "palier": "decouverte",
+      "duree": 10,
+      "consigne": "Lis la présentation qui t'explique comment trouver la quatrième proportionnelle. Note la méthode à suivre."
+     }
+    ]
+   },
+   {
+    "titre": "Appliquer les pourcentages simples",
+    "objectif": "Calculer et utiliser des pourcentages simples dans des situations concrètes.",
+    "introduction": "Les pourcentages sont une application directe de la proportionnalité. Tu vas apprendre à les calculer et à les utiliser dans des contextes variés.",
+    "cartes": [
+     {
+      "titre": "Calculer un pourcentage",
+      "objectif": "Apprendre à calculer un pourcentage à partir d'une situation donnée.",
+      "module": "FillInTheBlanks",
+      "palier": "entrainement",
+      "duree": 15,
+      "consigne": "Calcule le pourcentage demandé pour chaque situation. Vérifie tes réponses avant de valider."
+     },
+     {
+      "titre": "Résoudre un problème avec des pourcentages",
+      "objectif": "Utiliser les pourcentages pour résoudre un problème concret.",
+      "module": "Essay",
+      "palier": "transfert",
+      "duree": 20,
+      "consigne": "Rédige la solution du problème en expliquant chaque étape. N'oublie pas de donner la réponse finale."
+     }
+    ]
+   }
+  ],
+  "conclusion": "Félicitations ! Tu as maintenant les outils pour résoudre des problèmes de proportionnalité, calculer des pourcentages et trouver des quatrième proportionnelles. Ces compétences te seront utiles dans de nombreuses situations, que ce soit en mathématiques ou dans la vie quotidienne. Si tu veux aller plus loin, tu peux t'entraîner avec des exercices supplémentaires ou explorer des applications concrètes de la proportionnalité."
+ }
+}

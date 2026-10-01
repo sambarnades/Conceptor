@@ -29,7 +29,7 @@ import { translations } from '../../core/translation.js';
 import { processVideoFile, registerMedia } from '../image-manager.js';
 import { libellesSummary } from './Summary.js';
 import { formatTextToHtml, generateUUID, debugLog } from '../../core/utils.js';
-import { healSlidesLatex } from './CoursePresentation.js';
+import { healSlidesLatex, titreExercice } from './CoursePresentation.js';
 import { snapInteractions } from './interactive-video-snap.js';
 
 // === Mapping type simplifié IA → library H5P complète (mêmes versions que CP/IB) ===
@@ -284,7 +284,7 @@ async function buildInteractionAction(it, helpers) {
         subContentId: generateUUID(),
         library: fullLibrary,
         metadata: {
-            title: (it.question || it.title || 'Question').toString().slice(0, 80),
+            title: titreExercice(String(it.question || it.title || ''), 'Question').slice(0, 80),
             contentType: 'Question',
             license: 'U'
         },

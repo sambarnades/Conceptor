@@ -79,6 +79,64 @@ eq('gravité — la capture (3 consignes dans les trous) contre une sortie saine
 eq('gravité — sortie saine', graviteSortieIA('DragTheWords', glisser(SAINES['réel A03'])), 0);
 eq('contenu vide ou nul', [defautsSortieIA('DragTheWords', ''), defautsSortieIA('DragTheWords', null)], [[], []]);
 
+// 1 bis. Texte à trous, et exercices à trous d'un quiz : la réponse remplacée par un
+// NOM DE VARIABLE (Texte à trous d'un parcours réel, 1er oct. 2026 — l'élève aurait dû
+// taper 36, 21, 7,50, 3/20 et 12).
+const trous = questions => JSON.stringify({ taskDescription: 'Complète.', questions });
+const REEL_VARIABLES = trous([
+    'Un magasin propose une réduction de 20% sur un article à 45 €. Le nouveau prix est de *prix_réduit* €.',
+    'Dans une classe de 28 élèves, 75% ont réussi leur évaluation. Cela représente *nombre_élèves* élèves.',
+    'Pour 3 kg de pommes, on paie 4,50 €. Pour 5 kg, le prix serait de *prix_5kg* € (calcule avec la proportionnalité).',
+    'Un pourcentage de 15% correspond à la fraction *fraction_pourcentage* et au nombre décimal 0,15.',
+    'Si 6 cahiers coûtent 7,20 €, alors 10 cahiers coûtent *prix_10cahiers* € (utilise le *coefficient*).',
+]);
+eq('trous — réel : réponses en nom de variable', defautsSortieIA('FillInTheBlanks', REEL_VARIABLES), ['réponse en nom de variable']);
+eq('trous — réel : gravité = 5 trous touchés', graviteSortieIA('FillInTheBlanks', REEL_VARIABLES), 5);
+eq('trous — sains : nombres, variantes, indice, heure', defautsSortieIA('FillInTheBlanks', trous([
+    'Le nouveau prix est de *36* €.', 'Cela représente *21* élèves.', 'Pour 5 kg : *7,50/7.50* €.',
+    'Un *triangle:pense aux côtés* a trois côtés.', 'Le train part à *10:30*.', 'La fraction est *⅖/0,4*.',
+])), []);
+// Les trous de Mistral Small 4 (activité de proportionnalité, 1er oct. 2026) : ce qui ne
+// se déduit pas est vu ; ce qui se déduit (le résultat d'un calcul) est laissé au réparateur.
+eq('trous — réel : *x* partout, l’inconnue au lieu de la valeur', defautsSortieIA('FillInTheBlanks', trous([
+    'Si 3 stylos coûtent 7,5 €, alors 5 stylos coûtent *x* €.', 'Un coureur parcourt 12 km en 45 minutes. En 1 heure, il parcourt *x* km.',
+])), ['inconnue à la place de la réponse']);
+eq('trous — réel : l’unité sans la valeur', defautsSortieIA('FillInTheBlanks', trous([
+    'Un vélo parcourt 15 km en 30 minutes. Pour 1 heure, il parcourra *km*.', 'Si tu utilises 6 œufs, il te faudra *g de farine*.',
+])), ['unité sans valeur']);
+eq('trous — réel : la grandeur en réponse, plusieurs valeurs en indice', defautsSortieIA('FillInTheBlanks', trous([
+    'Pour 10 personnes, il faudra *farine:325 g/500 g/625 g* de farine.'])), ['réponse et indice inversés']);
+eq('trous — réel : deux valeurs différentes (*500/300*), et une fraction écrite avec la barre', defautsSortieIA('FillInTheBlanks', trous([
+    'Pour 6 personnes, il faudra *500/300* g de farine.', 'La part est de *3/20*.'])), ['réponses contradictoires']);
+eq('trous — une fraction dans une phrase de fractions n’est pas deux variantes (le réparateur la sépare)', defautsSortieIA('FillInTheBlanks', trous([
+    'Pour ⅔ + ⅙, on obtient *5/6*.', '1/2 + 1/3 = *5/6*', 'Le numérateur et le dénominateur : *3/4*.'])), []);
+eq('trous — un calcul dont le résultat ne se déduit pas', defautsSortieIA('FillInTheBlanks', trous([
+    'Le prix est *coefficient × quantité = prix*.'])), ['calcul à la place de la réponse']);
+eq('trous — un calcul qui se déduit est laissé au réparateur', defautsSortieIA('FillInTheBlanks', trous([
+    'Pour 36 crêpes, il faut *250 × 3 = 750* g de farine.'])), []);
+eq('trous — sains : grammaire, unités à trouver, durées', defautsSortieIA('FillInTheBlanks', trous([
+    'Les noms en -al font leur pluriel en *aux*, sauf 7 exceptions qui prennent un *s*.', 'Il *a* mangé ; il va *à* Paris.',
+    '1 000 m = 1 *km*.', 'La vitesse s’exprime en *km/h*.', 'Il a couru 20 *minutes*.', 'L’inconnue se note *x* dans l’équation 2x = 6.',
+])), []);
+eq('trous — trou vide et astérisque orphelin', defautsSortieIA('FillInTheBlanks', trous(['Le *___* dort.', 'Le chat *dort.'])),
+    ['astérisque orphelin', 'trou sans réponse']);
+eq('trous — réel : variantes qui se contredisent (toute réponse serait juste)', defautsSortieIA('FillInTheBlanks', trous([
+    'Le prix est proportionnel à la masse : *situation de proportionnalité/ce n\'est pas une situation de proportionnalité*.',
+    'L’âge et la taille : *oui/non*.', 'Cette affirmation est *vrai/faux*.',
+])), ['réponses contradictoires']);
+eq('trous — variantes équivalentes, et négations légitimes', defautsSortieIA('FillInTheBlanks', trous([
+    'Il y a *36/trente-six* élèves.', 'Il *n\'est pas/n\'est point* venu.', 'Réponds : *non/no*.', 'Ce *n\'est pas* juste.',
+])), []);
+eq('glisser — nom de variable', defautsSortieIA('DragTheWords', glisser('Le *mot_cle* et le *coefficient*.')), ['réponse en nom de variable']);
+const quiz = JSON.stringify({ title: 'Quiz', questions: [
+    { library: 'H5P.MultiChoice 1.16', params: { question: 'Q ?', answers: [] } },
+    { library: 'H5P.Blanks 1.14', params: { text: 'Complète.', questions: ['x = *valeur_x*'] } },
+    { library: 'H5P.DragText 1.10', params: { taskDescription: 'Glisse.', textField: 'Le *coefficient* relie *a* et *b*.' } },
+] });
+eq('quiz — le trou d’un Texte à trous du quiz est vu', defautsSortieIA('QuizSet', quiz), ['réponse en nom de variable']);
+eq('quiz — sain, et JSON illisible jamais jugé', [defautsSortieIA('QuizSetQCM', JSON.stringify({ questions: [
+    { library: 'H5P.Blanks 1.14', params: { questions: ['x = *4*'] } }] })), defautsSortieIA('QuizSet', '{pas du json')], [[], []]);
+
 // =======================================================================
 // 2. texteAffiche — zone des sources MASQUÉE (mode Rapide)
 // =======================================================================

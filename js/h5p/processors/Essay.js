@@ -61,24 +61,57 @@ export function replierAlternativesOrphelines(keywords) {
     return sortie;
 }
 
-function validerRedaction(data) {
+/** Un nombre de réglage : le nombre lu, ou `null` s'il n'en est pas un. */
+const nombre = v => (v == null || v === '' || !Number.isFinite(Number(v)) ? null : Number(v));
+
+/**
+ * Ramène dans leurs bornes les réglages d'une rédaction au lieu de la REJETER.
+ *
+ * Le modèle écrit parfois un réglage hors bornes : un mot-clé « compté 0 fois »
+ * (`occurrences: 0`, parcours réel du 1er oct. 2026, mot-clé « mesure d'un
+ * angle »), des points négatifs, un pourcentage au-delà de 100. Lever une erreur
+ * écartait toute l'activité à la livraison d'un parcours, sous « erreur de mise
+ * en forme » : un réglage se corrige, l'activité reste. Seule une rédaction sans
+ * aucun mot-clé est refusée — il n'y a rien à corriger. Appliqué au traitement
+ * même : un contenu déjà enregistré passe sans être régénéré.
+ */
+export function reparerRedaction(data) {
     data.keywords = replierAlternativesOrphelines(data.keywords);
-    if (!Array.isArray(data.keywords) || !data.keywords.length || data.keywords.map(normaliserMotCle).some(k => !String(k.keyword).trim())) throw Error('Essay: au moins un mot-clé non vide est requis.');
-    const behaviour = data.behaviour || {};
-    for (const [key,max] of [['minimumLength',Infinity],['maximumLength',Infinity],['percentagePassing',100],['percentageMastering',100],['pointsHost',Infinity]]) {
-        const value = behaviour[key];
-        if (value != null && value !== '' && (!Number.isFinite(Number(value)) || Number(value)<0 || Number(value)>max)) throw Error('Essay: valeur hors limites pour '+key);
+    if (Array.isArray(data.keywords)) {
+        data.keywords = data.keywords.filter(k => String(normaliserMotCle(k).keyword).trim());
     }
-    for (const keyword of data.keywords.map(normaliserMotCle)) {
-        const options = keyword.options || {};
-        if (options.points != null && (!Number.isFinite(Number(options.points)) || Number(options.points)<0)) throw Error('Essay: points invalides.');
-        if (options.occurrences != null && (!Number.isInteger(Number(options.occurrences)) || Number(options.occurrences)<1)) throw Error('Essay: occurrences invalides.');
+    if (!Array.isArray(data.keywords) || !data.keywords.length) throw Error('Essay: au moins un mot-clé non vide est requis.');
+    const behaviour = data.behaviour && typeof data.behaviour === 'object' ? data.behaviour : null;
+    if (behaviour) {
+        for (const [key, max] of [['minimumLength', Infinity], ['maximumLength', Infinity], ['percentagePassing', 100], ['percentageMastering', 100], ['pointsHost', Infinity]]) {
+            if (behaviour[key] == null || behaviour[key] === '') continue;
+            const n = nombre(behaviour[key]);
+            if (n === null || n < 0) delete behaviour[key];
+            else if (n > max) behaviour[key] = max;
+        }
     }
+    data.keywords = data.keywords.map(kw => {
+        if (!kw || typeof kw !== 'object') return kw;
+        const mot = { ...kw };
+        // Des points illisibles ou négatifs valent un point, à plat comme dans `options`.
+        if (mot.points !== undefined && (nombre(mot.points) === null || nombre(mot.points) < 0)) mot.points = 1;
+        if (mot.options && typeof mot.options === 'object') {
+            const options = { ...mot.options };
+            if (options.points != null && (nombre(options.points) === null || nombre(options.points) < 0)) options.points = 1;
+            if (options.occurrences != null) {
+                const n = nombre(options.occurrences);
+                // Compté au moins une fois : 0, une fraction ou du texte valent 1.
+                options.occurrences = n === null ? 1 : Math.max(1, Math.round(n));
+            }
+            mot.options = options;
+        }
+        return mot;
+    });
 }
 
 export default {
     process: (jsonObj) => {
-        validerRedaction(jsonObj);
+        reparerRedaction(jsonObj);
         return {
             ...jsonObj,
             taskDescription: formatTextToHtml(jsonObj.taskDescription),
@@ -122,7 +155,7 @@ export default {
     },
 
     transformForQuizSet: (question) => {
-        validerRedaction(question.params);
+        reparerRedaction(question.params);
         // 1. Convertir le Markdown de la consigne en HTML (cohérence avec process())
         if (question.params.taskDescription) {
             question.params.taskDescription = formatTextToHtml(question.params.taskDescription);

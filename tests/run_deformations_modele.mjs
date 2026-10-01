@@ -172,6 +172,61 @@ if (ecartsMeta.length) {
     process.exitCode = 1;
 }
 
+// ── La consigne écrite sous un autre nom (quiz de Gauthier, 30-09-2026) ────────────
+// Un exercice à surligner, à glisser, à trous ou à rédiger porte sa consigne dans
+// `taskDescription`. Écrite sous un autre nom, le processeur l'ignorait : la question
+// s'affichait SANS consigne. Chaque consigne d'exemple est déplacée sous chacun des
+// noms qu'un modèle emploie ; après réparation, la mise en forme doit être IDENTIQUE.
+// Et `consignesManquantes` voit l'exercice dont la consigne a disparu, lui seul.
+const { consignesManquantes } = await import('../js/h5p/json-healer.js');
+const LIB_CONSIGNE = { 'H5P.MarkTheWords': 'MarkTheWords', 'H5P.DragText': 'DragTheWords', 'H5P.Blanks': 'FillInTheBlanks', 'H5P.Essay': 'Essay' };
+const AUTRES_NOMS = ['consigne', 'instruction', 'instructions', 'question', 'text'];
+let casConsigne = 0;
+const ecartsConsigne = [];
+// La consigne retrouvée arrive en fin d'objet : H5P ignore l'ordre des clés, la comparaison aussi.
+const trie = v => (Array.isArray(v) ? v.map(trie) : v && typeof v === 'object'
+    ? Object.fromEntries(Object.keys(v).sort().map(k => [k, trie(v[k])])) : v);
+const canonique = v => JSON.stringify(trie(sansIds(v)));
+for (const fx of await listFixtures('all')) {
+    if (fx.kind === 'moodle' || !construits.has(fx.moduleKey)) continue;
+    let contenu, reference;
+    try { contenu = JSON.parse(readFileSync(fx.path, 'utf8')); reference = canonique(await miseEnForme(fx.moduleKey, contenu, fx.kind)); }
+    catch { continue; }
+    // Les exercices de l'exemple : l'activité elle-même, ou chaque question d'un quiz.
+    const cibles = Object.values(LIB_CONSIGNE).includes(fx.moduleKey) ? [[]]
+        : Array.isArray(contenu.questions) ? contenu.questions.map((q, i) => (LIB_CONSIGNE[String(q?.library || '').split(' ')[0]] ? ['questions', i, 'params'] : null)).filter(Boolean) : [];
+    for (const c of cibles) {
+        const noeud = x => c.reduce((n, k) => n[k], x);
+        const module = c.length ? LIB_CONSIGNE[String(contenu.questions[c[1]].library).split(' ')[0]] : fx.moduleKey;
+        if (typeof noeud(contenu).taskDescription !== 'string' || !noeud(contenu).taskDescription.trim()) continue;
+        if (consignesManquantes(contenu, fx.moduleKey).length) ecartsConsigne.push(`${fx.file} : exemple intact signalé sans consigne`);
+        for (const nom of AUTRES_NOMS) {
+            // `text` est déjà la consigne native du Texte à trous : rien à déplacer.
+            if (nom === 'text' && module === 'FillInTheBlanks') continue;
+            casConsigne++;
+            const deforme = structuredClone(contenu);
+            const n = noeud(deforme);
+            if (n[nom] !== undefined) continue;
+            n[nom] = n.taskDescription;
+            delete n.taskDescription;
+            try {
+                if (canonique(await miseEnForme(fx.moduleKey, deforme, fx.kind)) !== reference) ecartsConsigne.push(`${fx.file} · ${c.join('.') || 'racine'} (« ${nom} ») : consigne non retrouvée`);
+            } catch (e) { ecartsConsigne.push(`${fx.file} · ${c.join('.') || 'racine'} (« ${nom} ») : ${String(e?.message || e).slice(0, 100)}`); }
+        }
+        const sans = structuredClone(contenu);
+        delete noeud(sans).taskDescription;
+        if (module === 'FillInTheBlanks') delete noeud(sans).text;
+        const vus = consignesManquantes(healActivitySpecificFields(healJsonObject(sans, fx.moduleKey), fx.moduleKey), fx.moduleKey);
+        const attendu = c.length ? c[1] + 1 : 0;
+        if (vus.length !== 1 || vus[0].numero !== attendu) ecartsConsigne.push(`${fx.file} · ${c.join('.') || 'racine'} : absence mal détectée (${JSON.stringify(vus)})`);
+    }
+}
+console.log(`\n${casConsigne} consignes rangées sous un autre nom : ${casConsigne - ecartsConsigne.length} retrouvées à l'identique, absences détectées`);
+if (ecartsConsigne.length) {
+    console.log('❌ Consignes :\n  ' + ecartsConsigne.slice(0, 20).join('\n  '));
+    process.exitCode = 1;
+}
+
 console.log(`\n${cas} déformations sur les exemples H5P et Moodle : ${cas - refus - plantages.length} mises en forme, ${refus} refus explicites, ${plantages.length} plantage(s)`);
 if (temoinsKo.length) console.log(`(${temoinsKo.length} exemple(s) témoin non mis en forme sous Node, ignorés${DETAIL ? ' :\n  ' + temoinsKo.join('\n  ') : ''})`);
 if (plantages.length) {

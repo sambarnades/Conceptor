@@ -12,7 +12,7 @@
  *
  * @module parcours/notification-parcours
  */
-import { t } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 
 /** Les identifiants de notification par parcours, pour n'en garder qu'une. */
 const parParcours = new Map();

@@ -21,7 +21,8 @@
  *
  * @module parcours/external-ai-dialog
  */
-import { t, translatePage } from '../core/translation.js';
+import { translatePage } from '../core/translation.js';
+import { t } from './vocabulaire.js';
 import { setupToolbarListeners, syncPanelHeights, setupModalAccessibility } from '../core/utils.js';
 import { el, icone } from './dom.js';
 import { construireSelecteurModele, modeleParcours } from './model-selector.js';

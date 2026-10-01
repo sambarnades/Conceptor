@@ -355,8 +355,9 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       *Décochée par défaut* (D24), comme la Carte : le mode d'échec n'est pas bénin —
       une condition mal remappée verrouille une étape pour toujours, et cela ne se
       découvre qu'une fois la classe devant.
-- [ ] **D34 — La différenciation par le RÉSULTAT reste à concevoir, et ce n'est pas
-      la même chose.** La trame « Différenciation à trois vitesses » promet un test de
+- [x] **D34 — La différenciation par le RÉSULTAT reste à concevoir, et ce n'est pas
+      la même chose.** *Tranché le 30 sept. 2026 par D90 à D101 : le modèle de plan sait
+      désormais dire « ces étapes sont des alternatives ».* La trame « Différenciation à trois vitesses » promet un test de
       positionnement puis trois branches selon le score. L'ouverture progressive (D33)
       ne la rend PAS opérante : elle enchaîne, elle ne bifurque pas.
       *Ce qu'il faudrait* : une condition `{"type":"grade","id":…,"min":…,"max":…}`, ce
@@ -750,7 +751,8 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
       les textes nécessaires et les durées. Un écart provoque une recomposition
       ciblée, en série sur le même modèle, avec une répartition explicite. Le
       prompt ne recopie pas la structure erronée, qui incitait à la conserver.
-      Après un second écart, message traduit et brouillon conservé. L’annulation
+      Après un second écart, message traduit et brouillon conservé — *remplacé par D107 :
+      le plan est réparé puis retenu ; seule une réponse sans aucun plan échoue encore*. L’annulation
       reste active entre les appels. Les accents sur un palier connu sont
       normalisés sans changer son sens. Le contrôle porte sur la composition IA,
       jamais sur les retouches ou les scénarios importés par l’enseignant.
@@ -1779,6 +1781,402 @@ Chacune a été tranchée ; ne pas les rouvrir sans raison nouvelle.
         s'affiche avec sa consigne. Aide de Caramelia : les 12 fiches `parcours-modules` du RAG
         remplacées le même jour (seule la phrase du Test étudiant différait de la version en
         ligne, vérifié par empreinte).
+- [x] **D90 — Les chemins selon les résultats : UN mécanisme, l'aiguillage. La note d'un
+      test ouvre à chaque élève un chemin parmi deux à quatre, puis tous se retrouvent.
+      Livré le 30 sept. 2026 (7.1.0) ; aller-retour Éléa PARTIEL le soir même (compte
+      enseignant), la vue d'un vrai compte élève reste à voir (D24).**
+      Demande d'Emmanuel et de Gauthier (30 sept. 2026) : « si un élève se trompe, en fonction
+      du score plutôt, il est redirigé vers la remédiation ou autre chose » ; les modèles de
+      Gauthier (`gabarit-de-parcours-de-differenciation-pedagogique-.mbz`,
+      `au-bonheur-des-dames-seance-3-sur-la-langue.mbz`, transmis le 30 sept. 2026 et non
+      versionnés) ouvrent des sections cachées de
+      niveaux débutant, intermédiaire, avancé selon un test. Tranche D34.
+      *Pourquoi un seul mécanisme* : différencier dès le départ (test de positionnement) et
+      remédier en cours de route (point de contrôle) ne diffèrent que par la PLACE du test ;
+      deux mécanismes auraient fait deux écrans, deux prompts et deux passes pour le même objet.
+      - **Modèle** : une étape PEUT être un chemin, `etape.chemin = { depuis: <pourcentage> }`,
+        et rien d'autre n'est stocké. Tout le reste se DÉDUIT (`js/parcours/aiguillage.js`, pur) :
+        des étapes-chemins consécutives forment UN aiguillage ; le test est la DERNIÈRE activité
+        notée qui peut aiguiller dans l'étape d'avant ; les rôles viennent du rang et du nombre
+        (`ROLES_PAR_NOMBRE` : 2 → Renforcer, Approfondir ; 3 → + Consolider au milieu ;
+        4 → Reprendre les bases, Renforcer, Consolider, Approfondir) ; l'étape commune est la
+        première étape ordinaire qui suit. Deux sources pour une même information finissent
+        par se contredire (§ 4) : un plan de l'IA, un scénario importé ou une retouche ne
+        peuvent pas désaccorder un rôle stocké et une position.
+      - **Seuils** : gardés en POURCENTAGE (un test régénéré avec deux questions de moins garde
+        la même exigence), lus et réglés en BONNES RÉPONSES (`bornesEnReponses`), écrits dans
+        le cours à MI-POINT : seuil = (k − 0,5) / n × 100, à deux décimales. La note est rangée
+        à cinq décimales (`decimal(10,5)`) : aucune note atteignable ne tombe sur un seuil,
+        quel que soit l'arrondi. Par défaut : 60 (2 chemins), 40/75 (3), 25/50/75 (4) ; questions
+        conseillées : 8, 10, 12 — trier en trois sur cinq questions, c'est laisser une réponse
+        décider (repère de relecture, pas un blocage).
+      - **Conditions** (règles relues dans Moodle 5.1, `public/availability/`) : chemin
+        `{op:'&', c:[{type:'grade', id, min?, max?}], showc:[false]}` ; étape commune
+        `{op:'|', c:[un « & » d'achèvements par chemin], show:false}` ; fin du parcours (D96)
+        `{op:'&', c:[achèvements communs…, {op:'|', …} par aiguillage], showc:[false…]}`.
+        Une racine « & » exige `showc` (tableau de même longueur que `c`), une racine « | »
+        exige `show` ; les sous-groupes n'en portent pas ; `id` doit être un ENTIER
+        (`is_int`, un `"42"` est refusé) ; `min` inclus, `max` exclu ; pas de note = faux ;
+        un groupe vide = vrai. `restore_update_availability` traduit à la fin de la
+        restauration les éléments de note et les modules cités ; un identifiant non traduit
+        devient 0. `verifierCondition()` refuse tout ce que `tree.php` refuserait.
+      - **Où** : APRÈS l'assemblage, comme D33 — `mbz-course-builder.js` n'est pas touché.
+        Ordre des passes : `poserAchevementsH5P` (D100) → `poserAiguillages`
+        (`aiguillage-cours.js` : lit `<grade_item id>` dans le `grades.xml` du test, écrit
+        les conditions des chemins, de l'étape commune et de la fin, `grademethod` 4 sur le
+        test H5P) → `poserProgression` (ne remplit que les sections encore LIBRES : elle ne
+        peut ni écraser un chemin ni conditionner l'étape commune sur le seul dernier chemin)
+        → `poserDurees` (D97). Un chemin sans activité prête bloque la livraison
+        (`parcours_chemins_incomplets`, qui nomme le rôle) : jamais d'élève sans suite ; la
+        livraison partielle (D49) reste possible pour tout le reste.
+      - **Plan** : l'aiguillage s'affiche en un bloc — la barre des scores (un carré par score,
+        de la couleur du chemin qu'il ouvre), une ligne par chemin avec sa plage et deux
+        boutons − / + (« Ouvrir “Approfondir” dès une bonne réponse de moins »), les chemins
+        en colonnes, « Ajouter un chemin », « Retirer un chemin », « Un seul chemin pour tous »
+        (avec « Annuler »). Une étape qui finit par un test propose « Ouvrir des chemins selon
+        ce test » : l'étape suivante se décline, ses copies reprennent SA structure. Le test
+        porte le badge « Oriente les élèves ». Les flèches de déplacement ne font jamais
+        sortir une carte de son chemin ; seules les étapes communes sont numérotées. Le
+        bandeau dit ce que vit UN élève : chemins, activités par élève (et à fabriquer),
+        durée par élève — de même à la livraison et dans la fiche de séquence.
+      - **Bloquant** (`problemesAiguillage`, relu par `validerPlan`) : moins de deux ou plus
+        de quatre chemins, chemins en tête du plan, pas de test, moins de questions que de
+        chemins moins un, un chemin vide ou qui ne s'achève jamais, un test dans un chemin.
+        **Repères de relecture** (garde-fous, seulement avec des chemins) : un test oriente,
+        assez de questions, chemins parallèles (même nombre d'activités à un près, durée à
+        75 % au moins) ; la série de trois types identiques se compte par suite d'élève, la
+        durée tenable sur le plus long chemin.
+      - **Prompts** : celui du plan reçoit, pour chaque rôle, sa consigne de gradation
+        (`CONSIGNES_ROLES` : reconnaître avec un exemple résolu → retrouver → produire sans
+        modèle), les règles communes (même objectif, mêmes notions, chemins parallèles, aucun
+        texte ne dit à l'élève son niveau) et la consigne du test (toutes les notions, une par
+        question, difficulté étagée). Il rend aussi `conclusion` (D96). Les prompts des
+        ACTIVITÉS ne changent pas (D82) : le parcours leur ajoute un cadre « chemin » ou
+        « test qui oriente », et `historiqueDeLaCarte()` ne cite que ce que l'élève a vu sur
+        SON chemin — jamais les activités des autres.
+      - **Scénario** : format 2 dès qu'il y a des chemins (le format 1 reste écrit sinon) ;
+        l'import lit les deux et renormalise (`normaliserAiguillages`).
+      - **Contrôles** : `run_parcours_chemins.mjs` (Node pur, en CI, 37 contrôles) balaie 1 à
+        30 questions × 2 à 4 chemins × seuils quelconques × tous les scores, notes sur 100 et
+        sur 10 ; `run_parcours_aiguillage.mjs` (56) assemble trois vrais cours, les relit comme
+        Moodle et fait passer un élève par chaque score, avec trois contre-épreuves, puis
+        l'interface par de vrais clics. **À faire sur Éléa** : `node scripts/generer-parcours-sonde-chemins.mjs`
+        (deux aiguillages, trois élèves, fiche de relevé) — **rien n'est annoncé avant (D24)**.
+- [x] **D91 — Le choix se fait au cadrage : « Tous vos élèves suivent-ils le même chemin ? »**
+      Après l'ampleur, avant la trame : « Un même chemin pour tous » / « Des chemins selon les
+      résultats », puis « Combien de chemins ? » (2, 3, 4). *Pourquoi là* : la réponse change
+      les trames proposées, le prompt du plan et son calibrage ; la poser au plan obligerait
+      à tout refaire. Tout se retouche ensuite dans le plan. Les deux listes de trames ne se
+      mêlent pas ; « Structure libre » vaut pour les deux (des chemins sans modèle : une étape
+      de test, les chemins, une étape commune).
+- [x] **D92 — Trois modèles à l'écran, puis « Voir les autres modèles ».** *(Choix des trames
+      montrées revu par D102 : une vitrine de quatre intentions.)* Retour de Gauthier :
+      « beaucoup de modèles, les gens se perdent ». Les trois premiers compatibles avec la
+      modalité et l'ampleur s'affichent en cartes, avec « Caramel propose » ; les autres, sous
+      un bouton qui dit leur nombre, en lignes rangées par famille (séance, séquence, projets,
+      démarches particulières) — le champ `famille` sert enfin. Une trame choisie parmi les
+      autres les garde dépliées. En mode chemins : les deux trames à chemins et la structure
+      libre, sans « Caramel propose ». « Différenciation à trois vitesses » devient
+      **« Différencier dès le départ »** (test de positionnement, chemins, écrit commun) ; nouvelle
+      trame **« Remédier en cours de route »** (découvrir, point de contrôle, chemins, test
+      final). Une trame à chemins porte `CHEMINS` à la place d'une étape ; `adapterTrame` la
+      déplie en k étapes selon le nombre choisi, avec des longueurs par ampleur et par k qui
+      tiennent les douze activités fabriquées (D5) et l'ampleur PAR ÉLÈVE (D101). Pas de
+      trame à chemins sur une séquence entière : elle dépasserait douze activités à fabriquer
+      (message dédié ; la structure libre reste possible).
+- [x] **D93 — La première tentative décide, et une question vaut un point.** Test H5P noté sur
+      la PREMIÈRE tentative (`grademethod` 4), sans « Recommencer » ; Test Moodle à une
+      tentative. Pour réorienter un élève, l'enseignant modifie sa note au test dans le
+      carnet de notes (l'aide du plan et l'étiquette enseignant le disent). Les seuils se
+      lisent « k bonnes réponses sur n » : il faut UN point par question. D'où
+      `reglagesDuTest()`, posé à la génération ET de nouveau à l'assemblage (une retouche dans
+      l'éditeur ne peut pas le défaire) : `singlePoint` sur chaque QCM (sinon une question à
+      deux bonnes réponses vaut deux points), plus de tirage partiel (`poolSize`), pas de
+      reprise. Peuvent aiguiller : **Quiz QCM, Quiz Vrai/Faux, Test**. Écartés : le Quiz mixte
+      (un texte à trous compte un point par trou), la Série de choix uniques (jamais notée,
+      D100), la Leçon (pas de note avant la première tentative), le Devoir (noté à la main),
+      les greffons d'Éléa (jamais éprouvés comme condition).
+- [x] **D94 — Ce qui n'est pas pour l'élève reste invisible.** Les autres chemins sont
+      MASQUÉS (`showc: [false]`), pas grisés : un élève ne voit ni leur existence ni leur
+      niveau. L'étape commune et la fin apparaissent quand on y arrive (`show: false`). Sous
+      le test, une étiquette dit à l'élève que la suite s'affichera à la fin du test (sans
+      elle, le cours semble s'arrêter là). En tête de chaque chemin, une étiquette cachée aux
+      élèves (`visible` 0) dit à l'enseignant à qui il s'ouvre, en bonnes réponses — Moodle
+      ne lui montre qu'« une note dans un certain intervalle ».
+- [x] **D95 — Pas de Carte de progression avec des chemins.** `mapmodules` liste les
+      activités de toutes les sections et montre celles qu'on ne peut pas ouvrir comme des
+      étapes verrouillées : chaque élève verrait les autres chemins, verrouillés pour
+      toujours. Le réglage est désactivé sur le plan, avec la raison.
+- [x] **D96 — « Fin du parcours » dans TOUS les parcours.** Demande de Gauthier : « Bravo, tu
+      as fini ton parcours ». Une dernière section, masquée jusqu'à ce que l'élève ait
+      achevé tout ce qui s'achève (avec des chemins : son chemin de chaque aiguillage), qui
+      porte « Bravo ! Le parcours est terminé. » et le mot de la fin écrit avec le plan
+      (`plan.conclusion`, champ du prompt et de l'écran du plan). Posée seulement si une
+      activité au moins s'achève. Linéaire ou non : c'est le même bloc.
+- [x] **D97 — La durée est écrite dans le cours.** « Durée estimée : 10 min » en tête de la
+      description de chaque activité, et `showdescription` à 1 pour qu'elle se lise sous le
+      lien ; l'accueil (section 0, désormais toujours présent) dit la durée du parcours —
+      celle d'UN élève, en fourchette si ses chemins diffèrent. `durees-cours.js` lit
+      `translations` et non `t()` : `t()` rend la CLÉ quand elle manque, et le repli
+      français ne jouerait jamais.
+- [x] **D98 — Un parcours à chemins s'importe dans un cours VIDE.** En fusion, Moodle range les
+      sections du fichier dans celles du cours, par numéro ; une section existante garde
+      son nom et reçoit notre restriction si elle n'en avait pas — les sections de
+      l'enseignant hériteraient des conditions des chemins. La livraison le dit (première
+      étape « créez un cours VIDE », et pourquoi).
+- [x] **D99 — Des rôles pour l'enseignant, des tâches pour l'élève ; jamais de lettre, jamais de
+      pourcentage à l'écran.** Retour d'Emmanuel sur la maquette (30 sept. 2026) : « chemin A,
+      chemin B, à partir de −4 » ne se comprenait pas. Dans Caramel, un chemin se nomme par
+      son rôle (couleur et nom constants : Reprendre les bases, Renforcer, Consolider,
+      Approfondir) et sa plage se dit en bonnes réponses (« de 5 à 8 sur 8 ») ; aucun JSON,
+      aucun pourcentage. Dans le cours, l'élève lit le TITRE de son chemin, qui dit une
+      tâche, jamais un niveau. **« Voir comme un élève »** (`vue-eleve.js`) montre la page du
+      cours telle que la plateforme l'affichera, à un moment (avant le test, pendant son
+      chemin, chemin terminé, parcours terminé) et pour un score choisi, ou telle que
+      l'enseignant la voit ; il reconstruit le cours depuis le plan avec les MÊMES fonctions
+      que l'assemblage (`coursDuPlan`). Il s'ouvre depuis l'aiguillage et depuis « Relire le
+      parcours ». Les quatre écrans (cadrage, plan, fabrication, livraison) restent.
+- [x] **D100 — Un H5P qui ne rend jamais de note s'achève à la CONSULTATION.** Découvert en
+      préparant D90, et présent depuis la 7.0 : `mod_h5pactivity` n'enregistre une note que
+      pour un énoncé « terminé » portant un score maximal non nul. Frise chronologique,
+      Glossaire, Cartes de dialogue, Diagramme, Image interactive, Résumé (il émet
+      « answered » sans `completion`), Série de choix uniques, Vidéo interactive, Présentation
+      de cours et Livre interactif n'en rendent JAMAIS (ou pas de façon fiable) : achevés « à la note », ils ne s'achevaient jamais, et l'ouverture progressive
+      (D33) fermait pour toujours l'étape suivante. `achevement-h5p.js` leur pose
+      `completionview` 1 sans élément de note. Corrige le recensement du 6 sept. (§ 6).
+- [x] **D101 — Avec des chemins, l'ampleur compte ce que fait UN élève.** Une séance, c'est trois
+      ou quatre activités pour l'élève, pas pour Caramel : le calibrage borne les activités
+      par élève (tronc commun + un chemin) dans l'ampleur, et le total FABRIQUÉ, tous chemins
+      compris, sous le plafond de douze (D5). Le prompt du plan dit les deux nombres ; son
+      exemple les respecte (`exempleLibreAChemins` : sur une séquence à quatre chemins, un
+      seul temps différencié d'une activité par chemin). Constaté par le banc de calibrage :
+      l'exemple d'une structure libre à chemins contredisait sa propre consigne.
+- [x] **D102 — La vitrine : quatre intentions, et « Évaluer » règle le Test en épreuve.**
+      Retour de Gauthier après un parcours réel (30 sept. 2026, au soir) : « trop de choix,
+      et peu de différence entre réviser et remédier à l’évaluation ; il faut plutôt apprendre
+      en autonomie, réviser, s’entraîner, évaluer — avec les bons paramètres obligatoires du
+      test : une seule tentative, sans feedback, chronométré ». D92 montrait les trois
+      PREMIÈRES trames compatibles, dans l’ordre de la bibliothèque : réviser, remédier et
+      découvrir se côtoyaient. `VITRINE` (`templates.js`) fixe désormais l’ordre et le choix :
+      apprendre en autonomie, réviser, s’entraîner, évaluer, quand la modalité et l’ampleur le
+      permettent, complétées jusqu’à trois par les suivantes de la bibliothèque
+      (`trameEnVitrine` : une séquence entière montre apprendre, s’entraîner, découvrir).
+      - **Deux trames nouvelles**, pour toutes les modalités et les trois ampleurs :
+        `autonomie` (découvrir pas à pas par une présentation qui pose des questions, s’exercer
+        avec correction immédiate, retenir, vérifier ; chaque consigne se suffit à elle-même)
+        et `entrainement` (rappel sans support, exercices avec propositions, les mêmes sans
+        propositions, vérification finale ; le cours n’est pas refait).
+      - **« Évaluer »** (ex-« Préparer et passer une évaluation ») : une page des attendus
+        (ce qui est évalué, la forme, la durée, le barème), un entraînement au format, puis
+        le Test. Ses réglages d’épreuve (`reglagesTest` + `chronometre`) sont posés UNE fois, à
+        la génération (`reglagesDeTrame`) : une tentative, feedback différé, relecture « note
+        seule » (ni réponses, ni correction), temps limite = durée de la carte. L’enseignant
+        les retouche dans l’éditeur ; rien ne les réimpose à l’assemblage. La carte du Test
+        le dit sur le plan (« Épreuve : une seule tentative, en 20 min, la note seule à la
+        fin »). **La page de corrigé qui suivait le Test est retirée** : sans ouverture
+        progressive, l’élève pouvait la lire AVANT l’épreuve.
+- [x] **D103 — Une consigne d’exercice ne manque jamais en silence.** Même parcours réel : dans
+      un Quiz mixte de dix questions, trois exercices (Surligner, Glisser les mots, Texte à
+      trous) sont arrivés SANS consigne ; l’élève voyait un texte sans savoir quoi y faire,
+      et le retour d’un score faible (« Repérez les mots qui… ») passait pour la consigne.
+      Le prompt la demandait ; le pipeline la gardait (vérifié sur l’exemple du dépôt) : le
+      modèle l’avait omise. Trois parades :
+      - **Le réparateur** remet à sa place (`taskDescription`) une consigne écrite sous un
+        autre nom (`consigne`, `instruction(s)`, `question`, `text`…) — activité seule comme
+        question de quiz ; il n’en invente jamais (`recupererConsigne`, `json-healer.js`).
+      - **La file du parcours** vérifie (`consignesManquantes`) et redemande UNE fois en nommant
+        les questions (`rappelConsignes`) ; au second oubli, la carte échoue
+        (`parcours_consigne_manquante`) et se refait d’un clic.
+      - **Le cadre du prompt** d’un Quiz mixte rappelle la règle (D82 : ajout, pas retouche).
+      La fenêtre « IA externe » la refusait déjà : le schéma de l’éditeur tient la consigne
+      pour obligatoire (« Question 4 › … › Consigne : ce champ est obligatoire », contrôlé par
+      `run_parcours_external_ai.mjs`). La génération d’une activité seule profite du
+      réparateur, pas encore de la seconde demande. Bancs : `run_deformations_modele.mjs` (152 consignes déplacées, retrouvées à
+      l’identique ; contre-épreuve : 0/152 sans le réparateur), `run_parcours_atelier.mjs`.
+- [x] **D104 — La longueur d’une Page ou d’un Livre suit sa durée.** « Pas de différence entre
+      une page de 5 minutes et une de 25 » (Gauthier) : la durée fixait le nombre de blocs
+      (3 à 6), pas leur longueur. Le prompt de la carte vise désormais environ 80 mots par
+      minute de lecture attentive, prise de notes comprise (`motsVises` : 5 min → 400 mots,
+      25 min → 2 000). **Mesuré le 1er oct. 2026 sur le vrai modèle** (même sujet, la vraie
+      file) : glissée dans la commande en « environ N mots », la consigne se perdait face aux
+      « phrases courtes » du gabarit — 457 mots pour 5 min, 742 pour 25 (facteur 1,6). En
+      plancher (« au moins N »), la longue montait à 1 841, mais la courte débordait à 1 118.
+      Retenu : une FOURCHETTE (`fourchetteMots` : N à N + 30 %), répétée en ligne à part dans
+      le cadre de la carte — 480 / 1 146 / 1 390 mots pour 5 / 15 / 25 min (facteur 2,9). Le
+      modèle semble plafonner vers 1 400 mots par réponse : une lecture de 25 minutes reste à
+      environ 56 mots par minute, ce qui demeure une lecture attentive.
+- [x] **D105 — Le vocabulaire suit la plateforme : élèves, stagiaires, étudiants.** « Pour
+      Moodle on parle d’étudiant, Magistère c’est pour les stagiaires, et Éléa pour les
+      élèves ; dans les choix de bifurcation et tout, c’est important à respecter » (Emmanuel,
+      1er oct. 2026, sur une capture du cadrage Moodle qui disait « Tous vos élèves… »).
+      Remplacer un mot dans une phrase ne tient pas dans douze langues (articles, élisions,
+      accords, cas) : chaque texte de l’atelier qui nomme le public a ses VARIANTES rédigées,
+      `<clé>_magistere` et `<clé>_moodle` (125 clés, rangées juste après leur base) ; la clé de
+      base parle d’élèves. Le `t()` de `js/parcours/vocabulaire.js` choisit la variante de la
+      plateforme du brouillon, ou de celle qu’on lui passe (la fiche, le cours assemblé, la vue
+      d’un parcours rouvert depuis sa notification) ; une clé sans variante se traduit comme
+      avant. **Aucun module de l’atelier ne prend `t` au cœur** (garde-fou du banc des
+      chemins). Portée : le cadrage (repeint sur place quand on change de plateforme,
+      `data-key` compris), le plan et ses chemins, « Voir comme un stagiaire / un étudiant »
+      (« Le formateur » sur Magistère), la relecture, la fiche de séquence, les descriptions
+      des modules de la plateforme (« entre stagiaires », « le groupe » au lieu de « la
+      classe », « ses pairs »), et ce que le cours écrit (étiquette de chaque chemin, liste
+      « À faire »). Pas de variante là où le texte ne peut pas s’afficher (module absent de la
+      plateforme, Carte de progression d’Éléa) ni pour les noms (« Classe inversée », « Classe
+      virtuelle »). **Les prompts** gardent « l’élève » comme nom de la personne qui suit le
+      parcours (D82) ; hors d’Éléa, la règle de rédaction le définit désormais par la
+      plateforme — des STAGIAIRES (« le formateur » pour l’enseignant) ou des ÉTUDIANTS, jamais
+      appelés « élèves », « le groupe » et non « la classe », vouvoiement — au lieu de le
+      laisser deviner au modèle depuis le seul « public visé ». Banc :
+      `run_parcours_aiguillage.mjs` (section G, contre-épreuve : 10 contrôles au rouge si la
+      variante n’est plus choisie) et `run_parcours_chemins.mjs` (section 8).
+- [x] **D106 — Un trou vidé de son sens est redemandé, dans la file comme en un clic.**
+      Vérification de génération réelle du 1er oct. 2026 (parcours Éléa à trois chemins) :
+      un Texte à trous du chemin « Approfondir » portait des NOMS DE VARIABLES à la place des
+      réponses — `*prix_réduit* €`, `*nombre_élèves* élèves`, `*prix_10cahiers*` —, que
+      l’élève n’aurait jamais pu taper. `controle-sortie-ia.js`, qui ne jugeait que Glisser
+      les mots, voit désormais cette panne (des mots liés par des tirets bas, sans espace),
+      aussi dans le Texte à trous et dans les exercices à trous d’un quiz ; et la file du
+      parcours, qui ne l’appelait pas, s’en sert : même seconde demande que pour une
+      consigne absente (D103), avec un rappel qui nomme la panne, puis le moins grave des
+      deux tirages (une consigne absente reste prioritaire : sans elle, seul un second tirage
+      complet sert). « Réponse trop longue » et « même réponse dans plusieurs trous » restent des
+      indices : ils déclenchent la seconde demande, mais le banc des parcours réels ne les
+      compte pas comme défauts — l'exercice se joue (trois « nombre » à glisser, Moodle,
+      1er oct. 2026). En amont, le cadre de la carte d'un Texte à trous, d'un Glisser les
+      mots ou d'un Quiz mixte exige la réponse elle-même dans chaque trou : un mot du texte
+      ou la valeur calculée, jamais un nom de variable, une lettre-symbole ni le nom de la
+      notion — la régénération du même parcours avait rendu `*x* g` et
+      `*coefficient* = 200 ÷ 3 = *coefficient*`, que le contrôle ne peut pas distinguer d'un
+      exercice d'homophones (« *a* » trois fois) sans fausses alertes. La régénération
+      suivante a montré une troisième panne : des variantes qui se contredisent —
+      `*situation de proportionnalité/ce n'est pas une situation de proportionnalité*` —,
+      alors que `/` sépare des réponses toutes justes : l'élève avait raison quoi qu'il
+      écrive. Le contrôle la voit (« réponses contradictoires » : une variante reprend tous
+      les mots porteurs d'une autre et y ajoute une négation, ou une paire oui/non,
+      vrai/faux), et le cadre rappelle que la barre oblique ne sépare que des variantes
+      équivalentes. Banc :
+      `run_sources_prompt_tests.mjs` (CI), `run_parcours_atelier.mjs`, et
+      `run_parcours_reels.mjs` (constat « trous », avec contre-épreuve).
+- [x] **D107 — Le plan reçu se répare avant d’être jugé ; un plan utilisable n’est jamais refusé.**
+      Retour d’Emmanuel (1er oct. 2026, matin) : avec « Des chemins selon les résultats »,
+      « Composer le plan » tournait, puis revenait à l’étape 1 du cadrage — « il faut absolument
+      un healing de génération, […] la génération doit TOUJOURS fonctionner ». Relevé sur 16
+      cadrages réels (Mistral Small 4, prompt d’avant D108) : 7 retours au cadrage, tous à
+      chemins (7 sur 11), dont 5 pour la SEULE durée des chemins (10, 15 et 15 min : 10 est sous
+      les 75 % de 15). D58 renvoyait au cadrage après deux écarts. `reparation-plan.js` (pur,
+      comme `json-healer.js` pour une activité) répare désormais chaque réponse AVANT le
+      contrôle : cartes sans texte retirées, textes manquants repris d’un voisin, palier ramené
+      (synonymes, puis la place de l’étape), module inventé remplacé par le plus proche
+      (`resoudreModule`, carte marquée `moduleReplie`), durées entières, étapes-chemins
+      regroupées et rôles remis dans l’ordre, test posé avant les chemins (un quiz de l’étape
+      converti, sinon un « Test de positionnement » ajouté, textes traduits), durées des chemins
+      égalisées. La reprise unique de D58 ne porte plus que sur ce qui reste. Après elle, le
+      DERNIER RECOURS ramène le meilleur des deux plans à la forme demandée — chemins en trop
+      retirés, chemins manquants copiés du voisin (ce que fait « Ajouter un chemin »), forme
+      visée calculée (longueur des chemins, activités communes) pour tenir sous le plafond de
+      douze et dans les bornes « par élève », jamais le test retiré ni une étape vidée, étapes
+      en trop fusionnées avec leur voisine — et le plan est RETENU, écarts restants compris.
+      Seule une réponse sans aucun plan échoue encore : deux réponses illisibles (une réponse
+      illisible est désormais redemandée une fois, au lieu d’échouer aussitôt), ou aucune
+      activité. La réponse collée d’une IA externe passe par la même réparation. La boucle
+      (`composition-plan.js`) est partagée par l’atelier et le relevé sur le vrai modèle.
+      Bancs : `run_parcours_reparation.mjs` (Node, CI) — les 25 plans réels du relevé (les 18
+      refusés deviennent tous conformes, les 7 conformes ne bougent pas), 300 plans réels abîmés
+      au hasard (15 000 essayés sur trois graines), idempotence, contre-épreuve ;
+      `run_parcours_calibrage.mjs` (modes « echec » : plan ramené à l’ampleur et retenu,
+      « illisible », « relance »).
+- [x] **D108 — Le prompt du plan montre un exemple complet, de la forme demandée.**
+      « Peut-être que le prompt n’est pas assez cadré, avec un exemple en plus du modèle, comme
+      on le fait pour chaque activité » (Emmanuel, même matin). Le format de sortie n’était qu’un
+      squelette de « … » dont toutes les cartes duraient 10 minutes : il ne montrait ni la
+      longueur des textes, ni des durées plausibles, ni des chemins qui durent autant, et la
+      règle ne disait que « durées proches ». `exemple-plan.js` produit un plan COMPLET sur un
+      AUTRE sujet (le cycle de l’eau), de la forme exacte demandée : mêmes étapes, mêmes nombres
+      d’activités, test et chemins à leur place, modules de la trame, paliers imposés, chemins
+      de même durée ; tutoyé sur Éléa, vouvoyé sur Magistère et Moodle (D105). Une phrase chiffre
+      la durée de chaque chemin, la règle exige « la MÊME durée totale à 5 minutes près », et
+      l’exemple reste la dernière chose du prompt. Le banc vérifie, pour les 600 cadrages
+      possibles (plateforme, modalité, ampleur, chemins, trame), que l’exemple passe lui-même
+      le contrôle, a la forme demandée et le registre de la plateforme.
+- [x] **D109 — Une activité se met en forme dès la fabrication.** Parcours réel d’Emmanuel
+      (1er oct. 2026, « Découvrir les natures des angles ») : la Rédaction « Défi : décrire un
+      angle dans un objet » écartée à la LIVRAISON, « erreur de mise en forme » — un mot-clé à
+      `occurrences: 0`, que `Essay.js` rejetait (« occurrences invalides »). Trop tard pour la
+      redemander. Deux corrections : (1) un réglage hors bornes se RÉPARE au lieu d’être rejeté
+      — `reparerRedaction` (processeur, pour un contenu déjà enregistré) et `healEssay`
+      (réparateur, y compris dans un quiz) ramènent occurrences et points à 1, un pourcentage
+      au-delà de 100 à 100, retirent une longueur négative ; seule une rédaction sans aucun
+      mot-clé reste refusée ; (2) `fabriquer` ESSAIE la mise en paquet de la livraison
+      (`refusDuPaquet` → `activiteDepuisCarte`) : refusée, l’activité est redemandée une fois avec
+      la cause (`rappelMiseEnForme`) ; refusée encore, la carte échoue À LA FABRICATION, avec un
+      message clair (`parcours_mise_en_forme`) et « Refaire ». Bancs : `run_heal_rules_tests.mjs`
+      (section 5), `run_parcours_atelier.mjs`.
+- [x] **D110 — Une image inventée ne s’affiche pas cassée.** Même parcours : la Page portait deux
+      `https://via.placeholder.com/300x200?text=…`, un service d’images factices arrêté. Les
+      blocs `#08` (cartes) et `#09` (deux figures) affichent leur balise image même vide : ils
+      deviennent des paragraphes (titre, texte, légendes) ; `#13` et `#16` perdent l’adresse.
+      Deux niveaux, pour ne rien casser (Emmanuel : « l’utilisateur pourrait en ajouter un à la
+      main ou utiliser le prompt avec l’IA grand public de son choix ») : PARTOUT, le réparateur
+      retire les seuls services factices (`retirerImagesInventees`, placeholder, placehold,
+      picsum…) ; dans un parcours, la file retire toute adresse que l’IA de CARAMEL écrit — le
+      modèle d’ILaaS ne sait pas trouver de vraie image —, mais pas celle d’une réponse collée
+      depuis une IA externe. L’image envoyée par l’enseignant (`@@PLUGINFILE@@`, D88) n’est
+      jamais touchée. Le cadre d’une Page ou d’un Livre interdit d’INVENTER une adresse, sans
+      interdire les images. Bancs : `run_heal_rules_tests.mjs` (section 6), `run_parcours_atelier.mjs`.
+- [x] **D111 — Un trou porte sa réponse : déduite, sinon redemandée.** Essai du 1er oct. 2026 sur
+      une carte de proportionnalité : Mistral Small 4 rendait 5 tirages sur 7 sans la réponse
+      dans les trous — `*x*` partout, une unité seule (`*km*`, `*g de farine*`), le calcul entier
+      (`*250 × 3 = 750*`), réponse et indice inversés (`*farine:325 g/500 g/625 g*`), deux
+      valeurs dont une fausse (`*500/300*`) ; et un Texte à trous réel de fractions écrivait
+      `*4/6*`, que le lecteur H5P lit « 4 » ou « 6 » (`parseSolution`) : l’élève qui tapait 4/6
+      était compté faux. (1) Ce qui se DÉDUIT est réparé (`reponsesDeduitesDesTrous`,
+      `json-healer.js`) : le résultat d’un calcul, `*750* g` ; une valeur et son unité mises à
+      l’envers, `*600* km` ; une fraction dans une phrase de fractions, deux trous `*4*` / `*6*`.
+      (2) Le reste est REPÉRÉ (`controle-sortie-ia.js`) : inconnue dans plusieurs trous, unité
+      sans valeur dans une phrase qui compte, plusieurs valeurs en indice, deux valeurs
+      différentes, calcul sans résultat — sans fausse alerte sur la grammaire (`*s*`, `*a*`/`*à*`),
+      une unité à trouver (`1 000 m = 1 *km*`) ou une durée (`20 *minutes*`). (3) La seconde
+      demande dit ce qui n’allait pas (`correctionDesTrous`), dans la file du parcours ET en
+      génération « en un clic », qui redemandait jusque-là le même prompt. (4) Le cadre de la
+      carte donne les contre-exemples. Bancs : `run_sources_prompt_tests.mjs`,
+      `run_heal_rules_tests.mjs` (section 7), `run_parcours_reels.mjs`.
+- [x] **D112 — Une page « Bilan du parcours » dans la fin de TOUT parcours.** Demande de Gauthier
+      (1er oct. 2026) : « pour chaque parcours, une page de fin pour conclure le parcours, un peu
+      un bilan ». Sous l'étiquette « Bravo » (D96), qui reste : l'étiquette félicite, la page fait
+      le point. Elle se COMPOSE du plan (`bilan.js`, module pur), sans appel au modèle — rien qui
+      puisse échouer ni inventer : l'objectif du parcours ; « Faire le point », une ligne par étape
+      COMMUNE (ce qui a été travaillé, le nom de sa section pour y revenir) ; les notions pivots
+      (« Les mots à retenir ») ; « Pour consolider ». Les étapes d'un chemin n'y sont pas — chacun
+      n'en a suivi qu'un, et les autres lui restent fermés —, ni l'étape qui ne contient que le
+      test d'aiguillage, qui ne se repasse pas (D93) ; un encadré dit seulement que le parcours a
+      suivi le chemin adapté au résultat. Textes IMPERSONNELS : ni « tu » ni « vous », ni élève ni
+      stagiaire, une même phrase pour les trois plateformes (D105). C'est une Page de Caramel
+      (module dont l'aller-retour est fait), au thème des autres Pages du parcours ; marquée
+      `scenario` comme les étiquettes, elle ne compte pas parmi les activités, n'a pas de durée,
+      et la condition de la fin ne l'attend pas (elle ne porte que sur les sections du plan) —
+      elle s'ouvre avec sa section. Un échec de mise en forme la retire, jamais le parcours.
+      Visible dans l'écran du plan (note sous le mot de la fin), « Voir comme un élève » et la
+      fiche de séquence. Banc : `run_parcours_reels.mjs` (présente, dans la dernière section,
+      objectif et mots à retenir repris, sans condition propre, absente de la condition de la fin),
+      `run_parcours_course.mjs`, `run_parcours_aiguillage.mjs` (et « Voir comme un élève »),
+      `run_parcours_chemins.mjs` (Node, CI : composition pure). Une étape sans objectif (plan parti
+      du modèle) reprend ceux de ses activités, ou leurs titres. En l'écrivant, le banc a trouvé
+      qu'une étape sans titre devenait la section « Plan 5 » : l'assemblage empruntait
+      `parcours_step_plan`, le « Plan » du fil d'Ariane ; c'est désormais « Étape 5 »
+      (`parcours_fiche_etape`).
+- [x] **D113 — Refermer des chemins garde un chemin ÉCRIT.** « Un seul chemin pour tous » gardait
+      « Consolider », le chemin médian (le plus juste pour tous quand les chemins ont été conçus
+      ensemble). Mais juste après « Ouvrir des chemins selon ce test », les chemins ajoutés sont des
+      COPIES VIDES (mêmes types, aucun texte) : sur trois chemins, « Consolider » en est une, et
+      refermer rendait l'étape d'origine vidée de ses activités. Relevé en préparant le tutoriel
+      vidéo et le kit de formation (2 oct. 2026), qui conseillaient ce bouton pour revenir en
+      arrière. `fermerChemins` garde désormais « Consolider » s'il est écrit (un titre ou un contenu
+      dans ses activités), sinon le premier chemin écrit. Banc `run_parcours_chemins.mjs` (Node, CI),
+      avec sa contre-épreuve : les deux cas (copie vide, tous écrits). Même jour, même écran :
+      « Annuler la modification » rendait le focus au PREMIER champ du plan, ce qui faisait remonter
+      la page tout en haut ; il revient sur l'activité ou l'étape rétablie, sans saut
+      (`run_parcours_relecture.mjs`).
 - [ ] **D10 — Nom public du module.** L'interface dit « Créer un parcours » (le mot d'Éléa
       et de Magistère). Un nom interne reste à arrêter si on en veut un.
 
@@ -1982,9 +2380,9 @@ avait cinq, et deux surprises (D17, et les octets bruts de `createMbz`).
       lorsque la précédente est terminée, condition posée sur la section. Réglage sur
       l'écran du plan, décoché par défaut, sonde et banc (13 assertions, 3
       contre-épreuves). **L'aller-retour reste à faire.**
-- [ ] **Différenciation par le résultat** (D34) — bifurcation sur la note d'un test de
-      positionnement. Ce n'est pas la suite de D33 mais un autre objet : il faut un
-      modèle de plan qui sache exprimer des alternatives.
+- [x] **Différenciation par le résultat** (D34 → D90 à D101, 30 sept. 2026) — deux à quatre
+      chemins ouverts par la note d'un test, étape commune, fin du parcours, « Voir comme un
+      élève ». **L'aller-retour Éléa reste à faire** (`generer-parcours-sonde-chemins.mjs`).
 - [x] Fiche de séquence en DOCX / ODT / PDF via `export/document-exporter.js`
 
 ### Lot 3 — Circulation
@@ -2004,6 +2402,13 @@ avait cinq, et deux surprises (D17, et les octets bruts de `createMbz`).
 > **28 sept. 2026 (D81)** : trames relues à l'aune de l'état de l'art — quatre structures
 > ajustées, toutes les intentions précisées, une intention par ampleur quand les
 > emplacements diffèrent (`intentions`).
+> **1er oct. 2026 (D102)** : vingt-trois trames. La vitrine — apprendre en autonomie
+> (`autonomie`), réviser, s’entraîner (`entrainement`), évaluer (Test réglé en épreuve) —
+> remplace les trois premières de la bibliothèque.
+> **30 sept. 2026 (D91, D92)** : vingt et une trames. Trois à l'écran, les autres sous « Voir
+> les autres modèles », par famille. Deux trames à CHEMINS (`structure: 'chemins'`), qui ne
+> se proposent qu'en mode chemins : `differenciation` (« Différencier dès le départ ») et
+> `point_controle` (« Remédier en cours de route »).
 
 Données pures dans `js/parcours/templates.js` — ajouter une trame ne demande aucun code,
 seulement une entrée et deux clés de traduction. L'ordre va du besoin le plus fréquent au
@@ -2017,8 +2422,10 @@ information finissent toujours par se contredire.
 
 | id | Famille | Modalités | Étapes × activités, par ampleur |
 |---|---|---|---|
-| `revision` | séance | toutes | courte 4×4 · moyenne 4×6 |
-| `evaluation` | séance | toutes | courte 3×3 |
+| `autonomie` | séance (vitrine) | toutes | courte 3×3 · moyenne 4×5 · longue 4×9 |
+| `revision` | séance (vitrine) | toutes | courte 4×4 · moyenne 4×6 |
+| `entrainement` | séance (vitrine) | toutes | courte 4×4 · moyenne 4×6 · longue 4×9 |
+| `evaluation` | séance (vitrine) | toutes | courte 3×3 (attendus, entraînement, Test en épreuve) |
 | `remediation` | séance | distanciel, hybride | courte 3×4 · moyenne 3×5 |
 | `rituel` | séance | toutes | courte 3×3 |
 | `decouverte` | séquence | toutes | moyenne 4×8 · longue 4×9 |
@@ -2027,7 +2434,8 @@ information finissent toujours par se contredire.
 | `investigation` | séquence | présentiel, hybride | moyenne 4×7 · longue 4×9 |
 | `emi` | séquence | toutes | courte 4×4 · moyenne 4×7 |
 | `debat` | séquence | toutes | moyenne 4×6 · longue 4×9 |
-| `differenciation` | séquence | distanciel, hybride | moyenne 4×7 · longue 4×9 |
+| `differenciation` | séquence | toutes — **à chemins** | courte : test, k chemins de 2, écrit · moyenne : page + test, chemins de 4/3/2 (k = 2/3/4), écrit |
+| `point_controle` | séquence | toutes — **à chemins** | courte : page, quiz, k chemins de 2 · moyenne : présentation + trous, quiz, chemins de 4/2/2, test final |
 | `langue` | spécialisé | toutes | moyenne 4×7 |
 | `oral` | spécialisé | présentiel, hybride | courte 3×4 · moyenne 3×5 |
 | `autoformation` | spécialisé | distanciel seul | moyenne 4×6 · longue 4×9 |
@@ -2042,10 +2450,16 @@ information finissent toujours par se contredire.
 inversée sans travail à la maison n'en est pas une, et une capsule en autonomie n'a pas de
 sens en présentiel.
 
-Le champ `famille` (séance / séquence / projet / spécialisé) est renseigné mais **pas encore
-affiché** : le filtrage par modalité et ampleur ramène déjà la liste à une dizaine de cartes,
-et un second niveau de regroupement serait de la structure pour la structure. À rouvrir si
-la bibliothèque dépasse la vingtaine.
+Le champ `famille` (séance / séquence / projet / spécialisé) range, depuis D92, les modèles
+de « Voir les autres modèles » : la bibliothèque a dépassé la vingtaine et Gauthier a
+constaté qu'on s'y perdait.
+
+**Une trame à chemins** met `CHEMINS` à la place d'une étape, et donne les types d'activité de
+chaque rôle (`chemins.modules`) et leur longueur par ampleur et par nombre de chemins
+(`chemins.longueur`). `adapterTrame()` la déplie : l'entrée devient k étapes, et la trame
+gagne `aiguillage = { debut, nombre, roles, seuils }`. `nbActivites()` compte ce qui se
+fabrique, `nbActivitesParEleve()` ce que fait un élève ; les 36 dépliages possibles sont
+vérifiés par `run_parcours_chemins.mjs` (D101).
 
 **Idées de trames non retenues pour l'instant**, à reprendre si le besoin remonte :
 séance de rentrée / prise en main, tutoriel de prise en main d'un outil, parcours
@@ -2185,6 +2599,15 @@ réellement** leur règle : `classes/completion/custom_completion.php` déclare
 `get_state()` (lu dans `moodle-code/elea/mod_simplequiz`). Une colonne en base ne câble
 pas une règle ; celle-là est câblée.
 
+> **Correction du 30 sept. 2026 (D100)** : la première ligne était fausse pour dix types
+> H5P. `mod_h5pactivity` n'enregistre de note que pour un énoncé « terminé » à score
+> maximal non nul ; Frise chronologique, Glossaire, Cartes de dialogue, Diagramme, Image
+> interactive, Résumé, Série de choix uniques, Vidéo interactive, Présentation de cours et
+> Livre interactif n'en rendent pas. Achevés « à la note », ils ne s'achevaient jamais, et l'ouverture progressive
+> fermait l'étape suivante pour toujours. Ils s'achèvent désormais à la consultation
+> (`achevement-h5p.js`). Même leçon que l'encadré ci-dessous : un champ posé n'est pas une
+> règle qui se déclenche.
+
 **Conséquence, et elle est verte** : les douze icônes de la Carte peuvent toutes
 changer d'état. Le prérequis du chantier suivant — les **restrictions d'accès**, qui
 n'ont de sens que si l'achèvement est réel — est donc satisfait, et l'achèvement
@@ -2263,6 +2686,24 @@ Paquetage IMS Content · Paquetage SCORM · QCM · Questionnaire · **Sondage** 
 ---
 
 ## 7. Pièges à ne pas réapprendre
+
+- **Un seuil gardé en pourcentage arrondi ne se relit pas toujours.** « À partir de 2 bonnes
+  réponses sur 3 » se garde à 66,67 % ; relu tel quel, 66,67 × 3 / 100 = 2,0001 donnait 3.
+  161 réglages sur 465 (n ≤ 30) étaient touchés — aucun avec 5 ou 10 questions, d'où le
+  silence des premiers essais. `bornesEnReponses` tolère l'arrondi (− 0,01 réponse) ;
+  `run_parcours_chemins.mjs` vérifie l'aller-retour pour tout b ≤ n ≤ 40.
+- **`Number()` fabrique des identifiants.** `Number(null)` vaut 0, `Number(true)` vaut 1 :
+  une condition de note sur l'élément 0 ne s'ouvre jamais, pour personne. `entier()`
+  n'accepte qu'un entier strictement positif ou son écriture en chiffres.
+- **Un groupe de conditions vide est VRAI pour Moodle.** Un chemin sans activité qui s'achève
+  donnerait une étape commune ouverte d'emblée : `conditionApresChemins` refuse de le
+  construire, et la livraison bloque avant.
+- **Un QCM à deux bonnes réponses vaut deux points** (`singlePoint: false` par défaut) : un
+  test qui aiguille doit valoir un point par question, sinon « k bonnes réponses sur n » ne
+  dit plus la note que Moodle compare aux seuils (D93).
+- **Masquer ou griser n'est pas le même drapeau selon la racine** : `showc` (tableau) sous
+  « & », `show` (booléen) sous « | » ; se tromper donne une condition que Moodle ignore ou
+  refuse. Les sous-groupes n'en portent aucun.
 
 - **Les greffons tiers ont des colonnes ÉTROITES, et ils n'y tronquent pas : ils
   cassent l'import.** `mod_stickynotes` déclare `stickynotes_column.title` en
@@ -2506,6 +2947,17 @@ js/parcours/
   parcours-builder.js     plan → activités → .mbz de cours                    [fait]
   progression.js          l'ouverture progressive, posée sur les sections      [fait]
                           APRÈS l'assemblage (D33)
+  aiguillage.js           les chemins (D90) : lecture du plan, seuils, rôles,  [fait]
+                          édition, conditions de Moodle et leur évaluation,
+                          « le cours vu par un élève » — module PUR
+  aiguillage-cours.js     pose les conditions des chemins, de l'étape commune  [fait]
+                          et de la fin dans le .mbz assemblé (D90, D96)
+  bilan.js                la page « Bilan du parcours », composée du plan      [fait]
+                          (D112) — module PUR
+  achevement-h5p.js       les H5P jamais notés s'achèvent à la consultation    [fait]
+                          (D100)
+  durees-cours.js         « Durée estimée » en tête de chaque description (D97) [fait]
+  vue-eleve.js            « Voir comme un élève » (D99)                        [fait]
   types-apprentissage.js  le miroir : ce que le parcours fait travailler       [fait]
                           (D4, D35) — module PUR, comme les garde-fous
   carte-progression.js    la Carte de progression (mapmodules), posée en       [fait]
@@ -2516,6 +2968,14 @@ js/parcours/
                           (30 thèmes : tracé, image, icônes, taille)
   stats-parcours.js       relevé d'usage : ligne Grist PARCOURS par plan,      [fait]
                           nom + version + parcoursId des activités (D69)
+  reparation-plan.js      le plan reçu se répare avant d'être jugé ; dernier   [fait]
+                          recours dans l'ampleur (D107) — module PUR
+  composition-plan.js     la boucle réparer → contrôler → reprendre → garder   [fait]
+                          le meilleur, partagée par l'atelier et le relevé (D107)
+  exemple-plan.js         l'exemple complet du prompt de plan, de la forme     [fait]
+                          demandée (D108) — module PUR
+  vocabulaire.js          le `t` de l'atelier : élèves, stagiaires, étudiants   [fait]
+                          selon la plateforme (D105)
 css/components/parcours.css                                                  [fait]
 
 js/moodle/
@@ -2533,6 +2993,13 @@ tests/
   run_parcours_course.mjs   le .mbz de cours, dans un vrai navigateur          [fait]
   run_parcours_natifs.mjs   les modules natifs comparés au relevé du 27 sept.  [fait]
   run_parcours_atelier.mjs  la file, le socle commun, le scénario, les écrans  [fait]
+  run_parcours_chemins.mjs  les chemins, en Node pur : tous les seuils, tous   [fait]
+                            les scores (CI)
+  run_parcours_aiguillage.mjs  trois vrais cours relus comme Moodle, un élève  [fait]
+                            par score, contre-épreuves, interface
+scripts/
+  generer-parcours-sonde-chemins.mjs  le .mbz et la fiche de l'aller-retour    [fait]
+                            des chemins (trois élèves)
 ```
 
 Branchement : un `<link>` dans `index.html` et `initParcours()` dans `js/main.js`.
@@ -2561,9 +3028,14 @@ node tests/run_parcours_documentation.mjs # tutoriel, RAG embarqué et fiches du
 node tests/run_parcours_caramelia.mjs   # accès depuis Caramelia, reprise, conversation et langues
 node tests/run_parcours_harmonie.mjs    # continuité des quatre écrans, mobile et champs extensibles
 node tests/run_parcours_natifs.mjs      # modules natifs : forme relevée, achèvement, « À faire », palettes (D70–D74)
-node tests/run_parcours.mjs             # les huit bancs ci-dessus, en série
+node tests/run_parcours_chemins.mjs     # les chemins : tous les seuils, tous les scores (Node pur, CI)
+node tests/run_parcours_reparation.mjs  # le plan reçu réparé (D107) et l'exemple du prompt (D108) (Node pur, CI)
+node tests/run_parcours_calibrage.mjs   # composer le plan : réparer, reprendre, retenir ; réponse illisible
+node tests/run_parcours_aiguillage.mjs  # trois cours à chemins relus comme Moodle + l'interface
+node tests/run_parcours.mjs             # tous les bancs du parcours, en série
 node tests/run_module_hygiene.mjs        # imports résolvables (a vu le repli mbz-parser)
 node scripts/generer-parcours-sonde.mjs  # le .mbz à importer pour de vrai (cf. § 10)
+node scripts/generer-parcours-sonde-chemins.mjs # l'aller-retour des chemins : deux aiguillages, trois élèves
 node tests/roundtrip/mbz-quiz-backup.mjs # le Test : banque, câblage, réglages (D86), parité seul/parcours
 node tests/run_test_edition_audit.mjs    # Test : édition, réimport, réglages relus/réécrits, aperçu différé
 node scripts/generer-test-regle-sonde.mjs # les .mbz de Test réglé à importer pour de vrai (D86)
@@ -2628,6 +3100,23 @@ exactement ce que notre synthèse doit corriger.
 
 **Le résultat va dans ce fichier**, quel qu'il soit : § 11 (journal) si tout passe, § 7
 (pièges) si quelque chose casse. Un aller-retour dont le résultat n'est pas écrit devra être refait.
+
+### Les chemins selon les résultats (D90) — sonde dédiée, À FAIRE
+
+```bash
+node scripts/generer-parcours-sonde-chemins.mjs   # → tests/sonde-parcours/sonde-chemins-elea.{mbz,md}
+```
+
+Un cours à DEUX aiguillages : un Quiz QCM H5P de 5 questions (dont une à deux bonnes
+réponses, qui doit valoir UN point) ouvre trois chemins ; dans l'étape commune qui suit, un
+Test Moodle de 10 questions en ouvre deux ; puis une étape commune et la Fin du parcours.
+Frise et Cartes de dialogue y vérifient l'achèvement à la consultation (D100).
+**Il faut un cours VIDE et trois comptes élèves** : la fiche dit, pour chacun, quel score
+viser et ce qu'il doit voir à chaque rechargement. S'y ajoutent la réorientation (note
+remplacée dans le carnet), le point par question, et le ré-export, où l'`id` de chaque
+condition « grade » doit être celui du `grade_item` du cours d'accueil — jamais 0.
+**Ce que seule la plateforme dit** : que `restore_update_availability` traduit bien
+l'élément de note cité, et que le lecteur H5P d'Éléa rend une note à la première tentative.
 
 ### Résultat du 4 septembre 2026 — Éléa et Magistère
 
@@ -3043,6 +3532,148 @@ court « Parcours » ; la barre mesurée à dix largeurs avant et après, et deu
 dans la CSS de Caramel pour qu'elle tienne (détail en D38).
 
 ## 11. Journal
+
+- **2 octobre 2026 — Sortie de la 7.1.0 :** la vidéo de présentation est refaite (le parcours
+  différencié y figure), et un tutoriel vidéo « Créer un parcours » la complète, tourné dans le vrai
+  Caramel avec les vraies réponses du modèle (`scripts/video-demo/`, `--video=parcours` : un
+  parcours linéaire de révision en SVT, différencié ensuite par « Ouvrir des chemins selon ce
+  test »). Un kit de formation rapide (27 diapositives, `scripts/diaporama/generer-kit-formation.mjs`)
+  rejoint la page de présentation. Leur préparation a relevé D113 et le saut de page après
+  « Annuler la modification ». Reste ouvert : dans la consigne d'un texte à trous, le modèle écrit
+  parfois les deux caractères « \n » ; l'aperçu fait deux paragraphes, mais l'éditeur de
+  l'atelier les montre tels quels (relevé sur `revision-fractions.json` et sur la vidéo).
+- **1er octobre 2026, soir — La page de bilan (D112), et la vérification des parcours à chemins :**
+  Gauthier « adore » et demande une page de fin qui fasse le bilan : posée dans la fin de tout
+  parcours, composée du plan. Vérification demandée par Emmanuel avant un déploiement : « que les
+  nouveaux parcours différenciés fonctionnent avec tout ce qu'on a fait aujourd'hui, que l'ajout
+  de la page fonctionne ». Le contrôle de la condition de la fin lisait d'abord le JSON échappé
+  du `section.xml` (`&quot;`) et passait à vide : corrigé avant de compter. Vérifié DANS
+  L'INTERFACE, par de vrais clics et avec le vrai modèle (Mistral Small 4, quelques replis
+  silencieux du Worker), du cadrage « Des chemins selon les résultats » au `.mbz` téléchargé :
+  Éléa à 3 chemins (Pythagore, 4e), Magistère à 2 chemins (évaluer par compétences, stagiaires),
+  Moodle à 4 chemins (statistiques, BUT). Plans composés en 12 à 16 s, sans retour au cadrage ni
+  problème d'aiguillage ; 34 activités fabriquées sur 34, aucune écartée ; dans chaque cours, les
+  chemins aux bons seuils, l'étape commune ouverte au bout de n'importe quel chemin, la fin qui
+  attend le tronc commun et un chemin, le bilan dessous, hors de sa condition ; chemins de durées
+  égales à 5 min près ; aucune image ; aucun trou défectueux ; élèves / stagiaires / étudiants
+  selon la plateforme. Le banc des parcours réels, rejoué sur ces trois cours
+  (`run_parcours_reels.mjs --dossier=…`), n'y voit qu'un écart : sur Magistère, les retours par
+  score d'un Quiz tutoyaient les stagiaires (« Tu as bien ciblé un critère… »). Limite connue
+  (D80, D82), non bloquante ; piste : une seconde demande quand les RETOURS d'une carte tutoient
+  un public adulte, comme pour les consignes et les trous. (Le même banc compte aussi, à tort, le
+  tutoiement d'une phrase citée entre guillemets dans une Page : « ton travail est insuffisant ».)
+- **1er octobre 2026, après-midi — Le parcours de maths d’Emmanuel (D109 à D111) :** « Découvrir
+  les natures des angles » (Éléa, chemins) livré avec 11 activités sur 12 : la Rédaction « Défi :
+  décrire un angle dans un objet » écartée (« erreur de mise en forme », `occurrences: 0`), deux
+  images `via.placeholder.com` dans la Page. Le docx de la fiche semblait perdre les réponses d’un
+  quiz : fausse alerte, elles y sont en formules Word (OMML) — c’est l’outil d’extraction
+  (`textutil`) qui les omettait. Corrigé : D109, D110, D111, et la modale « Commencer un nouveau
+  parcours ? » (deux réponses en bloc insécable à droite, l’export à gauche ; rouge au survol ;
+  espace insécable avant « ? »). Le Texte à trous du parcours réel « Réviser les fractions »
+  écrivait `*4/6*` : injouable depuis sa génération (le lecteur lit « 4 » ou « 6 »), et faux par
+  endroits (« ⅘ - ¾ … 11/20 »). Régénérés avec le vrai modèle (Mistral Small 4) : un parcours
+  « Les natures des angles » (6e, 3 chemins, nouveau scénario `elea-angles-chemins`), « Réviser
+  les fractions » et « La proportionnalité » — toutes les cartes faites, aucune écartée, aucune
+  image ni bloc à image dans les Pages, aucun trou défectueux, fractions écrites ⅔ ; le banc des
+  parcours réels passe (412). Reste ce qu’aucun contrôle ne voit : une erreur de calcul (« 3 kg à
+  4,50 € → 5 kg à 6,75 € ») ou de notion (« l’angle saillant est plus grand qu’un angle droit »),
+  à faire relire.
+
+- **1er octobre 2026, matin — Le plan ne revient plus au cadrage (D107, D108) :** Emmanuel,
+  en local : avec « Des chemins selon les résultats », « Composer le plan » tournait puis
+  revenait à l’étape 1. Reproduit sur Magistère : deux plans refusés pour la seule durée des
+  chemins (28, 32 et 39 min, puis 32, 36 et 44). Relevé sur 16 cadrages réels avec Mistral
+  Small 4 (chemins 2 à 4 sur les trois plateformes, trois ampleurs, sans chemins, deux
+  trames) : 7 retours au cadrage, tous à chemins, dont 5 pour la seule durée des chemins ; les
+  plans refusés sont gardés comme cas d’épreuve (`tests/fixtures/parcours-plans-reels/`).
+  Après D107 (réparation, dernier recours) et D108 (exemple complet dans le prompt), mêmes 16
+  cadrages : **16 plans retenus avec Mistral Small 4** (9 au premier appel, dont 2 réparés ;
+  7 après la reprise ; aucun problème d’aiguillage), **16 avec Qwen 3.8** (12 au premier
+  appel sans réparation ; un plan de séquence longue reste trop court, 8 activités au lieu de
+  11 ou 12 : retenu, la réparation n’invente pas d’activité). Une panne passagère du serveur
+  n8n (délai de 5 minutes, puis « Failed to fetch ») a interrompu le premier passage : relancé
+  une fois le serveur revenu. Au passage :
+  - les chemins côte à côte du plan partagent leurs rangées (sous-grille CSS : en-tête,
+    activités, pied) : une introduction plus longue ne décale plus les activités ni le pied
+    d’un chemin ; « Ajouter une activité » descend en bas de sa rangée ; « Consigne et
+    palier » tient sur une ligne, l’état de la carte dessous ; les introductions gardent leur
+    hauteur après un redessin (ajouter un chemin les repliait à une ligne) ;
+  - « Voir comme un élève » : la vignette H5P (4:3) n’est plus écrasée en carré — sa largeur
+    seule est imposée, comme dans le choix du type (`vignetteModule`) ;
+  - essai de modèles sur la carte de proportionnalité qui s’était trompée (Texte à trous
+    « Résoudre des énigmes », 8 trous demandés), 7 à 8 tirages par modèle, chaque trou
+    recalculé : Qwen 3.8, 2 trous faux sur 45, jamais inutilisable, mais 3 énoncés au lieu de
+    8 ; Gemma 4 (servi 4 fois sur 7, repli silencieux sur Qwen 3.6 sinon), 2 trous faux sur
+    26 et un énoncé insoluble ; Mistral Small 4, 5 tirages sur 7 inutilisables (`*x*`, une
+    unité seule, `*... €*`, le calcul entier, réponse et indice inversés), dont 3 que
+    `controle-sortie-ia.js` ne voit pas ;
+  - catalogue ILaaS du jour : `qwen-3.8-27b` est arrivé (servi lui-même, 5 à 10 s),
+    `mistral-small-4-119b` répond de nouveau lui-même ;
+  - `run_parcours_external_ai.mjs` échouait depuis D85 sur une vérification du pied qui
+    cherchait « Importer un modèle » dans toute la page (il est en tête de l’atelier) :
+    restreinte au pied. Ce banc ne figure pas dans `run_parcours.mjs`.
+
+- **1er octobre 2026, nuit — Vérification de génération réelle après D105 :** huit activités
+  par la vraie interface (Surligner, Glisser les mots, Texte à trous, Rédaction, Quiz mixte,
+  QCM, Vrai/Faux, Cartes) et quatre parcours (Moodle « Évaluer », Éléa à trois chemins,
+  Magistère « S’entraîner », Moodle « Apprendre en autonomie »), puis relecture par
+  `run_parcours_reels.mjs`. Vocabulaire juste partout (vouvoiement et « vous » sur Moodle et
+  Magistère, aucun « élève » sur Moodle), Test d’« Évaluer » réglé en épreuve, trois chemins
+  posés. Trouvé et corrigé : un Texte à trous en noms de variables (D106) ; le gras Markdown
+  d’une question gardé dans le titre de l’exercice d’une Présentation (aussi Livre interactif
+  et Vidéo interactive : `titreExercice()`) ; le générateur de parcours réels qui ne rendait
+  pas la main. Un Quiz mixte « en un clic » a échoué une fois sur dix (le premier essai), sans cause captée ni reproduction.
+  Longueur des Pages remesurée et corrigée (D104 : fourchette en ligne à part, facteur 2,9
+  entre 5 et 25 minutes au lieu de 1,6) ; trous en symboles (« *x* g ») prévenus au cadre (D106).
+  Le parcours à chemins a été régénéré cinq fois : variantes contradictoires
+  (« proportionnelle/non proportionnelle » dans chaque trou, consigne « indique si… » confiée
+  par le plan à un Texte à trous), puis virgule LaTeX `37{,}5` dans les réponses, remise en
+  `37,5` par le réparateur hors formule. **Limite constatée, à dire aux enseignants** : le
+  dernier tirage portait trois erreurs de calcul sur huit énoncés (500 g de farine écrits
+  « 1000 », 75 min écrites « 37,5 ») — aucun contrôle ne voit la justesse d’un calcul ; les
+  activités de mathématiques générées se relisent avant d’être données.
+
+- **1er octobre 2026, soir — Le vocabulaire suit la plateforme (D105) :** sur une capture du
+  cadrage Moodle (« Tous vos élèves… »), Emmanuel demande « étudiants » sur Moodle et
+  « stagiaires » sur Magistère, choix des chemins compris. 125 variantes rédigées en français
+  puis traduites dans les 11 autres langues ; règle de rédaction des prompts définie par la
+  plateforme ; tutoriel et fiche RAG `parcours-creation` (1.5.0) d’une phrase. Fiche
+  réingérée dans les 12 langues le 1er oct. à 5 h 35, à la demande d’Emmanuel : 12 remplacées,
+  60 inchangées, 864 documents avant et après, aucun autre touché
+  (`rag/caramelia/reports/2026-10-01-parcours-chemins-05h35.json`).
+
+- **1er octobre 2026 — Retours de Gauthier sur un parcours réel (D102 à D104) :** un parcours
+  de mécanique des fluides généré en production (7.0.1). Trois exercices d’un Quiz mixte sans
+  consigne (le modèle l’avait omise ; le retour d’un score faible passait pour la consigne) :
+  réparateur, seconde demande dans la file, règle au cadre (D103). La vitrine des trames suit
+  sa proposition — apprendre en autonomie, réviser, s’entraîner, évaluer ; « Évaluer » règle le
+  Test en épreuve (D102). La longueur d’une Page suit sa durée (D104). La fin du parcours et
+  les durées qu’il demandait étaient déjà livrées (D96, D97). RAG : 48 fiches parcours écrites
+  le matin (12 ajoutées, 36 remplacées, 864 documents), puis 24 le soir (trames et étape 1 de
+  la création, après D102) ; aucun autre document touché (`rag/ingest-parcours-2026-10-01.mjs`,
+  un rapport par passage).
+
+- **30 septembre 2026 au soir — Premier essai des chemins sur Éléa (Emmanuel) :** la sonde
+  s'importe ; avec son compte enseignant, des réponses toutes justes puis toutes fausses au
+  test mènent chacune au bon chemin. Pas de compte élève de test sur la plateforme : ce qu'un
+  élève VOIT (autres chemins masqués, étape commune et fin qui apparaissent au bon moment,
+  réorientation par le carnet de notes) reste à confirmer avec la fiche
+  `sonde-chemins-elea.md`, dès qu'un compte élève sera disponible. Un compte enseignant
+  n'est pas soumis aux restrictions d'accès : seul un compte élève les éprouve vraiment.
+
+- **30 septembre 2026 — Les chemins selon les résultats (D90 à D101, 7.1.0) :**
+  demande d'Emmanuel et de Gauthier, maquette validée le jour même (« tes choix sont
+  judicieux ») avec trois retours : pas de lettres ni de pourcentages, un visuel propre,
+  « Voir comme un élève » intégré. Livré : choix au cadrage, trois trames à l'écran, deux
+  trames à chemins, aiguillage dans le plan, conditions posées après l'assemblage, fin du
+  parcours et durées dans tous les parcours, achèvement à la consultation des H5P jamais
+  notés (défaut de la 7.0 découvert en route). Les bancs ont trouvé trois défauts réels
+  avant tout essai : seuils mal relus (161 réglages sur 465), exemple de plan contraire à
+  sa consigne (structure libre à chemins sur une séquence), notes de livraison qui
+  déplaçaient la page. Bancs : chemins **37/0**, aiguillage **56/0**, calibrage **74/0**,
+  course **119/0**, atelier **193/0**. Les deux bancs `calibrage` et `sources` simulaient
+  les points d'accès `-bas` alors que ce dépôt appelle `-prod` : ils acceptent les deux.
+  **Reste** : l'aller-retour Éléa (`generer-parcours-sonde-chemins.mjs`, trois élèves).
 
 - **30 septembre 2026 — Test étudiant (D89) et validation de la 7.0.1 :**
   le Test étudiant rejoint la mosaïque d'Éléa, hors plan par défaut. Relevé
