@@ -1,6 +1,6 @@
 {
   "hotspot_vision_prompt": "你是图像分析专家。请仅用中文撰写你回答中的所有文本（imageDescription、每个 label、每个 description）。\n\n请在以下教学情境中分析所提供的图像：{context}\n\n1) 用一到两句话给出图像的整体简要描述：字段 \"imageDescription\"。\n2) 找出图像中确实存在且与该情境相关的 3 到 {count} 个关键区域/要点。\n对每个区域，请准确给出：\n- x：区域中心的水平坐标，范围 0 到 1000（0 = 左边缘，1000 = 右边缘）；\n- y：区域中心的垂直坐标，范围 0 到 1000（0 = 顶部，1000 = 底部）；\n- label：非常简短的名称（1 到 3 个词）；\n- description：该区域及其周围所展示的内容（一到两句话）。\n请根据每个区域的真实位置尽可能精确地估计 x 和 y（0 到 1000 之间的整数，各区域互不相同）。\n不要虚构图像中不存在的任何区域。\n请严格以有效的 JSON 格式作答，不要有任何多余文本，格式如下：",
-  "subtitle": "辅助创建 Moodle 与 Éléa 的资源与活动",
+  "subtitle": "用 AI 创建 Moodle 活动",
   "skip_to_content": "跳转到主要内容",
   "help_modal_title": "🚀 Caramel教师完整指南",
   "tutorial_title": "Caramel 教程",

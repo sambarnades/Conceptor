@@ -1,6 +1,6 @@
 {
   "hotspot_vision_prompt": "Ur mailh out war zielfennañ skeudennoù. Skriv HOLL destennoù da respont (imageDescription, pep label, pep description) E BREZHONEG HEPKEN.\n\nDielfenn ar skeudenn roet en endro pedagogel-mañ : {context}\n\n1) Ro un deskrivadur BERR HA HOLLEK eus ar skeudenn (1 pe 2 frazenn) : maezienn \"imageDescription\".\n2) Termen etre 3 ha {count} TAKAD/POENT pouezus a zo e gwirionez er skeudenn hag a zegouezh gant an endro-mañ.\nEvit PEP takad, ro RIK :\n- x : lec'hiadur a-blaen KREIZ an takad war ur skeul eus 0 da 1000 (0 = bord kleiz, 1000 = bord dehou) ;\n- y : lec'hiadur a-serzh KREIZ an takad war ur skeul eus 0 da 1000 (0 = krec'h, 1000 = traoñ) ;\n- label : un anv berr-tre (1 da 3 ger) ;\n- description : ar pezh a ziskouez an takad HAG ar pezh a zo en-dro dezhañ (1 pe 2 frazenn).\nPriz x ha y ken RESIS ha ma c'hallez, diouzh gwir lec'hiadur pep takad (niveroù anterin etre 0 ha 1000, disheñvel eus un takad d'egile).\nNa ijin TAKAD EBET ha n'emañ ket er skeudenn.\nRespont RIK e JSON reizh, hep testenn ebet en-dro, er mentrezh-mañ :",
-  "subtitle": "Krouiñ Skoazellet Danvezioù hag Oberezhioù evit Moodle hag Éléa",
+  "subtitle": "Krouiñ obererezhioù Moodle gant an NA",
   "skip_to_content": "Mont d'an danvez pennañ",
   "help_modal_title": "🚀 Sturlevr klok Caramel evit ar gelennerien",
   "tutorial_title": "Sturlevr Caramel",

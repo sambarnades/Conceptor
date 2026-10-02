@@ -1,6 +1,6 @@
 {
   "hotspot_vision_prompt": "Du bist ein Experte für Bildanalyse. Verfasse ALLE Texte deiner Antwort (imageDescription, jedes label, jede description) AUSSCHLIESSLICH auf Deutsch.\n\nAnalysiere das bereitgestellte Bild in diesem pädagogischen Kontext: {context}\n\n1) Gib eine kurze GESAMTBESCHREIBUNG des Bildes (1 bis 2 Sätze): Feld \"imageDescription\".\n2) Identifiziere 3 bis {count} SCHLÜSSELZONEN/-PUNKTE, die tatsächlich im Bild vorhanden und für diesen Kontext relevant sind.\nGib für JEDE Zone GENAU an:\n- x: horizontale Koordinate des ZENTRUMS der Zone auf einer Skala von 0 bis 1000 (0 = linker Rand, 1000 = rechter Rand);\n- y: vertikale Koordinate des ZENTRUMS der Zone auf einer Skala von 0 bis 1000 (0 = oben, 1000 = unten);\n- label: ein sehr kurzer Name (1 bis 3 Wörter);\n- description: was die Zone UND ihre Umgebung zeigt (1 bis 2 Sätze).\nSchätze x und y so GENAU wie möglich anhand der ECHTEN Position jeder Zone (ganze Zahlen zwischen 0 und 1000, für jede Zone verschieden).\nErfinde KEINE Zone, die nicht im Bild vorhanden ist.\nAntworte AUSSCHLIESSLICH mit gültigem JSON, ohne umgebenden Text, im Format:",
-  "subtitle": "KI-gestützte Erstellung von Ressourcen und Aktivitäten für Moodle und Éléa",
+  "subtitle": "KI-gestützte Erstellung von Moodle-Aktivitäten",
   "skip_to_content": "Zum Hauptinhalt springen",
   "help_modal_title": "🚀 Umfassender Caramel-Leitfaden für Lehrkräfte",
   "tutorial_title": "Caramel-Tutorial",

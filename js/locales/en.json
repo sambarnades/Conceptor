@@ -1,6 +1,6 @@
 {
   "hotspot_vision_prompt": "You are an image-analysis expert. Write ALL the texts in your answer (imageDescription, every label, every description) EXCLUSIVELY in English.\n\nAnalyse the provided image in this teaching context: {context}\n\n1) Give a short OVERALL description of the image (1 to 2 sentences): field \"imageDescription\".\n2) Identify 3 to {count} KEY ZONES/POINTS that are actually present in the image and relevant to this context.\nFor EACH zone, give EXACTLY:\n- x: horizontal coordinate of the CENTRE of the zone on a scale of 0 to 1000 (0 = left edge, 1000 = right edge);\n- y: vertical coordinate of the CENTRE of the zone on a scale of 0 to 1000 (0 = top, 1000 = bottom);\n- label: a very short name (1 to 3 words);\n- description: what the zone AND its surroundings show (1 to 2 sentences).\nEstimate x and y as ACCURATELY as possible from the REAL position of each zone (integers between 0 and 1000, distinct for each zone).\nDo NOT invent any zone absent from the image.\nReply STRICTLY with valid JSON, with no surrounding text, in the format:",
-  "subtitle": "Assisted Creation of Resources and Activities for Moodle and Éléa",
+  "subtitle": "AI-assisted creation of Moodle activities",
   "skip_to_content": "Skip to main content",
   "help_modal_title": "🚀 Caramel Complete Guide for Teachers",
   "tutorial_title": "Caramel Tutorial",

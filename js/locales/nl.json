@@ -1,6 +1,6 @@
 {
   "hotspot_vision_prompt": "Je bent een expert in beeldanalyse. Schrijf ALLE teksten in je antwoord (imageDescription, elk label, elke description) UITSLUITEND in het Nederlands.\n\nAnalyseer de aangeleverde afbeelding in deze educatieve context: {context}\n\n1) Geef een korte ALGEMENE beschrijving van de afbeelding (1 tot 2 zinnen): veld \"imageDescription\".\n2) Identificeer 3 tot {count} KERNZONES/-PUNTEN die daadwerkelijk in de afbeelding aanwezig en relevant voor deze context zijn.\nGeef voor ELKE zone PRECIES:\n- x: horizontale coördinaat van het MIDDEN van de zone op een schaal van 0 tot 1000 (0 = linkerrand, 1000 = rechterrand);\n- y: verticale coördinaat van het MIDDEN van de zone op een schaal van 0 tot 1000 (0 = boven, 1000 = onder);\n- label: een zeer korte naam (1 tot 3 woorden);\n- description: wat de zone EN de omgeving ervan tonen (1 tot 2 zinnen).\nSchat x en y zo NAUWKEURIG mogelijk op basis van de ECHTE positie van elke zone (gehele getallen tussen 0 en 1000, verschillend per zone).\nVerzin GEEN zone die niet in de afbeelding voorkomt.\nAntwoord UITSLUITEND met geldige JSON, zonder omringende tekst, in het formaat:",
-  "subtitle": "Ondersteunde creatie van bronnen en activiteiten voor Moodle en Éléa",
+  "subtitle": "Moodle-activiteiten creëren met AI",
   "skip_to_content": "Ga naar de hoofdinhoud",
   "help_modal_title": "🚀 Compleet Caramel-handboek voor docenten",
   "tutorial_title": "Caramel-handleiding",
