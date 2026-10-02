@@ -528,7 +528,7 @@ export const moodleModules = {
         jsonInputId: "millionnaireJsonInput",
         createBtnId: "createMillionnaireMBZ",
         categories: ["quiz", "elea"],
-        hidden: false,
+        hidden: true,
         platforms: ["Éléa"],
         formats: ["MBZ", "DOCX", "ODT", "PDF"]
     },
@@ -544,7 +544,7 @@ export const moodleModules = {
         // (mistral-small-4, fb=0) : items ultra-légers, N=40 ≈ 11 s → dormant (threshold:40).
         chunking: { path: "pairs", itemName: "paire", carcasse: ["title", "intro"], threshold: 40 },
         categories: ["quiz", "elea"],
-        hidden: false,
+        hidden: true,
         platforms: ["Éléa"],
         formats: ["MBZ", "DOCX", "ODT", "PDF"]
     },
@@ -561,7 +561,7 @@ export const moodleModules = {
         // ACTIF threshold:30 / batchSize:20 (lots ≤30 s). Plus léger qu'Éléa-Test (un seul type).
         chunking: { path: "questions", itemName: "question", carcasse: ["title"], threshold: 30, batchSize: 20 },
         categories: ["quiz", "elea"],
-        hidden: false,
+        hidden: true,
         platforms: ["Éléa"],
         formats: ["MBZ", "DOCX", "ODT", "PDF"]
     },
