@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caramel</title>
-    <meta name="description" content="Caramel — Créez des activités pédagogiques interactives (H5P, Éléa, Magistère, Moodle) avec l'IA, directement dans votre navigateur. Open source, sans compte, sans données envoyées.">
+    <title>Conceptor</title>
+    <meta name="description" content="Conceptor - Conception d'activités Moodle avec l'IA, directement dans votre navigateur. Open source, sans compte, sans données envoyées.">
  
     <!-- Vendor CSS (external libraries) -->
     <link rel="stylesheet" href="css/vendor/fontawesome/7.3.1/css/all.min.css">
@@ -34,13 +34,13 @@
     <link rel="stylesheet" href="css/simulators/qcm.css">
     <link rel="stylesheet" href="css/simulators/page.css">
     <link rel="stylesheet" href="css/simulators/devoir.css">
-    <link rel="stylesheet" href="css/components/caramelia.css">
+    <!-- <link rel="stylesheet" href="css/components/caramelia.css"> -->
     <link rel="stylesheet" href="css/components/parcours.css?v=20261001-vitrine">
 
     <!-- Logo Caramel -->
     <!-- Le SVG d'abord (net à toute taille) ; le .ico reste pour les navigateurs qui l'ignorent. -->
-    <link rel="icon" href="assets/images/branding/logo_caramel.svg" type="image/svg+xml">
-    <link rel="icon" href="assets/images/branding/logo_caramel.ico" type="image/x-icon">
+    <link rel="icon" href="assets/images/branding/m-conceptorLogo.png" type="image/svg+xml">
+    <link rel="icon" href="assets/images/branding/m-conceptorLogo.ico" type="image/x-icon">
 
     <!-- Début Matomo Code -->
     <script>
@@ -64,25 +64,14 @@
     <a href="#main-content" class="sr-only sr-only-focusable" data-key="skip_to_content">Aller au contenu principal</a>
     <header class="app-bar">
         <div class="header-left">
-            <a href="./"><img src="assets/images/branding/logo_caramel.svg" alt="Logo Caramel" class="logo" width="50" height="50"></a>
+            <a href="./"><img src="assets/images/branding/m-conceptorLogo.png" alt="Logo Caramel" class="logo" width="50" height="50"></a>
             <div class="title-container">
-                <h1 class="app-title">Caramel</h1>
-                <p class="subtitle" data-key="subtitle">Création Assistée de Ressources et d'Activités Magistère et Éléa
+                <h1 class="app-title">Conceptor</h1>
+                <p class="subtitle" data-key="subtitle">Création d'activité Moodle avec l'IA
                 </p>
             </div>
         </div>
         <div class="header-right">
-            <a href="https://edurl.fr/caramel-tchap" target="_blank" class="help-btn" id="tchap-button"
-                aria-label="Tchap">
-                <img src="assets/images/branding/tchap.svg" alt="Tchap" class="tchap-icon" width="20" height="20">
-                <span>Tchap</span>
-            </a>
-            <a href="https://sucrerie.forge.apps.education.fr/" target="_blank" rel="noopener" class="help-btn"
-                id="sucrerie-button" aria-label="Sucrerie" title="Sucrerie — déposer et partager vos activités">
-                <img src="assets/images/branding/sucrerie.svg" alt="Sucrerie" class="sucrerie-icon" width="22"
-                    height="22">
-                <span>Sucrerie</span>
-            </a>
             <button class="help-btn" id="help-button" aria-label="Aide">
                 <i class="fas fa-book-open"></i>
                 <span data-key="tutorial">Tutoriel</span>
@@ -318,8 +307,8 @@
             <div class="filter-separator"></div>
             <div class="filter-group filter-group--platform">
                 <button class="filter-chip filter-chip--h5p" data-filter-platform="h5p" data-key="tab_h5p">H5P</button>
-                <button class="filter-chip filter-chip--elea" data-filter-platform="elea" data-key="tab_elea">Éléa</button>
-                <button class="filter-chip filter-chip--magistere" data-filter-platform="magistere" data-key="tab_magistere">Magistère</button>
+                <!--<button class="filter-chip filter-chip--elea" data-filter-platform="elea" data-key="tab_elea">Éléa</button> -->
+                <!-- <button class="filter-chip filter-chip--magistere" data-filter-platform="magistere" data-key="tab_magistere">Magistère</button> -->
                 <button class="filter-chip filter-chip--moodle" data-filter-platform="moodle" data-key="tab_moodle">Moodle</button>
             </div>
         </div>
@@ -401,11 +390,9 @@
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank" class="footer-version"><i class="fas fa-info-circle"></i> <span>Caramel v7.1.0</span></a>
-        <a href="mailto:gauthier.remande@ac-nantes.fr" class="footer-author"><i class="fas fa-envelope"></i> <span>Gauthier REMANDE</span></a>
-        <a href="mailto:emmanuel.gaunard@ac-grenoble.fr" class="footer-author"><i class="fas fa-envelope"></i> <span>Emmanuel GAUNARD</span></a>
+        <a href="mailto:samuel.barnades@isfec-montpellier.org" class="footer-author"><i class="fas fa-envelope"></i> <span>Assistance</span></a>
         <a href="decouvrir/" class="footer-discover"><i class="fas fa-star"></i> <span data-key="footer_discover">Découvrir Caramel</span></a>
-        <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> <span>Forge</span></a>
-        <a href="https://forge.apps.education.fr/caramel/caramel/-/issues"><i class="fas fa-bug"></i> <span data-key="ticket">Ticket</span></a>
+        <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> <span>Propulsé par Caramel | Forge</span></a>
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE"><i class="fas fa-scroll"></i> <span data-key="license_info">GNU AGPL v3.0 ou ultérieure</span></a>
         <button type="button" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions légales</span></button>
     </footer>
@@ -549,5 +536,7 @@
     <!-- Bibliothèques chargées dynamiquement par lib-loader.js pour optimiser les performances -->
 
 </body>
+
+<style>#caramelia-fab, .caramelia-panel { display: none !important; }</style>
 
 </html>
