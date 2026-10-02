@@ -1,6 +1,6 @@
 {
   "hotspot_vision_prompt": "Tu es un expert en analyse d'images. Rédige TOUS les textes de ta réponse (imageDescription, chaque label, chaque description) EXCLUSIVEMENT en français.\n\nAnalyse l'image fournie dans ce contexte pédagogique : {context}\n\n1) Donne une brève description GLOBALE de l'image (1 à 2 phrases) : champ \"imageDescription\".\n2) Identifie de 3 à {count} ZONES/POINTS clés réellement présents dans l'image et pertinents pour ce contexte.\nPour CHAQUE zone, donne EXACTEMENT :\n- x : coordonnée horizontale du CENTRE de la zone sur une échelle de 0 à 1000 (0 = bord gauche, 1000 = bord droit) ;\n- y : coordonnée verticale du CENTRE de la zone sur une échelle de 0 à 1000 (0 = haut, 1000 = bas) ;\n- label : un nom très court (1 à 3 mots) ;\n- description : ce que montre la zone ET ce qui l'entoure (1 à 2 phrases).\nEstime x et y au plus JUSTE d'après la VRAIE position de chaque zone (entiers entre 0 et 1000, distincts d'une zone à l'autre).\nN'invente AUCUNE zone absente de l'image.\nRéponds STRICTEMENT en JSON valide, sans aucun texte autour, au format :",
-  "subtitle": "Création d'activité Moodle avec l'IA",
+  "subtitle": "Création d'activités Moodle avec l'IA",
   "skip_to_content": "Aller au contenu principal",
   "help_modal_title": "🚀 Guide complet de Caramel pour les enseignants",
   "tutorial_title": "Tutoriel de Caramel",
