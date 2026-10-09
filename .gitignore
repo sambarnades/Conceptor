@@ -1,0 +1,36 @@
+# ── Système d'exploitation ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Éditeurs / IDE ──────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Secrets et environnement local ──────────────────────────────────────
+# Clés API, tokens, configuration locale : jamais commités.
+.env
+.env.*
+*.env
+*.pem
+*.key
+
+# ── Node.js (scripts de test du fork exécutés depuis la racine) ─────────
+node_modules/
+npm-debug.log*
+package-lock.json.bak
+
+# ── Docker ─────────────────────────────────────────────────────────────
+# Images exportées, journaux de build, compose générés localement.
+*.tar
+docker-compose.override.yml
+
+# ── Artefacts et fichiers temporaires ──────────────────────────────────
+*.log
+*.tmp
+*.bak
+.cache/
+tmp/
