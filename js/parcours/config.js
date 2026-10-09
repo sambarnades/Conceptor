@@ -38,8 +38,8 @@ export const CONFIG = {
      * contraindra la palette d'activités proposées à l'étape suivante.
      */
     platforms: [
-        { id: 'elea',      moduleFilter: 'Éléa',      nameKey: 'parcours_platform_elea',      descKey: 'parcours_platform_elea_desc' },
-        { id: 'magistere', moduleFilter: 'Magistère', nameKey: 'parcours_platform_magistere', descKey: 'parcours_platform_magistere_desc' },
+        /* { id: 'elea',      moduleFilter: 'Éléa',      nameKey: 'parcours_platform_elea',      descKey: 'parcours_platform_elea_desc' },
+        { id: 'magistere', moduleFilter: 'Magistère', nameKey: 'parcours_platform_magistere', descKey: 'parcours_platform_magistere_desc' }, */
         { id: 'moodle',    moduleFilter: 'Moodle',    nameKey: 'parcours_platform_moodle',    descKey: 'parcours_platform_moodle_desc' },
     ],
 
