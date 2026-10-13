@@ -69,8 +69,10 @@ par l'équipe Caramel (`n8n-caramel.osc-fr1.scalingo.io`, modèles ILaaS).
 Conséquences pour la mise en production ISFEC :
 
 - la disponibilité de ces webhooks n'est **pas garantie** pour un usage tiers ;
-- pour une IA autonome (ex. clé Mistral propre à l'ISFEC), il faut déployer un
-  relais backend dédié et rediriger les endpoints — voir ROADMAP, décision **D8**.
+- **décision D8 (2026-10-13)** : les webhooks Caramel sont utilisés **en l'état** —
+  usage autorisé, aucune clé à gérer ; un relais backend dédié (ex. clé Mistral
+  propre à l'ISFEC, redirection de `endpoints.js`) reste possible plus tard si la
+  disponibilité devient un frein.
 
 ## État actuel de la personnalisation
 
