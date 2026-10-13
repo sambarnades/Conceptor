@@ -81,13 +81,14 @@ Conséquences pour la mise en production ISFEC :
 | Identité visuelle | `caramel/assets/images/branding/` | `m-conceptorLogo.svg` / `.png` / `.ico` commités dans le fork |
 | Conteneur | `Dockerfile` | Copie le fork `caramel/` — aucun réseau au build, image reproductible |
 | Masquage Éléa/Magistère | `js/core/definitions.js`, `js/parcours/config.js` | Modules Éléa-only masqués ; atelier de parcours limité à Moodle |
-| Publication | GitHub `sambarnades/m-conceptor` | Voir [`GUIDE-PUSH.md`](GUIDE-PUSH.md) |
+| Publication | GitHub [`sambarnades/Conceptor`](https://github.com/sambarnades/Conceptor) | Publiée (dépôt unique : `main` = pilotage, `isfec/main` = fork) — voir [`GUIDE-PUSH.md`](GUIDE-PUSH.md) |
 
 ## Documentation complémentaire
 
 - [`ROADMAP.md`](ROADMAP.md) — plan de personnalisation détaillé (rebranding, masquage
   Éléa/Magistère, parcours, conformité AGPL).
-- [`GUIDE-PUSH.md`](GUIDE-PUSH.md) — procédure de publication des dépôts (fork + racine).
+- [`GUIDE-PUSH.md`](GUIDE-PUSH.md) — architecture Git publiée (dépôt unique),
+  vérification d'un clone et synchronisation amont.
 - Documentation du projet amont : [`caramel/README.md`](caramel/README.md),
   [`caramel/docs/`](caramel/docs/).
 

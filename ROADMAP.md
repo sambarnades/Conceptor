@@ -3,7 +3,7 @@
 Plan de personnalisation de [Caramel](https://forge.apps.education.fr/caramel/caramel)
 pour l'ISFEC Saint-Joseph. Rédigé sur la constatation d'une surcouche v7.0.1 ; le fork
 est aujourd'hui basé sur **Caramel 7.1.0** (branche `isfec/main`). Mise à jour :
-2026-10-09. Objectifs :
+2026-10-13. Objectifs :
 
 1. Documenter et outiller le fork en restant conforme à la **licence AGPL v3**.
 2. Finir le **rebranding** Conceptor.
@@ -26,24 +26,27 @@ le build context. Concrètement, les personnalisations aujourd'hui posées à la
 État au 2026-10-09 (constat initial revu — le socle est en place) :
 
 - `caramel/` est bien un **submodule Git** (gitlink `160000` dans l'index racine) ;
-  l'URL de `.gitmodules`, corrigée, pointe désormais sur la Forge Caramel. **Décision
-  révisée** : conserver le submodule et le faire pointer sur le **dépôt fork ISFEC**
-  dès sa création (le gitlink doit référencer un commit publié, sinon un clone de la
-  racine est cassé).
+  `.gitmodules` pointe désormais sur le **dépôt fork ISFEC publié**
+  (`github.com/sambarnades/Conceptor`). Le gitlink référence un commit publié :
+  un clone récursif de la racine est valide.
 - Le `Dockerfile` est réécrit en `COPY` (plus de `apt-get`, plus de `git`, aucun réseau
   au build) — l'image embarque exactement le code du fork épinglé.
 - L'incohérence de version est résolue : les personnalisations ont été ré-appliquées
   sur `caramel/index.html` (7.1.0) et commitées dans le fork (branche `isfec/main`,
   7 commits ISFEC au 2026-10-09).
-- Reste à faire au socle : **créer le dépôt fork et publier** — procédure complète
-  dans [`GUIDE-PUSH.md`](GUIDE-PUSH.md).
+- Publication effectuée le **2026-10-13** (dépôt unique, voir 0.1 et D1/D7) ;
+  procédure de synchronisation amont dans [`GUIDE-PUSH.md`](GUIDE-PUSH.md).
 
 Tâches :
 
-- **0.1** (⬜ reste la publication) Créer le dépôt du fork (GitHub de l'ISFEC), y
-  pousser `caramel/` (branche `isfec/main`) ; remotes du fork : `origin` = fork ISFEC,
-  `upstream` = Caramel. Puis pointer `.gitmodules` de la racine sur le fork et
-  commiter le gitlink. — Voir [`GUIDE-PUSH.md`](GUIDE-PUSH.md).
+- **0.1** (✅ fait, 2026-10-13) Publication sur un **dépôt GitHub unique**
+  (`github.com/sambarnades/Conceptor`, ancien `m-conceptor` renommé) : `main` =
+  racine de pilotage, `isfec/main` = fork applicatif. Remotes : racine `origin` =
+  Conceptor ; submodule `caramel/` : `origin` = Conceptor, `upstream` = Forge
+  Caramel. `.gitmodules` pointe sur Conceptor et le gitlink (`3b5c2a9d`) est
+  publié. **Décision révisée (D1/D7)** : un seul dépôt, deux branches. Le dépôt
+  est **privé** — minimum AGPL acceptable seulement si les formateurs y ont accès ;
+  le rendre public reste recommandé.
 - **0.2** (✅ fait) Migrer la personnalisation dans le fork : ré-appliquer les
   modifications de l'`index.html` racine sur `caramel/index.html` (7.1.0), copier
   `branding/` dans `caramel/assets/images/branding/`, commiter chacun de ces
@@ -72,7 +75,7 @@ applicatif.
 **Critères d'acceptation** : ✅ `docker build` reproductible (aucun réseau au build) ;
 ✅ `docker run` affiche Conceptor ; ✅ version Caramel embarquée documentée (7.1.0,
 branche `isfec/main`) ; ✅ l'historique Git du fork distingue clairement les commits
-amont des commits ISFEC ; ⬜ dépôt fork publié et gitlink pointant dessus (0.1).
+amont des commits ISFEC ; ✅ dépôt fork publié et gitlink pointant dessus (0.1).
 
 ---
 
@@ -90,10 +93,10 @@ amont des commits ISFEC ; ⬜ dépôt fork publié et gitlink pointant dessus (0
   aux formateurs (dépôt accessible — interne ISFEC au minimum, public de préférence).
 - **1.5** Mettre à jour les **mentions légales** : module
   `js/ui/mentions-legales.js` + `assets/data/` (propriétaire : ISFEC Saint-Joseph,
-  hébergeur, traitement de données). Attention : l'index racine embarque encore le
-  **tracker Matomo de `phm.education.gouv.fr`** — le retirer (recommandé pour un
-  établissement privé) ou le remplacer par une instance propre, et le déclarer dans
-  les mentions légales.
+  hébergeur, traitement de données). Attention : `caramel/index.html` embarque
+  encore le **tracker Matomo de `phm.education.gouv.fr`** (confirmé le 2026-10-13) —
+  le retirer (recommandé pour un établissement privé) ou le remplacer par une
+  instance propre, et le déclarer dans les mentions légales.
 
 **Critères d'acceptation** : LICENSE intacte ; crédits visibles ; source publiée ;
 mentions légales exactes ; aucun appel réseau vers phm.education.gouv.fr.
@@ -246,11 +249,11 @@ Pré-requis : phases 0 (publication) et 1 terminées ; D8 arbitrée.
 
 | # | Décision | Recommandation | État |
 |---|---|---|---|
-| D1 | Architecture : tout dans `caramel/` (fork) vs surcouche racine | Fork dans `caramel/` en **submodule** pointant sur le dépôt fork ISFEC ; Dockerfile en `COPY` | Révisée — le submodule est fonctionnel, à publier |
+| D1 | Architecture : tout dans `caramel/` (fork) vs surcouche racine | Fork dans `caramel/` en **submodule** pointant sur le dépôt fork ISFEC ; Dockerfile en `COPY` | Fait — submodule publié ; **dépôt unique** Conceptor (`main` + `isfec/main`) |
 | D2 | Modules MBZ compatibles Moodle (Test, Devoir, Page, Livre, Glossaire) | Garder, après recette d'import dans Moodle nu | En attente de recette (3.4) |
 | D3 | Modules Éléa-only (Millionnaire, Appariement, QCM) | Masquer (`hidden: true`), ne pas supprimer | Fait |
-| D4 | Tracker Matomo (phm.education.gouv.fr) | Retirer | À vérifier dans le fork (1.5) |
+| D4 | Tracker Matomo (phm.education.gouv.fr) | Retirer | Confirmé présent dans `caramel/index.html` — à retirer (1.5) |
 | D5 | Vitrine `decouvrir/` | Masquer dans un premier temps | À faire (5.2) |
 | D6 | Carte de progression (Éléa-only) dans le parcours | Retirer ; alternative Moodle plus tard si besoin | À faire (4.3) |
-| D7 | Publication du code source du fork | Dépôt accessible aux utilisateurs (interne minimum) | À faire (0.1, GUIDE-PUSH.md) |
+| D7 | Publication du code source du fork | Dépôt accessible aux utilisateurs (interne minimum) | Fait — dépôt `sambarnades/Conceptor` (**privé**) ; visibilité publique ou accès formateurs à confirmer |
 | D8 | Infrastructure IA : dépendance aux webhooks n8n de l'équipe Caramel | **Nouveau constat** : aucune clé API dans le code ; tous les appels IA (génération, Caramelia, transcription, vision, dictée) passent par `n8n-caramel.osc-fr1.scalingo.io` (ILaaS). Court terme : utiliser tel quel en sachant que la disponibilité n'est pas garantie. Autonomie : déployer un relais backend ISFEC (n8n ou petit serveur) portant une clé Mistral propre, et rediriger `js/core/endpoints.js` | À trancher avant la mise en production |
