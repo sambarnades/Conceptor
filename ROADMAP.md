@@ -119,7 +119,7 @@ Résidus « Caramel » identifiés dans `caramel/index.html` (fork 7.1.0) :
   décider de le retirer du `index.html` et des imports JS pour alléger.
 - **2.5** (✅ corrigé dans le fork) Favicon / meta : `caramel/index.html` référence
   désormais le SVG avec `type="image/svg+xml"` et le PNG avec `type="image/png"` ;
-  `m-conceptorLogo.ico` est commité mais non référencé — à câbler ou à retirer.
+  `conceptorLogo.ico` est commité mais non référencé — à câbler ou à retirer.
 
 **Critères d'acceptation** : parcours complet de l'UI sans mention « Caramel » hors
 crédits licence ; console sans erreur 404 (logo supprimé).

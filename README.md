@@ -80,7 +80,7 @@ Conséquences pour la mise en production ISFEC :
 |---|---|---|
 | Code applicatif (fork ISFEC) | `caramel/` (submodule) | Branche `isfec/main`, base Caramel 7.1.0, 7 commits ISFEC (rebranding, masquage Éléa, parcours Moodle uniquement) |
 | Page d'accueil personnalisée | `caramel/index.html` | Titre « Conceptor », filtres Éléa/Magistère commentés, assistance ISFEC, boutons Tchap/Sucrerie retirés |
-| Identité visuelle | `caramel/assets/images/branding/` | `m-conceptorLogo.svg` / `.png` / `.ico` commités dans le fork |
+| Identité visuelle | `caramel/assets/images/branding/` | `conceptorLogo.svg` / `.png` / `.ico` commités dans le fork |
 | Conteneur | `Dockerfile` | Copie le fork `caramel/` — aucun réseau au build, image reproductible |
 | Masquage Éléa/Magistère | `js/core/definitions.js`, `js/parcours/config.js` | Modules Éléa-only masqués ; atelier de parcours limité à Moodle |
 | Publication | GitHub [`sambarnades/Conceptor`](https://github.com/sambarnades/Conceptor) | Publiée (dépôt unique : `main` = pilotage, `isfec/main` = fork) — voir [`GUIDE-PUSH.md`](GUIDE-PUSH.md) |
