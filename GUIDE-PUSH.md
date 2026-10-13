@@ -31,9 +31,9 @@ dépôt, un clone récursif de la racine est valide.
 
 ### Visibilité et AGPL (décision D7)
 
-Le dépôt est actuellement **privé**. La licence AGPL v3 impose de fournir le code
-source correspondant aux utilisateurs de l'image distribuée : le dépôt doit être
-soit rendu **public**, soit accessible à tous les formateurs ISFEC. À arbitrer.
+Le dépôt est **public** depuis le 2026-10-13 : l'obligation AGPL v3 de fournir le
+code source correspondant aux utilisateurs de l'image distribuée est couverte.
+Le conserver public est la recommandation à long terme.
 
 ## Vérification d'un clone sain
 

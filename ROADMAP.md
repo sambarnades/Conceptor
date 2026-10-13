@@ -45,8 +45,7 @@ Tâches :
   Conceptor ; submodule `caramel/` : `origin` = Conceptor, `upstream` = Forge
   Caramel. `.gitmodules` pointe sur Conceptor et le gitlink (`3b5c2a9d`) est
   publié. **Décision révisée (D1/D7)** : un seul dépôt, deux branches. Le dépôt
-  est **privé** — minimum AGPL acceptable seulement si les formateurs y ont accès ;
-  le rendre public reste recommandé.
+  est **public** (passé en public le 2026-10-13) — obligation AGPL couverte.
 - **0.2** (✅ fait) Migrer la personnalisation dans le fork : ré-appliquer les
   modifications de l'`index.html` racine sur `caramel/index.html` (7.1.0), copier
   `branding/` dans `caramel/assets/images/branding/`, commiter chacun de ces
@@ -255,5 +254,5 @@ Pré-requis : phases 0 (publication) et 1 terminées ; D8 arbitrée.
 | D4 | Tracker Matomo (phm.education.gouv.fr) | Retirer | Confirmé présent dans `caramel/index.html` — à retirer (1.5) |
 | D5 | Vitrine `decouvrir/` | Masquer dans un premier temps | À faire (5.2) |
 | D6 | Carte de progression (Éléa-only) dans le parcours | Retirer ; alternative Moodle plus tard si besoin | À faire (4.3) |
-| D7 | Publication du code source du fork | Dépôt accessible aux utilisateurs (interne minimum) | Fait — dépôt `sambarnades/Conceptor` (**privé**) ; visibilité publique ou accès formateurs à confirmer |
+| D7 | Publication du code source du fork | Dépôt accessible aux utilisateurs (interne minimum) | Fait — dépôt `sambarnades/Conceptor` **public** (obligation AGPL couverte) |
 | D8 | Infrastructure IA : dépendance aux webhooks n8n de l'équipe Caramel | **Nouveau constat** : aucune clé API dans le code ; tous les appels IA (génération, Caramelia, transcription, vision, dictée) passent par `n8n-caramel.osc-fr1.scalingo.io` (ILaaS). Court terme : utiliser tel quel en sachant que la disponibilité n'est pas garantie. Autonomie : déployer un relais backend ISFEC (n8n ou petit serveur) portant une clé Mistral propre, et rediriger `js/core/endpoints.js` | À trancher avant la mise en production |
